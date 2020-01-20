@@ -1486,20 +1486,7 @@ void CvPlayerAI::AI_updateFoundValues(bool bClear, CvArea* area) const
 
 				if ( bNeedsCalculating )
 				{
-					int iResult = -1;
-					if(GC.getUSE_GET_CITY_FOUND_VALUE_CALLBACK())
-					{
-						iResult = Cy::call<int>(PYGameModule, "getCityFoundValue", Cy::Args() << getID() << pLoopPlot->getX() << pLoopPlot->getY());
-					}
-
-					if (iResult == -1)
-					{
-						iValue = AI_foundValue(pLoopPlot->getX(), pLoopPlot->getY());
-					}
-					else
-					{
-						iValue = iResult;
-					}
+					iValue = AI_foundValue(pLoopPlot->getX(), pLoopPlot->getY());
 
 					pLoopPlot->setFoundValue(getID(), iValue);
 
@@ -8056,31 +8043,9 @@ int CvPlayerAI::AI_techUnitValue( TechTypes eTech, int iPathLength, bool &bEnabl
 
 void CvPlayerAI::AI_chooseFreeTech()
 {
-	TechTypes eBestTech;
-
 	clearResearchQueue();
 
-/************************************************************************************************/
-/* Afforess	                  Start		 04/29/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	if (GC.getUSE_AI_BESTTECH_CALLBACK())
-	{
-		eBestTech = Cy::call<TechTypes>(PYGameModule, "AI_chooseTech", Cy::Args() << getID() << true);
-	}
-	else
-	{
-		eBestTech = NO_TECH;
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
-	if (eBestTech == NO_TECH)
-	{
-		eBestTech = AI_bestTech(1, true);
-	}
+	TechTypes eBestTech = AI_bestTech(1, true);
 
 	if (eBestTech != NO_TECH)
 	{
@@ -8096,18 +8061,15 @@ void CvPlayerAI::AI_startGoldenAge()
 
 void CvPlayerAI::AI_chooseResearch()
 {
-	TechTypes eBestTech;
-	int iI;
-
 	clearResearchQueue();
 
 	if (getCurrentResearch() == NO_TECH)
 	{
-		for (iI = 0; iI < MAX_PLAYERS; iI++)
+		for (int iI = 0; iI < MAX_PLAYERS; iI++)
 		{
 			if (GET_PLAYER((PlayerTypes)iI).isAlive())
 			{
-				if ((iI != getID()) && (GET_PLAYER((PlayerTypes)iI).getTeam() == getTeam()))
+				if (iI != getID() && GET_PLAYER((PlayerTypes)iI).getTeam() == getTeam())
 				{
 					if (GET_PLAYER((PlayerTypes)iI).getCurrentResearch() != NO_TECH)
 					{
@@ -8123,46 +8085,11 @@ void CvPlayerAI::AI_chooseResearch()
 
 	if (getCurrentResearch() == NO_TECH)
 	{
-/************************************************************************************************/
-/* Afforess	                  Start		 04/29/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-		if (GC.getUSE_AI_BESTTECH_CALLBACK())
-		{
-			eBestTech = Cy::call<TechTypes>(PYGameModule, "AI_chooseTech", Cy::Args() << getID() << false);
-		}
-		else
-		{
-			eBestTech = NO_TECH;
-		}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
-		if (eBestTech == NO_TECH)
-		{
-
-			int iAIResearchDepth;
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                      03/08/10                                jdog5000      */
-/*                                                                                              */
-/* Victory Strategy AI                                                                          */
-/************************************************************************************************/
-			iAIResearchDepth = AI_isDoVictoryStrategy(AI_VICTORY_CULTURE3) ? 1 : 3;
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                       END                                                  */
-/************************************************************************************************/
-
-
-			eBestTech = AI_bestTech((isHuman()) ? 1 : iAIResearchDepth);
-		}
-
+		const int iAIResearchDepth = AI_isDoVictoryStrategy(AI_VICTORY_CULTURE3) ? 1 : 3;
+		const TechTypes eBestTech = AI_bestTech((isHuman()) ? 1 : iAIResearchDepth);
 		if (eBestTech != NO_TECH)
 		{
-			CvTechInfo& tech = GC.getTechInfo(eBestTech);
-
-			OutputDebugString(CvString::format("Game turn %d, AI chooses tech %S\n", GC.getGame().getGameTurn(), tech.getDescription()).c_str());
+			OutputDebugString(CvString::format("Game turn %d, AI chooses tech %S\n", GC.getGame().getGameTurn(), GC.getTechInfo(eBestTech).getDescription()).c_str());
 			pushResearch(eBestTech);
 		}
 	}
@@ -8171,11 +8098,9 @@ void CvPlayerAI::AI_chooseResearch()
 
 DiploCommentTypes CvPlayerAI::AI_getGreeting(PlayerTypes ePlayer) const
 {
-	TeamTypes eWorstEnemy;
-
 	if (GET_PLAYER(ePlayer).getTeam() != getTeam())
 	{
-		eWorstEnemy = GET_TEAM(getTeam()).AI_getWorstEnemy();
+		const TeamTypes eWorstEnemy = GET_TEAM(getTeam()).AI_getWorstEnemy();
 
 		if ((eWorstEnemy != NO_TEAM) && (eWorstEnemy != GET_PLAYER(ePlayer).getTeam()) && GET_TEAM(GET_PLAYER(ePlayer).getTeam()).isHasMet(eWorstEnemy) && (GC.getASyncRand().get(4) == 0))
 		{
@@ -21566,7 +21491,6 @@ void CvPlayerAI::AI_doDiplo()
 	int iGold;
 	int iGoldData;
 	int iGoldWeight;
-	int iGoldValuePercent;
 	int iCount;
 	int iPossibleCount;
 	int iValue;
@@ -21581,24 +21505,7 @@ void CvPlayerAI::AI_doDiplo()
 	FAssert(!isMinorCiv());
 	FAssert(!isNPC());
 
-/************************************************************************************************/
-/* Afforess	                  Start		 04/29/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	if (GC.getUSE_AI_DO_DIPLO_CALLBACK())
-	{
-		PROFILE("CvPlayerAI::AI_doDiplo.Python");
-		if (Cy::call<bool>(PYGameModule, "AI_doDiplo", Cy::Args() << getID()))
-		{
-			return;
-		}
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
-	iGoldValuePercent = AI_goldTradeValuePercent();
+	int iGoldValuePercent = AI_goldTradeValuePercent();
 
 	for (iI = 0; iI < MAX_TEAMS; iI++)
 	{
@@ -29627,47 +29534,30 @@ void CvPlayerAI::AI_recalculateFoundValues(int iX, int iY, int iInnerRadius, int
 {
 	CvPlot* pLoopPlot;
 	int iLoopX, iLoopY;
-	int iValue;
 
 	for (iLoopX = -iOuterRadius; iLoopX <= iOuterRadius; iLoopX++)
 	{
 		for (iLoopY = -iOuterRadius; iLoopY <= iOuterRadius; iLoopY++)
 		{
 			pLoopPlot = plotXY(iX, iY, iLoopX, iLoopY);
-			if ((NULL != pLoopPlot) && !AI_isPlotCitySite(pLoopPlot))
+			if (NULL != pLoopPlot && !AI_isPlotCitySite(pLoopPlot))
 			{
 				if (stepDistance(0, 0, iLoopX, iLoopY) <= iInnerRadius)
 				{
-					if (!((iLoopX == 0) && (iLoopY == 0)))
+					if (!(iLoopX == 0 && iLoopY == 0))
 					{
 						pLoopPlot->setFoundValue(getID(), 0);
 					}
 				}
-				else
+				else if ((pLoopPlot != NULL) && (pLoopPlot->isRevealed(getTeam(), false)))
 				{
-					if ((pLoopPlot != NULL) && (pLoopPlot->isRevealed(getTeam(), false)))
+					const int iValue = AI_foundValue(pLoopPlot->getX(), pLoopPlot->getY());
+
+					pLoopPlot->setFoundValue(getID(), iValue);
+
+					if (iValue > pLoopPlot->area()->getBestFoundValue(getID()))
 					{
-						int iResult=-1;
-						if(GC.getUSE_GET_CITY_FOUND_VALUE_CALLBACK())
-						{
-							iResult = Cy::call<int>(PYGameModule, "getCityFoundValue", Cy::Args() << getID() << pLoopPlot->getX() << pLoopPlot->getY());
-						}
-
-						if (iResult == -1)
-						{
-							iValue = AI_foundValue(pLoopPlot->getX(), pLoopPlot->getY());
-						}
-						else
-						{
-							iValue = iResult;
-						}
-
-						pLoopPlot->setFoundValue(getID(), iValue);
-
-						if (iValue > pLoopPlot->area()->getBestFoundValue(getID()))
-						{
-							pLoopPlot->area()->setBestFoundValue(getID(), iValue);
-						}
+						pLoopPlot->area()->setBestFoundValue(getID(), iValue);
 					}
 				}
 			}

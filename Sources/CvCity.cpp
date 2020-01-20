@@ -316,54 +316,38 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 		}
 	}
 
-	if (Cy::call<bool>(PYGameModule, "citiesDestroyFeatures", Cy::Args(iX, iY)))
+	// Don't remove floodplains from tiles when founding city
+	if ((pPlot->getFeatureType() != NO_FEATURE) && (pPlot->getFeatureType() != (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS")))
 	{
 		/************************************************************************************************/
-		/* UNOFFICIAL_PATCH                       10/30/09                     Mongoose & jdog5000      */
+		/* Afforess	                  Start		 02/09/10                                               */
 		/*                                                                                              */
-		/* Bugfix                                                                                       */
+		/*  Extra Hammer from Settling on Forest, Extra Food from Settling on Jungle                    */
 		/************************************************************************************************/
-		/* original bts code
-				if (pPlot->getFeatureType() != NO_FEATURE)
-		*/
-		// From Mongoose SDK
-		// Don't remove floodplains from tiles when founding city
-		if ((pPlot->getFeatureType() != NO_FEATURE) && (pPlot->getFeatureType() != (FeatureTypes)GC.getInfoTypeForString("FEATURE_FLOOD_PLAINS")))
-			/************************************************************************************************/
-			/* UNOFFICIAL_PATCH                        END                                                  */
-			/************************************************************************************************/
+		const BuildTypes eChopBuild = findChopBuild(pPlot->getFeatureType());
+		if (eChopBuild != NO_BUILD)
 		{
-			/************************************************************************************************/
-			/* Afforess	                  Start		 02/09/10                                               */
-			/*                                                                                              */
-			/*  Extra Hammer from Settling on Forest, Extra Food from Settling on Jungle                    */
-			/************************************************************************************************/
-			BuildTypes eChopBuild = findChopBuild(pPlot->getFeatureType());
-			if (eChopBuild != NO_BUILD)
+			if ((GC.getInfoTypeForString("FEATURE_FOREST", true) > 0 &&
+				pPlot->getFeatureType() == (FeatureTypes)GC.getInfoTypeForString("FEATURE_FOREST")) ||
+				(GC.getInfoTypeForString("FEATURE_JUNGLE", true) > 0 &&
+					pPlot->getFeatureType() == (FeatureTypes)GC.getInfoTypeForString("FEATURE_JUNGLE")))
 			{
-				if ((GC.getInfoTypeForString("FEATURE_FOREST", true) > 0 &&
-					pPlot->getFeatureType() == (FeatureTypes)GC.getInfoTypeForString("FEATURE_FOREST")) ||
-					(GC.getInfoTypeForString("FEATURE_JUNGLE", true) > 0 &&
-						pPlot->getFeatureType() == (FeatureTypes)GC.getInfoTypeForString("FEATURE_JUNGLE")))
-				{
-					int iProduction;
-					iProduction = GC.getBuildInfo(eChopBuild).getFeatureProduction(pPlot->getFeatureType());
+				int iProduction = GC.getBuildInfo(eChopBuild).getFeatureProduction(pPlot->getFeatureType());
 
-					iProduction *= GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getFeatureProductionPercent();
-					iProduction /= 100;
-					setExtraYieldTurns(iProduction);
-				}
+				iProduction *= GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getFeatureProductionPercent();
+				iProduction /= 100;
+				setExtraYieldTurns(iProduction);
 			}
-			/************************************************************************************************/
-			/* Afforess	                     END                                                            */
-			/************************************************************************************************/
-			if (pPlot->getFeatureType() != NO_FEATURE)
+		}
+		/************************************************************************************************/
+		/* Afforess	                     END                                                            */
+		/************************************************************************************************/
+		if (pPlot->getFeatureType() != NO_FEATURE)
+		{
+			const int iPopDestroys = GC.getFeatureInfo(pPlot->getFeatureType()).getPopDestroys();
+			if (iPopDestroys == 0 || iPopDestroys == 1)
 			{
-				int iPopDestroys = GC.getFeatureInfo(pPlot->getFeatureType()).getPopDestroys();
-				if (iPopDestroys == 0 || iPopDestroys == 1)
-				{
-					pPlot->setFeatureType(NO_FEATURE);
-				}
+				pPlot->setFeatureType(NO_FEATURE);
 			}
 		}
 	}
@@ -3058,23 +3042,6 @@ bool CvCity::canTrainInternal(UnitTypes eUnit, bool bContinue, bool bTestVisible
 		return false;
 	}
 
-	if (GC.getUSE_CAN_TRAIN_CALLBACK(eUnit))
-	{
-		PROFILE("canTrain.Python");
-
-		if (Cy::call<bool>(PYGameModule, "canTrain", Cy::Args()
-			<< const_cast<CvCity*>(this)
-			<< eUnit
-			<< bContinue
-			<< bTestVisible
-			<< bIgnoreCost
-			<< bIgnoreUpgrades
-			))
-		{
-			return true;
-		}
-	}
-
 	if (!plot()->canTrain(eUnit, bContinue, bTestVisible))
 	{
 		return false;
@@ -3198,28 +3165,9 @@ bool CvCity::canTrainInternal(UnitTypes eUnit, bool bContinue, bool bTestVisible
 	/* Afforess	                     END                                                            */
 	/************************************************************************************************/
 
-
-	if (!bIgnoreUpgrades)
+	if (!bIgnoreUpgrades && allUpgradesAvailable(eUnit) != NO_UNIT)
 	{
-		if (allUpgradesAvailable(eUnit) != NO_UNIT)
-		{
-			return false;
-		}
-	}
-
-	if (GC.getUSE_CANNOT_TRAIN_CALLBACK(eUnit))
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotTrain", Cy::Args()
-			<< const_cast<CvCity*>(this)
-			<< eUnit
-			<< bContinue
-			<< bTestVisible
-			<< bIgnoreCost
-			<< bIgnoreUpgrades
-			))
-		{
-			return false;
-		}
+		return false;
 	}
 
 	return true;
@@ -3552,21 +3500,6 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 		return false;
 	}
 
-	if (GC.getUSE_CAN_CONSTRUCT_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "canConstruct", Cy::Args()
-			// CyCity doesn't have a const only interface
-			<< const_cast<CvCity*>(this)
-			<< eBuilding
-			<< bContinue
-			<< bTestVisible
-			<< bIgnoreCost
-			))
-		{
-			return true;
-		}
-	}
-
 	//ls612: No Holy City Tag
 	if (GC.getBuildingInfo(eBuilding).isNoHolyCity() && isHolyCity() && !bExposed)
 	{
@@ -3582,13 +3515,11 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 	/*                                                                                              */
 	/*                                                                                              */
 	/************************************************************************************************/
-	if (!bIgnoreAmount)
+	if (!bIgnoreAmount && getNumBuilding(eBuilding) >= GC.getCITY_MAX_NUM_BUILDINGS())
 	{
-		if (getNumBuilding(eBuilding) >= GC.getCITY_MAX_NUM_BUILDINGS())
-		{
-			return false;
-		}
+		return false;
 	}
+
 	if (isDisabledBuilding(eBuilding))
 	{
 		return false;
@@ -4136,61 +4067,18 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 		}
 	}
 
-	if (GC.getUSE_CANNOT_CONSTRUCT_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotConstruct", Cy::Args()
-			// CyCity doesn't have a const only interface
-			<< const_cast<CvCity*>(this)
-			<< eBuilding
-			<< bContinue
-			<< bTestVisible
-			<< bIgnoreCost
-			))
-		{
-			return false;
-		}
-	}
-
 	return true;
 }
 
 
 bool CvCity::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisible) const
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_CREATE_PROJECT_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "canCreate", Cy::Args()
-			// CyCity doesn't have a const only interface
-			<< const_cast<CvCity*>(this)
-			<< eProject
-			<< bContinue
-			<< bTestVisible
-			))
-		{
-			return true;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
-
-
-	if (!(GET_PLAYER(getOwner()).canCreate(eProject, bContinue, bTestVisible)))
+	if (!GET_PLAYER(getOwner()).canCreate(eProject, bContinue, bTestVisible))
 	{
 		return false;
 	}
 
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	int iCount = GC.getProjectInfo(eProject).getNumMapCategoryTypes();
+	const int iCount = GC.getProjectInfo(eProject).getNumMapCategoryTypes();
 	bool bFound = (iCount < 1);
 	for (int iI = 0; iI < iCount; iI++)
 	{
@@ -4205,76 +4093,13 @@ bool CvCity::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisible)
 		return false;
 	}
 
-	if (GC.getUSE_CANNOT_CREATE_PROJECT_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotCreate", Cy::Args()
-			// CyCity doesn't have a const only interface
-			<< const_cast<CvCity*>(this)
-			<< eProject
-			<< bContinue
-			<< bTestVisible
-			))
-		{
-			return false;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
-
-
 	return true;
 }
 
 
 bool CvCity::canMaintain(ProcessTypes eProcess, bool bContinue) const
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_MAINTAIN_PROCESS_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "canMaintain", Cy::Args()
-			// CyCity doesn't have a const only interface
-			<< const_cast<CvCity*>(this)
-			<< eProcess
-			<< bContinue
-			))
-		{
-			return true;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
-	if (!(GET_PLAYER(getOwner()).canMaintain(eProcess, bContinue)))
-	{
-		return false;
-	}
-
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CANNOT_MAINTAIN_PROCESS_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotMaintain", Cy::Args()
-			// CyCity doesn't have a const only interface
-			<< const_cast<CvCity*>(this)
-			<< eProcess
-			<< bContinue
-			))
-		{
-			return false;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
-	return true;
+	return GET_PLAYER(getOwner()).canMaintain(eProcess, bContinue);
 }
 
 
@@ -17471,7 +17296,7 @@ bool CvCity::processGreatWall(bool bIn, bool bForce, bool bSeeded)
 
 			for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
 			{
-				const CvCity* pCity = itr.plot()->getPlotCity();
+				CvCity* pCity = itr.plot()->getPlotCity();
 
 				if (pCity != NULL && pCity->isInViewport())
 				{
@@ -19106,21 +18931,6 @@ const std::vector< std::pair<float, float> >& CvCity::getWallOverridePoints() co
 
 void CvCity::doGrowth()
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_GROWTH_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doGrowth", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
 	int iDiff = foodDifference();
 
 	changeFood(iDiff);
@@ -19130,18 +18940,7 @@ void CvCity::doGrowth()
 
 	if (getFood() >= growthThreshold())
 	{
-		/************************************************************************************************/
-		/* Afforess	                  Start		 06/28/10                                               */
-		/*                                                                                              */
-		/*                                                                                              */
-		/************************************************************************************************/
-		/*
-				if (AI_isEmphasizeAvoidGrowth())
-		*/
 		if ((isHuman() && AI_avoidGrowth()) || AI_isEmphasizeAvoidGrowth())
-			/************************************************************************************************/
-			/* Afforess	                     END                                                            */
-			/************************************************************************************************/
 		{
 			setFood(growthThreshold());
 		}
@@ -19150,7 +18949,6 @@ void CvCity::doGrowth()
 			changeFood(-(std::max(0, (growthThreshold() - getFoodKept()))));
 			changePopulation(1);
 
-			// ONEVENT - City growth
 			CvEventReporter::getInstance().cityGrowth(this, getOwner());
 		}
 		//ls612: Remove buildings which obsolete at a certain pop level
@@ -19180,21 +18978,6 @@ void CvCity::doCulture()
 {
 	PROFILE_FUNC();
 
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_CULTURE_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doCulture", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
 	changeCultureTimes100(getOwner(), getCommerceRateTimes100(COMMERCE_CULTURE), false, true);
 }
 
@@ -19203,26 +18986,6 @@ void CvCity::doPlotCulture(bool bUpdate, PlayerTypes ePlayer, int iCultureRate)
 {
 	PROFILE_FUNC();
 
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_PLOT_CULTURE_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doPlotCulture", Cy::Args()
-			<< this
-			<< bUpdate
-			<< ePlayer
-			<< iCultureRate
-			))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
 	FAssert(NO_PLAYER != ePlayer);
 
 	CultureLevelTypes eCultureLevel = (CultureLevelTypes)0;
@@ -19426,21 +19189,6 @@ bool CvCity::doCheckProduction()
 
 void CvCity::doProduction(bool bAllowNoProduction)
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_PRODUCTION_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doProduction", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
 	if (!isHuman() || isProductionAutomated())
 	{
 		//	Koshling - with the unit contracting system we only build units to contractual
@@ -19596,10 +19344,10 @@ void CvCity::doDecay()
 
 				if (isHuman())
 				{
-					int iGameSpeedPercent = GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getTrainPercent();
+					const int iGameSpeedPercent = GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getTrainPercent();
 					if (100 * getUnitProductionTime(eUnit) > GC.getDefineINT("UNIT_PRODUCTION_DECAY_TIME")* iGameSpeedPercent)
 					{
-						int iProduction = getUnitProduction(eUnit);
+						const int iProduction = getUnitProduction(eUnit);
 						setUnitProduction(eUnit, iProduction - (iProduction * (100 - GC.getDefineINT("UNIT_PRODUCTION_DECAY_PERCENT")) + iGameSpeedPercent - 1) / iGameSpeedPercent);
 					}
 				}
@@ -19615,33 +19363,7 @@ void CvCity::doDecay()
 
 void CvCity::doReligion()
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_RELIGION_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doReligion", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
-	/************************************************************************************************/
-	/* Afforess	                  Start		 06/09/10                                               */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	/*
-		if (getReligionCount() == 0)
-	*/
 	if (getReligionCount() == 0 || GC.getGame().isModderGameOption(MODDERGAMEOPTION_MULTIPLE_RELIGION_SPREAD))
-		/************************************************************************************************/
-		/* Afforess	                     END                                                            */
-		/************************************************************************************************/
 	{
 		for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
 		{
@@ -19667,15 +19389,7 @@ void CvCity::doReligion()
 									if (iSpread > 0)
 									{
 										iSpread /= std::max(1, (((GC.getDefineINT("RELIGION_SPREAD_DISTANCE_DIVISOR") * plotDistance(getX(), getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
-										/************************************************************************************************/
-										/* Afforess	                  Start		 06/09/10                                               */
-										/*                                                                                              */
-										/*                                                                                              */
-										/************************************************************************************************/
 										iSpread /= (getReligionCount() + 1);
-										/************************************************************************************************/
-										/* Afforess	                     END                                                            */
-										/************************************************************************************************/
 										iRandThreshold = std::max(iRandThreshold, iSpread);
 									}
 								}
@@ -19785,21 +19499,6 @@ void CvCity::doReligion()
 
 void CvCity::doGreatPeople()
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_GREATPEOPLE_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doGreatPeople", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
 	if (isDisorder())
 	{
 		return;
@@ -19853,21 +19552,6 @@ void CvCity::doGreatPeople()
 
 void CvCity::doMeltdown()
 {
-	/************************************************************************************************/
-	/* Afforess	                  Start		 12/21/09                                                */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-	if (GC.getUSE_CAN_DO_MELTDOWN_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doMeltdown", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-	/************************************************************************************************/
-	/* Afforess	                     END                                                            */
-	/************************************************************************************************/
 	for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 	{
 		if (getNumBuilding((BuildingTypes)iI) > 0)
@@ -19883,13 +19567,11 @@ void CvCity::doMeltdown()
 							if (GC.getGame().getSorenRandNum(GC.getBuildingInfo((BuildingTypes)iI).getNukeExplosionRand(), "Meltdown!!!") == 0)
 							{
 			*/
-			int iOdds = GC.getBuildingInfo((BuildingTypes)iI).getNukeExplosionRand();
+			const int iOdds = GC.getBuildingInfo((BuildingTypes)iI).getNukeExplosionRand();
 
 			if (iOdds > 0)
 			{
-				int iChance = 1000;
-
-				if (GC.getGame().getSorenRandNum(iChance, "Meltdown!!!") < iOdds)
+				if (GC.getGame().getSorenRandNum(1000, "Meltdown!!!") < iOdds)
 				{
 					/************************************************************************************************/
 					/* UNOFFICIAL_PATCH                        END                                                  */

@@ -1551,17 +1551,8 @@ bool CvGame::canHandleAction(int iAction, CvPlot* pPlot, bool bTestVisible, bool
 	PROFILE_FUNC();
 
 	CvSelectionGroup* pSelectedGroup;
-	CvUnit* pHeadSelectedUnit;
 	CvPlot* pMissionPlot;
 	bool bShift = gDLL->shiftKey();
-
-	if(GC.getUSE_CANNOT_HANDLE_ACTION_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotHandleAction", Cy::Args() << pPlot << iAction << bTestVisible))
-		{
-			return false;
-		}
-	}
 
 	if (GC.getActionInfo(iAction).getControlType() != NO_CONTROL)
 	{
@@ -1576,7 +1567,7 @@ bool CvGame::canHandleAction(int iAction, CvPlot* pPlot, bool bTestVisible, bool
 		return false; // XXX hack!
 	}
 
-	pHeadSelectedUnit = gDLL->getInterfaceIFace()->getHeadSelectedUnit();
+	CvUnit* pHeadSelectedUnit = gDLL->getInterfaceIFace()->getHeadSelectedUnit();
 
 	if (pHeadSelectedUnit != NULL)
 	{

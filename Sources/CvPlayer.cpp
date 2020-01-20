@@ -8241,21 +8241,6 @@ bool CvPlayer::canRaze(CvCity* pCity) const
 /************************************************************************************************/
 	}
 
-/************************************************************************************************/
-/* Afforess	                  Start		 12/21/09                                                */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	if(GC.getUSE_CAN_RAZE_CITY_CALLBACK())
-	{
-		if (!Cy::call<bool>(PYGameModule, "canRazeCity", Cy::Args() << getID() << pCity))
-		{
-			return false;
-		}
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 	return true;
 }
 
@@ -8263,7 +8248,6 @@ bool CvPlayer::canRaze(CvCity* pCity) const
 void CvPlayer::raze(CvCity* pCity)
 {
 	wchar szBuffer[1024];
-	PlayerTypes eHighestCulturePlayer;
 	int iI, iJ;
 
 	if (!canRaze(pCity))
@@ -8273,7 +8257,7 @@ void CvPlayer::raze(CvCity* pCity)
 
 	FAssert(pCity->getOwner() == getID());
 
-	eHighestCulturePlayer = pCity->findHighestCulture();
+	PlayerTypes eHighestCulturePlayer = pCity->findHighestCulture();
 
 	if (eHighestCulturePlayer != NO_PLAYER)
 	{
@@ -8802,21 +8786,12 @@ void CvPlayer::doGoody(CvPlot* pPlot, CvUnit* pUnit)
 
 bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 {
-	CvPlot* pPlot;
 	CvPlot* pLoopPlot;
 	bool bValid;
 	int iRange;
 	int iDX, iDY;
 
-	pPlot = GC.getMap().plot(iX, iY);
-
-	if(GC.getUSE_CANNOT_FOUND_CITY_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotFoundCity", Cy::Args() << getID() << iX << iY))
-		{
-			return false;
-		}
-	}
+	CvPlot* pPlot = GC.getMap().plot(iX, iY);
 
 	if (GC.getGame().isFinalInitialized())
 	{
@@ -8838,7 +8813,6 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 /************************************************************************************************/
 /* Afforess	Mountains End       END        		                                             */
 /************************************************************************************************/
-
 	{
 		return false;
 	}
@@ -8914,23 +8888,6 @@ bool CvPlayer::canFound(int iX, int iY, bool bTestVisible) const
 			}
 		}
 	}
-
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                       02/16/10                    EmperorFool & jdog5000    */
-/*                                                                                              */
-/* Bugfix                                                                                       */
-/************************************************************************************************/
-	// EF: canFoundCitiesOnWater callback handling was incorrect and ignored isWater() if it returned true
-	if (pPlot->isWater())
-	{
-		if(GC.getUSE_CAN_FOUND_CITIES_ON_WATER_CALLBACK())
-		{
-			bValid = Cy::call<bool>(PYGameModule, "canFoundCitiesOnWater", Cy::Args() << iX << iY);
-		}
-	}
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                        END                                                  */
-/************************************************************************************************/
 
 	if (!bValid)
 	{
@@ -10008,18 +9965,6 @@ int CvPlayer::getProductionNeeded(UnitTypes eUnit) const
 	//The following is where we get the cost for a settler unit (that's ALL this does) and the cost scales to GROWTH factors rather than training factors.
 	//Thus placing it so that training factors influence the cost will cause settlers to be double scaled and the costs to go out of balance as a result.
 	iProductionNeeded += (getUnitExtraCost(eUnitClass) * 100);
-
-	// Python cost modifier
-	if(GC.getUSE_GET_UNIT_COST_MOD_CALLBACK())
-	{
-		int iResult = Cy::call<bool>(PYGameModule, "getUnitCostMod", Cy::Args() << getID() << eUnit);
-		if (iResult > 1)
-		{
-			iProductionNeeded *= iResult;
-			iProductionNeeded /= 100;
-		}
-	}
-
 	iProductionNeeded /= 100;
 
 	if (iProductionNeeded > MAX_INT)
@@ -11142,12 +11087,6 @@ int CvPlayer::calculateUnitSupply(int& iPaidUnits, int& iBaseSupplyCost) const
 
 int CvPlayer::calculatePreInflatedCosts() const
 {
-	long lResult = 0;
-	if (GC.getUSE_EXTRA_PLAYER_COSTS_CALLBACK())
-	{
-		lResult = Cy::call<long>(PYGameModule, "getExtraCost", Cy::Args() << getID());
-	}
-
 	int iCosts = 0;
 	//ls612: All of the following functions (except for Corporate Tax) are modified by a new Gamespeed Gold tag.
 	//This is done in order for the displayed numbers in the Financial Advisor to be correct.
@@ -11155,19 +11094,7 @@ int CvPlayer::calculatePreInflatedCosts() const
 	iCosts += calculateUnitSupply();
 	iCosts += getTotalMaintenance();
 	iCosts += getCivicUpkeep();
-	//ls612: Old Code
-	//iCosts += (int)lResult;
 	iCosts -= getCorporateTaxIncome();
-	
-	//ls612: New Code for Gamespeed Gold modifiers
-	lResult *= (GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getGoldModifier());
-
-	if (lResult != 0)
-	{
-		lResult /= 100;
-	}
-
-	iCosts += (int)lResult;
 	return iCosts;
 }
 
@@ -11574,14 +11501,6 @@ int CvPlayer::calculateTotalCommerce() const
 
 bool CvPlayer::isResearch() const
 {
-	if(GC.getUSE_IS_PLAYER_RESEARCH_CALLBACK())
-	{
-		if (!Cy::call<bool>(PYGameModule, "isPlayerResearch", Cy::Args() << getID()))
-		{
-			return false;
-		}
-	}
-
 	if (!isFoundedFirstCity())
 	{
 		return false;
@@ -11657,18 +11576,6 @@ bool CvPlayer::canEverResearch(TechTypes eTech) const
 
 bool CvPlayer::canResearch(TechTypes eTech, bool bTrade) const
 {
-	bool bFoundPossible;
-	bool bFoundValid;
-	int iI;
-
-	if(GC.getUSE_CAN_RESEARCH_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "canResearch", Cy::Args() << getID() << eTech << bTrade))
-		{
-			return true;
-		}
-	}
-
 	if (!isResearch() && getAdvancedStartPoints() < 0)
 	{
 		return false;
@@ -11679,12 +11586,12 @@ bool CvPlayer::canResearch(TechTypes eTech, bool bTrade) const
 		return false;
 	}
 
-	bFoundPossible = false;
-	bFoundValid = false;
+	bool bFoundPossible = false;
+	bool bFoundValid = false;
 
-	for (iI = 0; iI < GC.getNUM_OR_TECH_PREREQS(); iI++)
+	for (int iI = 0; iI < GC.getNUM_OR_TECH_PREREQS(); iI++)
 	{
-		TechTypes ePrereq = (TechTypes)GC.getTechInfo(eTech).getPrereqOrTechs(iI);
+		const TechTypes ePrereq = (TechTypes)GC.getTechInfo(eTech).getPrereqOrTechs(iI);
 		if (ePrereq != NO_TECH)
 		{
 			bFoundPossible = true;
@@ -11732,9 +11639,7 @@ bool CvPlayer::canResearch(TechTypes eTech, bool bTrade) const
 
 TechTypes CvPlayer::getCurrentResearch() const
 {
-	CLLNode<TechTypes>* pResearchNode;
-
-	pResearchNode = headResearchQueueNode();
+	CLLNode<TechTypes>* pResearchNode = headResearchQueueNode();
 
 	if (pResearchNode != NULL)
 	{
@@ -11909,38 +11814,16 @@ bool CvPlayer::canDoCivics(CivicTypes eCivic) const
 	{
 		return GC.getGame().isForceCivic(eCivic);
 	}
-/************************************************************************************************/
-/* Afforess	                  Start		 5/28/11                                                */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	if (!isNPC() && GC.getCivicInfo(eCivic).getCityLimit(getID()) > 0 && GC.getCivicInfo(eCivic).getCityOverLimitUnhappy() == 0) {
 		if (GC.getCivicInfo(eCivic).getCityLimit(getID()) < getNumCities()) {
 			return false;
-		}
-	}
-/************************************************************************************************/
-/* Afforess	                  End		 5/28/11                                                */
-/************************************************************************************************/
-	if(GC.getUSE_CAN_DO_CIVIC_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "canDoCivic", Cy::Args() << getID() << eCivic))
-		{
-			return true;
 		}
 	}
 
 	if (!isHasCivicOption((CivicOptionTypes)(GC.getCivicInfo(eCivic).getCivicOptionType())) && !(GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getCivicInfo(eCivic).getTechPrereq()))))
 	{
 		return false;
-	}
-
-	if(GC.getUSE_CANNOT_DO_CIVIC_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotDoCivic", Cy::Args() << getID() << eCivic))
-		{
-			return false;
-		}
 	}
 
 	return true;
@@ -20106,41 +19989,14 @@ void CvPlayer::setSmtpHost(const char* szHost)
 	GC.getInitCore().setSmtpHost(getID(), szHost);
 }
 
-// Protected Functions...
 
 void CvPlayer::doGold()
 {
 	PROFILE_FUNC()
 
-	bool bStrike;
-	int iGoldChange;
-	int iDisbandUnit;
-	int iI;
+	changeGold(calculateGoldRate());
 
-/************************************************************************************************/
-/* Afforess	                  Start		 12/21/09                                                */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	if(GC.getUSE_CAN_DO_GOLD_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doGold", Cy::Args() << getID()))
-		{
-			return;
-		}
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-	iGoldChange = calculateGoldRate();
-
-	//	KOSHLING - this assert appears to be out of date.  It gets hit and then handled by the strike
-	//	code immediately below which doesn't really have any other purpose
-	//FAssert(isHuman() || isBarbarian() || ((getGold() + iGoldChange) >= 0) || isAnarchy());
-
-	changeGold(iGoldChange);
-
-	bStrike = false;
+	bool bStrike = false;
 
 	if (getEffectiveGold() < 0)
 	{
@@ -20159,9 +20015,9 @@ void CvPlayer::doGold()
 
 		if (getStrikeTurns() > 1)
 		{
-			iDisbandUnit = (getStrikeTurns() / 2); // XXX mod?
+			const int iDisbandUnit = (getStrikeTurns() / 2); // XXX mod?
 
-			for (iI = 0; iI < iDisbandUnit; iI++)
+			for (int iI = 0; iI < iDisbandUnit; iI++)
 			{
 				disbandUnit(true);
 
@@ -20183,33 +20039,15 @@ void CvPlayer::doResearch()
 {
 	PROFILE_FUNC()
 
-	bool bForceResearchChoice;
-	int iOverflowResearch;
-
 	for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
 	{
 		m_aiPathLengthCache[iI] = -1;
 		m_aiCostPathLengthCache[iI] = -1;
 	}
 
-/************************************************************************************************/
-/* Afforess	                  Start		 12/21/09                                                */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	if(GC.getUSE_CAN_DO_RESEARCH_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "doResearch", Cy::Args() << getID()))
-		{
-			return;
-		}
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 	if (isResearch())
 	{
-		bForceResearchChoice = false;
+		bool bForceResearchChoice = false;
 
 		if (getCurrentResearch() == NO_TECH)
 		{
@@ -20229,12 +20067,12 @@ void CvPlayer::doResearch()
 		TechTypes eCurrentTech = getCurrentResearch();
 		if (eCurrentTech == NO_TECH)
 		{
-			int iOverflow = (100 * calculateResearchRate()) / std::max(1, calculateResearchModifier(eCurrentTech));
+			const int iOverflow = (100 * calculateResearchRate()) / std::max(1, calculateResearchModifier(eCurrentTech));
 			changeOverflowResearch(iOverflow);
 		}
 		else
 		{
-			iOverflowResearch = (getOverflowResearch() * calculateResearchModifier(eCurrentTech)) / 100;
+			const int iOverflowResearch = (getOverflowResearch() * calculateResearchModifier(eCurrentTech)) / 100;
 			setOverflowResearch(0);
 			GET_TEAM(getTeam()).changeResearchProgress(eCurrentTech, (calculateResearchRate(eCurrentTech) + iOverflowResearch), getID());
 		}

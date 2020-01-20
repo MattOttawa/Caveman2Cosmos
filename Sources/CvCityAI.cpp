@@ -1090,14 +1090,6 @@ void CvCityAI::AI_chooseProduction()
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-	if(GC.getUSE_AI_CHOOSE_PRODUCTION_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "AI_chooseProduction", Cy::Args() << this))
-		{
-			return;
-		}
-	}
-
 	bool bInhibitUnits = false;
 	if (isHuman() && isProductionAutomated())
 	{

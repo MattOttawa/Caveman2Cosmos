@@ -10081,24 +10081,7 @@ int CvPlot::getFoundValue(PlayerTypes eIndex)
 	//	only a short (extra policing is present on the set)
 	if (m_aiFoundValue[eIndex] == INVALID_FOUND_VALUE)
 	{
-		long lResult = -1;
-		if(GC.getUSE_GET_CITY_FOUND_VALUE_CALLBACK())
-		{
-			lResult = Cy::call<long>(PYGameModule, "getCityFoundValue", Cy::Args()
-				<< eIndex
-				<< getX()
-				<< getY()
-			);
-		}
-
-		if (lResult == -1)
-		{
-			setFoundValue(eIndex,GET_PLAYER(eIndex).AI_foundValue(getX(), getY(), -1, true));
-		}
-		else
-		{
-			setFoundValue(eIndex, lResult);
-		}
+		setFoundValue(eIndex,GET_PLAYER(eIndex).AI_foundValue(getX(), getY(), -1, true));
 
 		if ( area()->hasBestFoundValue(eIndex) && (int) m_aiFoundValue[eIndex] > area()->getBestFoundValue(eIndex))
 		{

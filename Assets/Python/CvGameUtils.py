@@ -46,10 +46,6 @@ class CvGameUtils:
 		eVictory = argsList[0]
 		return True
 
-	def isPlayerResearch(self, argsList):
-		ePlayer = argsList[0]
-		return True
-
 	def getExtraCost(self, argsList):
 		ePlayer = argsList[0]
 		return 0
@@ -76,14 +72,6 @@ class CvGameUtils:
 		ePlayer = argsList[0]
 		eFirstTech = argsList[1]
 		return TechTypes.NO_TECH
-
-	def canRazeCity(self, argsList):
-		iRazingPlayer, pCity = argsList
-		return True
-
-	def canDeclareWar(self, argsList):
-		iAttackingTeam, iDefendingTeam = argsList
-		return True
 
 	def skipProductionPopup(self, argsList):
 		pCity = argsList[0]
@@ -238,9 +226,6 @@ class CvGameUtils:
 		bTestVisible = argsList[3]
 		return False
 
-	def canMaintain(self, argsList):
-		return False
-
 	def cannotMaintain(self, argsList):
 		CyCity, iProcess, bContinue, = argsList
 		if not CyCity or CyCity and CyCity.isNone():
@@ -286,16 +271,8 @@ class CvGameUtils:
 		pCity = argsList[0]
 		return False
 
-	def AI_unitUpdate(self, argsList):
-		pUnit = argsList[0]
-		return False
-
 	def AI_doWar(self, argsList):
 		eTeam = argsList[0]
-		return False
-
-	def AI_doDiplo(self, argsList):
-		ePlayer = argsList[0]
 		return False
 
 	def calculateScore(self, argsList):
@@ -383,44 +360,16 @@ class CvGameUtils:
 		#eTeam, ePlayer, eTech, bFirst = argsList
 		return False
 
-	def doGold(self, argsList):
-		#ePlayer = argsList[0]
-		return False
-
-	def doResearch(self, argsList):
-		#ePlayer = argsList[0]
-		return False
-
 	def doGoody(self, argsList):
 		#ePlayer, pPlot, pUnit, = argsList
-		return False
-
-	def doGrowth(self, argsList):
-		#pCity = argsList[0]
-		return False
-
-	def doProduction(self, argsList):
-		#pCity = argsList[0]
 		return False
 
 	def doCulture(self, argsList):
 		#pCity = argsList[0]
 		return False
 
-	def doPlotCulture(self, argsList):
-		#pCity, bUpdate, ePlayer, iCultureRate, = argsList
-		return False
-
-	def doReligion(self, argsList):
-		#pCity = argsList[0]
-		return False
-
 	def cannotSpreadReligion(self, argsList):
 		#iOwner, iUnitID, iReligion, iX, iY = argsList[0]
-		return False
-
-	def doGreatPeople(self, argsList):
-		#pCity = argsList[0]
 		return False
 
 	def doMeltdown(self, argsList):
@@ -485,31 +434,14 @@ class CvGameUtils:
 		#iX, iY = argsList
 		return True
 
-	def canFoundCitiesOnWater(self, argsList):
-		#iX, iY = argsList
-		return False
-
-	def doCombat(self, argsList):
-		#pSelectionGroup, pDestPlot = argsList
-		return False
-
 	# Returns the unit type to be conscripted.
 	def getConscriptUnitType(self, argsList):
 		#iPlayer = argsList[0]
 		return -1
 
-	# Returns the value for founding a city in a specific plot.
-	def getCityFoundValue(self, argsList):
-		#iPlayer, iPlotX, iPlotY = argsList
-		return -1
-
 	def canPickPlot(self, argsList):
 		#pPlot = argsList[0]
 		return true
-
-	def getUnitCostMod(self, argsList):
-		#iPlayer, iUnit = argsList
-		return -1
 
 	def getBuildingCostMod(self, argsList):
 		#iPlayer, iCityID, iBuilding = argsList

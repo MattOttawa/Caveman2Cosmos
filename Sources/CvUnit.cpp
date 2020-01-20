@@ -7000,19 +7000,6 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
 
-	if (GC.getUSE_UNIT_CANNOT_MOVE_INTO_CALLBACK())
-	{
-		// Python Override
-		if (Cy::call<bool>(PYGameModule, "unitCannotMoveInto", Cy::Args()
-			<< getOwner()
-			<< getID()
-			<< pPlot->getX()
-			<< pPlot->getY()))
-		{
-			return false;
-		}
-	}
-
 	return true;
 }
 
@@ -11613,12 +11600,7 @@ bool CvUnit::found()
 {
 	CvPlot* pPlot = plot();
 	
-	if (pPlot == NULL)
-	{
-		return false;
-	}
-
-	if (!canFound(plot()))
+	if (pPlot == NULL || !canFound(plot()))
 	{
 		return false;
 	}
@@ -11658,35 +11640,6 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 {
 	PROFILE_FUNC();
 
-	CvCity* pCity;
-
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                       08/19/09                                jdog5000      */
-/*                                                                                              */
-/* Efficiency                                                                                   */
-/************************************************************************************************/
-/* orginal bts code
-	if (GC.getUSE_USE_CANNOT_SPREAD_RELIGION_CALLBACK())
-	{
-		CyArgsList argsList;
-		argsList.add(getOwner());
-		argsList.add(getID());
-		argsList.add((int) eReligion);
-		argsList.add(pPlot->getX());
-		argsList.add(pPlot->getY());
-		long lResult=0;
-		PYTHON_CALL_FUNCTION(__FUNCTION__, PYGameModule, "cannotSpreadReligion", argsList.makeFunctionArgs(), &lResult);
-		if (lResult > 0)
-		{
-			return false;
-		}
-	}
-*/
-				// UP efficiency: Moved below faster calls
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                        END                                                  */
-/************************************************************************************************/
-
 	if (eReligion == NO_RELIGION)
 	{
 		return false;
@@ -11697,7 +11650,7 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 		return false;
 	}
 
-	pCity = pPlot->getPlotCity();
+	CvCity* pCity = pPlot->getPlotCity();
 
 	if (pCity == NULL)
 	{
@@ -11728,26 +11681,6 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 		}
 	}
 
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                       08/19/09                                jdog5000      */
-/*                                                                                              */
-/* Efficiency                                                                                   */
-/************************************************************************************************/
-	if (GC.getUSE_USE_CANNOT_SPREAD_RELIGION_CALLBACK())
-	{
-		if (Cy::call<bool>(PYGameModule, "cannotSpreadReligion", Cy::Args()
-			<< getOwner()
-			<< getID()
-			<< (int)eReligion
-			<< pPlot->getX()
-			<< pPlot->getY()))
-		{
-			return false;
-		}
-	}
-/************************************************************************************************/
-/* UNOFFICIAL_PATCH                        END                                                  */
-/************************************************************************************************/
 //TB Prophet Mod start
 #ifdef C2C_BUILD
 	if (!GC.getGame().isOption(GAMEOPTION_DIVINE_PROPHETS) && (AI_getUnitAIType() != UNITAI_MISSIONARY))
@@ -11812,20 +11745,18 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 
 bool CvUnit::spread(ReligionTypes eReligion)
 {
-	CvCity* pCity;
 	CvWString szBuffer;
-	int iSpreadProb;
 
 	if (!canSpread(plot(), eReligion))
 	{
 		return false;
 	}
 
-	pCity = plot()->getPlotCity();
+	CvCity* pCity = plot()->getPlotCity();
 
 	if (pCity != NULL)
 	{
-		iSpreadProb = m_pUnitInfo->getReligionSpreads(eReligion);
+		int iSpreadProb = m_pUnitInfo->getReligionSpreads(eReligion);
 //Team Project (6)
 		if (GET_PLAYER(getOwner()).getID() != NO_PLAYER)
 		{
