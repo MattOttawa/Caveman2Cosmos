@@ -438,6 +438,12 @@ class CvEventManager:
 					if key == InputTypes.KB_U:
 						DebugUtils.putOneOfEveryUnit()
 						return 1
+
+				if key == InputTypes.KB_N:
+					import GlobalDefinesMgr
+					GlobalDefinesMgr.writeDefines()
+					return 1
+
 		return 0
 
 
