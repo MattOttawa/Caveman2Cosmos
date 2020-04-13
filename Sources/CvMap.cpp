@@ -241,7 +241,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 /*********************************/
 	//Koshling - why do we ignore the map size in MapInfos if there is only 1???  Changed that for now
 	//if (GC.getNumMapInfos() > 1)
-	if (GC.multiMapsEnabled() && GC.getMapInfos().size() > 0)
+	if (GC.multiMapsEnabled() /*&& GC.getMapInfos().size() > 0*/)
 	{
 		if (GC.getMapInfo(getType()).getGridWidth() > 0 && GC.getMapInfo(getType()).getGridHeight() > 0)
 		{
@@ -1031,8 +1031,8 @@ void CvMap::changeNumBonuses(BonusTypes eIndex, int iChange)
 {
 	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
 	FAssertMsg(eIndex < GC.getNumBonusInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
-	m_paiNumBonus[eIndex] = (m_paiNumBonus[eIndex] + iChange);
-	FAssert(getNumBonuses(eIndex) >= 0);
+	m_paiNumBonus[eIndex] += iChange;
+	FAssertMsg(m_paiNumBonus[eIndex] >= 0, "Negative bonus occurance on the map!");
 }
 
 

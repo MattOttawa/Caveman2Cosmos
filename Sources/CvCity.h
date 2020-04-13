@@ -212,50 +212,6 @@ public:
 
 	void chooseProduction(UnitTypes eTrainUnit = NO_UNIT, BuildingTypes eConstructBuilding = NO_BUILDING, ProjectTypes eCreateProject = NO_PROJECT, bool bFinish = false, bool bFront = false); // Exposed to Python
 
-	// Base iterator type for iterating over city plots, returning valid ones only
-	template < class Value_ >
-	struct city_plot_iterator_base :
-		public bst::iterator_facade<city_plot_iterator_base<Value_>, Value_*, bst::forward_traversal_tag, Value_*>
-	{
-		city_plot_iterator_base() : m_centerX(-1), m_centerY(-1), m_curr(nullptr), m_idx(0) {}
-		explicit city_plot_iterator_base(int centerX, int centerY) : m_centerX(centerX), m_centerY(centerY), m_curr(nullptr), m_idx(-1)
-		{
-			increment();
-		}
-
-	private:
-		friend class bst::iterator_core_access;
-		void increment()
-		{
-			do
-			{
-				++m_idx;
-				m_curr = plotCity(m_centerX, m_centerY, m_idx);
-			} while (m_curr == nullptr && m_idx < NUM_CITY_PLOTS);
-		}
-		bool equal(city_plot_iterator_base const& other) const
-		{
-			return (this->m_centerX == other.m_centerX
-				&& this->m_centerY == other.m_centerY
-				&& this->m_idx == other.m_idx)
-				|| (this->m_curr == nullptr && other.m_curr == nullptr);
-		}
-
-		Value_* dereference() const { return m_curr; }
-
-		int m_centerX;
-		int m_centerY;
-		Value_* m_curr;
-		int m_idx;
-	};
-	typedef city_plot_iterator_base<CvPlot> city_plot_iterator;
-
-	city_plot_iterator beginPlots() const { return city_plot_iterator(getX(), getY()); }
-	city_plot_iterator endPlots() const { return city_plot_iterator(); }
-
-	typedef bst::iterator_range<city_plot_iterator> city_plot_range;
-	city_plot_range plots() const { return city_plot_range(beginPlots(), endPlots()); }
-
 	int getCityPlotIndex(const CvPlot* pPlot) const; // Exposed to Python
 	// Prefer to use plots() range instead of this for loops, searching etc.
 	CvPlot* getCityIndexPlot(int iIndex) const; // Exposed to Python
@@ -1673,19 +1629,10 @@ public:
 	virtual int AI_projectValue(ProjectTypes eProject) = 0;
 	virtual int AI_neededSeaWorkers() = 0;
 	virtual bool AI_isDefended(int iExtra = 0, bool bAllowAnyDefenders = true) = 0;
-/********************************************************************************/
-/**		BETTER_BTS_AI_MOD							9/19/08		jdog5000		*/
-/**																				*/
-/**		Air AI																	*/
-/********************************************************************************/
-/* original BTS code
-	virtual bool AI_isAirDefended(int iExtra = 0) = 0;
-*/
+
 	virtual bool AI_isAirDefended(bool bCountLand = 0, int iExtra = 0) = 0;
 	virtual bool AI_isAdequateHappinessMilitary(int iExtra = 0) = 0;
-/********************************************************************************/
-/**		BETTER_BTS_AI_MOD						END								*/
-/********************************************************************************/
+
 	virtual bool AI_isDanger() const = 0;
 	virtual int evaluateDanger() = 0;
 	virtual int AI_neededDefenders() = 0;
@@ -1704,18 +1651,11 @@ public:
 	virtual int AI_getBestBuildValue(int iIndex) = 0;
 	virtual void AI_markBestBuildValuesStale() = 0;
 
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                      06/25/09                                jdog5000      */
-/*                                                                                              */
-/* Debug                                                                                        */
-/************************************************************************************************/
 	virtual int AI_getTargetSize() = 0;
 	virtual int AI_getGoodTileCount() = 0;
-	virtual int AI_getImprovementValue( CvPlot* pPlot, ImprovementTypes eImprovement, int iFoodPriority, int iProductionPriority, int iCommercePriority, int iFoodChange, bool bOriginal = false ) = 0;
+	virtual int AI_getImprovementValue(CvPlot* pPlot, ImprovementTypes eImprovement, int iFoodPriority, int iProductionPriority, int iCommercePriority, int iFoodChange) = 0;
 	virtual void AI_getYieldMultipliers( int &iFoodMultiplier, int &iProductionMultiplier, int &iCommerceMultiplier, int &iDesiredFoodChange ) = 0;
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                       END                                                  */
-/************************************************************************************************/
+
 	virtual int AI_totalBestBuildValue(CvArea* pArea) = 0;
 	virtual int AI_countBestBuilds(CvArea* pArea) = 0; // Exposed to Python
 	virtual BuildTypes AI_getBestBuild(int iIndex) = 0;
@@ -1734,13 +1674,10 @@ public:
 	virtual int AI_getWorkersHave() = 0;
 	virtual int AI_getWorkersNeeded() = 0;
 	virtual void AI_changeWorkersHave(int iChange) = 0;
-/********************************************************************************/
-/* 	Worker Counting						03.08.2010				Fuyu			*/
-/********************************************************************************/
+
+	// Fuyu - Worker Counting - 03.08.2010
 	virtual int AI_workingCityPlotTargetMissionAIs(PlayerTypes ePlayer, MissionAITypes eMissionAI, UnitAITypes eUnitAI = NO_UNITAI, bool bSameAreaOnly = false) const = 0;
-/********************************************************************************/
-/* 	Worker Counting 											END 			*/
-/********************************************************************************/
+
 	virtual int AI_getBuildPriority() const = 0;
 
 	bool hasShrine(ReligionTypes eReligion) const;

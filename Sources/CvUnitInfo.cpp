@@ -144,7 +144,6 @@ m_bFlatMovementCost(false),
 m_bIgnoreTerrainCost(false),
 m_bNukeImmune(false),
 m_bPrereqBonuses(false),
-m_bPrereqReligion(false),
 m_bMechanized(false),
 m_bRenderBelowWater(false),
 m_bRenderAlways(false),
@@ -1083,11 +1082,6 @@ bool CvUnitInfo::isNukeImmune() const
 bool CvUnitInfo::isPrereqBonuses() const
 {
 	return m_bPrereqBonuses;
-}
-
-bool CvUnitInfo::isPrereqReligion() const
-{
-	return m_bPrereqReligion;
 }
 
 bool CvUnitInfo::isMechUnit() const
@@ -3930,7 +3924,6 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum)
 	CheckSum(iSum, m_bIgnoreTerrainCost);
 	CheckSum(iSum, m_bNukeImmune);
 	CheckSum(iSum, m_bPrereqBonuses);
-	CheckSum(iSum, m_bPrereqReligion);
 	CheckSum(iSum, m_bMechanized);
 	CheckSum(iSum, m_bRenderBelowWater);
 	CheckSum(iSum, m_bRenderAlways);
@@ -4316,9 +4309,6 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	// EXTRA HOVER TEXT
 	pXML->GetOptionalChildXmlValByName(m_szExtraHoverTextKey, L"ExtraHoverText");
 
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Capture");
-	m_aszExtraXMLforPass3.push_back(szTextVal);
-
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Combat");
 	m_iUnitCombatType = pXML->GetInfoClass(szTextVal);
 
@@ -4374,7 +4364,6 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bIgnoreTerrainCost, L"bIgnoreTerrainCost");
 	pXML->GetOptionalChildXmlValByName(&m_bNukeImmune, L"bNukeImmune");
 	pXML->GetOptionalChildXmlValByName(&m_bPrereqBonuses, L"bPrereqBonuses");
-	pXML->GetOptionalChildXmlValByName(&m_bPrereqReligion, L"bPrereqReligion");
 	pXML->GetOptionalChildXmlValByName(&m_bMechanized, L"bMechanized");
 	pXML->GetOptionalChildXmlValByName(&m_bRenderBelowWater, L"bRenderBelowWater");
 	pXML->GetOptionalChildXmlValByName(&m_bRenderAlways, L"bRenderAlways");
@@ -5437,7 +5426,6 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo, CvXMLLoadUtility* pXML)
 	if ( m_bIgnoreTerrainCost == bDefault )	m_bIgnoreTerrainCost = pClassInfo->isIgnoreTerrainCost();
 	if ( m_bNukeImmune == bDefault )	m_bNukeImmune = pClassInfo->isNukeImmune();
 	if ( m_bPrereqBonuses == bDefault )	m_bPrereqBonuses = pClassInfo->isPrereqBonuses();
-	if ( m_bPrereqReligion == bDefault )	m_bPrereqReligion = pClassInfo->isPrereqReligion();
 	if ( m_bMechanized == bDefault )	m_bMechanized = pClassInfo->isMechUnit();
 	if ( m_bRenderBelowWater == bDefault )	m_bRenderBelowWater = pClassInfo->isRenderBelowWater();
 	if ( m_bRenderAlways == bDefault )	m_bRenderAlways = pClassInfo->isRenderAlways();
@@ -6455,12 +6443,14 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo, CvXMLLoadUtility* pXML)
 
 bool CvUnitInfo::readPass2(CvXMLLoadUtility* pXML)
 {
-	CvString szTextVal;
-
 	if (!CvHotkeyInfo::read(pXML))
 	{
 		return false;
 	}
+	CvString szTextVal;
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"Capture");
+	m_iUnitCaptureType = pXML->GetInfoClass(szTextVal);
+
 	pXML->SetVariableListTagPair(&m_piFlankingStrikeUnit, L"FlankingStrikes", GC.getNumUnitInfos(), -1);
 	pXML->SetVariableListTagPair(&m_piUnitAttackModifier, L"UnitAttackMods", GC.getNumUnitInfos());
 	pXML->SetVariableListTagPair(&m_piUnitDefenseModifier, L"UnitDefenseMods", GC.getNumUnitInfos());
@@ -6497,6 +6487,10 @@ void CvUnitInfo::copyNonDefaultsReadPass2(CvUnitInfo* pClassInfo, CvXMLLoadUtili
 			m_piUnitDefenseModifier[i] = pClassInfo->getUnitDefenseModifier(i);
 		}
 	}
+	if (bOver || m_iUnitCaptureType == -1 && pClassInfo->getUnitCaptureType() != -1)
+	{
+		m_iUnitCaptureType = pClassInfo->getUnitCaptureType();
+	}
 }
 
 bool CvUnitInfo::readPass3()
@@ -6519,15 +6513,6 @@ bool CvUnitInfo::readPass3()
 		m_aszCivilizationNamesforPass3.clear();
 		m_aszCivilizationNamesValueforPass3.clear();
 	}
-	if (m_aszExtraXMLforPass3.size() < 1)
-	{
-		FAssert(false);
-		return false;
-	}
-	m_iUnitCaptureType = GC.getInfoTypeForString(m_aszExtraXMLforPass3[0]);
-
-	m_aszExtraXMLforPass3.clear();
-
 	return true;
 }
 

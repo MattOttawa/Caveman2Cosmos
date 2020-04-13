@@ -4958,30 +4958,10 @@ bool CvPlayerAI::AI_isFinancialTrouble() const
 {
 	PROFILE_FUNC();
 
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					  06/12/09								jdog5000	  */
-/*																							  */
-/* Barbarian AI																				 */
-/************************************************************************************************/
-	if( isNPC() )
+	if (!isNPC() && AI_costAsPercentIncome() < AI_safeCostAsPercentIncome())
 	{
-		return false;
+		return true;
 	}
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					   END												  */
-/************************************************************************************************/
-
-	//if (getCommercePercent(COMMERCE_GOLD) > 50)
-	{
-		int iFundedPercent = AI_costAsPercentIncome();
-		int iSafePercent = AI_safeCostAsPercentIncome();
-
-		if (iFundedPercent < iSafePercent)
-		{
-			return true;
-		}
-	}
-
 	return false;
 }
 
@@ -5885,7 +5865,7 @@ int CvPlayerAI::AI_techValue( TechTypes eTech, int iPathLength, bool bIgnoreCost
 	{
 		if (GC.getTechInfo(eTech).isTerrainTrade(iJ))
 		{
-			if (GC.getTerrainInfo((TerrainTypes)iJ).isWater())
+			if (GC.getTerrainInfo((TerrainTypes)iJ).isWaterTerrain())
 			{
 				if (pCapitalCity != NULL)
 				{
@@ -6025,7 +6005,7 @@ int CvPlayerAI::AI_techValue( TechTypes eTech, int iPathLength, bool bIgnoreCost
 					iTempValue += (kImprovement.getIrrigatedYieldChange(iK) * 150);
 
 					// land food yield is more valueble
-					if (iK == YIELD_FOOD && !kImprovement.isWater())
+					if (iK == YIELD_FOOD && !kImprovement.isWaterImprovement())
 					{
 						iTempValue *= 3;
 						iTempValue /= 2;
@@ -6092,9 +6072,7 @@ int CvPlayerAI::AI_techValue( TechTypes eTech, int iPathLength, bool bIgnoreCost
 						if (iNumBonuses > 0)
 						{
 							iBonusValue *= (iNumBonuses + 2);
-/********************************************************************************/
-/* 	Tech Value for Bonus Yields			04.08.2010				Fuyu			*/
-/********************************************************************************/
+
 							//Fuyu: massive bonus for early worker logic
 							int iCityRadiusBonusCount = 0;
 							if (getNumCities() <= 3 && (GC.getGame().getElapsedGameTurns() < ((30 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getTrainPercent()) / 100)))
@@ -6112,10 +6090,7 @@ int CvPlayerAI::AI_techValue( TechTypes eTech, int iPathLength, bool bIgnoreCost
 							{
 								iTempValue *= 3 + iCityRadiusBonusCount - getNumCities();
 							}
-/********************************************************************************/
-/* 	Tech Value for Bonus Yields									END 			*/
-/********************************************************************************/
-							iBonusValue /= kImprovement.isWater() ? 4 : 3;	// water resources are worth less
+							iBonusValue /= kImprovement.isWaterImprovement() ? 4 : 3; // water resources are worthless
 
 							iImprovementValue += iBonusValue;
 						}
@@ -6123,7 +6098,7 @@ int CvPlayerAI::AI_techValue( TechTypes eTech, int iPathLength, bool bIgnoreCost
 				}
 
 				// if water improvement, weight by coastal cities (weight the whole build)
-				if (kImprovement.isWater())
+				if (kImprovement.isWaterImprovement())
 				{
 					iImprovementValue *= iCoastalCities;
 					iImprovementValue /= std::max(1, iCityCount/2);
@@ -10703,7 +10678,7 @@ int CvPlayerAI::AI_bonusVal(BonusTypes eBonus, int iChange, bool bForTrade) cons
 	PROFILE_FUNC();
 
 	int iBonusCount = getNumAvailableBonuses(eBonus);
-	bool bAssumeHasBonusChanges = ((iChange == 0) || ((iChange == 1) && (iBonusCount == 0)) || ((iChange == -1) && (iBonusCount == 1)));
+	bool bAssumeHasBonusChanges = (iChange == 0 || iChange == 1 && iBonusCount == 0 || iChange == -1 && iBonusCount == 1);
 	int iValue = 0;
 
 	if (bAssumeHasBonusChanges)
@@ -10727,10 +10702,10 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus, bool bForTrade) const
 {
 	PROFILE_FUNC();
 
-	bool bRecalcNeeded = (m_aiBonusValue[eBonus] == -1 || (!bForTrade && !m_abNonTradeBonusCalculated[eBonus]));
+	bool bRecalcNeeded = m_aiBonusValue[eBonus] == -1 || !bForTrade && !m_abNonTradeBonusCalculated[eBonus];
 
 	//recalculate if not defined
-	if(bRecalcNeeded)
+	if (bRecalcNeeded)
 	{
 		PROFILE("CvPlayerAI::AI_baseBonusVal::recalculate");
 
@@ -11294,16 +11269,14 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus, bool bForTrade) const
 			//	}
 
 			iValue /= 10;
-			iTradeValue /= 10;
+			// All these effects are only going to be with us for a short period so devalue
+			iTradeValue /= 30;
 		}
 
-		//	All these effects are only going to be with us for a short period so devalue
-		iTradeValue /= 3;
-
 		//	Check there wasn't a race copndition that meant some other thread already did this
-		if (m_aiBonusValue[eBonus] == -1 || (!bForTrade && !m_abNonTradeBonusCalculated[eBonus]))
+		if (m_aiBonusValue[eBonus] == -1 || !bForTrade && !m_abNonTradeBonusCalculated[eBonus])
 		{
-			if ( !bJustNonTradeBuildings )
+			if (!bJustNonTradeBuildings)
 			{
 				m_aiBonusValue[eBonus] = std::max(0, iValue);
 				m_aiTradeBonusValue[eBonus] = std::max(0, iTradeValue);
@@ -11312,11 +11285,9 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus, bool bForTrade) const
 			{
 				m_aiBonusValue[eBonus] += std::max(0, iValue);
 			}
-
 			m_abNonTradeBonusCalculated[eBonus] |= !bForTrade;
 		}
 	}
-
 	return (bForTrade ? m_aiTradeBonusValue[eBonus] : m_aiBonusValue[eBonus]);
 }
 

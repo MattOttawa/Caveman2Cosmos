@@ -159,7 +159,6 @@ m_bNoUnhealthyPopulation(false),
 m_bBuildingOnlyHealthy(false),
 m_bNeverCapture(false),
 m_bNukeImmune(false),
-m_bPrereqReligion(false),
 m_bCenterInCity(false),
 m_bStateReligion(false),
 m_bAllowsNukes(false),
@@ -1171,11 +1170,6 @@ bool CvBuildingInfo::isNeverCapture() const
 bool CvBuildingInfo::isNukeImmune() const
 {
 	return m_bNukeImmune;
-}
-
-bool CvBuildingInfo::isPrereqReligion() const
-{
-	return m_bPrereqReligion;
 }
 
 bool CvBuildingInfo::isCenterInCity() const
@@ -3287,15 +3281,7 @@ void CvBuildingInfo::getCheckSum(unsigned int& iSum)
 	CheckSum(iSum, m_bAreaBorderObstacle);
 	CheckSum(iSum, m_bForceTeamVoteEligible);
 	CheckSum(iSum, m_bCapital);
-/************************************************************************************************/
-/* DCM                                     04/19/09                                Johny Smith  */
-/************************************************************************************************/
-	// Dale - AB: Bombing START
 	CheckSum(iSum, m_iDCMAirbombMission);
-	// Dale - AB: Bombing END
-/************************************************************************************************/
-/* DCM                                     END                                                  */
-/************************************************************************************************/
 	CheckSum(iSum, m_bGovernmentCenter);
 	CheckSum(iSum, m_bGoldenAge);
 	CheckSum(iSum, m_bMapCentering);
@@ -3304,7 +3290,6 @@ void CvBuildingInfo::getCheckSum(unsigned int& iSum)
 	CheckSum(iSum, m_bBuildingOnlyHealthy);
 	CheckSum(iSum, m_bNeverCapture);
 	CheckSum(iSum, m_bNukeImmune);
-	CheckSum(iSum, m_bPrereqReligion);
 	CheckSum(iSum, m_bCenterInCity);
 	CheckSum(iSum, m_bStateReligion);
 	CheckSum(iSum, m_bAllowsNukes);
@@ -3822,7 +3807,6 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bBuildingOnlyHealthy, L"bBuildingOnlyHealthy");
 	pXML->GetOptionalChildXmlValByName(&m_bNeverCapture, L"bNeverCapture");
 	pXML->GetOptionalChildXmlValByName(&m_bNukeImmune, L"bNukeImmune");
-	pXML->GetOptionalChildXmlValByName(&m_bPrereqReligion, L"bPrereqReligion");
 	pXML->GetOptionalChildXmlValByName(&m_bCenterInCity, L"bCenterInCity");
 	pXML->GetOptionalChildXmlValByName(&m_bStateReligion, L"bStateReligion");
 	pXML->GetOptionalChildXmlValByName(&m_iAIWeight, L"iAIWeight");
@@ -5539,7 +5523,6 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo, CvXMLLoadUtilit
 	if (isBuildingOnlyHealthy() == bDefault) m_bBuildingOnlyHealthy = pClassInfo->isBuildingOnlyHealthy();
 	if (isNeverCapture() == bDefault) m_bNeverCapture = pClassInfo->isNeverCapture();
 	if (isNukeImmune() == bDefault) m_bNukeImmune = pClassInfo->isNukeImmune();
-	if (isPrereqReligion() == bDefault) m_bPrereqReligion = pClassInfo->isPrereqReligion();
 	if (isCenterInCity() == bDefault) m_bCenterInCity = pClassInfo->isCenterInCity();
 	if (isStateReligion() == bDefault) m_bStateReligion = pClassInfo->isStateReligion();
 
@@ -6856,26 +6839,24 @@ void CvBuildingInfo::copyNonDefaultsReadPass2(CvBuildingInfo* pClassInfo, CvXMLL
 	if (getPrereqAnyoneBuilding() == NO_BUILDING) m_iPrereqAnyoneBuilding = pClassInfo->getPrereqAnyoneBuilding();
 	if (getExtendsBuilding() == NO_BUILDING) m_iExtendsBuilding = pClassInfo->getExtendsBuilding();
 
-	for ( int j = 0; j < GC.getNumBuildingInfos(); j++)
+	for (int j = 0; j < GC.getNumBuildingInfos(); j++)
 	{
-		if ( getPrereqNumOfBuilding(j) == iDefault && pClassInfo->getPrereqNumOfBuilding(j) != iDefault)
+		if (bOver || getPrereqNumOfBuilding(j) == iDefault && pClassInfo->getPrereqNumOfBuilding(j) != iDefault)
 		{
-			if ( NULL == m_piPrereqNumOfBuilding )
+			if (m_piPrereqNumOfBuilding == NULL)
 			{
 				CvXMLLoadUtility::InitList(&m_piPrereqNumOfBuilding,GC.getNumBuildingInfos(),iDefault);
 			}
 			m_piPrereqNumOfBuilding[j] = pClassInfo->getPrereqNumOfBuilding(j);
 		}
-
-		if ( getBuildingHappinessChanges(j) == iDefault && pClassInfo->getBuildingHappinessChanges(j) != iDefault)
+		if (bOver || getBuildingHappinessChanges(j) == iDefault && pClassInfo->getBuildingHappinessChanges(j) != iDefault)
 		{
-			if ( NULL == m_piBuildingHappinessChanges )
+			if (m_piBuildingHappinessChanges == NULL)
 			{
 				CvXMLLoadUtility::InitList(&m_piBuildingHappinessChanges,GC.getNumBuildingInfos(),iDefault);
 			}
 			m_piBuildingHappinessChanges[j] = pClassInfo->getBuildingHappinessChanges(j);
 		}
-
 		for (std::vector<BuildingCommerceChange>::const_iterator it = m_aGlobalBuildingCommerceChanges.begin(); it != m_aGlobalBuildingCommerceChanges.end(); ++it)
 		{
 			if ((*it).eBuilding == (BuildingTypes)j)
@@ -6887,11 +6868,11 @@ void CvBuildingInfo::copyNonDefaultsReadPass2(CvBuildingInfo* pClassInfo, CvXMLL
 				break;
 			}
 		}
-		if ( bNoDuplicate )
+		if (bNoDuplicate)
 		{
-			for ( int iCommerce = 0; iCommerce < NUM_COMMERCE_TYPES; iCommerce++)
+			for (int iCommerce = 0; iCommerce < NUM_COMMERCE_TYPES; iCommerce++)
 			{
-				if ( pClassInfo->getGlobalBuildingCommerceChange(j, iCommerce) != 0)
+				if (pClassInfo->getGlobalBuildingCommerceChange(j, iCommerce) != 0)
 				{
 					BuildingCommerceChange kChange;
 					kChange.eBuilding = (BuildingTypes)j;
@@ -6901,57 +6882,51 @@ void CvBuildingInfo::copyNonDefaultsReadPass2(CvBuildingInfo* pClassInfo, CvXMLL
 				}
 			}
 		}
-
-		if ( isPrereqNotBuilding(j) == bDefault && pClassInfo->isPrereqNotBuilding(j) != bDefault)
+		if (bOver || isPrereqNotBuilding(j) == bDefault && pClassInfo->isPrereqNotBuilding(j) != bDefault)
 		{
-			if ( NULL == m_pbPrereqNotBuilding )
+			if (m_pbPrereqNotBuilding == NULL)
 			{
-				CvXMLLoadUtility::InitList(&m_pbPrereqNotBuilding,GC.getNumBuildingInfos(),bDefault);
+				CvXMLLoadUtility::InitList(&m_pbPrereqNotBuilding, GC.getNumBuildingInfos(), bDefault);
 			}
 			m_pbPrereqNotBuilding[j] = pClassInfo->isPrereqNotBuilding(j);
 		}
-
-		if ( isPrereqOrBuilding(j) == bDefault && pClassInfo->isPrereqOrBuilding(j) != bDefault)
+		if (bOver || isPrereqOrBuilding(j) == bDefault && pClassInfo->isPrereqOrBuilding(j) != bDefault)
 		{
-			if ( NULL == m_pbPrereqOrBuilding )
+			if (m_pbPrereqOrBuilding == NULL)
 			{
-				CvXMLLoadUtility::InitList(&m_pbPrereqOrBuilding,GC.getNumBuildingInfos(),bDefault);
+				CvXMLLoadUtility::InitList(&m_pbPrereqOrBuilding, GC.getNumBuildingInfos(), bDefault);
 			}
 			m_pbPrereqOrBuilding[j] = pClassInfo->isPrereqOrBuilding(j);
 		}
-
-		if ( getBuildingProductionModifier(j) == iDefault && pClassInfo->getBuildingProductionModifier(j) != iDefault)
+		if (bOver || getBuildingProductionModifier(j) == iDefault && pClassInfo->getBuildingProductionModifier(j) != iDefault)
 		{
-			if ( NULL == m_piBuildingProductionModifier )
+			if (m_piBuildingProductionModifier == NULL)
 			{
-				CvXMLLoadUtility::InitList(&m_piBuildingProductionModifier, GC.getNumBuildingInfos(),iDefault);
+				CvXMLLoadUtility::InitList(&m_piBuildingProductionModifier, GC.getNumBuildingInfos(), iDefault);
 			}
 			m_piBuildingProductionModifier[j] = pClassInfo->getBuildingProductionModifier(j);
 		}
-
-		if ( getGlobalBuildingProductionModifier(j) == iDefault && pClassInfo->getGlobalBuildingProductionModifier(j) != iDefault)
+		if (bOver || getGlobalBuildingProductionModifier(j) == iDefault && pClassInfo->getGlobalBuildingProductionModifier(j) != iDefault)
 		{
-			if ( NULL == m_piGlobalBuildingProductionModifier )
+			if (m_piGlobalBuildingProductionModifier == NULL)
 			{
-				CvXMLLoadUtility::InitList(&m_piGlobalBuildingProductionModifier,GC.getNumBuildingInfos(),iDefault);
+				CvXMLLoadUtility::InitList(&m_piGlobalBuildingProductionModifier, GC.getNumBuildingInfos(), iDefault);
 			}
 			m_piGlobalBuildingProductionModifier[j] = pClassInfo->getGlobalBuildingProductionModifier(j);
 		}
-
-		if ( getGlobalBuildingCostModifier(j) == iDefault && pClassInfo->getGlobalBuildingCostModifier(j) != iDefault)
+		if (bOver || getGlobalBuildingCostModifier(j) == iDefault && pClassInfo->getGlobalBuildingCostModifier(j) != iDefault)
 		{
-			if ( NULL == m_piGlobalBuildingCostModifier )
+			if (m_piGlobalBuildingCostModifier == NULL)
 			{
-				CvXMLLoadUtility::InitList(&m_piGlobalBuildingCostModifier,GC.getNumBuildingInfos(),iDefault);
+				CvXMLLoadUtility::InitList(&m_piGlobalBuildingCostModifier, GC.getNumBuildingInfos(), iDefault);
 			}
 			m_piGlobalBuildingCostModifier[j] = pClassInfo->getGlobalBuildingCostModifier(j);
 		}
-
-		if ( isReplaceBuilding(j) == bDefault && pClassInfo->isReplaceBuilding(j) != bDefault )
+		if (bOver || isReplaceBuilding(j) == bDefault && pClassInfo->isReplaceBuilding(j) != bDefault)
 		{
-			if ( NULL == m_pbReplaceBuilding )
+			if (m_pbReplaceBuilding == NULL)
 			{
-				CvXMLLoadUtility::InitList(&m_pbReplaceBuilding,GC.getNumBuildingInfos(),bDefault);
+				CvXMLLoadUtility::InitList(&m_pbReplaceBuilding, GC.getNumBuildingInfos(), bDefault);
 			}
 			m_pbReplaceBuilding[j] = pClassInfo->isReplaceBuilding(j);
 		}

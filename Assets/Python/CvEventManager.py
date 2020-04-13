@@ -674,7 +674,7 @@ class CvEventManager:
 				iCulture = -1
 				civInfo = GC.getCivilizationInfo(CyPlayer.getCivilizationType())
 				for iPromo, _, native in self.aCultureList:
-					if civInfo.isCivilizationFreeBuilding(native):
+					if civInfo.isCivilizationBuilding(native):
 						iCulture = iPromo
 						break
 				CyUnit, i = CyPlayer.firstUnit(False)
@@ -906,13 +906,13 @@ class CvEventManager:
 			if not GAME.getSorenRandNum(10, "Gods"):
 
 				if not SDTK.sdObjectExists('Promo', CyUnitW):
-					CyUnitW.setDamage(0, False)
+					CyUnitW.setDamage(0, -1)
 					SDTK.sdObjectInit('Promo', CyUnitW, {'HealTurn' : GAME.getGameTurn()})
 				else:
 					iHealTurn = SDTK.sdObjectGetVal('Promo', CyUnitW, 'HealTurn')
 					iTurn = GAME.getGameTurn()
 					if iHealTurn is None or iTurn > iHealTurn:
-						CyUnitW.setDamage(0, False)
+						CyUnitW.setDamage(0, -1)
 						SDTK.sdObjectSetVal('Promo', CyUnitW, 'HealTurn', iTurn)
 
 		# Respawn promo
@@ -936,8 +936,8 @@ class CvEventManager:
 				iX = CyUnitL.getX()
 				iY = CyUnitL.getY()
 			CyUnit = CyPlayerL.initUnit(iUnit, iX, iY, UnitAITypes.NO_UNITAI, DirectionTypes.DIRECTION_NORTH)
-			CyUnit.convert(CyUnitL)
-			CyUnit.setDamage(GAME.getSorenRandNum(40, "Damage") + 20, False)
+			CyUnit.convert(CyUnitL, True)
+			CyUnit.setDamage(GAME.getSorenRandNum(40, "Damage") + 20, -1)
 
 			CyUnit.finishMoves()
 
@@ -1076,7 +1076,7 @@ class CvEventManager:
 				iX = CyPlotW.getX()
 				iY = CyPlotW.getY()
 				CyUnitL.setXY(iX, iY, False, True, True)
-				CyUnitL.setDamage(100000, False)
+				CyUnitL.setDamage(100000, -1)
 
 				CyPlotL = CyUnitL.plot()
 				if not CyPlotL.isVisibleEnemyUnit(iPlayerW):
@@ -1131,7 +1131,7 @@ class CvEventManager:
 					if CyUnitL.isNPC(): continue
 					iChance = GAME.getSorenRandNum(5, "Jaguar")
 					if not iChance:
-						CyUnitW.setDamage(0, False)
+						CyUnitW.setDamage(0, -1)
 
 
 	def onCombatLogCalc(self, argsList):
@@ -1183,11 +1183,15 @@ class CvEventManager:
 			return
 
 		# Worker placed bonus
-		aList = GC.getImprovementInfo(iImprovement).getType().split("_")
-		if aList[1] == "BONUS":
-			CyPlot = GC.getMap().plot(iX, iY)
-			CyPlot.setImprovementType(-1)
-			CyPlot.setBonusType(GC.getInfoTypeForString("BONUS_" + aList[2]))
+		szType = GC.getImprovementInfo(iImprovement).getType()
+		if szType[:18] == "IMPROVEMENT_BONUS_":
+			if CyPlot.getBonusType(-1) > -1:
+				return # Bonus was discovered while the farmer was working.
+			iBonus = GC.getInfoTypeForString(szType[12:])
+			if iBonus > -1:
+				CyPlot = GC.getMap().plot(iX, iY)
+				CyPlot.setImprovementType(-1)
+				CyPlot.setBonusType(iBonus)
 			return
 		# Worker placed feature
 		mapImpType = self.mapImpType

@@ -2121,14 +2121,9 @@ bool CvTechInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bRiverTrade, L"bRiverTrade");
 	pXML->GetOptionalChildXmlValByName(&m_iGridX, L"iGridX");
 	pXML->GetOptionalChildXmlValByName(&m_iGridY, L"iGridY");
-/************************************************************************************************/
-/* DCM									 04/19/09								Johny Smith  */
-/************************************************************************************************/
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBombTech1, L"bDCMAirBombTech1");
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBombTech2, L"bDCMAirBombTech2");
-/************************************************************************************************/
-/* DCM									 END												  */
-/************************************************************************************************/
+
 	if (pXML->TryMoveToXmlFirstChild(L"CommerceFlexible"))
 	{
 		pXML->SetCommerce(&m_pbCommerceFlexible);
@@ -12806,7 +12801,6 @@ m_bAIPlayable(false),
 m_piCivilizationFreeUnits(NULL),
 m_piCivilizationInitialCivics(NULL),
 m_pbLeaders(NULL),
-m_pbCivilizationFreeBuilding(NULL),
 m_pbCivilizationFreeTechs(NULL),
 m_pbCivilizationDisableTechs(NULL),
 m_paszCityNames(NULL),
@@ -12828,7 +12822,6 @@ CvCivilizationInfo::~CvCivilizationInfo()
 	SAFE_DELETE_ARRAY(m_piCivilizationFreeUnits);
 	SAFE_DELETE_ARRAY(m_piCivilizationInitialCivics);
 	SAFE_DELETE_ARRAY(m_pbLeaders);
-	SAFE_DELETE_ARRAY(m_pbCivilizationFreeBuilding);
 	SAFE_DELETE_ARRAY(m_pbCivilizationFreeTechs);
 	SAFE_DELETE_ARRAY(m_pbCivilizationDisableTechs);
 	SAFE_DELETE_ARRAY(m_paszCityNames);
@@ -12970,11 +12963,21 @@ bool CvCivilizationInfo::isLeaders(int i) const
 	return m_pbLeaders ? m_pbLeaders[i] : false;
 }
 
-bool CvCivilizationInfo::isCivilizationFreeBuilding(int i) const
+int CvCivilizationInfo::getCivilizationBuilding(int i) const
 {
-	FAssertMsg(i < GC.getNumBuildingInfos(), "Index out of bounds");
-	FAssertMsg(i > -1, "Index out of bounds");
-	return m_pbCivilizationFreeBuilding ? m_pbCivilizationFreeBuilding[i] : false;
+	return m_aiCivilizationBuildings[i];
+}
+int CvCivilizationInfo::getNumCivilizationBuildings() const
+{
+	return (int)m_aiCivilizationBuildings.size();
+}
+bool CvCivilizationInfo::isCivilizationBuilding(int i) const
+{
+	if (find(m_aiCivilizationBuildings.begin(), m_aiCivilizationBuildings.end(), i) == m_aiCivilizationBuildings.end())
+	{
+		return false;
+	}
+	return true;
 }
 
 bool CvCivilizationInfo::isCivilizationFreeTechs(int i) const
@@ -13061,19 +13064,19 @@ void CvCivilizationInfo::getCheckSum(unsigned int& iSum)
 	CheckSum(iSum, m_iDerivativeCiv);
 	CheckSum(iSum, m_bAIPlayable);
 	CheckSum(iSum, m_bPlayable);
-
+	// TB Tags
+	CheckSum(iSum, m_iSpawnRateModifier);
+	CheckSum(iSum, m_iSpawnRateNPCPeaceModifier);
+	CheckSum(iSum, m_bStronglyRestricted);
+	// ! TB Tags
 	// Arrays
 	CheckSumI(iSum, GC.getNumUnitInfos(), m_piCivilizationFreeUnits);
 	CheckSumI(iSum, GC.getNumCivicOptionInfos(), m_piCivilizationInitialCivics);
 	CheckSumI(iSum, GC.getNumLeaderHeadInfos(), m_pbLeaders);
-	CheckSumI(iSum, GC.getNumBuildingInfos(), m_pbCivilizationFreeBuilding);
 	CheckSumI(iSum, GC.getNumTechInfos(), m_pbCivilizationFreeTechs);
 	CheckSumI(iSum, GC.getNumTechInfos(), m_pbCivilizationDisableTechs);
-
-	//TB Tags
-	CheckSum(iSum, m_iSpawnRateModifier);
-	CheckSum(iSum, m_iSpawnRateNPCPeaceModifier);
-	CheckSum(iSum, m_bStronglyRestricted);
+	// Vectors
+	CheckSumC(iSum, m_aiCivilizationBuildings);
 }
 
 bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
@@ -13121,8 +13124,9 @@ bool CvCivilizationInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
+	pXML->SetOptionalIntVector(&m_aiCivilizationBuildings, L"FreeBuildings");
+
 	pXML->SetVariableListTagPair(&m_piCivilizationFreeUnits, L"FreeUnits", GC.getNumUnitInfos());
-	pXML->SetVariableListTagPair(&m_pbCivilizationFreeBuilding, L"FreeBuildings",  GC.getNumBuildingInfos());
 	pXML->SetVariableListTagPair(&m_pbCivilizationFreeTechs, L"FreeTechs", GC.getNumTechInfos());
 	pXML->SetVariableListTagPair(&m_pbCivilizationDisableTechs, L"DisableTechs", GC.getNumTechInfos());
 
@@ -13267,17 +13271,7 @@ void CvCivilizationInfo::copyNonDefaults(CvCivilizationInfo* pClassInfo, CvXMLLo
 		m_iActionSoundScriptId = (pClassInfo->getActionSoundScriptId());
 	}
 
-	for ( int i = 0; i < GC.getNumBuildingInfos(); i++)
-	{
-		if ( isCivilizationFreeBuilding(i) == bDefault && pClassInfo->isCivilizationFreeBuilding(i) != bDefault)
-		{
-			if ( NULL == m_pbCivilizationFreeBuilding )
-			{
-				CvXMLLoadUtility::InitList(&m_pbCivilizationFreeBuilding,GC.getNumBuildingInfos(),bDefault);
-			}
-			m_pbCivilizationFreeBuilding[i] = pClassInfo->isCivilizationFreeBuilding(i);
-		}
-	}
+	CvXMLLoadUtility::CopyNonDefaultsFromIntVector(m_aiCivilizationBuildings, pClassInfo->m_aiCivilizationBuildings);
 
 	for ( int i = 0; i < GC.getNumUnitInfos(); i++)
 	{
@@ -16128,6 +16122,7 @@ void CvImprovementBonusInfo::getCheckSum(unsigned int &iSum)
 //======================================================================================================
 
 ImprovementTypes CvImprovementInfo::m_ImprovementCity = NO_IMPROVEMENT;
+ImprovementTypes CvImprovementInfo::m_ImprovementRuins = NO_IMPROVEMENT;
 
 //------------------------------------------------------------------------------------------------------
 //
@@ -16169,11 +16164,11 @@ m_bRiverSideMakesValid(false),
 m_bNoFreshWater(false),
 m_bRequiresFlatlands(false),
 m_bRequiresRiverSide(false),
-m_bRequiresPeak(false),
 m_bRequiresIrrigation(false),
 m_bCarriesIrrigation(false),
 m_bRequiresFeature(false),
-m_bWater(false),
+m_bPeakImprovement(false),
+m_bWaterImprovement(false),
 m_bGoody(false),
 m_bPermanent(false),
 m_bOutsideBorders(false),
@@ -16397,11 +16392,6 @@ bool CvImprovementInfo::isRequiresRiverSide() const
 	return m_bRequiresRiverSide;
 }
 
-bool CvImprovementInfo::isRequiresPeak() const
-{
-	return m_bRequiresPeak;
-}
-
 bool CvImprovementInfo::isRequiresIrrigation() const
 {
 	return m_bRequiresIrrigation;
@@ -16417,9 +16407,14 @@ bool CvImprovementInfo::isRequiresFeature() const
 	return m_bRequiresFeature;
 }
 
-bool CvImprovementInfo::isWater() const
+bool CvImprovementInfo::isPeakImprovement() const
 {
-	return m_bWater;
+	return m_bPeakImprovement;
+}
+
+bool CvImprovementInfo::isWaterImprovement() const
+{
+	return m_bWaterImprovement;
 }
 
 bool CvImprovementInfo::isGoody() const
@@ -16822,11 +16817,11 @@ void CvImprovementInfo::getCheckSum(unsigned int &iSum)
 	CheckSum(iSum, m_bNoFreshWater);
 	CheckSum(iSum, m_bRequiresFlatlands);
 	CheckSum(iSum, m_bRequiresRiverSide);
-	CheckSum(iSum, m_bRequiresPeak);
 	CheckSum(iSum, m_bRequiresIrrigation);
 	CheckSum(iSum, m_bCarriesIrrigation);
 	CheckSum(iSum, m_bRequiresFeature);
-	CheckSum(iSum, m_bWater);
+	CheckSum(iSum, m_bPeakImprovement);
+	CheckSum(iSum, m_bWaterImprovement);
 	CheckSum(iSum, m_bGoody);
 	CheckSum(iSum, m_bPermanent);
 	CheckSum(iSum, m_bOutsideBorders);
@@ -16965,11 +16960,11 @@ bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bNoFreshWater, L"bNoFreshWater");
 	pXML->GetOptionalChildXmlValByName(&m_bRequiresFlatlands, L"bRequiresFlatlands");
 	pXML->GetOptionalChildXmlValByName(&m_bRequiresRiverSide, L"bRequiresRiverSide");
-	pXML->GetOptionalChildXmlValByName(&m_bRequiresPeak, L"bRequiresPeak");
 	pXML->GetOptionalChildXmlValByName(&m_bRequiresIrrigation, L"bRequiresIrrigation");
 	pXML->GetOptionalChildXmlValByName(&m_bCarriesIrrigation, L"bCarriesIrrigation");
 	pXML->GetOptionalChildXmlValByName(&m_bRequiresFeature, L"bRequiresFeature");
-	pXML->GetOptionalChildXmlValByName(&m_bWater, L"bWater");
+	pXML->GetOptionalChildXmlValByName(&m_bPeakImprovement, L"bPeakImprovement");
+	pXML->GetOptionalChildXmlValByName(&m_bWaterImprovement, L"bWaterImprovement");
 	pXML->GetOptionalChildXmlValByName(&m_bGoody, L"bGoody");
 	pXML->GetOptionalChildXmlValByName(&m_bPermanent, L"bPermanent");
 	pXML->GetOptionalChildXmlValByName(&m_iTilesPerGoody, L"iTilesPerGoody");
@@ -17284,11 +17279,11 @@ void CvImprovementInfo::copyNonDefaults(CvImprovementInfo* pClassInfo, CvXMLLoad
 	if (isNoFreshWater() == bDefault) m_bNoFreshWater = pClassInfo->isNoFreshWater();
 	if (isRequiresFlatlands() == bDefault) m_bRequiresFlatlands = pClassInfo->isRequiresFlatlands();
 	if (isRequiresRiverSide() == bDefault) m_bRequiresRiverSide = pClassInfo->isRequiresRiverSide();
-	if (isRequiresPeak() == bDefault) m_bRequiresPeak = pClassInfo->isRequiresPeak();
 	if (isRequiresIrrigation() == bDefault) m_bRequiresIrrigation = pClassInfo->isRequiresIrrigation();
 	if (isCarriesIrrigation() == bDefault) m_bCarriesIrrigation = pClassInfo->isCarriesIrrigation();
 	if (isRequiresFeature() == bDefault) m_bRequiresFeature = pClassInfo->isRequiresFeature();
-	if (isWater() == bDefault) m_bWater = pClassInfo->isWater();
+	if (isPeakImprovement() == bDefault) m_bPeakImprovement = pClassInfo->isPeakImprovement();
+	if (isWaterImprovement() == bDefault) m_bWaterImprovement = pClassInfo->isWaterImprovement();
 	if (isGoody() == bDefault) m_bGoody = pClassInfo->isGoody();
 	if (isPermanent() == bDefault) m_bPermanent = pClassInfo->isPermanent();
 	if (isOutsideBorders() == bDefault) m_bOutsideBorders = pClassInfo->isOutsideBorders();
@@ -17469,6 +17464,16 @@ void CvImprovementInfo::setImprovementCity(ImprovementTypes eIndex)
 	m_ImprovementCity = eIndex;
 }
 
+ImprovementTypes CvImprovementInfo::getImprovementRuins()
+{
+	return m_ImprovementRuins;
+}
+
+void CvImprovementInfo::setImprovementRuins(ImprovementTypes eIndex)
+{
+	m_ImprovementRuins = eIndex;
+}
+
 //======================================================================================================
 //					CvBonusClassInfo
 //======================================================================================================
@@ -17579,7 +17584,6 @@ m_pbTerrain(NULL),
 m_pbFeature(NULL),
 m_pbFeatureTerrain(NULL)
 ,m_bPeaks(false)
-,m_bCurrency(false)
 ,m_PropertyManipulators()
 ,m_tradeProvidingImprovements(NULL)
 {
@@ -17873,11 +17877,6 @@ bool CvBonusInfo::isPeaks() const
 {
 	return m_bPeaks;
 }
-bool CvBonusInfo::isCurrency() const
-{
-	return m_bCurrency;
-}
-
 
 void CvBonusInfo::getCheckSum(unsigned int &iSum)
 {
@@ -17922,7 +17921,6 @@ void CvBonusInfo::getCheckSum(unsigned int &iSum)
 	CheckSumC(iSum, m_aiMapCategoryTypes);
 
 	CheckSum(iSum, m_bPeaks);
-	CheckSum(iSum, m_bCurrency);
 
 	int iNumElements = m_aAfflictionCommunicabilityTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -18003,7 +18001,6 @@ bool CvBonusInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bNoRiverSide, L"bNoRiverSide");
 	pXML->GetOptionalChildXmlValByName(&m_bNormalize, L"bNormalize");
 	pXML->GetOptionalChildXmlValByName(&m_bPeaks, L"bPeaks");
-	pXML->GetOptionalChildXmlValByName(&m_bCurrency, L"bCurrency");
 
 	pXML->SetVariableListTagPair(&m_pbTerrain, L"TerrainBooleans", GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_pbFeature, L"FeatureBooleans", GC.getNumFeatureInfos());
@@ -18139,7 +18136,6 @@ void CvBonusInfo::copyNonDefaults(CvBonusInfo* pClassInfo, CvXMLLoadUtility* pXM
 	}
 
 	if (isPeaks() == bDefault) m_bPeaks = pClassInfo->isPeaks();
-	if (isCurrency() == bDefault) m_bCurrency = pClassInfo->isCurrency();
 
 	m_PropertyManipulators.copyNonDefaults(pClassInfo->getPropertyManipulators(), pXML);
 }
@@ -19219,7 +19215,7 @@ m_iSeeFromLevel(0),
 m_iSeeThroughLevel(0),
 m_iBuildModifier(0),
 m_iDefenseModifier(0),
-m_bWater(false),
+m_bWaterTerrain(false),
 m_bImpassable(false),
 m_bFound(false),
 m_bFoundCoast(false),
@@ -19280,9 +19276,9 @@ int CvTerrainInfo::getDefenseModifier() const
 	return m_iDefenseModifier;
 }
 
-bool CvTerrainInfo::isWater() const
+bool CvTerrainInfo::isWaterTerrain() const
 {
-	return m_bWater;
+	return m_bWaterTerrain;
 }
 
 bool CvTerrainInfo::isImpassable() const
@@ -19443,7 +19439,7 @@ bool CvTerrainInfo::read(CvXMLLoadUtility* pXML)
 	else
 		SAFE_DELETE_ARRAY(m_piHillsYieldChange);
 
-	pXML->GetOptionalChildXmlValByName(&m_bWater, L"bWater");
+	pXML->GetOptionalChildXmlValByName(&m_bWaterTerrain, L"bWaterTerrain");
 	pXML->GetOptionalChildXmlValByName(&m_bImpassable, L"bImpassable");
 	pXML->GetOptionalChildXmlValByName(&m_bFound, L"bFound");
 	pXML->GetOptionalChildXmlValByName(&m_bFoundCoast, L"bFoundCoast");
@@ -19555,7 +19551,7 @@ void CvTerrainInfo::copyNonDefaults(CvTerrainInfo* pClassInfo, CvXMLLoadUtility*
 			m_piHillsYieldChange[i] = pClassInfo->getHillsYieldChange(i);
 		}
 	}
-	if (isWater() == bDefault) m_bWater = pClassInfo->isWater();
+	if (isWaterTerrain() == bDefault) m_bWaterTerrain = pClassInfo->isWaterTerrain();
 	if (isImpassable() == bDefault) m_bImpassable = pClassInfo->isImpassable();
 	if (isFound() == bDefault) m_bFound = pClassInfo->isFound();
 	if (isFoundCoast() == bDefault) m_bFoundCoast = pClassInfo->isFoundCoast();
@@ -19607,7 +19603,7 @@ void CvTerrainInfo::getCheckSum(unsigned int &iSum)
 	CheckSum(iSum, m_iBuildModifier);
 	CheckSum(iSum, m_iDefenseModifier);
 
-	CheckSum(iSum, m_bWater);
+	CheckSum(iSum, m_bWaterTerrain);
 	CheckSum(iSum, m_bImpassable);
 	CheckSum(iSum, m_bFound);
 	CheckSum(iSum, m_bFoundCoast);
@@ -23470,7 +23466,7 @@ void CvCorporationInfo::setChar(int i)
 /*
 	m_iChar = i;
 */
-	m_iChar = 8550 + (GC.getTGA_RELIGIONS() + m_iTGAIndex) * 2;
+	m_iChar = 8550 + (GC.getGAMEFONT_TGA_RELIGIONS() + m_iTGAIndex) * 2;
 /************************************************************************************************/
 /* TGA_INDEXATION						  END												  */
 /************************************************************************************************/
@@ -23491,7 +23487,7 @@ void CvCorporationInfo::setHeadquarterChar(int i)
 /*
 	m_iHeadquarterChar = i;
 */
-	m_iHeadquarterChar = 8551 + (GC.getTGA_RELIGIONS() + m_iTGAIndex) * 2;
+	m_iHeadquarterChar = 8551 + (GC.getGAMEFONT_TGA_RELIGIONS() + m_iTGAIndex) * 2;
 /************************************************************************************************/
 /* TGA_INDEXATION						  END												  */
 /************************************************************************************************/

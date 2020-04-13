@@ -2105,7 +2105,7 @@ class CvMainInterface:
 				xStart = xywh[0] + 8
 				aMap = self.aRel2TechMap
 				for i in xrange(iTechInfos):
-					if CyPlayer.canResearch(i, False):
+					if CyPlayer.canResearch(i):
 						szName = "WID|TECH|Selection" + str(i)
 						if i in aMap:
 							if not bCanFoundReligion or GAME.countKnownTechNumTeams(i):
@@ -3934,15 +3934,9 @@ class CvMainInterface:
 						if CyUnit.isHurt():
 							fPercentHP = float(CyUnit.currHitPoints()) / CyUnit.maxHitPoints()
 							fStrength = strengthBase * fPercentHP
-							szTxt2 += self.floatToString(fStrength)
-							if szTxt2[-1] == "0":
-								szTxt2 = szTxt2[:-2]
-							szTxt2 += "/"
+							szTxt2 += self.floatToString(fStrength) + "/"
 
-						szTxt2 += self.floatToString(strengthBase)
-						if szTxt2[-1] == "0":
-							szTxt2 = szTxt2[:-2]
-						szTxt2 += self.iconStrength
+						szTxt2 += self.floatToString(strengthBase) + self.iconStrength
 
 						screen.appendTableRow(unitTable)
 						screen.setTableText(unitTable, 0, iRow, "<font=1>" + szTxt1, "", eWidGen, 0, 0, 1<<0)

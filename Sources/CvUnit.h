@@ -496,9 +496,9 @@ public:
 	void reset(int iID = 0, UnitTypes eUnit = NO_UNIT, PlayerTypes eOwner = NO_PLAYER, bool bConstructorCall = false, bool bIdentityChange = false);
 	void setupGraphical();
 
-	void convert(CvUnit* pUnit); // Exposed to Python
+	void convert(CvUnit* pUnit, const bool bKillOriginal=true); // Exposed to Python
 	void kill(bool bDelay, PlayerTypes ePlayer = NO_PLAYER, bool bMessaged = false); // Exposed to Python
-	void killUnconditional(bool bDelay, PlayerTypes ePlayer, bool bMessaged = false); //	Used internally
+	void killUnconditional(bool bDelay, PlayerTypes ePlayer, bool bMessaged = false); // Used internally
 
 	DllExport void NotifyEntity(MissionTypes eMission);
 
@@ -3314,6 +3314,7 @@ public:
 		DECLARE_MAP_FUNCTOR(CvUnit, int, getDamage);
 		DECLARE_MAP_FUNCTOR(CvUnit, int, getID);
 		DECLARE_MAP_FUNCTOR(CvUnit, TeamTypes, getTeam);
+		DECLARE_MAP_FUNCTOR(CvUnit, PlayerTypes, getOwner);
 		DECLARE_MAP_FUNCTOR(CvUnit, UnitTypes, getUnitType);
 		DECLARE_MAP_FUNCTOR(CvUnit, UnitCombatTypes, getUnitCombatType);
 		DECLARE_MAP_FUNCTOR(CvUnit, UnitAITypes, AI_getUnitAIType);
