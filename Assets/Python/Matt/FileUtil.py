@@ -15,8 +15,33 @@ def verifyModDir(szModPath):
 g_ModPath = verifyModDir(SP.modDir)
 
 
-dllFiles = ["CyCityInterface1.cpp",
-			"CyCityInterface2.cpp"]
+dllFiles = [
+	"CyAreaInterface.cpp",
+	"CyArtFileMgrInterface.cpp",
+	"CyCityInterface1.cpp",
+	"CyCityInterface2.cpp",
+	"CyGameInterface.cpp",
+	"CyGameTextMgrInterface.cpp",
+	"CyGlobalContextInterface1.cpp",
+	"CyGlobalContextInterface2.cpp",
+	"CyGlobalContextInterface3.cpp",
+	"CyGlobalContextInterface4.cpp",
+	"CyHallOfFameInterface.cpp",
+	"CyInfoInterface1.cpp",
+	"CyInfoInterface2.cpp",
+	"CyInfoInterface3.cpp",
+	"CyInfoInterface4.cpp",
+	"CyMapGeneratorInterface.cpp",
+	"CyMapInterface.cpp",
+	"CyMessageControlInterface.cpp",
+	"CyPlayerInterface1.cpp",
+	"CyPlayerInterface2.cpp",
+	"CyPlayerInterface3.cpp",
+	"CyPlotInterface1.cpp",
+	"CySelectionGroupInterface.cpp",
+	"CyTeamInterface.cpp",
+	"CyUnitInterface1.cpp"
+]
 
 def init():
 	logFile = open(os.path.join(g_ModPath, "Assets", "Python", "Matt", "log.txt"), "w")
