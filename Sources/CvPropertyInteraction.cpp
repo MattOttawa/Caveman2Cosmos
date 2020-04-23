@@ -112,9 +112,9 @@ bool CvPropertyInteraction::read(CvXMLLoadUtility *pXML)
 	//m_eTargetProperty = (PropertyTypes) pXML->FindInInfoClass(szTextVal);
 	GC.addDelayedResolution((int*)&m_eTargetProperty,szTextVal);
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"GameObjectType");
-	m_eObjectType = (GameObjectTypes) pXML->GetInfoClass(szTextVal);
+	m_eObjectType = (GameObjectTypes) GC.getInfoTypeForString(szTextVal);
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"RelationType");
-	m_eRelation = (RelationTypes) pXML->GetInfoClass(szTextVal);
+	m_eRelation = (RelationTypes) GC.getInfoTypeForString(szTextVal);
 	if (m_eRelation == RELATION_NEAR)
 		pXML->GetOptionalChildXmlValByName(&m_iRelationData, L"iDistance");
 	if (pXML->TryMoveToXmlFirstChild(L"Active"))

@@ -170,8 +170,8 @@ bool CvPropertyManipulators::read(CvXMLLoadUtility *pXML, const wchar_t* szTagNa
 				{
 					CvString szTextVal;
 					pXML->GetChildXmlValByName(szTextVal, L"PropertySourceType");
-					int iType = pXML->GetInfoClass(szTextVal);
-					int iPos = addSource((PropertySourceTypes)iType);
+					const int iType = GC.getInfoTypeForString(szTextVal);
+					const int iPos = addSource((PropertySourceTypes)iType);
 					if (iPos != -1)
 					{
 						m_apSources[iPos]->read(pXML);
@@ -184,8 +184,8 @@ bool CvPropertyManipulators::read(CvXMLLoadUtility *pXML, const wchar_t* szTagNa
 				{
 					CvString szTextVal;
 					pXML->GetChildXmlValByName(szTextVal, L"PropertyInteractionType");
-					int iType = pXML->GetInfoClass(szTextVal);
-					int iPos = addInteraction((PropertyInteractionTypes)iType);
+					const int iType = GC.getInfoTypeForString(szTextVal);
+					const int iPos = addInteraction((PropertyInteractionTypes)iType);
 					if (iPos != -1)
 						m_apInteractions[iPos]->read(pXML);
 				} while(pXML->TryMoveToXmlNextSibling(L"PropertyInteraction"));
@@ -196,8 +196,8 @@ bool CvPropertyManipulators::read(CvXMLLoadUtility *pXML, const wchar_t* szTagNa
 				{
 					CvString szTextVal;
 					pXML->GetChildXmlValByName(szTextVal, L"PropertyPropagatorType");
-					int iType = pXML->GetInfoClass(szTextVal);
-					int iPos = addPropagator((PropertyPropagatorTypes)iType);
+					const int iType = GC.getInfoTypeForString(szTextVal);
+					const int iPos = addPropagator((PropertyPropagatorTypes)iType);
 					if (iPos != -1)
 						m_apPropagators[iPos]->read(pXML);
 				} while(pXML->TryMoveToXmlNextSibling(L"PropertyPropagator"));

@@ -4345,23 +4345,23 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(m_szExtraHoverTextKey, L"ExtraHoverText");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Combat");
-	m_iUnitCombatType = pXML->GetInfoClass(szTextVal);
+	m_iUnitCombatType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Domain");
-	m_iDomainType = pXML->GetInfoClass(szTextVal);
+	m_iDomainType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"DefaultUnitAI", "UNITAI_UNKNOWN");
-	m_iDefaultUnitAIType = pXML->GetInfoClass(szTextVal);
+	m_iDefaultUnitAIType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Invisible");
-	m_iInvisibleType = pXML->GetInfoClass(szTextVal);
+	m_iInvisibleType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"SeeInvisible");
 	std::vector<CvString> tokens;
 	szTextVal.getTokens(",", tokens);
 	for(int i=0;i<(int)tokens.size();i++)
 	{
-		const int iInvisibleType = pXML->GetInfoClass(tokens[i]);
+		const int iInvisibleType = GC.getInfoTypeForString(tokens[i]);
 		if(iInvisibleType != NO_INVISIBLE)
 		{
 			m_aiSeeInvisibleTypes.push_back(iInvisibleType);
@@ -4369,7 +4369,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Advisor");
-	m_iAdvisorType = pXML->GetInfoClass(szTextVal);
+	m_iAdvisorType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_bFoodProduction, L"bFood");
 	pXML->GetOptionalChildXmlValByName(&m_bNoBadGoodies, L"bNoBadGoodies");
@@ -4434,7 +4434,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		m_piTerrainPassableTech = new int[GC.getNumTerrainInfos()];
 		for (int i = 0; i < GC.getNumTerrainInfos(); ++i)
 		{
-			m_piTerrainPassableTech[i] = pszTemp[i].IsEmpty() ? NO_TECH : pXML->GetInfoClass(pszTemp[i]);
+			m_piTerrainPassableTech[i] = pszTemp[i].IsEmpty() ? NO_TECH : GC.getInfoTypeForString(pszTemp[i]);
 		}
 		SAFE_DELETE_ARRAY(pszTemp);
 	}
@@ -4449,7 +4449,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		m_piFeaturePassableTech = new int[GC.getNumFeatureInfos()];
 		for (int i = 0; i < GC.getNumFeatureInfos(); ++i)
 		{
-			m_piFeaturePassableTech[i] = pszTemp[i].IsEmpty() ? NO_TECH : pXML->GetInfoClass(pszTemp[i]);
+			m_piFeaturePassableTech[i] = pszTemp[i].IsEmpty() ? NO_TECH : GC.getInfoTypeForString(pszTemp[i]);
 		}
 		SAFE_DELETE_ARRAY(pszTemp);
 	}
@@ -4463,18 +4463,18 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetOptionalIntVector(&m_pbBuildings, L"Buildings");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"MaxStartEra");
-	m_iMaxStartEra = pXML->GetInfoClass(szTextVal);
+	m_iMaxStartEra = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"ForceObsoleteTech");
-	m_iForceObsoleteTech = pXML->GetInfoClass(szTextVal);
+	m_iForceObsoleteTech = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_bStateReligion, L"bStateReligion");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqGameOption");
-	m_iPrereqGameOption = pXML->GetInfoClass(szTextVal);
+	m_iPrereqGameOption = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"NotGameOption");
-	m_iNotGameOption = pXML->GetInfoClass(szTextVal);
+	m_iNotGameOption = GC.getInfoTypeForString(szTextVal);
 
 	pXML->SetVariableListTagPair(&m_pbPrereqOrCivics, L"PrereqOrCivics", GC.getNumCivicInfos());
 
@@ -4484,25 +4484,25 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetOptionalIntVectorWithDelayedResolution(m_aiUnitUpgrades, L"UnitUpgrades");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"HolyCity");
-	m_iHolyCity = pXML->GetInfoClass(szTextVal);
+	m_iHolyCity = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"ReligionType");
-	m_iReligionType = pXML->GetInfoClass(szTextVal);
+	m_iReligionType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"StateReligion");
-	m_iStateReligion = pXML->GetInfoClass(szTextVal);
+	m_iStateReligion = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqReligion");
-	m_iPrereqReligion = pXML->GetInfoClass(szTextVal);
+	m_iPrereqReligion = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqCorporation");
-	m_iPrereqCorporation = pXML->GetInfoClass(szTextVal);
+	m_iPrereqCorporation = GC.getInfoTypeForString(szTextVal);
 
 	pXML->SetOptionalIntVector(&m_aiPrereqAndBuildings, L"PrereqAndBuildings");
 	pXML->SetOptionalIntVector(&m_aiPrereqOrBuildings, L"PrereqOrBuildings");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqTech");
-	m_iPrereqAndTech = pXML->GetInfoClass(szTextVal);
+	m_iPrereqAndTech = GC.getInfoTypeForString(szTextVal);
 
 	if (pXML->TryMoveToXmlFirstChild(L"TechTypes"))
 	{
@@ -4517,7 +4517,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				FAssertMsg((iNumSibs <= GC.getNUM_UNIT_AND_TECH_PREREQS()) ,"There are more siblings than memory allocated for them in SetGlobalUnitInfo");
 				for (j=0;j<iNumSibs;j++)
 				{
-					m_piPrereqAndTechs[j] = pXML->GetInfoClass(szTextVal);
+					m_piPrereqAndTechs[j] = GC.getInfoTypeForString(szTextVal);
 					if (!pXML->GetNextXmlVal(szTextVal))
 					{
 						break;
@@ -4540,7 +4540,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"BonusType");
-	m_iPrereqAndBonus = pXML->GetInfoClass(szTextVal);
+	m_iPrereqAndBonus = GC.getInfoTypeForString(szTextVal);
 
 	if (pXML->TryMoveToXmlFirstChild(L"PrereqBonuses"))
 	{
@@ -4555,7 +4555,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				FAssertMsg((iNumChildren <= GC.getNUM_UNIT_PREREQ_OR_BONUSES()) , "There are more siblings than memory allocated for them in SetGlobalUnitInfo");
 				for (j=0;j<iNumChildren;j++)
 				{
-					m_piPrereqOrBonuses[j] = pXML->GetInfoClass(szTextVal);
+					m_piPrereqOrBonuses[j] = GC.getInfoTypeForString(szTextVal);
 					if (!pXML->GetNextXmlVal(szTextVal))
 					{
 						break;
@@ -4644,16 +4644,16 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_iBombardRate, L"iBombardRate");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"SpecialCargo");
-	m_iSpecialCargo = pXML->GetInfoClass(szTextVal);
+	m_iSpecialCargo = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"SMSpecialCargo");
-	m_iSMSpecialCargo = pXML->GetInfoClass(szTextVal);
+	m_iSMSpecialCargo = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"SMNotSpecialCargo");
-	m_iSMNotSpecialCargo = pXML->GetInfoClass(szTextVal);
+	m_iSMNotSpecialCargo = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"DomainCargo");
-	m_iDomainCargo = pXML->GetInfoClass(szTextVal);
+	m_iDomainCargo = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_iCargoSpace, L"iCargo");
 	pXML->GetOptionalChildXmlValByName(&m_iSMCargoSpace, L"iSMCargo");
@@ -4727,7 +4727,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pbFreePromotions, L"FreePromotions", GC.getNumPromotionInfos());
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"LeaderPromotion");
-	m_iLeaderPromotion = pXML->GetInfoClass(szTextVal);
+	m_iLeaderPromotion = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_iLeaderExperience, L"iLeaderExperience");
 
@@ -4753,7 +4753,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bSlave, L"bSlave");
 	pXML->GetOptionalChildXmlValByName(&m_bRequiresStateReligionInCity, L"bRequiresStateReligionInCity");
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"VicinityBonusType");
-	m_iPrereqVicinityBonus = pXML->GetInfoClass(szTextVal);
+	m_iPrereqVicinityBonus = GC.getInfoTypeForString(szTextVal);
 	pXML->SetVariableListTagPair(&m_pbPassableRouteNeeded, L"PassableRouteNeededs", GC.getNumRouteInfos(), false);
 	pXML->GetOptionalChildXmlValByName(&m_iBaseFoodChange, L"iBaseFoodChange");
 	pXML->GetOptionalChildXmlValByName(&m_iControlPoints, L"iControlPoints");
@@ -4806,7 +4806,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				FAssertMsg((iNumSibs <= GC.getNUM_UNIT_PREREQ_OR_BONUSES()) , "There are more siblings than memory allocated for them in SetGlobalUnitInfo");
 				for (j=0;j<iNumSibs;j++)
 				{
-					m_piPrereqOrVicinityBonuses[j] = pXML->GetInfoClass(szTextVal);
+					m_piPrereqOrVicinityBonuses[j] = GC.getInfoTypeForString(szTextVal);
 					if (!pXML->GetNextXmlVal(szTextVal))
 					{
 						break;
@@ -4961,7 +4961,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PromotionLineType");
-					m_aAfflictionFortitudeModifiers[i].ePromotionLine = (PromotionLineTypes)pXML->GetInfoClass(szTextVal);
+					m_aAfflictionFortitudeModifiers[i].ePromotionLine = (PromotionLineTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aAfflictionFortitudeModifiers[i].iModifier), L"iModifier");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"AfflictionFortitudeModifier"));
@@ -4983,7 +4983,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PromotionLineType");
-					m_aAfflictOnAttackTypes[i].eAfflictionLine = (PromotionLineTypes)pXML->GetInfoClass(szTextVal);
+					m_aAfflictOnAttackTypes[i].eAfflictionLine = (PromotionLineTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aAfflictOnAttackTypes[i].iProbability), L"iProbability");
 					pXML->GetChildXmlValByName(&(m_aAfflictOnAttackTypes[i].iMelee), L"iMelee");
 					pXML->GetChildXmlValByName(&(m_aAfflictOnAttackTypes[i].iDistance), L"iDistance");
@@ -5008,7 +5008,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"UnitCombatType");
-					m_aHealUnitCombatTypes[i].eUnitCombat = (UnitCombatTypes)pXML->GetInfoClass(szTextVal);
+					m_aHealUnitCombatTypes[i].eUnitCombat = (UnitCombatTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aHealUnitCombatTypes[i].iHeal), L"iHeal");
 					pXML->GetChildXmlValByName(&(m_aHealUnitCombatTypes[i].iAdjacentHeal), L"iAdjacentHeal");
 					i++;
@@ -5031,7 +5031,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"UnitCombatType");
-					m_aGroupSpawnUnitCombatTypes[i].eUnitCombat = (UnitCombatTypes)pXML->GetInfoClass(szTextVal);
+					m_aGroupSpawnUnitCombatTypes[i].eUnitCombat = (UnitCombatTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aGroupSpawnUnitCombatTypes[i].iChance), L"iChance");
 					pXML->GetOptionalChildXmlValByName(m_aGroupSpawnUnitCombatTypes[i].m_szTitle, L"Title");
 					i++;
@@ -5054,9 +5054,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aInvisibleTerrainChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aInvisibleTerrainChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"TerrainType");
-					m_aInvisibleTerrainChanges[i].eTerrain = (TerrainTypes)pXML->GetInfoClass(szTextVal);
+					m_aInvisibleTerrainChanges[i].eTerrain = (TerrainTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aInvisibleTerrainChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"InvisibleTerrainChange"));
@@ -5078,9 +5078,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aInvisibleFeatureChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aInvisibleFeatureChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"FeatureType");
-					m_aInvisibleFeatureChanges[i].eFeature = (FeatureTypes)pXML->GetInfoClass(szTextVal);
+					m_aInvisibleFeatureChanges[i].eFeature = (FeatureTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aInvisibleFeatureChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"InvisibleFeatureChange"));
@@ -5102,9 +5102,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aInvisibleImprovementChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aInvisibleImprovementChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"ImprovementType");
-					m_aInvisibleImprovementChanges[i].eImprovement = (ImprovementTypes)pXML->GetInfoClass(szTextVal);
+					m_aInvisibleImprovementChanges[i].eImprovement = (ImprovementTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aInvisibleImprovementChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"InvisibleImprovementChange"));
@@ -5126,9 +5126,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aVisibleTerrainChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleTerrainChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"TerrainType");
-					m_aVisibleTerrainChanges[i].eTerrain = (TerrainTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleTerrainChanges[i].eTerrain = (TerrainTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aVisibleTerrainChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"VisibleTerrainChange"));
@@ -5150,9 +5150,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aVisibleFeatureChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleFeatureChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"FeatureType");
-					m_aVisibleFeatureChanges[i].eFeature = (FeatureTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleFeatureChanges[i].eFeature = (FeatureTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aVisibleFeatureChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"VisibleFeatureChange"));
@@ -5174,9 +5174,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aVisibleImprovementChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleImprovementChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"ImprovementType");
-					m_aVisibleImprovementChanges[i].eImprovement = (ImprovementTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleImprovementChanges[i].eImprovement = (ImprovementTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aVisibleImprovementChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"VisibleImprovementChange"));
@@ -5199,7 +5199,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
 					pXML->GetChildXmlValByName(szTextVal2, L"TerrainType");
-					m_aVisibleTerrainRangeChanges[i].eTerrain = (TerrainTypes)pXML->GetInfoClass(szTextVal2);
+					m_aVisibleTerrainRangeChanges[i].eTerrain = (TerrainTypes)GC.getInfoTypeForString(szTextVal2);
 					pXML->GetChildXmlValByName(&(m_aVisibleTerrainRangeChanges[i].iIntensity), L"iIntensity");
 					GC.addDelayedResolution((int*)&(m_aVisibleTerrainRangeChanges[i].eInvisible), szTextVal);
 					i++;
@@ -5222,9 +5222,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aVisibleFeatureRangeChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleFeatureRangeChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"FeatureType");
-					m_aVisibleFeatureRangeChanges[i].eFeature = (FeatureTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleFeatureRangeChanges[i].eFeature = (FeatureTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aVisibleFeatureRangeChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"VisibleFeatureRangeChange"));
@@ -5246,9 +5246,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"InvisibleType");
-					m_aVisibleImprovementRangeChanges[i].eInvisible = (InvisibleTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleImprovementRangeChanges[i].eInvisible = (InvisibleTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"ImprovementType");
-					m_aVisibleImprovementRangeChanges[i].eImprovement = (ImprovementTypes)pXML->GetInfoClass(szTextVal);
+					m_aVisibleImprovementRangeChanges[i].eImprovement = (ImprovementTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aVisibleImprovementRangeChanges[i].iIntensity), L"iIntensity");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"VisibleImprovementRangeChange"));
@@ -5270,7 +5270,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PromotionLineType");
-					m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine = (PromotionLineTypes)pXML->GetInfoClass(szTextVal);
+					m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine = (PromotionLineTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aDistanceAttackCommunicabilityTypeChanges[i].iChange), L"iChange");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"DistanceAttackCommunicabilityTypeChange"));
@@ -5424,7 +5424,7 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo, CvXMLLoadUtility* pXML)
 	{
 		for(int i=0; i < pClassInfo->getNumSeeInvisibleTypes(); i++)
 		{
-			int iSeeInvisibleType = pClassInfo->getSeeInvisibleType(i);
+			const int iSeeInvisibleType = pClassInfo->getSeeInvisibleType(i);
 			if(iSeeInvisibleType != NO_INVISIBLE)
 			{
 				m_aiSeeInvisibleTypes.push_back(iSeeInvisibleType);
@@ -6484,7 +6484,7 @@ bool CvUnitInfo::readPass2(CvXMLLoadUtility* pXML)
 	}
 	CvString szTextVal;
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Capture");
-	m_iUnitCaptureType = pXML->GetInfoClass(szTextVal);
+	m_iUnitCaptureType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->SetVariableListTagPair(&m_piFlankingStrikeUnit, L"FlankingStrikes", GC.getNumUnitInfos(), -1);
 	pXML->SetVariableListTagPair(&m_piUnitAttackModifier, L"UnitAttackMods", GC.getNumUnitInfos());

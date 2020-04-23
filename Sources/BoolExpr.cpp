@@ -296,11 +296,11 @@ BoolExpr* BoolExpr::read(CvXMLLoadUtility *pXML)
 	{
 		CvString szTextVal;
 		pXML->GetChildXmlValByName(szTextVal, L"RelationType");
-		RelationTypes eRelation = (RelationTypes) pXML->GetInfoClass(szTextVal);
+		const RelationTypes eRelation = (RelationTypes) GC.getInfoTypeForString(szTextVal);
 		int iData = -1;
 		pXML->GetOptionalChildXmlValByName(&iData, L"iDistance", -1);
 		pXML->GetChildXmlValByName(szTextVal, L"GameObjectType");
-		GameObjectTypes eType = (GameObjectTypes) pXML->GetInfoClass(szTextVal);
+		const GameObjectTypes eType = (GameObjectTypes) GC.getInfoTypeForString(szTextVal);
 		
 		// Find the expression and read it
 		if (pXML->TryMoveToXmlFirstChild())
@@ -353,7 +353,7 @@ BoolExpr* BoolExpr::read(CvXMLLoadUtility *pXML)
 		// this is an Is node, querying a tag of the game object
 		CvString szTextVal;
 		pXML->GetXmlVal(szTextVal);
-		return new BoolExprIs((TagTypes)pXML->GetInfoClass(szTextVal));
+		return new BoolExprIs((TagTypes)GC.getInfoTypeForString(szTextVal));
 	}
 
 	if (equal(pXML->GetXmlTagName(), L"Constant"))
@@ -430,7 +430,7 @@ void BoolExprHas::readContent(CvXMLLoadUtility* pXML)
 {
 	CvString szTextVal;
 	pXML->GetChildXmlValByName(szTextVal, L"GOMType");
-	m_eGOM = (GOMTypes)pXML->GetInfoClass(szTextVal);
+	m_eGOM = (GOMTypes)GC.getInfoTypeForString(szTextVal);
 	pXML->GetChildXmlValByName(szTextVal, L"ID");
 	GC.addDelayedResolution(&m_iID, szTextVal);
 }

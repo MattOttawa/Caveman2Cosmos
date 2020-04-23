@@ -207,7 +207,7 @@ bool CvOutcomeMission::read(CvXMLLoadUtility *pXML)
 	//m_eMission = (MissionTypes) pXML->FindInInfoClass(szTextVal);
 	pXML->GetOptionalChildXmlValByName(&m_bKill, L"bKill", true);
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PayerType");
-	m_ePayerType = (GameObjectTypes) pXML->GetInfoClass(szTextVal);
+	m_ePayerType = (GameObjectTypes) GC.getInfoTypeForString(szTextVal);
 	m_PropertyCost.read(pXML, L"PropertyCost");
 	m_OutcomeList.read(pXML, L"ActionOutcomes");
 	if (pXML->TryMoveToXmlFirstChild(L"PlotCondition"))

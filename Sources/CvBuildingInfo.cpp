@@ -3621,10 +3621,10 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"SpecialBuildingType");
-	m_iSpecialBuildingType = pXML->GetInfoClass(szTextVal);
+	m_iSpecialBuildingType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Advisor");
-	m_iAdvisorType = pXML->GetInfoClass(szTextVal);
+	m_iAdvisorType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_bNoLimit, L"bNoLimit");
 
@@ -3638,65 +3638,53 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-/*
-	pXML->GetChildXmlValByName(szTextVal, L"MovieDefineTag");
-	setMovieDefineTag(szTextVal);
-*/
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"MovieDefineTag");
 	setMovieDefineTag(szTextVal);
 
-/********************************************************************************/
-/**		REVDCM									2/16/10				phungus420	*/
-/**																				*/
-/**		CanConstruct															*/
-/********************************************************************************/
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqGameOption");
-	m_iPrereqGameOption = pXML->GetInfoClass(szTextVal);
+	m_iPrereqGameOption = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"NotGameOption");
-	m_iNotGameOption = pXML->GetInfoClass(szTextVal);
-/********************************************************************************/
-/**		REVDCM									END								*/
-/********************************************************************************/
+	m_iNotGameOption = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"HolyCity");
-	m_iHolyCity = pXML->GetInfoClass(szTextVal);
+	m_iHolyCity = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"ReligionType");
-	m_iReligionType = pXML->GetInfoClass(szTextVal);
+	m_iReligionType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"StateReligion");
-	m_iStateReligion = pXML->GetInfoClass(szTextVal);
+	m_iStateReligion = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqReligion");
-	m_iPrereqReligion = pXML->GetInfoClass(szTextVal);
+	m_iPrereqReligion = GC.getInfoTypeForStrings(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqCorporation");
-	m_iPrereqCorporation = pXML->GetInfoClass(szTextVal);
+	m_iPrereqCorporation = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FoundsCorporation");
-	m_iFoundsCorporation = pXML->GetInfoClass(szTextVal);
+	m_iFoundsCorporation = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"GlobalReligionCommerce");
-	m_iGlobalReligionCommerce = pXML->GetInfoClass(szTextVal);
+	m_iGlobalReligionCommerce = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"GlobalCorporationCommerce");
-	m_iGlobalCorporationCommerce = pXML->GetInfoClass(szTextVal);
+	m_iGlobalCorporationCommerce = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"VictoryPrereq");
-	m_iVictoryPrereq = pXML->GetInfoClass(szTextVal);
+	m_iVictoryPrereq = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeStartEra");
-	m_iFreeStartEra = pXML->GetInfoClass(szTextVal);
+	m_iFreeStartEra = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"MaxStartEra");
-	m_iMaxStartEra = pXML->GetInfoClass(szTextVal);
+	m_iMaxStartEra = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"ObsoleteTech");
-	m_iObsoleteTech = pXML->GetInfoClass(szTextVal);
+	m_iObsoleteTech = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqTech");
-	m_iPrereqAndTech = pXML->GetInfoClass(szTextVal);
+	m_iPrereqAndTech = GC.getInfoTypeForString(szTextVal);
 
 	if (pXML->TryMoveToXmlFirstChild(L"TechTypes"))
 	{
@@ -3710,7 +3698,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				FAssertMsg((iNumChildren <= GC.getNUM_BUILDING_AND_TECH_PREREQS()),"For loop iterator is greater than array size");
 				for (int j = 0; j < iNumChildren; j++)
 				{
-					m_piPrereqAndTechs[j] = pXML->GetInfoClass(szTextVal);
+					m_piPrereqAndTechs[j] = GC.getInfoTypeForString(szTextVal);
 					if (!pXML->GetNextXmlVal(szTextVal))
 					{
 						break;
@@ -3733,19 +3721,19 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Bonus");
-	m_iPrereqAndBonus = pXML->GetInfoClass(szTextVal);
+	m_iPrereqAndBonus = GC.getInfoTypeForString(szTextVal);
 
 	//Alberts2 PrereqBonuses
 	pXML->SetOptionalIntVector(&m_aePrereqOrBonuses, L"PrereqBonuses");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"NoBonus");
-	m_iNoBonus = pXML->GetInfoClass(szTextVal);
+	m_iNoBonus = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PowerBonus");
-	m_iPowerBonus = pXML->GetInfoClass(szTextVal);
+	m_iPowerBonus = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeBonus");
-	m_iFreeBonus = pXML->GetInfoClass(szTextVal);
+	m_iFreeBonus = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_iNumFreeBonuses, L"iNumFreeBonuses");
 
@@ -3759,7 +3747,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"FreeBonus");
-					BonusTypes eBonus = (BonusTypes) pXML->GetInfoClass(szTextVal);
+					const BonusTypes eBonus = (BonusTypes) GC.getInfoTypeForString(szTextVal);
 					int iNum;
 					pXML->GetChildXmlValByName(&iNum, L"iNumFreeBonuses");
 					m_aExtraFreeBonuses.push_back(std::pair<BonusTypes,int>(eBonus, iNum));
@@ -3771,16 +3759,16 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreePromotion");
-	m_iFreePromotion = pXML->GetInfoClass(szTextVal);
+	m_iFreePromotion = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"CivicOption");
-	m_iCivicOption = pXML->GetInfoClass(szTextVal);
+	m_iCivicOption = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"GreatPeopleUnitType");
 	m_aszExtraXMLforPass3.push_back(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"DiploVoteType");
-	m_iVoteSourceType = pXML->GetInfoClass(szTextVal);
+	m_iVoteSourceType = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_iGreatPeopleRateChange, L"iGreatPeopleRateChange");
 	pXML->GetOptionalChildXmlValByName(&m_bTeamShare, L"bTeamShare");
@@ -3872,7 +3860,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_iFreeTechs, L"iFreeTechs");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeSpecialTech");
-	m_eFreeSpecialTech = (TechTypes) pXML->GetInfoClass(szTextVal);
+	m_eFreeSpecialTech = (TechTypes) GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(&m_iDefenseModifier, L"iDefense");
 	pXML->GetOptionalChildXmlValByName(&m_iBombardDefenseModifier, L"iBombardDefense");
@@ -4139,7 +4127,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"SpecialistType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiSpecialistYieldChange == NULL )
@@ -4183,7 +4171,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"SpecialistType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiSpecialistCommerceChange == NULL )
@@ -4228,7 +4216,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"SpecialistType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiLocalSpecialistYieldChange == NULL )
@@ -4272,7 +4260,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"SpecialistType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiLocalSpecialistCommerceChange == NULL )
@@ -4316,7 +4304,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiBonusYieldModifier == NULL )
@@ -4384,19 +4372,19 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bProtectedCulture, L"bProtectedCulture");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqCultureLevel");
-	m_iPrereqCultureLevel = pXML->GetInfoClass(szTextVal);
+	m_iPrereqCultureLevel = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreePromotion_2");
-	m_iFreePromotion_2 = pXML->GetInfoClass(szTextVal);
+	m_iFreePromotion_2 = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreePromotion_3");
-	m_iFreePromotion_3 = pXML->GetInfoClass(szTextVal);
+	m_iFreePromotion_3 = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"VicinityBonus");
-	m_iPrereqVicinityBonus = pXML->GetInfoClass(szTextVal);
+	m_iPrereqVicinityBonus = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"RawVicinityBonus");
-	m_iPrereqRawVicinityBonus = pXML->GetInfoClass(szTextVal);
+	m_iPrereqRawVicinityBonus = GC.getInfoTypeForString(szTextVal);
 
 	pXML->SetVariableListTagPair(&m_piTechHappinessChanges, L"TechHappinessChanges", GC.getNumTechInfos());
 	pXML->SetVariableListTagPair(&m_piTechHealthChanges, L"TechHealthChanges", GC.getNumTechInfos());
@@ -4424,7 +4412,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiBonusCommerceModifier == NULL )
@@ -4468,7 +4456,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiBonusCommercePercentChanges == NULL )
@@ -4512,7 +4500,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiBonusYieldChanges == NULL )
@@ -4556,7 +4544,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 			for (int j = 0; j < iNumChildren; ++j)
 			{
 				pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-				const int k = pXML->GetInfoClass(szTextVal);
+				const int k = GC.getInfoTypeForString(szTextVal);
 				if (k > -1)
 				{
 					if ( m_ppaiVicinityBonusYieldChanges == NULL )
@@ -4693,7 +4681,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				FAssertMsg((iNumChildren <= GC.getNUM_BUILDING_PREREQ_OR_BONUSES()),"For loop iterator is greater than array size");
 				for (int j = 0; j < iNumChildren; ++j)
 				{
-					m_piPrereqOrVicinityBonuses[j] = pXML->GetInfoClass(szTextVal);
+					m_piPrereqOrVicinityBonuses[j] = GC.getInfoTypeForString(szTextVal);
 					if (!pXML->GetNextXmlVal(szTextVal))
 					{
 						break;
@@ -4726,7 +4714,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				FAssertMsg((iNumChildren <= GC.getNUM_BUILDING_PREREQ_OR_BONUSES()),"For loop iterator is greater than array size");
 				for (int j = 0; j < iNumChildren; ++j)
 				{
-					m_piPrereqOrRawVicinityBonuses[j] = pXML->GetInfoClass(szTextVal);
+					m_piPrereqOrRawVicinityBonuses[j] = GC.getInfoTypeForString(szTextVal);
 					if (!pXML->GetNextXmlVal(szTextVal))
 					{
 						break;
@@ -4757,7 +4745,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				for (int j = 0; j < iNumSibs; j++)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PrereqTech");
-					const int k = pXML->GetInfoClass(szTextVal);
+					const int k = GC.getInfoTypeForString(szTextVal);
 
 					if (k > -1)
 					{
@@ -4804,7 +4792,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				for (int j = 0; j < iNumSibs; j++)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PrereqTech");
-					const int k = pXML->GetInfoClass(szTextVal);
+					const int k = GC.getInfoTypeForString(szTextVal);
 
 					if (k > -1)
 					{
@@ -4850,7 +4838,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				for (int j = 0; j < iNumSibs; j++)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PrereqTech");
-					const int k = pXML->GetInfoClass(szTextVal);
+					const int k = GC.getInfoTypeForString(szTextVal);
 
 					if (k > -1)
 					{
@@ -4890,7 +4878,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				for (int j = 0; j < iNumSibs; j++)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PrereqTech");
-					const int k = pXML->GetInfoClass(szTextVal);
+					const int k = GC.getInfoTypeForString(szTextVal);
 
 					if (k > -1)
 					{
@@ -4935,7 +4923,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				for (int j = 0; j < iNumSibs; j++)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PrereqTech");
-					const int k = pXML->GetInfoClass(szTextVal);
+					const int k = GC.getInfoTypeForString(szTextVal);
 
 					if (k > -1)
 					{
@@ -4979,7 +4967,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				for (int j = 0; j < iNumSibs; j++)
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"ImprovementType");
-					const int iIndex = pXML->GetInfoClass(szTextVal);
+					const int iIndex = GC.getInfoTypeForString(szTextVal);
 
 					if (iIndex > -1)
 					{
@@ -5039,10 +5027,10 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	m_aszExtraXMLforPass3.push_back(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PropertySpawnProperty");
-	m_ePropertySpawnProperty = (PropertyTypes) pXML->GetInfoClass(szTextVal);
+	m_ePropertySpawnProperty = (PropertyTypes) GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PromotionLineType");
-	m_ePromotionLineType = (PromotionLineTypes) pXML->GetInfoClass(szTextVal);
+	m_ePromotionLineType = (PromotionLineTypes) GC.getInfoTypeForString(szTextVal);
 	//integers
 	pXML->GetOptionalChildXmlValByName(&m_iLinePriority, L"iLinePriority");
 	pXML->GetOptionalChildXmlValByName(&m_iOutbreakBase, L"iOutbreakBase");
@@ -5095,7 +5083,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PromotionType");
-					m_aFreePromoTypes[i].ePromotion = (PromotionTypes)pXML->GetInfoClass(szTextVal);
+					m_aFreePromoTypes[i].ePromotion = (PromotionTypes)GC.getInfoTypeForString(szTextVal);
 					if (pXML->TryMoveToXmlFirstChild(L"FreePromotionCondition"))
 					{
 						m_aFreePromoTypes[i].m_pExprFreePromotionCondition = BoolExpr::read(pXML);
@@ -5125,7 +5113,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"UnitCombatType");
-					m_aHealUnitCombatTypes[i].eUnitCombat = (UnitCombatTypes)pXML->GetInfoClass(szTextVal);
+					m_aHealUnitCombatTypes[i].eUnitCombat = (UnitCombatTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aHealUnitCombatTypes[i].iHeal), L"iHeal");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"HealUnitCombatType"));
@@ -5148,9 +5136,9 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-					m_aBonusAidModifiers[i].eBonusType = (BonusTypes)pXML->GetInfoClass(szTextVal);
+					m_aBonusAidModifiers[i].eBonusType = (BonusTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(szTextVal, L"PropertyType");
-					m_aBonusAidModifiers[i].ePropertyType = (PropertyTypes)pXML->GetInfoClass(szTextVal);
+					m_aBonusAidModifiers[i].ePropertyType = (PropertyTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aBonusAidModifiers[i].iModifier), L"iModifier");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"BonusAidModifier"));
@@ -5173,7 +5161,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 				do
 				{
 					pXML->GetChildXmlValByName(szTextVal, L"PropertyType");
-					m_aAidRateChanges[i].ePropertyType = (PropertyTypes)pXML->GetInfoClass(szTextVal);
+					m_aAidRateChanges[i].ePropertyType = (PropertyTypes)GC.getInfoTypeForString(szTextVal);
 					pXML->GetChildXmlValByName(&(m_aAidRateChanges[i].iChange), L"iChange");
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"AidRateChange"));
@@ -5219,7 +5207,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	//			{
 	//				for (int j = 0; j < iNumSibs; j++)
 	//				{
-	//					m_aiFreePromoTypes.push_back(pXML->GetInfoClass(szTextVal));
+	//					m_aiFreePromoTypes.push_back(GC.getInfoTypeForString(szTextVal));
 	//					if (!pXML->GetNextXmlVal(szTextVal))
 	//					{
 	//						break;
@@ -5282,10 +5270,10 @@ bool CvBuildingInfo::readPass2(CvXMLLoadUtility* pXML)
 	CvString szTextVal;
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeBuilding");
-	m_iFreeBuilding = pXML->GetInfoClass(szTextVal);
+	m_iFreeBuilding = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeAreaBuilding");
-	m_iFreeAreaBuilding = pXML->GetInfoClass(szTextVal);
+	m_iFreeAreaBuilding = GC.getInfoTypeForString(szTextVal);
 
 	pXML->SetVariableListTagPair(&m_piPrereqNumOfBuilding, L"PrereqAmountBuildings",  GC.getNumBuildingInfos());
 
@@ -5303,9 +5291,9 @@ bool CvBuildingInfo::readPass2(CvXMLLoadUtility* pXML)
 					if (pXML->GetChildXmlVal(szTextVal))
 					{
 						BuildingCommerceChange kChange;
-						kChange.eBuilding = (BuildingTypes)pXML->GetInfoClass(szTextVal);
+						kChange.eBuilding = (BuildingTypes)GC.getInfoTypeForString(szTextVal);
 						pXML->GetNextXmlVal(szTextVal);
-						kChange.eCommerce = (CommerceTypes)pXML->GetInfoClass(szTextVal);
+						kChange.eCommerce = (CommerceTypes)GC.getInfoTypeForString(szTextVal);
 						pXML->GetNextXmlVal(&kChange.iChange);
 						m_aGlobalBuildingCommerceChanges.push_back(kChange);
 
@@ -5328,13 +5316,13 @@ bool CvBuildingInfo::readPass2(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_piBuildingHappinessChanges, L"BuildingHappinessChanges",  GC.getNumBuildingInfos());
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"ProductionContinueBuilding");
-	m_iProductionContinueBuilding = pXML->GetInfoClass(szTextVal);
+	m_iProductionContinueBuilding = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqAnyoneBuilding");
-	m_iPrereqAnyoneBuilding = pXML->GetInfoClass(szTextVal);
+	m_iPrereqAnyoneBuilding = GC.getInfoTypeForString(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"ExtendsBuilding");
-	m_iExtendsBuilding = pXML->GetInfoClass(szTextVal);
+	m_iExtendsBuilding = GC.getInfoTypeForString(szTextVal);
 
 	pXML->SetVariableListTagPair(&m_pbPrereqOrBuilding, L"PrereqOrBuildings",  GC.getNumBuildingInfos());
 	pXML->SetVariableListTagPair(&m_pbReplaceBuilding, L"ReplaceBuildings",  GC.getNumBuildingInfos());

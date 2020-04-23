@@ -151,15 +151,15 @@ bool CvPropertyPropagator::read(CvXMLLoadUtility *pXML)
 //	m_eProperty = (PropertyTypes) pXML->GetInfoClass(szTextVal);
 	GC.addDelayedResolution((int*)&m_eProperty, szTextVal);
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"GameObjectType");
-	m_eObjectType = (GameObjectTypes) pXML->GetInfoClass(szTextVal);
+	m_eObjectType = (GameObjectTypes) GC.getInfoTypeForString(szTextVal);
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"RelationType");
-	m_eRelation = (RelationTypes) pXML->GetInfoClass(szTextVal);
+	m_eRelation = (RelationTypes) GC.getInfoTypeForString(szTextVal);
 	if (m_eRelation == RELATION_NEAR)
 		pXML->GetOptionalChildXmlValByName(&m_iRelationData, L"iDistance");
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"TargetObjectType");
-	m_eTargetObjectType = (GameObjectTypes) pXML->GetInfoClass(szTextVal);
+	m_eTargetObjectType = (GameObjectTypes) GC.getInfoTypeForString(szTextVal);
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"TargetRelationType");
-	m_eTargetRelation = (RelationTypes) pXML->GetInfoClass(szTextVal);
+	m_eTargetRelation = (RelationTypes) GC.getInfoTypeForString(szTextVal);
 	if (m_eTargetRelation == RELATION_NEAR)
 		pXML->GetOptionalChildXmlValByName(&m_iTargetRelationData, L"iTargetDistance");
 	if (pXML->TryMoveToXmlFirstChild(L"Active"))
