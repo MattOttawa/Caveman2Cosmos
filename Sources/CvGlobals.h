@@ -30,8 +30,6 @@ class CMPDiplomacyScreen;
 class FMPIManager;
 class FAStar;
 class CvInterface;
-class CMainMenu;
-class CvArtFileMgr;
 class FVariableSystem;
 class CvMap;
 class CvMapExternal;
@@ -161,7 +159,7 @@ extern CvDLLUtilityIFaceBase* g_DLL;
 
 class cvInternalGlobals
 {
-//	friend class CvDLLUtilityIFace;
+	friend class CvGlobals;
 	friend class CvXMLLoadUtility;
 public:
 
@@ -177,7 +175,6 @@ public:
 
 	CvDiplomacyScreen* getDiplomacyScreen() const 		{ return m_diplomacyScreen; }
 	CMPDiplomacyScreen* getMPDiplomacyScreen() const 	{ return m_mpDiplomacyScreen; }
-
 	FMPIManager*& getFMPMgrPtr()	 					{ return m_pFMPMgr; }
 	CvPortal& getPortal() const 						{ return *m_portal; }
 	CvSetupData& getSetupData() const 					{ return *m_setupData; }
@@ -186,10 +183,7 @@ public:
 	CvInitCore& getIniInitCore() const 					{ return *m_iniInitCore; }
 	CvMessageCodeTranslator& getMessageCodes() const 	{ return *m_messageCodes; }
 	CvStatsReporter& getStatsReporter() const 			{ return *m_statsReporter; }
-	CvStatsReporter* getStatsReporterPtr() const 		{ return m_statsReporter; }
 	CvInterface& getInterface() const 					{ return *m_interface; }
-	CvInterface* getInterfacePtr() const 				{ return m_interface; }
-	
 
 /*********************************/
 /***** Parallel Maps - Begin *****/
@@ -226,7 +220,6 @@ public:
 /***** Parallel Maps - End *****/
 /*******************************/
 	inline CvGameAI& getGame() const 			{ return *m_game; }
-	CvGameAI* getGamePointer();
 	CvRandom& getASyncRand() const 				{ return *m_asyncRand; }
 	CMessageQueue& getMessageQueue() const 		{ return *m_messageQueue; }
 	CMessageQueue& getHotMessageQueue() const 	{ return *m_hotJoinMsgQueue; }
@@ -239,12 +232,11 @@ public:
 	FAStar& getBorderFinder() const 			{ return *m_borderFinder; }
 	FAStar& getAreaFinder() const 				{ return *m_areaFinder; }
 	FAStar& getPlotGroupFinder() const 			{ return *m_plotGroupFinder; }
-	NiPoint3& getPt3Origin()	 				{ return m_pt3Origin; }
+	//NiPoint3& getPt3Origin()	 				{ return m_pt3Origin; }
 
-	std::vector<CvInterfaceModeInfo*>& getInterfaceModeInfos();
-	CvInterfaceModeInfo& getInterfaceModeInfo(InterfaceModeTypes e);
+	CvInterfaceModeInfo& getInterfaceModeInfo(InterfaceModeTypes e) const;
 
-	NiPoint3& getPt3CameraDir()		 			{ return m_pt3CameraDir; }
+	//NiPoint3& getPt3CameraDir()		 			{ return m_pt3CameraDir; }
 
 	bool& getLogging() 							{ return m_bLogging; }
 	bool& getRandLogging() 						{ return m_bRandLogging; }
@@ -496,9 +488,6 @@ public:
 
 	int iStuckUnitID;
 	int iStuckUnitCount;
-
-	bool isLoadedPlayerOptions() const;
-	void setLoadedPlayerOptions(bool bNewVal);
 
 	bool isXMLLogging() const;
 	void setXMLLogging(bool bNewVal);
@@ -766,7 +755,7 @@ public:
 	// THESE ARE READ-ONLY
 	//
 
-	FVariableSystem* getDefinesVarSystem() const;
+	FVariableSystem* getDefinesVarSystem() const { return m_VarSystem; }
 	void cacheEnumGlobals();
 	void cacheGlobals();
 
@@ -783,7 +772,7 @@ public:
 
 	void setGraphicalDetailPagingEnabled(bool bEnabled);
 	bool getGraphicalDetailPagingEnabled() const;
-	int getGraphicalDetailPageInRange();
+	int getGraphicalDetailPageInRange() const;
 
 	int getDefineINT( const char * szName ) const;
 	float getDefineFLOAT( const char * szName ) const;
@@ -833,18 +822,13 @@ public:
 
 	////////////// END DEFINES //////////////////
 
-#ifdef _USRDLL
-	CvDLLUtilityIFaceBase* getDLLIFace() { return g_DLL; }		// inlined for perf reasons, do not use outside of dll
-#endif
-	CvDLLUtilityIFaceBase* getDLLIFaceNonInl();
-	void setDLLProfiler(FProfiler* prof);
-	FProfiler* getDLLProfiler() const;
-	void enableDLLProfiler(bool bEnable);
-	bool isDLLProfilerEnabled() const;
-	const char* alternateProfileSampleName() const;
+	inline CvDLLUtilityIFaceBase* getDLLIFace() const	{ return g_DLL; }
 
-	bool IsGraphicsInitialized() const;
-	void SetGraphicsInitialized(bool bVal);
+	//FProfiler* getDLLProfiler() const					{ return m_Profiler; }
+	bool isDLLProfilerEnabled() const					{ return m_bDLLProfiler; }
+	const char* alternateProfileSampleName() const		{ return m_szAlternateProfilSampleName; }
+
+	bool IsGraphicsInitialized() const					{ return m_bGraphicsInitialized; }
 
 	// for caching
 	bool readBuildingInfoArray(FDataStreamBase* pStream);
@@ -886,29 +870,6 @@ public:
 	bool readEventTriggerInfoArray(FDataStreamBase* pStream);
 	void writeEventTriggerInfoArray(FDataStreamBase* pStream);
 
-	//
-	// additional accessors for initting globals
-	//
-
-	void setInterface(CvInterface* pVal);
-	 void setDiplomacyScreen(CvDiplomacyScreen* pVal);
-	 void setMPDiplomacyScreen(CMPDiplomacyScreen* pVal);
-	 void setMessageQueue(CMessageQueue* pVal);
-	 void setHotJoinMessageQueue(CMessageQueue* pVal);
-	 void setMessageControl(CMessageControl* pVal);
-	 void setSetupData(CvSetupData* pVal);
-	 void setMessageCodeTranslator(CvMessageCodeTranslator* pVal);
-	 void setDropMgr(CvDropMgr* pVal);
-	 void setPortal(CvPortal* pVal);
-	 void setStatsReport(CvStatsReporter* pVal);
-	 void setPathFinder(FAStar* pVal);
-	 void setInterfacePathFinder(FAStar* pVal);
-	 void setStepFinder(FAStar* pVal);
-	 void setRouteFinder(FAStar* pVal);
-	 void setBorderFinder(FAStar* pVal);
-	 void setAreaFinder(FAStar* pVal);
-	 void setPlotGroupFinder(FAStar* pVal);
-
 // BUG - BUG Info - start
 	void setIsBug(bool bIsBug);
 // BUG - BUG Info - end
@@ -936,21 +897,11 @@ protected:
 	bool m_bRandLogging;
 	bool m_bSynchLogging;
 	bool m_bOverwriteLogs;
-	NiPoint3  m_pt3CameraDir;
-	int m_iNewPlayers;
+	//NiPoint3  m_pt3CameraDir;
 
-	CMainMenu* m_pkMainMenu;
-
-	bool m_bZoomOut;
-	bool m_bZoomIn;
-	bool m_bLoadGameFromFile;
-
-	FMPIManager * m_pFMPMgr;
-
+	FMPIManager* m_pFMPMgr;
 	CvRandom* m_asyncRand;
-
 	CvGameAI* m_game;
-
 	CMessageQueue* m_messageQueue;
 	CMessageQueue* m_hotJoinMsgQueue;
 	CMessageControl* m_messageControl;
@@ -958,13 +909,11 @@ protected:
 	CvInitCore* m_iniInitCore;
 	CvInitCore* m_loadedInitCore;
 	CvInitCore* m_initCore;
-	CvMessageCodeTranslator * m_messageCodes;
+	CvMessageCodeTranslator* m_messageCodes;
 	CvDropMgr* m_dropMgr;
 	CvPortal* m_portal;
-	CvStatsReporter * m_statsReporter;
+	CvStatsReporter* m_statsReporter;
 	CvInterface* m_interface;
-
-//	CvArtFileMgr* m_pArtFileMgr; (unused)
 
 /*********************************/
 /***** Parallel Maps - Begin *****/
@@ -986,7 +935,7 @@ protected:
 	FAStar* m_areaFinder;
 	FAStar* m_plotGroupFinder;
 
-	NiPoint3 m_pt3Origin;
+	//NiPoint3 m_pt3Origin;
 
 	int* m_aiPlotDirectionX;	// [NUM_DIRECTION_TYPES];
 	int* m_aiPlotDirectionY;	// [NUM_DIRECTION_TYPES];
@@ -1001,7 +950,6 @@ protected:
 	DirectionTypes* m_aeTurnRightDirection;	// [NUM_DIRECTION_TYPES];
 	DirectionTypes m_aaeXYDirection[DIRECTION_DIAMETER][DIRECTION_DIAMETER];
 
-	//InterfaceModeInfo m_aInterfaceModeInfo[NUM_INTERFACEMODE_TYPES] =
 	std::vector<CvInterfaceModeInfo*> m_paInterfaceModeInfo;
 
 	/***********************************************************************************************************************
@@ -1271,7 +1219,6 @@ protected:
 	DO_FOR_EACH_GLOBAL_DEFINE(DECLARE_MEMBER_VAR)
 
 	bool m_bXMLLogging;
-	bool m_bLoadedPlayerOptions;
 
 	float m_fPLOT_SIZE;
 
@@ -1284,8 +1231,7 @@ protected:
 	bool m_bGraphicalDetailPagingEnabled;
 
 	const char* m_szAlternateProfilSampleName;
-	FProfiler* m_Profiler;		// profiler
-	CvString m_szDllProfileText;
+	FProfiler* m_Profiler;
 /************************************************************************************************/
 /* BETTER_BTS_AI_MOD                      02/21/10                                jdog5000      */
 /*                                                                                              */
@@ -1361,9 +1307,6 @@ public:
 //	by the core engine to establish memory allocators)
 class CvGlobals
 {
-	friend class CvXMLLoadUtility;
-	friend class ProxyTracker;
-
 public:
 	DllExport inline static CvGlobals& getInstance();
 
@@ -1438,7 +1381,7 @@ public:
 	DllExport CvInterface* getInterfacePtr()
 	{
 		PROXY_TRACK("getInterfacePtr");
-		return gGlobals->getInterfacePtr();
+		return &gGlobals->getInterface();
 	}
 	// This determines how many starting civs can be chosen in the custom game staging room screen.
 	// Currently it allows you to add more civs than there are civ slots.
@@ -1461,7 +1404,7 @@ public:
 	DllExport CvGameAI* getGamePointer()
 	{
 		PROXY_TRACK("getGamePointer");
-		return gGlobals->getGamePointer();
+		return &gGlobals->getGame();
 	}
 	DllExport CvRandom& getASyncRand()
 	{
@@ -1526,7 +1469,7 @@ public:
 	DllExport std::vector<CvInterfaceModeInfo*>& getInterfaceModeInfo()
 	{
 		PROXY_TRACK("getInterfaceModeInfo");
-		return gGlobals->getInterfaceModeInfos();
+		return gGlobals->m_paInterfaceModeInfo;
 	}
 	DllExport CvInterfaceModeInfo& getInterfaceModeInfo(InterfaceModeTypes e)
 	{
@@ -1992,7 +1935,6 @@ public:
 		PROXY_TRACK("getVictoryInfo");
 		return gGlobals->getVictoryInfo(eVictoryNum);
 	}
-
 	//
 	// Global Types
 	// All type strings are upper case and are kept in this hash map for fast lookup
@@ -2211,17 +2153,21 @@ public:
 	DllExport CvDLLUtilityIFaceBase* getDLLIFaceNonInl()
 	{
 		//PROXY_TRACK("getDLLIFaceNonInl");
-		return gGlobals->getDLLIFaceNonInl();
+		return g_DLL;
 	}
 	DllExport void setDLLProfiler(FProfiler* prof)
 	{
 		PROXY_TRACK("setDLLProfiler");
-		gGlobals->setDLLProfiler(prof);
+		gGlobals->m_Profiler = prof;
 	}
 	DllExport void enableDLLProfiler(bool bEnable)
 	{
 		PROXY_TRACK("enableDLLProfiler");
-		gGlobals->enableDLLProfiler(bEnable);
+		gGlobals->m_bDLLProfiler = bEnable;
+#ifdef USE_INTERNAL_PROFILER
+		if (bEnable)
+			g_bTraceBackgroundThreads = getDefineBOOL("ENABLE_BACKGROUND_PROFILING");
+#endif
 	}
 	DllExport bool IsGraphicsInitialized() const
 	{
@@ -2231,7 +2177,7 @@ public:
 	DllExport void SetGraphicsInitialized(bool bVal)
 	{
 		PROXY_TRACK("SetGraphicsInitialized");
-		gGlobals->SetGraphicsInitialized(bVal);
+		gGlobals->m_bGraphicsInitialized = bVal;
 	}
 	DllExport bool readBuildingInfoArray(FDataStreamBase* pStream)
 	{
@@ -2369,92 +2315,92 @@ public:
 	DllExport void setInterface(CvInterface* pVal)
 	{
 		PROXY_TRACK("setInterface");
-		gGlobals->setInterface(pVal);
+		gGlobals->m_interface = pVal;
 	}
 	DllExport void setDiplomacyScreen(CvDiplomacyScreen* pVal)
 	{
 		PROXY_TRACK("setDiplomacyScreen");
-		gGlobals->setDiplomacyScreen(pVal);
+		gGlobals->m_diplomacyScreen = pVal;
 	}
 	DllExport void setMPDiplomacyScreen(CMPDiplomacyScreen* pVal)
 	{
 		PROXY_TRACK("setMPDiplomacyScreen");
-		gGlobals->setMPDiplomacyScreen(pVal);
+		gGlobals->m_mpDiplomacyScreen = pVal;
 	}
 	DllExport void setMessageQueue(CMessageQueue* pVal)
 	{
 		PROXY_TRACK("setMessageQueue");
-		gGlobals->setMessageQueue(pVal);
+		gGlobals->m_messageQueue = pVal;
 	}
 	DllExport void setHotJoinMessageQueue(CMessageQueue* pVal)
 	{
 		PROXY_TRACK("setHotJoinMessageQueue");
-		gGlobals->setHotJoinMessageQueue(pVal);
+		gGlobals->m_hotJoinMsgQueue = pVal;
 	}
 	DllExport void setMessageControl(CMessageControl* pVal)
 	{
 		PROXY_TRACK("setMessageControl");
-		gGlobals->setMessageControl(pVal);
+		gGlobals->m_messageControl = pVal;
 	}
 	DllExport void setSetupData(CvSetupData* pVal)
 	{
 		PROXY_TRACK("setSetupData");
-		gGlobals->setSetupData(pVal);
+		gGlobals->m_setupData = pVal;
 	}
 	DllExport void setMessageCodeTranslator(CvMessageCodeTranslator* pVal)
 	{
 		PROXY_TRACK("setMessageCodeTranslator");
-		gGlobals->setMessageCodeTranslator(pVal);
+		gGlobals->m_messageCodes = pVal;
 	}
 	DllExport void setDropMgr(CvDropMgr* pVal)
 	{
 		PROXY_TRACK("setDropMgr");
-		gGlobals->setDropMgr(pVal);
+		gGlobals->m_dropMgr = pVal;
 	}
 	DllExport void setPortal(CvPortal* pVal)
 	{
 		PROXY_TRACK("setPortal");
-		gGlobals->setPortal(pVal);
+		gGlobals->m_portal = pVal;
 	}
 	DllExport void setStatsReport(CvStatsReporter* pVal)
 	{
 		PROXY_TRACK("setStatsReport");
-		gGlobals->setStatsReport(pVal);
+		gGlobals->m_statsReporter = pVal;
 	}
 	DllExport void setPathFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setPathFinder");
-		gGlobals->setPathFinder(pVal);
+		gGlobals->m_pathFinder = pVal;
 	}
 	DllExport void setInterfacePathFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setInterfacePathFinder");
-		gGlobals->setInterfacePathFinder(pVal);
+		gGlobals->m_interfacePathFinder = pVal;
 	}
 	DllExport void setStepFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setStepFinder");
-		gGlobals->setStepFinder(pVal);
+		gGlobals->m_stepFinder = pVal;
 	}
 	DllExport void setRouteFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setRouteFinder");
-		gGlobals->setRouteFinder(pVal);
+		gGlobals->m_routeFinder = pVal;
 	}
 	DllExport void setBorderFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setBorderFinder");
-		gGlobals->setBorderFinder(pVal);
+		gGlobals->m_borderFinder = pVal;
 	}
 	DllExport void setAreaFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setAreaFinder");
-		gGlobals->setAreaFinder(pVal);
+		gGlobals->m_areaFinder = pVal;
 	}
 	DllExport void setPlotGroupFinder(FAStar* pVal)
 	{
 		PROXY_TRACK("setPlotGroupFinder");
-		gGlobals->setPlotGroupFinder(pVal);
+		gGlobals->m_plotGroupFinder = pVal;
 	}
 	// So that CvEnums are moddable in the DLL
 	DllExport int getNumDirections() const

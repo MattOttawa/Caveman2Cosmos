@@ -128,11 +128,6 @@ cvInternalGlobals::cvInternalGlobals()
 	, m_bOverwriteLogs(false)
 	, m_bSynchLogging(false)
 	, m_bDLLProfiler(false)
-	, m_pkMainMenu(NULL)
-	, m_iNewPlayers(0)
-	, m_bZoomOut(false)
-	, m_bZoomIn(false)
-	, m_bLoadGameFromFile(false)
 	, m_pFMPMgr(NULL)
 	, m_asyncRand(NULL)
 	, m_interface(NULL)
@@ -195,7 +190,6 @@ cvInternalGlobals::cvInternalGlobals()
 	/************************************************************************************************/
 	/* XML_MODULAR_ART_LOADING                 END                                                  */
 	/************************************************************************************************/
-	, m_bLoadedPlayerOptions(false)
 	, m_bXMLLogging(false)
 	/************************************************************************************************/
 	/* BETTER_BTS_AI_MOD                      02/21/10                                jdog5000      */
@@ -527,7 +521,7 @@ void cvInternalGlobals::init()
 	CvPlayerAI::initStatics();
 	CvTeamAI::initStatics();
 
-	m_pt3Origin = NiPoint3(0.0f, 0.0f, 0.0f);
+	//m_pt3Origin = NiPoint3(0.0f, 0.0f, 0.0f);
 
 	COPY(m_aiPlotDirectionX, aiPlotDirectionX, int);
 	COPY(m_aiPlotDirectionY, aiPlotDirectionY, int);
@@ -622,12 +616,7 @@ void cvInternalGlobals::clearTypesMap()
 	}
 }
 
-std::vector<CvInterfaceModeInfo*>& cvInternalGlobals::getInterfaceModeInfos()		// For Moose - XML Load Util and CvInfos
-{
-	return m_paInterfaceModeInfo;
-}
-
-CvInterfaceModeInfo& cvInternalGlobals::getInterfaceModeInfo(InterfaceModeTypes e)
+CvInterfaceModeInfo& cvInternalGlobals::getInterfaceModeInfo(InterfaceModeTypes e) const
 {
 	FAssertMsg(e >= 0 && e < NUM_INTERFACEMODE_TYPES, "InterfaceModeInfo index out of bounds");
 	return *(m_paInterfaceModeInfo[e]);
@@ -2651,11 +2640,6 @@ CvString& cvInternalGlobals::getCurrentXMLFile()
 	return m_szCurrentXMLFile;
 }
 
-FVariableSystem* cvInternalGlobals::getDefinesVarSystem() const
-{
-	return m_VarSystem;
-}
-
 void cvInternalGlobals::cacheEnumGlobals()
 {
 #define CACHE_ENUM_GLOBAL_DEFINE(dataType, VAR) \
@@ -2822,38 +2806,6 @@ float cvInternalGlobals::getPLOT_SIZE() const
 	kMap.mapCoordinates(true);
 
 	return m_fPLOT_SIZE;
-}
-
-void cvInternalGlobals::setDLLProfiler(FProfiler* prof)
-{
-	m_Profiler = prof;
-}
-
-FProfiler* cvInternalGlobals::getDLLProfiler() const
-{
-	return m_Profiler;
-}
-
-void cvInternalGlobals::enableDLLProfiler(bool bEnable)
-{
-	m_bDLLProfiler = bEnable;
-
-#ifdef USE_INTERNAL_PROFILER
-	if ( bEnable )
-	{
-		g_bTraceBackgroundThreads = getDefineBOOL("ENABLE_BACKGROUND_PROFILING");
-	}
-#endif
-}
-
-bool cvInternalGlobals::isDLLProfilerEnabled() const
-{
-	return m_bDLLProfiler;
-}
-
-const char* cvInternalGlobals::alternateProfileSampleName() const
-{
-	return m_szAlternateProfilSampleName;
 }
 
 bool cvInternalGlobals::readBuildingInfoArray(FDataStreamBase* pStream)
@@ -3585,30 +3537,6 @@ inline CvMap& cvInternalGlobals::getMap() const
 	return *m_maps[GC.getGame().getCurrentMap()];
 }
 
-CvGameAI* cvInternalGlobals::getGamePointer() { return m_game; }
-
-bool cvInternalGlobals::IsGraphicsInitialized() const { return m_bGraphicsInitialized; }
-void cvInternalGlobals::SetGraphicsInitialized(bool bVal) { m_bGraphicsInitialized = bVal; }
-void cvInternalGlobals::setInterface(CvInterface* pVal) { m_interface = pVal; }
-void cvInternalGlobals::setDiplomacyScreen(CvDiplomacyScreen* pVal) { m_diplomacyScreen = pVal; }
-void cvInternalGlobals::setMPDiplomacyScreen(CMPDiplomacyScreen* pVal) { m_mpDiplomacyScreen = pVal; }
-void cvInternalGlobals::setMessageQueue(CMessageQueue* pVal) { m_messageQueue = pVal; }
-void cvInternalGlobals::setHotJoinMessageQueue(CMessageQueue* pVal) { m_hotJoinMsgQueue = pVal; }
-void cvInternalGlobals::setMessageControl(CMessageControl* pVal) { m_messageControl = pVal; }
-void cvInternalGlobals::setSetupData(CvSetupData* pVal) { m_setupData = pVal; }
-void cvInternalGlobals::setMessageCodeTranslator(CvMessageCodeTranslator* pVal) { m_messageCodes = pVal; }
-void cvInternalGlobals::setDropMgr(CvDropMgr* pVal) { m_dropMgr = pVal; }
-void cvInternalGlobals::setPortal(CvPortal* pVal) { m_portal = pVal; }
-void cvInternalGlobals::setStatsReport(CvStatsReporter* pVal) { m_statsReporter = pVal; }
-void cvInternalGlobals::setPathFinder(FAStar* pVal) { m_pathFinder = pVal; }
-void cvInternalGlobals::setInterfacePathFinder(FAStar* pVal) { m_interfacePathFinder = pVal; }
-void cvInternalGlobals::setStepFinder(FAStar* pVal) { m_stepFinder = pVal; }
-void cvInternalGlobals::setRouteFinder(FAStar* pVal) { m_routeFinder = pVal; }
-void cvInternalGlobals::setBorderFinder(FAStar* pVal) { m_borderFinder = pVal; }
-void cvInternalGlobals::setAreaFinder(FAStar* pVal) { m_areaFinder = pVal; }
-void cvInternalGlobals::setPlotGroupFinder(FAStar* pVal) { m_plotGroupFinder = pVal; }
-CvDLLUtilityIFaceBase* cvInternalGlobals::getDLLIFaceNonInl() { return g_DLL; }
-
 // BUG - BUG Info - start
 static bool bBugInitCalled = false;
 
@@ -3684,16 +3612,6 @@ bool cvInternalGlobals::getTECH_DIFFUSION_ENABLE() const
 /* BETTER_BTS_AI_MOD                       END                                                  */
 /************************************************************************************************/
 
-bool cvInternalGlobals::isLoadedPlayerOptions() const
-{
-	return m_bLoadedPlayerOptions;
-}
-
-void cvInternalGlobals::setLoadedPlayerOptions(bool bNewVal)
-{
-	m_bLoadedPlayerOptions = bNewVal;
-}
-
 void cvInternalGlobals::setXMLLogging(bool bNewVal)
 {
 	m_bXMLLogging = bNewVal;
@@ -3714,7 +3632,7 @@ bool cvInternalGlobals::getGraphicalDetailPagingEnabled() const
 	return m_bGraphicalDetailPagingEnabled;
 }
 
-int cvInternalGlobals::getGraphicalDetailPageInRange()
+int cvInternalGlobals::getGraphicalDetailPageInRange() const
 {
 	return std::max(getGame().getXResolution(), getGame().getYResolution())/150;
 }
