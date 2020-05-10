@@ -183,5 +183,13 @@ void CyGlobalContextPythonInterface2(python::class_<CyGlobalContext>& x)
 		.def("getINVALID_PLOT_COORD", &CyGlobalContext::getINVALID_PLOT_COORD, "int ()")
 		.def("getNUM_CITY_PLOTS", &CyGlobalContext::getNUM_CITY_PLOTS, "int ()")
 		.def("getCITY_HOME_PLOT", &CyGlobalContext::getCITY_HOME_PLOT, "int ()")
-		;
+
+#define EXPOSE_GET_METHOD(VAR, ) \
+	ADD_FUNC(get##VAR)
+
+	#define ADD_FUNC(func, ) \
+		.def(#func, &CyGlobalContext::func, "")
+
+		FOR_EACH_EXPOSED_GLOBAL_DEFINE_INT(EXPOSE_GET_METHOD, )
+	;
 }

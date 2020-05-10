@@ -457,6 +457,11 @@ public:
 /************************************************************************************************/
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
+
+#define DECLARE_CY_GET_METHOD(VAR, dataType) \
+	dataType get##VAR() const { return GC.get##VAR(); }
+
+	DO_FOR_EACH_EXPOSED_INT_GLOBAL_DEFINE(DECLARE_CY_GET_METHOD, int)
 };
 
 #endif	// CyGlobalContext_h
