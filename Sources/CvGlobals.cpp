@@ -220,15 +220,13 @@ cvInternalGlobals::cvInternalGlobals()
 	, m_iStoreExeSettingsBonusInfo(0)
 	, m_bSignsCleared(false)
 
-#define ADD_INT_TO_CONSTRUCTOR(dataType, VAR) \
-	, m_##VAR(0)
-	DO_FOR_EACH_INT_GLOBAL_DEFINE(ADD_INT_TO_CONSTRUCTOR)
-	DO_FOR_EACH_ENUM_GLOBAL_DEFINE(ADD_INT_TO_CONSTRUCTOR)
-	DO_FOR_EACH_FLOAT_GLOBAL_DEFINE(ADD_INT_TO_CONSTRUCTOR)
+#define ADD_VAR_TO_CONSTRUCTOR(VAR, value) \
+	, m_##VAR(value)
 
-#define ADD_BOOL_TO_CONSTRUCTOR(dataType, VAR) \
-	, m_##VAR(false)
-	DO_FOR_EACH_BOOL_GLOBAL_DEFINE(ADD_BOOL_TO_CONSTRUCTOR)
+	FOR_EACH_GLOBAL_DEFINE_INT(ADD_VAR_TO_CONSTRUCTOR, 0)
+	FOR_EACH_GLOBAL_DEFINE_BOOL(ADD_VAR_TO_CONSTRUCTOR, false)
+	FOR_EACH_GLOBAL_DEFINE_FLOAT(ADD_VAR_TO_CONSTRUCTOR, 0)
+	FOR_EACH_SIZE_T_GLOBAL_DEFINE(ADD_VAR_TO_CONSTRUCTOR, 0)
 {
 }
 
@@ -2627,27 +2625,11 @@ CvString& cvInternalGlobals::getCurrentXMLFile()
 	return m_szCurrentXMLFile;
 }
 
-void cvInternalGlobals::cacheEnumGlobals()
-{
-#define CACHE_ENUM_GLOBAL_DEFINE(dataType, VAR) \
-	m_##VAR = getDefineINT(#VAR);
-	DO_FOR_EACH_ENUM_GLOBAL_DEFINE(CACHE_ENUM_GLOBAL_DEFINE)
-}
-
 void cvInternalGlobals::cacheGlobals()
 {
-	OutputDebugString("Caching Globals: Start");
+	OutputDebugString("Caching Globals: Start\n");
 
 	strcpy(gVersionString, getDefineSTRING("C2C_VERSION"));
-
-#define CACHE_INT_GLOBAL_DEFINE(dataType, VAR) \
-	m_##VAR = getDefineINT(#VAR);
-	DO_FOR_EACH_INT_GLOBAL_DEFINE(CACHE_INT_GLOBAL_DEFINE)
-	DO_FOR_EACH_BOOL_GLOBAL_DEFINE(CACHE_INT_GLOBAL_DEFINE)
-
-#define CACHE_FLOAT_GLOBAL_DEFINE(dataType, VAR) \
-	m_##VAR = getDefineFLOAT(#VAR);
-	DO_FOR_EACH_FLOAT_GLOBAL_DEFINE(CACHE_FLOAT_GLOBAL_DEFINE)
 
 	m_fPLOT_SIZE = getDefineFLOAT("PLOT_SIZE");
 /************************************************************************************************/
@@ -2679,7 +2661,19 @@ void cvInternalGlobals::cacheGlobals()
 		m_szAlternateProfilSampleName = "";
 	}
 
-	OutputDebugString("Caching Globals: End");
+#define CACHE_VAR(VAR, suffix) \
+	m_##VAR = getDefine##suffix(#VAR);
+
+	FOR_EACH_GLOBAL_DEFINE_INT(CACHE_VAR, INT)
+	FOR_EACH_GLOBAL_DEFINE_BOOL(CACHE_GLOBAL_DEFINE, BOOL)
+	FOR_EACH_GLOBAL_DEFINE_FLOAT(CACHE_GLOBAL_DEFINE, FLOAT)
+
+	OutputDebugString("Caching Globals: End\n");
+}
+
+void cvInternalGlobals::cacheEnumGlobals()
+{
+	FOR_EACH_SIZE_T_GLOBAL_DEFINE(CACHE_VAR, INT)
 }
 
 /************************************************************************************************/
