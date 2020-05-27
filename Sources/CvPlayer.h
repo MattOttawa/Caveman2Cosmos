@@ -1028,7 +1028,7 @@ public:
 	int getImprovementYieldChange(ImprovementTypes eIndex1, YieldTypes eIndex2) const; // Exposed to Python
 	void changeImprovementYieldChange(ImprovementTypes eIndex1, YieldTypes eIndex2, int iChange);
 
-	void updateGroupCycle(CvUnit* pUnit, bool bFarMove);
+	void updateGroupCycle(const CvUnit* pUnit, bool bFarMove);
 	CLLNode<int>* removeGroupCycle(int iID);
 	CLLNode<int>* deleteGroupCycleNode(CLLNode<int>* pNode);
 	CLLNode<int>* nextGroupCycleNode(CLLNode<int>* pNode) const;
@@ -1051,6 +1051,12 @@ public:
 	CvWString getCityName(int iIndex) const; // Exposed to Python
 	CLLNode<CvWString>* nextCityNameNode(CLLNode<CvWString>* pNode) const;
 	CLLNode<CvWString>* headCityNameNode() const;
+
+#ifdef PARALLEL_MAPS
+	void updateMembers();
+	void addMembers();
+	void initMembers(int iIndex);
+#endif
 
 	// plot groups iteration
 	DECLARE_INDEX_ITERATOR(const CvPlayer, CvPlotGroup, plot_group_iterator, firstPlotGroup, nextPlotGroup);
@@ -1999,20 +2005,23 @@ protected:
 	int** m_ppaaiImprovementYieldChange;
 	int** m_ppaaiSpecialistExtraCommerce;
 
-	CLinkList<int> m_groupCycle;
-
 	CLinkList<TechTypes> m_researchQueue;
 
 	CLinkList<CvWString> m_cityNames;
 
+#ifdef PARALLEL_MAPS
+	std::vector<CLinkList<int>*> m_groupCycles;
+	std::vector<FFreeListTrashArray<CvPlotGroup>*> m_plotGroups;
+	std::vector<FFreeListTrashArray<CvCityAI>*> m_cities;
+	std::vector<FFreeListTrashArray<CvUnitAI>*> m_units;
+	std::vector<FFreeListTrashArray<CvSelectionGroupAI>*> m_selectionGroups;
+#else
+	CLinkList<int> m_groupCycle;
 	FFreeListTrashArray<CvPlotGroup> m_plotGroups;
-
 	FFreeListTrashArray<CvCityAI> m_cities;
-
 	FFreeListTrashArray<CvUnitAI> m_units;
-
 	FFreeListTrashArray<CvSelectionGroupAI> m_selectionGroups;
-
+#endif
 	FFreeListTrashArray<EventTriggeredData> m_eventsTriggered;
 	CvEventMap m_mapEventsOccured;
 	CvEventMap m_mapEventCountdown;
