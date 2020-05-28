@@ -2,13 +2,11 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvReachablePlotSet.h"
-
-#include <boost155/bind.hpp>
-#include "BetterBTSAI.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
 
 const CvSelectionGroup* CvSelectionGroup::m_pCachedMovementGroup = nullptr;
 bst::scoped_ptr<CvSelectionGroup::CachedPathGenerator> CvSelectionGroup::m_cachedPathGenerator;
-
 
 //std::map<int,CachedEdgeCosts>* CvSelectionGroup::m_pCachedNonEndTurnEdgeCosts = nullptr;
 //std::map<int,CachedEdgeCosts>* CvSelectionGroup::m_pCachedEndTurnEdgeCosts = nullptr;
@@ -1142,9 +1140,6 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 		case MISSION_MULTI_SELECT:
 		case MISSION_MULTI_DESELECT:
 			break;
-/************************************************************************************************/
-/* DCM                                     04/19/09                                Johny Smith  */
-/************************************************************************************************/
 		// Dale - AB: Bombing START
 		case MISSION_AIRBOMB1:
 			if (pLoopUnit->canAirBomb1At(pPlot, iData1, iData2))
@@ -1190,14 +1185,6 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 			}
 			break;
 		// Dale - FE: Fighters END
-/************************************************************************************************/
-/* DCM                                     END                                                  */
-/************************************************************************************************/
-	/************************************************************************************************/
-/* Afforess	                  Start		 02/14/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 		case MISSION_CLAIM_TERRITORY:
 			if (pLoopUnit->canClaimTerritory(pPlot))
 			{
@@ -1288,7 +1275,6 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 			break;
 		}
 	}
-
 	return false;
 }
 

@@ -14,6 +14,7 @@
 #define CV_INFO_H
 
 #include "CvXMLLoadUtilityModTools.h"
+#include "CvArtFileMgr.h"
 #include "CvProperties.h"
 #include "CvPropertySource.h"
 #include "CvPropertyInteraction.h"
@@ -1776,6 +1777,8 @@ public:
 	int getMaxGlobalInstances() const; // Exposed to Python
 	int getMaxPlayerInstances() const; // Exposed to Python
 	bool isUnlimitedException() const; // Exposed to Python
+	bool isCivilizationUnit(const PlayerTypes ePlayer=NO_PLAYER) const;
+
 	int getInstanceCostModifier() const; // Exposed to Python
 	int getAIWeight() const; // Exposed to Python
 	int getProductionCost() const; // Exposed to Python
@@ -4058,18 +4061,12 @@ protected:
 
 	int* m_piCommerceAttacks;
 
-	bool* m_pbPrereqOrBuilding;
 	bool* m_pbPrereqOrGameSpeed;
 	bool* m_pbPrereqOrTerrain;
 	bool* m_pbPrereqAndTerrain;
 	bool* m_pbPrereqOrImprovement;
 	bool* m_pbPrereqOrFeature;
-	int* m_piBuildingProductionModifier;
-	int* m_piGlobalBuildingProductionModifier;
-	int* m_piGlobalBuildingCostModifier;
 	int* m_piBonusDefenseChanges;
-	bool* m_pbPrereqNotBuilding;
-	bool* m_pbReplaceBuilding;
 	int** m_ppaiBonusCommerceModifier;
 	int* m_piUnitCombatExtraStrength;
 	int** m_ppaiTechCommerceChange;
@@ -4081,8 +4078,18 @@ protected:
 	int** m_ppaiBonusYieldChanges;
 	int** m_ppaiBonusCommercePercentChanges;
 	int** m_ppaiVicinityBonusYieldChanges;
-public:
 
+private:
+	int* m_piBuildingProductionModifier;
+	int* m_piGlobalBuildingProductionModifier;
+	int* m_piGlobalBuildingCostModifier;
+	int* m_piBuildingHappinessChanges;
+	int* m_piPrereqNumOfBuilding;
+	bool* m_pbPrereqNotBuilding;
+	bool* m_pbReplaceBuilding;
+	bool* m_pbPrereqOrBuilding;
+
+public:
 	bool readPass2(CvXMLLoadUtility* pXML);
 	void copyNonDefaults(CvBuildingInfo* pClassInfo = NULL, CvXMLLoadUtility* pXML = NULL);
 	void copyNonDefaultsReadPass2(CvBuildingInfo* pClassInfo = NULL, CvXMLLoadUtility* pXML = NULL, bool bOver = false);
@@ -4271,9 +4278,7 @@ protected:
 	bool m_bAnyUnitCombatFreeExperience;
 	bool m_bAnyDomainFreeExperience;
 	int* m_piDomainProductionModifier;
-	int* m_piBuildingHappinessChanges;
 	std::vector<int> m_aiPrereqInCityBuildings;
-	int* m_piPrereqNumOfBuilding;
 	int* m_piFlavorValue;
 	int* m_piImprovementFreeSpecialist;
 	int* m_piVictoryThreshold;
@@ -5716,11 +5721,9 @@ public:
 
 	bool isOneArea() const; // Exposed to Python
 	bool isHills() const; // Exposed to Python
-
-	// Afforess	Mountains 08/03/09
 	bool isPeaks() const; // Exposed to Python
-
 	bool isFlatlands() const; // Exposed to Python
+	bool isBonusCoastalOnly() const; // Exposed to Python
 	bool isNoRiverSide() const; // Exposed to Python
 	bool isNormalize() const; // Exposed to Python
 
@@ -5792,6 +5795,7 @@ protected:
 	bool m_bHills;
 	bool m_bPeaks;
 	bool m_bFlatlands;
+	bool m_bBonusCoastalOnly;
 	bool m_bNoRiverSide;
 	bool m_bNormalize;
 

@@ -1,7 +1,8 @@
 // selectionGroupAI.cpp
 
 #include "CvGameCoreDLL.h"
-#include "BetterBTSAI.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
 
 // Public Functions...
 

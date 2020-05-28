@@ -1,8 +1,13 @@
 // buttonPopup.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvGameAI.h"
+#include "CvGameTextMgr.h"
 #include "CvDLLButtonPopup.h"
 #include "CvPopupReturn.h"
+#include "CvInitCore.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
 
 // Public Functions...
 
@@ -531,7 +536,7 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 				switch ((ControlTypes)info.getData1())
 				{
 				case CONTROL_WORLD_BUILDER:
-					gDLL->getInterfaceIFace()->setWorldBuilder(!(gDLL->GetWorldBuilderMode()));
+					gDLL->getInterfaceIFace()->setWorldBuilder(!gDLL->GetWorldBuilderMode());
 					break;
 				case CONTROL_ADMIN_DETAILS:
 					gDLL->getInterfaceIFace()->showAdminDetails();
@@ -913,7 +918,6 @@ void CvDLLButtonPopup::OnFocus(CvPopup* pPopup, CvPopupInfo &info)
 				break;
 			}
 
-			//if (GC.getDefineINT("ZOOM_CITY_FOR_PRODUCTION_POPUP"))
 			if (getBugOptionBOOL("RoMSettings__NoProductionPopup", false, "ZOOM_CITY_FOR_PRODUCTION_POPUP"))
 			{
 				gDLL->getInterfaceIFace()->popupSetAsCancelled(pPopup);
@@ -1680,7 +1684,7 @@ bool CvDLLButtonPopup::launchRazeCityPopup(CvPopup* pPopup, CvPopupInfo &info)
 		return (false);
 	}
 
-	if (0 != GC.getDefineINT("PLAYER_ALWAYS_RAZES_CITIES"))
+	if (0 != GC.getPLAYER_ALWAYS_RAZES_CITIES())
 	{
 		player.raze(pNewCity);
 		return false;
@@ -3441,7 +3445,7 @@ bool CvDLLButtonPopup::launchImprovementUpgradeOptionsPopup(CvPopup* pPopup, CvP
 		{
 			if ((ImprovementTypes)kImprovement.getImprovementUpgrade() == eImprovement)
 			{
-				if (pPlot->canHaveImprovement(eImprovement, eTeam, false, true, true))
+				if (pPlot->canHaveImprovement(eImprovement, eTeam, false, true))
 				{
 					gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, kImprovementX.getDescription(), kImprovementX.getButton(), iI, WIDGET_HELP_IMPROVEMENT_ACTUAL, iI, 0, true);
 				}
@@ -3450,7 +3454,7 @@ bool CvDLLButtonPopup::launchImprovementUpgradeOptionsPopup(CvPopup* pPopup, CvP
 			for (int iJ = 0; iJ < kImprovement.getNumAlternativeImprovementUpgradeTypes(); iJ++)
 			{
 				if ((ImprovementTypes)kImprovement.getAlternativeImprovementUpgradeType(iJ) == eImprovement
-				&& pPlot->canHaveImprovement(eImprovement, eTeam, false, true, true))
+				&& pPlot->canHaveImprovement(eImprovement, eTeam, false, true))
 				{
 					gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, kImprovementX.getDescription(), kImprovementX.getButton(), iI, WIDGET_HELP_IMPROVEMENT_ACTUAL, iI, 0, true);
 				}

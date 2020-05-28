@@ -1,12 +1,13 @@
 // game.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvGameAI.h"
+#include "CvInitCore.h"
 #include "CvMapGenerator.h"
-#include "CvDiploParameters.h"
 #include "CvReplayMessage.h"
 #include "CvReplayInfo.h"
-
-#include "BetterBTSAI.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
 
 //	Koshling - save game compatibility between (most) builds
 //	UI flag values in game serialization.  These are bitwise combinable
@@ -625,16 +626,18 @@ void CvGame::regenerateMap()
 	gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getInterfaceIFace()->setDirty(ColoredPlots_DIRTY_BIT, true);
+	if (isInAdvancedStart())
+	{
+		gDLL->getInterfaceIFace()->setDirty(Advanced_Start_DIRTY_BIT, true);
+	}
+	else gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 
-	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
-
-	// ADDON (regenerate Map) Sephi
-	CvEventReporter::getInstance().gameStart();
+	CvEventReporter::getInstance().mapRegen();
 
 	gDLL->getEngineIFace()->AutoSave(true);
-
-	// BUG - AutoSave - start
 	Cy::call(PYBugModule, "gameStartSave");
+	// Toffer - Move camera after autosave as the latter interrupts the former from completing succsessfully.
+	GC.getCurrentViewport()->bringIntoView(GET_PLAYER(GC.getGame().getActivePlayer()).getStartingPlot()->getX(), GET_PLAYER(GC.getGame().getActivePlayer()).getStartingPlot()->getY());
 }
 
 void CvGame::uninit()
@@ -2265,15 +2268,11 @@ void CvGame::normalizeStartingPlots()
 {
 	PROFILE_FUNC();
 
-	if (!(GC.getInitCore().getWBMapScript()) || GC.getInitCore().getWBMapNoPlayers())
+	if ((!GC.getInitCore().getWBMapScript() || GC.getInitCore().getWBMapNoPlayers())
+	&& !Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "normalizeStartingPlotLocations")
+	&& !isOption(GAMEOPTION_CULTURALLY_LINKED_STARTS))
 	{
-		if (!Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "normalizeStartingPlotLocations"))
-		{
-			if (!isOption(GAMEOPTION_CULTURALLY_LINKED_STARTS))
-			{
-				normalizeStartingPlotLocations();
-			}
-		}
+		normalizeStartingPlotLocations();
 	}
 
 	if (GC.getInitCore().getWBMapScript())
@@ -2502,6 +2501,8 @@ void CvGame::update()
 		//	on significant events (discovery of mountaineering by someone,
 		//	terra-forming leading to water<->land transformations, etc.)
 		ensureChokePointsEvaluated();
+		// Toffer - Attempt to fix the lack of unit cycle process on load
+		gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 	}
 
 	{
@@ -2546,42 +2547,22 @@ again:
 			gDLL->getEngineIFace()->AutoSave(true);
 		}
 
-		if (getNumGameTurnActive() == 0)
+		if (getNumGameTurnActive() == 0 && (!isPbem() || !getPbemTurnSent()))
 		{
-			if (!isPbem() || !getPbemTurnSent())
-			{
-				doTurn();
-			}
+			doTurn();
 		}
-
 		updateScore();
-
 		updateMoves();
-
 		updateTimers();
-
 		updateTurnTimer();
 
 		AI_updateAssignWork();
-
 		testAlive();
 
-/************************************************************************************************/
-/* REVOLUTION_MOD                                                                 lemmy101      */
-/*                                                                                jdog5000      */
-/*                                                                                              */
-/************************************************************************************************/
-		if ((getAIAutoPlay(getActivePlayer()) <= 0) && !(gDLL->GetAutorun()) && GAMESTATE_EXTENDED != getGameState())
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
+		if (getAIAutoPlay(getActivePlayer()) <= 0 && !gDLL->GetAutorun() && GAMESTATE_EXTENDED != getGameState() && countHumanPlayersAlive() == 0)
 		{
-			if (countHumanPlayersAlive() == 0)
-			{
-				setGameState(GAMESTATE_OVER);
-			}
+			setGameState(GAMESTATE_OVER);
 		}
-
 		changeTurnSlice(1);
 
 		if (NO_PLAYER != getActivePlayer() && GET_PLAYER(getActivePlayer()).getAdvancedStartPoints() >= 0 && !gDLL->getInterfaceIFace()->isInAdvancedStart())
@@ -2765,19 +2746,14 @@ void CvGame::testExtendedGame()
 	{
 		return;
 	}
-
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if(GET_PLAYER((PlayerTypes)iI).isAlive()
+		&& GET_PLAYER((PlayerTypes)iI).isHuman()
+		&& GET_PLAYER((PlayerTypes)iI).isExtendedGame())
 		{
-			if (GET_PLAYER((PlayerTypes)iI).isHuman())
-			{
-				if (GET_PLAYER((PlayerTypes)iI).isExtendedGame())
-				{
-					setGameState(GAMESTATE_EXTENDED);
-					break;
-				}
-			}
+			setGameState(GAMESTATE_EXTENDED);
+			break;
 		}
 	}
 }
@@ -2785,18 +2761,7 @@ void CvGame::testExtendedGame()
 
 void CvGame::cityPushOrder(CvCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl) const
 {
-	if (pCity->getProduction() > 0)
-	{
-		CvMessageControl::getInstance().sendPushOrder(pCity->getID(), eOrder, iData, bAlt, bShift, !bShift);
-	}
-	else if ((eOrder == ORDER_TRAIN) && (pCity->getProductionUnit() == iData))
-	{
-		CvMessageControl::getInstance().sendPushOrder(pCity->getID(), eOrder, iData, bAlt, !bCtrl, bCtrl);
-	}
-	else
-	{
-		CvMessageControl::getInstance().sendPushOrder(pCity->getID(), eOrder, iData, bAlt, bShift, bCtrl);
-	}
+	CvMessageControl::getInstance().sendPushOrder(pCity->getID(), eOrder, iData, bAlt, bShift, bCtrl);
 }
 
 
@@ -3632,12 +3597,6 @@ bool CvGame::canTrainNukes() const
 }
 
 
-
-/************************************************************************************************/
-/* RevDCM	                  Start		 11/04/10                                phungus420     */
-/*                                                                                              */
-/* New World Logic                                                                              */
-/************************************************************************************************/
 EraTypes CvGame::getHighestEra() const
 {
 	int iHighestEra = 0;
@@ -3656,9 +3615,7 @@ EraTypes CvGame::getHighestEra() const
 
 	return EraTypes(iHighestEra);
 }
-/************************************************************************************************/
-/* LIMITED_RELIGIONS               END                                                          */
-/************************************************************************************************/
+
 EraTypes CvGame::getCurrentEra() const
 {
 	int iEra = 0;
@@ -3672,8 +3629,7 @@ EraTypes CvGame::getCurrentEra() const
 			iCount++;
 		}
 	}
-
-	return (iCount > 0) ? ((EraTypes)(iEra / iCount)) : NO_ERA;
+	return (iCount > 0 ? (EraTypes)(iEra/iCount) : (EraTypes)0);
 }
 
 
@@ -7765,9 +7721,11 @@ namespace {
 		return unitInfo.getCombat() > 0 && !unitInfo.isOnlyDefensive()
 			// Make sure its the correct unit type for the area type (land or water)
 			&& (area->isWater() && unitInfo.getDomainType() == DOMAIN_SEA || !area->isWater() && unitInfo.getDomainType() == DOMAIN_LAND)
-			// This invalidates any units with world bonus req, like cultures, due to the "true" argument.
-			&& GET_TEAM(BARBARIAN_TEAM).isUnitBonusEnabledByTech(unitInfo, true)
-			&& GET_PLAYER(BARBARIAN_PLAYER).canTrain(unitType, false, false, false, true); // Invalidates World Units for NPC;
+			// Barbs don't need the bonus, but the bonus must be enabled by tech
+			&& GET_TEAM(BARBARIAN_TEAM).isUnitBonusEnabledByTech(unitInfo, true) // "true" to invalidate units that require cultural bonuses
+			&& !unitInfo.isCivilizationUnit() // Invalidates Neanderthal units and units that require the palace.
+			// General requirements that must be fulfilled, also invalidates World Units for NPC
+			&& GET_PLAYER(BARBARIAN_PLAYER).canTrain(unitType, false, false, false, true);
 	}
 
 	bool barbarianCityShouldSpawnWorker(CvGame* game, CvCity* city)
@@ -9184,7 +9142,6 @@ uint CvGame::getNumReplayMessages() const
 
 void CvGame::read(FDataStreamBase* pStream)
 {
-	int iI;
 	CvTaggedSaveFormatWrapper&	wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
 
 	reset(NO_HANDICAP);
@@ -9273,29 +9230,13 @@ void CvGame::read(FDataStreamBase* pStream)
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_PLAYERS, m_aiRankPlayer);
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_PLAYERS, m_aiPlayerRank);
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_PLAYERS, m_aiPlayerScore);
-/************************************************************************************************/
-/* Afforess                                     12/7/09                                         */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_TEAMS, starshipLaunched);
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_TEAMS, diplomaticVictoryAchieved);
-/************************************************************************************************/
-/* Afforess	                         END                                                        */
-/************************************************************************************************/
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_TEAMS, m_aiRankTeam);
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_TEAMS, m_aiTeamRank);
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_TEAMS, m_aiTeamScore);
-/************************************************************************************************/
-/* REVOLUTION_MOD                                                                 lemmy101      */
-/*                                                                                jdog5000      */
-/*                                                                                              */
-/************************************************************************************************/
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_PLAYERS, m_iAIAutoPlay);
 	WRAPPER_READ_ARRAY(wrapper,"CvGame",MAX_PLAYERS, m_iForcedAIAutoPlay);
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
 
 	WRAPPER_READ_CLASS_ARRAY(wrapper,"CvGame", REMAPPED_CLASS_TYPE_UNITS, GC.getNumUnitInfos(), m_paiUnitCreatedCount);
 	WRAPPER_READ_CLASS_ARRAY(wrapper,"CvGame", REMAPPED_CLASS_TYPE_BUILDINGS, GC.getNumBuildingInfos(), m_paiBuildingCreatedCount);
@@ -9311,44 +9252,37 @@ void CvGame::read(FDataStreamBase* pStream)
 	WRAPPER_READ_CLASS_ARRAY(wrapper,"CvGame", REMAPPED_CLASS_TYPE_SPECIAL_UNITS, GC.getNumSpecialUnitInfos(), m_pabSpecialUnitValid);
 	WRAPPER_READ_CLASS_ARRAY(wrapper,"CvGame", REMAPPED_CLASS_TYPE_SPECIAL_BUILDINGS, GC.getNumSpecialBuildingInfos(), m_pabSpecialBuildingValid);
 	WRAPPER_READ_CLASS_ARRAY(wrapper,"CvGame", REMAPPED_CLASS_TYPE_RELIGIONS, GC.getNumReligionInfos(), m_abReligionSlotTaken);
-/************************************************************************************************/
-/* RevDCM	                  Start		 4/29/10                                                */
-/*                                                                                              */
-/* OC_LIMITED_RELIGIONS                                                                         */
-/************************************************************************************************/
+
 	WRAPPER_READ(wrapper,"CvGame",&m_bGameStart);
 	WRAPPER_READ_CLASS_ARRAY_ALLOW_MISSING(wrapper,"CvGame",REMAPPED_CLASS_TYPE_TECHS,GC.getNumTechInfos(), m_abTechCanFoundReligion);
-/************************************************************************************************/
-/* LIMITED_RELIGIONS               END                                                          */
-/************************************************************************************************/
 
 	//	If ther latest asets define NEW religions we'll need to initialize their tech can-found flag
-	if ( wrapper.isUsingTaggedFormat() )
+	if (wrapper.isUsingTaggedFormat())
 	{
-		for(iI = 0; iI < GC.getNumReligionInfos(); iI++)
+		for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
 		{
 			bool bReligionIsNew = true;
 
-			for(int iJ = 0; iJ < wrapper.getNumClassEnumValues(REMAPPED_CLASS_TYPE_RELIGIONS); iJ++)
+			for (int iJ = 0; iJ < wrapper.getNumClassEnumValues(REMAPPED_CLASS_TYPE_RELIGIONS); iJ++)
 			{
-				if ( wrapper.getNewClassEnumValue(REMAPPED_CLASS_TYPE_RELIGIONS, iJ) == iI )
+				if ( wrapper.getNewClassEnumValue(REMAPPED_CLASS_TYPE_RELIGIONS, iJ) == iI)
 				{
 					bReligionIsNew = false;
 					break;
 				}
 			}
 
-			if ( bReligionIsNew )
+			if (bReligionIsNew)
 			{
 				CvReligionInfo&	newReligion = GC.getReligionInfo((ReligionTypes)iI);
-				TechTypes	eFoundingTech = (TechTypes)newReligion.getTechPrereq();
+				TechTypes eFoundingTech = (TechTypes)newReligion.getTechPrereq();
 
 				setTechCanFoundReligion(eFoundingTech, false);
 			}
 		}
 	}
 
-	for (iI=0;iI<wrapper.getNumClassEnumValues(REMAPPED_CLASS_TYPE_RELIGIONS);iI++)
+	for (int iI = 0; iI < wrapper.getNumClassEnumValues(REMAPPED_CLASS_TYPE_RELIGIONS); iI++)
 	{
 		int	eOwner;
 		int	iID;
@@ -9357,14 +9291,14 @@ void CvGame::read(FDataStreamBase* pStream)
 		WRAPPER_READ_DECORATED(wrapper,"CvGame",&eOwner, "m_paHolyCity[].eOwner");
 		WRAPPER_READ_DECORATED(wrapper,"CvGame",&iID, "m_paHolyCity[].iID");
 
-		if ( iRemappedReligion != -1 )
+		if (iRemappedReligion != -1)
 		{
 			m_paHolyCity[iRemappedReligion].eOwner = (PlayerTypes)eOwner;
 			m_paHolyCity[iRemappedReligion].iID = iID;
 		}
 	}
 
-	for (iI=0;iI<wrapper.getNumClassEnumValues(REMAPPED_CLASS_TYPE_CORPORATIONS);iI++)
+	for (int iI = 0; iI < wrapper.getNumClassEnumValues(REMAPPED_CLASS_TYPE_CORPORATIONS); iI++)
 	{
 		int eOwner;
 		int	iID;
@@ -9483,7 +9417,7 @@ void CvGame::read(FDataStreamBase* pStream)
 				//	believed anyway
 				WRAPPER_READ_DECORATED(wrapper, "CvGame", &iTrigger, "InactiveTrigger");
 			}
-			else if ( iTrigger != -1 )
+			else if (iTrigger != -1)
 			{
 				m_aeInactiveTriggers.push_back((EventTriggerTypes)iTrigger);
 			}
@@ -9493,7 +9427,7 @@ void CvGame::read(FDataStreamBase* pStream)
 	// Get the active player information from the initialization structure
 	if (!isGameMultiPlayer())
 	{
-		for (iI = 0; iI < MAX_PC_PLAYERS; iI++)
+		for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 		{
 			if (GET_PLAYER((PlayerTypes)iI).isHuman())
 			{
@@ -9529,17 +9463,11 @@ void CvGame::read(FDataStreamBase* pStream)
 	WRAPPER_READ(wrapper,"CvGame",&m_eCultureVictoryCultureLevel);
 
 	m_Properties.readWrapper(pStream);
-/************************************************************************************************/
-/* Afforess	                  Start		 07/27/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	setFutureEras();
 	int iCurrentHandicap = range(getHandicapType(), 0, GC.getNumHandicapInfos() - 1);
 	setHandicapType((HandicapTypes)iCurrentHandicap);
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+
 	m_plotGroupHashesInitialized = false;	//	Force calculation in first update timeslice
 
 	//Example of how to skip element
@@ -9549,7 +9477,7 @@ void CvGame::read(FDataStreamBase* pStream)
 	WRAPPER_READ_OBJECT_END(wrapper);
 
 	//establish improvement costs
-	for (iI = 0; iI < GC.getNumImprovementInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumImprovementInfos(); iI++)
 	{
 		GC.getImprovementInfo((ImprovementTypes)iI).setHighestCost();
 	}
@@ -12764,6 +12692,7 @@ namespace {
 		return unitInfo.getCombat() > 0 && !unitInfo.isOnlyDefensive()
 			&& unitInfo.getDomainType() == DOMAIN_LAND
 			&& GET_TEAM(BARBARIAN_TEAM).isUnitBonusEnabledByTech(unitInfo, true)
+			&& !unitInfo.isCivilizationUnit()
 			&& GET_PLAYER(BARBARIAN_PLAYER).canTrain(unitType, false, false, false, true);
 	}
 }

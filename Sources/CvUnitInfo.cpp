@@ -9,6 +9,8 @@
 //  Copyright (c) 2003 Firaxis Games, Inc. All rights reserved.
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvPlayerAI.h"
+#include "CvXMLLoadUtility.h"
 
 //======================================================================================================
 //					CvUnitInfo
@@ -432,6 +434,41 @@ bool CvUnitInfo::isUnlimitedException() const
 	return m_bUnlimitedException;
 }
 
+
+// When a player is specified as argument, only civ units not specific to said player returns false, else true.
+// Thus regular units will also return true as they are not specific to another civ than this player.
+// When NO_PLAYER - Any units requiring a civ specific building are considered civ units, all others are not.
+bool CvUnitInfo::isCivilizationUnit(const PlayerTypes ePlayer) const
+{
+	// Not the most elegant solution for exluding or including neanderthal units for startin unit selection,
+	// nor the best way to stop barbarians from spawning neanderthal units. But good enough for now.
+	const bool bCivUnit = ePlayer != NO_PLAYER;
+
+	for (int iI = 0; iI < getNumPrereqAndBuildings(); ++iI)
+	{
+		const int iBuilding = getPrereqAndBuilding(iI);
+
+		for (int iCiv = 0; iCiv < GC.getNumCivilizationInfos(); iCiv++)
+		{
+			// Civ specific building prereq?
+			if(GC.getCivilizationInfo((CivilizationTypes)iCiv).isPlayable()
+			&& GC.getCivilizationInfo((CivilizationTypes)iCiv).isCivilizationBuilding(iBuilding))
+			{
+				if (!bCivUnit) // NO_PLAYER
+				{
+					return true; // A civ specific unit.
+				}
+				// Most likely a native or active culture prereq
+				if (!GC.getCivilizationInfo(GET_PLAYER(ePlayer).getCivilizationType()).isCivilizationBuilding(iBuilding))
+				{
+					return false; // Not specific to ePlayer civ.
+				}
+				break;
+			}
+		}
+	}
+	return bCivUnit; // Unit is valid for ePlayer civilization.
+}
 
 int CvUnitInfo::getInstanceCostModifier() const
 {
@@ -1239,13 +1276,13 @@ bool CvUnitInfo::isPrereqOrCivics(int i) const
 	return m_pbPrereqOrCivics ? m_pbPrereqOrCivics[i] : false;
 }
 
-int CvUnitInfo::getPrereqAndBuilding(int i) const
-{
-	return m_aiPrereqAndBuildings[i];
-}
 int CvUnitInfo::getNumPrereqAndBuildings() const
 {
 	return (int)m_aiPrereqAndBuildings.size();
+}
+int CvUnitInfo::getPrereqAndBuilding(int i) const
+{
+	return m_aiPrereqAndBuildings[i];
 }
 bool CvUnitInfo::isPrereqAndBuilding(int i) const
 {
@@ -6460,31 +6497,67 @@ bool CvUnitInfo::readPass2(CvXMLLoadUtility* pXML)
 
 void CvUnitInfo::copyNonDefaultsReadPass2(CvUnitInfo* pClassInfo, CvXMLLoadUtility* pXML, bool bOver)
 {
-	for ( int i = 0; i < GC.getNumUnitInfos(); i++)
+	if (pClassInfo->m_piFlankingStrikeUnit != NULL)
 	{
-		if (bOver || getFlankingStrikeUnit(i) == -1 && pClassInfo->getFlankingStrikeUnit(i) != -1)
+		for (int i = 0; i < GC.getNumUnitInfos(); i++)
 		{
-			if (m_piFlankingStrikeUnit == NULL)
+			if (bOver || getFlankingStrikeUnit(i) == -1 && pClassInfo->getFlankingStrikeUnit(i) != -1)
 			{
-				CvXMLLoadUtility::InitList(&m_piFlankingStrikeUnit, GC.getNumUnitInfos(), -1);
+				if (m_piFlankingStrikeUnit == NULL)
+				{
+					CvXMLLoadUtility::InitList(&m_piFlankingStrikeUnit, GC.getNumUnitInfos(), -1);
+				}
+				m_piFlankingStrikeUnit[i] = pClassInfo->getFlankingStrikeUnit(i);
 			}
-			m_piFlankingStrikeUnit[i] = pClassInfo->getFlankingStrikeUnit(i);
 		}
-		if (bOver || getUnitAttackModifier(i) == -1 && pClassInfo->getUnitAttackModifier(i) != -1)
+	}
+	else
+	{
+		if (bOver && m_piFlankingStrikeUnit != NULL)
 		{
-			if (m_piUnitAttackModifier == NULL)
-			{
-				CvXMLLoadUtility::InitList(&m_piUnitAttackModifier, GC.getNumUnitInfos(), -1);
-			}
-			m_piUnitAttackModifier[i] = pClassInfo->getUnitAttackModifier(i);
+			SAFE_DELETE_ARRAY(m_piFlankingStrikeUnit);
 		}
-		if (bOver || getUnitDefenseModifier(i) == -1 && pClassInfo->getUnitDefenseModifier(i) != -1)
+	}
+	if (pClassInfo->m_piUnitAttackModifier != NULL)
+	{
+		for (int i = 0; i < GC.getNumUnitInfos(); i++)
 		{
-			if (m_piUnitDefenseModifier == NULL)
+			if (bOver || getUnitAttackModifier(i) == -1 && pClassInfo->getUnitAttackModifier(i) != -1)
 			{
-				CvXMLLoadUtility::InitList(&m_piUnitDefenseModifier, GC.getNumUnitInfos(), -1);
+				if (m_piUnitAttackModifier == NULL)
+				{
+					CvXMLLoadUtility::InitList(&m_piUnitAttackModifier, GC.getNumUnitInfos(), -1);
+				}
+				m_piUnitAttackModifier[i] = pClassInfo->getUnitAttackModifier(i);
 			}
-			m_piUnitDefenseModifier[i] = pClassInfo->getUnitDefenseModifier(i);
+		}
+	}
+	else
+	{
+		if (bOver && m_piUnitAttackModifier != NULL)
+		{
+			SAFE_DELETE_ARRAY(m_piUnitAttackModifier);
+		}
+	}
+	if (pClassInfo->m_piUnitDefenseModifier != NULL)
+	{
+		for (int i = 0; i < GC.getNumUnitInfos(); i++)
+		{
+			if (bOver || getUnitDefenseModifier(i) == -1 && pClassInfo->getUnitDefenseModifier(i) != -1)
+			{
+				if (m_piUnitDefenseModifier == NULL)
+				{
+					CvXMLLoadUtility::InitList(&m_piUnitDefenseModifier, GC.getNumUnitInfos(), -1);
+				}
+				m_piUnitDefenseModifier[i] = pClassInfo->getUnitDefenseModifier(i);
+			}
+		}
+	}
+	else
+	{
+		if (bOver && m_piUnitDefenseModifier != NULL)
+		{
+			SAFE_DELETE_ARRAY(m_piUnitDefenseModifier);
 		}
 	}
 	if (bOver || m_iUnitCaptureType == -1 && pClassInfo->getUnitCaptureType() != -1)

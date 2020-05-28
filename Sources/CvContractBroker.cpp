@@ -1,7 +1,7 @@
 // unitAI.cpp
 
 #include "CvGameCoreDLL.h"
-#include "BetterBTSAI.h"
+#include "CvPlayerAI.h"
 
 CvContractBroker::CvContractBroker() : m_eOwner(NO_PLAYER)
 {
