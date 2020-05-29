@@ -9,24 +9,8 @@ CyArtFileMgr::CyArtFileMgr() : m_pArtFileMgr(NULL)
 	m_pArtFileMgr = &ARTFILEMGR;
 }
 
-CyArtFileMgr::CyArtFileMgr(CvArtFileMgr* pArtFileMgr) : m_pArtFileMgr(pArtFileMgr)
+CyArtFileMgr::CyArtFileMgr(const CvArtFileMgr* pArtFileMgr) : m_pArtFileMgr(pArtFileMgr)
 {}
-
-void CyArtFileMgr::Reset()
-{
-	if (m_pArtFileMgr)
-	{
-		m_pArtFileMgr->Reset();
-	}
-}
-
-void CyArtFileMgr::buildArtFileInfoMaps()
-{
-	if (m_pArtFileMgr)
-	{
-		m_pArtFileMgr->buildArtFileInfoMaps();
-	}
-}
 
 CvArtInfoInterface* CyArtFileMgr::getInterfaceArtInfo( const char * szArtDefineTag ) const
 {
@@ -58,11 +42,6 @@ CvArtInfoCivilization* CyArtFileMgr::getCivilizationArtInfo( const char * szArtD
 	return m_pArtFileMgr ? m_pArtFileMgr->getCivilizationArtInfo( szArtDefineTag ) : NULL;
 }
 
-CvArtInfoLeaderhead* CyArtFileMgr::getLeaderheadArtInfo( const char * szArtDefineTag ) const
-{
-	return m_pArtFileMgr ? m_pArtFileMgr->getLeaderheadArtInfo( szArtDefineTag ) : NULL;
-}
-
 CvArtInfoBonus* CyArtFileMgr::getBonusArtInfo( const char * szArtDefineTag ) const
 {
 	return m_pArtFileMgr ? m_pArtFileMgr->getBonusArtInfo( szArtDefineTag ) : NULL;
@@ -71,14 +50,4 @@ CvArtInfoBonus* CyArtFileMgr::getBonusArtInfo( const char * szArtDefineTag ) con
 CvArtInfoImprovement* CyArtFileMgr::getImprovementArtInfo( const char * szArtDefineTag ) const
 {
 	return m_pArtFileMgr ? m_pArtFileMgr->getImprovementArtInfo( szArtDefineTag ) : NULL;
-}
-
-CvArtInfoTerrain* CyArtFileMgr::getTerrainArtInfo( const char * szArtDefineTag ) const
-{
-	return m_pArtFileMgr ? m_pArtFileMgr->getTerrainArtInfo( szArtDefineTag ) : NULL;
-}
-
-CvArtInfoFeature* CyArtFileMgr::getFeatureArtInfo( const char * szArtDefineTag ) const
-{
-	return m_pArtFileMgr ? m_pArtFileMgr->getFeatureArtInfo( szArtDefineTag ) : NULL;
 }

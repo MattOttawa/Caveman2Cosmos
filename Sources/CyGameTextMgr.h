@@ -11,15 +11,14 @@ class CvGameTextMgr;
 class CyCity;
 class CyUnit;
 class CyDeal;
-struct TradeData;
+//struct TradeData;
+
 class CyGameTextMgr 
 {
 public:
 	CyGameTextMgr();
 	CyGameTextMgr(CvGameTextMgr* m_pGameTextMgr);			// Call from C++
 	bool isNone() { return (m_pGameTextMgr==NULL); }
-
-	void Reset();
 
 	std::wstring getTimeStr(int iGameTurn, bool bSave);
 	std::wstring getDateStr(int iGameTurn, bool bSave, int /*CalendarTypes*/ eCalendar, int iStartYear, int /*GameSpeedTypes*/ eSpeed);
@@ -34,7 +33,6 @@ public:
 	std::wstring getBuildingHelp(int iBuilding, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, CyCity* pCity, bool bActual = false);
 	std::wstring getProjectHelp(int iProject, bool bCivilopediaText, CyCity* pCity);
 	std::wstring getPromotionHelp(int iPromotion, bool bCivilopediaText);
-	std::wstring getTraitHelp(int iTrait);
 	std::wstring getBonusHelp(int iBonus, bool bCivilopediaText);
 	std::wstring getProductionHelpCity(CyCity* pCity);
 	std::wstring getReligionHelpCity(int iReligion, CyCity* pCity, bool bCityScreen, bool bForceReligion, bool bForceState, bool bNoStateReligion);
@@ -50,13 +48,11 @@ public:
 	std::wstring parseLeaderTraits(int /*LeaderHeadTypes*/ iLeader, int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan, bool bCivilopediaText);
 	std::wstring parseTraits(int /*TraitTypes*/ eTrait, int /*CivilizationTypes*/ eCivilization, bool bDawnOfMan, bool bEffectsOnly);
 	std::wstring getHappinessHelp();
-	std::wstring getTradeString(TradeData* pTradeData, int iPlayer1, int iPlayer2);
 	std::wstring getSpecialistHelp(int iSpecialist, bool bCivilopediaText);
 	std::wstring buildHintsList();
 	std::wstring getAttitudeString(int iPlayer, int iTargetPlayer);
 	std::wstring setConvertHelp(int iPlayer, int iReligion);
 	std::wstring setRevolutionHelp(int iPlayer);
-	std::wstring setVassalRevoltHelp(int iMaster, int iVassal);
 	std::wstring getActiveDealsString(int iThisPlayer, int iOtherPlayer);
 	std::wstring getDealString(CyDeal* pDeal, int iPlayerPerspective);
 

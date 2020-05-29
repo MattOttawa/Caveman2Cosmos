@@ -1,161 +1,92 @@
-//
-// Python wrapper class for CvCity
-//
 #include "CvGameCoreDLL.h"
-#include "CvPlayerAI.h"
+//#include "CvPlayerAI.h"
 #include "CyArea.h"
 #include "CyCity.h"
 #include "CyPlot.h"
 #include "CyUnit.h"
 
-CyCity::CyCity() : m_pCity(NULL)
-{
-}
+//
+// Python wrapper class for CvCity
+//
 
-CyCity::CyCity(CvCity* pCity) : m_pCity(pCity)
-{
-}
+CyCity::CyCity() : m_pCity(NULL) {}
+
+CyCity::CyCity(CvCity* pCity) : m_pCity(pCity) {}
+
 
 void CyCity::kill()
 {
-	if (m_pCity)
-		m_pCity->kill(true);
+	if (m_pCity) m_pCity->kill(true);
 }
 
-/************************************************************************************************/
-/* REVOLUTION_MOD                         03/29/09                                jdog5000      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 int CyCity::getRevolutionIndex()
 {
 	return m_pCity ? m_pCity->getRevolutionIndex() : 0;
 }
 
-void CyCity::setRevolutionIndex( int iNewValue )
+void CyCity::setRevolutionIndex(int iNewValue)
 {
-	if( m_pCity )
-		m_pCity->setRevolutionIndex(iNewValue);
+	if (m_pCity) m_pCity->setRevolutionIndex(iNewValue);
 }
 
-void CyCity::changeRevolutionIndex( int iChange )
+void CyCity::changeRevolutionIndex(int iChange)
 {
-	if( m_pCity )
-		m_pCity->changeRevolutionIndex( iChange );
+	if (m_pCity) m_pCity->changeRevolutionIndex(iChange);
 }
 
 int CyCity::getLocalRevIndex()
 {
-	if( m_pCity )
-		return m_pCity->getLocalRevIndex();
-	else
-		return 0;
+	return m_pCity ? m_pCity->getLocalRevIndex() : 0;
 }
 
-void CyCity::setLocalRevIndex( int iNewValue )
+void CyCity::setLocalRevIndex(int iNewValue)
 {
-	if( m_pCity )
-		m_pCity->setLocalRevIndex( iNewValue );
-}
-
-void CyCity::changeLocalRevIndex( int iChange )
-{
-	if( m_pCity )
-		m_pCity->changeLocalRevIndex( iChange );
+	if (m_pCity) m_pCity->setLocalRevIndex(iNewValue);
 }
 
 int CyCity::getRevIndexAverage() const
 {
-	if( m_pCity )
-		return m_pCity->getRevIndexAverage();
-	else
-		return 0;
+	return m_pCity ? m_pCity->getRevIndexAverage() : 0;
 }
 
-void CyCity::setRevIndexAverage( int iNewValue )
+void CyCity::setRevIndexAverage(int iNewValue)
 {
-	if( m_pCity )
-		m_pCity->setRevIndexAverage( iNewValue );
+	if (m_pCity) m_pCity->setRevIndexAverage(iNewValue);
 }
 
-void CyCity::updateRevIndexAverage( )
+void CyCity::updateRevIndexAverage()
 {
-	if( m_pCity )
-		m_pCity->updateRevIndexAverage( );
+	if (m_pCity) m_pCity->updateRevIndexAverage();
 }
 
 int CyCity::getReinforcementCounter()
 {
-	if( m_pCity )
-		return m_pCity->getReinforcementCounter();
-	else
-		return 0;
+	return m_pCity ? m_pCity->getReinforcementCounter() : 0;
 }
 
-void CyCity::setReinforcementCounter( int iNewValue )
+void CyCity::setReinforcementCounter(int iNewValue)
 {
-	if( m_pCity )
-		m_pCity->setReinforcementCounter(iNewValue);
+	if (m_pCity) m_pCity->setReinforcementCounter(iNewValue);
 }
 
-void CyCity::changeReinforcementCounter( int iChange )
+void CyCity::changeReinforcementCounter(int iChange)
 {
-	if( m_pCity )
-		m_pCity->changeReinforcementCounter( iChange );
+	if (m_pCity) m_pCity->changeReinforcementCounter(iChange);
 }
 
 int CyCity::getRevolutionCounter()
 {
-	if( m_pCity )
-		return m_pCity->getRevolutionCounter();
-	else
-		return 0;
+	return m_pCity ? m_pCity->getRevolutionCounter() : 0;
 }
 
-void CyCity::setRevolutionCounter( int iNewValue )
+void CyCity::setRevolutionCounter(int iNewValue)
 {
-	if( m_pCity )
-		m_pCity->setRevolutionCounter(iNewValue);
+	if (m_pCity) m_pCity->setRevolutionCounter(iNewValue);
 }
 
-void CyCity::changeRevolutionCounter( int iChange )
+void CyCity::changeRevolutionCounter(int iChange)
 {
-	if( m_pCity )
-		m_pCity->changeRevolutionCounter( iChange );
-}
-
-bool CyCity::isRecentlyAcquired()
-{
-	if( m_pCity )
-		return m_pCity->isRecentlyAcquired();
-	else
-		return false;
-}
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
-
-void CyCity::createGreatPeople(int /*UnitTypes*/ eGreatPersonUnit, bool bIncrementThreshold, bool bIncrementExperience)
-{
-	if (m_pCity)
-		m_pCity->createGreatPeople((UnitTypes) eGreatPersonUnit, bIncrementThreshold, bIncrementExperience);
-}
-
-void CyCity::doTask(int /*TaskTypes*/ eTask, int iData1, int iData2, bool bOption)
-{
-	if (m_pCity)
-		m_pCity->doTask((TaskTypes)eTask, iData1, iData2, bOption);
-}
-
-void CyCity::chooseProduction(int /*UnitTypes*/ eTrainUnit, int /*BuildingTypes*/ eConstructBuilding, int /*ProjectTypes*/ eCreateProject, bool bFinish, bool bFront)
-{
-	if (m_pCity)
-		m_pCity->chooseProduction((UnitTypes) eTrainUnit, (BuildingTypes) eConstructBuilding, (ProjectTypes) eCreateProject, bFinish, bFront);
-}
-
-int CyCity::getCityPlotIndex(CyPlot* pPlot)
-{
-	return m_pCity ? m_pCity->getCityPlotIndex(pPlot->getPlot()) : -1;
+	if (m_pCity) m_pCity->changeRevolutionCounter(iChange);
 }
 
 CyPlot* CyCity::getCityIndexPlot(int iIndex)
@@ -168,12 +99,6 @@ bool CyCity::canWork(CyPlot* pPlot)
 	return m_pCity ? m_pCity->canWork(pPlot ? pPlot->getPlot() : NULL) : false;
 }
 
-void CyCity::clearWorkingOverride(int iIndex)
-{
-	if (m_pCity)
-		m_pCity->clearWorkingOverride(iIndex);
-}
-
 int CyCity::countNumImprovedPlots()
 {
 	return m_pCity ? m_pCity->countNumImprovedPlots() : -1;
@@ -184,84 +109,39 @@ int CyCity::countNumWaterPlots()
 	return m_pCity ? m_pCity->countNumWaterPlots() : -1;
 }
 
-int CyCity::countNumRiverPlots()
-{
-	return m_pCity ? m_pCity->countNumRiverPlots() : -1;
-}
-
-int CyCity::findPopulationRank()
-{
-	return m_pCity ? m_pCity->findPopulationRank() : -1;
-}
-
-int CyCity::findBaseYieldRateRank(int /*YieldTypes*/ eYield)
+int CyCity::findBaseYieldRateRank(int /*YieldTypes*/ eYield) const
 {
 	return m_pCity ? m_pCity->findBaseYieldRateRank((YieldTypes) eYield) : -1;
 }
 
-int CyCity::findYieldRateRank(int /*YieldTypes*/ eYield)
+int CyCity::findYieldRateRank(int /*YieldTypes*/ eYield) const
 {
 	return m_pCity ? m_pCity->findYieldRateRank((YieldTypes) eYield) : -1;
 }
 
-int CyCity::findCommerceRateRank(int /*CommerceTypes*/ eCommerce)
+int CyCity::findCommerceRateRank(int /*CommerceTypes*/ eCommerce) const
 {
 	return m_pCity ? m_pCity->findCommerceRateRank((CommerceTypes) eCommerce) : -1;
 }
 
-bool CyCity::isSupersedingUnitAvailable(int /*UnitTypes*/ eUnitType)
-{
-	return m_pCity ? m_pCity->isSupersedingUnitAvailable((UnitTypes) eUnitType) : false;
-}
-
-bool CyCity::isPlotTrainable(int /*UnitTypes*/ eUnit, bool bContinue, bool bTestVisible)
-{
-	return m_pCity ? m_pCity->isPlotTrainable((UnitTypes)eUnit, bContinue, bTestVisible) : false;
-}
-
-int /*UnitTypes*/ CyCity::allUpgradesAvailable(int /*UnitTypes*/ eUnitType, int iUpgradeCount)
-{
-	return m_pCity ? m_pCity->allUpgradesAvailable((UnitTypes) eUnitType, iUpgradeCount) : -1;
-}
-
-bool CyCity::isWorldWondersMaxed()
-{
-	return m_pCity ? m_pCity->isWorldWondersMaxed() : false;
-}
-
-bool CyCity::isTeamWondersMaxed()
-{
-	return m_pCity ? m_pCity->isTeamWondersMaxed() : false;
-}
-
-bool CyCity::isNationalWondersMaxed()
-{
-	return m_pCity ? m_pCity->isNationalWondersMaxed() : false;
-}
-
-bool CyCity::canTrain( int /*UnitTypes*/ eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost, bool bIgnoreUpgrades )
+bool CyCity::canTrain(int /*UnitTypes*/ eUnit, bool bContinue, bool bTestVisible, bool bIgnoreCost, bool bIgnoreUpgrades)
 {
 	return m_pCity ? m_pCity->canTrain((UnitTypes)eUnit, bContinue, bTestVisible, bIgnoreCost, bIgnoreUpgrades) : false;
 }
 
-bool CyCity::canConstruct( int /*BuildingTypes*/ eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost)
+bool CyCity::canConstruct(int /*BuildingTypes*/ eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost)
 {
 	return m_pCity ? m_pCity->canConstruct((BuildingTypes)eBuilding, bContinue, bTestVisible, bIgnoreCost) : false;
 }
 
-bool CyCity::canCreate( int /*ProjectTypes*/ eProject, bool bContinue, bool bTestVisible )
+bool CyCity::canCreate(int /*ProjectTypes*/ eProject, bool bContinue, bool bTestVisible)
 {
 	return m_pCity ? m_pCity->canCreate((ProjectTypes)eProject, bContinue, bTestVisible) : false;
 }
 
-bool CyCity::canMaintain( int /*ProcessTypes*/ eProcess, bool bContinue )
+bool CyCity::canMaintain(int /*ProcessTypes*/ eProcess, bool bContinue)
 {
 	return m_pCity ? m_pCity->canMaintain((ProcessTypes)eProcess, bContinue) : false;
-}
-
-bool CyCity::canJoin()
-{
-	return m_pCity ? m_pCity->canJoin() : false;
 }
 
 int CyCity::getFoodTurnsLeft()
@@ -272,11 +152,6 @@ int CyCity::getFoodTurnsLeft()
 bool CyCity::isProduction()
 {
 	return m_pCity ? m_pCity->isProduction() : false;
-}
-
-bool CyCity::isProductionLimited()
-{
-	return m_pCity ? m_pCity->isProductionLimited() : false;
 }
 
 bool CyCity::isProductionUnit()
@@ -299,11 +174,6 @@ bool CyCity::isProductionProcess()
 	return m_pCity ? m_pCity->isProductionProcess() : false;
 }
 
-bool CyCity::canContinueProduction(OrderData order)
-{
-	return m_pCity ? m_pCity->canContinueProduction(order) : false;
-}
-
 int CyCity::getProductionExperience(int /*UnitTypes*/ eUnit)
 {
 	return m_pCity ? m_pCity->getProductionExperience((UnitTypes) eUnit) : -1;
@@ -311,18 +181,12 @@ int CyCity::getProductionExperience(int /*UnitTypes*/ eUnit)
 
 void CyCity::addProductionExperience(CyUnit* pUnit, bool bConscript)
 {
-	if (m_pCity)
-		m_pCity->addProductionExperience(pUnit->getUnit(), bConscript);
+	if (m_pCity) m_pCity->addProductionExperience(pUnit->getUnit(), bConscript);
 }
 
 int /*UnitTypes*/ CyCity::getProductionUnit()
 {
 	return m_pCity ? m_pCity->getProductionUnit() : NO_UNIT;
-}
-
-int /*UnitAITypes*/  CyCity::getProductionUnitAI()
-{
-	return m_pCity ? m_pCity->getProductionUnitAI() : NO_UNIT;
 }
 
 int /*BuildingTypes*/ CyCity::getProductionBuilding()
@@ -370,19 +234,9 @@ int CyCity::getFirstBuildingOrder(int /*BuildingTypes*/ eBuilding)
 	return m_pCity ? m_pCity->getFirstBuildingOrder((BuildingTypes)eBuilding) : -1;
 }
 
-int CyCity::getFirstProjectOrder(int /*ProjectTypes*/ eProject)
-{
-	return m_pCity ? m_pCity->getFirstProjectOrder((ProjectTypes)eProject) : -1;
-}
-
 int CyCity::getNumTrainUnitAI(int /*UnitAITypes*/ eUnitAI)
 {
 	return m_pCity ? m_pCity->getNumTrainUnitAI((UnitAITypes) eUnitAI) : -1;
-}
-
-bool CyCity::isUnitFoodProduction(int /*UnitTypes*/ iUnit)
-{
-	return m_pCity ? m_pCity->isFoodProduction((UnitTypes)iUnit) : false;
 }
 
 int CyCity::getProduction()
@@ -417,14 +271,12 @@ int CyCity::getProjectProductionTurnsLeft(int /*ProjectTypes*/ eProject, int iNu
 
 void CyCity::setProduction(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setProduction(iNewValue);
+	if (m_pCity) m_pCity->setProduction(iNewValue);
 }
 
 void CyCity::changeProduction(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeProduction(iChange);
+	if (m_pCity) m_pCity->changeProduction(iChange);
 }
 
 int CyCity::getProductionModifier()
@@ -440,40 +292,14 @@ int CyCity::getCurrentProductionDifference(bool bIgnoreFood, bool bOverflow)
 	) : -1;
 }
 
-int CyCity::getProjectProductionModifier(int /*ProjectTypes*/ eProject)
-{
-	return m_pCity ? m_pCity->getProductionModifier((ProjectTypes)eProject) : -1;
-}
-
-int CyCity::getExtraProductionDifference(int iExtra)
-{
-	return m_pCity ? m_pCity->getExtraProductionDifference(iExtra) : -1;
-}
-
 bool CyCity::canHurry(int /*HurryTypes*/ iHurry, bool bTestVisible)
 {
 	return m_pCity ? m_pCity->canHurry((HurryTypes)iHurry, bTestVisible) : false;
 }
 
-void CyCity::hurry(int /*HurryTypes*/ iHurry)
-{
-	if (m_pCity)
-		m_pCity->hurry((HurryTypes)iHurry);
-}
-
 int /*UnitTypes*/ CyCity::getConscriptUnit()
 {
-	return m_pCity ? (int)m_pCity->getConscriptUnit() : -1;
-}
-
-int CyCity::getConscriptPopulation()
-{
-	return m_pCity ? m_pCity->getConscriptPopulation() : -1;
-}
-
-int CyCity::conscriptMinCityPopulation()
-{
-	return m_pCity ? m_pCity->conscriptMinCityPopulation() : -1;
+	return m_pCity ? m_pCity->getConscriptUnit() : -1;
 }
 
 int CyCity::flatConscriptAngerLength()
@@ -484,12 +310,6 @@ int CyCity::flatConscriptAngerLength()
 bool CyCity::canConscript()
 {
 	return m_pCity ? m_pCity->canConscript() : false;
-}
-
-void CyCity::conscript()
-{
-	if (m_pCity)
-		m_pCity->conscript();
 }
 
 int CyCity::getBonusHealth(int /*BonusTypes*/ iBonus)
@@ -530,11 +350,6 @@ int /* LeaderHeadTypes */ CyCity::getPersonalityType()
 int /* ArtStyleTypes */ CyCity::getArtStyleType()
 {
 	return m_pCity ? m_pCity->getArtStyleType() : -1;
-}
-
-int /* CitySizeTypes */ CyCity::getCitySizeType()
-{
-	return m_pCity ? m_pCity->getCitySizeType() : -1;
 }
 
 bool CyCity::hasTrait(int /*TraitTypes*/ iTrait)
@@ -597,29 +412,9 @@ bool CyCity::isHeadquartersByType(int /*CorporationTypes*/ iIndex)
 	return m_pCity ? m_pCity->isHeadquarters((CorporationTypes) iIndex) : false;
 }
 
-bool CyCity::isHeadquarters()
-{
-	return m_pCity ? m_pCity->isHeadquarters() : false;
-}
-
-int CyCity::getOvercrowdingPercentAnger(int iExtra)
-{
-	return m_pCity ? m_pCity->getOvercrowdingPercentAnger(iExtra) : -1;
-}
-
 int CyCity::getNoMilitaryPercentAnger()
 {
 	return m_pCity ? m_pCity->getNoMilitaryPercentAnger() : -1;
-}
-
-int CyCity::getCulturePercentAnger()
-{
-	return m_pCity ? m_pCity->getCulturePercentAnger() : -1;
-}
-
-int CyCity::getReligionPercentAnger()
-{
-	return m_pCity ? m_pCity->getReligionPercentAnger() : -1;
 }
 
 int CyCity::getWarWearinessPercentAnger()
@@ -627,27 +422,9 @@ int CyCity::getWarWearinessPercentAnger()
 	return m_pCity ? m_pCity->getWarWearinessPercentAnger() : -1;
 }
 
-/************************************************************************************************/
-/* REVOLUTION_MOD                         04/26/08                                jdog5000      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-int CyCity::getRevRequestPercentAnger()
-{
-	return m_pCity ? m_pCity->getRevRequestPercentAnger() : -1;
-}
-
 int CyCity::getRevIndexPercentAnger()
 {
 	return m_pCity ? m_pCity->getRevIndexPercentAnger() : -1;
-}
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
-
-int CyCity::getLargestCityHappiness()
-{
-	return m_pCity ? m_pCity->getLargestCityHappiness() : -1;
 }
 
 int CyCity::unhappyLevel(int iExtra)
@@ -668,36 +445,6 @@ int CyCity::angryPopulation(int iExtra)
 int CyCity::totalFreeSpecialists()
 {
 	return m_pCity ? m_pCity->totalFreeSpecialists() : -1;
-}
-
-int CyCity::extraFreeSpecialists()
-{
-	return m_pCity ? m_pCity->extraFreeSpecialists() : -1;
-}
-
-int CyCity::extraPopulation()
-{
-	return m_pCity ? m_pCity->extraPopulation() : -1;
-}
-
-int CyCity::extraSpecialists()
-{
-	return m_pCity ? m_pCity->extraSpecialists() : -1;
-}
-
-int CyCity::unhealthyPopulation(bool bNoAngry, int iExtra)									
-{
-	return m_pCity ? m_pCity->unhealthyPopulation(bNoAngry, iExtra) : -1;
-}
-
-int CyCity::totalGoodBuildingHealth()																	
-{
-	return m_pCity ? m_pCity->totalGoodBuildingHealth() : -1;
-}
-
-int CyCity::totalBadBuildingHealth()																			
-{
-	return m_pCity ? m_pCity->totalBadBuildingHealth() : -1;
 }
 
 int CyCity::goodHealth()
@@ -735,11 +482,6 @@ int CyCity::productionLeft()
 	return m_pCity ? m_pCity->productionLeft() : -1;
 }
 
-int CyCity::hurryCost(bool bExtra)
-{
-	return m_pCity ? m_pCity->hurryCost(bExtra) : -1;
-}
-
 int CyCity::hurryGold(int /*HurryTypes*/ iHurry)
 {
 	return m_pCity ? m_pCity->hurryGold((HurryTypes)iHurry) : -1;
@@ -760,32 +502,6 @@ int CyCity::flatHurryAngerLength()
 	return m_pCity ? m_pCity->flatHurryAngerLength() : -1;
 }
 
-int CyCity::hurryAngerLength(int /*HurryTypes*/ iHurry)
-{
-	return m_pCity ? m_pCity->hurryAngerLength((HurryTypes)iHurry) : -1;
-}
-
-int CyCity::maxHurryPopulation()
-{
-	return m_pCity ? m_pCity->maxHurryPopulation() : -1;
-}
-
-int CyCity::cultureDistance(int iDX, int iDY)
-{
-	return m_pCity ? m_pCity->cultureDistance(iDX, iDY) : -1;
-}
-
-int CyCity::cultureStrength(int /*PlayerTypes*/ ePlayer)
-{
-	int iOriginal = 0;
-	return m_pCity ? m_pCity->cultureStrength((PlayerTypes)ePlayer, iOriginal) : -1;
-}
-
-int CyCity::cultureGarrison(int /*PlayerTypes*/ ePlayer)
-{
-	return m_pCity ? m_pCity->cultureGarrison((PlayerTypes)ePlayer) : -1;
-}
-
 int CyCity::getNumBuilding(int /*BuildingTypes*/ iIndex)
 {
 	return m_pCity ? (iIndex != -1 ? m_pCity->getNumBuilding((BuildingTypes) iIndex) : 0) : -1;
@@ -793,14 +509,7 @@ int CyCity::getNumBuilding(int /*BuildingTypes*/ iIndex)
 
 bool CyCity::isHasBuilding(int /*BuildingTypes*/ iIndex)
 {
-	if (m_pCity)
-	{
-		if (m_pCity->getNumBuilding((BuildingTypes) iIndex) > 0)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_pCity ? m_pCity->getNumBuilding((BuildingTypes) iIndex) > 0 : false;
 }
 
 int CyCity::getNumActiveBuilding(int /*BuildingTypes*/ iIndex)
@@ -821,16 +530,6 @@ int CyCity::getX()
 int CyCity::getY()
 {
 	return m_pCity ? m_pCity->getY() : -1;
-}
-
-bool CyCity::at(int iX, int iY)
-{
-	return m_pCity ? m_pCity->at(iX, iY) : false;
-}
-
-bool CyCity::atPlot(CyPlot* pPlot)
-{
-	return m_pCity ? m_pCity->at(pPlot->getPlot()) : false;
 }
 
 CyPlot* CyCity::plot()
@@ -880,14 +579,12 @@ int CyCity::getPopulation()
 
 void CyCity::setPopulation(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setPopulation(iNewValue);
+	if (m_pCity) m_pCity->setPopulation(iNewValue);
 }
 
 void CyCity::changePopulation(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changePopulation(iChange);
+	if (m_pCity) m_pCity->changePopulation(iChange);
 }
 
 long CyCity::getRealPopulation()
@@ -902,8 +599,7 @@ int CyCity::getHighestPopulation()
 
 void CyCity::setHighestPopulation(int iNewValue) 
 {
-	if (m_pCity)
-		m_pCity->setHighestPopulation(iNewValue);
+	if (m_pCity) m_pCity->setHighestPopulation(iNewValue);
 }
 
 int CyCity::getWorkingPopulation()
@@ -931,37 +627,15 @@ int CyCity::getGreatPeopleRate()
 	return m_pCity ? m_pCity->getGreatPeopleRate() : -1;
 }
 
-int CyCity::getTotalGreatPeopleRateModifier()
-{
-	return m_pCity ? m_pCity->getTotalGreatPeopleRateModifier() : -1;
-}
-
 void CyCity::changeBaseGreatPeopleRate(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeBaseGreatPeopleRate(iChange);
+	if (m_pCity) m_pCity->changeBaseGreatPeopleRate(iChange);
 }
+
 int CyCity::getGreatPeopleRateModifier()
 {
 	return m_pCity ? m_pCity->getGreatPeopleRateModifier() : -1;
 }
-
-// BUG - Building Additional Great People - start
-int CyCity::getAdditionalGreatPeopleRateByBuilding(int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalGreatPeopleRateByBuilding((BuildingTypes)iBuilding) : -1;
-}
-
-int CyCity::getAdditionalBaseGreatPeopleRateByBuilding(int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalBaseGreatPeopleRateByBuilding((BuildingTypes)iBuilding) : -1;
-}
-
-int CyCity::getAdditionalGreatPeopleRateModifierByBuilding(int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalGreatPeopleRateModifierByBuilding((BuildingTypes)iBuilding) : -1;
-}
-// BUG - Building Additional Great People - end
 
 int CyCity::getGreatPeopleProgress()
 {
@@ -970,18 +644,12 @@ int CyCity::getGreatPeopleProgress()
 
 void CyCity::changeGreatPeopleProgress(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeGreatPeopleProgress(iChange);
+	if (m_pCity) m_pCity->changeGreatPeopleProgress(iChange);
 }
 
 int CyCity::getNumWorldWonders()
 {
 	return m_pCity ? m_pCity->getNumWorldWonders() : -1;
-}
-
-int CyCity::getNumTeamWonders()
-{
-	return m_pCity ? m_pCity->getNumTeamWonders() : -1;
 }
 
 int CyCity::getNumNationalWonders()
@@ -992,11 +660,6 @@ int CyCity::getNumNationalWonders()
 int CyCity::getMaxNumWorldWonders()
 {
 	return m_pCity ? m_pCity->getMaxNumWorldWonders() : -1;
-}
-
-int CyCity::getMaxNumTeamWonders()
-{
-	return m_pCity ? m_pCity->getMaxNumTeamWonders() : -1;
 }
 
 int CyCity::getMaxNumNationalWonders()
@@ -1014,18 +677,6 @@ bool CyCity::isGovernmentCenter()
 	return m_pCity ? m_pCity->isGovernmentCenter() : false;
 }
 
-// BUG - Building Saved Maintenance - start
-int CyCity::getSavedMaintenanceByBuilding(int /*BuildingTypes*/ iBuilding) const
-{
-	return m_pCity ? m_pCity->getSavedMaintenanceByBuilding((BuildingTypes)iBuilding) : -1;
-}
-
-int CyCity::getSavedMaintenanceTimes100ByBuilding(int /*BuildingTypes*/ iBuilding) const
-{
-	return m_pCity ? m_pCity->getSavedMaintenanceTimes100ByBuilding((BuildingTypes)iBuilding) : -1;
-}
-// BUG - Building Saved Maintenance - end
-
 int CyCity::getMaintenance() const
 {
 	return m_pCity ? m_pCity->getMaintenance() : -1;
@@ -1041,41 +692,14 @@ int CyCity::calculateDistanceMaintenance() const
 	return m_pCity ? m_pCity->calculateDistanceMaintenance() : -1;
 }
 
-
-int CyCity::calculateDistanceMaintenanceTimes100() const														
-{
-	return m_pCity ? m_pCity->calculateDistanceMaintenanceTimes100() : -1;
-}
-
-
 int CyCity::calculateNumCitiesMaintenance()	const												
 {
 	return m_pCity ? m_pCity->calculateNumCitiesMaintenance() : -1;
 }
 
-int CyCity::calculateNumCitiesMaintenanceTimes100()	const												
-{
-	return m_pCity ? m_pCity->calculateNumCitiesMaintenanceTimes100() : -1;
-}
-
-int CyCity::calculateColonyMaintenance()	const												
-{
-	return m_pCity ? m_pCity->calculateColonyMaintenance() : -1;
-}
-
 int CyCity::calculateColonyMaintenanceTimes100()	const												
 {
 	return m_pCity ? m_pCity->calculateColonyMaintenanceTimes100() : -1;
-}
-
-int CyCity::calculateCorporationMaintenanceTimes100()	const												
-{
-	return m_pCity ? m_pCity->calculateCorporationMaintenanceTimes100() : -1;
-}
-
-int CyCity::calculateCorporationMaintenance()	const												
-{
-	return m_pCity ? m_pCity->calculateCorporationMaintenance() : -1;
 }
 
 int CyCity::getMaintenanceModifier()
@@ -1088,11 +712,6 @@ int CyCity::getWarWearinessModifier()
 	return m_pCity ? m_pCity->getWarWearinessModifier() : -1;
 }
 
-int CyCity::getHurryAngerModifier()
-{
-	return m_pCity ? m_pCity->getHurryAngerModifier() : -1;
-}
-
 int CyCity::getEspionageHealthCounter()
 {
 	return m_pCity ? m_pCity->getEspionageHealthCounter() : -1;
@@ -1100,8 +719,7 @@ int CyCity::getEspionageHealthCounter()
 
 void CyCity::changeEspionageHealthCounter(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeEspionageHealthCounter(iChange);
+	if (m_pCity) m_pCity->changeEspionageHealthCounter(iChange);
 }
 
 int CyCity::getEspionageHappinessCounter()
@@ -1111,196 +729,12 @@ int CyCity::getEspionageHappinessCounter()
 
 void CyCity::changeEspionageHappinessCounter(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeEspionageHappinessCounter(iChange);
+	if (m_pCity) m_pCity->changeEspionageHappinessCounter(iChange);
 }
-
-void CyCity::changeHealRate(int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeHealRate(iChange);
-}
-
-int CyCity::getFreshWaterGoodHealth()
-{
-	return m_pCity ? m_pCity->getFreshWaterGoodHealth() : -1;
-}
-
-int CyCity::getFreshWaterBadHealth()
-{
-	return m_pCity ? m_pCity->getFreshWaterBadHealth() : -1;
-}
-
-int CyCity::getBuildingGoodHealth()
-{
-	return m_pCity ? m_pCity->getBuildingGoodHealth() : -1;
-}
-
-int CyCity::getBuildingBadHealth()
-{
-	return m_pCity ? m_pCity->getBuildingBadHealth() : -1;
-}
-
-int CyCity::getFeatureGoodHealth()
-{
-	return m_pCity ? m_pCity->getFeatureGoodHealth() : -1;
-}
-
-int CyCity::getFeatureBadHealth()
-{
-	return m_pCity ? m_pCity->getFeatureBadHealth() : -1;
-}
-
-// BUG - Feature Health - start
-int CyCity::getAdditionalHealthByFeature(int /*FeatureTypes*/ eFeature, int iChange)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0;
-
-		return m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad);
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalGoodHealthByFeature(int /*FeatureTypes*/ eFeature, int iChange)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0;
-
-		m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad);
-		return iGood;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalBadHealthByFeature(int /*FeatureTypes*/ eFeature, int iChange)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0;
-
-		m_pCity->getAdditionalHealthByFeature((FeatureTypes)eFeature, iChange, iGood, iBad);
-		return iBad;
-	}
-	else
-	{
-		return -1;
-	}
-}
-// BUG - Feature Health - end
 
 int CyCity::getBuildingHealth(int /*BuildingTypes*/ eBuilding)
 {
 	return m_pCity ? m_pCity->getBuildingHealth((BuildingTypes)eBuilding) : -1;
-}
-
-// BUG - Building Additional Health - start
-int CyCity::getAdditionalHealthByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
-
-		return m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalGoodHealthByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
-
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
-		return iGood;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalBadHealthByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
-
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
-		return iBad;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalSpoiledFoodByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
-
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
-		return iSpoiledFood;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalStarvationByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iSpoiledFood = 0, iStarvation = 0;
-
-		m_pCity->getAdditionalHealthByBuilding((BuildingTypes)eBuilding, iGood, iBad, iSpoiledFood, iStarvation);
-		return iStarvation;
-	}
-	else
-	{
-		return -1;
-	}
-}
-// BUG - Building Additional Health - end
-
-int CyCity::getPowerGoodHealth()
-{
-	return m_pCity ? m_pCity->getPowerGoodHealth() : -1;
-}
-
-int CyCity::getPowerBadHealth()
-{
-	return m_pCity ? m_pCity->getPowerBadHealth() : -1;
-}
-
-int CyCity::getBonusGoodHealth()
-{
-	return m_pCity ? m_pCity->getBonusGoodHealth() : -1;
-}
-
-int CyCity::getBonusBadHealth()
-{
-	return m_pCity ? m_pCity->getBonusBadHealth() : -1;
-}
-
-int CyCity::getMilitaryHappiness()
-{
-	return m_pCity ? m_pCity->getMilitaryHappiness() : -1;
 }
 
 int CyCity::getMilitaryHappinessUnits()
@@ -1308,120 +742,9 @@ int CyCity::getMilitaryHappinessUnits()
 	return m_pCity ? m_pCity->getMilitaryHappinessUnits() : -1;
 }
 
-int CyCity::getBuildingGoodHappiness()
-{
-	return m_pCity ? m_pCity->getBuildingGoodHappiness() : -1;
-}
-
-int CyCity::getBuildingBadHappiness()
-{
-	return m_pCity ? m_pCity->getBuildingBadHappiness() : -1;
-}
-
 int CyCity::getBuildingHappiness(int /*BuildingTypes*/ eBuilding)
 {
 	return m_pCity ? m_pCity->getBuildingHappiness((BuildingTypes)eBuilding) : -1;
-}
-
-// BUG - Building Additional Happiness - start
-int CyCity::getAdditionalHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iAngryPop = 0;
-
-		return m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalGoodHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iAngryPop = 0;
-
-		m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
-		return iGood;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalBadHappinessByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iAngryPop = 0;
-
-		m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
-		return iBad;
-	}
-	else
-	{
-		return -1;
-	}
-}
-
-int CyCity::getAdditionalAngryPopulationByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	if (m_pCity)
-	{
-		int iGood = 0, iBad = 0, iAngryPop = 0;
-
-		m_pCity->getAdditionalHappinessByBuilding((BuildingTypes)eBuilding, iGood, iBad, iAngryPop);
-		return iAngryPop;
-	}
-	else
-	{
-		return -1;
-	}
-}
-// BUG - Building Additional Happiness - end
-
-int CyCity::getExtraBuildingGoodHappiness()
-{
-	return m_pCity ? m_pCity->getExtraBuildingGoodHappiness() : -1;
-}
-
-int CyCity::getExtraBuildingBadHappiness()
-{
-	return m_pCity ? m_pCity->getExtraBuildingBadHappiness() : -1;
-}
-
-int CyCity::getFeatureGoodHappiness()
-{
-	return m_pCity ? m_pCity->getFeatureGoodHappiness() : -1;
-}
-
-int CyCity::getFeatureBadHappiness()
-{
-	return m_pCity ? m_pCity->getFeatureBadHappiness() : -1;
-}
-
-int CyCity::getBonusGoodHappiness()
-{
-	return m_pCity ? m_pCity->getBonusGoodHappiness() : -1;
-}
-
-int CyCity::getBonusBadHappiness()
-{
-	return m_pCity ? m_pCity->getBonusBadHappiness() : -1;
-}
-
-int CyCity::getReligionGoodHappiness()
-{
-	return m_pCity ? m_pCity->getReligionGoodHappiness() : -1;
-}
-
-int CyCity::getReligionBadHappiness()
-{
-	return m_pCity ? m_pCity->getReligionBadHappiness() : -1;
 }
 
 int CyCity::getReligionHappiness(int /*ReligionTypes*/ eReligion)
@@ -1436,8 +759,7 @@ int CyCity::getExtraHappiness()
 
 void CyCity::changeExtraHappiness(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeExtraHappiness(iChange);
+	if (m_pCity) m_pCity->changeExtraHappiness(iChange);
 }
 
 int CyCity::getExtraHealth()
@@ -1447,8 +769,7 @@ int CyCity::getExtraHealth()
 
 void CyCity::changeExtraHealth(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeExtraHealth(iChange);
+	if (m_pCity) m_pCity->changeExtraHealth(iChange);
 }
 
 int CyCity::getHurryAngerTimer()
@@ -1458,14 +779,9 @@ int CyCity::getHurryAngerTimer()
 
 void CyCity::changeHurryAngerTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeHurryAngerTimer(iChange);
+	if (m_pCity) m_pCity->changeHurryAngerTimer(iChange);
 }
-/************************************************************************************************/
-/* REVOLUTION_MOD                         04/19/08                                jdog5000      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 int CyCity::getRevRequestAngerTimer()
 {
 	return m_pCity ? m_pCity->getRevRequestAngerTimer() : -1;
@@ -1473,23 +789,13 @@ int CyCity::getRevRequestAngerTimer()
 
 void CyCity::changeRevRequestAngerTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeRevRequestAngerTimer(iChange);
-}
-
-int CyCity::getRevSuccessTimer()
-{
-	return m_pCity ? m_pCity->getRevSuccessTimer() : -1;
+	if (m_pCity) m_pCity->changeRevRequestAngerTimer(iChange);
 }
 
 void CyCity::changeRevSuccessTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeRevSuccessTimer(iChange);
+	if (m_pCity) m_pCity->changeRevSuccessTimer(iChange);
 }
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
 
 int CyCity::getConscriptAngerTimer()
 {
@@ -1498,8 +804,7 @@ int CyCity::getConscriptAngerTimer()
 
 void CyCity::changeConscriptAngerTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeConscriptAngerTimer(iChange);
+	if (m_pCity) m_pCity->changeConscriptAngerTimer(iChange);
 }
 
 int CyCity::getDefyResolutionAngerTimer()
@@ -1509,8 +814,7 @@ int CyCity::getDefyResolutionAngerTimer()
 
 void CyCity::changeDefyResolutionAngerTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeDefyResolutionAngerTimer(iChange);
+	if (m_pCity) m_pCity->changeDefyResolutionAngerTimer(iChange);
 }
 
 int CyCity::flatDefyResolutionAngerLength()
@@ -1525,18 +829,12 @@ int CyCity::getHappinessTimer()
 
 void CyCity::changeHappinessTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeHappinessTimer(iChange);
+	if (m_pCity) m_pCity->changeHappinessTimer(iChange);
 }
 
 bool CyCity::isNoUnhappiness()
 {
 	return m_pCity ? m_pCity->isNoUnhappiness() : false;
-}
-
-bool CyCity::isNoUnhealthyPopulation()
-{
-	return m_pCity ? m_pCity->isNoUnhealthyPopulation() : false;
 }
 
 bool CyCity::isBuildingOnlyHealthy()
@@ -1551,24 +849,17 @@ int CyCity::getFood()
 
 void CyCity::setFood(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setFood(iNewValue);
+	if (m_pCity) m_pCity->setFood(iNewValue);
 }
 
 void CyCity::changeFood(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeFood(iChange);
+	if (m_pCity) m_pCity->changeFood(iChange);
 }
 
 int CyCity::getFoodKept()
 {
 	return m_pCity ? m_pCity->getFoodKept() : -1;
-}
-
-int CyCity::getMaxFoodKeptPercent()
-{
-	return m_pCity ? m_pCity->getMaxFoodKeptPercent() : -1;
 }
 
 int CyCity::getOverflowProduction()
@@ -1578,8 +869,7 @@ int CyCity::getOverflowProduction()
 
 void CyCity::setOverflowProduction(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setOverflowProduction(iNewValue);
+	if (m_pCity) m_pCity->setOverflowProduction(iNewValue);
 }
 
 int CyCity::getFeatureProduction()
@@ -1589,8 +879,7 @@ int CyCity::getFeatureProduction()
 
 void CyCity::setFeatureProduction(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setFeatureProduction(iNewValue);
+	if (m_pCity) m_pCity->setFeatureProduction(iNewValue);
 }
 
 int CyCity::getMilitaryProductionModifier()
@@ -1610,8 +899,7 @@ int CyCity::getExtraTradeRoutes()
 
 void CyCity::changeExtraTradeRoutes(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeExtraTradeRoutes(iChange);
+	if (m_pCity) m_pCity->changeExtraTradeRoutes(iChange);
 }
 
 int CyCity::getTradeRouteModifier()															
@@ -1629,26 +917,9 @@ int CyCity::getBuildingDefense()
 	return m_pCity ? m_pCity->getBuildingDefense() : -1;
 }
 
-// BUG - Building Additional Defense - start
-int CyCity::getAdditionalDefenseByBuilding(int /*BuildingTypes*/ eBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalDefenseByBuilding((BuildingTypes)eBuilding) : -1;
-}
-// BUG - Building Additional Defense - end
-
-int CyCity::getBuildingBombardDefense()
-{
-	return m_pCity ? m_pCity->getBuildingBombardDefense() : -1;
-}
-
 int CyCity::getFreeExperience()
 {
 	return m_pCity ? m_pCity->getFreeExperience() : -1;
-}
-
-int CyCity::getCurrAirlift()
-{
-	return m_pCity ? m_pCity->getCurrAirlift() : -1;
 }
 
 int CyCity::getMaxAirlift()
@@ -1661,19 +932,9 @@ int CyCity::getAirModifier()
 	return m_pCity ? m_pCity->getAirModifier() : -1;
 }
 
-int CyCity::getAirUnitCapacity(int /*TeamTypes*/ eTeam)
-{
-	return m_pCity ? m_pCity->getAirUnitCapacity((TeamTypes)eTeam) : -1;
-}
-
 int CyCity::getNukeModifier()
 {
 	return m_pCity ? m_pCity->getNukeModifier() : -1;
-}
-
-int CyCity::getFreeSpecialist() 
-{
-	return m_pCity ? m_pCity->getFreeSpecialist() : -1;
 }
 
 bool CyCity::isPower()
@@ -1698,13 +959,7 @@ int CyCity::getDefenseDamage()
 
 void CyCity::changeDefenseDamage(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeDefenseDamage(iChange);
-}
-
-bool CyCity::isBombardable(CyUnit* pUnit)
-{
-	return m_pCity ? m_pCity->isBombardable(pUnit->getUnit()) : false;
+	if (m_pCity) m_pCity->changeDefenseDamage(iChange);
 }
 
 int CyCity::getNaturalDefense()
@@ -1734,25 +989,12 @@ bool CyCity::isOccupation()
 
 void CyCity::setOccupationTimer(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setOccupationTimer(iNewValue);
+	if (m_pCity) m_pCity->setOccupationTimer(iNewValue);
 }
 
 void CyCity::changeOccupationTimer(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeOccupationTimer(iChange);
-}
-
-int CyCity::getCultureUpdateTimer()
-{
-	return m_pCity ? m_pCity->getCultureUpdateTimer() : -1;
-}
-
-void CyCity::changeCultureUpdateTimer(int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeCultureUpdateTimer(iChange);
+	if (m_pCity) m_pCity->changeOccupationTimer(iChange);
 }
 
 bool CyCity::isNeverLost()
@@ -1762,16 +1004,13 @@ bool CyCity::isNeverLost()
 
 void CyCity::setNeverLost(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setNeverLost(iNewValue);
+	if (m_pCity) m_pCity->setNeverLost(iNewValue);
 }
 
-// < M.A.D. Nukes Start >
 int CyCity::getMADIncoming()
 {
 	return m_pCity ? m_pCity->getMADIncoming() : -1;
 }
-// < M.A.D. Nukes End   >
 
 bool CyCity::isBombarded()
 {
@@ -1780,8 +1019,7 @@ bool CyCity::isBombarded()
 
 void CyCity::setBombarded(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setBombarded(iNewValue);
+	if (m_pCity) m_pCity->setBombarded(iNewValue);
 }
 
 bool CyCity::isDrafted()
@@ -1791,8 +1029,7 @@ bool CyCity::isDrafted()
 
 void CyCity::setDrafted(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setDrafted(iNewValue);
+	if (m_pCity) m_pCity->setDrafted(iNewValue);
 }
 
 bool CyCity::isAirliftTargeted()
@@ -1802,8 +1039,7 @@ bool CyCity::isAirliftTargeted()
 
 void CyCity::setAirliftTargeted(int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setAirliftTargeted(iNewValue);
+	if (m_pCity) m_pCity->setAirliftTargeted(iNewValue);
 }
 
 bool CyCity::isCitizensAutomated()
@@ -1813,8 +1049,7 @@ bool CyCity::isCitizensAutomated()
 
 void CyCity::setCitizensAutomated(bool bNewValue)
 {
-	if (m_pCity)
-		m_pCity->setCitizensAutomated(bNewValue);
+	if (m_pCity) m_pCity->setCitizensAutomated(bNewValue);
 }
 
 bool CyCity::isProductionAutomated()
@@ -1824,10 +1059,7 @@ bool CyCity::isProductionAutomated()
 
 void CyCity::setProductionAutomated(bool bNewValue)
 {
-	if (m_pCity)
-	{
-		m_pCity->setProductionAutomated(bNewValue, false);
-	}
+	if (m_pCity) m_pCity->setProductionAutomated(bNewValue, false);
 }
 
 bool CyCity::isWallOverride() const
@@ -1837,14 +1069,7 @@ bool CyCity::isWallOverride() const
 
 void CyCity::setWallOverride(bool bOverride)
 {
-	if (m_pCity)
-		m_pCity->setWallOverride(bOverride);
-}
-
-void CyCity::setCitySizeBoost(int iBoost)
-{
-	if (m_pCity)
-		m_pCity->setCitySizeBoost(iBoost);
+	if (m_pCity) m_pCity->setWallOverride(bOverride);
 }
 
 bool CyCity::isPlundered()
@@ -1854,10 +1079,7 @@ bool CyCity::isPlundered()
 
 void CyCity::setPlundered(bool bNewValue)
 {
-	if (m_pCity)
-	{
-		m_pCity->setPlundered(bNewValue);
-	}
+	if (m_pCity) m_pCity->setPlundered(bNewValue);
 }
 
 int /*PlayerTypes*/ CyCity::getOwner()
@@ -1895,43 +1117,14 @@ int CyCity::getSeaPlotYield(int /*YieldTypes*/ eIndex)
 	return m_pCity ? m_pCity->getSeaPlotYield((YieldTypes) eIndex) : -1;
 }
 
-int CyCity::getRiverPlotYield(int /*YieldTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getRiverPlotYield((YieldTypes) eIndex) : -1;
-}
-
-// BUG - Building Additional Yield - start
-int CyCity::getAdditionalYieldByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalYieldByBuilding((YieldTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-
-int CyCity::getAdditionalBaseYieldRateByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalBaseYieldRateByBuilding((YieldTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-
-int CyCity::getAdditionalYieldRateModifierByBuilding(int /*YieldTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalYieldRateModifierByBuilding((YieldTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-// BUG - Building Additional Yield - end
-
 int CyCity::getBaseYieldRate(int /*YieldTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getBaseYieldRate((YieldTypes)eIndex) : -1;
 }
 
-void CyCity::setBaseYieldRate(int /*YieldTypes*/ eIndex, int iNewValue)
-{
-	if (m_pCity)
-		m_pCity->setBaseYieldRate((YieldTypes)eIndex, iNewValue);
-}
-
 void CyCity::changeBaseYieldRate(int /*YieldTypes*/ eIndex, int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->changeBaseYieldRate((YieldTypes)eIndex, iNewValue);
+	if (m_pCity) m_pCity->changeBaseYieldRate((YieldTypes)eIndex, iNewValue);
 }
 
 int CyCity::getBaseYieldRateModifier(int /*YieldTypes*/ eIndex, int iExtra)
@@ -1954,11 +1147,6 @@ int CyCity::getTradeYield(int /*YieldTypes*/ eIndex)
 	return m_pCity ? m_pCity->getTradeYield((YieldTypes)eIndex) : -1;
 }
 
-int CyCity::totalTradeModifier()
-{
-	return m_pCity ? m_pCity->totalTradeModifier() : -1;
-}
-
 // BUG - Fractional Trade Routes - start
 #ifdef _MOD_FRACTRADE
 int CyCity::calculateTradeProfitTimes100(CyCity* pCity)
@@ -1978,20 +1166,6 @@ int CyCity::calculateTradeYield(int /*YieldTypes*/ eIndex, int iTradeProfit)
 	return m_pCity ? m_pCity->calculateTradeYield((YieldTypes)eIndex, iTradeProfit) : -1;
 }
 
-int CyCity::getExtraSpecialistYield(int /*YieldTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getExtraSpecialistYield((YieldTypes) eIndex) : -1;
-}
-
-int CyCity::getExtraSpecialistYieldOfType(int /*YieldTypes*/ eIndex, int /*SpecialistTypes*/ eSpecialist)
-{
-//Team Project (1)
-	int iTotal = 0;
-	iTotal += (m_pCity ? m_pCity->getExtraSpecialistYield((YieldTypes) eIndex, (SpecialistTypes) eSpecialist) : 0);
-	iTotal += (m_pCity ? m_pCity->getLocalSpecialistExtraYield((SpecialistTypes) eSpecialist, (YieldTypes) eIndex) : 0);
-	return m_pCity ? iTotal : -1;
-}
-
 int CyCity::getCommerceRate(int /*CommerceTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getCommerceRate((CommerceTypes)eIndex) : -1;
@@ -2002,24 +1176,9 @@ int CyCity::getCommerceRateTimes100(int /*CommerceTypes*/ eIndex)
 	return m_pCity ? m_pCity->getCommerceRateTimes100((CommerceTypes)eIndex) : -1;
 }
 
-int CyCity::getCommerceFromPercent(int /*CommerceTypes*/ eIndex, int iYieldRate)
-{
-	return m_pCity ? m_pCity->getCommerceFromPercent((CommerceTypes)eIndex, iYieldRate) : -1;
-}
-
 int CyCity::getBaseCommerceRate(int /*CommerceTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getBaseCommerceRate((CommerceTypes)eIndex) : -1;
-}
-
-int CyCity::getBaseCommerceRateTimes100(int /*CommerceTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getBaseCommerceRateTimes100((CommerceTypes)eIndex) : -1;
-}
-
-int CyCity::getTotalCommerceRateModifier(int /*CommerceTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getTotalCommerceRateModifier((CommerceTypes)eIndex) : -1;
 }
 
 int CyCity::getProductionToCommerceModifier(int /*CommerceTypes*/ eIndex)
@@ -2027,37 +1186,10 @@ int CyCity::getProductionToCommerceModifier(int /*CommerceTypes*/ eIndex)
 	return m_pCity ? m_pCity->getProductionToCommerceModifier((CommerceTypes)eIndex) : -1;
 }
 
-int CyCity::getBuildingCommerce(int /*CommerceTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getBuildingCommerce((CommerceTypes)eIndex) : -1;
-}
-
 int CyCity::getBuildingCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
 {
 	return m_pCity ? m_pCity->getBuildingCommerceByBuilding((CommerceTypes)eIndex, (BuildingTypes) iBuilding) : -1;
 }
-
-// BUG - Building Additional Commerce - start
-int CyCity::getAdditionalCommerceByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalCommerceByBuilding((CommerceTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-
-int CyCity::getAdditionalCommerceTimes100ByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalCommerceTimes100ByBuilding((CommerceTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-
-int CyCity::getAdditionalBaseCommerceRateByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalBaseCommerceRateByBuilding((CommerceTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-
-int CyCity::getAdditionalCommerceRateModifierByBuilding(int /*CommerceTypes*/ eIndex, int /*BuildingTypes*/ iBuilding)
-{
-	return m_pCity ? m_pCity->getAdditionalCommerceRateModifierByBuilding((CommerceTypes)eIndex, (BuildingTypes) iBuilding) : -1;
-}
-// BUG - Building Additional Commerce - end
 
 int CyCity::getSpecialistCommerce(int /*CommerceTypes*/ eIndex)
 {
@@ -2066,13 +1198,7 @@ int CyCity::getSpecialistCommerce(int /*CommerceTypes*/ eIndex)
 
 void CyCity::changeSpecialistCommerce(int /*CommerceTypes*/ eIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeSpecialistCommerceTimes100((CommerceTypes)eIndex, 100*iChange);
-}
-
-int CyCity::getReligionCommerce(int /*CommerceTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getReligionCommerce((CommerceTypes)eIndex) : -1;
+	if (m_pCity) m_pCity->changeSpecialistCommerceTimes100((CommerceTypes)eIndex, 100*iChange);
 }
 
 int CyCity::getReligionCommerceByReligion(int /*CommerceTypes*/ eIndex, int /*ReligionTypes*/ eReligion)
@@ -2105,19 +1231,9 @@ int CyCity::getCommerceRateModifier(int /*CommerceTypes*/ eIndex)
 	return m_pCity ? m_pCity->getTotalCommerceRateModifier((CommerceTypes)eIndex) : -1;
 }
 
-int CyCity::getCommerceHappinessPer(int /*CommerceTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getCommerceHappinessPer((CommerceTypes)eIndex) : -1;
-}
-
 int CyCity::getCommerceHappinessByType(int /*CommerceTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getCommerceHappinessByType((CommerceTypes) eIndex) : -1;
-}
-
-int CyCity::getCommerceHappiness()
-{
-	return m_pCity ? m_pCity->getCommerceHappiness() : -1;
 }
 
 int CyCity::getDomainFreeExperience(int /*DomainTypes*/ eIndex)
@@ -2128,11 +1244,6 @@ int CyCity::getDomainFreeExperience(int /*DomainTypes*/ eIndex)
 int CyCity::getDomainProductionModifier(int /*DomainTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getDomainProductionModifier((DomainTypes)eIndex) : -1;
-}
-
-int CyCity::getUnitProductionModifier(int /*UnitTypes*/ eIndex) const
-{
-	return m_pCity ? m_pCity->getUnitProductionModifier((UnitTypes)eIndex) : -1;
 }
 
 int CyCity::getCulture(int /*PlayerTypes*/ eIndex)
@@ -2160,61 +1271,28 @@ int CyCity::calculateCulturePercent(int /*PlayerTypes*/ eIndex)
 	return m_pCity ? m_pCity->calculateCulturePercent((PlayerTypes)eIndex) : -1;
 }
 
-int CyCity::calculateTeamCulturePercent(int /*TeamTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->calculateTeamCulturePercent((TeamTypes)eIndex) : -1;
-}
-
 void CyCity::setCulture(int /*PlayerTypes*/ eIndex, int iNewValue, bool bPlots)
 {
-	if (m_pCity)
-		m_pCity->setCulture((PlayerTypes)eIndex, iNewValue, bPlots, true);
+	if (m_pCity) m_pCity->setCulture((PlayerTypes)eIndex, iNewValue, bPlots, true);
 }
 
 void CyCity::setCultureTimes100(int /*PlayerTypes*/ eIndex, int iNewValue, bool bPlots)
 {
-	if (m_pCity)
-		m_pCity->setCultureTimes100((PlayerTypes)eIndex, iNewValue, bPlots, true);
+	if (m_pCity) m_pCity->setCultureTimes100((PlayerTypes)eIndex, iNewValue, bPlots, true);
 }
 
 void CyCity::changeCulture(int /*PlayerTypes*/ eIndex, int iChange, bool bPlots)
 {
-	if (m_pCity)
-		m_pCity->changeCulture((PlayerTypes)eIndex, iChange, bPlots, true);
+	if (m_pCity) m_pCity->changeCulture((PlayerTypes)eIndex, iChange, bPlots, true);
 }
 
-void CyCity::changeCultureTimes100(int /*PlayerTypes*/ eIndex, int iChange, bool bPlots)
-{
-	if (m_pCity)
-		m_pCity->changeCultureTimes100((PlayerTypes)eIndex, iChange, bPlots, true);
-}
-
-/************************************************************************************************/
-/* REVOLUTION_MOD                         01/01/08                                jdog5000      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 int CyCity::getNumRevolts(int playerIdx)
 {
 	return m_pCity ? m_pCity->getNumRevolts((PlayerTypes)playerIdx) : -1;
 }
 void CyCity::changeNumRevolts(int playerIdx, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeNumRevolts((PlayerTypes)playerIdx,iChange);
-}
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
-
-bool CyCity::isTradeRoute(int /*PlayerTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->isTradeRoute((PlayerTypes)eIndex) : false;
-}
-
-bool CyCity::isEverOwned(int /*PlayerTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->isEverOwned((PlayerTypes)eIndex) : false;
+	if (m_pCity) m_pCity->changeNumRevolts((PlayerTypes)playerIdx,iChange);
 }
 
 bool CyCity::isRevealed(int /*TeamTypes */eIndex, bool bDebug)
@@ -2224,8 +1302,7 @@ bool CyCity::isRevealed(int /*TeamTypes */eIndex, bool bDebug)
 
 void CyCity::setRevealed(int /*TeamTypes*/ eIndex, bool bNewValue) 	
 {
-	if (m_pCity)
-		m_pCity->setRevealed((TeamTypes)eIndex, bNewValue);
+	if (m_pCity) m_pCity->setRevealed((TeamTypes)eIndex, bNewValue);
 }
 
 bool CyCity::getEspionageVisibility(int /*TeamTypes */eIndex)
@@ -2250,14 +1327,12 @@ std::wstring CyCity::getNameKey()
 
 void CyCity::setName(std::wstring szNewValue, bool bFound)
 {
-	if (m_pCity)
-		m_pCity->setName(CvWString(szNewValue), bFound);
+	if (m_pCity) m_pCity->setName(CvWString(szNewValue), bFound);
 }
 
 void CyCity::changeNoBonusCount(int /*BonusTypes*/ eBonus, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeNoBonusCount((BonusTypes)eBonus, iChange);
+	if (m_pCity) m_pCity->changeNoBonusCount((BonusTypes)eBonus, iChange);
 }
 
 bool CyCity::isNoBonus(int /*BonusTypes*/ eBonus)
@@ -2272,8 +1347,7 @@ int CyCity::getFreeBonus(int /*BonusTypes*/ eIndex)
 
 void CyCity::changeFreeBonus(int /*BonusTypes*/ eIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeFreeBonus((BonusTypes)eIndex, iChange);
+	if (m_pCity) m_pCity->changeFreeBonus((BonusTypes)eIndex, iChange);
 }
 
 int CyCity::getNumBonuses(int /*BonusTypes*/ iBonus)
@@ -2281,14 +1355,9 @@ int CyCity::getNumBonuses(int /*BonusTypes*/ iBonus)
 	return m_pCity ? m_pCity->getNumBonuses((BonusTypes) iBonus) : -1;
 }
 
-bool CyCity::hasBonus(int /*BonusTypes */iBonus)
+bool CyCity::hasBonus(int /*BonusTypes*/ iBonus)
 {
 	return m_pCity ? m_pCity->hasBonus((BonusTypes) iBonus) : false;
-}
-
-bool CyCity::hasVicinityBonus(int iBonus)
-{
-	return m_pCity ? m_pCity->hasVicinityBonus(static_cast<BonusTypes>(iBonus)) : false;
 }
 
 int CyCity::getBuildingProduction(int /*BuildingTypes*/ iIndex)
@@ -2298,17 +1367,7 @@ int CyCity::getBuildingProduction(int /*BuildingTypes*/ iIndex)
 
 void CyCity::setBuildingProduction(int /*BuildingTypes*/ iIndex, int iNewValue)
 {
-	if (m_pCity)
-	{
-		int iAdaptedNewValue = std::max(0, iNewValue);
-		m_pCity->setBuildingProduction((BuildingTypes) iIndex, iAdaptedNewValue);
-	}
-}
-
-void CyCity::changeBuildingProduction(int /*BuildingTypes*/ iIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeBuildingProduction((BuildingTypes) iIndex, iChange);
+	if (m_pCity) m_pCity->setBuildingProduction((BuildingTypes) iIndex, std::max(0, iNewValue));
 }
 
 int CyCity::getBuildingProductionTime(int /*BuildingTypes*/ eIndex)
@@ -2316,34 +1375,15 @@ int CyCity::getBuildingProductionTime(int /*BuildingTypes*/ eIndex)
 	return m_pCity ? m_pCity->getBuildingProductionTime((BuildingTypes)eIndex) : -1;
 }
 
-void CyCity::setBuildingProductionTime(int /*BuildingTypes*/ eIndex, int iNewValue)
-{
-	if (m_pCity)
-		m_pCity->setBuildingProductionTime((BuildingTypes)eIndex, iNewValue);
-}
-
-void CyCity::changeBuildingProductionTime(int /*BuildingTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeBuildingProductionTime((BuildingTypes) eIndex, iChange);
-}
-
-// BUG - Production Decay - start
 bool CyCity::isBuildingProductionDecay(int /*BuildingTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->isBuildingProductionDecay((BuildingTypes)eIndex) : false;
-}
-
-int CyCity::getBuildingProductionDecay(int /*BuildingTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getBuildingProductionDecay((BuildingTypes)eIndex) : 0;
 }
 
 int CyCity::getBuildingProductionDecayTurns(int /*BuildingTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getBuildingProductionDecayTurns((BuildingTypes)eIndex) : 0;
 }
-// BUG - Production Decay - end
 
 int CyCity::getBuildingOriginalOwner(int /*BuildingTypes*/ iIndex)
 {
@@ -2362,32 +1402,12 @@ int CyCity::getUnitProduction(int iIndex)
 
 void CyCity::setUnitProduction(int iIndex, int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setUnitProduction((UnitTypes)iIndex, iNewValue);
+	if (m_pCity) m_pCity->setUnitProduction((UnitTypes)iIndex, iNewValue);
 }
 
-void CyCity::changeUnitProduction(int /*UnitTypes*/ iIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeUnitProduction((UnitTypes) iIndex, iChange);
-}
-
-// BUG - Production Decay - start
 int CyCity::getUnitProductionTime(int /*UnitTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getUnitProductionTime((UnitTypes)eIndex) : -1;
-}
-
-void CyCity::setUnitProductionTime(int /*UnitTypes*/ eIndex, int iNewValue)
-{
-	if (m_pCity)
-		m_pCity->setUnitProductionTime((UnitTypes)eIndex, iNewValue);
-}
-
-void CyCity::changeUnitProductionTime(int /*UnitTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeUnitProductionTime((UnitTypes) eIndex, iChange);
 }
 
 bool CyCity::isUnitProductionDecay(int /*UnitTypes*/ eIndex)
@@ -2395,39 +1415,14 @@ bool CyCity::isUnitProductionDecay(int /*UnitTypes*/ eIndex)
 	return m_pCity ? m_pCity->isUnitProductionDecay((UnitTypes)eIndex) : false;
 }
 
-int CyCity::getUnitProductionDecay(int /*UnitTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getUnitProductionDecay((UnitTypes)eIndex) : 0;
-}
-
 int CyCity::getUnitProductionDecayTurns(int /*UnitTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getUnitProductionDecayTurns((UnitTypes)eIndex) : 0;
 }
-// BUG - Production Decay - end
 
-// BUG - Project Production - start
 int CyCity::getProjectProduction(int /*ProjectTypes*/ iIndex)
 {
 	return m_pCity ? m_pCity->getProjectProduction((ProjectTypes) iIndex) : -1;
-}
-
-void CyCity::setProjectProduction(int /*ProjectTypes*/ iIndex, int iNewValue)
-{
-	if (m_pCity)
-		m_pCity->setProjectProduction((ProjectTypes) iIndex, iNewValue);
-}
-
-void CyCity::changeProjectProduction(int /*ProjectTypes*/ iIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeProjectProduction((ProjectTypes) iIndex, iChange);
-}
-// BUG - Project Production - end
-
-int CyCity::getGreatPeopleUnitRate(int /*UnitTypes*/ iIndex)
-{
-	return m_pCity ? m_pCity->getGreatPeopleUnitRate((UnitTypes) iIndex) : -1;
 }
 
 int CyCity::getGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex)
@@ -2437,25 +1432,17 @@ int CyCity::getGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex)
 
 void CyCity::setGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex, int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setGreatPeopleUnitProgress((UnitTypes) iIndex, iNewValue);
+	if (m_pCity) m_pCity->setGreatPeopleUnitProgress((UnitTypes) iIndex, iNewValue);
 }
 
 void CyCity::changeGreatPeopleUnitProgress(int /*UnitTypes*/ iIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeGreatPeopleUnitProgress((UnitTypes) iIndex, iChange);
+	if (m_pCity) m_pCity->changeGreatPeopleUnitProgress((UnitTypes) iIndex, iChange);
 }
 
 int CyCity::getSpecialistCount(int /*SpecialistTypes*/ eIndex)
 {
 	return m_pCity ? m_pCity->getSpecialistCount((SpecialistTypes)eIndex) : -1;
-}
-
-void CyCity::alterSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->alterSpecialistCount((SpecialistTypes)eIndex, iChange);
 }
 
 int CyCity::getMaxSpecialistCount(int /*SpecialistTypes*/ eIndex)
@@ -2473,11 +1460,6 @@ int CyCity::getForceSpecialistCount(int /*SpecialistTypes*/ eIndex)
 	return m_pCity ? m_pCity->getForceSpecialistCount((SpecialistTypes)eIndex) : -1;
 }
 
-bool CyCity::isSpecialistForced()
-{
-	return m_pCity ? m_pCity->isSpecialistForced() : false;
-}
-
 int CyCity::getImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex)
 {
 	return m_pCity ? m_pCity->getImprovementFreeSpecialists((ImprovementTypes) iIndex) : -1;
@@ -2490,14 +1472,7 @@ int CyCity::getReligionInfluence(int /*ReligionTypes*/ iIndex)
 
 void CyCity::setForceSpecialistCount(int /*SpecialistTypes*/ eIndex, int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setForceSpecialistCount((SpecialistTypes)eIndex, iNewValue);
-}
-
-void CyCity::changeForceSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-		m_pCity->changeForceSpecialistCount((SpecialistTypes)eIndex, iChange);
+	if (m_pCity) m_pCity->setForceSpecialistCount((SpecialistTypes)eIndex, iNewValue);
 }
 
 int CyCity::getFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
@@ -2507,8 +1482,7 @@ int CyCity::getFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
 
 void CyCity::changeFreeSpecialistCount(int /*SpecialistTypes*/ eIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeFreeSpecialistCount((SpecialistTypes)eIndex, iChange, true);
+	if (m_pCity) m_pCity->changeFreeSpecialistCount((SpecialistTypes)eIndex, iChange, true);
 }
 
 int CyCity::getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
@@ -2518,19 +1492,12 @@ int CyCity::getAddedFreeSpecialistCount(int /*SpecialistTypes*/ eIndex)
 
 void CyCity::changeImprovementFreeSpecialists(int /*ImprovementTypes*/ iIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeImprovementFreeSpecialists((ImprovementTypes) iIndex, iChange);
+	if (m_pCity) m_pCity->changeImprovementFreeSpecialists((ImprovementTypes) iIndex, iChange);
 }
 
 void CyCity::changeReligionInfluence(int /*ReligionTypes*/ iIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeReligionInfluence((ReligionTypes) iIndex, iChange);
-}
-
-int CyCity::getCurrentStateReligionHappiness()
-{
-	return m_pCity ? m_pCity->getCurrentStateReligionHappiness() : -1;
+	if (m_pCity) m_pCity->changeReligionInfluence((ReligionTypes) iIndex, iChange);
 }
 
 int CyCity::getStateReligionHappiness(int /*ReligionTypes*/ eIndex)
@@ -2540,23 +1507,7 @@ int CyCity::getStateReligionHappiness(int /*ReligionTypes*/ eIndex)
 
 void CyCity::changeStateReligionHappiness(int /*ReligionTypes*/ eIndex, int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeStateReligionHappiness((ReligionTypes) eIndex, iChange);
-}
-
-int CyCity::getUnitCombatFreeExperience(int /*UnitCombatTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getUnitCombatFreeExperience((UnitCombatTypes) eIndex) : -1;
-}
-
-int CyCity::getFreePromotionCount(int /*PromotionTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->getFreePromotionCount((PromotionTypes) eIndex) : -1;
-}
-
-bool CyCity::isFreePromotion(int /*PromotionTypes*/ eIndex)
-{
-	return m_pCity ? m_pCity->isFreePromotion((PromotionTypes) eIndex) : false;
+	if (m_pCity) m_pCity->changeStateReligionHappiness((ReligionTypes) eIndex, iChange);
 }
 
 int CyCity::getSpecialistFreeExperience() const
@@ -2569,20 +1520,9 @@ int CyCity::getEspionageDefenseModifier() const
 	return m_pCity ? m_pCity->getEspionageDefenseModifier() : 0;
 }
 
-bool CyCity::isWorkingPlotByIndex(int iIndex)
-{
-	return m_pCity ? m_pCity->isWorkingPlot(iIndex) : false;
-}
-
 bool CyCity::isWorkingPlot(CyPlot* pPlot) 
 {
 	return m_pCity ? m_pCity->isWorkingPlot(pPlot->getPlot()) : false;
-}
-
-void CyCity::alterWorkingPlot(int iIndex)
-{
-	if (m_pCity)
-		m_pCity->alterWorkingPlot(iIndex);
 }
 
 int CyCity::getNumRealBuilding(int /*BuildingTypes*/ iIndex)
@@ -2592,13 +1532,7 @@ int CyCity::getNumRealBuilding(int /*BuildingTypes*/ iIndex)
 
 void CyCity::setNumRealBuilding(int /*BuildingTypes*/ iIndex, int iNewValue)
 {
-	if (m_pCity)
-		m_pCity->setNumRealBuilding((BuildingTypes) iIndex, iNewValue);
-}
-
-int CyCity::getNumFreeBuilding(int /*BuildingTypes*/ iIndex)
-{
-	return m_pCity ? m_pCity->getNumFreeBuilding((BuildingTypes) iIndex) : -1;
+	if (m_pCity) m_pCity->setNumRealBuilding((BuildingTypes) iIndex, iNewValue);
 }
 
 bool CyCity::isHasReligion(int /*ReligionTypes*/ iIndex)
@@ -2608,8 +1542,7 @@ bool CyCity::isHasReligion(int /*ReligionTypes*/ iIndex)
 
 void CyCity::setHasReligion(int /*ReligionTypes*/ iIndex, bool bNewValue, bool bAnnounce, bool bArrows)
 {
-	if (m_pCity)
-		m_pCity->setHasReligion((ReligionTypes) iIndex, bNewValue, bAnnounce, bArrows);
+	if (m_pCity) m_pCity->setHasReligion((ReligionTypes) iIndex, bNewValue, bAnnounce, bArrows);
 }
 
 bool CyCity::isHasCorporation(int /*CorporationTypes*/ iIndex)
@@ -2619,8 +1552,7 @@ bool CyCity::isHasCorporation(int /*CorporationTypes*/ iIndex)
 
 void CyCity::setHasCorporation(int /*CorporationTypes*/ iIndex, bool bNewValue, bool bAnnounce, bool bArrows)
 {
-	if (m_pCity)
-		m_pCity->setHasCorporation((CorporationTypes) iIndex, bNewValue, bAnnounce, bArrows);
+	if (m_pCity) m_pCity->setHasCorporation((CorporationTypes) iIndex, bNewValue, bAnnounce, bArrows);
 }
 
 bool CyCity::isActiveCorporation(int /*CorporationTypes*/ eCorporation)
@@ -2640,20 +1572,17 @@ int CyCity::getTradeRoutes()
 
 void CyCity::clearOrderQueue()
 {
-	if (m_pCity)
-		m_pCity->clearOrderQueue();
+	if (m_pCity) m_pCity->clearOrderQueue();
 }
 
 void CyCity::pushOrder(OrderTypes eOrder, int iData1, int iData2, bool bSave, bool bPop, bool bAppend, bool bForce)
 {
-	if (m_pCity)
-		m_pCity->pushOrder(eOrder, iData1, iData2, bSave, bPop, bAppend, bForce);
+	if (m_pCity) m_pCity->pushOrder(eOrder, iData1, iData2, bSave, bPop, bAppend, bForce);
 }
 
 void CyCity::popOrder(int iNum, bool bFinish, bool bChoose)
 {
-	if (m_pCity)
-		m_pCity->popOrder(iNum, bFinish, bChoose);
+	if (m_pCity) m_pCity->popOrder(iNum, bFinish, bChoose);
 }
 
 int CyCity::getOrderQueueLength()
@@ -2664,49 +1593,6 @@ int CyCity::getOrderQueueLength()
 OrderData CyCity::getOrderFromQueue(int iIndex)
 {
 	return m_pCity ? m_pCity->getOrderAt(iIndex) : OrderData::InvalidOrder;
-}
-
-void CyCity::setWallOverridePoints(const python::tuple& kPoints)
-{
-	if (!m_pCity)
-		return;
-
-	float* pPointsData = NULL;
-	int iSeqLength = gDLL->getPythonIFace()->putSeqInArray(kPoints.ptr() /*src*/, &pPointsData /*dst*/);
-	
-	// copy to pairs vector
-	std::vector< std::pair<float, float> > pointsVec;
-	pointsVec.reserve(iSeqLength/2);
-	int i;
-	for(i=0;i<iSeqLength;i+=2)
-	{
-		std::pair<float, float> pr(pPointsData[i], pPointsData[i+1]);
-		pointsVec.push_back(pr);
-	}
-
-	m_pCity->setWallOverridePoints(pointsVec);
-
-	delete [] pPointsData;
-	
-}
-
-python::tuple CyCity::getWallOverridePoints() const
-{
-	python::tuple tup = python::make_tuple();
-	if (m_pCity)
-	{
-		std::vector< std::pair<float, float> > pointsVec = m_pCity->getWallOverridePoints();
-		uint i;
-		for(i=0;i<pointsVec.size();i++)
-			tup += python::make_tuple(pointsVec[i].first, pointsVec[i].second);
-	}
-
-	return tup;
-}
-
-bool CyCity::AI_avoidGrowth()
-{
-	return m_pCity ? m_pCity->AI_avoidGrowth() : false;
 }
 
 bool CyCity::AI_isEmphasize(int iEmphasizeType)
@@ -2731,18 +1617,7 @@ std::string CyCity::getScriptData() const
 
 void CyCity::setScriptData(std::string szNewValue)
 {
-	if (m_pCity)
-		m_pCity->setScriptData(szNewValue);
-}
-
-int CyCity::visiblePopulation()
-{
-	if ( m_pCity )
-	{
-		return m_pCity->visiblePopulation();
-	}
-
-	return 0;
+	if (m_pCity) m_pCity->setScriptData(szNewValue);
 }
 
 int CyCity::getBuildingYieldChange(int /*BuildingTypes*/ eBuilding, int /*YieldTypes*/ eYield) const
@@ -2752,10 +1627,7 @@ int CyCity::getBuildingYieldChange(int /*BuildingTypes*/ eBuilding, int /*YieldT
 
 void CyCity::setBuildingYieldChange(int /*BuildingTypes*/ eBuilding, int /*YieldTypes*/ eYield, int iChange)
 {
-	if (m_pCity)
-	{
-		m_pCity->setBuildingYieldChange((BuildingTypes)eBuilding, (YieldTypes)eYield, iChange);
-	}
+	if (m_pCity) m_pCity->setBuildingYieldChange((BuildingTypes)eBuilding, (YieldTypes)eYield, iChange);
 }
 
 int CyCity::getBuildingCommerceChange(int /*BuildingTypes*/ eBuilding, int /*CommerceTypes*/ eCommerce) const
@@ -2765,10 +1637,7 @@ int CyCity::getBuildingCommerceChange(int /*BuildingTypes*/ eBuilding, int /*Com
 
 void CyCity::setBuildingCommerceChange(int /*BuildingTypes*/ eBuilding, int /*CommerceTypes*/ eCommerce, int iChange)
 {
-	if (m_pCity)
-	{
-		m_pCity->setBuildingCommerceChange((BuildingTypes)eBuilding, (CommerceTypes)eCommerce, iChange);
-	}
+	if (m_pCity) m_pCity->setBuildingCommerceChange((BuildingTypes)eBuilding, (CommerceTypes)eCommerce, iChange);
 }
 
 int CyCity::getBuildingHappyChange(int /*BuildingTypes*/ eBuilding) const
@@ -2778,10 +1647,7 @@ int CyCity::getBuildingHappyChange(int /*BuildingTypes*/ eBuilding) const
 
 void CyCity::setBuildingHappyChange(int /*BuildingTypes*/ eBuilding, int iChange)
 {
-	if (m_pCity)
-	{
-		m_pCity->setBuildingHappyChange((BuildingTypes)eBuilding, iChange);
-	}
+	if (m_pCity) m_pCity->setBuildingHappyChange((BuildingTypes)eBuilding, iChange);
 }
 
 int CyCity::getBuildingHealthChange(int /*BuildingTypes*/ eBuilding) const
@@ -2791,142 +1657,19 @@ int CyCity::getBuildingHealthChange(int /*BuildingTypes*/ eBuilding) const
 
 void CyCity::setBuildingHealthChange(int /*BuildingTypes*/ eBuilding, int iChange)
 {
-	if (m_pCity)
-	{
-		m_pCity->setBuildingHealthChange((BuildingTypes)eBuilding, iChange);
-	}
+	if (m_pCity) m_pCity->setBuildingHealthChange((BuildingTypes)eBuilding, iChange);
 }
 
 int CyCity::getLiberationPlayer(bool bConquest)
 {
-	return (m_pCity ? m_pCity->getLiberationPlayer(bConquest) : -1);
-}
-
-void CyCity::liberate(bool bConquest)
-{
-	if (m_pCity)
-	{
-		m_pCity->liberate(bConquest);
-	}
-}
-
-/************************************************************************************************/
-/* REVOLUTION_MOD                         02/01/09                                jdog5000      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-int /*UnitTypes*/ CyCity::AI_bestUnit()
-{
-	int iDummyValue;
-
-	return (m_pCity ? m_pCity->AI_bestUnit(iDummyValue) : -1);
-}
-
-int /*UnitTypes*/ CyCity::AI_bestUnitAI(int iUnitAIType)
-{
-	int iDummyValue;
-
-	return (m_pCity ? m_pCity->AI_bestUnitAI((UnitAITypes)iUnitAIType, iDummyValue) : -1);
-}
-
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
-
-/************************************************************************************************/
-/* Afforess	                  Start		 12/20/09                                                */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-int CyCity::getCivicHappiness() const
-{
-	return (m_pCity ? m_pCity->getCivicHappiness() : 0);
-}
-
-int CyCity::getNumCityPlots() const
-{
-	return (m_pCity ? m_pCity->getNumCityPlots() : 0);
-}
-
-int CyCity::getPopulationgrowthratepercentage() const
-{
-	return (m_pCity ? m_pCity->getPopulationgrowthratepercentage() : 0);
-}
-
-void CyCity::changePopulationgrowthratepercentage(int iChange)
-{
-	if (m_pCity)
-	{
-		m_pCity->changePopulationgrowthratepercentage(iChange, true);
-	}
-}
-
-bool CyCity::isValidTerrainForBuildings(int /*BuildingTypes*/ eIndex) const
-{
-	return (m_pCity ? m_pCity->isValidTerrainForBuildings((BuildingTypes)eIndex) : false);
-}
-
-bool CyCity::hasFreshWater() const
-{
-	return (m_pCity ? m_pCity->hasFreshWater() : false);
-}
-
-bool CyCity::canUpgradeUnit(int /*UnitTypes*/ eUnit) const
-{
-	return (m_pCity ? m_pCity->canUpgradeUnit((UnitTypes)eUnit) : false);
-}
-
-void CyCity::changeUnitProductionModifier(int /*UnitTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-	{
-		m_pCity->changeUnitProductionModifier((UnitTypes)eIndex, iChange);
-	}
-}
-
-int CyCity::getBuildingProductionModifier(int /*BuildingTypes*/ eIndex) const
-{
-	return (m_pCity ? m_pCity->getBuildingProductionModifier((BuildingTypes)eIndex) : 0);
-}
-
-void CyCity::changeBuildingProductionModifier(int /*BuildingTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-	{
-		m_pCity->changeBuildingProductionModifier((BuildingTypes)eIndex, iChange);
-	}
-}
-
-int CyCity::getBonusDefenseChanges(int /*BonusTypes*/ eIndex) const
-{
-	return (m_pCity ? m_pCity->getBonusDefenseChanges((BonusTypes)eIndex) : 0);
-}
-
-void CyCity::changeBonusDefenseChanges(int /*BonusTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-	{
-		m_pCity->changeBonusDefenseChanges((BonusTypes)eIndex, iChange);
-	}
+	return m_pCity ? m_pCity->getLiberationPlayer(bConquest) : -1;
 }
 
 int CyCity::getBonusCommerceRateModifier(int /*CommerceTypes*/ eIndex) const
 {
-	return (m_pCity ? m_pCity->getBonusCommerceRateModifier((CommerceTypes)eIndex) : 0);
+	return m_pCity ? m_pCity->getBonusCommerceRateModifier((CommerceTypes)eIndex) : 0;
 }
 
-void CyCity::changeBonusCommerceRateModifier(int /*CommerceTypes*/ eIndex, int iChange)
-{
-	if (m_pCity)
-	{
-		m_pCity->changeBonusCommerceRateModifier((CommerceTypes)eIndex, iChange);
-	}
-}
-
-bool CyCity::AI_isDefended(int iExtra)
-{
-	return (m_pCity ? m_pCity->AI_isDefended(iExtra*GET_PLAYER(m_pCity->getOwner()).strengthOfBestUnitAI(DOMAIN_LAND, UNITAI_CITY_DEFENSE)) : 0);
-}
 int CyCity::getArea() const
 {
 	return m_pCity ? m_pCity->getArea() : 0;
@@ -2939,8 +1682,7 @@ bool CyCity::isWeLoveTheKingDay() const
 
 void CyCity::setWeLoveTheKingDay(bool bWeLoveTheKingDay)
 {
-	if (m_pCity)
-		m_pCity->setWeLoveTheKingDay(bWeLoveTheKingDay);
+	if (m_pCity) m_pCity->setWeLoveTheKingDay(bWeLoveTheKingDay);
 }  
 
 int CyCity::calculateCorporateTaxes() const
@@ -2950,19 +1692,12 @@ int CyCity::calculateCorporateTaxes() const
 
 void CyCity::changePowerCount(int iChange, bool bDirty)
 {
-	if (m_pCity)
-		m_pCity->changePowerCount(iChange, bDirty);
+	if (m_pCity) m_pCity->changePowerCount(iChange, bDirty);
 } 
-
-int CyCity::getEventAnger()
-{
-	return m_pCity ? m_pCity->getEventAnger() : 0;
-}
 
 void CyCity::changeEventAnger(int iChange)
 {
-	if (m_pCity)
-		m_pCity->changeEventAnger(iChange);
+	if (m_pCity) m_pCity->changeEventAnger(iChange);
 } 
 
 int CyCity::getNumPopulationEmployed()
@@ -2982,26 +1717,12 @@ bool CyCity::isAutomatedCanBuild(int /*BuildTypes*/ eIndex)
 
 void CyCity::setAutomatedCanBuild(int /*BuildTypes*/ eIndex, bool bNewValue)
 {
-	if (m_pCity)
-		m_pCity->setAutomatedCanBuild((BuildTypes)eIndex, bNewValue);
+	if (m_pCity) m_pCity->setAutomatedCanBuild((BuildTypes)eIndex, bNewValue);
 }
-
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
 CvProperties* CyCity::getProperties()
 {
-	if (m_pCity)
-		return m_pCity->getProperties();
-	return NULL;
-}
-
-
-void CyCity::setBuildingListInvalid()
-{
-	if (m_pCity)
-		m_pCity->setBuildingListInvalid();
+	return m_pCity ? m_pCity->getProperties() : NULL;
 }
 
 bool CyCity::getBuildingListFilterActive(int eFilter)
@@ -3011,8 +1732,7 @@ bool CyCity::getBuildingListFilterActive(int eFilter)
 
 void CyCity::setBuildingListFilterActive(int eFilter, bool bActive)
 {
-	if (m_pCity)
-		m_pCity->setBuildingListFilterActive((BuildingFilterTypes)eFilter, bActive);
+	if (m_pCity) m_pCity->setBuildingListFilterActive((BuildingFilterTypes)eFilter, bActive);
 }
 
 int CyCity::getBuildingListGrouping()
@@ -3022,8 +1742,7 @@ int CyCity::getBuildingListGrouping()
 
 void CyCity::setBuildingListGrouping(int eGrouping)
 {
-	if (m_pCity)
-		m_pCity->setBuildingListGrouping((BuildingGroupingTypes)eGrouping);
+	if (m_pCity) m_pCity->setBuildingListGrouping((BuildingGroupingTypes)eGrouping);
 }
 
 int CyCity::getBuildingListSorting()
@@ -3033,8 +1752,7 @@ int CyCity::getBuildingListSorting()
 
 void CyCity::setBuildingListSorting(int eSorting)
 {
-	if (m_pCity)
-		m_pCity->setBuildingListSorting((BuildingSortTypes)eSorting);
+	if (m_pCity) m_pCity->setBuildingListSorting((BuildingSortTypes)eSorting);
 }
 
 int CyCity::getBuildingListGroupNum()
@@ -3052,42 +1770,9 @@ int CyCity::getBuildingListType(int iGroup, int iPos)
 	return m_pCity ? m_pCity->getBuildingListType(iGroup, iPos) : 0;
 }
 
-int CyCity::getBuildingListSelectedBuildingRow()
-{
-	return m_pCity ? m_pCity->getBuildingListSelectedBuildingRow() : 0;
-}
-
-int CyCity::getBuildingListSelectedWonderRow()
-{
-	return m_pCity ? m_pCity->getBuildingListSelectedWonderRow() : 0;
-}
-
-void CyCity::setBuildingListSelectedBuilding(int eBuilding)
-{
-	if (m_pCity)
-		m_pCity->setBuildingListSelectedBuilding((BuildingTypes)eBuilding);
-}
-
-void CyCity::setBuildingListSelectedWonder(int eWonder)
-{
-	if (m_pCity)
-		m_pCity->setBuildingListSelectedWonder((BuildingTypes)eWonder);
-}
-
-int CyCity::getBuildingListSelectedBuilding()
-{
-	return m_pCity ? m_pCity->getBuildingListSelectedBuilding() : NO_BUILDING;
-}
-
-int CyCity::getBuildingListSelectedWonder()
-{
-	return m_pCity ? m_pCity->getBuildingListSelectedWonder() : NO_BUILDING;
-}
-
 void CyCity::setUnitListInvalid()
 {
-	if (m_pCity)
-		m_pCity->setUnitListInvalid();
+	if (m_pCity) m_pCity->setUnitListInvalid();
 }
 
 bool CyCity::getUnitListFilterActive(int eFilter)
@@ -3097,8 +1782,7 @@ bool CyCity::getUnitListFilterActive(int eFilter)
 
 void CyCity::setUnitListFilterActive(int eFilter, bool bActive)
 {
-	if (m_pCity)
-		m_pCity->setUnitListFilterActive((UnitFilterTypes)eFilter, bActive);
+	if (m_pCity) m_pCity->setUnitListFilterActive((UnitFilterTypes)eFilter, bActive);
 }
 
 int CyCity::getUnitListGrouping()
@@ -3108,8 +1792,7 @@ int CyCity::getUnitListGrouping()
 
 void CyCity::setUnitListGrouping(int eGrouping)
 {
-	if (m_pCity)
-		m_pCity->setUnitListGrouping((UnitGroupingTypes)eGrouping);
+	if (m_pCity) m_pCity->setUnitListGrouping((UnitGroupingTypes)eGrouping);
 }
 
 int CyCity::getUnitListSorting()
@@ -3119,8 +1802,7 @@ int CyCity::getUnitListSorting()
 
 void CyCity::setUnitListSorting(int eSorting)
 {
-	if (m_pCity)
-		m_pCity->setUnitListSorting((UnitSortTypes)eSorting);
+	if (m_pCity) m_pCity->setUnitListSorting((UnitSortTypes)eSorting);
 }
 
 int CyCity::getUnitListGroupNum()
@@ -3136,55 +1818,6 @@ int CyCity::getUnitListNumInGroup(int iGroup)
 int CyCity::getUnitListType(int iGroup, int iPos)
 {
 	return m_pCity ? m_pCity->getUnitListType(iGroup, iPos) : 0;
-}
-
-int CyCity::getUnitListSelectedRow()
-{
-	return m_pCity ? m_pCity->getUnitListSelectedRow() : 0;
-}
-
-void CyCity::setUnitListSelected(int eUnit)
-{
-	if (m_pCity)
-		m_pCity->setUnitListSelected((UnitTypes)eUnit);
-}
-
-int CyCity::getUnitListSelected()
-{
-	return m_pCity ? m_pCity->getUnitListSelected() : NO_UNIT;
-}
-
-int CyCity::localCitizenCaptureResistance() const														
-{
-	return m_pCity ? m_pCity->localCitizenCaptureResistance() : 0;
-}
-
-int CyCity::getPrioritorizedSpecialist() const														
-{
-	return m_pCity ? m_pCity->getPrioritorizedSpecialist() : 0;
-}
-
-void CyCity::setPrioritorizedSpecialist(int eSpecialist)
-{
-	if (m_pCity)
-		m_pCity->setPrioritorizedSpecialist((SpecialistTypes)eSpecialist);
-}
-
-bool CyCity::isSpecialistBanned(int eSpecialist)														
-{
-	return m_pCity ? m_pCity->isSpecialistBanned((SpecialistTypes)eSpecialist) : false;
-}
-
-void CyCity::banSpecialist(int eSpecialist)
-{
-	if (m_pCity)
-		m_pCity->banSpecialist((SpecialistTypes)eSpecialist);
-}
-
-void CyCity::removeSpecialistBan(int eSpecialist)
-{
-	if (m_pCity)
-		m_pCity->removeSpecialistBan((SpecialistTypes)eSpecialist);
 }
 
 bool CyCity::isEventOccured(int eEvent) const

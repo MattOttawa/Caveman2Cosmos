@@ -1,8 +1,3 @@
-//
-// Python wrapper class for global vars and fxns
-// Author - Mustafa Thamer
-//
-
 #include "CvGameCoreDLL.h"
 #include "CvGameAI.h"
 #include "CvPlayerAI.h"
@@ -13,15 +8,12 @@
 #include "CyPlayer.h"
 #include "CyTeam.h"
 
-CyGlobalContext::CyGlobalContext()
-{
-}
+//
+// Python wrapper class for global vars and fxns
+// Author - Mustafa Thamer
+//
 
-CyGlobalContext::~CyGlobalContext()
-{
-}
-
-CyGlobalContext& CyGlobalContext::getInstance()
+const CyGlobalContext& CyGlobalContext::getInstance()
 {
 	static CyGlobalContext globalContext;
 	return globalContext;
@@ -36,12 +28,11 @@ bool CyGlobalContext::isDebugBuild() const
 #endif
 }
 
-CyGame* CyGlobalContext::getCyGame() const
+CyGame& CyGlobalContext::getCyGame() const
 {
-	static CyGame cyGame(&GC.getGame());
-	return &cyGame;
+	static CyGame cyGame(reinterpret_cast<CvGame&>(GC.getGame()));
+	return cyGame;
 }
-
 
 CyMap* CyGlobalContext::getCyMap() const
 {
@@ -52,7 +43,6 @@ CyMap* CyGlobalContext::getCyMap() const
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-
 bool CyGlobalContext::multiMapsEnabled() const
 {
 	return GC.multiMapsEnabled();
@@ -73,7 +63,7 @@ CvMapInfo* CyGlobalContext::getMapInfo(int iMap) const
 	return &(GC.getMapInfo((MapTypes)iMap));
 }
 
-CyMap* CyGlobalContext::getMapByIndex(int iIndex)
+CyMap* CyGlobalContext::getMapByIndex(int iIndex) const
 {
 	static CyMap cyMap;
 	cyMap = GC.getMapByIndex((MapTypes)iIndex);
@@ -99,22 +89,16 @@ bool CyGlobalContext::mapInitialized(int iMap) const
 /***** Parallel Maps - End *****/
 /*******************************/	
 
-void CyGlobalContext::setIsInPedia(bool isInPedia)
-{
-	GC.setIsInPedia(isInPedia);
-}
-
-CyPlayer* CyGlobalContext::getCyPlayer(int idx)
+CyPlayer* CyGlobalContext::getCyPlayer(int idx) const
 {
 	static CyPlayer cyPlayers[MAX_PLAYERS];
-	static bool bInit=false;
+	static bool bInit = false;
 
 	if (!bInit)
 	{
-		int i;
-		for(i=0;i<MAX_PLAYERS;i++)
-			cyPlayers[i]=CyPlayer(&GET_PLAYER((PlayerTypes)i));
-		bInit=true;
+		for (int i = 0; i < MAX_PLAYERS; i++)
+			cyPlayers[i] = CyPlayer(&GET_PLAYER((PlayerTypes)i));
+		bInit = true;
 	}
 
 	if (idx >= 0 && idx < MAX_PLAYERS)
@@ -127,9 +111,9 @@ CyPlayer* CyGlobalContext::getCyPlayer(int idx)
 }
 
 
-CyPlayer* CyGlobalContext::getCyActivePlayer()
+CyPlayer* CyGlobalContext::getCyActivePlayer() const
 {
-	PlayerTypes pt = GC.getGame().getActivePlayer();
+	const PlayerTypes pt = GC.getGame().getActivePlayer();
 	return pt != NO_PLAYER ? getCyPlayer(pt) : NULL;
 }
 
@@ -139,22 +123,21 @@ CvRandom& CyGlobalContext::getCyASyncRand() const
 	return GC.getASyncRand();
 }
 
-CyTeam* CyGlobalContext::getCyTeam(int i)
+CyTeam* CyGlobalContext::getCyTeam(int i) const
 {
 	static CyTeam cyTeams[MAX_TEAMS];
-	static bool bInit=false;
+	static bool bInit = false;
 
 	if (!bInit)
 	{
-		int j;
-		for(j=0;j<MAX_TEAMS;j++)
+		for (int j = 0; j < MAX_TEAMS; j++)
 		{
-			cyTeams[j]=CyTeam(&GET_TEAM((TeamTypes)j));
+			cyTeams[j] = CyTeam(&GET_TEAM((TeamTypes)j));
 		}
 		bInit = true;
 	}
 
-	return i<MAX_TEAMS ? &cyTeams[i] : NULL;
+	return i < MAX_TEAMS ? &cyTeams[i] : NULL;
 }
 
 
@@ -472,18 +455,11 @@ int CyGlobalContext::getInfoTypeForString(const char* szInfoType) const
 {
 	return GC.getInfoTypeForString(szInfoType, true);
 }
-/************************************************************************************************/
-/* Afforess	                  Start		 03/18/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 int CyGlobalContext::getInfoTypeForStringWithHiddenAssert(const char* szInfoType) const
 {
 	return GC.getInfoTypeForString(szInfoType, true);
 }
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
 int CyGlobalContext::getTypesEnum(const char* szType) const
 {
@@ -494,12 +470,6 @@ int CyGlobalContext::getTypesEnum(const char* szType) const
 CvPlayerColorInfo* CyGlobalContext::getPlayerColorInfo(int i) const
 {
 	return (i>=0 && i<GC.getNumPlayerColorInfos()) ? &GC.getPlayerColorInfo((PlayerColorTypes)i) : NULL;
-}
-
-
-CvInfoBase* CyGlobalContext::getHints(int i) const
-{
-	return ((i >= 0 && i < GC.getNumHints()) ? &GC.getHints(i) : NULL);
 }
 
 
@@ -533,13 +503,13 @@ CvInfoBase* CyGlobalContext::getMemoryInfo(int i) const
 }
 
 
-CvPlayerOptionInfo* CyGlobalContext::getPlayerOptionsInfoByIndex(int i) const
+CvPlayerOptionInfo* CyGlobalContext::getPlayerOptionInfo(int i) const
 {
 	return &GC.getPlayerOptionInfo((PlayerOptionTypes) i);
 }
 
 
-CvGraphicOptionInfo* CyGlobalContext::getGraphicOptionsInfoByIndex(int i) const
+CvGraphicOptionInfo* CyGlobalContext::getGraphicOptionInfo(int i) const
 {
 	return &GC.getGraphicOptionInfo((GraphicOptionTypes) i);
 }
@@ -554,12 +524,6 @@ CvInfoBase* CyGlobalContext::getConceptInfo(int i) const
 CvInfoBase* CyGlobalContext::getNewConceptInfo(int i) const
 {
 	return (i>=0 && i<GC.getNumNewConceptInfos()) ? &GC.getNewConceptInfo((NewConceptTypes)i) : NULL;
-}
-
-
-CvInfoBase* CyGlobalContext::getCityTabInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumCityTabInfos()) ? &GC.getCityTabInfo((CityTabTypes)i) : NULL;
 }
 
 
@@ -587,36 +551,6 @@ CvInfoBase* CyGlobalContext::getForceControlInfo(int i) const
 }
 
 
-CvInfoBase* CyGlobalContext::getSeasonInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumSeasonInfos()) ? &GC.getSeasonInfo((SeasonTypes)i) : NULL;
-}
-
-
-CvInfoBase* CyGlobalContext::getMonthInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumMonthInfos()) ? &GC.getMonthInfo((MonthTypes)i) : NULL;
-}
-
-
-CvInfoBase* CyGlobalContext::getDenialInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumDenialInfos()) ? &GC.getDenialInfo((DenialTypes)i) : NULL;
-}
-
-
-CvQuestInfo* CyGlobalContext::getQuestInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumQuestInfos()) ? &GC.getQuestInfo(i) : NULL;
-}
-
-
-CvTutorialInfo* CyGlobalContext::getTutorialInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumTutorialInfos()) ? &GC.getTutorialInfo(i) : NULL;
-}
-
-
 CvEventTriggerInfo* CyGlobalContext::getEventTriggerInfo(int i) const
 {
 	return (i>=0 && i<GC.getNumEventTriggerInfos()) ? &GC.getEventTriggerInfo((EventTriggerTypes)i) : NULL;
@@ -632,12 +566,6 @@ CvEventInfo* CyGlobalContext::getEventInfo(int i) const
 CvEspionageMissionInfo* CyGlobalContext::getEspionageMissionInfo(int i) const
 {
 	return (i>=0 && i<GC.getNumEspionageMissionInfos()) ? &GC.getEspionageMissionInfo((EspionageMissionTypes)i) : NULL;
-}
-
-
-CvUnitArtStyleTypeInfo* CyGlobalContext::getUnitArtStyleTypeInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumUnitArtStyleTypeInfos()) ? &GC.getUnitArtStyleTypeInfo((UnitArtStyleTypes)i) : NULL;
 }
 
 
@@ -677,12 +605,6 @@ CvArtInfoCivilization* CyGlobalContext::getCivilizationArtInfo(int i) const
 }
 
 
-CvArtInfoLeaderhead* CyGlobalContext::getLeaderheadArtInfo(int i) const
-{
-	return (i>=0 && i<ARTFILEMGR.getNumLeaderheadArtInfos()) ? &ARTFILEMGR.getLeaderheadArtInfo(i) : NULL;
-}
-
-
 CvArtInfoBonus* CyGlobalContext::getBonusArtInfo(int i) const
 {
 	return (i>=0 && i<ARTFILEMGR.getNumBonusArtInfos()) ? &ARTFILEMGR.getBonusArtInfo(i) : NULL;
@@ -695,34 +617,7 @@ CvArtInfoImprovement* CyGlobalContext::getImprovementArtInfo(int i) const
 }
 
 
-CvArtInfoTerrain* CyGlobalContext::getTerrainArtInfo(int i) const
-{
-	return (i>=0 && i<ARTFILEMGR.getNumTerrainArtInfos()) ? &ARTFILEMGR.getTerrainArtInfo(i) : NULL;
-}
-
-
-CvArtInfoFeature* CyGlobalContext::getFeatureArtInfo(int i) const
-{
-	return (i>=0 && i<ARTFILEMGR.getNumFeatureArtInfos()) ? &ARTFILEMGR.getFeatureArtInfo(i) : NULL;
-}
-
-
 CvGameSpeedInfo* CyGlobalContext::getGameSpeedInfo(int i) const
 {
 	return &(GC.getGameSpeedInfo((GameSpeedTypes) i));
-}
-
-CvTurnTimerInfo* CyGlobalContext::getTurnTimerInfo(int i) const
-{
-	return &(GC.getTurnTimerInfo((TurnTimerTypes) i));
-}
-
-bool CyGlobalContext::isShiftDown() const {
-	return gDLL->shiftKey();
-}
-bool CyGlobalContext::isAltDown() const {
-	return gDLL->altKey();
-}
-bool CyGlobalContext::isCtrlDown() const {
-	return gDLL->ctrlKey();
 }

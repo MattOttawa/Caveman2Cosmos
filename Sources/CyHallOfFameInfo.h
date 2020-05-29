@@ -10,7 +10,7 @@ class CyReplayInfo;
 class CyHallOfFameInfo
 {
 public:
-	CyHallOfFameInfo();
+	CyHallOfFameInfo() {}
 
 	void loadReplays();
 	int getNumGames() const;

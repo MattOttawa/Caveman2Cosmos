@@ -7,7 +7,6 @@
 //-----------------------------------------------------------------------------
 //	Copyright (c) 2005 Firaxis Games, Inc. All rights reserved.
 //-----------------------------------------------------------------------------
-//
 
 #include "CvGameCoreDLL.h"
 #include "CvMapGenerator.h"
@@ -20,8 +19,7 @@ CyMapGenerator::CyMapGenerator() : m_pMapGenerator(NULL)
 }
 
 CyMapGenerator::CyMapGenerator(CvMapGenerator* pMapGenerator) : m_pMapGenerator(pMapGenerator)
-{
-}
+{}
 
 void CyMapGenerator::doRiver(CyPlot* pStartPlot, CardinalDirectionTypes eCardinalDirection)
 {

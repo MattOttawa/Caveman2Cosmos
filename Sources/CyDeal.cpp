@@ -1,24 +1,11 @@
+#include "CvGameCoreDLL.h"
+#include "CyDeal.h"
+
 //
 // Python wrapper class for CvGame 
 // 
 
-#include "CvGameCoreDLL.h"
-#include "CyDeal.h"
-
-CyDeal::CyDeal(CvDeal* pDeal) :
-	m_pDeal(pDeal)
-{
-
-}
-
-CyDeal::~CyDeal()
-{
-}
-
-bool CyDeal::isNone()
-{ 
-	return (NULL == m_pDeal); 
-}
+CyDeal::CyDeal(CvDeal* pDeal) : m_pDeal(pDeal) {}
 
 int CyDeal::getID() const
 {
