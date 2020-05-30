@@ -29,7 +29,6 @@ void CyTeamPythonInterface()
 
 		.def("getAssets", &CyTeam::getAssets, "int ()")
 		.def("getPower", &CyTeam::getPower, "int (bool bIncludeVassals)")
-
 		.def("getTotalVictoryScore", &CyTeam::getTotalVictoryScore, "int ()")
 
 		.def("getAtWarCount", &CyTeam::getAtWarCount, "int (bool bIgnoreMinors)")

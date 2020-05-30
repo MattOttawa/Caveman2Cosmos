@@ -526,7 +526,7 @@ void CyPlot::changeCulture(int /*PlayerTypes*/ eIndex, int iChange, bool bUpdate
 	if (m_pPlot) m_pPlot->changeCulture((PlayerTypes)eIndex, iChange, bUpdate);
 }
 
-int CyPlot::getFoundValue(int /*PlayerTypes*/ eIndex)	 const
+int CyPlot::getFoundValue(int /*PlayerTypes*/ eIndex) const
 {
 	return m_pPlot ? m_pPlot->getFoundValue((PlayerTypes)eIndex) : -1;
 }

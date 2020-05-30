@@ -147,7 +147,7 @@ int CyGame::getActiveTeam() const
 	return m_pGame.getActiveTeam();
 }
 
-int /* CivilizationTypes */ CyGame::getActiveCivilizationType() const
+int /*CivilizationTypes*/ CyGame::getActiveCivilizationType() const
 {
 	return m_pGame.getActiveCivilizationType();
 }
@@ -452,7 +452,7 @@ int /*GameStateTypes*/ CyGame::getGameState() const
 	return m_pGame.getGameState();
 }
 
-int /* HandicapTypes */ CyGame::getHandicapType() const
+int /*HandicapTypes*/ CyGame::getHandicapType() const
 {
 	return m_pGame.getHandicapType();
 }

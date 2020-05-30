@@ -9,11 +9,10 @@
 // Python wrapper class for CySelectionGroup
 //
 
-CySelectionGroup::CySelectionGroup() : m_pSelectionGroup(NULL)
-{}
+CySelectionGroup::CySelectionGroup() : m_pSelectionGroup(NULL) {}
 
-CySelectionGroup::CySelectionGroup(CvSelectionGroup* pSelectionGroup) : m_pSelectionGroup(pSelectionGroup)
-{}
+CySelectionGroup::CySelectionGroup(CvSelectionGroup* pSelectionGroup) : m_pSelectionGroup(pSelectionGroup) {}
+
 
 void CySelectionGroup::pushMission(MissionTypes eMission, int iData1, int iData2, int iFlags, bool bAppend, bool bManual, MissionAITypes eMissionAI, CyPlot* pMissionAIPlot, CyUnit* pMissionAIUnit)
 {
@@ -150,5 +149,5 @@ int CySelectionGroup::getMissionType(int iNode)
 
 int CySelectionGroup::getMissionData1(int iNode)
 {
-	return m_pSelectionGroup ? m_pSelectionGroup->getMissionData1( iNode ) : -1;
+	return m_pSelectionGroup ? m_pSelectionGroup->getMissionData1(iNode) : -1;
 }

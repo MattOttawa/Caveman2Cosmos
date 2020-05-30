@@ -15,8 +15,9 @@ class CyTeam
 public:
 	CyTeam();
 	explicit CyTeam(CvTeam* pTeam);		// Call from C++
-	CvTeam* getTeam() { return m_pTeam;	}	// Call from C++
-	bool isNone() { return (m_pTeam==NULL); }
+
+	CvTeam* getTeam() const { return m_pTeam; }	// Call from C++
+	bool isNone() const { return m_pTeam == NULL; }
 
 	bool isRebelAgainst(int iTeam);
 	void setRebelAgainst(int iTeam, bool bNewValue);

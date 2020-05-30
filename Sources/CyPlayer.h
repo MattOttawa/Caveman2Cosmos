@@ -21,8 +21,8 @@ public:
 	CyPlayer();
 	explicit CyPlayer(CvPlayer* pPlayer); // Call from C++
 
-	CvPlayer* getPlayer() { return m_pPlayer; } // Call from C++
-	bool isNone() { return (m_pPlayer==NULL); }
+	CvPlayer* getPlayer() const { return m_pPlayer; } // Call from C++
+	bool isNone() const { return m_pPlayer == NULL; }
 
 	void changeLeader(int /*LeaderHeadTypes*/ eNewLeader);
 	void changeCiv(int /*CivilizationTypes*/ eNewCiv);
@@ -130,7 +130,7 @@ public:
 	int calculatePreInflatedCosts();
 	int calculateInflatedCosts();
 
-	void setFreeUnitCountdown( int iValue );
+	void setFreeUnitCountdown(int iValue);
 
 	int calculateGoldRate();
 	int calculateTotalCommerce();
@@ -139,7 +139,7 @@ public:
 	int calculateBaseNetResearch();
 	bool canEverResearch(int /*TechTypes*/ eTech);
 	bool canResearch(int /*TechTypes*/ eTech);
-	int /* TechTypes */ getCurrentResearch();
+	int /*TechTypes*/ getCurrentResearch();
 	bool isCurrentResearchRepeat();
 	int getResearchTurnsLeft(int /*TechTypes*/ eTech, bool bOverflow);
 
@@ -282,12 +282,11 @@ public:
 	void changeTechScore(int iChange);
 
 	bool isStrike();
-
 	bool isMADNukesEnabled() const;
 
 	int getID();
-	int /* HandicapTypes */ getHandicapType();
-	int /* CivilizationTypes */ getCivilizationType();
+	int /*HandicapTypes*/ getHandicapType();
+	int /*CivilizationTypes*/ getCivilizationType();
 	int /*LeaderHeadTypes*/ getLeaderType();
 	int /*LeaderHeadTypes*/ getPersonalityType();
 	void setPersonalityType(int /*LeaderHeadTypes*/ eNewValue);
@@ -357,7 +356,7 @@ public:
 	void changeCombatExperience(int iChange);
 	void setCombatExperience(int iExperience);
 
-	int getQueuePosition( int /*TechTypes*/ eTech );
+	int getQueuePosition(int /*TechTypes*/ eTech);
 	void clearResearchQueue();
 	bool pushResearch(int /*TechTypes*/ iIndex, bool bClear);
 	int getLengthResearchQueue();
@@ -375,9 +374,9 @@ public:
 	int getNumSelectionGroups();
 	CySelectionGroup* getSelectionGroup(int iID);
 
-	void trigger(/*EventTriggerTypes*/int eEventTrigger);
+	void trigger(int /*EventTriggerTypes*/ eEventTrigger);
 	const EventTriggeredData* getEventOccured(int /*EventTypes*/ eEvent) const;
-	void resetEventOccured(/*EventTypes*/ int eEvent);
+	void resetEventOccured(int /*EventTypes*/ eEvent);
 	EventTriggeredData* getEventTriggered(int iID) const;
 	EventTriggeredData* initTriggeredData(int eEventTrigger, bool bFire, int iCityId, int iPlotX, int iPlotY, int eOtherPlayer, int iOtherPlayerCityId, int eReligion, int eCorporation, int iUnitId, int eBuilding);
 
@@ -418,7 +417,7 @@ public:
 
 	bool canSplitEmpire() const;
 	bool canSplitArea(int iAreaId) const;
-	bool assimilatePlayer( int iPlayer );
+	bool assimilatePlayer(int iPlayer);
 
 	bool canHaveTradeRoutesWith(int iPlayer);
 

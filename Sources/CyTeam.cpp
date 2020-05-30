@@ -8,580 +8,522 @@
 // Python wrapper class for CvTeam 
 //
 
-CyTeam::CyTeam() : m_pTeam(NULL)
+CyTeam::CyTeam() : m_pTeam(NULL) {}
+
+CyTeam::CyTeam(CvTeam* pTeam) : m_pTeam(pTeam) {}
+
+
+bool CyTeam::isRebelAgainst(int iTeam)
 {
+	return m_pTeam->isRebelAgainst((TeamTypes)iTeam);
 }
 
-CyTeam::CyTeam(CvTeam* pTeam) : m_pTeam(pTeam)
+void CyTeam::setRebelAgainst(int iTeam, bool bNewValue)
 {
+	m_pTeam->setRebelAgainst((TeamTypes)iTeam, bNewValue);
 }
 
-/************************************************************************************************/
-/* REVOLUTION_MOD                         01/01/08                                jdog5000      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-bool CyTeam::isRebelAgainst( int iTeam )
+int CyTeam::countRebelAgainst()
 {
-	if (m_pTeam)
-		return m_pTeam->isRebelAgainst( (TeamTypes)iTeam );
-	else
-		return false;
+	return m_pTeam->countRebelAgainst();
 }
 
-void CyTeam::setRebelAgainst( int iTeam, bool bNewValue )
-{
-	if (m_pTeam)
-		m_pTeam->setRebelAgainst( (TeamTypes)iTeam, bNewValue );
-}
-
-int CyTeam::countRebelAgainst( )
-{
-	if (m_pTeam)
-		return m_pTeam->countRebelAgainst( );
-	else
-		return -1;
-}
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
 void CyTeam::addTeam(int /*TeamTypes*/ eTeam)
 {
-	if (m_pTeam)
-		m_pTeam->addTeam((TeamTypes)eTeam);
+	m_pTeam->addTeam((TeamTypes)eTeam);
 }
 
 bool CyTeam::canChangeWarPeace(int /*TeamTypes*/ eTeam)
 {
-	return m_pTeam ? m_pTeam->canChangeWarPeace((TeamTypes)eTeam) : false;
+	return m_pTeam->canChangeWarPeace((TeamTypes)eTeam);
 }
 
 bool CyTeam::canDeclareWar(int /*TeamTypes*/ eTeam)
 {
-	return m_pTeam ? m_pTeam->canDeclareWar((TeamTypes)eTeam) : false;
+	return m_pTeam->canDeclareWar((TeamTypes)eTeam);
 }
 
 void CyTeam::declareWar(int /*TeamTypes*/ eTeam, bool bNewDiplo, int /*WarPlanTypes*/ eWarPlan)
 {
-	if (m_pTeam)
-		m_pTeam->declareWar((TeamTypes)eTeam, bNewDiplo, (WarPlanTypes)eWarPlan);
+	m_pTeam->declareWar((TeamTypes)eTeam, bNewDiplo, (WarPlanTypes)eWarPlan);
 }
 
 void CyTeam::makePeace(int /*TeamTypes*/ eTeam)
 {
-	if (m_pTeam)
-		m_pTeam->makePeace((TeamTypes)eTeam);
+	m_pTeam->makePeace((TeamTypes)eTeam);
 }
 
 bool CyTeam::canContact(int /*TeamTypes*/ eTeam)
 {
-	return m_pTeam ? m_pTeam->canContact((TeamTypes)eTeam) : false;
+	return m_pTeam->canContact((TeamTypes)eTeam);
 }
 
 void CyTeam::meet(int /*TeamTypes*/ eTeam, bool bNewDiplo)
 {
-	if (m_pTeam)
-		m_pTeam->meet((TeamTypes)eTeam, bNewDiplo);
+	m_pTeam->meet((TeamTypes)eTeam, bNewDiplo);
 }
 
 void CyTeam::signOpenBorders(int /*TeamTypes*/ eTeam)
 {
-	if (m_pTeam)
-		m_pTeam->signOpenBorders((TeamTypes)eTeam);
+	m_pTeam->signOpenBorders((TeamTypes)eTeam);
 }
 
 void CyTeam::signDefensivePact(int /*TeamTypes*/ eTeam)
 {
-	if (m_pTeam)
-		m_pTeam->signDefensivePact((TeamTypes)eTeam);
+	m_pTeam->signDefensivePact((TeamTypes)eTeam);
 }
 
 int CyTeam::getAssets()
 {
-	return m_pTeam ? m_pTeam->getAssets() : -1;
+	return m_pTeam->getAssets();
 }
 
 int CyTeam::getPower(bool bIncludeVassals)
 {
-	return m_pTeam ? m_pTeam->getPower(bIncludeVassals) : -1;
+	return m_pTeam->getPower(bIncludeVassals);
 }
 
 int CyTeam::getTotalVictoryScore()
 {
-	return m_pTeam ? m_pTeam->getTotalVictoryScore() : -1;
+	return m_pTeam->getTotalVictoryScore();
 }
 
 int CyTeam::getAtWarCount(bool bIgnoreMinors)
 {
-	return m_pTeam ? m_pTeam->getAtWarCount(bIgnoreMinors) : -1;
+	return m_pTeam->getAtWarCount(bIgnoreMinors);
 }
 
 int CyTeam::getHasMetCivCount(bool bIgnoreMinors)
 {
-	return m_pTeam ? m_pTeam->getHasMetCivCount(bIgnoreMinors) : -1;
+	return m_pTeam->getHasMetCivCount(bIgnoreMinors);
 }
 
 bool CyTeam::isAVassal() const
 {
-	return m_pTeam ? m_pTeam->isAVassal() : false;
+	return m_pTeam->isAVassal();
 }
 
 int CyTeam::getUnitMaking(int /*UnitTypes*/ eUnit)
 {
-	return m_pTeam ? m_pTeam->getUnitMaking((UnitTypes)eUnit) : -1;
+	return m_pTeam->getUnitMaking((UnitTypes)eUnit);
 }
 
 int CyTeam::getUnitCountPlusMaking(int /*UnitTypes*/ eUnit)
 {
-	return m_pTeam ? m_pTeam->getUnitCountPlusMaking((UnitTypes)eUnit) : -1;
+	return m_pTeam->getUnitCountPlusMaking((UnitTypes)eUnit);
 }
 
 int CyTeam::getBuildingCountPlusMaking(int /*BuildingTypes*/ eBuilding) const
 {
-	return m_pTeam ? m_pTeam->getBuildingCountPlusMaking((BuildingTypes)eBuilding) : -1;
+	return m_pTeam->getBuildingCountPlusMaking((BuildingTypes)eBuilding);
 }
 
 int CyTeam::getHasReligionCount(int /*ReligionTypes*/ eReligion)
 {
-	return m_pTeam ? m_pTeam->getHasReligionCount((ReligionTypes)eReligion) : -1;
+	return m_pTeam->getHasReligionCount((ReligionTypes)eReligion);
 }
 
 int CyTeam::getHasCorporationCount(int /*CorporationTypes*/ eReligion)
 {
-	return m_pTeam ? m_pTeam->getHasCorporationCount((CorporationTypes)eReligion) : -1;
+	return m_pTeam->getHasCorporationCount((CorporationTypes)eReligion);
 }
 
 int CyTeam::countTotalCulture()
 {
-	return m_pTeam ? m_pTeam->processedTeamCulture() : -1;
+	return m_pTeam->processedTeamCulture();
 }
 
 int CyTeam::countNumCitiesByArea(CyArea* pArea)
 {
-	return m_pTeam ? m_pTeam->countNumCitiesByArea(pArea->getArea()) : -1;
+	return m_pTeam->countNumCitiesByArea(pArea->getArea());
 }
 
 int CyTeam::getResearchCost(int /*TechTypes*/ eTech)
 {
-	return m_pTeam ? m_pTeam->getResearchCost((TechTypes)eTech) : -1;
+	return m_pTeam->getResearchCost((TechTypes)eTech);
 }
 
 bool CyTeam::hasHolyCity(int /*ReligionTypes*/ eReligion)
 {
-	return m_pTeam ? m_pTeam->hasHolyCity((ReligionTypes)eReligion) : false;
+	return m_pTeam->hasHolyCity((ReligionTypes)eReligion);
 }
 
 bool CyTeam::hasHeadquarters(int /*CorporationTypes*/ eCorporation)
 {
-	return m_pTeam ? m_pTeam->hasHeadquarters((CorporationTypes)eCorporation) : false;
+	return m_pTeam->hasHeadquarters((CorporationTypes)eCorporation);
 }
 
 bool CyTeam::isHuman()
 {
-	return m_pTeam ? m_pTeam->isHuman() : false;
+	return m_pTeam->isHuman();
 }
 
 bool CyTeam::isBarbarian()
 {
-	return m_pTeam ? m_pTeam->isBarbarian() : false;
+	return m_pTeam->isBarbarian();
 }
 
 bool CyTeam::isNPC()
 {
-	return m_pTeam ? m_pTeam->isNPC() : false;
+	return m_pTeam->isNPC();
 }
 
 bool CyTeam::isHominid()
 {
-	return m_pTeam ? m_pTeam->isHominid() : false;
+	return m_pTeam->isHominid();
 }
 
 bool CyTeam::isMinorCiv()
 {
-	return m_pTeam ? m_pTeam->isMinorCiv() : false;
+	return m_pTeam->isMinorCiv();
 }
 
-/************************************************************************************************/
-/* REVOLUTION_MOD                         10/23/08                                jdog5000      */
-/*                                                                                              */
-/* For minor civs                                                                               */
-/************************************************************************************************/
 void CyTeam::setIsMinorCiv(bool bNewValue, bool bDoBarbCivCheck)
 {
-	if( m_pTeam )
+	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 	{
-		for(int iI = 0; iI < MAX_PC_PLAYERS; iI++)
+		if(GET_PLAYER((PlayerTypes)iI).getTeam() == m_pTeam->getID())
 		{
-			if( GET_PLAYER((PlayerTypes)iI).getTeam() == m_pTeam->getID() )
+			if (GET_PLAYER((PlayerTypes)iI).getCivilizationType() < 0)
 			{
-				if (GET_PLAYER((PlayerTypes)iI).getCivilizationType() < 0)
-				{
-					FAssertMsg(false, "GET_PLAYER((PlayerTypes)iI) of m_pTeam should have a civilizationType");
+				FAssertMsg(false, "GET_PLAYER((PlayerTypes)iI) of m_pTeam should have a civilizationType");
 #ifdef _DEBUG
-					throw new std::exception();
+				throw new std::exception();
 #endif
-				}
 			}
 		}
-		
-		m_pTeam->setIsMinorCiv(bNewValue, bDoBarbCivCheck);
 	}
+	m_pTeam->setIsMinorCiv(bNewValue, bDoBarbCivCheck);
 }
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
 
 int /*PlayerTypes*/ CyTeam::getLeaderID()
 {
-	return m_pTeam ? m_pTeam->getLeaderID() : -1;
+	return m_pTeam->getLeaderID();
 }
 
 int /*HandicapTypes*/ CyTeam::getHandicapType()
 {
-	return m_pTeam ? m_pTeam->getHandicapType() : -1;
+	return m_pTeam->getHandicapType();
 }
 
 std::wstring CyTeam::getName()
 {
-	return m_pTeam ? m_pTeam->getName() : L"";
+	return m_pTeam->getName();
 }
 
 int CyTeam::getNumMembers()
 {
-	return m_pTeam ? m_pTeam->getNumMembers() : -1;
+	return m_pTeam->getNumMembers();
 }
 
 bool CyTeam::isAlive()
 {
-	return m_pTeam ? m_pTeam->isAlive() : false;
+	return m_pTeam->isAlive();
 }
 
 bool CyTeam::isEverAlive()
 {
-	return m_pTeam ? m_pTeam->isEverAlive() : false;
+	return m_pTeam->isEverAlive();
 }
 
 int CyTeam::getNumCities()
 {
-	return m_pTeam ? m_pTeam->getNumCities() : -1;
+	return m_pTeam->getNumCities();
 }
 
 int CyTeam::getTotalPopulation()
 {
-	return m_pTeam ? m_pTeam->getTotalPopulation() : -1;
+	return m_pTeam->getTotalPopulation();
 }
 
 int CyTeam::getTotalLand()
 {
-	return m_pTeam ? m_pTeam->getTotalLand() : -1;
+	return m_pTeam->getTotalLand();
 }
 
 int CyTeam::getNukeInterception()
 {
-	return m_pTeam ? m_pTeam->getNukeInterception() : -1;
+	return m_pTeam->getNukeInterception();
 }
 
 void CyTeam::changeNukeInterception(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeNukeInterception(iChange);
+	m_pTeam->changeNukeInterception(iChange);
 }
 
 int CyTeam::getForceTeamVoteEligibilityCount(int /*VoteSourceTypes*/ eVoteSource)
 {
-	return m_pTeam ? m_pTeam->getForceTeamVoteEligibilityCount((VoteSourceTypes)eVoteSource) : -1;
+	return m_pTeam->getForceTeamVoteEligibilityCount((VoteSourceTypes)eVoteSource);
 }
 
 bool CyTeam::isForceTeamVoteEligible(int /*VoteSourceTypes*/ eVoteSource)
 {
-	return m_pTeam ? m_pTeam->isForceTeamVoteEligible((VoteSourceTypes)eVoteSource) : false;
+	return m_pTeam->isForceTeamVoteEligible((VoteSourceTypes)eVoteSource);
 }
 
 void CyTeam::changeForceTeamVoteEligibilityCount(int /*VoteSourceTypes*/ eVoteSource, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeForceTeamVoteEligibilityCount((VoteSourceTypes)eVoteSource, iChange);
+	m_pTeam->changeForceTeamVoteEligibilityCount((VoteSourceTypes)eVoteSource, iChange);
 }
 
 int CyTeam::getExtraWaterSeeFromCount()
 {
-	return m_pTeam ? m_pTeam->getExtraWaterSeeFromCount() : -1;
+	return m_pTeam->getExtraWaterSeeFromCount();
 }
 
 bool CyTeam::isExtraWaterSeeFrom()	 
 {
-	return m_pTeam ? m_pTeam->isExtraWaterSeeFrom() : false;
+	return m_pTeam->isExtraWaterSeeFrom();
 }
 
 void CyTeam::changeExtraWaterSeeFromCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeExtraWaterSeeFromCount(iChange);
+	m_pTeam->changeExtraWaterSeeFromCount(iChange);
 }
 
 int CyTeam::getMapTradingCount()
 {
-	return m_pTeam ? m_pTeam->getMapTradingCount() : -1;
+	return m_pTeam->getMapTradingCount();
 }
 
 bool CyTeam::isMapTrading()
 {
-	return m_pTeam ? m_pTeam->isMapTrading() : false;
+	return m_pTeam->isMapTrading();
 }
 
 void CyTeam::changeMapTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeMapTradingCount(iChange);
+	m_pTeam->changeMapTradingCount(iChange);
 }
 
 int CyTeam::getTechTradingCount()
 {
-	return m_pTeam ? m_pTeam->getTechTradingCount() : -1;
+	return m_pTeam->getTechTradingCount();
 }
 
 bool CyTeam::isTechTrading()
 {
-	return m_pTeam ? m_pTeam->isTechTrading() : false;
+	return m_pTeam->isTechTrading();
 }
 
 void CyTeam::changeTechTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeTechTradingCount(iChange);
+	m_pTeam->changeTechTradingCount(iChange);
 }
 
 int CyTeam::getGoldTradingCount()
 {
-	return m_pTeam ? m_pTeam->getGoldTradingCount() : -1;
+	return m_pTeam->getGoldTradingCount();
 }
 
 bool CyTeam::isGoldTrading()
 {
-	return m_pTeam ? m_pTeam->isGoldTrading() : false;
+	return m_pTeam->isGoldTrading();
 }
 
 void CyTeam::changeGoldTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeGoldTradingCount(iChange);
+	m_pTeam->changeGoldTradingCount(iChange);
 }
 
 int CyTeam::getOpenBordersTradingCount()
 {
-	return m_pTeam ? m_pTeam->getOpenBordersTradingCount() : -1;
+	return m_pTeam->getOpenBordersTradingCount();
 }
 
 bool CyTeam::isOpenBordersTrading()
 {
-	return m_pTeam ? m_pTeam->isOpenBordersTrading() : false;
+	return m_pTeam->isOpenBordersTrading();
 }
 
 void CyTeam::changeOpenBordersTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeOpenBordersTradingCount(iChange);
+	m_pTeam->changeOpenBordersTradingCount(iChange);
 }
 
 int CyTeam::getDefensivePactTradingCount()
 {
-	return m_pTeam ? m_pTeam->getDefensivePactTradingCount() : -1;
+	return m_pTeam->getDefensivePactTradingCount();
 }
 
 bool CyTeam::isDefensivePactTrading()
 {
-	return m_pTeam ? m_pTeam->isDefensivePactTrading() : false;
+	return m_pTeam->isDefensivePactTrading();
 }
 
 void CyTeam::changeDefensivePactTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeDefensivePactTradingCount(iChange);
+	m_pTeam->changeDefensivePactTradingCount(iChange);
 }
 
 int CyTeam::getPermanentAllianceTradingCount()
 {
-	return m_pTeam ? m_pTeam->getPermanentAllianceTradingCount() : -1;
+	return m_pTeam->getPermanentAllianceTradingCount();
 }
 
 bool CyTeam::isPermanentAllianceTrading()
 {
-	return m_pTeam ? m_pTeam->isPermanentAllianceTrading() : false;
+	return m_pTeam->isPermanentAllianceTrading();
 }
 
 void CyTeam::changePermanentAllianceTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changePermanentAllianceTradingCount(iChange);
+	m_pTeam->changePermanentAllianceTradingCount(iChange);
 }
 
 int CyTeam::getVassalTradingCount()
 {
-	return m_pTeam ? m_pTeam->getVassalTradingCount() : -1;
+	return m_pTeam->getVassalTradingCount();
 }
 
 bool CyTeam::isVassalStateTrading()
 {
-	return m_pTeam ? m_pTeam->isVassalStateTrading() : false;
+	return m_pTeam->isVassalStateTrading();
 }
 
 void CyTeam::changeVassalTradingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeVassalTradingCount(iChange);
+	m_pTeam->changeVassalTradingCount(iChange);
 }
 
 int CyTeam::getBridgeBuildingCount()
 {
-	return m_pTeam ? m_pTeam->getBridgeBuildingCount() : -1;
+	return m_pTeam->getBridgeBuildingCount();
 }
 
 bool CyTeam::isBridgeBuilding()
 {
-	return m_pTeam ? m_pTeam->isBridgeBuilding() : false;
+	return m_pTeam->isBridgeBuilding();
 }
 
 void CyTeam::changeBridgeBuildingCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeBridgeBuildingCount(iChange);
+	m_pTeam->changeBridgeBuildingCount(iChange);
 }
 
 int CyTeam::getIrrigationCount()
 {
-	return m_pTeam ? m_pTeam->getIrrigationCount() : -1;
+	return m_pTeam->getIrrigationCount();
 }
 
 bool CyTeam::isIrrigation()
 {
-	return m_pTeam ? m_pTeam->isIrrigation() : false;
+	return m_pTeam->isIrrigation();
 }
 
 void CyTeam::changeIrrigationCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeIrrigationCount(iChange);
+	m_pTeam->changeIrrigationCount(iChange);
 }
 
 int CyTeam::getIgnoreIrrigationCount()
 {
-	return m_pTeam ? m_pTeam->getIgnoreIrrigationCount() : -1;
+	return m_pTeam->getIgnoreIrrigationCount();
 }
 
 bool CyTeam::isIgnoreIrrigation()
 {
-	return m_pTeam ? m_pTeam->isIgnoreIrrigation() : false;
+	return m_pTeam->isIgnoreIrrigation();
 }
 
 void CyTeam::changeIgnoreIrrigationCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeIgnoreIrrigationCount(iChange);
+	m_pTeam->changeIgnoreIrrigationCount(iChange);
 }
 
 int CyTeam::getWaterWorkCount()
 {
-	return m_pTeam ? m_pTeam->getWaterWorkCount() : -1;
+	return m_pTeam->getWaterWorkCount();
 }
 
 bool CyTeam::isWaterWork()
 {
-	return m_pTeam ? m_pTeam->isWaterWork() : false;
+	return m_pTeam->isWaterWork();
 }
 
 void CyTeam::changeWaterWorkCount(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeWaterWorkCount(iChange);
+	m_pTeam->changeWaterWorkCount(iChange);
 }
 
 int CyTeam::getVassalPower() const
 {
-	return (m_pTeam ? m_pTeam->getVassalPower() : -1);
+	return m_pTeam->getVassalPower();
 }
 
 void CyTeam::setVassalPower(int iPower)
 {
-	if (m_pTeam)
-	{
-		m_pTeam->setVassalPower(iPower);
-	}
+	m_pTeam->setVassalPower(iPower);
 }
 
 int CyTeam::getMasterPower() const
 {
-	return (m_pTeam ? m_pTeam->getMasterPower() : -1);
+	return m_pTeam->getMasterPower();
 }
 
 void CyTeam::setMasterPower(int iPower)
 {
-	if (m_pTeam)
-		m_pTeam->setMasterPower(iPower);
+	m_pTeam->setMasterPower(iPower);
 }
 
 int CyTeam::getEnemyWarWearinessModifier() const
 {
-	return m_pTeam ? m_pTeam->getEnemyWarWearinessModifier() : -1;
+	return m_pTeam->getEnemyWarWearinessModifier();
 }
 
 void CyTeam::changeEnemyWarWearinessModifier(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeEnemyWarWearinessModifier(iChange);
+	m_pTeam->changeEnemyWarWearinessModifier(iChange);
 }
 
 bool CyTeam::isMapCentering()
 {
-	return m_pTeam ? m_pTeam->isMapCentering() : false;
+	return m_pTeam->isMapCentering();
 }
 
 void CyTeam::setMapCentering(bool bNewValue)
 {
-	if (m_pTeam)
-		m_pTeam->setMapCentering(bNewValue);
+	m_pTeam->setMapCentering(bNewValue);
 }
 
 int CyTeam::getID()
 {
-	return m_pTeam ? m_pTeam->getID() : -1;
+	return m_pTeam->getID();
 }
 
 int CyTeam::getWarWeariness(int /*TeamTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getWarWeariness((TeamTypes)eIndex) : -1;
+	return m_pTeam->getWarWeariness((TeamTypes)eIndex);
 }
 
 void CyTeam::changeWarWeariness(int /*TeamTypes*/ eIndex, int iChange)	 
 {
-	if (m_pTeam)
-		m_pTeam->changeWarWeariness((TeamTypes)eIndex, iChange);
+	m_pTeam->changeWarWeariness((TeamTypes)eIndex, iChange);
 }
 
 int CyTeam::getCommerceFlexibleCount(int /*CommerceTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getCommerceFlexibleCount((CommerceTypes)eIndex) : -1;
+	return m_pTeam->getCommerceFlexibleCount((CommerceTypes)eIndex);
 }
 
 bool CyTeam::isCommerceFlexible(int /*CommerceTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->isCommerceFlexible((CommerceTypes)eIndex) : false;
+	return m_pTeam->isCommerceFlexible((CommerceTypes)eIndex);
 }
 
 void CyTeam::changeCommerceFlexibleCount(int /*CommerceTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeCommerceFlexibleCount((CommerceTypes)eIndex, iChange);
+	m_pTeam->changeCommerceFlexibleCount((CommerceTypes)eIndex, iChange);
 }
 
 int CyTeam::getExtraMoves(int /*DomainTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getExtraMoves((DomainTypes)eIndex) : -1;
+	return m_pTeam->getExtraMoves((DomainTypes)eIndex);
 }
 
 void CyTeam::changeExtraMoves(int /*DomainTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeExtraMoves((DomainTypes)eIndex, iChange);
+	m_pTeam->changeExtraMoves((DomainTypes)eIndex, iChange);
 }
 
 bool CyTeam::isHasMet(int /*TeamTypes*/ eIndex)
@@ -597,236 +539,214 @@ bool CyTeam::isHasMet(int /*TeamTypes*/ eIndex)
         return false;
 	}
 
-	return m_pTeam ? m_pTeam->isHasMet((TeamTypes)eIndex) : false;
+	return m_pTeam->isHasMet((TeamTypes)eIndex);
 }
 
 bool CyTeam::isAtWar(int /*TeamTypes*/ iIndex)
 {
-	if (iIndex == NO_TEAM) return false;
-	return m_pTeam ? m_pTeam->isAtWar((TeamTypes)iIndex) : false;
+	return (iIndex != NO_TEAM) ? m_pTeam->isAtWar((TeamTypes)iIndex) : false;
 }
 
 bool CyTeam::isPermanentWarPeace(int /*TeamTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->isPermanentWarPeace((TeamTypes)eIndex) : false;
+	return m_pTeam->isPermanentWarPeace((TeamTypes)eIndex);
 }
 
 void CyTeam::setPermanentWarPeace(int /*TeamTypes*/ eIndex, bool bNewValue)
 {
-	if (m_pTeam)
-		m_pTeam->setPermanentWarPeace((TeamTypes)eIndex, bNewValue);
+	m_pTeam->setPermanentWarPeace((TeamTypes)eIndex, bNewValue);
 }
 
 bool CyTeam::isOpenBorders(int /*TeamTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->isOpenBorders((TeamTypes)eIndex) : false;
+	return m_pTeam->isOpenBorders((TeamTypes)eIndex);
 }
 
 bool CyTeam::isForcePeace(int /*TeamTypes*/ eIndex)				 
 {
-	return m_pTeam ? m_pTeam->isForcePeace((TeamTypes)eIndex) : false;
+	return m_pTeam->isForcePeace((TeamTypes)eIndex);
 }
 
 bool CyTeam::isVassal(int /*TeamTypes*/ eIndex)				 
 {
-	return m_pTeam ? m_pTeam->isVassal((TeamTypes)eIndex) : false;
+	return m_pTeam->isVassal((TeamTypes)eIndex);
 }
 
 void CyTeam::assignVassal(int /*TeamTypes*/ eIndex, bool bSurrender)				 
 {
-	if (m_pTeam)
-		m_pTeam->assignVassal((TeamTypes)eIndex, bSurrender);
+	m_pTeam->assignVassal((TeamTypes)eIndex, bSurrender);
 }
 
 void CyTeam::freeVassal(int /*TeamTypes*/ eIndex)				 
 {
-	if (m_pTeam)
-		m_pTeam->freeVassal((TeamTypes)eIndex);
+	m_pTeam->freeVassal((TeamTypes)eIndex);
 }
 
 bool CyTeam::isDefensivePact(int /*TeamTypes*/ eIndex)				 
 {
-	return m_pTeam ? m_pTeam->isDefensivePact((TeamTypes)eIndex) : false;
+	return m_pTeam->isDefensivePact((TeamTypes)eIndex);
 }
 
 int CyTeam::getRouteChange(int /*RouteTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getRouteChange((RouteTypes)eIndex) : -1;
+	return m_pTeam->getRouteChange((RouteTypes)eIndex);
 }
 
 void CyTeam::changeRouteChange(int /*RouteTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeRouteChange((RouteTypes)eIndex, iChange);
+	m_pTeam->changeRouteChange((RouteTypes)eIndex, iChange);
 }
 
 int CyTeam::getProjectCount(int /*ProjectTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getProjectCount((ProjectTypes)eIndex) : -1;
+	return m_pTeam->getProjectCount((ProjectTypes)eIndex);
 }
 
 int CyTeam::getProjectDefaultArtType(int /*ProjectTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getProjectDefaultArtType((ProjectTypes)eIndex) : -1;
+	return m_pTeam->getProjectDefaultArtType((ProjectTypes)eIndex);
 }
 
 int CyTeam::getProjectArtType(int /*ProjectTypes*/ eIndex, int number)
 {
-	if(m_pTeam != NULL)
-		return m_pTeam->getProjectArtType((ProjectTypes)eIndex, number);
-	else
-		return -1;
+	return m_pTeam->getProjectArtType((ProjectTypes)eIndex, number);
 }
 
 void CyTeam::setProjectArtType(int /*ProjectTypes*/ eIndex, int number, int value)
 {
-	if(m_pTeam != NULL)
-		m_pTeam->setProjectArtType((ProjectTypes)eIndex, number, value);
+	m_pTeam->setProjectArtType((ProjectTypes)eIndex, number, value);
 }
 
 void CyTeam::changeProjectCount(int /*ProjectTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeProjectCount((ProjectTypes)eIndex, iChange);
+	m_pTeam->changeProjectCount((ProjectTypes)eIndex, iChange);
 }
 
 int CyTeam::getProjectMaking(int /*ProjectTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getProjectMaking((ProjectTypes)eIndex) : -1;
+	return m_pTeam->getProjectMaking((ProjectTypes)eIndex);
 }
 
 int CyTeam::getUnitCount(int /*UnitTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getUnitCount((UnitTypes)eIndex) : -1;
+	return m_pTeam->getUnitCount((UnitTypes)eIndex);
 }
 
 bool CyTeam::isUnitMaxedOut(int /*UnitTypes*/ eIndex, int iExtra)
 {
-	return m_pTeam ? m_pTeam->isUnitMaxedOut((UnitTypes)eIndex, iExtra) : false;
+	return m_pTeam->isUnitMaxedOut((UnitTypes)eIndex, iExtra);
 }
 
 int CyTeam::getBuildingCount(int /*BuildingTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getBuildingCount((BuildingTypes)eIndex) : -1;
+	return m_pTeam->getBuildingCount((BuildingTypes)eIndex);
 }
 
 bool CyTeam::isBuildingMaxedOut(int /*BuildingTypes*/ eIndex, int iExtra)
 {
-	return m_pTeam ? m_pTeam->isBuildingMaxedOut((BuildingTypes)eIndex, iExtra) : false;
+	return m_pTeam->isBuildingMaxedOut((BuildingTypes)eIndex, iExtra);
 }
 
 bool CyTeam::isObsoleteBuilding(int /*BuildingTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->isObsoleteBuilding((BuildingTypes)eIndex) : false;
+	return m_pTeam->isObsoleteBuilding((BuildingTypes)eIndex);
 }
 
 int CyTeam::getResearchProgress(int /*TechTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getResearchProgress((TechTypes)eIndex) : -1;
+	return m_pTeam->getResearchProgress((TechTypes)eIndex);
 }
 
 void CyTeam::setResearchProgress(int /*TechTypes*/ eIndex, int iNewValue, int /*PlayerTypes*/ ePlayer)
 {
-	if (m_pTeam && eIndex != NO_TECH)
+	if (eIndex != NO_TECH)
 		m_pTeam->setResearchProgress((TechTypes)eIndex, iNewValue, (PlayerTypes)ePlayer);
 }
 
 void CyTeam::changeResearchProgress(int /*TechTypes*/ eIndex, int iChange, int /*PlayerTypes*/ ePlayer)
 {
-	if (m_pTeam && eIndex != NO_TECH)
+	if (eIndex != NO_TECH)
 		m_pTeam->changeResearchProgress((TechTypes)eIndex, iChange, (PlayerTypes)ePlayer);
 }
 
 int CyTeam::getTechCount(int /*TechTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getTechCount((TechTypes)eIndex) : -1;
+	return m_pTeam->getTechCount((TechTypes)eIndex);
 }
 
 bool CyTeam::isTerrainTrade(int /*TerrainTypes*/ eIndex)
 {
-	if (m_pTeam)
-	{
-		return m_pTeam->isTerrainTrade((TerrainTypes)eIndex);
-	}
-	return false;
+	return m_pTeam->isTerrainTrade((TerrainTypes)eIndex);
 }
 
 bool CyTeam::isRiverTrade()
 {
-	if (m_pTeam)
-	{
-		return m_pTeam->isRiverTrade();
-	}
-	return false;
+	return m_pTeam->isRiverTrade();
 }
 
-bool CyTeam::isHasTech(int /* TechTypes */ iIndex)
+bool CyTeam::isHasTech(int /*TechTypes*/ iIndex)
 {
-	return m_pTeam ? m_pTeam->isHasTech((TechTypes)iIndex) : false;
+	return m_pTeam->isHasTech((TechTypes)iIndex);
 }
 
 void CyTeam::setHasTech(int /*TechTypes*/ eIndex, bool bNewValue, int /*PlayerTypes*/ ePlayer, bool bFirst, bool bAnnounce)
 {
-	if (m_pTeam)
-		m_pTeam->setHasTech((TechTypes)eIndex, bNewValue, (PlayerTypes)ePlayer, bFirst, bAnnounce);
+	m_pTeam->setHasTech((TechTypes)eIndex, bNewValue, (PlayerTypes)ePlayer, bFirst, bAnnounce);
 }
 
-bool CyTeam::isNoTradeTech(int /* TechTypes */ iIndex)
+bool CyTeam::isNoTradeTech(int /*TechTypes*/ iIndex)
 {
-	return m_pTeam ? m_pTeam->isNoTradeTech((TechTypes)iIndex) : false;
+	return m_pTeam->isNoTradeTech((TechTypes)iIndex);
 }
 
 int CyTeam::getImprovementYieldChange(int /*ImprovementTypes*/ eIndex1, int /*YieldTypes*/ eIndex2)
 {
-	return m_pTeam ? m_pTeam->getImprovementYieldChange((ImprovementTypes)eIndex1, (YieldTypes)eIndex2) : -1;
+	return m_pTeam->getImprovementYieldChange((ImprovementTypes)eIndex1, (YieldTypes)eIndex2);
 }
 
 void CyTeam::changeImprovementYieldChange(int /*ImprovementTypes*/ eIndex1, int /*YieldTypes*/ eIndex2, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeImprovementYieldChange((ImprovementTypes)eIndex1, (YieldTypes)eIndex2, iChange);
+	m_pTeam->changeImprovementYieldChange((ImprovementTypes)eIndex1, (YieldTypes)eIndex2, iChange);
 }
 
 int CyTeam::getBuildingYieldChange(int /*BuildingTypes*/ eIndex1, int /*YieldTypes*/ eIndex2)
 {
-	return m_pTeam ? m_pTeam->getBuildingYieldChange((BuildingTypes)eIndex1, (YieldTypes)eIndex2) : -1;
+	return m_pTeam->getBuildingYieldChange((BuildingTypes)eIndex1, (YieldTypes)eIndex2);
 }
 
 int CyTeam::getVictoryCountdown(int /*VictoryTypes*/ eVictory)
 {
-	return (m_pTeam ? m_pTeam->getVictoryCountdown((VictoryTypes)eVictory) : -1);
+	return m_pTeam->getVictoryCountdown((VictoryTypes)eVictory);
 }
 
 int CyTeam::getVictoryDelay(int /*VictoryTypes*/ eVictory)
 {
-	return (m_pTeam ? m_pTeam->getVictoryDelay((VictoryTypes)eVictory) : -1);
+	return m_pTeam->getVictoryDelay((VictoryTypes)eVictory);
 }
 
 bool CyTeam::canLaunch(int /*VictoryTypes*/ eVictory)
 {
-	return (m_pTeam ? m_pTeam->canLaunch((VictoryTypes)eVictory) : false);
+	return m_pTeam->canLaunch((VictoryTypes)eVictory);
 }
 
 int CyTeam::getLaunchSuccessRate(int /*VictoryTypes*/ eVictory)
 {
-	return (m_pTeam ? m_pTeam->getLaunchSuccessRate((VictoryTypes)eVictory) : -1);
+	return m_pTeam->getLaunchSuccessRate((VictoryTypes)eVictory);
 }
 
 int CyTeam::getEspionagePointsAgainstTeam(int /*TeamTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getEspionagePointsAgainstTeam((TeamTypes) eIndex) : -1;
+	return m_pTeam->getEspionagePointsAgainstTeam((TeamTypes) eIndex);
 }
 
 void CyTeam::setEspionagePointsAgainstTeam(int /*TeamTypes*/ eIndex, int iValue)
 {
-	if (m_pTeam)
-		m_pTeam->setEspionagePointsAgainstTeam((TeamTypes) eIndex, iValue);
+	m_pTeam->setEspionagePointsAgainstTeam((TeamTypes) eIndex, iValue);
 }
 
 void CyTeam::changeEspionagePointsAgainstTeam(int /*TeamTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeEspionagePointsAgainstTeam((TeamTypes) eIndex, iChange);
+	m_pTeam->changeEspionagePointsAgainstTeam((TeamTypes) eIndex, iChange);
 }
 
 int CyTeam::getEspionagePointsEver()
@@ -836,60 +756,55 @@ int CyTeam::getEspionagePointsEver()
 
 void CyTeam::setEspionagePointsEver(int iValue)
 {
-	if (m_pTeam)
-		m_pTeam->setEspionagePointsEver(iValue);
+	m_pTeam->setEspionagePointsEver(iValue);
 }
 
 void CyTeam::changeEspionagePointsEver(int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeEspionagePointsEver(iChange);
+	m_pTeam->changeEspionagePointsEver(iChange);
 }
 
 int CyTeam::getCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getCounterespionageTurnsLeftAgainstTeam((TeamTypes) eIndex) : -1;
+	return m_pTeam->getCounterespionageTurnsLeftAgainstTeam((TeamTypes) eIndex);
 }
 
 void CyTeam::changeCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeCounterespionageTurnsLeftAgainstTeam((TeamTypes) eIndex, iChange);
+	m_pTeam->changeCounterespionageTurnsLeftAgainstTeam((TeamTypes) eIndex, iChange);
 }
 
 int CyTeam::getCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex)
 {
-	return m_pTeam ? m_pTeam->getCounterespionageModAgainstTeam((TeamTypes) eIndex) : -1;
+	return m_pTeam->getCounterespionageModAgainstTeam((TeamTypes) eIndex);
 }
 
 void CyTeam::changeCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex, int iChange)
 {
-	if (m_pTeam)
-		m_pTeam->changeCounterespionageModAgainstTeam((TeamTypes) eIndex, iChange);
+	m_pTeam->changeCounterespionageModAgainstTeam((TeamTypes) eIndex, iChange);
 }
-
 
 bool CyTeam::AI_shareWar(int /*TeamTypes*/ eTeam)
 {
-	return m_pTeam ? m_pTeam->AI_shareWar((TeamTypes)eTeam) : false;
+	return m_pTeam->AI_shareWar((TeamTypes)eTeam);
 }
 
 int CyTeam::AI_getAtWarCounter(int /*TeamTypes*/ eTeam) const
 {
-	return m_pTeam ? m_pTeam->AI_getAtWarCounter((TeamTypes)eTeam) : -1;
+	return m_pTeam->AI_getAtWarCounter((TeamTypes)eTeam);
 }
 
 int CyTeam::AI_getAtPeaceCounter(int /*TeamTypes*/ eTeam) const
 {
-	return m_pTeam ? m_pTeam->AI_getAtPeaceCounter((TeamTypes)eTeam) : -1;
+	return m_pTeam->AI_getAtPeaceCounter((TeamTypes)eTeam);
 }
 
 int CyTeam::AI_getWarSuccess(int /*TeamTypes*/ eIndex) const
 {
-	return m_pTeam ? m_pTeam->AI_getWarSuccess((TeamTypes)eIndex) : -1;
+	return m_pTeam->AI_getWarSuccess((TeamTypes)eIndex);
 }
 
 bool CyTeam::isHasEmbassy(int /*TeamTypes*/ eTeam) const
 {
-	return m_pTeam ? m_pTeam->isHasEmbassy((TeamTypes)eTeam) : false;
+	return m_pTeam->isHasEmbassy((TeamTypes)eTeam);
 }

@@ -8,7 +8,6 @@
 //
 
 class CvGame;
-class CvGameAI;
 class CyCity;
 class CvRandom;
 class CyDeal;
@@ -21,7 +20,7 @@ public:
 	CyGame();
 	explicit CyGame(CvGame& pGame);			// Call from C++
 
-	const CvGame& getGame() const { return m_pGame;	}	// Call from C++
+	//const CvGame& getGame() const { return m_pGame; }	// Call from C++
 	bool isNone() const { return false; }//m_pGame == NULL; }
 
 	int getCurrentMap() const;
@@ -204,7 +203,7 @@ public:
 	void saveReplay(int iPlayer);
 
 	void addPlayer(int /*PlayerTypes*/ eNewPlayer, int /*LeaderHeadTypes*/ eLeader, int /*CivilizationTypes*/ eCiv, bool bSetAlive );
-	void changeHumanPlayer( int /*PlayerTypes*/ eOldHuman , int /*PlayerTypes*/ eNewHuman );
+	void changeHumanPlayer(int /*PlayerTypes*/ eOldHuman , int /*PlayerTypes*/ eNewHuman);
 	void addReplayMessage(int /*ReplayMessageTypes*/ eType, int /*PlayerTypes*/ ePlayer, std::wstring pszText, int iPlotX, int iPlotY, int /*ColorTypes*/ eColor);
 	void log(TCHAR* str);
 
