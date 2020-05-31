@@ -50,11 +50,11 @@ void CyHallOfFameInterface()
 		.def("getMapHeight", &CyReplayInfo::getMapHeight, "int ()")
 
 		.def("getModName", &CyReplayInfo::getModName, "std::wstring ()")
-		;
+	;
 		
 	python::class_<CyHallOfFameInfo>("CyHallOfFameInfo")
 		.def("loadReplays", &CyHallOfFameInfo::loadReplays, "void ()")
 		.def("getNumGames", &CyHallOfFameInfo::getNumGames, "int ()")
 		.def("getReplayInfo", &CyHallOfFameInfo::getReplayInfo, python::return_value_policy<python::manage_new_object>(), "CyReplayInfo* (int i)")
-		;
+	;
 }

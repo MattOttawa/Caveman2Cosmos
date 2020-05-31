@@ -23,8 +23,8 @@ public:
 	void sendEmpireSplit(int /*PlayerTypes*/ ePlayer, int iAreaId);
 
 	//	Helper function to determine the first bad connection...
-	int GetFirstBadConnection();
-	int GetConnState(int iPlayer);
+	int GetFirstBadConnection() const;
+	int GetConnState(int iPlayer) const;
 };
 
 #endif // _CYMESSAGECONTROL_H

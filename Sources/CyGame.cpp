@@ -14,8 +14,6 @@
 
 CyGame::CyGame() : m_pGame(reinterpret_cast<CvGame&>(GC.getGame())) {}
 
-CyGame::CyGame(CvGame& pGame) : m_pGame(pGame) {}
-
 
 int CyGame::getCurrentMap() const
 {
@@ -572,9 +570,9 @@ CyCity* CyGame::getHolyCity(int /*ReligionTypes*/ eIndex) const
 	return new CyCity(m_pGame.getHolyCity((ReligionTypes) eIndex));
 }
 
-void CyGame::setHolyCity(int /*ReligionTypes*/ eIndex, CyCity* pNewValue, bool bAnnounce)
+void CyGame::setHolyCity(int /*ReligionTypes*/ eIndex, const CyCity& kNewValue, bool bAnnounce)
 {
-	m_pGame.setHolyCity((ReligionTypes) eIndex, pNewValue->getCity(), bAnnounce);
+	m_pGame.setHolyCity((ReligionTypes)eIndex, kNewValue.getCity(), bAnnounce);
 }
 
 void CyGame::clearHolyCity(int /*ReligionTypes*/ eIndex)
@@ -587,9 +585,9 @@ CyCity* CyGame::getHeadquarters(int /*CorporationTypes*/ eIndex) const
 	return new CyCity(m_pGame.getHeadquarters((CorporationTypes) eIndex));
 }
 
-void CyGame::setHeadquarters(int /*CorporationTypes*/ eIndex, CyCity* pNewValue, bool bAnnounce)
+void CyGame::setHeadquarters(int /*CorporationTypes*/ eIndex, const CyCity& kNewValue, bool bAnnounce)
 {
-	m_pGame.setHeadquarters((CorporationTypes) eIndex, pNewValue->getCity(), bAnnounce);
+	m_pGame.setHeadquarters((CorporationTypes)eIndex, kNewValue.getCity(), bAnnounce);
 }
 
 void CyGame::clearHeadquarters(int /*CorporationTypes*/ eIndex)

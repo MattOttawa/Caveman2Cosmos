@@ -15,9 +15,9 @@ class CyMap
 {
 public:
 	CyMap();
-	explicit CyMap(CvMap* pMap);		// Call from C++
+
 	//CvMapInterfaceBase* getMap() { return m_pMap;	}	// Call from C++
-	bool isNone() const { return m_pMap == NULL; }
+	bool isNone() const { return false; }
 	
 /*********************************/
 /***** Parallel Maps - Begin *****/
@@ -90,14 +90,14 @@ public:
 	void updateMinimapColor();
 
 	// AIAndy: Expose path generation functionality to Python
-	bool generatePathForHypotheticalUnit(CyPlot* pFrom, CyPlot* pTo, int /*PlayerTypes*/ ePlayer, int /*UnitTypes*/ eUnit, int iFlags, int iMaxTurns);
+	bool generatePathForHypotheticalUnit(const CyPlot& kFrom, const CyPlot& kTo, int /*PlayerTypes*/ ePlayer, int /*UnitTypes*/ eUnit, int iFlags, int iMaxTurns);
 	int getLastPathStepNum();
 	CyPlot* getLastPathPlotByIndex(int index);
 	void resetPathDistance();
-	int calculatePathDistance(CyPlot* pSource, CyPlot* pDest);
+	int calculatePathDistance(const CyPlot& kSource, const CyPlot& kDest);
 
 protected:
-	CvMap* m_pMap;
+	CvMap& m_pMap;
 };
 
 #endif	// CyMap_h

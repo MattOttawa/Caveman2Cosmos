@@ -9,7 +9,6 @@
 
 class CvUnit;
 class CyArea;
-class CyCity;
 class CyPlot;
 class CySelectionGroup;
 
@@ -19,36 +18,33 @@ public:
 	CyUnit();
 	DllExport explicit CyUnit(CvUnit* pUnit);		// Call from C++
 
-	CvUnit* getUnit()				{ return m_pUnit; };	// Call from C++
-	const CvUnit* getUnit() const	{ return m_pUnit; };	// Call from C++
-	bool isNone() const				{ return m_pUnit == NULL; }
+	CvUnit* getUnit() const { return m_pUnit; };	// Call from C++
+	const CvUnit* getUnitConst() const { return m_pUnit; };	// Call from C++
+	bool isNone() const { return m_pUnit == NULL; }
 
-	void convert(CyUnit* pUnit, const bool bKillOriginal);
+	void convert(const CyUnit& kUnit, bool bKillOriginal);
 	void kill(bool bDelay, int /*PlayerTypes*/ ePlayer);
-
 	void NotifyEntity(int /*MissionTypes*/ eMission);
-
+	void doCommand(CommandTypes eCommand, int iData1, int iData2);
 	bool isActionRecommended(int i) const;
 
-	void doCommand(CommandTypes eCommand, int iData1, int iData2);
-
-	bool canMoveInto(CyPlot* pPlot, bool bAttack, bool bDeclareWar, bool bIgnoreLoad) const;
+	bool canMoveInto(const CyPlot& kPlot, bool bAttack, bool bDeclareWar, bool bIgnoreLoad) const;
 	bool isAutoUpgrading() const;
 	bool isAutoPromoting() const;
-	bool canHeal(CyPlot* pPlot) const;
+	bool canHeal(const CyPlot& kPlot) const;
 	bool IsSelected() const;
-	bool canFound(CyPlot* pPlot, bool bTestVisible) const;
-	bool canConstruct(CyPlot* pPlot, int /*BuildingTypes*/ eBuilding) const;
+	bool canFound(const CyPlot& kPlot, bool bTestVisible) const;
+	bool canConstruct(const CyPlot& kPlot, int /*BuildingTypes*/ eBuilding) const;
 
 	int /*TechTypes*/ getDiscoveryTech() const;
 	int getDiscoverResearch(int /*TechTypes*/ eTech) const;
-	int getHurryProduction(CyPlot* pPlot) const;
-	bool canHurry(CyPlot* pPlot, bool bTestVisible) const;
-	bool canTrade(CyPlot* pPlot, bool bTestVisible) const;
-	int getGreatWorkCulture(CyPlot* pPlot) const;
-	int getEspionagePoints(CyPlot* pPlot) const;
+	int getHurryProduction(const CyPlot& kPlot) const;
+	bool canHurry(const CyPlot& kPlot, bool bTestVisible) const;
+	bool canTrade(const CyPlot& kPlot, bool bTestVisible) const;
+	int getGreatWorkCulture(const CyPlot& kPlot) const;
+	int getEspionagePoints(const CyPlot& kPlot) const;
 
-	bool canBuild(CyPlot* pPlot, int /*BuildTypes*/ eBuild, bool bTestVisible) const;
+	bool canBuild(const CyPlot& kPlot, int /*BuildTypes*/ eBuild, bool bTestVisible) const;
 	bool canUpgrade(int /*UnitTypes*/ eUnit, bool bTestVisible) const;
 
 	int /*HandicapTypes*/ getHandicapType() const;
@@ -168,7 +164,7 @@ public:
 
 	CyUnit* getTransportUnit() const;
 	bool isCargo() const;
-	void setTransportUnit(CyUnit* pTransportUnit);
+	void setTransportUnit(const CyUnit& kTransportUnit);
 
 	std::wstring getName() const;
 	std::wstring getNameForm(int iForm) const;

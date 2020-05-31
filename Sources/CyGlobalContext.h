@@ -19,14 +19,14 @@ class CyTeam;
 class CyGlobalContext
 {
 public:
-	CyGlobalContext() {}
-	virtual ~CyGlobalContext() {}
+	CyGlobalContext();
+	virtual ~CyGlobalContext();
 
-	static const CyGlobalContext& getInstance();
+	//static const CyGlobalContext& getInstance();
 
 	bool isDebugBuild() const;
 	CyGame& getCyGame() const;
-	CyMap* getCyMap() const;
+	CyMap& getCyMap() const;
 	CyPlayer* getCyPlayer(int idx) const;
 	CyPlayer* getCyActivePlayer() const;
 	CvRandom& getCyASyncRand() const;
@@ -39,7 +39,7 @@ public:
 	bool multiMapsEnabled() const;
 	void switchMap(int iMap);
 	int getNumMapInfos() const;
-	CvMapInfo* getMapInfo(int iMap) const;
+	CvMapInfo& getMapInfo(int iMap) const;
 	CyMap* getMapByIndex(int iIndex) const;
 	void updateMaps();
 	void initializeMap(int iMap);
@@ -212,6 +212,7 @@ public:
 	int getNumMainMenus() const { return GC.getNumMainMenus(); }
 	int getNumInvisibleInfos() const { return GC.getNumInvisibleInfos(); }
 	int getNumVoteSourceInfos() const { return GC.getNumVoteSourceInfos(); }
+	int getNumPropertyInfos() const { return GC.getNumPropertyInfos(); }
 
 	// ArtInfos
 	int getNumAnimationPathInfos() const { return GC.getNumAnimationPathInfos(); }
@@ -221,16 +222,14 @@ public:
 	int getNumFlavorTypes() const { return GC.getNumFlavorTypes(); }
 	int getNumFootstepAudioTypes() const { return GC.getNumFootstepAudioTypes(); }
 
-	int getNumPropertyInfos() const { return GC.getNumPropertyInfos(); }
-
 	//////////////////////
 	// Globals Defines
 	//////////////////////
 
-	int getDefineINT( const char * szName ) const { return GC.getDefineINT( szName ); }
-	float getDefineFLOAT( const char * szName ) const { return GC.getDefineFLOAT( szName ); }
-	void setDefineINT( const char * szName, int iValue ) { return GC.setDefineINT( szName, iValue ); }
-	void setDefineFLOAT( const char * szName, float fValue ) { return GC.setDefineFLOAT( szName, fValue ); }
+	int getDefineINT(const char* szName) const { return GC.getDefineINT(szName); }
+	float getDefineFLOAT(const char* szName) const { return GC.getDefineFLOAT(szName); }
+	void setDefineINT(const char* szName, int iValue) { return GC.setDefineINT(szName, iValue); }
+	void setDefineFLOAT(const char* szName, float fValue) { return GC.setDefineFLOAT(szName, fValue); }
 
 	bool isDCM_BATTLE_EFFECTS() const { return GC.isDCM_BATTLE_EFFECTS(); }
 	bool isDCM_AIR_BOMBING() const { return GC.isDCM_AIR_BOMBING(); }
@@ -272,9 +271,9 @@ public:
 	int getBARBARIAN_PLAYER() const { return GC.getBARBARIAN_PLAYER(); }
 	int getNUM_CITY_PLOTS() const { return NUM_CITY_PLOTS; }
 
-	void setIsBug(bool bIsBug) { GC.setIsBug(bIsBug); }										// Exposed to Python
+	void setIsBug(bool bIsBug) { GC.setIsBug(bIsBug); }
 	
-	void setNoUpdateDefineFLOAT( const char * szName, float fValue ) { return GC.setDefineFLOAT( szName, fValue, false ); }
+	void setNoUpdateDefineFLOAT(const char* szName, float fValue) { return GC.setDefineFLOAT(szName, fValue, false); }
 };
 
 #endif	// CyGlobalContext_h

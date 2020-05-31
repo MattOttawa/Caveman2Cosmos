@@ -7,6 +7,7 @@
 
 CyDeal::CyDeal(CvDeal* pDeal) : m_pDeal(pDeal) {}
 
+
 int CyDeal::getID() const
 {
 	return (m_pDeal ? m_pDeal->getID() : -1);

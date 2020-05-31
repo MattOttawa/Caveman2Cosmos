@@ -18,10 +18,6 @@ class CyGame
 {
 public:
 	CyGame();
-	explicit CyGame(CvGame& pGame);			// Call from C++
-
-	//const CvGame& getGame() const { return m_pGame; }	// Call from C++
-	bool isNone() const { return false; }//m_pGame == NULL; }
 
 	int getCurrentMap() const;
 
@@ -169,11 +165,11 @@ public:
 	bool isInAdvancedStart() const;
 
 	CyCity* getHolyCity(int /*ReligionTypes*/ eIndex) const;
-	void setHolyCity(int /*ReligionTypes*/ eIndex, CyCity* pNewValue, bool bAnnounce);
+	void setHolyCity(int /*ReligionTypes*/ eIndex, const CyCity& kNewValue, bool bAnnounce);
 	void clearHolyCity(int /*ReligionTypes*/ eIndex);
 
 	CyCity* getHeadquarters(int /*CorporationTypes*/ eIndex) const;
-	void setHeadquarters(int /*CorporationTypes*/ eIndex, CyCity* pNewValue, bool bAnnounce);
+	void setHeadquarters(int /*CorporationTypes*/ eIndex, const CyCity& kNewValue, bool bAnnounce);
 	void clearHeadquarters(int /*CorporationTypes*/ eIndex);
 
 	std::string getScriptData() const;
@@ -202,7 +198,7 @@ public:
 
 	void saveReplay(int iPlayer);
 
-	void addPlayer(int /*PlayerTypes*/ eNewPlayer, int /*LeaderHeadTypes*/ eLeader, int /*CivilizationTypes*/ eCiv, bool bSetAlive );
+	void addPlayer(int /*PlayerTypes*/ eNewPlayer, int /*LeaderHeadTypes*/ eLeader, int /*CivilizationTypes*/ eCiv, bool bSetAlive);
 	void changeHumanPlayer(int /*PlayerTypes*/ eOldHuman , int /*PlayerTypes*/ eNewHuman);
 	void addReplayMessage(int /*ReplayMessageTypes*/ eType, int /*PlayerTypes*/ ePlayer, std::wstring pszText, int iPlotX, int iPlotY, int /*ColorTypes*/ eColor);
 	void log(TCHAR* str);

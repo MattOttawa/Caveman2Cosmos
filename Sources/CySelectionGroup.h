@@ -4,14 +4,13 @@
 #define CySelectionGroup_h__
 
 //
-// Python wrapper class for CySelectionGroup
+// Python wrapper class for CvSelectionGroup
 //
 
 class CvSelectionGroup;
 class CyPlot;
 class CyArea;
 class CyUnit;
-//struct MissionData;
 
 class CySelectionGroup
 {
@@ -19,41 +18,41 @@ public:
 	CySelectionGroup();
 	explicit CySelectionGroup(CvSelectionGroup* pSelectionGroup);		// Call from C++
 
-	CvSelectionGroup* getSelectionGroup() const { return m_pSelectionGroup;	}	// Call from C++
+	//CvSelectionGroup* getSelectionGroup() const { return m_pSelectionGroup; }	// Call from C++
 	bool isNone() const { return m_pSelectionGroup == NULL; }
 
-	void pushMission(MissionTypes eMission, int iData1, int iData2, int iFlags, bool bAppend, bool bManual, MissionAITypes eMissionAI, CyPlot* pMissionAIPlot, CyUnit* pMissionAIUnit);
-	bool canStartMission(int iMission, int iData1, int iData2, CyPlot* pPlot, bool bTestVisible);
+	void pushMission(MissionTypes eMission, int iData1, int iData2, int iFlags, bool bAppend, bool bManual, MissionAITypes eMissionAI, const CyPlot& kMissionAIPlot, const CyUnit& kMissionAIUnit);
+	bool canStartMission(int iMission, int iData1, int iData2, const CyPlot& kPlot, bool bTestVisible) const;
 
-	bool isHuman();
-	int baseMoves();	
-	bool isWaiting();
-	bool isFull();
-	bool hasMoved();
-	bool canMoveInto(CyPlot* pPlot, bool bAttack);
-	bool canMoveOrAttackInto(CyPlot* pPlot, bool bDeclareWar);
-	bool canFight();
-	bool isInvisible(int /*TeamTypes*/ eTeam);	
+	bool isHuman() const;
+	int baseMoves() const;	
+	bool isWaiting() const;
+	bool isFull() const;
+	bool hasMoved() const;
+	bool canMoveInto(const CyPlot& kPlot, bool bAttack) const;
+	bool canMoveOrAttackInto(const CyPlot& kPlot, bool bDeclareWar) const;
+	bool canFight() const;
+	bool isInvisible(int /*TeamTypes*/ eTeam) const;	
 
-	CyPlot* plot();
-	CyArea* area();
+	CyPlot* plot() const;
+	CyArea* area() const;
 
-	bool readyToMove(bool bAny);
+	bool readyToMove(bool bAny) const;
 
-	int getID();
-	int /*PlayerTypes*/ getOwner();
-	int /*TeamTypes*/ getTeam();
-	int /*ActivityTypes*/ getActivityType();
+	int getID() const;
+	int /*PlayerTypes*/ getOwner() const;
+	int /*TeamTypes*/ getTeam() const;
+	int /*ActivityTypes*/ getActivityType() const;
 	void setActivityType(int /*ActivityTypes*/ eNewValue);
-	int /*AutomateTypes*/ getAutomateType();
-	bool isAutomated();
+	int /*AutomateTypes*/ getAutomateType() const;
+	bool isAutomated() const;
 	void setAutomateType(int /*AutomateTypes*/ eNewValue);
 
-	int getNumUnits();
-	int getLengthMissionQueue();
-	int getMissionType( int iNode );
-	int getMissionData1( int iNode );
-	CyUnit* getHeadUnit();
+	int getNumUnits() const;
+	int getLengthMissionQueue() const;
+	int getMissionType(int iNode) const;
+	int getMissionData1(int iNode) const;
+	CyUnit* getHeadUnit() const;
 
 protected:
 	CvSelectionGroup* m_pSelectionGroup;

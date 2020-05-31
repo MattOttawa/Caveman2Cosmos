@@ -1,6 +1,7 @@
 #include "CvGameCoreDLL.h"
 #include "CyMessageControl.h"
 
+
 void CyMessageControl::sendPushOrder(int iCityID, int eOrder, int iData, bool bAlt, bool bShift, bool bCtrl)
 {
 	CvMessageControl::getInstance().sendPushOrder(iCityID, (OrderTypes) eOrder, iData, bAlt, bShift, bCtrl);
@@ -57,12 +58,12 @@ void CyMessageControl::sendModNetMessage(int iData1, int iData2, int iData3, int
 //
 // return true if succeeded
 //
-int CyMessageControl::GetFirstBadConnection()
+int CyMessageControl::GetFirstBadConnection() const
 {
 	return gDLL->getFirstBadConnection();
 }
 
-int CyMessageControl::GetConnState(int iPlayer)
+int CyMessageControl::GetConnState(int iPlayer) const
 {
 	return gDLL->getConnState((PlayerTypes)iPlayer);
 }

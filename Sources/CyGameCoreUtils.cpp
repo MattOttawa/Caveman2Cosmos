@@ -4,6 +4,7 @@
 #include "CyPlot.h"
 #include "CyUnit.h"
 
+
 int cyIntRange(int iNum, int iLow, int iHigh)
 {
 	return range(iNum, iLow, iHigh);
@@ -45,9 +46,10 @@ CyPlot* cyPlotCardinalDirection(int iX, int iY, CardinalDirectionTypes eCardDire
 }
 
 CyPlot* cysPlotCardinalDirection(int iX, int iY, CardinalDirectionTypes eCardDirection)
-{	static CyPlot plot;
-plot.setPlot(plotCardinalDirection(iX, iY, eCardDirection));
-return &plot;
+{
+	static CyPlot plot;
+	plot.setPlot(plotCardinalDirection(iX, iY, eCardDirection));
+	return &plot;
 }
 
 CyPlot* cyPlotXY(int iX, int iY, int iDX, int iDY)
@@ -67,7 +69,7 @@ DirectionTypes cyDirectionXYFromInt(int iDX, int iDY)
 	return directionXY(iDX, iDY);
 }
 
-DirectionTypes cyDirectionXYFromPlot(CyPlot* pFromPlot, CyPlot* pToPlot)
+DirectionTypes cyDirectionXYFromPlot(const CyPlot& kFromPlot, const CyPlot& kToPlot)
 {
 	return directionXY(pFromPlot->getPlot(), pToPlot->getPlot());
 }
@@ -82,7 +84,7 @@ int cyPlotCityXYFromInt(int iDX, int iDY)
 	return plotCityXY(iDX, iDY);
 }
 
-int cyPlotCityXYFromCity(CyCity* pCity, CyPlot* pPlot)
+int cyPlotCityXYFromCity(const CyCity& kCity, const CyPlot& kPlot)
 {
 	return plotCityXY(pCity->getCity(), pPlot->getPlot());
 }
@@ -117,12 +119,12 @@ bool cyIsPotentialEnemy(int /*TeamTypes*/ eOurTeam, int /*TeamTypes*/ eTheirTeam
 	return isPotentialEnemy((TeamTypes)eOurTeam, (TeamTypes)eTheirTeam);
 }
 
-CyCity* cyGetCity(IDInfo city)
+CyCity* cyGetCity(const IDInfo city)
 {
 	return new CyCity(getCity(city));
 }
 
-CyUnit* cyGetUnit(IDInfo unit)
+CyUnit* cyGetUnit(const IDInfo unit)
 {
 	return new CyUnit(getUnit(unit));
 }
@@ -247,7 +249,7 @@ bool cyIsLimitedProject(int /*ProjectTypes*/ eProject)
 	return isLimitedProject((ProjectTypes)eProject);
 }
 
-int cyGetCombatOdds(CyUnit* pAttacker, CyUnit* pDefender)
+int cyGetCombatOdds(const CyUnit& kAttacker, const CyUnit& kDefender)
 {
 	return getCombatOdds(pAttacker->getUnit(), pDefender->getUnit());
 }
@@ -257,7 +259,6 @@ int cyGetEspionageModifier(int iOurTeam, int iTargetTeam)
 	return getEspionageModifier((TeamTypes)iOurTeam, (TeamTypes)iTargetTeam);
 }
 
-// BUG - Unit Experience - start
 int cyCalculateExperience(int iLevel, int ePlayer)
 {
 	return calculateExperience(iLevel, (PlayerTypes)ePlayer);
@@ -267,5 +268,3 @@ int cyCalculateLevel(int iExperience, int ePlayer)
 {
 	return calculateLevel(iExperience, (PlayerTypes)ePlayer);
 }
-// BUG - Unit Experience - end
-

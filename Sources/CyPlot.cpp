@@ -30,14 +30,14 @@ int CyPlot::getTeam() const
 	return m_pPlot ? m_pPlot->getTeam() : -1;
 }
 
-void CyPlot::nukeExplosion(int iRange, CyUnit* pNukeUnit)
+void CyPlot::nukeExplosion(int iRange, const CyUnit& kNukeUnit)
 {
-	if (m_pPlot) m_pPlot->nukeExplosion(iRange, pNukeUnit->getUnit());
+	if (m_pPlot) m_pPlot->nukeExplosion(iRange, kNukeUnit.getUnit());
 }
 
-bool CyPlot::isConnectedTo(CyCity* pCity) const
+bool CyPlot::isConnectedTo(const CyCity& kCity) const
 {
-	return m_pPlot ? m_pPlot->isConnectedTo(pCity->getCity()) : false;
+	return m_pPlot ? m_pPlot->isConnectedTo(kCity.getCity()) : false;
 }
 
 bool CyPlot::isConnectedToCapital(int /*PlayerTypes*/ ePlayer) const
@@ -45,9 +45,9 @@ bool CyPlot::isConnectedToCapital(int /*PlayerTypes*/ ePlayer) const
 	return m_pPlot ? m_pPlot->isConnectedToCapital((PlayerTypes) ePlayer): false;
 }
 
-bool CyPlot::isAdjacentToArea(CyArea* pArea) const
+bool CyPlot::isAdjacentToArea(const CyArea& kArea) const
 {
-	return m_pPlot ? m_pPlot->isAdjacentToArea(pArea->getArea()) : false;
+	return m_pPlot ? m_pPlot->isAdjacentToArea(kArea.getArea()) : false;
 }
 
 bool CyPlot::isCoastal() const
@@ -100,10 +100,10 @@ int CyPlot::getBuildTurnsLeft(int /*BuildTypes*/ eBuild, int iNowExtra, int iThe
 	return m_pPlot ? m_pPlot->getBuildTurnsLeft((BuildTypes) eBuild, iNowExtra, iThenExtra) : -1;
 }
 
-int CyPlot::getFeatureProduction(int /*BuildTypes*/ eBuild, int /*TeamTypes*/ eTeam, CyCity* ppCity) const
+int CyPlot::getFeatureProduction(int /*BuildTypes*/ eBuild, int /*TeamTypes*/ eTeam, const CyCity* ppCity) const
 {
 	CvCity* tempCity = ppCity->getCity();
-	return m_pPlot ? m_pPlot->getFeatureProduction((BuildTypes) eBuild, (TeamTypes) eTeam, &tempCity) : -1;
+	return m_pPlot ? m_pPlot->getFeatureProduction((BuildTypes)eBuild, (TeamTypes)eTeam, &tempCity) : -1;
 }
 
 int CyPlot::getUnitPower(int /*PlayerTypes*/ eOwner) const
@@ -191,9 +191,9 @@ int CyPlot::getNumDefenders(int /*PlayerTypes*/ ePlayer) const
 	return m_pPlot ? m_pPlot->getNumDefenders((PlayerTypes) ePlayer) : -1;
 }
 
-int CyPlot::getNumVisiblePotentialEnemyDefenders(CyUnit* pUnit) const
+int CyPlot::getNumVisiblePotentialEnemyDefenders(const CyUnit& kUnit) const
 {
-	return m_pPlot ? m_pPlot->getNumVisiblePotentialEnemyDefenders(pUnit->getUnit()) : -1;
+	return m_pPlot ? m_pPlot->getNumVisiblePotentialEnemyDefenders(kUnit.getUnit()) : -1;
 }
 
 bool CyPlot::isVisibleEnemyUnit(int /*PlayerTypes*/ ePlayer) const

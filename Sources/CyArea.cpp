@@ -1,17 +1,15 @@
+#include "CvGameCoreDLL.h"
+#include "CvArea.h"
+#include "CyArea.h"
+
 //
 // Python wrapper class for CvArea 
-// 
-#include "CvGameCoreDLL.h"
-#include "CyArea.h"
-#include "CyCity.h"
+//
 
-CyArea::CyArea() : m_pArea(NULL)
-{
-}
+CyArea::CyArea() : m_pArea(NULL) {}
 
-CyArea::CyArea(CvArea* pArea) : m_pArea(pArea)
-{
-}
+CyArea::CyArea(CvArea* pArea) : m_pArea(pArea) {}
+
 
 int CyArea::calculateTotalBestNatureYield() const
 {
@@ -125,6 +123,5 @@ int CyArea::getNumTotalBonuses() const
 
 void CyArea::changeCleanPowerCount(int /*TeamTypes*/ eIndex, int iChange) const
 {
-    if (m_pArea)
-        m_pArea->changeCleanPowerCount((TeamTypes)eIndex, iChange);
+    if (m_pArea) m_pArea->changeCleanPowerCount((TeamTypes)eIndex, iChange);
 }  

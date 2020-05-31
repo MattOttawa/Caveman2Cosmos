@@ -21,8 +21,8 @@ class CyArtFileMgr
 {
 public:
 	CyArtFileMgr();
-	explicit CyArtFileMgr(const CvArtFileMgr* pArtFileMgr);			// Call from C++
-	bool isNone() const { return m_pArtFileMgr == NULL; }
+
+	bool isNone() const { return false; }
 
 	CvArtInfoInterface* getInterfaceArtInfo(const char* szArtDefineTag) const;
 	CvArtInfoMovie* getMovieArtInfo(const char* szArtDefineTag) const;
@@ -34,7 +34,7 @@ public:
 	CvArtInfoImprovement* getImprovementArtInfo(const char* szArtDefineTag) const;
 
 protected:
-	const CvArtFileMgr* m_pArtFileMgr;
+	const CvArtFileMgr& m_pArtFileMgr;
 };
 
 #endif	// #ifndef CyArtFileMgr

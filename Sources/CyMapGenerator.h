@@ -4,14 +4,8 @@
 #define CyMapGenerator_h
 
 //
-//	FILE:	 CyMapGenerator.h
-//	AUTHOR:  Mustafa Thamer
-//	PURPOSE: 
-//			Python wrapper class for CvMapGenerator
+// Python wrapper class for CvMapGenerator
 //
-//-----------------------------------------------------------------------------
-//	Copyright (c) 2005 Firaxis Games, Inc. All rights reserved.
-//-----------------------------------------------------------------------------
 
 class CvMapGenerator;
 class CyPlot;
@@ -20,11 +14,10 @@ class CyMapGenerator
 {	
 public:
 	CyMapGenerator();
-	explicit CyMapGenerator(CvMapGenerator* pMapGenerator);		// Call from C++
 
-	bool isNone() const { return m_pMapGenerator == NULL; }
+	bool isNone() const { return false; }
 
-	void doRiver(CyPlot* pStartPlot, CardinalDirectionTypes eCardinalDirection);
+	void doRiver(const CyPlot& kStartPlot, CardinalDirectionTypes eCardinalDirection);
 	void addFeatures();
 	void addBonuses();
 
@@ -34,7 +27,7 @@ public:
 	void setPlotTypes(boost::python::list& listPlotTypes);
 
 protected:
-	CvMapGenerator* m_pMapGenerator;
+	CvMapGenerator& m_pMapGenerator;
 };
 
 #endif	// CyMapGenerator_h

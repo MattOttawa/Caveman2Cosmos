@@ -19,20 +19,20 @@ public:
 	DllExport explicit CyPlot(CvPlot*);			// Call from C++
 	CyPlot(CvPlot*, bool bInViewportSpace);
 
-	CvPlot* getPlot()		{ return m_pPlot; }	// Call from C++
+	CvPlot* getPlot() const { return m_pPlot; }	// Call from C++
 	void setPlot(CvPlot* p) { m_pPlot = p; }	// Call from C++
-	bool isNone() const		{ return m_pPlot == NULL; }
+	bool isNone() const { return m_pPlot == NULL; }
 
 	void erase();
 	DllExport NiPoint3 getPoint() const;
 	int getTeam() const;
 
-	void nukeExplosion(int iRange, CyUnit* pNukeUnit);
+	void nukeExplosion(int iRange, const CyUnit& kNukeUnit);
 
-	bool isConnectedTo(CyCity* pCity) const;
+	bool isConnectedTo(const CyCity& kCity) const;
 	bool isConnectedToCapital(int /*PlayerTypes*/ ePlayer) const;
 
-	bool isAdjacentToArea(CyArea* pArea) const;
+	bool isAdjacentToArea(const CyArea& kArea) const;
 	bool isCoastal() const;
 
 	bool isLake() const;
@@ -46,7 +46,7 @@ public:
 	bool canHaveImprovement(int /*ImprovementTypes*/ eImprovement, int /*TeamTypes*/ eTeam, bool bPotential) const;
 	bool canBuild(int /*BuildTypes*/ eBuild, int /*PlayerTypes*/ ePlayer, bool bTestVisible) const;
 	int getBuildTurnsLeft(int /*BuildTypes*/ eBuild, int iNowExtra, int iThenExtra) const;
-	int getFeatureProduction(int /*BuildTypes*/ eBuild, int /*TeamTypes*/ eTeam, CyCity* ppCity) const;
+	int getFeatureProduction(int /*BuildTypes*/ eBuild, int /*TeamTypes*/ eTeam, const CyCity* ppCity) const;
 
 	int getUnitPower(int /*PlayerTypes*/ eOwner) const;
 
@@ -67,7 +67,7 @@ public:
 	bool isOccupation() const;
 	bool isUnit() const;
 	int getNumDefenders(int /*PlayerTypes*/ ePlayer) const;
-	int getNumVisiblePotentialEnemyDefenders(CyUnit* pUnit) const;
+	int getNumVisiblePotentialEnemyDefenders(const CyUnit& kUnit) const;
 	bool isVisibleEnemyUnit(int /*PlayerTypes*/ ePlayer) const;
 	bool isFighting() const;
 
@@ -161,7 +161,7 @@ public:
 
 	int getInvisibleVisibilityCount(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible) const;
 	bool isInvisibleVisible(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible) const;
-	void changeInvisibleVisibilityCount(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible, int iChange, int iIntensity = 0);
+	void changeInvisibleVisibilityCount(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible, int iChange, int iIntensity);
 
 	int getNumUnits() const;
 	CyUnit* getUnit(int iIndex) const;

@@ -1,6 +1,5 @@
 #include "CvGameCoreDLL.h"
 #include "CyArea.h"
-#include "CyCity.h"
 #include "CyPlot.h"
 #include "CySelectionGroup.h"
 #include "CyUnit.h"
@@ -14,22 +13,19 @@ CyUnit::CyUnit() : m_pUnit(NULL) {}
 CyUnit::CyUnit(CvUnit* pUnit) : m_pUnit(pUnit) {}
 
 
-void CyUnit::convert(CyUnit* pUnit, const bool bKillOriginal)
+void CyUnit::convert(const CyUnit& kUnit, bool bKillOriginal)
 {
-	if (m_pUnit)
-		m_pUnit->convert(pUnit->getUnit(), bKillOriginal);
+	if (m_pUnit) m_pUnit->convert(kUnit.getUnit(), bKillOriginal);
 }
 
 void CyUnit::kill(bool bDelay, int /*PlayerTypes*/ ePlayer)
 {
-	if (m_pUnit)
-		m_pUnit->kill(bDelay, (PlayerTypes)ePlayer);
+	if (m_pUnit) m_pUnit->kill(bDelay, (PlayerTypes)ePlayer);
 }
 
 void CyUnit::NotifyEntity(int /*MissionTypes*/ eEvent)
 {
-	if (m_pUnit)
-		m_pUnit->NotifyEntity((MissionTypes)eEvent);
+	if (m_pUnit) m_pUnit->NotifyEntity((MissionTypes)eEvent);
 }
 
 bool CyUnit::isActionRecommended(int i) const
@@ -39,32 +35,31 @@ bool CyUnit::isActionRecommended(int i) const
 
 void CyUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 {
-	if (m_pUnit)
-		m_pUnit->doCommand(eCommand, iData1, iData2);
+	if (m_pUnit) m_pUnit->doCommand(eCommand, iData1, iData2);
 }
 
-bool CyUnit::canMoveInto(CyPlot* pPlot, bool bAttack, bool bDeclareWar, bool bIgnoreLoad) const
+bool CyUnit::canMoveInto(const CyPlot& kPlot, bool bAttack, bool bDeclareWar, bool bIgnoreLoad) const
 {
-	return m_pUnit ? m_pUnit->canMoveInto(pPlot->getPlot(), 
+	return m_pUnit ? m_pUnit->canMoveInto(kPlot.getPlot(), 
 		(bAttack ? MoveCheck::Attack : MoveCheck::None) |
 		(bDeclareWar ? MoveCheck::DeclareWar : MoveCheck::None) |
 		(bIgnoreLoad ? MoveCheck::IgnoreLoad : MoveCheck::None)
 	) : false;
 }
 
-bool CyUnit::canHeal(CyPlot* pPlot) const
+bool CyUnit::canHeal(const CyPlot& kPlot) const
 {
-	return m_pUnit ? m_pUnit->canHeal(pPlot->getPlot()) : false;
+	return m_pUnit ? m_pUnit->canHeal(kPlot.getPlot()) : false;
 }
 
-bool CyUnit::canFound(CyPlot* pPlot, bool bTestVisible) const
+bool CyUnit::canFound(const CyPlot& kPlot, bool bTestVisible) const
 {
-	return m_pUnit ? m_pUnit->canFound(pPlot->getPlot(), bTestVisible) : false;
+	return m_pUnit ? m_pUnit->canFound(kPlot.getPlot(), bTestVisible) : false;
 }
 
-bool CyUnit::canConstruct(CyPlot* pPlot, int /*BuildingTypes*/ eBuilding) const
+bool CyUnit::canConstruct(const CyPlot& kPlot, int /*BuildingTypes*/ eBuilding) const
 {
-	return m_pUnit ? m_pUnit->canConstruct(pPlot->getPlot(), (BuildingTypes) eBuilding) : false;
+	return m_pUnit ? m_pUnit->canConstruct(kPlot.getPlot(), (BuildingTypes)eBuilding) : false;
 }
 
 int /*TechTypes*/ CyUnit::getDiscoveryTech() const
@@ -77,34 +72,34 @@ int CyUnit::getDiscoverResearch(int /*TechTypes*/ eTech) const
 	return m_pUnit ? m_pUnit->getDiscoverResearch((TechTypes) eTech) : -1;
 }
 
-int CyUnit::getHurryProduction(CyPlot* pPlot) const
+int CyUnit::getHurryProduction(const CyPlot& kPlot) const
 {
-	return m_pUnit ? m_pUnit->getHurryProduction(pPlot->getPlot()) : -1;
+	return m_pUnit ? m_pUnit->getHurryProduction(kPlot.getPlot()) : -1;
 }
 
-bool CyUnit::canHurry(CyPlot* pPlot, bool bTestVisible) const
+bool CyUnit::canHurry(const CyPlot& kPlot, bool bTestVisible) const
 {
-	return m_pUnit ? m_pUnit->canHurry(pPlot->getPlot(), bTestVisible) : false;
+	return m_pUnit ? m_pUnit->canHurry(kPlot.getPlot(), bTestVisible) : false;
 }
 
-bool CyUnit::canTrade(CyPlot* pPlot, bool bTestVisible) const
+bool CyUnit::canTrade(const CyPlot& kPlot, bool bTestVisible) const
 {
-	return m_pUnit ? m_pUnit->canTrade(pPlot->getPlot(), bTestVisible) : false;
+	return m_pUnit ? m_pUnit->canTrade(kPlot.getPlot(), bTestVisible) : false;
 }
 
-int CyUnit::getGreatWorkCulture(CyPlot* pPlot) const
+int CyUnit::getGreatWorkCulture(const CyPlot& kPlot) const
 {
-	return m_pUnit ? m_pUnit->getGreatWorkCulture(pPlot->getPlot()) : -1;
+	return m_pUnit ? m_pUnit->getGreatWorkCulture(kPlot.getPlot()) : -1;
 }
 
-int CyUnit::getEspionagePoints(CyPlot* pPlot) const
+int CyUnit::getEspionagePoints(const CyPlot& kPlot) const
 {
-	return m_pUnit ? m_pUnit->getEspionagePoints(pPlot->getPlot()) : -1;
+	return m_pUnit ? m_pUnit->getEspionagePoints(kPlot.getPlot()) : -1;
 }
 
-bool CyUnit::canBuild(CyPlot* pPlot, int /*BuildTypes*/ eBuild, bool bTestVisible) const
+bool CyUnit::canBuild(const CyPlot& kPlot, int /*BuildTypes*/ eBuild, bool bTestVisible) const
 {
-	return m_pUnit ? m_pUnit->canBuild(pPlot->getPlot(), (BuildTypes) eBuild, bTestVisible) : false;
+	return m_pUnit ? m_pUnit->canBuild(kPlot.getPlot(), (BuildTypes) eBuild, bTestVisible) : false;
 }
 
 bool CyUnit::canUpgrade(int /*UnitTypes*/ eUnit, bool bTestVisible) const
@@ -239,8 +234,7 @@ bool CyUnit::isDead() const
 
 void CyUnit::setBaseCombatStr(int iCombat)
 {
-	if (m_pUnit)
-		m_pUnit->setBaseCombatStr(iCombat);
+	if (m_pUnit) m_pUnit->setBaseCombatStr(iCombat);
 }
 
 int CyUnit::baseCombatStr() const
@@ -325,8 +319,7 @@ int CyUnit::cargoSpace() const
 
 void CyUnit::changeCargoSpace(int iChange)
 {
-	if (m_pUnit)
-		m_pUnit->changeCargoSpace(iChange);
+	if (m_pUnit) m_pUnit->changeCargoSpace(iChange);
 }
 
 bool CyUnit::isFull() const
@@ -376,8 +369,7 @@ int CyUnit::getY() const
 
 void CyUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow)
 {
-	if (m_pUnit)
-		m_pUnit->setXY(iX, iY, bGroup, bUpdate, bShow);
+	if (m_pUnit) m_pUnit->setXY(iX, iY, bGroup, bUpdate, bShow);
 }
 
 CyPlot* CyUnit::plot() const
@@ -397,14 +389,12 @@ int CyUnit::getDamage() const
 
 void CyUnit::setDamage(int iNewValue, int /*PlayerTypes*/ ePlayer)
 {
-	if (m_pUnit)
-		m_pUnit->setDamage(iNewValue, (PlayerTypes)ePlayer);
+	if (m_pUnit) m_pUnit->setDamage(iNewValue, (PlayerTypes)ePlayer);
 }
 
 void CyUnit::changeDamage(int iChange, int /*PlayerTypes*/ ePlayer)
 {
-	if (m_pUnit)
-		m_pUnit->changeDamage(iChange, (PlayerTypes)ePlayer);
+	if (m_pUnit) m_pUnit->changeDamage(iChange, (PlayerTypes)ePlayer);
 }
 
 int CyUnit::getMoves() const
@@ -414,20 +404,17 @@ int CyUnit::getMoves() const
 
 void CyUnit::setMoves(int iNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setMoves(iNewValue);
+	if (m_pUnit) m_pUnit->setMoves(iNewValue);
 }
 
 void CyUnit::changeMoves(int iChange)
 {
-	if (m_pUnit)
-		m_pUnit->changeMoves(iChange);
+	if (m_pUnit) m_pUnit->changeMoves(iChange);
 }
 
 void CyUnit::finishMoves()
 {
-	if (m_pUnit)
-		m_pUnit->finishMoves();
+	if (m_pUnit) m_pUnit->finishMoves();
 }
 
 int CyUnit::getExperience() const
@@ -437,14 +424,12 @@ int CyUnit::getExperience() const
 
 void CyUnit::setExperience(int iNewValue, int iMax)
 {
-	if (m_pUnit)
-		m_pUnit->setExperience(iNewValue, iMax);
+	if (m_pUnit) m_pUnit->setExperience(iNewValue, iMax);
 }
 
 void CyUnit::changeExperience(int iChange, int iMax, bool bFromCombat, bool bInBorders, bool bUpdateGlobal)
 {
-	if (m_pUnit)
-		m_pUnit->changeExperience(iChange, iMax, bFromCombat, bInBorders, bUpdateGlobal);
+	if (m_pUnit) m_pUnit->changeExperience(iChange, iMax, bFromCombat, bInBorders, bUpdateGlobal);
 }
 
 int CyUnit::getLevel() const
@@ -454,8 +439,7 @@ int CyUnit::getLevel() const
 
 void CyUnit::setLevel(int iNewLevel)
 {
-	if (m_pUnit)
-		m_pUnit->setLevel(iNewLevel);
+	if (m_pUnit) m_pUnit->setLevel(iNewLevel);
 }
 
 int CyUnit::getFacingDirection() const
@@ -465,14 +449,12 @@ int CyUnit::getFacingDirection() const
 
 void CyUnit::rotateFacingDirectionClockwise()
 {
-	if (m_pUnit)
-		m_pUnit->rotateFacingDirectionClockwise();
+	if (m_pUnit) m_pUnit->rotateFacingDirectionClockwise();
 }
 
 void CyUnit::rotateFacingDirectionCounterClockwise()
 {
-	if (m_pUnit)
-		m_pUnit->rotateFacingDirectionCounterClockwise();
+	if (m_pUnit) m_pUnit->rotateFacingDirectionCounterClockwise();
 }
 
 int CyUnit::getCargo() const
@@ -487,8 +469,7 @@ int CyUnit::getFortifyTurns() const
 
 void CyUnit::setFortifyTurns(int iNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setFortifyTurns(iNewValue);
+	if (m_pUnit) m_pUnit->setFortifyTurns(iNewValue);
 }
 
 bool CyUnit::isRiver() const
@@ -523,8 +504,7 @@ int CyUnit::getImmobileTimer() const
 
 void CyUnit::setImmobileTimer(int iNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setImmobileTimer(iNewValue);
+	if (m_pUnit) m_pUnit->setImmobileTimer(iNewValue);
 }
 
 bool CyUnit::isMadeAttack() const
@@ -534,8 +514,7 @@ bool CyUnit::isMadeAttack() const
 
 void CyUnit::setMadeAttack(bool bNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setMadeAttack(bNewValue);
+	if (m_pUnit) m_pUnit->setMadeAttack(bNewValue);
 }
 
 bool CyUnit::isMadeInterception() const
@@ -545,8 +524,7 @@ bool CyUnit::isMadeInterception() const
 
 void CyUnit::setMadeInterception(bool bNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setMadeInterception(bNewValue);
+	if (m_pUnit) m_pUnit->setMadeInterception(bNewValue);
 }
 
 bool CyUnit::isPromotionReady() const
@@ -556,8 +534,7 @@ bool CyUnit::isPromotionReady() const
 
 void CyUnit::setPromotionReady(bool bNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setPromotionReady(bNewValue);
+	if (m_pUnit) m_pUnit->setPromotionReady(bNewValue);
 }
 
 int CyUnit::getOwner() const
@@ -587,8 +564,7 @@ int /*UnitTypes*/ CyUnit::getLeaderUnitType() const
 
 void CyUnit::setLeaderUnitType(int leaderUnitType)
 {
-	if (m_pUnit)
-		m_pUnit->setLeaderUnitType((UnitTypes) leaderUnitType);
+	if (m_pUnit) m_pUnit->setLeaderUnitType((UnitTypes) leaderUnitType);
 }
 
 CyUnit* CyUnit::getTransportUnit() const
@@ -601,10 +577,9 @@ bool CyUnit::isCargo() const
 	return m_pUnit ? m_pUnit->isCargo() : false;
 }
 
-void CyUnit::setTransportUnit(CyUnit* pTransportUnit)
+void CyUnit::setTransportUnit(const CyUnit& kTransportUnit)
 {
-	if (m_pUnit)
-		m_pUnit->setTransportUnit(pTransportUnit->getUnit());
+	if (m_pUnit) m_pUnit->setTransportUnit(kTransportUnit.getUnit());
 }
 
 std::wstring CyUnit::getName() const
@@ -629,8 +604,7 @@ std::wstring CyUnit::getNameNoDesc() const
 
 void CyUnit::setName(std::wstring szNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setName(szNewValue);
+	if (m_pUnit) m_pUnit->setName(szNewValue);
 }
 
 std::string CyUnit::getScriptData() const
@@ -640,8 +614,7 @@ std::string CyUnit::getScriptData() const
 
 void CyUnit::setScriptData(std::string szNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setScriptData(szNewValue.c_str());
+	if (m_pUnit) m_pUnit->setScriptData(szNewValue.c_str());
 }
 
 bool CyUnit::canAcquirePromotion(int /*PromotionTypes*/ ePromotion) const
@@ -676,8 +649,7 @@ bool CyUnit::isHasUnitCombat(int /*UnitCombatTypes*/eIndex) const
 
 void CyUnit::setHasPromotion(int /*PromotionTypes*/ eIndex, bool bNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->setHasPromotion((PromotionTypes) eIndex, bNewValue);
+	if (m_pUnit) m_pUnit->setHasPromotion((PromotionTypes) eIndex, bNewValue);
 }
 
 int CyUnit::captureProbabilityTotal() const
@@ -697,8 +669,7 @@ int /*UnitAITypes*/ CyUnit::getUnitAIType() const
 
 void CyUnit::setUnitAIType(int /*UnitAITypes*/ iNewValue)
 {
-	if (m_pUnit)
-		m_pUnit->AI_setUnitAIType((UnitAITypes)iNewValue);
+	if (m_pUnit) m_pUnit->AI_setUnitAIType((UnitAITypes)iNewValue);
 }
 
 bool CyUnit::IsSelected() const
@@ -743,6 +714,5 @@ bool CyUnit::isHiddenNationality() const
 
 void CyUnit::doHNCapture()
 {
-	if (m_pUnit)
-		m_pUnit->doHNCapture();
+	if (m_pUnit) m_pUnit->doHNCapture();
 }

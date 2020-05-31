@@ -23,10 +23,10 @@ CyPlot* cysPlotCardinalDirection(int iX, int iY, CardinalDirectionTypes eCardDir
 CyPlot* cyPlotXY(int iX, int iY, int iDX, int iDY);
 CyPlot* cysPlotXY(int iX, int iY, int iDX, int iDY);
 DirectionTypes cyDirectionXYFromInt(int iDX, int iDY);
-DirectionTypes cyDirectionXYFromPlot(CyPlot* pFromPlot, CyPlot* pToPlot);
+DirectionTypes cyDirectionXYFromPlot(const CyPlot& kFromPlot, const CyPlot& kToPlot);
 CyPlot* cyPlotCity(int iX, int iY, int iIndex);
 int cyPlotCityXYFromInt(int iDX, int iDY);
-int cyPlotCityXYFromCity(CyCity* pCity, CyPlot* pPlot);
+int cyPlotCityXYFromCity(const CyCity& kCity, const CyPlot& kPlot);
 CardinalDirectionTypes cyGetOppositeCardinalDirection(CardinalDirectionTypes eDir);
 DirectionTypes cyCardinalDirectionToDirection(CardinalDirectionTypes eCard);
 
@@ -36,8 +36,8 @@ DirectionTypes cyEstimateDirection(int iDX, int iDY);
 bool cyAtWar(int /*TeamTypes*/ eTeamA, int /*TeamTypes*/ eTeamB);
 bool cyIsPotentialEnemy(int /*TeamTypes*/ eOurPlayer, int /*TeamTypes*/ eTheirPlayer);
 
-CyCity* cyGetCity(IDInfo city);
-CyUnit* cyGetUnit(IDInfo unit);
+CyCity* cyGetCity(const IDInfo city);
+CyUnit* cyGetUnit(const IDInfo unit);
 
 bool cyIsPromotionValid(int /*PromotionTypes*/ ePromotion, int /*UnitTypes*/ eUnit, bool bLeader);
 int cyGetPopulationAsset(int iPopulation);
@@ -66,12 +66,10 @@ bool cyIsLimitedWonder(int /*BuildingTypes*/ eBuilding);
 bool cyIsWorldProject(int /*ProjectTypes*/ eProject);
 bool cyIsTeamProject(int /*ProjectTypes*/ eProject);
 bool cyIsLimitedProject(int /*ProjectTypes*/ eProject);
-int cyGetCombatOdds(CyUnit* pAttacker, CyUnit* pDefender);
+int cyGetCombatOdds(const CyUnit& kAttacker, const CyUnit& kDefender);
 int cyGetEspionageModifier(int /*TeamTypes*/ iOurTeam, int /*TeamTypes*/ iTargetTeam);
 
-// BUG - Unit Experience - start
 int cyCalculateExperience(int iLevel, int /*PlayerTypes*/ ePlayer);
 int cyCalculateLevel(int iExperience, int /*PlayerTypes*/ ePlayer);
-// BUG - Unit Experience - end
 
 #endif	// CyGameCoreUtils_h
