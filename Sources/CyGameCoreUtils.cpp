@@ -71,7 +71,7 @@ DirectionTypes cyDirectionXYFromInt(int iDX, int iDY)
 
 DirectionTypes cyDirectionXYFromPlot(const CyPlot& kFromPlot, const CyPlot& kToPlot)
 {
-	return directionXY(pFromPlot->getPlot(), pToPlot->getPlot());
+	return directionXY(kFromPlot.getPlot(), kToPlot.getPlot());
 }
 
 CyPlot* cyPlotCity(int iX, int iY, int iIndex)
@@ -86,7 +86,7 @@ int cyPlotCityXYFromInt(int iDX, int iDY)
 
 int cyPlotCityXYFromCity(const CyCity& kCity, const CyPlot& kPlot)
 {
-	return plotCityXY(pCity->getCity(), pPlot->getPlot());
+	return plotCityXY(kCity.getCity(), kPlot.getPlot());
 }
 
 CardinalDirectionTypes cyGetOppositeCardinalDirection(CardinalDirectionTypes eCardDirection)
@@ -251,7 +251,7 @@ bool cyIsLimitedProject(int /*ProjectTypes*/ eProject)
 
 int cyGetCombatOdds(const CyUnit& kAttacker, const CyUnit& kDefender)
 {
-	return getCombatOdds(pAttacker->getUnit(), pDefender->getUnit());
+	return getCombatOdds(kAttacker.getUnit(), kDefender.getUnit());
 }
 
 int cyGetEspionageModifier(int iOurTeam, int iTargetTeam)

@@ -5,7 +5,7 @@
 #include "CyUnit.h"
 
 //
-// Python interface for CvgameCoreUtils.h.
+// Python interface for CvGameCoreUtils.h.
 //
 
 void CyGameCoreUtilsPythonInterface()
@@ -69,8 +69,6 @@ void CyGameCoreUtilsPythonInterface()
 	python::def("getCombatOdds", cyGetCombatOdds, "int (CyUnit* pAttacker, CyUnit* pDefender)");
 	python::def("getEspionageModifier", cyGetEspionageModifier, "int (int /*TeamTypes*/ iOurTeam, int /*TeamTypes*/ iTargetTeam)");
 
-// BUG - Unit Experience - start
 	python::def("calculateExperience", cyCalculateExperience, "int (int iLevel, int /*PlayerTypes*/ iPlayer)");
 	python::def("calculateLevel", cyCalculateLevel, "int (int iExperience, int /*PlayerTypes*/ iPlayer)");
-// BUG - Unit Experience - end
 }
