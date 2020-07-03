@@ -32,6 +32,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("setBuildingHealthChange", &CyCity::setBuildingHealthChange, "void (int /*BuildingTypes*/ eBuilding, int iChange)")
 
 		.def("getLiberationPlayer", &CyCity::getLiberationPlayer, "int ()")
+		//.def("liberate", &CyCity::liberate, "void ()")
 		
 // BUG - Fractional Trade Routes - start
 #ifdef _MOD_FRACTRADE
@@ -65,6 +66,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("setCulture", &CyCity::setCulture, "void (int /*PlayerTypes*/ eIndex, bool bPlots)")
 		.def("setCultureTimes100", &CyCity::setCultureTimes100, "void (int /*PlayerTypes*/ eIndex, int iNewValue, bool bPlots)")
 		.def("changeCulture", &CyCity::changeCulture, "void (int /*PlayerTypes*/ eIndex, int iChange, bool bPlots)")
+
 
 		.def("isRevealed", &CyCity::isRevealed, "bool (int /*TeamTypes*/ eIndex, bool bDebug)")
 		.def("setRevealed", &CyCity::setRevealed, "void (int /*TeamTypes*/ eIndex, bool bNewValue)")
@@ -116,6 +118,7 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("getTradeCity", &CyCity::getTradeCity, python::return_value_policy<python::manage_new_object>(), "CyCity (int iIndex) - remove SpecialistType[iIndex]")
 		.def("getTradeRoutes", &CyCity::getTradeRoutes, "int ()")
 
+
 		/********************************************************************************/
 		/**		REVOLUTION_MOD							03/29/09			jdog5000	*/
 		/**																				*/
@@ -147,9 +150,6 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 
 		.def("getNumRevolts", &CyCity::getNumRevolts, "int (PlayerTypes eIndex)")
 		.def("changeNumRevolts", &CyCity::changeNumRevolts, "int (PlayerTypes eIndex, int iChange)" )
-		/********************************************************************************/
-		/**		REVOLUTION_MOD							END								*/
-		/********************************************************************************/
 // BUG - Fractional Trade Routes - start
 #ifdef _MOD_FRACTRADE
 		.def("calculateTradeProfitTimes100", &CyCity::calculateTradeProfitTimes100, "int (CyCity) - returns the unrounded trade profit created by CyCity")
@@ -158,12 +158,20 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 // BUG - Production Decay - start
 		.def("isBuildingProductionDecay", &CyCity::isBuildingProductionDecay, "bool (int eIndex)")
 		.def("getBuildingProductionDecayTurns", &CyCity::getBuildingProductionDecayTurns, "int (int eIndex)")
+// BUG - Production Decay - end
+// BUG - Production Decay - start
 		.def("getUnitProductionTime", &CyCity::getUnitProductionTime, "int (int eIndex)")
 		.def("isUnitProductionDecay", &CyCity::isUnitProductionDecay, "bool (int eIndex)")
 		.def("getUnitProductionDecayTurns", &CyCity::getUnitProductionDecayTurns, "int (int eIndex)")
 // BUG - Production Decay - end
+
+// BUG - Production Decay - start
+		.def("isBuildingProductionDecay", &CyCity::isBuildingProductionDecay, "bool (int /*BuildingTypes*/ eIndex)")
+		.def("getBuildingProductionDecayTurns", &CyCity::getBuildingProductionDecayTurns, "int (int /*BuildingTypes*/ eIndex)")
+// BUG - Production Decay - end
 		.def("getBuildingOriginalOwner", &CyCity::getBuildingOriginalOwner, "int (BuildingType) - index of original building owner")
-		.def("getBuildingOriginalTime", &CyCity::getBuildingOriginalTime, "int (BuildingType) - original build date")
+		.def("getBuildingOriginalTime", &CyCity::getBuildingOriginalTime, "int (int BuildingType) - original build date")
+		.def("setBuildingOriginalTime", &CyCity::setBuildingOriginalTime, "void (int iBuildingType, int iNewValue) - original build date")
 		.def("getUnitProduction", &CyCity::getUnitProduction, "int (UnitID) - gets current production towards UnitID")
 		.def("setUnitProduction", &CyCity::setUnitProduction, "void (UnitID, iNewValue) - sets production towards UnitID as iNewValue")
 // BUG - Production Decay - start
@@ -211,5 +219,6 @@ void CyCityPythonInterface2(python::class_<CyCity>& x)
 		.def("getUnitListGroupNum", &CyCity::getUnitListGroupNum, "int ()")
 		.def("getUnitListNumInGroup", &CyCity::getUnitListNumInGroup, "int (int)")
 		.def("getUnitListType", &CyCity::getUnitListType, "int (int,int)")
-	;
+
+		;
 }

@@ -17,11 +17,11 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 	x
 		.def("isNone", &CyPlayer::isNone, "checks for a null player")
 
-		.def("changeLeader", &CyPlayer::changeLeader, "void (int /*LeaderHeadTypes*/ eNewLeader)")
-		.def("changeCiv", &CyPlayer::changeCiv, "void (int /*CivilizationTypes*/ eNewCiv)")
-		.def("setIsHuman", &CyPlayer::setIsHuman, "void (bool bNewValue)")
-		.def("setIsRebel", &CyPlayer::setIsRebel, "void (bool bNewValue)")
-		.def("isRebel", &CyPlayer::isRebel, "bool ()")
+		.def( "changeLeader", &CyPlayer::changeLeader, "void ( int /*LeaderHeadTypes*/ eNewLeader ) - change leader of player")
+		.def( "changeCiv", &CyPlayer::changeCiv, "void ( int /*CivilizationTypes*/ eNewCiv ) - change civilization of player" )
+		.def( "setIsHuman", &CyPlayer::setIsHuman, "void ( bool bNewValue ) - set whether player is human" )
+		.def( "setIsRebel", &CyPlayer::setIsRebel, "void ( bool bNewValue ) - set whether the player is considered a rebel" )
+		.def( "isRebel", &CyPlayer::isRebel, "bool ( ) - true if player is a rebel" )
 
 		.def("isDoNotBotherStatus", &CyPlayer::isDoNotBotherStatus, "bool (int /*PlayerTypes*/ playerID ) - set if player instructed not to contact playerID" )
 
@@ -47,7 +47,7 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 		.def("isHominid", &CyPlayer::isHominid, "bool () - returns True if player is a Hominid")
 		.def("getName", &CyPlayer::getName, "str ()")
 
-		.def("setName", &CyPlayer::setName, "void (std::wstring szNewValue)")
+		.def("setName", &CyPlayer::setName, "void(std::wstring szNewValue)" ) // Exposed to Python
 		.def("getNameForm", &CyPlayer::getNameForm, "str ()")
 		.def("getNameKey", &CyPlayer::getNameKey, "str ()")
 		.def("getCivilizationDescription", &CyPlayer::getCivilizationDescription, "str() - returns the Civilization Description String")
@@ -65,7 +65,10 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 		.def("getArtStyleType", &CyPlayer::getArtStyleType, " int () - Returns the ArtStyleType for this player (e.g. European)")
 		.def("getUnitButton", &CyPlayer::getUnitButton, " string (int eUnit) - Returns the unit button for this player")
 
+
+
 		.def("countNumCoastalCities", &CyPlayer::countNumCoastalCities, "int ()")
+
 		.def("countTotalCulture", &CyPlayer::countTotalCulture, "int ()")
 		.def("countOwnedBonuses", &CyPlayer::countOwnedBonuses, "int (int (BonusTypes) eBonus) - ")
 		.def("countNumBuildings", &CyPlayer::countNumBuildings, "int (int /*BuildingTypes*/ eBuilding) - Returns the number of buildings?")
@@ -149,7 +152,6 @@ void CyPlayerPythonInterface1(python::class_<CyPlayer>& x)
 		.def("getRealPopulation", &CyPlayer::getRealPopulation, "long int ()")
 
 		.def("getTotalLand", &CyPlayer::getTotalLand, "int ()")
-
 		.def("getEffectiveGold", &CyPlayer::getEffectiveGold, "int ()")
 		.def("getGold", &CyPlayer::getGold, "int ()")
 		.def("getGreaterGold", &CyPlayer::getGreaterGold, "int ()")

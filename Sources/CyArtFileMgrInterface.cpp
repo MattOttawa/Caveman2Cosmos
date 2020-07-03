@@ -22,3 +22,4 @@ void CyArtFileMgrPythonInterface()
 		.def("getImprovementArtInfo", &CyArtFileMgr::getImprovementArtInfo, python::return_value_policy<python::reference_existing_object>(), "CvArtInfoImprovement ()")
 	;
 }
+

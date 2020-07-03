@@ -4,7 +4,6 @@
 #include "CyPlot.h"
 #include "CyUnit.h"
 
-
 int cyIntRange(int iNum, int iLow, int iHigh)
 {
 	return range(iNum, iLow, iHigh);
@@ -89,21 +88,6 @@ int cyPlotCityXYFromCity(const CyCity& kCity, const CyPlot& kPlot)
 	return plotCityXY(kCity.getCity(), kPlot.getPlot());
 }
 
-CardinalDirectionTypes cyGetOppositeCardinalDirection(CardinalDirectionTypes eCardDirection)
-{
-	return getOppositeCardinalDirection(eCardDirection);
-}
-
-DirectionTypes cyCardinalDirectionToDirection(CardinalDirectionTypes eCard)
-{
-	return cardinalDirectionToDirection(eCard);
-}
-
-bool cyIsCardinalDirection(DirectionTypes eDirection)
-{
-	return isCardinalDirection(eDirection);
-}
-
 DirectionTypes cyEstimateDirection(int iDX, int iDY)
 {
 	return estimateDirection(iDX, iDY);
@@ -132,31 +116,6 @@ CyUnit* cyGetUnit(const IDInfo unit)
 bool cyIsPromotionValid(int /*PromotionTypes*/ ePromotion, int /*UnitTypes*/ eUnit, bool bLeader)
 {
 	return isPromotionValid((PromotionTypes) ePromotion, (UnitTypes) eUnit, bLeader);
-}
-
-int cyGetPopulationAsset(int iPopulation)
-{
-	return getPopulationAsset(iPopulation);
-}
-
-int cyGetLandPlotsAsset(int iLandPlots)
-{
-	return getLandPlotsAsset(iLandPlots);
-}
-
-int cyGetPopulationPower(int iPopulation)
-{
-	return getPopulationPower(iPopulation);
-}
-
-int cyGetPopulationScore(int iPopulation)
-{
-	return getPopulationScore(iPopulation);
-}
-
-int cyGetLandPlotsScore(int iPopulation)
-{
-	return getLandPlotsScore(iPopulation);
 }
 
 int cyGetTechScore(int /*TechTypes*/ eTech)

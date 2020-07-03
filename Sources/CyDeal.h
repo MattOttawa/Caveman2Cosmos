@@ -13,7 +13,7 @@ class CyDeal
 {
 public:
 	CyDeal(CvDeal* pDeal = NULL);
-	virtual ~CyDeal() {}
+	virtual ~CyDeal();
 
 	CvDeal* getDeal() const { return m_pDeal; }
 	bool isNone() const { return m_pDeal == NULL;  }

@@ -45,5 +45,5 @@ void CySelectionGroupInterface()
 		.def("getHeadUnit", &CySelectionGroup::getHeadUnit, python::return_value_policy<python::manage_new_object>(), "CyUnit* ()")
 		.def("getMissionType", &CySelectionGroup::getMissionType, "int (int iNode)")
 		.def("getMissionData1", &CySelectionGroup::getMissionData1, "int (int iNode)")
-	;
+		;
 }

@@ -23,6 +23,7 @@ void CyGlobalContextPythonInterface1(python::class_<CyGlobalContext>& x)
 		.def("getASyncRand", &CyGlobalContext::getCyASyncRand, python::return_value_policy<python::reference_existing_object>(), "Non-Synch'd random #")
 		.def("getTeam", &CyGlobalContext::getCyTeam, python::return_value_policy<python::reference_existing_object>(), "(iTeam) - iTeam instance")
 
+		// infos
 		.def("getNumEffectInfos", &CyGlobalContext::getNumEffectInfos, "int () - Number of effect infos")
 		.def("getEffectInfo", &CyGlobalContext::getEffectInfo, python::return_value_policy<python::reference_existing_object>(), "(int (EffectTypes) eEffectID) - CvInfo for EffectID")
 
@@ -82,7 +83,7 @@ void CyGlobalContextPythonInterface1(python::class_<CyGlobalContext>& x)
 		.def("getImprovementInfo", &CyGlobalContext::getImprovementInfo, python::return_value_policy<python::reference_existing_object>(), "(ImprovementID) - CvInfo for ImprovementID")
 
 		.def("getNumGoodyInfos", &CyGlobalContext::getNumGoodyInfos, "() - Total Goody Infos XML\\GameInfo\\CIV4GoodyInfos.xml")
-		//.def("getGoodyInfo", &CyGlobalContext::getGoodyInfo, python::return_value_policy<python::reference_existing_object>(), "(GoodyID) - CvInfo for GoodyID")
+		.def("getGoodyInfo", &CyGlobalContext::getGoodyInfo, python::return_value_policy<python::reference_existing_object>(), "(GoodyID) - CvInfo for GoodyID")
 
 		.def("getNumBuildInfos", &CyGlobalContext::getNumBuildInfos, "() - Total Build Infos XML\\Units\\CIV4BuildInfos.xml")
 		.def("getBuildInfo", &CyGlobalContext::getBuildInfo, python::return_value_policy<python::reference_existing_object>(), "(BuildID) - CvInfo for BuildID")
@@ -105,7 +106,7 @@ void CyGlobalContextPythonInterface1(python::class_<CyGlobalContext>& x)
 		.def("getActionInfo", &CyGlobalContext::getActionInfo, python::return_value_policy<python::reference_existing_object>(), "(ActionID) - CvInfo for ActionID")
 
 		//TB Promotion Line Mod begin
-		//.def("getNumPromotionLineInfos", &CyGlobalContext::getNumPromotionLineInfos, "() - Total Promotion Line Infos XML\\Units\\CIV4PromotionLineInfos.xml")
+		.def("getNumPromotionLineInfos", &CyGlobalContext::getNumPromotionLineInfos, "() - Total Promotion Line Infos XML\\Units\\CIV4PromotionLineInfos.xml")
 		.def("getPromotionLineInfo", &CyGlobalContext::getPromotionLineInfo, python::return_value_policy<python::reference_existing_object>(), "(PromotionLineID) - CvInfo for PromotionLineID")
 		//TB Promotion Line Mod end
 

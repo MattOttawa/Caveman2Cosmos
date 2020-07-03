@@ -4,9 +4,6 @@
 #include "CySelectionGroup.h"
 #include "CyUnit.h"
 
-//
-// published python interface for CyPlayer
-//
 
 void CyPlayerPythonInterface3(python::class_<CyPlayer>& x)
 {
@@ -47,6 +44,8 @@ void CyPlayerPythonInterface3(python::class_<CyPlayer>& x)
 		.def("getGreatGeneralRateModifier", &CyPlayer::getGreatGeneralRateModifier, "int ()")
 		.def("greatPeopleThresholdMilitary", &CyPlayer::greatPeopleThresholdMilitary, "int ()")
 		.def("greatPeopleThresholdNonMilitary", &CyPlayer::greatPeopleThresholdNonMilitary, "int ()")
+		.def("getGreatGeneralsThresholdModifier", &CyPlayer::getGreatGeneralsThresholdModifier, "int ()")
+		.def("changeGreatGeneralsThresholdModifier", &CyPlayer::changeGreatGeneralsThresholdModifier, "void (int iChange)")
 
 		.def("getFreeExperience", &CyPlayer::getFreeExperience, "int ()")
 		.def("getFeatureProductionModifier", &CyPlayer::getFeatureProductionModifier, "int ()")
@@ -70,7 +69,6 @@ void CyPlayerPythonInterface3(python::class_<CyPlayer>& x)
 		.def("getExtraHealth", &CyPlayer::getExtraHealth, "int ()")
 		.def("changeExtraHealth", &CyPlayer::changeExtraHealth, "void (int iChange)")
 
-
 		.def("getExtraHappiness", &CyPlayer::getExtraHappiness, "int ()")
 		.def("changeExtraHappiness", &CyPlayer::changeExtraHappiness, "void (int iChange)")
 
@@ -80,8 +78,8 @@ void CyPlayerPythonInterface3(python::class_<CyPlayer>& x)
 		.def("getCoastalTradeRoutes", &CyPlayer::getCoastalTradeRoutes, "int ()")
 		.def("changeCoastalTradeRoutes", &CyPlayer::changeCoastalTradeRoutes, "void (int iChange)")
 		.def("getTradeRoutes", &CyPlayer::getTradeRoutes, "int ()")
-		.def("getRevolutionTimer", &CyPlayer::getRevolutionTimer, "int ()")
 
+		.def("getRevolutionTimer", &CyPlayer::getRevolutionTimer, "int ()")
 		.def("changeRevolutionTimer", &CyPlayer::changeRevolutionTimer, "void (int addTime)")
 
 		.def("isStateReligion", &CyPlayer::isStateReligion, "bool ()")
@@ -94,15 +92,17 @@ void CyPlayerPythonInterface3(python::class_<CyPlayer>& x)
 		.def("getCapitalCity", &CyPlayer::getCapitalCity, python::return_value_policy<python::manage_new_object>(), "CyCity* (int iID)")
 		.def("getCitiesLost", &CyPlayer::getCitiesLost, "int ()")
 
+
 		.def("getAssets", &CyPlayer::getAssets, "int ()")
 		.def("getPower", &CyPlayer::getPower, "int ()")
 		.def("getUnitPower", &CyPlayer::getUnitPower, "int ()")
 		.def("getPopScore", &CyPlayer::getPopScore, "int ()")
 		.def("getLandScore", &CyPlayer::getLandScore, "int ()")
+
 		.def("getSevoWondersScore", &CyPlayer::getSevoWondersScore, "int ()")
+
 		.def("getWondersScore", &CyPlayer::getWondersScore, "int ()")
 		.def("getTechScore", &CyPlayer::getTechScore, "int ()")
-
 		.def("isMinorCiv", &CyPlayer::isMinorCiv, "bool ()")
 		.def("isAlive", &CyPlayer::isAlive, "bool ()")
 		.def("isEverAlive", &CyPlayer::isEverAlive, "bool ()")
@@ -180,6 +180,8 @@ void CyPlayerPythonInterface3(python::class_<CyPlayer>& x)
 		.def("getCombatExperience", &CyPlayer::getCombatExperience, "int () - Combat experience used to produce Warlords")
 		.def("changeCombatExperience", &CyPlayer::changeCombatExperience, "void (int) - Combat experience used to produce Warlords")
 		.def("setCombatExperience", &CyPlayer::setCombatExperience, "void (int) - Combat experience used to produce Warlords")
+
+
 
 		.def("getQueuePosition", &CyPlayer::getQueuePosition, "int")
 		.def("clearResearchQueue", &CyPlayer::clearResearchQueue, "void ()")

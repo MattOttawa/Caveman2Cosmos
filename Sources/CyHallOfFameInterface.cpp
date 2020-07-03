@@ -20,6 +20,7 @@ void CyHallOfFameInterface()
 		.def("getColor", &CyReplayInfo::getColor, "int (int iPlayer)")
 		.def("getDifficulty", &CyReplayInfo::getDifficulty, "int ()")
 		.def("getLeaderName", &CyReplayInfo::getLeaderName, "wstring ()")
+		.def("getCivDescription", &CyReplayInfo::getCivDescription, "wstring ()")
 		.def("getShortCivDescription", &CyReplayInfo::getShortCivDescription, "wstring ()")
 		.def("getMapScriptName", &CyReplayInfo::getMapScriptName, "wstring ()")
 		.def("getWorldSize", &CyReplayInfo::getWorldSize, "int ()")
@@ -36,9 +37,15 @@ void CyHallOfFameInterface()
 		.def("getNormalizedScore", &CyReplayInfo::getNormalizedScore, "int ()")
 		
 		.def("getReplayMessageTurn", &CyReplayInfo::getReplayMessageTurn, "int (int i)")
+		.def("getReplayMessageType", &CyReplayInfo::getReplayMessageType, "int (int i)")
+		.def("getReplayMessagePlotX", &CyReplayInfo::getReplayMessagePlotX, "int (int i)")
+		.def("getReplayMessagePlotY", &CyReplayInfo::getReplayMessagePlotY, "int (int i)")
+		.def("getReplayMessagePlayer", &CyReplayInfo::getReplayMessagePlayer, "int (int i)")
 		.def("getReplayMessageText", &CyReplayInfo::getReplayMessageText, "wstring (int i)")
 		.def("getNumReplayMessages", &CyReplayInfo::getNumReplayMessages, "int ()")
+		.def("getReplayMessageColor", &CyReplayInfo::getReplayMessageColor, "int (int i)")
 
+		.def("getInitialTurn", &CyReplayInfo::getInitialTurn, "int ()")
 		.def("getStartYear", &CyReplayInfo::getStartYear, "int ()")
 		.def("getFinalTurn", &CyReplayInfo::getFinalTurn, "int ()")
 		.def("getFinalDate", &CyReplayInfo::getFinalDate, "wstring ()")
@@ -50,11 +57,11 @@ void CyHallOfFameInterface()
 		.def("getMapHeight", &CyReplayInfo::getMapHeight, "int ()")
 
 		.def("getModName", &CyReplayInfo::getModName, "std::wstring ()")
-	;
+		;
 		
 	python::class_<CyHallOfFameInfo>("CyHallOfFameInfo")
 		.def("loadReplays", &CyHallOfFameInfo::loadReplays, "void ()")
 		.def("getNumGames", &CyHallOfFameInfo::getNumGames, "int ()")
 		.def("getReplayInfo", &CyHallOfFameInfo::getReplayInfo, python::return_value_policy<python::manage_new_object>(), "CyReplayInfo* (int i)")
-	;
+		;
 }

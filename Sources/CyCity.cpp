@@ -1292,7 +1292,7 @@ int CyCity::getNumRevolts(int playerIdx) const
 
 void CyCity::changeNumRevolts(int playerIdx, int iChange)
 {
-	if (m_pCity) m_pCity->changeNumRevolts((PlayerTypes)playerIdx,iChange);
+	if (m_pCity) m_pCity->changeNumRevolts((PlayerTypes)playerIdx, iChange);
 }
 
 bool CyCity::isRevealed(int /*TeamTypes*/ eIndex, bool bDebug) const
@@ -1393,6 +1393,12 @@ int CyCity::getBuildingOriginalOwner(int /*BuildingTypes*/ iIndex) const
 int CyCity::getBuildingOriginalTime(int /*BuildingTypes*/ iIndex) const
 {
 	return m_pCity ? m_pCity->getBuildingOriginalTime((BuildingTypes) iIndex) : -1;
+}
+
+void CyCity::setBuildingOriginalTime(int iIndex, int iNewValue)
+{
+	if (m_pCity)
+		m_pCity->setBuildingOriginalTime((BuildingTypes) iIndex, iNewValue);
 }
 
 int CyCity::getUnitProduction(int iIndex) const

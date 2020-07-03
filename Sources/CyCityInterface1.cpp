@@ -10,6 +10,7 @@
 void CyCityPythonInterface1(python::class_<CyCity>& x)
 {
 	OutputDebugString("Python Extension Module - CyCityPythonInterface1\n");
+
 	x
 		.def("isNone", &CyCity::isNone, "void () - is the instance valid?")
 		.def("kill", &CyCity::kill, "void () - kill the city")
@@ -57,6 +58,7 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("changeProduction", &CyCity::changeProduction, "void (int iChange)")
 		.def("getProductionModifier", &CyCity::getProductionModifier, "int () - multiplier (if any) for item being produced")
 		.def("getCurrentProductionDifference", &CyCity::getCurrentProductionDifference, "int (bool bIgnoreFood, bool bOverflow)")
+
 
 		.def("canHurry", &CyCity::canHurry, "bool (HurryTypes eHurry, bool bTestVisible = 0) - can player eHurry in this city?")
 		.def("getConscriptUnit", &CyCity::getConscriptUnit, "UnitID () - UnitID for the best unit the city can conscript")
@@ -208,9 +210,9 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("changeOccupationTimer", &CyCity::changeOccupationTimer, "void (iChange) - adjusts the Occupation Timer by iChange")
 		.def("isNeverLost", &CyCity::isNeverLost, "bool ()")
 		.def("setNeverLost", &CyCity::setNeverLost, "void (iNewValue)")
-
+		// < M.A.D. Nukes Start >
 		.def("getMADIncoming", &CyCity::getMADIncoming, "int ()")
-
+		// < M.A.D. Nukes End   >
 		.def("isBombarded", &CyCity::isBombarded, "bool ()")
 		.def("setBombarded", &CyCity::setBombarded, "void (iNewValue)")
 		.def("isDrafted", &CyCity::isDrafted, "bool ()")
@@ -231,16 +233,15 @@ void CyCityPythonInterface1(python::class_<CyCity>& x)
 		.def("getOriginalOwner", &CyCity::getOriginalOwner, "int /*PlayerTypes*/ ()")
 		.def("getCultureLevel", &CyCity::getCultureLevel, "int /*CultureLevelTypes*/ ()")
 		.def("getCultureThreshold", &CyCity::getCultureThreshold)
-		.def("getSeaPlotYield", &CyCity::getSeaPlotYield, "int (int /*YieldTypes*/) - total YieldType for water plots")
 
+		.def("getSeaPlotYield", &CyCity::getSeaPlotYield, "int (int /*YieldTypes*/) - total YieldType for water plots")
 		.def("getBaseYieldRate", &CyCity::getBaseYieldRate, "int (int /*YieldTypes*/) - base rate for YieldType")
 		.def("changeBaseYieldRate", &CyCity::changeBaseYieldRate, "int (int /*YieldTypes*/, int iChange) - changes the base rate for YieldType")
-
 		.def("getBaseYieldRateModifier", &CyCity::getBaseYieldRateModifier)
 		.def("getYieldRate", &CyCity::getYieldRate, "int (int /*YieldTypes*/) - total value of YieldType")
 		.def("getYieldRateModifier", &CyCity::getYieldRateModifier, "int (int /*YieldTypes*/) - yield rate modifier for YieldType")
 		.def("getTradeYield", &CyCity::getTradeYield, "int (int /*YieldTypes*/) - trade adjustment to YieldType")
 
 		.def("isEventOccured", &CyCity::isEventOccured, "bool (int /*EventTypes*/)")
-	;
+		;
 }

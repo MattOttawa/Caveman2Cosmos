@@ -1,49 +1,84 @@
-#include "CvGameCoreDLL.h"
-#include "CyArtFileMgr.h"
-
 //
 // Python wrapper class for CvArtFileMgr 
 // 
+#include "CvGameCoreDLL.h"
+#include "CyArtFileMgr.h"
 
-CyArtFileMgr::CyArtFileMgr() : m_pArtFileMgr(ARTFILEMGR) {}
-
-
-CvArtInfoInterface* CyArtFileMgr::getInterfaceArtInfo(const char* szArtDefineTag) const
+CyArtFileMgr::CyArtFileMgr() : m_pArtFileMgr(NULL)
 {
-	return m_pArtFileMgr.getInterfaceArtInfo(szArtDefineTag);
+	m_pArtFileMgr = &ARTFILEMGR;
 }
 
-CvArtInfoMovie* CyArtFileMgr::getMovieArtInfo(const char* szArtDefineTag) const
+CyArtFileMgr::CyArtFileMgr(CvArtFileMgr* pArtFileMgr) : m_pArtFileMgr(pArtFileMgr)
+{}
+
+void CyArtFileMgr::Reset()
 {
-	return m_pArtFileMgr.getMovieArtInfo(szArtDefineTag);
+	if (m_pArtFileMgr)
+	{
+		m_pArtFileMgr->Reset();
+	}
 }
 
-CvArtInfoMisc* CyArtFileMgr::getMiscArtInfo(const char* szArtDefineTag) const
+void CyArtFileMgr::buildArtFileInfoMaps()
 {
-	return m_pArtFileMgr.getMiscArtInfo(szArtDefineTag);
+	if (m_pArtFileMgr)
+	{
+		m_pArtFileMgr->buildArtFileInfoMaps();
+	}
 }
 
-CvArtInfoUnit* CyArtFileMgr::getUnitArtInfo(const char* szArtDefineTag) const
+CvArtInfoInterface* CyArtFileMgr::getInterfaceArtInfo( const char * szArtDefineTag ) const
 {
-	return m_pArtFileMgr.getUnitArtInfo(szArtDefineTag);
+	return m_pArtFileMgr ? m_pArtFileMgr->getInterfaceArtInfo( szArtDefineTag ) : NULL;
 }
 
-CvArtInfoBuilding* CyArtFileMgr::getBuildingArtInfo(const char* szArtDefineTag) const
+CvArtInfoMovie* CyArtFileMgr::getMovieArtInfo( const char * szArtDefineTag ) const
 {
-	return m_pArtFileMgr.getBuildingArtInfo(szArtDefineTag);
+	return m_pArtFileMgr ? m_pArtFileMgr->getMovieArtInfo( szArtDefineTag ) : NULL;
 }
 
-CvArtInfoCivilization* CyArtFileMgr::getCivilizationArtInfo(const char* szArtDefineTag) const
+CvArtInfoMisc* CyArtFileMgr::getMiscArtInfo( const char * szArtDefineTag ) const
 {
-	return m_pArtFileMgr.getCivilizationArtInfo(szArtDefineTag);
+	return m_pArtFileMgr ? m_pArtFileMgr->getMiscArtInfo( szArtDefineTag ) : NULL;
 }
 
-CvArtInfoBonus* CyArtFileMgr::getBonusArtInfo(const char* szArtDefineTag) const
+CvArtInfoUnit* CyArtFileMgr::getUnitArtInfo( const char * szArtDefineTag ) const
 {
-	return m_pArtFileMgr.getBonusArtInfo(szArtDefineTag);
+	return m_pArtFileMgr ? m_pArtFileMgr->getUnitArtInfo( szArtDefineTag ) : NULL;
 }
 
-CvArtInfoImprovement* CyArtFileMgr::getImprovementArtInfo(const char* szArtDefineTag) const
+CvArtInfoBuilding* CyArtFileMgr::getBuildingArtInfo( const char * szArtDefineTag ) const
 {
-	return m_pArtFileMgr.getImprovementArtInfo(szArtDefineTag);
+	return m_pArtFileMgr ? m_pArtFileMgr->getBuildingArtInfo( szArtDefineTag ) : NULL;
+}
+
+CvArtInfoCivilization* CyArtFileMgr::getCivilizationArtInfo( const char * szArtDefineTag ) const
+{
+	return m_pArtFileMgr ? m_pArtFileMgr->getCivilizationArtInfo( szArtDefineTag ) : NULL;
+}
+
+CvArtInfoLeaderhead* CyArtFileMgr::getLeaderheadArtInfo( const char * szArtDefineTag ) const
+{
+	return m_pArtFileMgr ? m_pArtFileMgr->getLeaderheadArtInfo( szArtDefineTag ) : NULL;
+}
+
+CvArtInfoBonus* CyArtFileMgr::getBonusArtInfo( const char * szArtDefineTag ) const
+{
+	return m_pArtFileMgr ? m_pArtFileMgr->getBonusArtInfo( szArtDefineTag ) : NULL;
+}
+
+CvArtInfoImprovement* CyArtFileMgr::getImprovementArtInfo( const char * szArtDefineTag ) const
+{
+	return m_pArtFileMgr ? m_pArtFileMgr->getImprovementArtInfo( szArtDefineTag ) : NULL;
+}
+
+CvArtInfoTerrain* CyArtFileMgr::getTerrainArtInfo( const char * szArtDefineTag ) const
+{
+	return m_pArtFileMgr ? m_pArtFileMgr->getTerrainArtInfo( szArtDefineTag ) : NULL;
+}
+
+CvArtInfoFeature* CyArtFileMgr::getFeatureArtInfo( const char * szArtDefineTag ) const
+{
+	return m_pArtFileMgr ? m_pArtFileMgr->getFeatureArtInfo( szArtDefineTag ) : NULL;
 }

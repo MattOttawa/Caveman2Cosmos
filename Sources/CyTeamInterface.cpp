@@ -10,6 +10,7 @@ void CyTeamPythonInterface()
 	OutputDebugString("Python Extension Module - CyTeamPythonInterface\n");
 
 	python::class_<CyTeam>("CyTeam")
+
 		.def("isNone", &CyTeam::isNone, "bool () - is this instance valid?")
 
 		.def("isRebelAgainst", &CyTeam::isRebelAgainst, "bool ( int iTeam )" )
@@ -29,6 +30,7 @@ void CyTeamPythonInterface()
 
 		.def("getAssets", &CyTeam::getAssets, "int ()")
 		.def("getPower", &CyTeam::getPower, "int (bool bIncludeVassals)")
+
 		.def("getTotalVictoryScore", &CyTeam::getTotalVictoryScore, "int ()")
 
 		.def("getAtWarCount", &CyTeam::getAtWarCount, "int (bool bIgnoreMinors)")
@@ -53,7 +55,7 @@ void CyTeamPythonInterface()
 		.def("isHuman", &CyTeam::isHuman, "bool () - is human team?")
 		.def("isBarbarian", &CyTeam::isBarbarian, "bool () - is barbarian team?")
 		.def("isNPC", &CyTeam::isNPC, "bool () - is NPC team?")
-		.def("isHominid", &CyTeam::isHominid, "bool () - is Hominid team?")
+		.def("isHominid", &CyTeam::isNPC, "bool () - is Hominid team?")
 		.def("isMinorCiv", &CyTeam::isMinorCiv)
 		.def("setIsMinorCiv", &CyTeam::setIsMinorCiv, "void( bool bNewValue, bool bDoBarbCivCheck )")
 
@@ -187,7 +189,6 @@ void CyTeamPythonInterface()
 		.def("changeCounterespionageTurnsLeftAgainstTeam", &CyTeam::changeCounterespionageTurnsLeftAgainstTeam, "void (TeamTypes eIndex, int iChange)")
 		.def("getCounterespionageModAgainstTeam", &CyTeam::getCounterespionageModAgainstTeam, "int (TeamTypes eIndex)")
 		.def("changeCounterespionageModAgainstTeam", &CyTeam::changeCounterespionageModAgainstTeam, "void (TeamTypes eIndex, int iChange)")
-
 		.def("AI_shareWar", &CyTeam::AI_shareWar, "bool (TeamTypes)")
 		.def("AI_getAtWarCounter", &CyTeam::AI_getAtWarCounter, "int (TeamTypes)")
 		.def("AI_getAtPeaceCounter", &CyTeam::AI_getAtPeaceCounter, "int (TeamTypes)")

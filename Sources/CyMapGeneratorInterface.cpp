@@ -20,5 +20,5 @@ void CyMapGeneratorPythonInterface()
 		.def("generateTerrain", &CyMapGenerator::generateTerrain, "void ()")
 
 		.def("setPlotTypes", &CyMapGenerator::setPlotTypes, "void (list lPlotTypes) - set plot types to the contents of the given list")
-	;
+		;
 }

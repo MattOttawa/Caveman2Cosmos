@@ -27,10 +27,7 @@ DirectionTypes cyDirectionXYFromPlot(const CyPlot& kFromPlot, const CyPlot& kToP
 CyPlot* cyPlotCity(int iX, int iY, int iIndex);
 int cyPlotCityXYFromInt(int iDX, int iDY);
 int cyPlotCityXYFromCity(const CyCity& kCity, const CyPlot& kPlot);
-CardinalDirectionTypes cyGetOppositeCardinalDirection(CardinalDirectionTypes eDir);
-DirectionTypes cyCardinalDirectionToDirection(CardinalDirectionTypes eCard);
 
-bool cyIsCardinalDirection(DirectionTypes eDirection);
 DirectionTypes cyEstimateDirection(int iDX, int iDY);
 
 bool cyAtWar(int /*TeamTypes*/ eTeamA, int /*TeamTypes*/ eTeamB);
@@ -40,11 +37,6 @@ CyCity* cyGetCity(const IDInfo city);
 CyUnit* cyGetUnit(const IDInfo unit);
 
 bool cyIsPromotionValid(int /*PromotionTypes*/ ePromotion, int /*UnitTypes*/ eUnit, bool bLeader);
-int cyGetPopulationAsset(int iPopulation);
-int cyGetLandPlotsAsset(int iLandPlots);
-int cyGetPopulationPower(int iPopulation);
-int cyGetPopulationScore(int iPopulation);
-int cyGetLandPlotsScore(int iPopulation);
 int cyGetTechScore(int /*TechTypes*/ eTech);
 int cyGetWonderScore(int /*BuildingTypes*/ eWonder);
 int /*ImprovementTypes*/ cyFinalImprovementUpgrade(int /*ImprovementTypes*/ eImprovement, int iCount);

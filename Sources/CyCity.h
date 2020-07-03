@@ -356,18 +356,19 @@ public:
 	void changeFreeBonus(int /*BonusTypes*/ eIndex, int iChange);
 	int getNumBonuses(int /*BonusTypes*/ iBonus) const;
 	bool hasBonus(int /*BonusTypes */ iBonus) const;
+
 	int getBuildingProduction(int /*BuildingTypes*/ iIndex) const;
 	void setBuildingProduction(int /*BuildingTypes*/ iIndex, int iNewValue);
 	int getBuildingProductionTime(int /*BuildingTypes*/ eIndex) const;
-
 	bool isBuildingProductionDecay(int /*BuildingTypes*/ eIndex) const;
 	int getBuildingProductionDecayTurns(int /*BuildingTypes*/ eIndex) const;
 
 	int getBuildingOriginalOwner(int /*BuildingTypes*/ iIndex) const;
 	int getBuildingOriginalTime(int /*BuildingTypes*/ iIndex) const;
+	void setBuildingOriginalTime(int iBuildingType, int i);
+
 	int getUnitProduction(int iIndex) const;
 	void setUnitProduction(int iIndex, int iNewValue);
-
 	int getUnitProductionTime(int /*UnitTypes*/ eIndex) const;
 	bool isUnitProductionDecay(int /*UnitTypes*/ eIndex) const;
 	int getUnitProductionDecayTurns(int /*UnitTypes*/ eIndex) const;

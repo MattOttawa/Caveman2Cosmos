@@ -26,7 +26,9 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("AI_changeAttitudeExtra", &CyPlayer::AI_changeAttitudeExtra, "void (int /*PlayerTypes*/ eIndex, int iChange) - Changes the extra attitude for this player - usually scenario specific")
 		.def("AI_getMemoryCount", &CyPlayer::AI_getMemoryCount, "int (/*PlayerTypes*/ eIndex1, /*MemoryTypes*/ eIndex2)")
 		.def("AI_changeMemoryCount", &CyPlayer::AI_changeMemoryCount, "void (/*PlayerTypes*/ eIndex1, /*MemoryTypes*/ eIndex2, int iChange)")
+// BUG - Refuses to Talk - start
 		.def("AI_isWillingToTalk", &CyPlayer::AI_isWillingToTalk, "bool (int /*PlayerTypes*/)")
+// BUG - Refuses to Talk - end
 
 		.def("getScoreHistory", &CyPlayer::getScoreHistory, "int (int iTurn)")
 		.def("getEconomyHistory", &CyPlayer::getEconomyHistory, "int (int iTurn)")
@@ -44,14 +46,27 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 
 		.def("canSplitEmpire", &CyPlayer::canSplitEmpire, "bool ()")
 		.def("canSplitArea", &CyPlayer::canSplitArea, "bool (int)")
-
+/************************************************************************************************/
+/* REVOLUTION_MOD                         11/15/08                                jdog5000      */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
 		.def("assimilatePlayer", &CyPlayer::assimilatePlayer, "bool ( int iPlayer ) - acquire iPlayer's units and cities")
-
+/************************************************************************************************/
+/* REVOLUTION_MOD                          END                                                  */
+/************************************************************************************************/
 		.def("canHaveTradeRoutesWith", &CyPlayer::canHaveTradeRoutesWith, "bool (int)")
 		.def("forcePeace", &CyPlayer::forcePeace, "void (int)")
 
-		.def("addReminder", &CyPlayer::addReminder, "void (int iGameTurn, string szMessage)")
+/************************************************************************************************/
+/* REVOLUTION_MOD                         06/11/08                                jdog5000      */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
 
+// BUG - Reminder Mod - start
+		.def("addReminder", &CyPlayer::addReminder, "void (int iGameTurn, string szMessage)")
+// BUG - Reminder Mod - end
 		.def("setFoundedFirstCity", &CyPlayer::setFoundedFirstCity, "void (bool bNewValue)")
 		.def("setAlive", &CyPlayer::setAlive, "void (bool bNewValue)")
 		.def("setNewPlayerAlive", &CyPlayer::setNewPlayerAlive, "void (bool bNewValue) - like setAlive, but without firing turn logic")
@@ -63,6 +78,7 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getRevolutionStabilityHistory", &CyPlayer::getRevolutionStabilityHistory, "int (int iTurn)")
 
 		.def("isNonStateReligionCommerce", &CyPlayer::isNonStateReligionCommerce, "bool ()")
+
 		.def("getBuildingCountWithUpgrades", &CyPlayer::getBuildingCountWithUpgrades, "int (int iBuilding)")
 		.def("setColor", &CyPlayer::setColor, "void (int iColor)")
 		.def("setHandicap", &CyPlayer::setHandicap, "void (int iNewVal)")
@@ -71,10 +87,10 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("isAutomatedCanBuild", &CyPlayer::isAutomatedCanBuild, "bool ()")
 		.def("setAutomatedCanBuild", &CyPlayer::setAutomatedCanBuild, "void ()")
 		.def("getBestUnitType", &CyPlayer::getBestUnitType, "int (int /*UnitAITypes*/ eUnitAI)")
+
 		.def("getCulture", &CyPlayer::getCulture, "int ()")
 		.def("setCulture", &CyPlayer::setCulture, "void (int)")
 		.def("changeCulture", &CyPlayer::changeCulture, "void (int)")
-		//.def("getProperties", &CyPlayer::getProperties, python::return_value_policy<python::reference_existing_object>(), "CvProperties ()")
 
 		.def("getBuildingListFilterActive", &CyPlayer::getBuildingListFilterActive, "bool (int)")
 		.def("setBuildingListFilterActive", &CyPlayer::setBuildingListFilterActive, "void (int,bool)")
@@ -96,8 +112,12 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("getUnitListGroupNum", &CyPlayer::getUnitListGroupNum, "int ()")
 		.def("getUnitListNumInGroup", &CyPlayer::getUnitListNumInGroup, "int (int)")
 		.def("getUnitListType", &CyPlayer::getUnitListType, "int (int,int)")
-
 		.def("makeNukesValid", &CyPlayer::makeNukesValid, " void (bool bValid)")
+
+		//TB Combat Mod begin
+		//TB Combat Mod end
+
+		//TB Traits begin
 
 		// AIAndy: Build Lists
 		.def("getBLNumLists", &CyPlayer::getBLNumLists, "int ()")
@@ -111,5 +131,6 @@ void CyPlayerPythonInterface2(python::class_<CyPlayer>& x)
 		.def("addBLList", &CyPlayer::addBLList, "void ()")
 		.def("renameBLList", &CyPlayer::renameBLList, "void (int)")
 		.def("removeBLList", &CyPlayer::removeBLList, "void (int)")
-	;
+
+		;
 }

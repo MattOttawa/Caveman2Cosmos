@@ -1,3 +1,6 @@
+//
+// Python wrapper class for CyGameTextMgr 
+// 
 #include "CvGameCoreDLL.h"
 #include "CvGameTextMgr.h"
 #include "CyCity.h"
@@ -5,77 +8,86 @@
 #include "CyGameTextMgr.h"
 #include "CyUnit.h"
 
-//
-// Python wrapper class for CyGameTextMgr 
-//
+CyGameTextMgr::CyGameTextMgr() : 
+m_pGameTextMgr(NULL)
+{
+	m_pGameTextMgr = &CvGameTextMgr::GetInstance();
+}
 
-CyGameTextMgr::CyGameTextMgr() {}
+CyGameTextMgr::CyGameTextMgr(CvGameTextMgr* pGameTextMgr) : m_pGameTextMgr(pGameTextMgr)
+{
 
+}
 
-std::wstring CyGameTextMgr::getTimeStr(int iGameTurn, bool bSave) const
+void CyGameTextMgr::Reset()
+{
+	GAMETEXT.Reset();
+}
+
+std::wstring CyGameTextMgr::getTimeStr(int iGameTurn, bool bSave)
 {
 	CvWString str;
 	GAMETEXT.setTimeStr(str, iGameTurn, bSave);
 	return str;
 }
 
-std::wstring CyGameTextMgr::getDateStr(int iGameTurn, bool bSave, int /*CalendarTypes*/ eCalendar, int iStartYear, int /*GameSpeedTypes*/ eSpeed) const
+std::wstring CyGameTextMgr::getDateStr(int iGameTurn, bool bSave, int /*CalendarTypes*/ eCalendar, int iStartYear, int /*GameSpeedTypes*/ eSpeed)
 {
 	CvWString str;
 	GAMETEXT.setDateStr(str, iGameTurn, bSave, (CalendarTypes)eCalendar, iStartYear, (GameSpeedTypes)eSpeed);
 	return str;
 }
 
-std::wstring CyGameTextMgr::getInterfaceTimeStr(int /*PlayerTypes*/ iPlayer) const
+std::wstring CyGameTextMgr::getInterfaceTimeStr(int /*PlayerTypes*/ iPlayer)
 {
 	CvWString szBuffer;
-	GAMETEXT.setInterfaceTime(szBuffer, (PlayerTypes)iPlayer);
+	GAMETEXT.setInterfaceTime(szBuffer, ((PlayerTypes)iPlayer));
 	return szBuffer;
 }
 
-std::wstring CyGameTextMgr::getGoldStr(int /*PlayerTypes*/ iPlayer) const
+std::wstring CyGameTextMgr::getGoldStr(int /*PlayerTypes*/ iPlayer)
 {
 	CvWString szBuffer;
-	GAMETEXT.setGoldStr(szBuffer, (PlayerTypes)iPlayer);
+	GAMETEXT.setGoldStr(szBuffer, ((PlayerTypes)iPlayer));
 	return szBuffer;
 }
 
-std::wstring CyGameTextMgr::getResearchStr(int /*PlayerTypes*/ iPlayer) const
+std::wstring CyGameTextMgr::getResearchStr(int /*PlayerTypes*/ iPlayer)
 {
 	CvWString szBuffer;
-	GAMETEXT.setResearchStr(szBuffer, (PlayerTypes)iPlayer);
+	GAMETEXT.setResearchStr(szBuffer, ((PlayerTypes)iPlayer));
 	return szBuffer;
 }
 
-std::wstring CyGameTextMgr::getOOSSeeds(int /*PlayerTypes*/ iPlayer) const
+std::wstring CyGameTextMgr::getOOSSeeds(int /*PlayerTypes*/ iPlayer)
 {
 	CvWString szBuffer;
-	GAMETEXT.setOOSSeeds(szBuffer, (PlayerTypes)iPlayer);
+	GAMETEXT.setOOSSeeds(szBuffer, ((PlayerTypes)iPlayer));
 	return szBuffer;
 }
 
-std::wstring CyGameTextMgr::getNetStats(int /*PlayerTypes*/ iPlayer) const
+std::wstring CyGameTextMgr::getNetStats(int /*PlayerTypes*/ iPlayer)
 {
 	CvWString szBuffer;
-	GAMETEXT.setNetStats(szBuffer, (PlayerTypes)iPlayer);
+	GAMETEXT.setNetStats(szBuffer, ((PlayerTypes)iPlayer));
 	return szBuffer;
 }
 
-std::wstring CyGameTextMgr::getTechHelp(int iTech, bool bCivilopediaText, bool bPlayerContext, bool bStrategyText, bool bTreeInfo, int iFromTech) const
+std::wstring CyGameTextMgr::getTechHelp(int iTech, bool bCivilopediaText, bool bPlayerContext, bool bStrategyText, bool bTreeInfo, int iFromTech)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setTechHelp(szBuffer, (TechTypes)iTech, bCivilopediaText, bPlayerContext, bStrategyText, bTreeInfo, (TechTypes)iFromTech);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getUnitHelp(int iUnit, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, const CyCity* pCity) const
+std::wstring CyGameTextMgr::getUnitHelp(int iUnit, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, CyCity* pCity)
 {
 	CvWStringBuffer szBuffer;
-	GAMETEXT.setUnitHelp(szBuffer, (UnitTypes)iUnit, bCivilopediaText, bStrategyText, bTechChooserText, pCity ? pCity->getCity() : NULL);
+	GAMETEXT.setUnitHelp(szBuffer, (UnitTypes)iUnit, bCivilopediaText, bStrategyText, bTechChooserText, ((pCity != NULL) ? pCity->getCity() : NULL));
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getSpecificUnitHelp(const CyUnit* pUnit, bool bOneLine, bool bShort) const
+std::wstring CyGameTextMgr::getSpecificUnitHelp(CyUnit* pUnit, bool bOneLine, bool bShort)
 {
 	CvWStringBuffer szBuffer;
 	if (pUnit && pUnit->getUnit())
@@ -85,180 +97,204 @@ std::wstring CyGameTextMgr::getSpecificUnitHelp(const CyUnit* pUnit, bool bOneLi
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getBuildingHelp(int iBuilding, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, const CyCity* pCity, bool bActual) const
+std::wstring CyGameTextMgr::getBuildingHelp(int iBuilding, bool bCivilopediaText, bool bStrategyText, bool bTechChooserText, CyCity* pCity, bool bActual)
 {
 	CvWStringBuffer szBuffer;
-	GAMETEXT.setBuildingHelpActual(szBuffer, (BuildingTypes)iBuilding, bCivilopediaText, bStrategyText, bTechChooserText, pCity ? pCity->getCity() : NULL, bActual);
+	GAMETEXT.setBuildingHelpActual(szBuffer, (BuildingTypes)iBuilding, bCivilopediaText, bStrategyText, bTechChooserText, ((pCity != NULL) ? pCity->getCity() : NULL), bActual);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getProjectHelp(int iProject, bool bCivilopediaText, const CyCity* pCity) const
+std::wstring CyGameTextMgr::getProjectHelp(int iProject, bool bCivilopediaText, CyCity* pCity)
 {
 	CvWStringBuffer szBuffer;
-	GAMETEXT.setProjectHelp(szBuffer, (ProjectTypes)iProject, bCivilopediaText, pCity ? pCity->getCity() : NULL);
+	GAMETEXT.setProjectHelp(szBuffer, (ProjectTypes)iProject, bCivilopediaText, ((pCity != NULL) ? pCity->getCity() : NULL));
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getPromotionHelp(int iPromotion, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getPromotionHelp(int iPromotion, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setPromotionHelp(szBuffer, (PromotionTypes)iPromotion, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getBonusHelp(int iBonus, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getTraitHelp(int iTrait)
+{
+	CvWStringBuffer szBuffer;
+	GAMETEXT.setTraitHelp(szBuffer, (TraitTypes)iTrait);
+	return szBuffer.getCString();
+}
+
+std::wstring CyGameTextMgr::getBonusHelp(int iBonus, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setBonusHelp(szBuffer, (BonusTypes)iBonus, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getProductionHelpCity(const CyCity& kCity) const
+std::wstring CyGameTextMgr::getProductionHelpCity(CyCity *pCity)
 {
 	CvWStringBuffer szBuffer;
-	GAMETEXT.setProductionHelp(szBuffer, *kCity.getCity());
+	GAMETEXT.setProductionHelp(szBuffer, *pCity->getCity());
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getReligionHelpCity(int iReligion, const CyCity* pCity, bool bCityScreen, bool bForceReligion, bool bForceState, bool bNoStateReligion) const
+std::wstring CyGameTextMgr::getReligionHelpCity(int iReligion, CyCity* pCity, bool bCityScreen, bool bForceReligion, bool bForceState, bool bNoStateReligion)
 {
 	CvWStringBuffer szBuffer;
-	GAMETEXT.setReligionHelpCity(szBuffer, (ReligionTypes)iReligion, pCity ? pCity->getCity() : NULL, bCityScreen, bForceReligion, bForceState, bNoStateReligion);
+	GAMETEXT.setReligionHelpCity(szBuffer, (ReligionTypes)iReligion, ((pCity != NULL) ? pCity->getCity() : NULL), bCityScreen, bForceReligion, bForceState, bNoStateReligion);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getCorporationHelpCity(int iCorporation, const CyCity* pCity, bool bCityScreen, bool bForceCorporation) const
+std::wstring CyGameTextMgr::getCorporationHelpCity(int iCorporation, CyCity* pCity, bool bCityScreen, bool bForceCorporation)
 {
 	CvWStringBuffer szBuffer;
-	GAMETEXT.setCorporationHelpCity(szBuffer, (CorporationTypes)iCorporation, pCity ? pCity->getCity() : NULL, bCityScreen, bForceCorporation);
+	GAMETEXT.setCorporationHelpCity(szBuffer, (CorporationTypes)iCorporation, ((pCity != NULL) ? pCity->getCity() : NULL), bCityScreen, bForceCorporation);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getImprovementHelp(int iImprovement, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getImprovementHelp(int iImprovement, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setImprovementHelp(szBuffer, (ImprovementTypes)iImprovement, NO_FEATURE, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getRouteHelp(int iRoute, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getRouteHelp(int iRoute, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setRouteHelp(szBuffer, (RouteTypes)iRoute, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getFeatureHelp(int iFeature, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getFeatureHelp(int iFeature, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setFeatureHelp(szBuffer, (FeatureTypes)iFeature, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getTerrainHelp(int iTerrain, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getTerrainHelp(int iTerrain, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setTerrainHelp(szBuffer, (TerrainTypes)iTerrain, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::parseCivicInfo(int /*CivicTypes*/ iCivicType, bool bCivilopediaText, bool bPlayerContext, bool bSkipName) const
+std::wstring CyGameTextMgr::parseCivicInfo(int /*CivicTypes*/ iCivicType, bool bCivilopediaText, bool bPlayerContext, bool bSkipName)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.parseCivicInfo(szBuffer, (CivicTypes) iCivicType, bCivilopediaText, bPlayerContext, bSkipName);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::parseReligionInfo(int /*ReligionTypes*/ iReligionType, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::parseReligionInfo(int /*ReligionTypes*/ iReligionType, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setReligionHelp(szBuffer, (ReligionTypes) iReligionType, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::parseCorporationInfo(int /*CorporationTypes*/ iCorporationType, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::parseCorporationInfo(int /*CorporationTypes*/ iCorporationType, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setCorporationHelp(szBuffer, (CorporationTypes) iCorporationType, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::parseCivInfos(int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan) const
+std::wstring CyGameTextMgr::parseCivInfos(int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.parseCivInfos(szBuffer, (CivilizationTypes) iCivilization, bDawnOfMan);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::parseLeaderTraits(int /*LeaderHeadTypes*/ iLeader, int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::parseLeaderTraits(int /*LeaderHeadTypes*/ iLeader, int /*CivilizationTypes*/ iCivilization, bool bDawnOfMan, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.parseLeaderTraits(szBuffer, (LeaderHeadTypes)iLeader, (CivilizationTypes) iCivilization, bDawnOfMan, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::parseTraits(int /*TraitTypes*/ eTrait, int /*CivilizationTypes*/ eCivilization, bool bDawnOfMan, bool bEffectsOnly) const
+std::wstring CyGameTextMgr::parseTraits(int /*TraitTypes*/ eTrait, int /*CivilizationTypes*/ eCivilization, bool bDawnOfMan, bool bEffectsOnly)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.parseTraits(szBuffer, (TraitTypes)eTrait, (CivilizationTypes)eCivilization, bDawnOfMan, bEffectsOnly);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getHappinessHelp() const
+std::wstring CyGameTextMgr::getHappinessHelp()
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.parseHappinessHelp(szBuffer);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getSpecialistHelp(int iSpecialist, bool bCivilopediaText) const
+std::wstring CyGameTextMgr::getTradeString(TradeData* pTradeData, int iPlayer1, int iPlayer2)
+{
+	CvWStringBuffer szBuffer;
+	if (NULL != pTradeData)
+	{
+		GAMETEXT.getTradeString(szBuffer, *pTradeData, (PlayerTypes)iPlayer1, (PlayerTypes) iPlayer2);
+	}
+	return szBuffer.getCString();
+}
+
+std::wstring CyGameTextMgr::getSpecialistHelp(int iSpecialist, bool bCivilopediaText)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.parseSpecialistHelp(szBuffer, (SpecialistTypes) iSpecialist, NULL, bCivilopediaText);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::buildHintsList() const
+std::wstring CyGameTextMgr::buildHintsList()
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.buildHintsList(szBuffer);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getAttitudeString(int iPlayer, int iTargetPlayer) const
+std::wstring CyGameTextMgr::getAttitudeString(int iPlayer, int iTargetPlayer)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.getAttitudeString(szBuffer, (PlayerTypes)iPlayer, (PlayerTypes) iTargetPlayer);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::setConvertHelp(int iPlayer, int iReligion) const
+std::wstring CyGameTextMgr::setConvertHelp(int iPlayer, int iReligion)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setConvertHelp(szBuffer, (PlayerTypes)iPlayer, (ReligionTypes) iReligion);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::setRevolutionHelp(int iPlayer) const
+std::wstring CyGameTextMgr::setRevolutionHelp(int iPlayer)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.setRevolutionHelp(szBuffer, (PlayerTypes)iPlayer);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getActiveDealsString(int iThisPlayer, int iOtherPlayer) const
+std::wstring CyGameTextMgr::setVassalRevoltHelp(int iMaster, int iVassal)
+{
+	CvWStringBuffer szBuffer;
+	GAMETEXT.setVassalRevoltHelp(szBuffer, (TeamTypes)iMaster, (TeamTypes)iVassal);
+	return szBuffer.getCString();
+}
+
+std::wstring CyGameTextMgr::getActiveDealsString(int iThisPlayer, int iOtherPlayer)
 {
 	CvWStringBuffer szBuffer;
 	GAMETEXT.getActiveDealsString(szBuffer, (PlayerTypes)iThisPlayer, (PlayerTypes)iOtherPlayer);
 	return szBuffer.getCString();
 }
 
-std::wstring CyGameTextMgr::getDealString(const CyDeal* pDeal, int iPlayerPerspective) const
+std::wstring CyGameTextMgr::getDealString(CyDeal* pDeal, int iPlayerPerspective)
 {
 	CvWStringBuffer szBuffer;
 	if (pDeal && pDeal->getDeal())
 	{
-		GAMETEXT.getDealString(szBuffer, *pDeal->getDeal(), (PlayerTypes)iPlayerPerspective);
+		GAMETEXT.getDealString(szBuffer, *(pDeal->getDeal()), (PlayerTypes)iPlayerPerspective);
 	}
 	return szBuffer.getCString();
 }

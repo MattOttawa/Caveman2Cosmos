@@ -97,12 +97,12 @@ int /*PlayerTypes*/ CySelectionGroup::getOwner() const
 
 int /*TeamTypes*/ CySelectionGroup::getTeam() const
 {
-	return m_pSelectionGroup ? (TeamTypes) m_pSelectionGroup->getTeam() : -1;
+	return m_pSelectionGroup ? m_pSelectionGroup->getTeam() : -1;
 }
 
 int /*ActivityTypes*/ CySelectionGroup::getActivityType() const
 {
-	return m_pSelectionGroup ? (ActivityTypes) m_pSelectionGroup->getActivityType() : -1;
+	return m_pSelectionGroup ? m_pSelectionGroup->getActivityType() : -1;
 }
 
 void CySelectionGroup::setActivityType(int /*ActivityTypes*/ eNewValue)
@@ -113,7 +113,7 @@ void CySelectionGroup::setActivityType(int /*ActivityTypes*/ eNewValue)
 
 int /*AutomateTypes*/ CySelectionGroup::getAutomateType() const
 {
-	return m_pSelectionGroup ? (AutomateTypes) m_pSelectionGroup->getAutomateType() : -1;
+	return m_pSelectionGroup ? m_pSelectionGroup->getAutomateType() : -1;
 }
 
 bool CySelectionGroup::isAutomated() const
