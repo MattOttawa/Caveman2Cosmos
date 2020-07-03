@@ -19,9 +19,6 @@ import ScreenInput as PyScreenInput
 import BugCore
 AdvisorOpt = BugCore.game.Advisors
 
-import C2CMainOptions
-import C2CNationAdvisor
-
 g_iScreenActive = -2
 
 def toggleSetNoScreens():
@@ -51,15 +48,6 @@ def toggleSetScreenOn(argsList):
 
 #diplomacyScreen = CvDiplomacy.CvDiplomacy()
 
-c2cMainOptionsScreen = C2CMainOptions.C2CMainOptions()
-def showC2CMainOptionsScreen():
-	c2cMainOptionsScreen.interfaceScreen()
-
-c2cNationAdvisorScreen = C2CNationAdvisor.C2CNationAdvisor()
-def showC2CNationAdvisorScreen():
-	c2cNationAdvisorScreen.interfaceScreen()
-
-
 mainInterface = CvMainInterface.CvMainInterface()
 def showMainInterface():
 	print "showMainInterface"
@@ -71,7 +59,7 @@ def reinitMainInterface():
 	mainInterface = CvMainInterface.CvMainInterface()
 	mainInterface.interfaceScreen()
 
-def numPlotListButtons(): return 0 # Called from exe.
+def numPlotListButtons(): return 0 # Called from exe
 
 def showTechChooser():
 	if CyGame().getActivePlayer() != -1:
@@ -673,11 +661,8 @@ screenMap = {
 	MAIN_INTERFACE			: mainInterface,
 	OPTIONS_SCREEN			: optionsScreen,
 	REPLAY_SCREEN			: replayScreen,
-	# add new screens here
 	STRATEGY_OVERLAY_SCREEN		: overlayScreen,
-	REVOLUTION_WATCH_ADVISOR	: revolutionWatchAdvisor,
-	C2C_INITIAL_OPTIONS_SCREEN	: c2cMainOptionsScreen,
-	C2C_NATIONAL_ADVISOR_SCREEN	: c2cNationAdvisorScreen
+	REVOLUTION_WATCH_ADVISOR	: revolutionWatchAdvisor
 }
 ##############
 # Initialize #
@@ -728,7 +713,6 @@ def lateInit():
 	import WBBuildingScreen
 	import WBCityDataScreen
 	import WBCityEditScreen
-	import WBTechScreen
 	import WBProjectScreen
 	import WBTeamScreen
 	import WBPlayerScreen
@@ -746,7 +730,6 @@ def lateInit():
 	screenMap[WB_BUILDING]		= WBBuildingScreen.WBBuildingScreen()
 	screenMap[WB_CITYDATA]		= WBCityDataScreen.WBCityDataScreen()
 	screenMap[WB_CITYEDIT]		= WBCityEditScreen.WBCityEditScreen(worldBuilderScreen)
-	screenMap[WB_TECH]			= WBTechScreen.WBTechScreen()
 	screenMap[WB_PROJECT]		= WBProjectScreen.WBProjectScreen()
 	screenMap[WB_TEAM]			= WBTeamScreen.WBTeamScreen()
 	screenMap[WB_PLAYER]		= WBPlayerScreen.WBPlayerScreen()

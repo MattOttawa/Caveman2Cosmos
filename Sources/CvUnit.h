@@ -477,10 +477,10 @@ public:
 	CvPlot* getMADTargetPlot() const;
 	int getMADTargetPlotX() const;
 	int getMADTargetPlotY() const;
-	void setMADTargetPlot(CvPlot* pPlot);
+	void setMADTargetPlot(const CvPlot* pPlot);
 	bool setMADTargetPlot(int iX, int iY);
 	bool clearMADTargetPlot();
-	PlayerTypes getMADTargetPlotOwner();
+	PlayerTypes getMADTargetPlotOwner() const;
 	void setMADTargetPlotOwner(PlayerTypes pPlayer);
 	void doMADNukes(bool bForceRetarget);
 protected:
@@ -510,11 +510,11 @@ public:
 	void updateAirCombat(bool bQuick = false);
 	void updateAirStrike(CvPlot* pPlot, bool bQuick, bool bFinish);
 
-	bool isActionRecommended(int iAction);
+	bool isActionRecommended(int iAction) const;
 
 	bool isBetterDefenderThan(CvUnit* pDefender, CvUnit* pAttacker) const; // Exposed to Python
 
-	bool canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bTestVisible = false, bool bTestBusy = true); // Exposed to Python
+	bool canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bTestVisible = false, bool bTestBusy = true) const; // Exposed to Python
 	void doCommand(CommandTypes eCommand, int iData1, int iData2); // Exposed to Python
 
 #ifdef USE_OLD_PATH_GENERATOR
@@ -610,7 +610,7 @@ public:
 	CvUnit* getCommander() const;
 	void tryUseCommander(); //assigns m_pUsedCommander by call to getCommander() and consumes command points from used commander.
 	bool isCommander() const; //Exposed to python
-	void setCommander(bool bNewVal);
+	void setCommander(bool bNewVal); //Exposed to python
 	void nullUsedCommander(); //delete m_pUsedCommander
 	void clearCommanderCache() ; //	Should be called prior to each turn
 
@@ -656,7 +656,7 @@ public:
 	bool canShadow() const;
 	bool canShadowAt(const CvPlot* pShadowPlot, CvUnit* pShadowUnit = NULL) const;
 	
-	void setShadowUnit(CvUnit* pUnit);
+	void setShadowUnit(const CvUnit* pUnit);
 	CvUnit* getShadowUnit() const;
 
 	TechTypes getDesiredDiscoveryTech() const;
@@ -666,7 +666,7 @@ public:
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
 
-	bool canGift(bool bTestVisible = false, bool bTestTransport = true); // Exposed to Python
+	bool canGift(bool bTestVisible = false, bool bTestTransport = true) const; // Exposed to Python
 	void gift(bool bTestTransport = true);
 
 	bool canLoadOntoUnit(const CvUnit* pUnit, const CvPlot* pPlot) const; // Exposed to Python
@@ -780,7 +780,7 @@ public:
 
 	bool canSpreadCorporation(const CvPlot* pPlot, CorporationTypes eCorporation, bool bTestVisible = false) const; // Exposed to Python
 	bool spreadCorporation(CorporationTypes eCorporation);
-	int spreadCorporationCost(CorporationTypes eCorporation, CvCity* pCity) const;
+	int spreadCorporationCost(CorporationTypes eCorporation, const CvCity* pCity) const;
 
 	bool canJoin(const CvPlot* pPlot, SpecialistTypes eSpecialist) const; // Exposed to Python
 	bool join(SpecialistTypes eSpecialist);
@@ -793,7 +793,7 @@ public:
 	bool canDiscover() const; // Exposed to Python
 	bool discover();
 
-	int getMaxHurryProduction(CvCity* pCity) const; // Exposed to Python
+	int getMaxHurryProduction(const CvCity* pCity) const; // Exposed to Python
 	int getHurryProduction(const CvPlot* pPlot) const; // Exposed to Python
 	bool canHurry(const CvPlot* pPlot, bool bTestVisible = false) const; // Exposed to Python
 	bool hurry();
@@ -1123,7 +1123,7 @@ public:
 	bool isInGroup() const; // Exposed to Python
 	bool isGroupHead() const; // Exposed to Python
 	DllExport CvSelectionGroup* getGroup() const; // Exposed to Python
-	bool canJoinGroup(const CvPlot* pPlot, CvSelectionGroup* pSelectionGroup) const;
+	bool canJoinGroup(const CvPlot* pPlot, const CvSelectionGroup* pSelectionGroup) const;
 	void joinGroup(CvSelectionGroup* pSelectionGroup, bool bRemoveSelected = false, bool bRejoin = true);
 
 	DllExport int getHotKeyNumber(); // Exposed to Python
@@ -1621,10 +1621,10 @@ public:
 	void setCapturingPlayer(PlayerTypes eNewValue);
 
 	CvUnit* getCapturingUnit() const;
-	void setCapturingUnit(CvUnit* pCapturingUnit);
+	void setCapturingUnit(const CvUnit* pCapturingUnit);
 
 	DllExport const UnitTypes getUnitType() const; // Exposed to Python
-	CvUnitInfo &getUnitInfo() const;
+	const CvUnitInfo& getUnitInfo() const;
 
 	DllExport const UnitTypes getLeaderUnitType() const;
 	void setLeaderUnitType(UnitTypes leaderUnitType);
@@ -1802,8 +1802,8 @@ public:
 	bool canBombardAtRanged(const CvPlot* pPlot, int iX, int iY) const;
 	bool bombardRanged(int iX, int iY, bool sAttack = false);
 	// RevolutionDCM - ranged bombard
-	bool isRbombardable(int iMinStack);
-	int getRbombardSeigeCount(CvPlot* pPlot);
+	bool isRbombardable(int iMinStack) const;
+	int getRbombardSeigeCount(const CvPlot* pPlot) const;
 	// RevolutionDCM - end
 // Dale - SA: Opp Fire START
 	void doOpportunityFire();
@@ -1839,12 +1839,12 @@ public:
 	virtual bool AI_follow() = 0;
 	virtual bool AI_upgrade() = 0;
 	virtual bool AI_promote() = 0;
-	virtual int AI_groupFirstVal() = 0;
-	virtual int AI_groupSecondVal() = 0;
+	virtual int AI_groupFirstVal() const = 0;
+	virtual int AI_groupSecondVal() const = 0;
 	virtual int AI_attackOdds(const CvPlot* pPlot, bool bPotentialEnemy, CvUnit** ppDefender = NULL, bool bAssassinate = false) = 0;
 	//	Variant to test a specific defender AS IF it was in the specified plot
 	virtual int AI_attackOddsAtPlot(const CvPlot* pPlot, CvUnit* pDefender, bool modifyPredictedResults = false) = 0;
-	virtual bool AI_bestCityBuild(CvCity* pCity, CvPlot** ppBestPlot = NULL, BuildTypes* peBestBuild = NULL, CvPlot* pIgnorePlot = NULL, CvUnit* pUnit = NULL) = 0;
+	virtual bool AI_bestCityBuild(const CvCity* pCity, CvPlot** ppBestPlot = NULL, BuildTypes* peBestBuild = NULL, const CvPlot* pIgnorePlot = NULL, const CvUnit* pUnit = NULL) = 0;
 	virtual bool AI_isCityAIType() const = 0;
 	virtual UnitAITypes AI_getUnitAIType() const = 0; // Exposed to Python
 	virtual void AI_setUnitAIType(UnitAITypes eNewValue) = 0;
@@ -1866,7 +1866,7 @@ public:
 	virtual int AI_getBirthmark() const = 0;
 	virtual void setToWaitOnUnitAI(UnitAITypes eUnitAI, bool bAdd) = 0;
 	virtual bool isWaitingOnUnitAI(int iIndex) = 0;
-	virtual bool isWaitingOnUnitAIAny() = 0;
+	virtual bool isWaitingOnUnitAIAny() const = 0;
 
 	inline int getMovementCharacteristicsHash() const { return m_movementCharacteristicsHash; }
 
@@ -2336,7 +2336,7 @@ public:
 	virtual void AI_setLeaderPriority(int iPriority) = 0; //	 -1 means reset to default
 	virtual int AI_getPredictedHitPoints() const = 0;
 	virtual void AI_setPredictedHitPoints(int iPredictedHitPoints) = 0;
-	virtual bool AI_getHasAttacked() = 0;
+	virtual bool AI_getHasAttacked() const = 0;
 	virtual int AI_beneficialPropertyValueToCity(CvCity* pCity, PropertyTypes eProperty) const = 0;
 
 	bool isUsingDummyEntities() const;
@@ -3306,14 +3306,18 @@ public:
 		DECLARE_MAP_FUNCTOR(CvUnit, bool, IsSelected);
 		DECLARE_MAP_FUNCTOR(CvUnit, bool, isCommander);
 		DECLARE_MAP_FUNCTOR(CvUnit, bool, isGoldenAge);
+		DECLARE_MAP_FUNCTOR(CvUnit, bool, isBlockading);
+		DECLARE_MAP_FUNCTOR(CvUnit, bool, isMADEnabled);
 
 		DECLARE_MAP_FUNCTOR_1(CvUnit, bool, meetsUnitSelectionCriteria, const CvUnitSelectionCriteria*);
 		DECLARE_MAP_FUNCTOR_1(CvUnit, bool, canPillage, const CvPlot*);
 		DECLARE_MAP_FUNCTOR_1(CvUnit, bool, hasAfflictionLine, PromotionLineTypes);
+		DECLARE_MAP_FUNCTOR_1(CvUnit, bool, hasBuild, BuildTypes);
 
 		DECLARE_MAP_FUNCTOR_1(CvUnit, int, upgradePrice, UnitTypes);
 		DECLARE_MAP_FUNCTOR_2(CvUnit, bool, canUpgrade, UnitTypes, bool);
 
+		DECLARE_MAP_FUNCTOR(CvUnit, int, cargoSpace);
 		DECLARE_MAP_FUNCTOR(CvUnit, int, getFortifyTurns);
 		DECLARE_MAP_FUNCTOR(CvUnit, int, visibilityRange);
 		DECLARE_MAP_FUNCTOR(CvUnit, int, collateralDamage);
@@ -3325,6 +3329,7 @@ public:
 		DECLARE_MAP_FUNCTOR(CvUnit, UnitTypes, getUnitType);
 		DECLARE_MAP_FUNCTOR(CvUnit, UnitCombatTypes, getUnitCombatType);
 		DECLARE_MAP_FUNCTOR(CvUnit, UnitAITypes, AI_getUnitAIType);
+		DECLARE_MAP_FUNCTOR(CvUnit, DomainTypes, getDomainType);
 
 		DECLARE_MAP_FUNCTOR(CvUnit, int, getArea);
 		DECLARE_MAP_FUNCTOR(CvUnit, const CvArea*, area);
@@ -3343,7 +3348,6 @@ public:
 
 		DECLARE_MAP_FUNCTOR_3(CvUnit, bool, canBombardAtRanged, const CvPlot*, int, int);
 		DECLARE_MAP_FUNCTOR_3(CvUnit, int, getTriggerValue, EventTriggerTypes /*eTrigger*/, const CvPlot* /*pPlot*/, bool /*bCheckPlot*/);
-
 	};
 };
 
