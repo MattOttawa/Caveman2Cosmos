@@ -509,8 +509,7 @@ class CvDomesticAdvisor:
 		# add National Wonders
 		for i in xrange(GC.getNumBuildingInfos()):
 			info = GC.getBuildingInfo(i)
-			classInfo = GC.getBuildingClassInfo(info.getBuildingClassType())
-			if classInfo.getMaxGlobalInstances() == -1 and classInfo.getMaxPlayerInstances() == 1 and CyCity.getNumBuilding(i) > 0 and not info.isCapital():
+			if info.getMaxGlobalInstances() == -1 and info.getMaxPlayerInstances() == 1 and CyCity.getNumBuilding(i) > 0 and not info.isCapital():
 				# Use bullets as markers for National Wonders
 				szReturn += unichr(8854)
 
@@ -636,7 +635,7 @@ class CvDomesticAdvisor:
 				szIcon = self.yieldIcons[YieldTypes.YIELD_PRODUCTION]
 				if city.isProductionBuilding():
 					szColorKey = "WONDER"
-					pInfo = GC.getBuildingClassInfo(GC.getBuildingInfo(city.getProductionBuilding()).getBuildingClassType())
+					pInfo = GC.getBuildingInfo(city.getProductionBuilding())
 					if pInfo.getMaxGlobalInstances() != -1:
 						szIcon = unichr(8858)
 					elif pInfo.getMaxTeamInstances() != -1:
@@ -846,7 +845,7 @@ class CvDomesticAdvisor:
 
 		iGreatPersonRate = city.getGreatPeopleRate()
 		if iGreatPersonRate > 0:
-			iGPPLeft = self.CyPlayer.greatPeopleThreshold(False) - city.getGreatPeopleProgress()
+			iGPPLeft = self.CyPlayer.greatPeopleThresholdNonMilitary() - city.getGreatPeopleProgress()
 			return (iGPPLeft + iGreatPersonRate - 1) / iGreatPersonRate
 		return u"-"
 

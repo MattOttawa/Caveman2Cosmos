@@ -45,6 +45,7 @@ class CvMainInterface:
 		self.InputData = InputData.instance
 
 		self.bInitialize = True
+		self.bSetStartZoom = True
 		self.xRes = 0
 		self.yRes = 0
 
@@ -65,6 +66,7 @@ class CvMainInterface:
 		self.bCityChange = False
 		self.bCityEnter = False
 		self.bCityExit = False
+		self.bInverseShiftQueue = False
 		self.bGlobeview = False
 		self.bUpdateCityTab = False
 		self.bBuildWorkQueue = False
@@ -90,23 +92,22 @@ class CvMainInterface:
 
 
 	def interfaceScreen(self):
-		print "interfaceScreen"
 		if GAME.isPitbossHost(): return
 		# Cache Game Status
 		self.bNetworkMP		= GAME.isNetworkMultiPlayer()
 		self.bMultiPlayer	= GAME.isGameMultiPlayer()
 		self.bDebugMode		= GAME.isDebugMode()
 		# Cache Game Options
-		self.GO_NO_REVOLUTION = bNoRev = GAME.isOption(GameOptionTypes.GAMEOPTION_NO_REVOLUTION)
+		self.GO_REVOLUTION			= GAME.isOption(GameOptionTypes.GAMEOPTION_REVOLUTION)
 		self.GO_PICK_RELIGION		= GAME.isOption(GameOptionTypes.GAMEOPTION_PICK_RELIGION)
 		self.GO_NO_ESPIONAGE		= GAME.isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE)
 		self.GO_SIZE_MATTERS		= GAME.isOption(GameOptionTypes.GAMEOPTION_SIZE_MATTERS)
 		self.GO_WIN_FOR_LOSING		= GAME.isOption(GameOptionTypes.GAMEOPTION_WIN_FOR_LOSING)
-		self.GO_NO_TECH_DIFFUSION	= GAME.isOption(GameOptionTypes.GAMEOPTION_NO_TECH_DIFFUSION)
+		self.GO_TECH_DIFFUSION   	= GAME.isOption(GameOptionTypes.GAMEOPTION_TECH_DIFFUSION)
 		self.GO_ONE_CITY_CHALLENGE	= GAME.isOption(GameOptionTypes.GAMEOPTION_ONE_CITY_CHALLENGE)
 		# First pass initialization.
 		if self.bInitialize:
-			# FOW
+			# FOV
 			if MainOpt.isRememberFieldOfView():
 				self.iField_View = int(MainOpt.getFieldOfView())
 			# Raw Yields
@@ -138,7 +139,6 @@ class CvMainInterface:
 			self.iNumEmphasizeInfos 	= GC.getNumEmphasizeInfos()
 			self.iNumHurryInfos			= GC.getNumHurryInfos()
 			self.iNumProjectInfos		= GC.getNumProjectInfos()
-			self.iNumUnitClassInfos		= GC.getNumUnitClassInfos()
 			self.iNumProcessInfos		= GC.getNumProcessInfos()
 			self.iNumSpecialistInfos	= iNumSpecialistInfos = GC.getNumSpecialistInfos()
 			self.aSpecialistIconList = aSpecialistIconList = []
@@ -148,6 +148,8 @@ class CvMainInterface:
 			FONT_CENTER_JUSTIFY	= 1<<2
 			FONT_RIGHT_JUSTIFY	= 1<<1
 			FONT_LEFT_JUSTIFY	= 1<<0
+			// Toffer note: setTextAt(..., 1<<1, ...) doesn't work, it will always be left justified.
+			//			Use setText() instead, if interaction is not needed then setLabel() and setLabelAt() handle text justification.
 			'''
 			# Cache Icons
 			self.iconStrength			= u'%c' % GAME.getSymbolID(FontSymbols.STRENGTH_CHAR)
@@ -235,8 +237,8 @@ class CvMainInterface:
 			self.artPathFilterCivilianPLE		= afm.getInterfaceArtInfo("PLE_FILTER_DOM").getPath()
 			self.artPathFilterSiegePLE			= afm.getInterfaceArtInfo("PLE_GRP_UNITTYPE").getPath()
 			self.artPathFilterHeroPLE			= afm.getInterfaceArtInfo("PLE_FILTER_MIL").getPath()
-			self.artPathWorldWonderOnBUG		= afm.getInterfaceArtInfo("BUG_WORLDWONDER_ON").getPath()
 
+			self.artFILTER_SHOW_UNLIMITED		= afm.getInterfaceArtInfo("ART_DEF_FILTER_SHOW_UNLIMITED").getPath()
 			self.artFILTER_SHOW_MILITARY		= afm.getInterfaceArtInfo("ART_DEF_FILTER_SHOW_MILITARY").getPath()
 			self.artFILTER_SHOW_HAPPY			= afm.getInterfaceArtInfo("ART_DEF_FILTER_SHOW_HAPPY").getPath()
 			self.artFILTER_HIDE_UNHAPPY			= afm.getInterfaceArtInfo("ART_DEF_FILTER_HIDE_UNHAPPY").getPath()
@@ -285,16 +287,16 @@ class CvMainInterface:
 			self.szDeadCiv					= obj.getText("TXT_KEY_BUG_DEAD_CIV", ())
 			self.szMinorCiv					= obj.getText("TXT_KEY_MINOR_CIV_DISPLAY", ())
 			self.AdvisorButtonTip = [
-				("Domestic" ,	"F1"),
-				("Finance",		"F2"),
-				("Civics",		"F3"),
-				("Foreign",		"F4"),
-				("Military",	"F5"),
-				("Technology",	"F6"),
-				("Religious",	"F7"),
-				("Corporate",	"Shift+F7"),
-				("Intelligence","Ctrl+E"),
-				("Partisan",	"Ctrl+Shift+G")]
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_DOMESTIC", ()) ,	"F1"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_FINANCE", ()),		"F2"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_CIVICS", ()),		"F3"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_FOREIGN", ()),		"F4"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_MILITARY", ()),	"F5"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_TECHNOLOGY", ()),	"F6"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_RELIGIOUS", ()),	"F7"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_CORPORATE", ()),	"Shift+F7"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_INTELLIGENCE", ()),"Ctrl+E"),
+				(obj.getText("TXT_BUTTONTIP_ADVISOR_PARTISAN", ()),	"Ctrl+Shift+G")]
 			# Building infos:
 			aBuildingList0 = []
 			aBuildingList1 = []
@@ -302,14 +304,13 @@ class CvMainInterface:
 			iNumBuildingInfos = GC.getNumBuildingInfos()
 			for iBuilding in xrange(iNumBuildingInfos):
 				CvBuildingInfo = GC.getBuildingInfo(iBuilding)
-				iBuildingClass = CvBuildingInfo.getBuildingClassType()
 				szName = CvBuildingInfo.getDescription()
 				if CvBuildingInfo.getProductionCost() < 1:
-					aBuildingList2.append((szName, iBuilding, CvBuildingInfo, iBuildingClass))
-				elif isLimitedWonderClass(iBuildingClass):
-					aBuildingList1.append((szName, iBuilding, CvBuildingInfo, iBuildingClass))
+					aBuildingList2.append((szName, iBuilding, CvBuildingInfo))
+				elif isLimitedWonder(iBuilding):
+					aBuildingList1.append((szName, iBuilding, CvBuildingInfo))
 				else:
-					aBuildingList0.append((szName, iBuilding, CvBuildingInfo, iBuildingClass))
+					aBuildingList0.append((szName, iBuilding, CvBuildingInfo))
 			# Bonus infos:
 			aBonusList1 = []
 			aBonusList2 = []
@@ -489,7 +490,8 @@ class CvMainInterface:
 		panel = "CityScreenAdjustPanel"
 		screen.addPanel(panel, "", "", True, False, 4, yComCon, wComCon, hComCon, ePanelSTD)
 		screen.setStyle(panel, "Panel_City_Info_Style")
-		screen.setLabel("MaintenanceText", "", "<font=1>Maintenance:", 1<<0, 8, 34, 0, eFontSmall, WidgetTypes.WIDGET_HELP_MAINTENANCE, 0, 0)
+		maintenanceText = "<font=1>" + TRNSLTR.getText("TXT_KEY_CONCEPT_MAINTENANCE", ()) + ":"
+		screen.setLabel("MaintenanceText", "", maintenanceText, 1<<0, 8, 34, 0, eFontSmall, WidgetTypes.WIDGET_HELP_MAINTENANCE, 0, 0)
 		yTradeRoutesTop = yComCon + hComCon
 		# City Top Right Religions and Corp. Panel
 		yComCon = 32
@@ -521,8 +523,8 @@ class CvMainInterface:
 		screen.setStackedBarColors("ProductionBar", InfoBarTypes.INFOBAR_RATE_EXTRA, szColorFood)
 		screen.setStackedBarColors("ProductionBar", InfoBarTypes.INFOBAR_EMPTY, szColorEmpty)
 		#-- Right side label
-		screen.setLabel("HappinessText", "", "", 1<<0, xRes - xPopProgBar + 6, 98, 0, eFontGame, WidgetTypes.WIDGET_HELP_HAPPINESS, 0, 0)
-		screen.hide("HappinessText")
+		screen.setText("CS|Happiness0", "", "", 1<<0, xRes - xPopProgBar + 6, 98, 0, eFontGame, eWidGen, 0, 0)
+		screen.hide("CS|Happiness0")
 		#####################
 		# City flag buttons #
 		if not iResID:
@@ -638,31 +640,31 @@ class CvMainInterface:
 		iGap = 8
 		### Trade
 		artPath = CyArtFileMgr().getInterfaceArtInfo("RAW_YIELDS_TRADE").getPath()
-		screen.addCheckBoxGFC("RawYields0", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 0, -1, eBtnLabel)
-		screen.hide("RawYields0")
+		screen.addCheckBoxGFC("CS|RawYields0", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 0, -1, eBtnLabel)
+		screen.hide("CS|RawYields0")
 		### Yields
 		x += dx + iGap
-		screen.addCheckBoxGFC("RawYields1", self.artPathRawYieldsFood, szHighlightButton, x, y, iSize, iSize, eWidGen, 1, -1, eBtnLabel)
-		screen.hide("RawYields1") # Food
+		screen.addCheckBoxGFC("CS|RawYields1", self.artPathRawYieldsFood, szHighlightButton, x, y, iSize, iSize, eWidGen, 1, -1, eBtnLabel)
+		screen.hide("CS|RawYields1") # Food
 		x += dx
-		screen.addCheckBoxGFC("RawYields2", self.artPathRawYieldsProduction, szHighlightButton, x, y, iSize, iSize, eWidGen, 2, -1, eBtnLabel)
-		screen.hide("RawYields2") # Production
+		screen.addCheckBoxGFC("CS|RawYields2", self.artPathRawYieldsProduction, szHighlightButton, x, y, iSize, iSize, eWidGen, 2, -1, eBtnLabel)
+		screen.hide("CS|RawYields2") # Production
 		x += dx
-		screen.addCheckBoxGFC("RawYields3", self.artPathRawYieldsCommerce, szHighlightButton, x, y, iSize, iSize, eWidGen, 3, -1, eBtnLabel)
-		screen.hide("RawYields3") # Commerce
+		screen.addCheckBoxGFC("CS|RawYields3", self.artPathRawYieldsCommerce, szHighlightButton, x, y, iSize, iSize, eWidGen, 3, -1, eBtnLabel)
+		screen.hide("CS|RawYields3") # Commerce
 		### Tile Selection
 		artPath = CyArtFileMgr().getInterfaceArtInfo("RAW_YIELDS_WORKED_TILES").getPath()
 		x += dx + iGap
-		screen.addCheckBoxGFC("RawYields4", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 4, 1, eBtnLabel)
-		screen.hide("RawYields4") # Worked Tiles
+		screen.addCheckBoxGFC("CS|RawYields4", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 4, 1, eBtnLabel)
+		screen.hide("CS|RawYields4") # Worked Tiles
 		artPath = CyArtFileMgr().getInterfaceArtInfo("RAW_YIELDS_CITY_TILES").getPath()
 		x += dx
-		screen.addCheckBoxGFC("RawYields5", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 5, 1, eBtnLabel)
-		screen.hide("RawYields5") # City Tiles
+		screen.addCheckBoxGFC("CS|RawYields5", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 5, 1, eBtnLabel)
+		screen.hide("CS|RawYields5") # City Tiles
 		artPath = CyArtFileMgr().getInterfaceArtInfo("RAW_YIELDS_OWNED_TILES").getPath()
 		x += dx
-		screen.addCheckBoxGFC("RawYields6", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 6, 1, eBtnLabel)
-		screen.hide("RawYields6") # Owned Tiles
+		screen.addCheckBoxGFC("CS|RawYields6", artPath, szHighlightButton, x, y, iSize, iSize, eWidGen, 6, 1, eBtnLabel)
+		screen.hide("CS|RawYields6") # Owned Tiles
 		#######################
 		# Building built list #
 		x = 8
@@ -752,9 +754,9 @@ class CvMainInterface:
 		self.yCityStackBarBot = y + 2
 		#-- Revolution Bar
 		y -= h
-		if not bNoRev:
-			screen.addStackedBarGFC("RevBar0", 8, y, w, h, InfoBarTypes.NUM_INFOBAR_TYPES, eWidGen, -1, -1)
-			screen.hide("RevBar0")
+		if self.GO_REVOLUTION:
+			screen.addStackedBarGFC("CS|RevBar0", 8, y, w, h, InfoBarTypes.NUM_INFOBAR_TYPES, eWidGen, -1, -1)
+			screen.hide("CS|RevBar0")
 		#-- Great People Bar
 		screen.addStackedBarGFC("GreatPeopleBar", xR, y, wR, h, InfoBarTypes.NUM_INFOBAR_TYPES, WidgetTypes.WIDGET_HELP_GREAT_PEOPLE, 0, 0)
 		screen.setStackedBarColors("GreatPeopleBar", InfoBarTypes.INFOBAR_STORED, szColorStoredGP)
@@ -808,7 +810,7 @@ class CvMainInterface:
 		y = 22
 		dx = 24
 		# Partisan:
-		if not bNoRev:
+		if self.GO_REVOLUTION:
 			btn = "AdvisorButton9"
 			screen.setImageButton(btn, "Art/Interface/Buttons/revbtn.dds", x, y, iSize, iSize, eWidGen, 0, 0)
 			screen.setStyle(btn, "Button_HUDSmall_Style")
@@ -1309,10 +1311,12 @@ class CvMainInterface:
 				else:
 					screen.setHelpTextArea(self.xMidL, FontTypes.GAME_FONT, 4, self.yRes - 8, 0, False, "", True, False, 1<<0, 0)
 					self.bHelpTextFullY = True
+
 				if self.bSetStartZoom:
 					# CAMERA_START_DISTANCE also defines camera zoom where music is turned on/off, we want that to be quite low and the start zoom to be higher.
 					# Max zoom change from game to game, so the percentage zoom is relative to the initial zoom from CAMERA_START_DISTANCE
-					CyCamera().SetZoom(CyCamera().GetZoom() * 1.9)
+					CAM = CyCamera()
+					CAM.SetZoom(CAM.GetZoom() * 1.8)
 					self.bSetStartZoom = False
 
 			# This will update the flag widget for SP hotseat and debugging
@@ -1415,6 +1419,7 @@ class CvMainInterface:
 				if InCity:
 					bFirst = False
 				else:
+					self.bInverseShiftQueue = MainOpt.isInverseShiftForQueueing()
 					if AtUnit:
 						screen.hide("UnitButtons")
 					bFirst = True
@@ -1454,7 +1459,7 @@ class CvMainInterface:
 					screen.deleteWidget("PopulationText")
 					screen.deleteWidget("PopulationInputText")
 					screen.deleteWidget("ProductionText")
-					screen.deleteWidget("ProductionInputText")
+					screen.deleteWidget("CS|ProdYield0")
 					screen.deleteWidget("TradeRouteTable")
 					for i, entry in enumerate(InCity.listBonus):
 						if entry:
@@ -2022,11 +2027,6 @@ class CvMainInterface:
 		IFT = self.iInterfaceType
 		if IFT in (InterfaceVisibility.INTERFACE_HIDE_ALL, InterfaceVisibility.INTERFACE_MINIMAP_ONLY): return
 
-		yRes = self.yRes
-		xMidL = self.xMidL
-		xMidR = self.xMidR
-		yBotBar = self.yBotBar
-
 		InCity = self.InCity
 		AtUnit = self.AtUnit
 
@@ -2067,14 +2067,13 @@ class CvMainInterface:
 		elif AtUnit:
 			CyUnit = AtUnit.CyUnit
 			# Unit action list
-			xMidL = self.xMidL
-			y = yBotBar + 60
+			y = self.yBotBar + 60
 			h = self.yRes - y - 2
 
-			w = xMidR - xMidL - 4
+			w = self.xMidR - self.xMidL - 4
 			iSize = MainOpt.getUnitIconSize()
 			MuLi = "UnitButtons"
-			screen.addMultiListControlGFC(MuLi, "", xMidL, y, w, h, 1, iSize, iSize, TableStyles.TABLE_STYLE_STANDARD)
+			screen.addMultiListControlGFC(MuLi, "", self.xMidL, y, w, h, 1, iSize, iSize, TableStyles.TABLE_STYLE_STANDARD)
 
 			actions = CyIF.getActionsToShow()
 			for i, iType in enumerate(actions):
@@ -2112,7 +2111,7 @@ class CvMainInterface:
 				xStart = xywh[0] + 8
 				aMap = self.aRel2TechMap
 				for i in xrange(iTechInfos):
-					if CyPlayer.canResearch(i, False):
+					if CyPlayer.canResearch(i):
 						szName = "WID|TECH|Selection" + str(i)
 						if i in aMap:
 							if not bCanFoundReligion or GAME.countKnownTechNumTeams(i):
@@ -2168,7 +2167,7 @@ class CvMainInterface:
 					iResearchRate = CyPlayer.calculateResearchRate(iCurrentResearch)
 					iResearchMod = CyPlayer.calculateResearchModifier(iCurrentResearch)
 					if not bCityScreen:
-						bTDDisplayOption = self.GO_WIN_FOR_LOSING or not self.GO_NO_TECH_DIFFUSION
+						bTDDisplayOption = self.GO_WIN_FOR_LOSING or self.GO_TECH_DIFFUSION
 				iconCommerceList = self.iconCommerceList
 				dY = 0
 				for i in xrange(iRange):
@@ -2195,25 +2194,16 @@ class CvMainInterface:
 						dY += 18
 				# Treasury and income info.
 				iGold = CyPlayer.getGold()
-				iGreaterGold = CyPlayer.getGreaterGold()
-				iEffectiveGold = iGreaterGold * 1000000 + iGold
 				iGoldRate = CyPlayer.calculateGoldRate()
 				szTxt = "<font=3>"
-				if iEffectiveGold < 0:
+				if iGold < 0:
 					szTxt += "<color=255,0,0,255>"
-				if iGold > 99999:
-					if iGreaterGold:
-						szTxt += str(iGreaterGold)
-					szTxt += str(iGold/1000) + "K"
-				else:
-					if iGreaterGold:
-						szTxt += str(iGreaterGold) + "M "
-					szTxt += str(iGold)
+				szTxt += str(iGold)
 				if iGoldRate:
 					szTxt += " <color="
-					if iGoldRate > 0 and iEffectiveGold + iGoldRate >= 0:
+					if iGoldRate > 0 and iGold + iGoldRate >= 0:
 						szTxt += "127,255,0,255>"
-					elif iGoldRate < 0 and iEffectiveGold + iGoldRate < 0:
+					elif iGoldRate < 0 and iGold + iGoldRate < 0:
 						szTxt += "255,124,0,255>"
 					else:
 						szTxt += "255,227,0,255>"
@@ -2259,8 +2249,12 @@ class CvMainInterface:
 						iCurr = researchProgress + iOverflow
 
 						screen.setBarPercentage("ResearchBar", InfoBarTypes.INFOBAR_STORED, iCurr * 1.0 / researchCost)
-						if researchCost > iCurr and iResearchRate > 0:
-							self.researchBarDC.drawTickMarks(screen, iCurr, researchCost, iResearchRate)
+						self.researchBarDC.drawTickMarks(screen, 0, 0, 0) # remove old tick marks
+
+						if iResearchRate > 0 and researchCost > iCurr:
+							# Ticks - only bother with a 100 or less
+							if iResearchRate * 100 / (researchCost - iCurr) >= 1:
+								self.researchBarDC.drawTickMarks(screen, iCurr, researchCost, iResearchRate)
 							screen.setBarPercentage("ResearchBar", InfoBarTypes.INFOBAR_RATE, iResearchRate * 1.0 / (researchCost - researchProgress - iOverflow))
 						else:
 							screen.setBarPercentage("ResearchBar", InfoBarTypes.INFOBAR_RATE, 0)
@@ -2272,7 +2266,7 @@ class CvMainInterface:
 				# Great General Bar
 				CyPlayer = self.CyPlayer
 				iCombatExp = CyPlayer.getCombatExperience()
-				iThresholdExp = CyPlayer.greatPeopleThreshold(True)
+				iThresholdExp = CyPlayer.greatPeopleThresholdMilitary()
 
 				szTxt = self.iconGreatGeneral + " (" + str(iThresholdExp - iCombatExp) + ")"
 
@@ -2296,7 +2290,7 @@ class CvMainInterface:
 					screen.setText("GreatPersonBar1", "", szTxt, 1<<2, x, y, 0, eFontGame, eWidGen, 0, 0)
 					screen.setHitTest("GreatPersonBar1", HitTestTypes.HITTEST_NOHIT)
 					if CyCity:
-						fThreshold = float(GC.getPlayer(CyCity.getOwner()).greatPeopleThreshold(False))
+						fThreshold = float(GC.getPlayer(CyCity.getOwner()).greatPeopleThresholdNonMilitary())
 						fRate = float(CyCity.getGreatPeopleRate())
 						fFirst = float(CyCity.getGreatPeopleProgress()) / fThreshold
 
@@ -2381,6 +2375,8 @@ class CvMainInterface:
 		screen = CyGInterfaceScreen("MainInterface", CvScreenEnums.MAIN_INTERFACE)
 		#Clean up?
 		if self.bCityExit or self.bCityChange and not self.bCityEnter:
+			screen.hide("WonderLimit0")
+			screen.hide("WonderLimit1")
 			screen.hide("Liberate")
 			iReligionInfos = self.iNumReligionInfos
 			for i in xrange(iReligionInfos):
@@ -2403,13 +2399,11 @@ class CvMainInterface:
 				screen.hide("MaintenanceText")
 				screen.hide("MaintenanceAmountText")
 				screen.hide("NationalityText")
-				screen.hide("WonderLimit0")
-				screen.hide("WonderLimit1")
 				screen.hide("DefenseText")
 				screen.hide("EmploymentText")
 				screen.hide("CityNameText")
 				screen.hide("HealthText")
-				screen.hide("HappinessText")
+				screen.hide("CS|Happiness0")
 				screen.hide("CultureText")
 				screen.hide("GreatPeopleText")
 				screen.hide("TradeRouteListLabel")
@@ -2445,16 +2439,16 @@ class CvMainInterface:
 				screen.hide("GreatPeopleBar")
 				screen.hide("CultureBar")
 				screen.hide("NationalityBar")
-				screen.hide("RevBar0")
-				screen.hide("RevBar1")
+				screen.hide("CS|RevBar0")
+				screen.hide("CS|RevBar1")
 				# Raw Commerce
-				screen.hide("RawYields0")
-				screen.hide("RawYields1")
-				screen.hide("RawYields2")
-				screen.hide("RawYields3")
-				screen.hide("RawYields4")
-				screen.hide("RawYields5")
-				screen.hide("RawYields6")
+				screen.hide("CS|RawYields0")
+				screen.hide("CS|RawYields1")
+				screen.hide("CS|RawYields2")
+				screen.hide("CS|RawYields3")
+				screen.hide("CS|RawYields4")
+				screen.hide("CS|RawYields5")
+				screen.hide("CS|RawYields6")
 				self.bCityExit = False
 
 		InCity = self.InCity
@@ -2547,7 +2541,7 @@ class CvMainInterface:
 			if CyCity.isOccupation():
 				szTxt += " " + self.iconOccupation + ":" + str(CyCity.getOccupationTimer())
 
-			screen.setText("CityNameText", "", szTxt, 1<<2, halfX, 32, 0, eFontGame, WidgetTypes.WIDGET_CITY_NAME, -1, -1)
+			screen.setText("CityNameText", "", szTxt, 1<<2, halfX, 32, 0, eFontGame, WidgetTypes.WIDGET_CITY_NAME, 0, 1)
 
 			iHealthGood = CyCity.goodHealth()
 			iHealthBad = CyCity.badHealth(False)
@@ -2579,8 +2573,9 @@ class CvMainInterface:
 				iAngerTimer = max(CyCity.getHurryAngerTimer(), CyCity.getConscriptAngerTimer())
 				if iAngerTimer > 0:
 					szTxt += " (%i)" % iAngerTimer
-			screen.modifyLabel("HappinessText", uFont2 + szTxt, 1<<0)
-			screen.show("HappinessText")
+			screen.hide("CS|Happiness0")
+			screen.modifyString("CS|Happiness0", uFont2 + szTxt, 1<<0)
+			screen.show("CS|Happiness0")
 
 			# City Commerce panel
 			y = 34
@@ -2616,22 +2611,22 @@ class CvMainInterface:
 				bYieldView = self.bYieldView
 				iYieldType = self.iYieldType
 				iYieldTiles = self.iYieldTiles
-				screen.setState("RawYields0", not bYieldView)
-				screen.show("RawYields0")
+				screen.setState("CS|RawYields0", not bYieldView)
+				screen.show("CS|RawYields0")
 
-				screen.setState("RawYields1", bYieldView and iYieldType == YieldTypes.YIELD_FOOD)
-				screen.show("RawYields1")
-				screen.setState("RawYields2", bYieldView and iYieldType == YieldTypes.YIELD_PRODUCTION)
-				screen.show("RawYields2")
-				screen.setState("RawYields3", bYieldView and iYieldType == YieldTypes.YIELD_COMMERCE)
-				screen.show("RawYields3")
+				screen.setState("CS|RawYields1", bYieldView and iYieldType == YieldTypes.YIELD_FOOD)
+				screen.show("CS|RawYields1")
+				screen.setState("CS|RawYields2", bYieldView and iYieldType == YieldTypes.YIELD_PRODUCTION)
+				screen.show("CS|RawYields2")
+				screen.setState("CS|RawYields3", bYieldView and iYieldType == YieldTypes.YIELD_COMMERCE)
+				screen.show("CS|RawYields3")
 
-				screen.setState("RawYields4", iYieldTiles == RawYields.WORKED_TILES)
-				screen.show("RawYields4")
-				screen.setState("RawYields5", iYieldTiles == RawYields.CITY_TILES)
-				screen.show("RawYields5")
-				screen.setState("RawYields6", iYieldTiles == RawYields.OWNED_TILES)
-				screen.show("RawYields6")
+				screen.setState("CS|RawYields4", iYieldTiles == RawYields.WORKED_TILES)
+				screen.show("CS|RawYields4")
+				screen.setState("CS|RawYields5", iYieldTiles == RawYields.CITY_TILES)
+				screen.show("CS|RawYields5")
+				screen.setState("CS|RawYields6", iYieldTiles == RawYields.OWNED_TILES)
+				screen.show("CS|RawYields6")
 			else:
 				bYieldView = False
 				screen.show("TradeRouteListLabel")
@@ -2785,7 +2780,7 @@ class CvMainInterface:
 			screen.show("NationalityBar")
 
 			yTop = self.yCityStackBarTop
-			if not (self.GO_NO_REVOLUTION or RevInstances.RevolutionInst is None):
+			if self.GO_REVOLUTION and not RevInstances.RevolutionInst is None:
 				# < Revolution Mod Start >
 				RevInstances.RevolutionInst.updateLocalRevIndices(GAME.getGameTurn(), iPlayer, subCityList = [CyCity], bIsRevWatch = True)
 
@@ -2814,24 +2809,24 @@ class CvMainInterface:
 				else:
 					cityString = safe
 				szTxt = uFont2 + u"%s: %s"%(TRNSLTR.getText("TXT_KEY_REV_STATUS", ()), cityString)
-				screen.setText("RevBar1", "", szTxt, 1<<2, x, yTop, 0, eFontGame, eWidGen, 0, 0)
+				screen.setText("CS|RevBar1", "", szTxt, 1<<2, x, yTop, 0, eFontGame, eWidGen, 0, 0)
 
 				fPercent1 = adjIndex/(1.0*divisor)
 				fPercent2 = abs(deltaTrend)/(1.0*divisor)
 				fPercent2 = min([fPercent2, 1.0-fPercent1])
-				screen.setStackedBarColorsRGB("RevBar0", 0, 100, 100, 100, 255)
-				screen.setBarPercentage("RevBar0", 0, fPercent1)
+				screen.setStackedBarColorsRGB("CS|RevBar0", 0, 100, 100, 100, 255)
+				screen.setBarPercentage("CS|RevBar0", 0, fPercent1)
 
 				if deltaTrend < 0:
-					screen.setStackedBarColorsRGB("RevBar0", 1, 0, 230, 0, 255)
+					screen.setStackedBarColorsRGB("CS|RevBar0", 1, 0, 230, 0, 255)
 				else:
-					screen.setStackedBarColorsRGB("RevBar0", 1, 230, 0, 0, 255)
+					screen.setStackedBarColorsRGB("CS|RevBar0", 1, 230, 0, 0, 255)
 
 				if fPercent1 == 1:
-					screen.setBarPercentage("RevBar0", 1, fPercent2)
+					screen.setBarPercentage("CS|RevBar0", 1, fPercent2)
 				else:
-					screen.setBarPercentage("RevBar0", 1, fPercent2/(1.0-fPercent1))
-				screen.show("RevBar0")
+					screen.setBarPercentage("CS|RevBar0", 1, fPercent2/(1.0-fPercent1))
+				screen.show("CS|RevBar0")
 			# Wonder slots
 			iNationalWonders = CyCity.getNumNationalWonders()
 			iGreatWonders = CyCity.getNumWorldWonders()
@@ -2880,7 +2875,7 @@ class CvMainInterface:
 			iGreatPeopleRate = CyCity.getGreatPeopleRate()
 			if iGreatPeopleProgress + iGreatPeopleRate > 0:
 				# Great Person Turns
-				iGreatPeopleTreshold = CyPlayer.greatPeopleThreshold(False)
+				iGreatPeopleTreshold = CyPlayer.greatPeopleThresholdNonMilitary()
 				if iGreatPeopleRate > 0:
 					iGPTurns = (iGreatPeopleTreshold - iGreatPeopleProgress + iGreatPeopleRate - 1) / iGreatPeopleRate
 				else:
@@ -2954,7 +2949,7 @@ class CvMainInterface:
 		ROW_0 = "BldgListRow%d"
 		iRow = 0
 		y = -2
-		for szName, i, CvBuildingInfo, iBuildingClass in aBuildingList:
+		for szName, i, CvBuildingInfo in aBuildingList:
 			iBuilt = CyCity.getNumBuilding(i)
 			if iBuilt:
 				szStat = ""
@@ -2979,7 +2974,7 @@ class CvMainInterface:
 							szStat += str(-iHappiness) + iconUnhappy
 
 					for j in xrange(YieldTypes.NUM_YIELD_TYPES):
-						iYield = iBuilt * (CvBuildingInfo.getYieldChange(j) +  CyCity.getBuildingYieldChange(iBuildingClass, j) + CyTeam.getBuildingYieldChange(i, j))
+						iYield = iBuilt * (CvBuildingInfo.getYieldChange(j) +  CyCity.getBuildingYieldChange(i, j) + CyTeam.getBuildingYieldChange(i, j))
 						if iYield:
 							szStat += str(iYield) + iconYieldList[j]
 							self.yields.addBuilding(j, iYield)
@@ -3266,7 +3261,7 @@ class CvMainInterface:
 		TYPE = UnitGroupingTypes.UNIT_GROUPING_COMBAT
 		screen.addPullDownString(ID, TRNSLTR.getText("TXT_KEY_UNIT_GROUPING_COMBAT", ()), TYPE, TYPE, SELECTED == TYPE)
 		TYPE = UnitGroupingTypes.UNIT_GROUPING_DOMAIN
-		screen.addPullDownString(ID, TRNSLTR.getText("TXT_KEY_UNIT_GROUPING_DOMAIN", ()), TYPE, TYPE, SELECTED == TYPE)
+		screen.addPullDownString(ID, TRNSLTR.getText("TXT_KEY_DOMAIN", ()), TYPE, TYPE, SELECTED == TYPE)
 		TYPE = UnitGroupingTypes.UNIT_GROUPING_HERO
 		screen.addPullDownString(ID, TRNSLTR.getText("TXT_KEY_UNIT_GROUPING_HERO", ()), TYPE, TYPE, SELECTED == TYPE)
 
@@ -3414,7 +3409,6 @@ class CvMainInterface:
 				screen.hide("CT|BuildingSorting")
 
 		self.iCityTab = iTab
-		self.bLockedTT = True
 		xRes = self.xRes
 		a4thX = xRes/4
 		halfX = xRes/2
@@ -3474,7 +3468,7 @@ class CvMainInterface:
 
 		aList = [
 			[int(UnitFilterTypes.UNIT_FILTER_HIDE_UNBUILDABLE),	self.artPathButtonNoProduction],
-			[int(UnitFilterTypes.UNIT_FILTER_HIDE_LIMITED),		self.artPathWorldWonderOnBUG],
+			[int(UnitFilterTypes.UNIT_FILTER_HIDE_LIMITED),		self.artFILTER_SHOW_UNLIMITED],
 			[int(UnitFilterTypes.UNIT_FILTER_SHOW_LAND),		self.artPathFilterLandPLE],
 			[int(UnitFilterTypes.UNIT_FILTER_SHOW_AIR),			self.artPathFilterAirPLE],
 			[int(UnitFilterTypes.UNIT_FILTER_SHOW_WATER),		self.artPathFilterSeaPLE],
@@ -3626,8 +3620,7 @@ class CvMainInterface:
 			i = 0
 			while i < iNumInGroup:
 				iType = CyCity.getBuildingListType(0, i)
-				iBuildingClass = GC.getBuildingInfo(iType).getBuildingClassType()
-				if isLimitedWonderClass(iBuildingClass):
+				if isLimitedWonder(iType):
 					break
 				i += 1
 				BTN = GC.getBuildingInfo(iType).getButton()
@@ -3667,17 +3660,18 @@ class CvMainInterface:
 					continue
 				for i in xrange(iNumInGroup):
 					iType = CyCity.getBuildingListType(iGroup, i)
-					iBuildingClass = GC.getBuildingInfo(iType).getBuildingClassType()
-					if not isLimitedWonderClass(iBuildingClass):
-						break
 
-					if GC.getBuildingClassInfo(iBuildingClass).isNoLimit():
+					if not isLimitedWonder(iType):
+						break
+					CvBuildingInfo = GC.getBuildingInfo(iType)
+
+					if CvBuildingInfo.isNoLimit():
 						aList0.append(iType)
 
-					elif isNationalWonderClass(iBuildingClass):
+					elif isNationalWonder(iType):
 						aList1.append(iType)
 
-					elif isTeamWonderClass(iBuildingClass):
+					elif isTeamWonder(iType):
 						aList2.append(iType)
 					else:
 						aList3.append(iType)
@@ -3770,7 +3764,6 @@ class CvMainInterface:
 		screen.hide("CT|UnitGrouping")
 		screen.hide("CT|UnitSorting")
 		screen.hide("CT|BuildingSorting")
-		self.bLockedTT = False
 		self.iCityTab = -1
 
 	# Will update the info pane strings
@@ -3942,15 +3935,9 @@ class CvMainInterface:
 						if CyUnit.isHurt():
 							fPercentHP = float(CyUnit.currHitPoints()) / CyUnit.maxHitPoints()
 							fStrength = strengthBase * fPercentHP
-							szTxt2 += "%.1f" % fStrength
-							if szTxt2[-1] == "0":
-								szTxt2 = szTxt2[:-2]
-							szTxt2 += "/"
+							szTxt2 += self.floatToString(fStrength) + "/"
 
-						szTxt2 += "%.1f" % strengthBase
-						if szTxt2[-1] == "0":
-							szTxt2 = szTxt2[:-2]
-						szTxt2 += self.iconStrength
+						szTxt2 += self.floatToString(strengthBase) + self.iconStrength
 
 						screen.appendTableRow(unitTable)
 						screen.setTableText(unitTable, 0, iRow, "<font=1>" + szTxt1, "", eWidGen, 0, 0, 1<<0)
@@ -4202,7 +4189,7 @@ class CvMainInterface:
 			szTxt += str(iProductionDiffJustFood) + self.iconYieldList[0] + " + " + str(iProductionDiffNoFood) + self.iconYieldList[1]
 		else:
 			szTxt += str(iProductionDiffNoFood) + self.iconYieldList[1]
-		screen.setLabel("ProductionInputText", "", szTxt, 1<<1, xPopProgBar - 6, 98, 0, eFontGame, WidgetTypes.WIDGET_PRODUCTION_MOD_HELP, -1, -1)
+		screen.setText("CS|ProdYield0", "", szTxt, 1<<1, xPopProgBar - 6, 100, 0, eFontGame, eWidGen, 1, 2)
 
 	def updateScoreStrings(self, screen):
 		print "updateScoreStrings"
@@ -4971,6 +4958,7 @@ class CvMainInterface:
 	def hideTooltip(self, screen):
 		self.bTooltip = False
 		self.bUpdateUnitTT = False
+		self.bLockedTT = False
 		self.dataTT = []
 		screen.hide("Tooltip")
 
@@ -4986,6 +4974,8 @@ class CvMainInterface:
 			self.iOffsetTT = [iX - POINT.x, iY - POINT.y]
 			self.xMouseTT = POINT.x
 			self.yMouseTT = POINT.y
+			if xPos == yPos == -1:
+				self.bLockedTT = True
 		else:
 			if xPos == yPos == -1:
 				POINT = Win32.getCursorPos()
@@ -4999,6 +4989,7 @@ class CvMainInterface:
 				if iY < 0:
 					iY = 0
 				screen.moveItem("Tooltip", iX, iY, 0)
+				self.bLockedTT = True
 			screen.moveToFront("Tooltip")
 			screen.show("Tooltip")
 		self.bTooltip = True
@@ -5008,10 +4999,10 @@ class CvMainInterface:
 		CyCity, iTurns = GPUtil.getDisplayCity()
 		if not CyCity:
 			# no rate or progress in any city and no city selected
-			szTxt = TRNSLTR.getText("TXT_KEY_MISC_GREAT_PERSON", (0, self.CyPlayer.greatPeopleThreshold(False)))
+			szTxt = TRNSLTR.getText("TXT_KEY_MISC_GREAT_PERSON", (0, self.CyPlayer.greatPeopleThresholdNonMilitary()))
 			self.updateTooltip(screen, szTxt)
 			return
-		iThreshold = GC.getPlayer(CyCity.getOwner()).greatPeopleThreshold(False)
+		iThreshold = GC.getPlayer(CyCity.getOwner()).greatPeopleThresholdNonMilitary()
 		iProgress = CyCity.getGreatPeopleProgress()
 		iRate = CyCity.getGreatPeopleRate()
 		szTxt = TRNSLTR.changeTextColor(CyCity.getName(), GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT")) + "\n"
@@ -5031,7 +5022,7 @@ class CvMainInterface:
 	def treasuryHelp(self, screen, szTxt):
 		iconCommerceGold = self.iconCommerceList[0]
 		CyPlayer = self.CyPlayer
-		szTxt += "\n%s: %d" % (iconCommerceGold, CyPlayer.getGreaterGold() * 1000000 + CyPlayer.getGold())
+		szTxt += "\n%s: %d" % (iconCommerceGold, CyPlayer.getGold())
 		iSum = 0
 		# Civics
 		szTemp = ""
@@ -5039,30 +5030,29 @@ class CvMainInterface:
 			iCivic = CyPlayer.getCivics(i)
 			iUpkeep = CyPlayer.getSingleCivicUpkeep(iCivic, True)
 			if iUpkeep:
-				szTemp += "\n	" + str(iUpkeep) + iconCommerceGold + " from " + GC.getCivicInfo(iCivic).getDescription()
+				szTemp += "\n	" + str(iUpkeep) + iconCommerceGold + " "+ TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_FROM", ())+ " " + GC.getCivicInfo(iCivic).getDescription()
 				iSum += iUpkeep
 		if iSum:
-			szTxt += "\nCivic Upkeep: " + str(iSum) + iconCommerceGold + szTemp
+			szTxt += "\n" + TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_CIVIC_UPKEEP", ()) +" " + str(iSum) + iconCommerceGold + szTemp
 		# Maintenance
 		iMaintenance = CyPlayer.getTotalMaintenance()
 		if iMaintenance:
-			szTxt += "\nCity maintenance: " + str(iMaintenance) + iconCommerceGold
+			szTxt += "\n" + TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_CITY_MAINTENANCE", ()) + " " + str(iMaintenance) + iconCommerceGold
 		# Unit upkeep
-		iUnitUpkeep = CyPlayer.calculateUnitCost()
+		iUnitUpkeep = CyPlayer.getFinalUnitUpkeep()
 		iUnitSupply = CyPlayer.calculateUnitSupply()
 		if iUnitUpkeep or iUnitSupply:
-			szTxt += "\nUnit "
+			szTxt += "\n"
 			if iUnitUpkeep:
+				szTxt += TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_UNIT_UPKEEP", ()) + " " + str(iUnitUpkeep) + iconCommerceGold
 				if iUnitSupply:
-					szTxt += "Upkeep: " + str(iUnitUpkeep) + iconCommerceGold + "\n	" + str(iUnitSupply) + iconCommerceGold + " for expeditionary supplies."
-				else:
-					szTxt += "Upkeep: " + str(iUnitUpkeep) + iconCommerceGold
+					szTxt += "\n	" + str(iUnitSupply) + iconCommerceGold + " " + TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_EXPEDITIONARY", ())
 			elif iUnitSupply:
-				szTxt += "Supply: " + str(iUnitSupply) + iconCommerceGold
+				szTxt += TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_UNIT_SUPPLY", ()) + " " + str(iUnitSupply) + iconCommerceGold
 		# Trade
 		iTradeGoPerT = CyPlayer.getGoldPerTurn()
 		if iTradeGoPerT:
-			szTxt += "\nTrade: <color="
+			szTxt += "\n" + TRNSLTR.getText("TXT_INTERFACE_TREASURYHELP_TRADE", ()) +" <color="
 			if iTradeGoPerT < 0:
 				szTxt += "255,0,0>"
 			else:
@@ -5142,6 +5132,7 @@ class CvMainInterface:
 						dataTT[0] = bCtrl
 						dataTT[1] = bShift
 						dataTT[2] = bAlt
+					return 1
 			return 0
 
 		elif iCode == 17: # Key Up
@@ -5206,7 +5197,7 @@ class CvMainInterface:
 						szTxt = CyGameTextMgr().getProjectHelp(iType, False, CyCity)
 						self.updateTooltip(screen, szTxt)
 					elif TYPE == "PROCESS":
-						y = self.yBotBar
+						y = self.yBotBar + 12
 						CvProcessInfo = GC.getProcessInfo(iType)
 						eYieldProd = YieldTypes.YIELD_PRODUCTION
 						fProd = CyCity.getYieldRate(eYieldProd) / 100.0
@@ -5219,26 +5210,26 @@ class CvMainInterface:
 							if szTxt[-1] == "0":
 								szTxt = szTxt[:-2]
 							szTxt += self.iconCommerceList[i]
-						self.updateTooltip(screen, szTxt, -1, y)
+						self.updateTooltip(screen, szTxt, self.xPopProgBar, y)
 
 				elif TYPE == "PROMO":
 					szTxt = ""
 					if CASE[0] == "PromoPanel":
 						iCount = self.aUnitPromoCountMap[iType]
 						if iCount > 1:
-							szTxt = "<color=144,255,72>In Stack: " + str(iCount) + "</color>\n"
+							szTxt = "<color=144,255,72>" + TRNSLTR.getText("TXT_KEY_IN_STACK", (iCount,)) + "</color>\n"
 					szTxt += CyGameTextMgr().getPromotionHelp(iType, False)
 					self.updateTooltip(screen, szTxt)
 
 				elif TYPE == "TECH":
 					szTxt = ""
 					if CASE[0] == "Selection":
-						szTxt += "Research: "
+						szTxt += TRNSLTR.getText("TXT_INTERFACE_TECH_HELP_RESEARCH", ()) + " "
 					elif CASE[0] == "ProgBar":
-						szTxt += "Researching: "
+						szTxt += TRNSLTR.getText("TXT_INTERFACE_TECH_HELP_RESEARCHING", ()) + " "
 						iType = GC.getPlayer(self.iPlayer).getCurrentResearch()
 					elif CASE[0] == "Score":
-						szTxt += "Researching: "
+						szTxt += TRNSLTR.getText("TXT_INTERFACE_TECH_HELP_RESEARCHING", ()) + " "
 					szTxt += CyGameTextMgr().getTechHelp(iType, False, True, True, True, -1)
 					self.updateTooltip(screen, szTxt)
 
@@ -5255,7 +5246,7 @@ class CvMainInterface:
 			elif BASE == "PlotList":
 				if TYPE in ("Button", "Health"):
 					CyUnit = self.aPlotListList[ID][0]
-					if not CyUnit.isDead():
+					if not CyUnit.getGroup().isNone():
 						if TYPE == "Button":
 							szTxt = CyGameTextMgr().getSpecificUnitHelp(CyUnit, False, False)
 							x = self.xRes / 4
@@ -5265,40 +5256,45 @@ class CvMainInterface:
 							szTxt = "HP: %d/%d" %(CyUnit.currHitPoints(), CyUnit.maxHitPoints())
 							x = -1
 							y = -1
+						else: return
 						self.updateTooltip(screen, szTxt, x, y)
 
 			elif BASE == "BldgList":
 				if TYPE == "Demolish":
-					self.updateTooltip(screen, "Demolish")
+					self.updateTooltip(screen, TRNSLTR.getText("TXT_KEY_CITY_SCREEN_DEMOLISH", ()))
 				elif TYPE == "BUILDING":
 					szTxt = CyGameTextMgr().getBuildingHelp(ID, False, False, True, CyCity, True)
 					self.updateTooltip(screen, szTxt)
 				else:
-					aList = ["Buildings","Wonders","Conceptual"]
+					aList = [TRNSLTR.getText("TXT_KEY_CONCEPT_BUILDINGS", ()), TRNSLTR.getText("TXT_KEY_CONCEPT_WONDERS", ()), TRNSLTR.getText("TXT_KEY_CITY_SCREEN_CONCEPTUAL", ())]
 					self.updateTooltip(screen, aList[ID])
 
 			elif BASE == "BonusList":
-				aList = ["Properties","Map Bonuses","Manufacture","Cultures"]
+				aList = [TRNSLTR.getText("TXT_KEY_PROPERTIES_PROPERTIES", ()), TRNSLTR.getText("TXT_KEY_PEDIA_CATEGORY_BONUS_MAP", ()), TRNSLTR.getText("TXT_KEY_PEDIA_CATEGORY_BONUS_MANDFACTURED", ()), TRNSLTR.getText("TXT_KEY_PEDIA_CATEGORY_C2C_CULTURES", ())]
 				self.updateTooltip(screen, aList[ID])
 
 			elif BASE == "CityTab":
 				if TYPE == "BG":
-					szTxt = "Close tab"
-					y = -1
+					szTxt = TRNSLTR.getText("INTERFACE_CLOSE_TAB", ())
+					x = y = -1
 				else:
+					x = self.xPopProgBar
 					y = self.yBotBar + 12
 					if not ID:
-						szTxt = "Unit"
+						szTxt = TRNSLTR.getText("INTERFACE_UNIT_TAB", ())
 						szKey = "A"
 					elif ID == 1:
-						szTxt = "Building"
+						szTxt = TRNSLTR.getText("INTERFACE_BUILDING_TAB", ())
 						szKey = "S"
 					else:
-						szTxt = "Wonder"
+						szTxt = TRNSLTR.getText("INTERFACE_WONDER_TAB", ())
 						szKey = "D"
-					szTxt += " Tab  <color=144,255,72>&#60" + szKey + "&#62"
-				self.updateTooltip(screen, szTxt, -1, y)
+
+					szTxt += " <color=144,255,72>&#60" + szKey + "&#62"
+				self.updateTooltip(screen, szTxt, x, y)
+
 			elif BASE == "CT":
+				# City Tab
 				if TYPE == "UnitFilter":
 					aMap = {
 						UnitFilterTypes.UNIT_FILTER_HIDE_UNBUILDABLE: "SHOW_BUILDABLE",
@@ -5344,6 +5340,20 @@ class CvMainInterface:
 					if ID in aMap:
 						self.updateTooltip(screen, TRNSLTR.getText("TXT_KEY_LIST_BUILDING_FILTER_" + aMap[ID], ()))
 
+			elif BASE == "CS":
+				# City Screen
+				if TYPE == "RawYields":
+					self.updateTooltip(screen, u"%s" % TRNSLTR.getText(self.RAW_YIELD_HELP[ID], ()))
+
+				elif TYPE == "RevBar":
+					self.showRevStatusInfoPane(screen)
+
+				elif TYPE == "Happiness":
+					self.updateTooltip(screen, CyGameTextMgr().getHappinessHelp())
+
+				elif TYPE == "ProdYield":
+					self.updateTooltip(screen, CyGameTextMgr().getProductionHelpCity(self.InCity.CyCity))
+
 			elif NAME == "GreatPersonBar":
 				self.helpGreatPersonBar(screen)
 
@@ -5356,7 +5366,7 @@ class CvMainInterface:
 
 			elif NAME == "AdvisorButton":
 				advisorTip = self.AdvisorButtonTip[ID]
-				szTxt = "<color=101,229,255>" + advisorTip[0] + " Advisor  <color=144,255,72>&#60" + advisorTip[1] + "&#62"
+				szTxt = "<color=101,229,255>" + advisorTip[0] + "  <color=144,255,72>&#60" + advisorTip[1] + "&#62"
 				if ID == 1:
 					self.treasuryHelp(screen, szTxt)
 				else:
@@ -5377,13 +5387,6 @@ class CvMainInterface:
 			elif NAME == "MADScreenWidget":
 				szTxt = TRNSLTR.getText("TXT_KEY_MAD_SCREEN_HOVER", ())
 				self.updateTooltip(screen, szTxt)
-
-			elif NAME == "RawYields":
-				szTxt = u"%s" % TRNSLTR.getText(self.RAW_YIELD_HELP[ID], ())
-				self.updateTooltip(screen, szTxt)
-
-			elif NAME == "RevBar":
-				self.showRevStatusInfoPane(screen)
 
 			elif NAME == "EraIndicator":
 				self.updateTooltip(screen, GC.getEraInfo(self.CyPlayer.getCurrentEra()).getDescription())
@@ -5413,10 +5416,17 @@ class CvMainInterface:
 						if not InCity: return
 						CyPlayer = InCity.CyPlayer
 						CyCity = InCity.CyCity
-						if CyCity.getProduction():
-							bCtrl = not bShift
-						elif TYPE == "UNIT" and CyCity.getProductionUnit() == iType:
-							bShift = not bCtrl
+
+						# Some modifier key logic
+						if bCtrl:
+							bShift = False
+						else:
+							if self.bInverseShiftQueue:
+								bShift = not bShift
+
+							if not bShift and CyCity.getProduction():
+								bCtrl = True
+
 						# Determine order type
 						iGaMsgType = GameMessageTypes.GAMEMESSAGE_PUSH_ORDER
 						szTxt = ""
@@ -5437,11 +5447,10 @@ class CvMainInterface:
 							szTxt += GC.getUnitInfo(iType).getDescription()
 							CyPlayer = InCity.CyPlayer
 							CyTeam = InCity.CyTeam
-							iUnitClass = GC.getUnitInfo(iType).getUnitClassType()
-							iTeamMaking = CyTeam.getUnitClassMaking(iUnitClass) + 1
-							if (GAME.isUnitClassMaxedOut(iUnitClass, iTeamMaking) or
-								CyTeam.isUnitClassMaxedOut(iUnitClass, iTeamMaking) or
-								CyPlayer.isUnitClassMaxedOut(iUnitClass, CyPlayer.getUnitClassMaking(iUnitClass) + 1)
+							iTeamMaking = CyTeam.getUnitMaking(iType) + 1
+							if (GAME.isUnitMaxedOut(iType, iTeamMaking) or
+								CyTeam.isUnitMaxedOut(iType, iTeamMaking) or
+								CyPlayer.isUnitMaxedOut(iType, CyPlayer.getUnitMaking(iType) + 1)
 							):
 								screen.enable(NAME + str(iType), False)
 
@@ -5480,15 +5489,15 @@ class CvMainInterface:
 						self.InCity.QueueIndex += 1
 						szName = BASE + "|" + TYPE + "|"
 						ROW = "QueueRow"
-						if bShift:	# Last
-							iNode = CyIF.getNumOrdersQueued()
-							self.InCity.WorkQueue.append([szName, iType, szRow])
-						elif bCtrl: # First
+						if bCtrl: # First
 							y = dy
 							for i, entry in enumerate(InCity.WorkQueue):
 								screen.moveItem(ROW + entry[2], -2, y-2, 0)
 								y += dy
 							self.InCity.WorkQueue = [[szName, iType, szRow]] + InCity.WorkQueue
+						elif bShift: # Last
+							iNode = CyIF.getNumOrdersQueued()
+							self.InCity.WorkQueue.append([szName, iType, szRow])
 						else: # Replace current
 							if InCity.WorkQueue:
 								screen.show(InCity.WorkQueue[0][0] + "CityWork" + str(InCity.WorkQueue[0][1]))
@@ -5518,13 +5527,12 @@ class CvMainInterface:
 							if not iTab:
 								CyPlayer = InCity.CyPlayer
 								CyTeam = InCity.CyTeam
-								iUnitClass = GC.getUnitInfo(iType).getUnitClassType()
-								iTeamMaking = CyTeam.getUnitClassMaking(iUnitClass)
-								if GAME.isUnitClassMaxedOut(iUnitClass, iTeamMaking):
+								iTeamMaking = CyTeam.getUnitMaking(iType)
+								if GAME.isUnitMaxedOut(iType, iTeamMaking):
 									self.bUpdateCityTab = True
-								elif CyTeam.isUnitClassMaxedOut(iUnitClass, iTeamMaking):
+								elif CyTeam.isUnitMaxedOut(iType, iTeamMaking):
 									self.bUpdateCityTab = True
-								elif CyPlayer.isUnitClassMaxedOut(iUnitClass, CyPlayer.getUnitClassMaking(iUnitClass)):
+								elif CyPlayer.isUnitMaxedOut(iType, CyPlayer.getUnitMaking(iType)):
 									self.bUpdateCityTab = True
 						elif TYPE == "BUILDING":
 							if iTab in (1, 2):
@@ -5674,6 +5682,25 @@ class CvMainInterface:
 				CyMessageControl().sendModNetMessage(999, self.iPlayer, ID, iChange, 0)
 				return 1
 
+			elif BASE == "CS":
+				# City Screen
+				if TYPE == "RawYields":
+					if not ID:
+						self.bYieldView = False
+					elif ID in (1, 2, 3):
+						self.bYieldView = True
+						self.iYieldType = RawYields.YIELDS[ID - 1]
+					elif ID in (4, 5, 6):
+						self.bYieldView = True
+						self.iYieldTiles = RawYields.TILES[ID - 4]
+					else:
+						return 0
+					CyIF.setDirty(InterfaceDirtyBits.CityScreen_DIRTY_BIT, True)
+
+				elif TYPE == "RevBar":
+					if self.InCity.iPlayer == self.iPlayer:
+						RevInstances.RevolutionInst.showBribeCityPopup(self.InCity.CyCity)
+
 			elif NAME == "AdvisorButton":
 				if not ID:
 					UP.showDomesticAdvisor(-1)
@@ -5684,7 +5711,7 @@ class CvMainInterface:
 				elif ID == 3:
 					UP.showForeignAdvisorScreen([0])
 				elif ID == 4:
-					UP.showMilitaryAdvisor()
+					GAME.doControl(ControlTypes.CONTROL_MILITARY_SCREEN)
 				elif ID == 5:
 					UP.showTechChooser()
 				elif ID == 6:
@@ -5698,19 +5725,6 @@ class CvMainInterface:
 
 			elif NAME == "PediaButton":
 				UP.pediaShow()
-
-			elif NAME == "RawYields":
-				if not ID:
-					self.bYieldView = False
-				elif ID in (1, 2, 3):
-					self.bYieldView = True
-					self.iYieldType = RawYields.YIELDS[ID - 1]
-				elif ID in (4, 5, 6):
-					self.bYieldView = True
-					self.iYieldTiles = RawYields.TILES[ID - 4]
-				else:
-					return 0
-				CyIF.setDirty(InterfaceDirtyBits.CityScreen_DIRTY_BIT, True)
 
 			elif NAME == "OptionsBtnBUG":
 				import BugOptionsScreen
@@ -5728,10 +5742,6 @@ class CvMainInterface:
 				CyCity, _ = GPUtil.findNextCity()
 				if CyCity:
 					CyIF.selectCity(CyCity, False)
-
-			elif NAME == "RevBar":
-				if self.InCity.iPlayer == self.iPlayer:
-					RevInstances.RevolutionInst.showBribeCityPopup(self.InCity.CyCity)
 
 			elif NAME == "EraIndicator":
 				UP.pediaJumpToEra(iData1)

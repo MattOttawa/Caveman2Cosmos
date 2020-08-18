@@ -3,7 +3,7 @@
 #ifndef CvArea_h__
 #define CvArea_h__
 
-#include "CvGameCoreDLL.h"
+#include "CvEnums.h"
 
 class CvCity;
 class CvPlot;
@@ -132,7 +132,7 @@ public:
 	void setAreaAIType(TeamTypes eIndex, AreaAITypes eNewValue);
 
 	CvCity* getTargetCity(PlayerTypes eIndex) const;													// Exposed to Python
-	void setTargetCity(PlayerTypes eIndex, CvCity* pNewValue);
+	void setTargetCity(PlayerTypes eIndex, const CvCity* pNewValue);
 
 	int getYieldRateModifier(PlayerTypes eIndex1, YieldTypes eIndex2) const;	// Exposed to Python
 	void changeYieldRateModifier(PlayerTypes eIndex1, YieldTypes eIndex2, int iChange);
@@ -229,6 +229,16 @@ private:
 	int					m_iLastGameTurnRecorded;
 	TurnCombatResults	m_combatRecord[COMBAT_RECORD_LENGTH];
 
+public:
+	//
+	// Algorithm/range helpers
+	//
+	struct fn {
+		DECLARE_MAP_FUNCTOR(CvArea, bool, isWater);
+		DECLARE_MAP_FUNCTOR(CvArea, int, getNumTiles);
+		DECLARE_MAP_FUNCTOR_1(CvArea, int, getBestFoundValue, PlayerTypes);
+		DECLARE_MAP_FUNCTOR_1(CvArea, int, getCitiesPerPlayer, PlayerTypes);
+	};
 };
 
 #endif // CvArea_h__

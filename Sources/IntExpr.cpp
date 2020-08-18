@@ -7,6 +7,8 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvGameAI.h"
+#include "CvXMLLoadUtility.h"
 #include "IntExpr.h"
 
 IntExpr::~IntExpr()
@@ -755,7 +757,7 @@ IntExprRandom::~IntExprRandom()
 
 int IntExprRandom::evaluate(CvGameObject *pObject)
 {
-	return GC.getGameINLINE().getSorenRandNum(m_pExpr->evaluate(pObject), "Random integer expression");
+	return GC.getGame().getSorenRandNum(m_pExpr->evaluate(pObject), "Random integer expression");
 }
 
 void IntExprRandom::buildDisplayString(CvWStringBuffer &szBuffer) const
@@ -789,7 +791,7 @@ int IntExprAdapt::evaluate(CvGameObject *pObject)
 void IntExprAdapt::buildDisplayString(CvWStringBuffer &szBuffer) const
 {
 	CvWString szTextVal;
-	szTextVal.Format(L"%d", GC.getGameINLINE().getGameObject()->adaptValueToGame(m_iID, m_pExpr->evaluate(GC.getGameINLINE().getGameObject())));
+	szTextVal.Format(L"%d", GC.getGame().getGameObject()->adaptValueToGame(m_iID, m_pExpr->evaluate(GC.getGame().getGameObject())));
 	szBuffer.append(szTextVal);
 }
 

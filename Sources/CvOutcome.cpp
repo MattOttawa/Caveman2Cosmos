@@ -7,7 +7,12 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
-
+//#include "CvProperties.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
+#include "CvXMLLoadUtility.h"
+#include "CyUnit.h"
+#include "CyPlot.h"
 
 CvOutcome::CvOutcome(): m_eUnitType(NO_UNIT),
 						m_iChance(NULL),
@@ -137,17 +142,17 @@ int CvOutcome::getGPP() const
 	return m_iGPP;
 }
 
-CvProperties* CvOutcome::getProperties()
+const CvProperties* CvOutcome::getProperties() const
 {
 	return &m_Properties;
 }
 
-int CvOutcome::getHappinessTimer()
+int CvOutcome::getHappinessTimer() const
 {
 	return m_iHappinessTimer;
 }
 
-int CvOutcome::getPopulationBoost()
+int CvOutcome::getPopulationBoost() const
 {
 	return m_iPopulationBoost;
 }
@@ -161,7 +166,7 @@ int CvOutcome::getReduceAnarchyLength(const CvUnit &kUnit) const
 	return 0;
 }
 
-EventTriggerTypes CvOutcome::getEventTrigger()
+EventTriggerTypes CvOutcome::getEventTrigger() const
 {
 	return m_eEventTrigger;
 }
@@ -311,15 +316,15 @@ void CvOutcome::compilePython()
 int CvOutcome::getChance(const CvUnit &kUnit) const
 {
 	int iChance = m_iChance->evaluate(const_cast<CvUnit&>(kUnit).getGameObject());
-	CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
+	const CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
 
-	CvCity* pCity = kUnit.plot()->getPlotCity();
+	const CvCity* pCity = kUnit.plot()->getPlotCity();
 
 	if (pCity)
 	{
 		iChance += getChancePerPop() * pCity->getPopulation();
 	}
-	
+
 	for (int i=0; i<kInfo.getNumExtraChancePromotions(); i++)
 	{
 		if (kUnit.isHasPromotion(kInfo.getExtraChancePromotion(i)))
@@ -332,8 +337,8 @@ int CvOutcome::getChance(const CvUnit &kUnit) const
 
 bool CvOutcome::isPossible(const CvUnit& kUnit) const
 {
-	CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
-	CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
+	const CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
+	const CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
 
 	if (!kTeam.isHasTech(kInfo.getPrereqTech()))
 	{
@@ -350,7 +355,7 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 	if (kInfo.getPrereqCivic() != NO_CIVIC)
 	{
-		if (!GET_PLAYER(kUnit.getOwnerINLINE()).isCivic(kInfo.getPrereqCivic()))
+		if (!GET_PLAYER(kUnit.getOwner()).isCivic(kInfo.getPrereqCivic()))
 		{
 			return false;
 		}
@@ -380,9 +385,9 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 		}
 	}
 
-	TeamTypes eOwnerTeam = GET_PLAYER(kUnit.getOwnerINLINE()).getTeam();
-	CvTeam& kOwnerTeam = GET_TEAM(eOwnerTeam);
-	PlayerTypes ePlotOwner = kUnit.plot()->getOwnerINLINE();
+	const TeamTypes eOwnerTeam = GET_PLAYER(kUnit.getOwner()).getTeam();
+	const CvTeam& kOwnerTeam = GET_TEAM(eOwnerTeam);
+	const PlayerTypes ePlotOwner = kUnit.plot()->getOwner();
 	if (ePlotOwner == NO_PLAYER)
 	{
 		if (!kInfo.getNeutralTerritory())
@@ -401,8 +406,8 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 		}
 		else
 		{
-			TeamTypes ePlotOwnerTeam = GET_PLAYER(ePlotOwner).getTeam();
-			CvTeam& kPlotOwnerTeam = GET_TEAM(ePlotOwnerTeam);
+			const TeamTypes ePlotOwnerTeam = GET_PLAYER(ePlotOwner).getTeam();
+			const CvTeam& kPlotOwnerTeam = GET_TEAM(ePlotOwnerTeam);
 			if (kOwnerTeam.isAtWar(ePlotOwnerTeam))
 			{
 				if (!kInfo.getHostileTerritory())
@@ -427,10 +432,10 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 		}
 	}
 
-	int iPrereqBuildings = kInfo.getNumPrereqBuildings();
+	const int iPrereqBuildings = kInfo.getNumPrereqBuildings();
 	if (iPrereqBuildings > 0)
 	{
-		CvCity* pCity = kUnit.plot()->getPlotCity();
+		const CvCity* pCity = kUnit.plot()->getPlotCity();
 		if (!pCity)
 		{
 			return false;
@@ -464,7 +469,7 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 	if (m_eBonusType != NO_BONUS)
 	{
-		CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
+		const CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
 		if (!kTeam.isHasTech((TechTypes)kBonus.getTechReveal()))
 		{
 			return false;
@@ -499,19 +504,8 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 			}
 		}
 
-		int iCount = 0;
-		for (int iI = 0; iI < NUM_DIRECTION_TYPES; ++iI)
-		{
-			CvPlot* pAdjacentPlot = plotDirection(kUnit.plot()->getX_INLINE(), kUnit.plot()->getY_INLINE(), ((DirectionTypes)iI));
+		const int iCount = algo::count_if(kUnit.plot()->adjacent(), CvPlot::fn::getBonusType(NO_TEAM) == m_eBonusType);
 
-			if (pAdjacentPlot != NULL)
-			{
-				if (pAdjacentPlot->getBonusType() == m_eBonusType)
-				{
-					iCount++;
-				}
-			}
-		}
 		if (!(iCount == 0 || (iCount == 1 && kUnit.plot()->isWater())))
 		{
 			return false;
@@ -520,8 +514,8 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 	if (m_eEventTrigger != NO_EVENTTRIGGER)
 	{
-		CvPlayer& kOwner = GET_PLAYER(kUnit.getOwnerINLINE());
-		CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
+		const CvPlayer& kOwner = GET_PLAYER(kUnit.getOwner());
+		const CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
 		if (!kOwner.isEventTriggerPossible(m_eEventTrigger, true))
 		{
 			return false;
@@ -529,7 +523,7 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 		if (kTriggerInfo.isPickCity())
 		{
-			CvCity* pCity = kUnit.plot()->getPlotCity();
+			const CvCity* pCity = kUnit.plot()->getPlotCity();
 			if (pCity)
 			{
 				if (!pCity->isEventTriggerPossible(m_eEventTrigger))
@@ -541,7 +535,7 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 		if (isPlotEventTrigger(m_eEventTrigger))
 		{
-			if (!kUnit.plot()->canTrigger(m_eEventTrigger, kUnit.getOwnerINLINE()))
+			if (!kUnit.plot()->canTrigger(m_eEventTrigger, kUnit.getOwner()))
 			{
 				return false;
 			}
@@ -590,8 +584,8 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 // Can return a false positive if an outcome requires a building combination
 bool CvOutcome::isPossibleSomewhere(const CvUnit& kUnit) const
 {
-	CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
-	CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
+	const CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
+	const CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
 
 	if (!kTeam.isHasTech(kInfo.getPrereqTech()))
 	{
@@ -608,21 +602,21 @@ bool CvOutcome::isPossibleSomewhere(const CvUnit& kUnit) const
 
 	if (kInfo.getPrereqCivic() != NO_CIVIC)
 	{
-		if (!GET_PLAYER(kUnit.getOwnerINLINE()).isCivic(kInfo.getPrereqCivic()))
+		if (!GET_PLAYER(kUnit.getOwner()).isCivic(kInfo.getPrereqCivic()))
 		{
 			return false;
 		}
 	}
 
-	//TeamTypes eOwnerTeam = GET_PLAYER(kUnit.getOwnerINLINE()).getTeam();
+	//TeamTypes eOwnerTeam = GET_PLAYER(kUnit.getOwner()).getTeam();
 	//CvTeam& kOwnerTeam = GET_TEAM(eOwnerTeam);
 
-	int iPrereqBuildings = kInfo.getNumPrereqBuildings();
+	const int iPrereqBuildings = kInfo.getNumPrereqBuildings();
 	if (iPrereqBuildings > 0)
 	{
 		for (int i=0; i<iPrereqBuildings; i++)
 		{
-			if (GET_PLAYER(kUnit.getOwnerINLINE()).getBuildingClassCount((BuildingClassTypes)GC.getBuildingInfo(kInfo.getPrereqBuilding(i)).getBuildingClassType()) <= 0)
+			if (GET_PLAYER(kUnit.getOwner()).getBuildingCount(kInfo.getPrereqBuilding(i)) <= 0)
 			{
 				return false;
 			}
@@ -648,7 +642,7 @@ bool CvOutcome::isPossibleSomewhere(const CvUnit& kUnit) const
 
 	if (m_eBonusType != NO_BONUS)
 	{
-		CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
+		const CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
 		if (!kTeam.isHasTech((TechTypes)kBonus.getTechReveal()))
 		{
 			return false;
@@ -664,8 +658,7 @@ bool CvOutcome::isPossibleSomewhere(const CvUnit& kUnit) const
 
 	if (m_eEventTrigger != NO_EVENTTRIGGER)
 	{
-		CvPlayer& kOwner = GET_PLAYER(kUnit.getOwnerINLINE());
-		if (!kOwner.isEventTriggerPossible(m_eEventTrigger, true))
+		if (!GET_PLAYER(kUnit.getOwner()).isEventTriggerPossible(m_eEventTrigger, true))
 		{
 			return false;
 		}
@@ -684,8 +677,8 @@ bool CvOutcome::isPossibleSomewhere(const CvUnit& kUnit) const
 
 bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool bForTrade) const
 {
-	CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
-	CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
+	const CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
+	const CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
 
 	if (!kTeam.isHasTech(kInfo.getPrereqTech()))
 	{
@@ -702,7 +695,7 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 	if (kInfo.getPrereqCivic() != NO_CIVIC)
 	{
-		if (!GET_PLAYER(kUnit.getOwnerINLINE()).isCivic(kInfo.getPrereqCivic()))
+		if (!GET_PLAYER(kUnit.getOwner()).isCivic(kInfo.getPrereqCivic()))
 		{
 			return false;
 		}
@@ -724,9 +717,9 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 		}
 	}
 
-	TeamTypes eOwnerTeam = GET_PLAYER(kUnit.getOwnerINLINE()).getTeam();
-	CvTeam& kOwnerTeam = GET_TEAM(eOwnerTeam);
-	PlayerTypes ePlotOwner = kPlot.getOwnerINLINE();
+	const TeamTypes eOwnerTeam = GET_PLAYER(kUnit.getOwner()).getTeam();
+	const CvTeam& kOwnerTeam = GET_TEAM(eOwnerTeam);
+	const PlayerTypes ePlotOwner = kPlot.getOwner();
 	if (ePlotOwner == NO_PLAYER)
 	{
 		if (!kInfo.getNeutralTerritory())
@@ -745,8 +738,8 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 		}
 		else
 		{
-			TeamTypes ePlotOwnerTeam = GET_PLAYER(ePlotOwner).getTeam();
-			CvTeam& kPlotOwnerTeam = GET_TEAM(ePlotOwnerTeam);
+			const TeamTypes ePlotOwnerTeam = GET_PLAYER(ePlotOwner).getTeam();
+			const CvTeam& kPlotOwnerTeam = GET_TEAM(ePlotOwnerTeam);
 			if (kOwnerTeam.isAtWar(ePlotOwnerTeam))
 			{
 				if (!kInfo.getHostileTerritory())
@@ -771,10 +764,10 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 		}
 	}
 
-	int iPrereqBuildings = kInfo.getNumPrereqBuildings();
+	const int iPrereqBuildings = kInfo.getNumPrereqBuildings();
 	if (iPrereqBuildings > 0)
 	{
-		CvCity* pCity = kPlot.getPlotCity();
+		const CvCity* pCity = kPlot.getPlotCity();
 		if (!pCity)
 		{
 			return false;
@@ -808,7 +801,7 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 	if (m_eBonusType != NO_BONUS)
 	{
-		CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
+		const CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
 		if (!kTeam.isHasTech((TechTypes)kBonus.getTechReveal()))
 		{
 			return false;
@@ -843,19 +836,8 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 			}
 		}
 
-		int iCount = 0;
-		for (int iI = 0; iI < NUM_DIRECTION_TYPES; ++iI)
-		{
-			CvPlot* pAdjacentPlot = plotDirection(kPlot.getX_INLINE(), kPlot.getY_INLINE(), ((DirectionTypes)iI));
+		const int iCount = algo::count_if(kPlot.adjacent(), CvPlot::fn::getBonusType(NO_TEAM) == m_eBonusType);
 
-			if (pAdjacentPlot != NULL)
-			{
-				if (pAdjacentPlot->getBonusType() == m_eBonusType)
-				{
-					iCount++;
-				}
-			}
-		}
 		if (!(iCount == 0 || (iCount == 1 && kPlot.isWater())))
 		{
 			return false;
@@ -864,8 +846,8 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 	if (m_eEventTrigger != NO_EVENTTRIGGER)
 	{
-		CvPlayer& kOwner = GET_PLAYER(kUnit.getOwnerINLINE());
-		CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
+		const CvPlayer& kOwner = GET_PLAYER(kUnit.getOwner());
+		const CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
 		if (!kOwner.isEventTriggerPossible(m_eEventTrigger, true))
 		{
 			return false;
@@ -873,7 +855,7 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 		if (kTriggerInfo.isPickCity())
 		{
-			CvCity* pCity = kPlot.getPlotCity();
+			const CvCity* pCity = kPlot.getPlotCity();
 			if (pCity)
 			{
 				if (!pCity->isEventTriggerPossible(m_eEventTrigger))
@@ -885,7 +867,7 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 		if (isPlotEventTrigger(m_eEventTrigger))
 		{
-			if (!kPlot.canTrigger(m_eEventTrigger, kUnit.getOwnerINLINE()))
+			if (!kPlot.canTrigger(m_eEventTrigger, kUnit.getOwner()))
 			{
 				return false;
 			}
@@ -933,8 +915,8 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 bool CvOutcome::isPossible(const CvPlayerAI& kPlayer) const
 {
-	CvTeam& kTeam = GET_TEAM(kPlayer.getTeam());
-	CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
+	const CvTeam& kTeam = GET_TEAM(kPlayer.getTeam());
+	const CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
 
 	if (!kTeam.isHasTech(kInfo.getPrereqTech()))
 	{
@@ -976,7 +958,7 @@ bool CvOutcome::isPossible(const CvPlayerAI& kPlayer) const
 
 	if (m_eBonusType != NO_BONUS)
 	{
-		CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
+		const CvBonusInfo& kBonus = GC.getBonusInfo(m_eBonusType);
 		if (!kTeam.isHasTech((TechTypes)kBonus.getTechReveal()))
 		{
 			return false;
@@ -1010,9 +992,9 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 
 	CvWStringBuffer szBuffer;
 
-	CvPlayer& kPlayer = GET_PLAYER(kUnit.getOwnerINLINE());
-	bool bToCoastalCity = GC.getOutcomeInfo(getType()).getToCoastalCity();
-	CvUnitInfo* pUnitInfo;
+	CvPlayer& kPlayer = GET_PLAYER(kUnit.getOwner());
+	const bool bToCoastalCity = GC.getOutcomeInfo(getType()).getToCoastalCity();
+	const CvUnitInfo* pUnitInfo;
 	if (eDefeatedUnitType > NO_UNIT)
 		pUnitInfo = &GC.getUnitInfo(eDefeatedUnitType);
 	else
@@ -1046,7 +1028,7 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 	}
 	if (m_eUnitType > NO_UNIT && !bUnitToCity)
 	{
-		CvUnit* pUnit = kPlayer.initUnit(m_eUnitType, kUnit.plot()->getX_INLINE(), kUnit.plot()->getY_INLINE(), (UnitAITypes)GC.getUnitInfo(m_eUnitType).getDefaultUnitAIType(), NO_DIRECTION, GC.getGameINLINE().getSorenRandNum(10000, "AI Unit Birthmark"));
+		CvUnit* pUnit = kPlayer.initUnit(m_eUnitType, kUnit.plot()->getX(), kUnit.plot()->getY(), (UnitAITypes)GC.getUnitInfo(m_eUnitType).getDefaultUnitAIType(), NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
 		FAssertMsg(pUnit != NULL, "pUnit is expected to be assigned a valid unit object");
 		int iDmg = GC.getDefineINT("ANIMAL_DAMAGE_PERCENT_AFTER_SUBDUE");
 		iDmg = (iDmg * pUnit->maxHitPoints())/100;
@@ -1085,9 +1067,9 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 
 	if (aiYield[YIELD_PRODUCTION] || aiYield[YIELD_FOOD] || aiCommerce[COMMERCE_CULTURE] || m_iGPP || (bUnitToCity && m_eUnitType > NO_UNIT) || m_iHappinessTimer || m_iPopulationBoost || m_iReduceAnarchyLength)
 	{
-		CvCity* pCity = GC.getMapINLINE().findCity(kUnit.plot()->getX_INLINE(), kUnit.plot()->getY_INLINE(), kUnit.getOwnerINLINE(), NO_TEAM, true, bToCoastalCity);
+		CvCity* pCity = GC.getMap().findCity(kUnit.plot()->getX(), kUnit.plot()->getY(), kUnit.getOwner(), NO_TEAM, true, bToCoastalCity);
 		if (!pCity)
-			pCity = GC.getMapINLINE().findCity(kUnit.plot()->getX_INLINE(), kUnit.plot()->getY_INLINE(), kUnit.getOwnerINLINE(), NO_TEAM, false, bToCoastalCity);
+			pCity = GC.getMap().findCity(kUnit.plot()->getX(), kUnit.plot()->getY(), kUnit.getOwner(), NO_TEAM, false, bToCoastalCity);
 
 		if (pCity)
 		{
@@ -1116,7 +1098,7 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 
 			if (aiCommerce[COMMERCE_CULTURE])
 			{
-				pCity->changeCulture(kUnit.getOwnerINLINE(), aiCommerce[COMMERCE_CULTURE], true, true);
+				pCity->changeCulture(kUnit.getOwner(), aiCommerce[COMMERCE_CULTURE], true, true);
 				CvWString szTemp;
 				szTemp.Format(L" %d%c", aiCommerce[COMMERCE_CULTURE], GC.getCommerceInfo(COMMERCE_CULTURE).getChar());
 				szBuffer.append(szTemp);
@@ -1170,7 +1152,7 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 
 			if (bUnitToCity && m_eUnitType > NO_UNIT)
 			{
-				CvUnit* pUnit = kPlayer.initUnit(m_eUnitType, pCity->getX_INLINE(), pCity->getY_INLINE(), (UnitAITypes)GC.getUnitInfo(m_eUnitType).getDefaultUnitAIType(), NO_DIRECTION, GC.getGameINLINE().getSorenRandNum(10000, "AI Unit Birthmark"));
+				CvUnit* pUnit = kPlayer.initUnit(m_eUnitType, pCity->getX(), pCity->getY(), (UnitAITypes)GC.getUnitInfo(m_eUnitType).getDefaultUnitAIType(), NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
 				FAssertMsg(pUnit != NULL, "pUnit is expected to be assigned a valid unit object");
 				int iDmg = GC.getDefineINT("ANIMAL_DAMAGE_PERCENT_AFTER_SUBDUE");
 				iDmg = (iDmg * pUnit->maxHitPoints())/100;
@@ -1221,10 +1203,10 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 	CvTeam& kTeam = GET_TEAM(kUnit.getTeam());
 	if (iResearchTimes100)
 	{
-		TechTypes eCurrentTech = kPlayer.getCurrentResearch();
+		const TechTypes eCurrentTech = kPlayer.getCurrentResearch();
 		if (eCurrentTech != NO_TECH)
 		{
-			kTeam.changeResearchProgress(eCurrentTech, iResearchTimes100 / 100, kUnit.getOwnerINLINE());
+			kTeam.changeResearchProgress(eCurrentTech, iResearchTimes100 / 100, kUnit.getOwner());
 			if (!bFirst)
 			{
 				szBuffer.append(L", ");
@@ -1301,19 +1283,19 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 	{
 		MEMORY_TRACK_EXEMPT();
 
-		AddDLLMessage(kUnit.getOwnerINLINE(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer.getCString(), NULL, MESSAGE_TYPE_INFO, pUnitInfo->getButton(), NO_COLOR, kUnit.plot()->getX_INLINE(), kUnit.plot()->getY_INLINE(), true, true);
+		AddDLLMessage(kUnit.getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer.getCString(), NULL, MESSAGE_TYPE_INFO, pUnitInfo->getButton(), NO_COLOR, kUnit.plot()->getX(), kUnit.plot()->getY(), true, true);
 	}
 
 	if (m_eEventTrigger != NO_EVENTTRIGGER)
 	{
-		CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
+		const CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
 		if (kTriggerInfo.isPickCity() && (kUnit.plot()->getPlotCity() != NULL))
 		{
 			kPlayer.initTriggeredData(m_eEventTrigger, true, kUnit.plot()->getPlotCity()->getID());
 		}
 		else
 		{
-			kPlayer.initTriggeredData(m_eEventTrigger, true, -1, kUnit.plot()->getX_INLINE(), kUnit.plot()->getY_INLINE());
+			kPlayer.initTriggeredData(m_eEventTrigger, true, -1, kUnit.plot()->getX(), kUnit.plot()->getY());
 		}
 	}
 
@@ -1358,8 +1340,8 @@ int CvOutcome::AI_getValueInPlot(const CvUnit &kUnit, const CvPlot &kPlot, bool 
 
 	int iValue = 0;
 
-	CvPlayerAI& kPlayer = GET_PLAYER(kUnit.getOwnerINLINE());
-	bool bToCoastalCity = GC.getOutcomeInfo(getType()).getToCoastalCity();
+	CvPlayerAI& kPlayer = GET_PLAYER(kUnit.getOwner());
+	const bool bToCoastalCity = GC.getOutcomeInfo(getType()).getToCoastalCity();
 	//CvUnitInfo* pUnitInfo = &kUnit.getUnitInfo();
 
 	if (m_ePromotionType > NO_PROMOTION)
@@ -1372,14 +1354,14 @@ int CvOutcome::AI_getValueInPlot(const CvUnit &kUnit, const CvPlot &kPlot, bool 
 		int iTempValue;
 		EventTriggeredData* pTriggerData;
 
-		CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
+		const CvEventTriggerInfo& kTriggerInfo = GC.getEventTriggerInfo(m_eEventTrigger);
 		if (kTriggerInfo.isPickCity() && (kPlot.getPlotCity() != NULL))
 		{
 			pTriggerData = kPlayer.initTriggeredData(m_eEventTrigger, false, kPlot.getPlotCity()->getID());
 		}
 		else
 		{
-			pTriggerData = kPlayer.initTriggeredData(m_eEventTrigger, false, -1, kPlot.getX_INLINE(), kPlot.getY_INLINE());
+			pTriggerData = kPlayer.initTriggeredData(m_eEventTrigger, false, -1, kPlot.getX(), kPlot.getY());
 		}
 
 		if ( NO_EVENT != kPlayer.AI_chooseEvent(pTriggerData->getID(), &iTempValue) )
@@ -1415,9 +1397,9 @@ int CvOutcome::AI_getValueInPlot(const CvUnit &kUnit, const CvPlot &kPlot, bool 
 		// short circuit plot city as this method will be called for city plots most of the time
 		CvCityAI* pCity = (CvCityAI*) kPlot.getPlotCity();
 		if (!pCity || (bToCoastalCity && (!pCity->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()))))
-			pCity = (CvCityAI*) GC.getMapINLINE().findCity(kPlot.getX_INLINE(), kPlot.getY_INLINE(), kUnit.getOwnerINLINE(), NO_TEAM, true, bToCoastalCity);
+			pCity = (CvCityAI*) GC.getMap().findCity(kPlot.getX(), kPlot.getY(), kUnit.getOwner(), NO_TEAM, true, bToCoastalCity);
 		if (!pCity)
-			pCity = (CvCityAI*) GC.getMapINLINE().findCity(kPlot.getX_INLINE(), kPlot.getY_INLINE(), kUnit.getOwnerINLINE(), NO_TEAM, false, bToCoastalCity);
+			pCity = (CvCityAI*) GC.getMap().findCity(kPlot.getX(), kPlot.getY(), kUnit.getOwner(), NO_TEAM, false, bToCoastalCity);
 
 		if (pCity)
 		{
@@ -1455,7 +1437,7 @@ int CvOutcome::AI_getValueInPlot(const CvUnit &kUnit, const CvPlot &kPlot, bool 
 			int iReduce = getReduceAnarchyLength(kUnit);
 			if (iReduce)
 			{
-				int iOccupation = pCity->getOccupationTimer();
+				const int iOccupation = pCity->getOccupationTimer();
 				iReduce = std::min(iReduce, iOccupation);
 				iValue += iReduce * 50; // pure guess, might be more or less valuable or some more complex code might be needed
 			}
@@ -1588,7 +1570,7 @@ bool CvOutcome::read(CvXMLLoadUtility* pXML)
 	return true;
 }
 
-void CvOutcome::copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML )
+void CvOutcome::copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML)
 {
 	GC.copyNonDefaultDelayedResolution((int*)&m_eType, (int*)&(pOutcome->m_eType));
 	//if (m_eType == NO_OUTCOME)
@@ -1714,9 +1696,8 @@ void CvOutcome::copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML )
 
 void CvOutcome::buildDisplayString(CvWStringBuffer &szBuffer, const CvUnit& kUnit) const
 {
-
-	//CvPlayer& kPlayer = GET_PLAYER(kUnit.getOwnerINLINE());
-	bool bToCoastalCity = GC.getOutcomeInfo(getType()).getToCoastalCity();
+	//CvPlayer& kPlayer = GET_PLAYER(kUnit.getOwner());
+	const bool bToCoastalCity = GC.getOutcomeInfo(getType()).getToCoastalCity();
 	//CvUnitInfo* pUnitInfo = &kUnit.getUnitInfo();
 
 	szBuffer.append(GC.getOutcomeInfo(getType()).getText());
@@ -1823,7 +1804,7 @@ void CvOutcome::buildDisplayString(CvWStringBuffer &szBuffer, const CvUnit& kUni
 
 		if (m_iHappinessTimer)
 		{
-			int iHappy = GC.getDefineINT("TEMP_HAPPY");
+			const int iHappy = GC.getDefineINT("TEMP_HAPPY");
 			szBuffer.append(L" ");
 			szBuffer.append(gDLL->getText("TXT_KEY_OUTCOME_TEMP_HAPPY", iHappy, m_iHappinessTimer));
 		}
@@ -1833,7 +1814,6 @@ void CvOutcome::buildDisplayString(CvWStringBuffer &szBuffer, const CvUnit& kUni
 			szBuffer.append(L" ");
 			szBuffer.append(gDLL->getText("TXT_KEY_OUTCOME_TEMP_POPULATION_BOOST", m_iPopulationBoost));
 		}
-
 
 		if (m_iReduceAnarchyLength)
 		{

@@ -23,7 +23,7 @@ bool runProcess(const std::string& exe, const std::string& workingDir)
 	// HOWEVER: this DLL is loaded by LoadLibrary later in exe startup so we appear to have the required dlls already loaded at this point.
 	if (::CreateProcessA(NULL, (LPSTR)exe.c_str(), NULL, NULL, TRUE, 0, NULL, workingDir.c_str(), &startupInfo, &procInfo))
 	{
-		success = ::WaitForSingleObject(procInfo.hProcess, 1500000) == WAIT_OBJECT_0;
+		success = ::WaitForSingleObject(procInfo.hProcess, 1800000) == WAIT_OBJECT_0;
 	}
 	::CloseHandle(procInfo.hProcess);
 	::CloseHandle(procInfo.hThread);
@@ -603,3 +603,41 @@ void stopProfilingDLL(bool longLived)
 	}
 #endif
 }
+
+// Toffer - Square root with integer math, OOS safe.
+int intSqrt(const int iValue, const bool bTreatNegAsPos)
+{
+	unsigned int iVal;
+	if (iValue < 0)
+	{
+		if (!bTreatNegAsPos)
+		{
+			return -1;
+		}
+		iVal = static_cast<unsigned int>(-iValue);
+	}
+	else if (iValue < 2)
+	{
+		return iValue;
+	}
+	else iVal = static_cast<unsigned int>(iValue);
+
+	int iRem = 0;
+	int iRoot = 0;
+	for (int iI = 0; iI < 16; iI++)
+	{
+		iRoot <<= 1;
+		iRem <<= 2;
+		iRem += iVal >> 30;
+		iVal <<= 2;
+
+		if (iRoot < iRem)
+		{
+			iRoot++;
+			iRem -= iRoot;
+			iRoot++;
+		}
+	}
+	return iRoot >> 1;
+}
+// ! Toffer

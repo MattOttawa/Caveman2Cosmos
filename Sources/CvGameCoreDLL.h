@@ -105,6 +105,13 @@ typedef long long  int64_t;
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p);   (p)=NULL; } }
 #define SAFE_RELEASE(p)      { if(p) { (p)->Release(); (p)=NULL; } }
 
+#define SAFE_DELETE_ARRAY2(p,size) \
+	if(p) { \
+		for (int i = 0; i < size; i++) \
+			SAFE_DELETE_ARRAY(p[i]); \
+		SAFE_DELETE_ARRAY(p); \
+	}
+
 #define SQR(x)      ( (x) * (x) )
 #define DEGTORAD(x) ( (float)( (x) * (M_PI / 180) ))
 #define LIMIT_RANGE(low, value, high) value = (value < low ? low : (value > high ? high : value));
@@ -134,9 +141,9 @@ DECLARE_FLAGS(ECacheAccess::flags);
 // Feature macros
 //
 // #define STRENGTH_IN_NUMBERS
-// #define BARBARIAN_CITY_SPAWN_MAPCATEGORY_CHECK
 // #define GLOBAL_WARMING
 // #define THE_GREAT_WALL
+// #define NOMADIC_START
 
 //
 // Cache feature macros
@@ -170,6 +177,8 @@ void dumpProfileStack();
 void EnableDetailedTrace(bool enable);
 void IFPSetCount(ProfileSample* sample, int count);
 #endif
+
+int intSqrt(const int iValue, const bool bTreatNegAsPos=false);
 
 #define	MEMORY_TRACK()
 #define MEMORY_TRACK_EXEMPT()
@@ -251,22 +260,6 @@ namespace python = boost::python;
 //#include <boost155/range/adaptor/filtered.hpp>
 //#include <boost155/range/adaptor/transformed.hpp>
 
-//
-// xercesc for XML loading
-// 
-#include <xercesc/dom/DOM.hpp>
-#include <xercesc/util/XMLString.hpp>
-#include <xercesc/util/PlatformUtils.hpp>
-#include <xercesc/parsers/XercesDOMParser.hpp>
-#include <xercesc/sax/SAXException.hpp>
-#include <xercesc/sax/HandlerBase.hpp>
-#include <xercesc/sax/SAXException.hpp>
-#include <xercesc/sax/HandlerBase.hpp>
-#include <xercesc/framework/MemBufInputSource.hpp>
-#include <xercesc/framework/XMLGrammarPoolImpl.hpp>
-#include <xercesc/framework/Wrapper4InputSource.hpp>
-#include <xercesc/validators/common/Grammar.hpp>
-
 // Stupid define comes from windows and interferes with our stuff
 #undef Yield
 
@@ -299,48 +292,35 @@ namespace python = boost::python;
 #include "CheckSum.h"
 #include "Stopwatch.h"
 #include "CvGameCoreDLLDefNew.h"
+#include "CvGameCoreDLLUnDefNew.h"
 #include "FDataStreamBase.h"
 #include "FFreeListArrayBase.h"
 #include "FFreeListTrashArray.h"
 #include "FFreeListArray.h"
-#include "FVariableSystem.h"
 #include "FAStarNode.h"
-#include "CvString.h"
+
 #include "CvEnums.h"
 #include "CvStructs.h"
+
 #include "CvDLLUtilityIFaceBase.h"
 #include "CvDLLEngineIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
 #include "CvDLLPythonIFaceBase.h"
 #include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLXMLIFaceBase.h"
+#include "CvDLLFlagEntityIFaceBase.h"
 
+#include "BetterBTSAI.h"
 #include "CvGameCoreUtils.h"
-#include "CvXMLLoadUtility.h"
-#include "CvInitCore.h"
-#include "CvArtFileMgr.h"
-#include "CvGameTextMgr.h"
 #include "CvBugOptions.h"
 #include "CvPopupInfo.h"
 #include "CvEventReporter.h"
 #include "CvMessageControl.h"
-#include "CvDiploParameters.h"
 #include "CvDeal.h"
 #include "CvInfoWater.h"
-#include "CvMap.h"
 #include "CvViewport.h"
-#include "CvGlobals.h"
-#include "CvGameAI.h"
-#include "CvTeamAI.h"
-#include "CvPlayerAI.h"
-#include "CvCityAI.h"
-#include "CvUnitAI.h"
-#include "CvSelectionGroupAI.h"
-#include "CvPlot.h"
 #include "CvTalkingHeadMessage.h"
 #include "FProfiler.h"
-#include "CvPathGenerator.h"
-#include "CvBugOptions.h"
 #include "CvPython.h"
 
 #include "SCvDebug.h"

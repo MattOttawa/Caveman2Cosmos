@@ -264,13 +264,13 @@ bool postEvent(EventArgs eventData, const char* eventName)
 	if (eventData.toJson)
 	{
 		eventData.jsonArgs << logging::JsonValue("game_name", GC.getInitCore().getGameName());
-		eventData.jsonArgs << logging::JsonValue("game_id", GC.getGameINLINE().getGameId());
+		eventData.jsonArgs << logging::JsonValue("game_id", GC.getGame().getGameId());
 		eventData.jsonArgs << logging::JsonValue("session_id", gSessionID);
 
 		logging::log_json_event("pyevent", eventData.jsonArgs);
 	}
 
-	eventData.pyArgs << GC.getGameINLINE().isDebugMode();
+	eventData.pyArgs << GC.getGame().isDebugMode();
 	eventData.pyArgs << false;
 	eventData.pyArgs << gDLL->altKey();
 	eventData.pyArgs << gDLL->ctrlKey();
@@ -453,6 +453,18 @@ void CvDllPythonEvents::reportWindowActivation(bool bActive)
 		postEvent(eventData, "windowActivation");
 	}
 }
+
+
+void CvDllPythonEvents::reportMapRegen()
+{
+	if (preEvent())
+	{
+		EventArgs eventData;
+		eventData.arg("event", "MapRegen");
+		postEvent(eventData, "MapRegen");
+	}
+}
+
 
 void CvDllPythonEvents::reportBeginGameTurn(int iGameTurn)
 {
@@ -1481,26 +1493,14 @@ void CvDllPythonEvents::preSave()
 		postEvent(eventData, "OnPreSave");
 	}
 }
-/************************************************************************************************/
-/* Afforess	                  Start		 07/19/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-void CvDllPythonEvents::reportAddTeam(TeamTypes eIndex0, TeamTypes eIndex1, bool bAdded)
+
+
+void CvDllPythonEvents::reportChangeTeam(TeamTypes eOld, TeamTypes eNew)
 {
 	if (preEvent())
 	{
 		EventArgs eventData;
-		eventData
-			.arg("event", "addTeam")
-			.arg("eIndex0", eIndex0)
-			.arg("eIndex1", eIndex1)
-			.arg("bAdded", bAdded);
-		postEvent(eventData, "addTeam");
+		eventData.arg("event", "changeTeam").arg("eOld", eOld).arg("eNew", eNew);
+		postEvent(eventData, "changeTeam");
 	}
 }
-
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
