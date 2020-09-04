@@ -8,7 +8,7 @@
 //
 class CvEntity;
 class CvPlotBuilder;
-class cvInternalGlobals;
+class CvGlobals;
 class CvDLLUtilityIFaceBase;
 class CvDLLEntityIFaceBase;
 
@@ -20,7 +20,7 @@ public:
 
 	// derived methods
 	virtual void destroy(CvPlotBuilder*& pPlotBuilder, bool bSafeDelete=true) {
-		cvInternalGlobals::getInstance().getDLLIFace()->getEntityIFace()->destroyEntity((CvEntity*&)pPlotBuilder, bSafeDelete);
+		CvGlobals::getInstance().getDLLIFace()->getEntityIFace()->destroyEntity((CvEntity*&)pPlotBuilder, bSafeDelete);
 	}
 };
 

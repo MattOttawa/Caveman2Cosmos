@@ -12,7 +12,7 @@
 #define CVINFOREPLACEMENTS_H
 
 class BoolExpr;
-class cvInternalGlobals;
+class CvGlobals;
 class CvInfoBase;
 
 #include <set>
@@ -59,7 +59,7 @@ public:
 
 	bool checkCondition()
 	{
-		return m_pCondition->evaluate(cvInternalGlobals::getInstance().getGame().getGameObject());
+		return m_pCondition->evaluate(CvGlobals::getInstance().getGame().getGameObject());
 	}
 
 	T* getInfo() const

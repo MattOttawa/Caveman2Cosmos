@@ -1678,7 +1678,7 @@ public:
 	// Deprecated, use the one above that takes enum flags instead for increased readability.
 	void setHasPromotion(PromotionTypes eIndex, bool bNewValue, bool bFree = true, bool bDying = false, bool bInitial = false, bool bFromTrait = false); // Exposed to Python
 
-	typedef cvInternalGlobals::PromotionPredicateFn PromotionPredicateFn;
+	typedef CvGlobals::PromotionPredicateFn PromotionPredicateFn;
 
 	// Consecutively apply a number of promotions to a set of units.
 	// promotionPredicateFn defines what promotions are valid to be applied.

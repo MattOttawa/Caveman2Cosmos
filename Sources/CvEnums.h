@@ -1513,7 +1513,7 @@ enum TraitOptionEditsTypes
 };
 //	Koshling - UNITAIs are NOT registered based on the XML any more, but entirely done in code
 //	This means that UNITAIs can be freely added provided you update here and also in 
-//	cvInternalGlobals::registerUnitAIs().  The order of the enum no longer matters and the XML
+//	CvGlobals::registerUnitAIs().  The order of the enum no longer matters and the XML
 //	is not read, so serves at most a documentary function
 enum UnitAITypes			// Exposed to Python
 {

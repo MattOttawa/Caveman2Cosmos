@@ -26,88 +26,88 @@ namespace logging {
 	template <>
 	static picojson::value make_json_value(UnitTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getUnitInfo));
+		return picojson::value(info_base(value, &CvGlobals::getUnitInfo));
 	}
 	template <>
 	static picojson::value make_json_value(FeatureTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getFeatureInfo));
+		return picojson::value(info_base(value, &CvGlobals::getFeatureInfo));
 	}
 	template <>
 	static picojson::value make_json_value(BuildingTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getBuildingInfo));
+		return picojson::value(info_base(value, &CvGlobals::getBuildingInfo));
 	}
 	template <>
 	static picojson::value make_json_value(ProjectTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getProjectInfo));
+		return picojson::value(info_base(value, &CvGlobals::getProjectInfo));
 	}
 	template <>
 	static picojson::value make_json_value(ProcessTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getProcessInfo));
+		return picojson::value(info_base(value, &CvGlobals::getProcessInfo));
 	}
 	template <>
 	static picojson::value make_json_value(HurryTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getHurryInfo));
+		return picojson::value(info_base(value, &CvGlobals::getHurryInfo));
 	}
 	template <>
 	static picojson::value make_json_value(MissionTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getMissionInfo));
+		return picojson::value(info_base(value, &CvGlobals::getMissionInfo));
 	}
 	template <>
 	static picojson::value make_json_value(PromotionTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getPromotionInfo));
+		return picojson::value(info_base(value, &CvGlobals::getPromotionInfo));
 	}
 
 	template <>
 	static picojson::value make_json_value(ImprovementTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getImprovementInfo));
+		return picojson::value(info_base(value, &CvGlobals::getImprovementInfo));
 	}
 	template <>
 	static picojson::value make_json_value(RouteTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getRouteInfo));
+		return picojson::value(info_base(value, &CvGlobals::getRouteInfo));
 	}
 	template <>
 	static picojson::value make_json_value(ReligionTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getReligionInfo));
+		return picojson::value(info_base(value, &CvGlobals::getReligionInfo));
 	}
 	template <>
 	static picojson::value make_json_value(BuildTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getBuildInfo));
+		return picojson::value(info_base(value, &CvGlobals::getBuildInfo));
 	}
 	template <>
 	static picojson::value make_json_value(GoodyTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getGoodyInfo));
+		return picojson::value(info_base(value, &CvGlobals::getGoodyInfo));
 	}
 	template <>
 	static picojson::value make_json_value(CivicTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getCivicInfo));
+		return picojson::value(info_base(value, &CvGlobals::getCivicInfo));
 	}
 	template <>
 	static picojson::value make_json_value(TechTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getTechInfo));
+		return picojson::value(info_base(value, &CvGlobals::getTechInfo));
 	}
 	template <>
 	static picojson::value make_json_value(CorporationTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getCorporationInfo));
+		return picojson::value(info_base(value, &CvGlobals::getCorporationInfo));
 	}
 	template <>
 	static picojson::value make_json_value(VictoryTypes value)
 	{
-		return picojson::value(info_base(value, &cvInternalGlobals::getVictoryInfo));
+		return picojson::value(info_base(value, &CvGlobals::getVictoryInfo));
 	}
 
 	template <>

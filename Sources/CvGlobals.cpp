@@ -86,36 +86,16 @@ bool writeInfoArray(FDataStreamBase* pStream,  std::vector<T*>& array)
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-CvGlobals gGlobalsProxy;	// for debugging
-cvInternalGlobals* gGlobals = NULL;
+CvGlobals* gGlobals = NULL;
 CvDLLUtilityIFaceBase* g_DLL = NULL;
 
 int g_iPercentDefault = 100;
 int g_iModifierDefault = 0;
 
-#ifdef _DEBUG
-int inDLL = 0;
-const char* fnName = NULL;
-
-//	Wrapper for debugging so as to be able to always tell last method entered
-ProxyTracker::ProxyTracker(const CvGlobals* proxy, const char* name)
-{
-	inDLL++;
-	fnName = name;
-	FAssertMsg(gGlobals != NULL, "Method called prior to global instantiation");
-}
-
-ProxyTracker::~ProxyTracker()
-{
-	inDLL--;
-	fnName = NULL;
-}
-#endif
-
 //
 // CONSTRUCTOR
 //
-cvInternalGlobals::cvInternalGlobals() 
+CvGlobals::CvGlobals() 
 	: m_paszEntityEventTypes(NULL)
 	, m_paszAnimationOperatorTypes(NULL)
 	, m_paszFunctionTypes(NULL)
@@ -251,7 +231,7 @@ cvInternalGlobals::cvInternalGlobals()
 {
 }
 
-cvInternalGlobals::~cvInternalGlobals()
+CvGlobals::~CvGlobals()
 {
 }
 
@@ -346,7 +326,7 @@ LONG WINAPI CustomFilter(EXCEPTION_POINTERS *ExceptionInfo)
 //
 // allocate
 //
-void cvInternalGlobals::init()
+void CvGlobals::init()
 {
 	OutputDebugString("Initializing Internal Globals: Start");
 /************************************************************************************************/
@@ -548,7 +528,7 @@ void cvInternalGlobals::init()
 //
 // free
 //
-void cvInternalGlobals::uninit()
+void CvGlobals::uninit()
 {
 	//
 	// See also CvXMLLoadUtilityInit.cpp::CleanUpGlobalVariables()
@@ -611,7 +591,7 @@ void cvInternalGlobals::uninit()
 	m_aInfoVectors.clear();
 }
 
-void cvInternalGlobals::clearTypesMap()
+void CvGlobals::clearTypesMap()
 {
 	m_typesMap.clear();
 	if (m_VarSystem)
@@ -620,82 +600,82 @@ void cvInternalGlobals::clearTypesMap()
 	}
 }
 
-std::vector<CvInterfaceModeInfo*>& cvInternalGlobals::getInterfaceModeInfos()
+std::vector<CvInterfaceModeInfo*>& CvGlobals::getInterfaceModeInfos()
 {
 	return m_paInterfaceModeInfo;
 }
 
-CvInterfaceModeInfo& cvInternalGlobals::getInterfaceModeInfo(InterfaceModeTypes e) const
+CvInterfaceModeInfo& CvGlobals::getInterfaceModeInfo(InterfaceModeTypes e)
 {
 	FAssertMsg(e >= 0 && e < NUM_INTERFACEMODE_TYPES, "InterfaceModeInfo index out of bounds");
 	return *(m_paInterfaceModeInfo[e]);
 }
 
-int* cvInternalGlobals::getPlotDirectionX() const
+int* CvGlobals::getPlotDirectionX()
 {
 	return m_aiPlotDirectionX;
 }
 
-int* cvInternalGlobals::getPlotDirectionY() const
+int* CvGlobals::getPlotDirectionY()
 {
 	return m_aiPlotDirectionY;
 }
 
-int* cvInternalGlobals::getPlotCardinalDirectionX() const
+int* CvGlobals::getPlotCardinalDirectionX()
 {
 	return m_aiPlotCardinalDirectionX;
 }
 
-int* cvInternalGlobals::getPlotCardinalDirectionY() const
+int* CvGlobals::getPlotCardinalDirectionY()
 {
 	return m_aiPlotCardinalDirectionY;
 }
 
-int* cvInternalGlobals::getCityPlotX() const
+int* CvGlobals::getCityPlotX() const
 {
 	return m_aiCityPlotX;
 }
 
-int* cvInternalGlobals::getCityPlotY() const
+int* CvGlobals::getCityPlotY() const
 {
 	return m_aiCityPlotY;
 }
 
-int* cvInternalGlobals::getCityPlotPriority() const
+int* CvGlobals::getCityPlotPriority() const
 {
 	return m_aiCityPlotPriority;
 }
 
-int cvInternalGlobals::getXYCityPlot(int i, int j) const
+int CvGlobals::getXYCityPlot(int i, int j) const
 {
 	FAssertMsg(i >= 0 && i < CITY_PLOTS_DIAMETER, "XYCityPlot i index out of bounds");
 	FAssertMsg(j >= 0 && j < CITY_PLOTS_DIAMETER, "XYCityPlot j index out of bounds");
 	return m_aaiXYCityPlot[i][j];
 }
 
-DirectionTypes* cvInternalGlobals::getTurnLeftDirection() const
+DirectionTypes* CvGlobals::getTurnLeftDirection() const
 {
 	return m_aeTurnLeftDirection;
 }
 
-DirectionTypes cvInternalGlobals::getTurnLeftDirection(int i) const
+DirectionTypes CvGlobals::getTurnLeftDirection(int i) const
 {
 	FAssertMsg(i >= 0 && i < DIRECTION_DIAMETER, "TurnLeftDirection index out of bounds");
 	return m_aeTurnLeftDirection[i];
 }
 
-DirectionTypes* cvInternalGlobals::getTurnRightDirection() const
+DirectionTypes* CvGlobals::getTurnRightDirection() const
 {
 	return m_aeTurnRightDirection;
 }
 
-DirectionTypes cvInternalGlobals::getTurnRightDirection(int i) const
+DirectionTypes CvGlobals::getTurnRightDirection(int i) const
 {
 	FAssertMsg(i >= 0 && i < DIRECTION_DIAMETER, "TurnRightDirection index out of bounds");
 	return m_aeTurnRightDirection[i];
 }
 
-DirectionTypes cvInternalGlobals::getXYDirection(int i, int j) const
+DirectionTypes CvGlobals::getXYDirection(int i, int j)
 {
 	FAssertMsg(i >= 0 && i < DIRECTION_DIAMETER, "XYDirection i index out of bounds");
 	FAssertMsg(j >= 0 && j < DIRECTION_DIAMETER, "XYDirection j index out of bounds");
@@ -705,44 +685,44 @@ DirectionTypes cvInternalGlobals::getXYDirection(int i, int j) const
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-bool cvInternalGlobals::multiMapsEnabled() const
+bool CvGlobals::multiMapsEnabled() const
 {
 	return m_bMultimapsEnabled;
 }
 
-bool cvInternalGlobals::viewportsEnabled() const
+bool CvGlobals::viewportsEnabled() const
 {
 	return m_bViewportsEnabled;
 }
 
-bool cvInternalGlobals::getReprocessGreatWallDynamically() const
+bool CvGlobals::getReprocessGreatWallDynamically() const
 {
 	return m_bViewportsEnabled || (getDefineBOOL("DYNAMIC_GREAT_WALL") != 0);
 }
 
-int cvInternalGlobals::getNumMapInfos() const
+int CvGlobals::getNumMapInfos() const
 {
 	return multiMapsEnabled() ? m_paMapInfo.size() : 1;
 }
 
-int cvInternalGlobals::getNumMapSwitchInfos() const
+int CvGlobals::getNumMapSwitchInfos() const
 {
 	return m_paMapSwitchInfo.size();
 }
 
-CvMapInfo& cvInternalGlobals::getMapInfo(MapTypes eMap) const
+CvMapInfo& CvGlobals::getMapInfo(MapTypes eMap) const
 {
 	FAssertMsg(eMap > NO_MAP && eMap < GC.getNumMapInfos(), "MapInfo index out of bounds");
 	return *(m_paMapInfo[eMap]);
 }
 
-CvMapSwitchInfo& cvInternalGlobals::getMapSwitchInfo(MapSwitchTypes eMapSwitch) const
+CvMapSwitchInfo& CvGlobals::getMapSwitchInfo(MapSwitchTypes eMapSwitch) const
 {
 	FAssertMsg(eMapSwitch > NO_MAPSWITCH && eMapSwitch < GC.getNumMapSwitchInfos(), "MapSwitchInfo index out of bounds");
 	return *(m_paMapSwitchInfo[eMapSwitch]);
 }
 
-void cvInternalGlobals::updateMaps()
+void CvGlobals::updateMaps()
 {
 	for (int i = 1; i < GC.getNumMapInfos(); i++)
 	{
@@ -751,14 +731,14 @@ void cvInternalGlobals::updateMaps()
 	FAssert(m_maps.size() == GC.getNumMapInfos());
 }
 
-void cvInternalGlobals::setResourceLayer(bool bOn)
+void CvGlobals::setResourceLayer(bool bOn)
 {
 	m_bResourceLayerOn = bOn;
 
 	gDLL->getEngineIFace()->setResourceLayer(bOn);
 }
 
-bool cvInternalGlobals::getResourceLayer() const
+bool CvGlobals::getResourceLayer() const
 {
 	return m_bResourceLayerOn;
 }
@@ -767,12 +747,12 @@ bool cvInternalGlobals::getResourceLayer() const
 /***** Parallel Maps - End *****/
 /*******************************/
 
-int cvInternalGlobals::getNumWorldInfos() const
+int CvGlobals::getNumWorldInfos()
 {
 	return (int)m_paWorldInfo.size();
 }
 
-CvWorldInfo& cvInternalGlobals::getWorldInfo(WorldSizeTypes e) const
+CvWorldInfo& CvGlobals::getWorldInfo(WorldSizeTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumWorldInfos(), "WorldInfo index out of bounds");
 	return *(m_paWorldInfo[e]);
@@ -782,12 +762,12 @@ CvWorldInfo& cvInternalGlobals::getWorldInfo(WorldSizeTypes e) const
 // CLIMATE
 /////////////////////////////////////////////
 
-int cvInternalGlobals::getNumClimateInfos() const
+int CvGlobals::getNumClimateInfos()
 {
 	return (int)m_paClimateInfo.size();
 }
 
-CvClimateInfo& cvInternalGlobals::getClimateInfo(ClimateTypes e) const
+CvClimateInfo& CvGlobals::getClimateInfo(ClimateTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumClimateInfos(), "ClimateInfo index out of bounds");
 	return *(m_paClimateInfo[e]);
@@ -797,33 +777,33 @@ CvClimateInfo& cvInternalGlobals::getClimateInfo(ClimateTypes e) const
 // SEALEVEL
 /////////////////////////////////////////////
 
-int cvInternalGlobals::getNumSeaLevelInfos() const
+int CvGlobals::getNumSeaLevelInfos()
 {
 	return (int)m_paSeaLevelInfo.size();
 }
 
-CvSeaLevelInfo& cvInternalGlobals::getSeaLevelInfo(SeaLevelTypes e) const
+CvSeaLevelInfo& CvGlobals::getSeaLevelInfo(SeaLevelTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumSeaLevelInfos(), "SeaLevelInfo index out of bounds");
 	return *(m_paSeaLevelInfo[e]);
 }
 
-int cvInternalGlobals::getNumHints() const
+int CvGlobals::getNumHints()
 {
 	return (int)m_paHints.size();
 }
 
-CvInfoBase& cvInternalGlobals::getHints(int i) const
+CvInfoBase& CvGlobals::getHints(int i)
 {
 	return *(m_paHints[i]);
 }
 
-int cvInternalGlobals::getNumMainMenus() const
+int CvGlobals::getNumMainMenus() const
 {
 	return (int)m_paMainMenus.size();
 }
 
-CvMainMenuInfo& cvInternalGlobals::getMainMenus(int i) const
+CvMainMenuInfo& CvGlobals::getMainMenus(int i)
 {
 	if (i >= getNumMainMenus())
 	{
@@ -838,48 +818,48 @@ CvMainMenuInfo& cvInternalGlobals::getMainMenus(int i) const
 /*                                                                                              */
 /************************************************************************************************/
 // MLF loading
-void cvInternalGlobals::resetModLoadControlVector()
+void CvGlobals::resetModLoadControlVector()
 {
 	m_paModLoadControlVector.clear();
 }
 
-int cvInternalGlobals::getModLoadControlVectorSize() const
+int CvGlobals::getModLoadControlVectorSize() const
 {
 	return (int)m_paModLoadControlVector.size();
 }
 
-void cvInternalGlobals::setModLoadControlVector(const char* szModule)
+void CvGlobals::setModLoadControlVector(const char* szModule)
 {
 	m_paModLoadControlVector.push_back(szModule);
 }
 
-CvString cvInternalGlobals::getModLoadControlVector(int i) const
+CvString CvGlobals::getModLoadControlVector(int i) const
 {
 	return (CvString)m_paModLoadControlVector.at(i);
 }
 
-int cvInternalGlobals::getTotalNumModules() const
+int CvGlobals::getTotalNumModules() const
 {
 	return m_iTotalNumModules;
 }
 
-void cvInternalGlobals::setTotalNumModules()
+void CvGlobals::setTotalNumModules()
 {
 	m_iTotalNumModules++;
 }
 
-int cvInternalGlobals::getNumModLoadControlInfos() const
+int CvGlobals::getNumModLoadControlInfos() const
 {
 	return (int)m_paModLoadControls.size();
 }
 
-CvModLoadControlInfo& cvInternalGlobals::getModLoadControlInfos(int iIndex) const
+CvModLoadControlInfo& CvGlobals::getModLoadControlInfos(int iIndex) const
 {
 	FAssertMsg(iIndex >= 0 && iIndex < getNumModLoadControlInfos(), "ModLoadControlInfo index out of bounds");
 	return *(m_paModLoadControls[iIndex]);
 }
 
-void cvInternalGlobals::updateReplacements()
+void CvGlobals::updateReplacements()
 {
 //ReplacementStep
 	m_WorldInfoReplacements.updateReplacements(m_paWorldInfo);
@@ -934,12 +914,12 @@ void cvInternalGlobals::updateReplacements()
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-void cvInternalGlobals::setModDir(const char* szModDir)
+void CvGlobals::setModDir(const char* szModDir)
 {
 	m_cszModDir = szModDir;
 }
 
-std::string cvInternalGlobals::getModDir() const
+std::string CvGlobals::getModDir() const
 {
 	return m_cszModDir;
 }
@@ -947,587 +927,587 @@ std::string cvInternalGlobals::getModDir() const
 /* XML_MODULAR_ART_LOADING                 END                                                  */
 /************************************************************************************************/
 
-int cvInternalGlobals::getNumColorInfos() const
+int CvGlobals::getNumColorInfos() const
 {
 	return (int)m_paColorInfo.size();
 }
 
-CvColorInfo& cvInternalGlobals::getColorInfo(ColorTypes e) const
+CvColorInfo& CvGlobals::getColorInfo(ColorTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumColorInfos(), "ColorInfo index out of bounds");
 	return *(m_paColorInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumPlayerColorInfos() const
+int CvGlobals::getNumPlayerColorInfos()
 {
 	return (int)m_paPlayerColorInfo.size();
 }
 
-CvPlayerColorInfo& cvInternalGlobals::getPlayerColorInfo(PlayerColorTypes e) const
+CvPlayerColorInfo& CvGlobals::getPlayerColorInfo(PlayerColorTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumPlayerColorInfos(), "PlayerColorInfo index out of bounds");
 	return *(m_paPlayerColorInfo[e]);
 }
 
-int cvInternalGlobals::getNumAdvisorInfos() const
+int CvGlobals::getNumAdvisorInfos() const
 {
 	return (int)m_paAdvisorInfo.size();
 }
 
-CvAdvisorInfo& cvInternalGlobals::getAdvisorInfo(AdvisorTypes e) const
+CvAdvisorInfo& CvGlobals::getAdvisorInfo(AdvisorTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumAdvisorInfos(), "AdvisorInfo index out of bounds");
 	return *(m_paAdvisorInfo[e]);
 }
 
-int cvInternalGlobals::getNumRouteModelInfos() const
+int CvGlobals::getNumRouteModelInfos()
 {
 	return (int)m_paRouteModelInfo.size();
 }
 
-CvRouteModelInfo& cvInternalGlobals::getRouteModelInfo(int i) const
+CvRouteModelInfo& CvGlobals::getRouteModelInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumRouteModelInfos(), "RouteModelInfo index out of bounds");
 	return *(m_paRouteModelInfo[i]);
 }
 
-int cvInternalGlobals::getNumRiverModelInfos() const
+int CvGlobals::getNumRiverModelInfos()
 {
 	return (int)m_paRiverModelInfo.size();
 }
 
-CvRiverModelInfo& cvInternalGlobals::getRiverModelInfo(int i) const
+CvRiverModelInfo& CvGlobals::getRiverModelInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumRiverModelInfos(), "RiverModelInfo index out of bounds");
 	return *(m_paRiverModelInfo[i]);
 }
 
-int cvInternalGlobals::getNumWaterPlaneInfos() const
+int CvGlobals::getNumWaterPlaneInfos() const
 {
 	return (int)m_paWaterPlaneInfo.size();
 }
 
-CvWaterPlaneInfo& cvInternalGlobals::getWaterPlaneInfo(int i) const
+CvWaterPlaneInfo& CvGlobals::getWaterPlaneInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumWaterPlaneInfos(), "WaterPlaneInfo index out of bounds");
 	return *(m_paWaterPlaneInfo[i]);
 }
 
-int cvInternalGlobals::getNumTerrainPlaneInfos() const
+int CvGlobals::getNumTerrainPlaneInfos()
 {
 	return (int)m_paTerrainPlaneInfo.size();
 }
 
-CvTerrainPlaneInfo& cvInternalGlobals::getTerrainPlaneInfo(int i) const
+CvTerrainPlaneInfo& CvGlobals::getTerrainPlaneInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumTerrainPlaneInfos(), "TerrainPlaneInfo index out of bounds");
 	return *(m_paTerrainPlaneInfo[i]);
 }
 
-int cvInternalGlobals::getNumCameraOverlayInfos() const
+int CvGlobals::getNumCameraOverlayInfos()
 {
 	return (int)m_paCameraOverlayInfo.size();
 }
 
-CvCameraOverlayInfo& cvInternalGlobals::getCameraOverlayInfo(int i) const
+CvCameraOverlayInfo& CvGlobals::getCameraOverlayInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumCameraOverlayInfos(), "CameraOverlayInfo index out of bounds");
 	return *(m_paCameraOverlayInfo[i]);
 }
 
-int cvInternalGlobals::getNumAnimationPathInfos() const
+int CvGlobals::getNumAnimationPathInfos() const
 {
 	return (int)m_paAnimationPathInfo.size();
 }
 
-CvAnimationPathInfo& cvInternalGlobals::getAnimationPathInfo(AnimationPathTypes e) const
+CvAnimationPathInfo& CvGlobals::getAnimationPathInfo(AnimationPathTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumAnimationPathInfos(), "AnimationPathInfo index out of bounds");
 	return *(m_paAnimationPathInfo[e]);
 }
 
-int cvInternalGlobals::getNumAnimationCategoryInfos() const
+int CvGlobals::getNumAnimationCategoryInfos() const
 {
 	return (int)m_paAnimationCategoryInfo.size();
 }
 
-CvAnimationCategoryInfo& cvInternalGlobals::getAnimationCategoryInfo(AnimationCategoryTypes e) const
+CvAnimationCategoryInfo& CvGlobals::getAnimationCategoryInfo(AnimationCategoryTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumAnimationCategoryInfos(), "AnimationCategoryInfo index out of bounds");
 	return *(m_paAnimationCategoryInfo[e]);
 }
 
-int cvInternalGlobals::getNumEntityEventInfos() const
+int CvGlobals::getNumEntityEventInfos() const
 {
 	return (int)m_paEntityEventInfo.size();
 }
 
-CvEntityEventInfo& cvInternalGlobals::getEntityEventInfo(EntityEventTypes e) const
+CvEntityEventInfo& CvGlobals::getEntityEventInfo(EntityEventTypes e)
 {
 	FAssertMsg(e >= 0 && e < GC.getNumEntityEventInfos(), "EntityEventInfo index out of bounds");
 	return *(m_paEntityEventInfo[e]);
 }
 
-int cvInternalGlobals::getNumEffectInfos() const
+int CvGlobals::getNumEffectInfos() const
 {
 	return (int)m_paEffectInfo.size();
 }
 
-CvEffectInfo& cvInternalGlobals::getEffectInfo(int i) const
+CvEffectInfo& CvGlobals::getEffectInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumEffectInfos(), "EffectInfo index out of bounds");
 	return *(m_paEffectInfo[i]);
 }
 
 
-int cvInternalGlobals::getNumAttachableInfos() const
+int CvGlobals::getNumAttachableInfos() const
 {
 	return (int)m_paAttachableInfo.size();
 }
 
-CvAttachableInfo& cvInternalGlobals::getAttachableInfo(int i) const
+CvAttachableInfo& CvGlobals::getAttachableInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumAttachableInfos(), "AttachableInfo index out of bounds");
 	return *(m_paAttachableInfo[i]);
 }
 
-int cvInternalGlobals::getNumUnitFormationInfos() const
+int CvGlobals::getNumUnitFormationInfos()
 {
 	return (int)m_paUnitFormationInfo.size();
 }
 
-CvUnitFormationInfo& cvInternalGlobals::getUnitFormationInfo(int i) const
+CvUnitFormationInfo& CvGlobals::getUnitFormationInfo(int i)
 {
 	FAssertMsg(i >= 0 && i < GC.getNumUnitFormationInfos(), "UnitFormationInfo index out of bounds");
 	return *(m_paUnitFormationInfo[i]);
 }
 
 // Landscape INFOS
-int cvInternalGlobals::getNumLandscapeInfos() const
+int CvGlobals::getNumLandscapeInfos() const
 {
 	return (int)m_paLandscapeInfo.size();
 }
 
-CvLandscapeInfo& cvInternalGlobals::getLandscapeInfo(int iIndex) const
+CvLandscapeInfo& CvGlobals::getLandscapeInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumLandscapeInfos(), "LandscapeInfo index out of bounds");
 	return *(m_paLandscapeInfo[iIndex]);
 }
 
-int cvInternalGlobals::getActiveLandscapeID() const
+int CvGlobals::getActiveLandscapeID()
 {
 	return m_iActiveLandscapeID;
 }
 
-void cvInternalGlobals::setActiveLandscapeID(int iLandscapeID)
+void CvGlobals::setActiveLandscapeID(int iLandscapeID)
 {
 	m_iActiveLandscapeID = iLandscapeID;
 }
 
 
-int cvInternalGlobals::getNumTerrainInfos() const
+int CvGlobals::getNumTerrainInfos()
 {
 	return (int)m_paTerrainInfo.size();
 }
 
-CvTerrainInfo& cvInternalGlobals::getTerrainInfo(TerrainTypes eTerrainNum) const
+CvTerrainInfo& CvGlobals::getTerrainInfo(TerrainTypes eTerrainNum)
 {
 	FAssertMsg(eTerrainNum >= 0 && eTerrainNum < GC.getNumTerrainInfos(), "TerrainInfo index out of bounds");
 	return *(m_paTerrainInfo[eTerrainNum]);
 }
 
-int cvInternalGlobals::getNumBonusClassInfos() const
+int CvGlobals::getNumBonusClassInfos() const
 {
 	return (int)m_paBonusClassInfo.size();
 }
 
-CvBonusClassInfo& cvInternalGlobals::getBonusClassInfo(BonusClassTypes eBonusNum) const
+CvBonusClassInfo& CvGlobals::getBonusClassInfo(BonusClassTypes eBonusNum) const
 {
 	FAssertMsg(eBonusNum >= 0 && eBonusNum < GC.getNumBonusClassInfos(), "BonusClassInfo index out of bounds");
 	return *(m_paBonusClassInfo[eBonusNum]);
 }
 
 
-int cvInternalGlobals::getNumBonusInfos() const
+int CvGlobals::getNumBonusInfos()
 {
 	return (int)m_paBonusInfo.size();
 }
 
-const std::vector<CvBonusInfo*>& cvInternalGlobals::getBonusInfos() const
+const std::vector<CvBonusInfo*>& CvGlobals::getBonusInfos() const
 {
 	return m_paBonusInfo;
 }
 
-CvBonusInfo& cvInternalGlobals::getBonusInfo(BonusTypes eBonusNum) const
+CvBonusInfo& CvGlobals::getBonusInfo(BonusTypes eBonusNum)
 {
 	FAssertMsg(eBonusNum >= 0 && eBonusNum < GC.getNumBonusInfos(), "BonusInfo index out of bounds");
 	return *(m_paBonusInfo[eBonusNum]);
 }
 
-int cvInternalGlobals::getNumFeatureInfos() const
+int CvGlobals::getNumFeatureInfos()
 {
 	return (int)m_paFeatureInfo.size();
 }
 
-CvFeatureInfo& cvInternalGlobals::getFeatureInfo(FeatureTypes eFeatureNum) const
+CvFeatureInfo& CvGlobals::getFeatureInfo(FeatureTypes eFeatureNum)
 {
 	FAssertMsg(eFeatureNum >= 0 && eFeatureNum < GC.getNumFeatureInfos(), "FeatureInfo index out of bounds");
 	return *(m_paFeatureInfo[eFeatureNum]);
 }
 
-int& cvInternalGlobals::getNumPlayableCivilizationInfos()
+int& CvGlobals::getNumPlayableCivilizationInfos()
 {
 	return m_iNumPlayableCivilizationInfos;
 }
 
-int& cvInternalGlobals::getNumAIPlayableCivilizationInfos()
+int& CvGlobals::getNumAIPlayableCivilizationInfos()
 {
 	return m_iNumAIPlayableCivilizationInfos;
 }
 
-int cvInternalGlobals::getNumCivilizationInfos() const
+int CvGlobals::getNumCivilizationInfos()
 {
 	return (int)m_paCivilizationInfo.size();
 }
 
-CvCivilizationInfo& cvInternalGlobals::getCivilizationInfo(CivilizationTypes eCivilizationNum) const
+CvCivilizationInfo& CvGlobals::getCivilizationInfo(CivilizationTypes eCivilizationNum)
 {
 	FAssertMsg(eCivilizationNum >= 0 && eCivilizationNum < GC.getNumCivilizationInfos(), "CivilizationInfo index out of bounds");
 	return *(m_paCivilizationInfo[eCivilizationNum]);
 }
 
 
-int cvInternalGlobals::getNumLeaderHeadInfos() const
+int CvGlobals::getNumLeaderHeadInfos()
 {
 	return (int)m_paLeaderHeadInfo.size();
 }
 
-CvLeaderHeadInfo& cvInternalGlobals::getLeaderHeadInfo(LeaderHeadTypes eLeaderHeadNum) const
+CvLeaderHeadInfo& CvGlobals::getLeaderHeadInfo(LeaderHeadTypes eLeaderHeadNum)
 {
 	FAssertMsg(eLeaderHeadNum >= 0 && eLeaderHeadNum < GC.getNumLeaderHeadInfos(), "LeaderHeadInfo index out of bounds");
 	return *(m_paLeaderHeadInfo[eLeaderHeadNum]);
 }
 
 
-int cvInternalGlobals::getNumTraitInfos() const
+int CvGlobals::getNumTraitInfos() const
 {
 	return (int)m_paTraitInfo.size();
 }
 
-CvTraitInfo& cvInternalGlobals::getTraitInfo(TraitTypes eTraitNum) const
+CvTraitInfo& CvGlobals::getTraitInfo(TraitTypes eTraitNum) const
 {
 	FAssertMsg(eTraitNum >= 0 && eTraitNum < GC.getNumTraitInfos(), "TraitInfo index out of bounds");
 	return *(m_paTraitInfo[eTraitNum]);
 }
 
 
-int cvInternalGlobals::getNumCursorInfos() const
+int CvGlobals::getNumCursorInfos()
 {
 	return (int)m_paCursorInfo.size();
 }
 
-CvCursorInfo& cvInternalGlobals::getCursorInfo(CursorTypes eCursorNum) const
+CvCursorInfo& CvGlobals::getCursorInfo(CursorTypes eCursorNum)
 {
 	FAssertMsg(eCursorNum >= 0 && eCursorNum < GC.getNumCursorInfos(), "CursorInfo index out of bounds");
 	return *(m_paCursorInfo[eCursorNum]);
 }
 
-int cvInternalGlobals::getNumThroneRoomCameras() const
+int CvGlobals::getNumThroneRoomCameras() const
 {
 	return (int)m_paThroneRoomCamera.size();
 }
 
-CvThroneRoomCamera& cvInternalGlobals::getThroneRoomCamera(int iIndex) const
+CvThroneRoomCamera& CvGlobals::getThroneRoomCamera(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumThroneRoomCameras(), "ThroneRoomCamera index out of bounds");
 	return *(m_paThroneRoomCamera[iIndex]);
 }
 
-int cvInternalGlobals::getNumThroneRoomInfos() const
+int CvGlobals::getNumThroneRoomInfos() const
 {
 	return (int)m_paThroneRoomInfo.size();
 }
 
-CvThroneRoomInfo& cvInternalGlobals::getThroneRoomInfo(int iIndex) const
+CvThroneRoomInfo& CvGlobals::getThroneRoomInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumThroneRoomInfos(), "ThroneRoomInfo index out of bounds");
 	return *(m_paThroneRoomInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumThroneRoomStyleInfos() const
+int CvGlobals::getNumThroneRoomStyleInfos()
 {
 	return (int)m_paThroneRoomStyleInfo.size();
 }
 
-CvThroneRoomStyleInfo& cvInternalGlobals::getThroneRoomStyleInfo(int iIndex) const
+CvThroneRoomStyleInfo& CvGlobals::getThroneRoomStyleInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumThroneRoomStyleInfos(), "ThroneRoomStyleInfo index out of bounds");
 	return *(m_paThroneRoomStyleInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumSlideShowInfos() const
+int CvGlobals::getNumSlideShowInfos()
 {
 	return (int)m_paSlideShowInfo.size();
 }
 
-CvSlideShowInfo& cvInternalGlobals::getSlideShowInfo(int iIndex) const
+CvSlideShowInfo& CvGlobals::getSlideShowInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumSlideShowInfos(), "SlideShowInfo index out of bounds");
 	return *(m_paSlideShowInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumSlideShowRandomInfos() const
+int CvGlobals::getNumSlideShowRandomInfos()
 {
 	return (int)m_paSlideShowRandomInfo.size();
 }
 
-CvSlideShowRandomInfo& cvInternalGlobals::getSlideShowRandomInfo(int iIndex) const
+CvSlideShowRandomInfo& CvGlobals::getSlideShowRandomInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumSlideShowRandomInfos(), "SlideShowRandomInfo index out of bounds");
 	return *(m_paSlideShowRandomInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumWorldPickerInfos() const
+int CvGlobals::getNumWorldPickerInfos()
 {
 	return (int)m_paWorldPickerInfo.size();
 }
 
-CvWorldPickerInfo& cvInternalGlobals::getWorldPickerInfo(int iIndex) const
+CvWorldPickerInfo& CvGlobals::getWorldPickerInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumWorldPickerInfos(), "WorldPickerInfo index out of bounds");
 	return *(m_paWorldPickerInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumSpaceShipInfos() const
+int CvGlobals::getNumSpaceShipInfos()
 {
 	return (int)m_paSpaceShipInfo.size();
 }
 
-CvSpaceShipInfo& cvInternalGlobals::getSpaceShipInfo(int iIndex) const
+CvSpaceShipInfo& CvGlobals::getSpaceShipInfo(int iIndex)
 {
 	FAssertMsg(iIndex >= 0 && iIndex < GC.getNumSpaceShipInfos(), "SpaceShipInfo index out of bounds");
 	return *(m_paSpaceShipInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumUnitInfos() const
+int CvGlobals::getNumUnitInfos() const
 {
 	return (int)m_paUnitInfo.size();
 }
 
-CvUnitInfo& cvInternalGlobals::getUnitInfo(UnitTypes eUnitNum) const
+CvUnitInfo& CvGlobals::getUnitInfo(UnitTypes eUnitNum) const
 {
 	FAssertMsg(eUnitNum >= 0 && eUnitNum < GC.getNumUnitInfos(), "UnitInfo index out of bounds");
 	return *(m_paUnitInfo[eUnitNum]);
 }
 
-int cvInternalGlobals::getNumSpawnInfos() const
+int CvGlobals::getNumSpawnInfos() const
 {
 	return (int)m_paSpawnInfo.size();
 }
 
-CvSpawnInfo& cvInternalGlobals::getSpawnInfo(SpawnTypes eSpawnNum) const
+CvSpawnInfo& CvGlobals::getSpawnInfo(SpawnTypes eSpawnNum) const
 {
 	FAssertMsg(eSpawnNum >= 0 && eSpawnNum < GC.getNumSpawnInfos(), "SpawnInfo index out of bounds");
 	return *(m_paSpawnInfo[eSpawnNum]);
 }
 
-int cvInternalGlobals::getNumSpecialUnitInfos() const
+int CvGlobals::getNumSpecialUnitInfos() const
 {
 	return (int)m_paSpecialUnitInfo.size();
 }
 
-CvSpecialUnitInfo& cvInternalGlobals::getSpecialUnitInfo(SpecialUnitTypes eSpecialUnitNum) const
+CvSpecialUnitInfo& CvGlobals::getSpecialUnitInfo(SpecialUnitTypes eSpecialUnitNum) const
 {
 	FAssertMsg(eSpecialUnitNum >= 0 && eSpecialUnitNum < GC.getNumSpecialUnitInfos(), "SpecialUnitInfo index out of bounds");
 	return *(m_paSpecialUnitInfo[eSpecialUnitNum]);
 }
 
 
-int cvInternalGlobals::getNumConceptInfos() const
+int CvGlobals::getNumConceptInfos() const
 {
 	return (int)m_paConceptInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getConceptInfo(ConceptTypes e) const
+CvInfoBase& CvGlobals::getConceptInfo(ConceptTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumConceptInfos(), "ConceptInfo index out of bounds");
 	return *(m_paConceptInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumNewConceptInfos() const
+int CvGlobals::getNumNewConceptInfos() const
 {
 	return (int)m_paNewConceptInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getNewConceptInfo(NewConceptTypes e) const
+CvInfoBase& CvGlobals::getNewConceptInfo(NewConceptTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumNewConceptInfos(), "NewConceptInfo index out of bounds");
 	return *(m_paNewConceptInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumCityTabInfos() const
+int CvGlobals::getNumCityTabInfos() const
 {
 	return (int)m_paCityTabInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getCityTabInfo(CityTabTypes e) const
+CvInfoBase& CvGlobals::getCityTabInfo(CityTabTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumCityTabInfos(), "CityTabInfo index out of bounds");
 	return *(m_paCityTabInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumCalendarInfos() const
+int CvGlobals::getNumCalendarInfos() const
 {
 	return (int)m_paCalendarInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getCalendarInfo(CalendarTypes e) const
+CvInfoBase& CvGlobals::getCalendarInfo(CalendarTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumCalendarInfos(), "CalendarInfo index out of bounds");
 	return *(m_paCalendarInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumSeasonInfos() const
+int CvGlobals::getNumSeasonInfos() const
 {
 	return (int)m_paSeasonInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getSeasonInfo(SeasonTypes e) const
+CvInfoBase& CvGlobals::getSeasonInfo(SeasonTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumSeasonInfos(), "SeasonInfo index out of bounds");
 	return *(m_paSeasonInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumMonthInfos() const
+int CvGlobals::getNumMonthInfos() const
 {
 	return (int)m_paMonthInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getMonthInfo(MonthTypes e) const
+CvInfoBase& CvGlobals::getMonthInfo(MonthTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumMonthInfos(), "MonthInfo index out of bounds");
 	return *(m_paMonthInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumDenialInfos() const
+int CvGlobals::getNumDenialInfos() const
 {
 	return (int)m_paDenialInfo.size();
 }
 
-CvInfoBase& cvInternalGlobals::getDenialInfo(DenialTypes e) const
+CvInfoBase& CvGlobals::getDenialInfo(DenialTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumDenialInfos(), "DenialInfo index out of bounds");
 	return *(m_paDenialInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumInvisibleInfos() const
+int CvGlobals::getNumInvisibleInfos() const
 {
 	return (int)m_paInvisibleInfo.size();
 }
 
-CvInvisibleInfo& cvInternalGlobals::getInvisibleInfo(InvisibleTypes e) const
+CvInvisibleInfo& CvGlobals::getInvisibleInfo(InvisibleTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumInvisibleInfos(), "InvisibleInfo index out of bounds");
 	return *(m_paInvisibleInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumVoteSourceInfos() const
+int CvGlobals::getNumVoteSourceInfos() const
 {
 	return (int)m_paVoteSourceInfo.size();
 }
 
-CvVoteSourceInfo& cvInternalGlobals::getVoteSourceInfo(VoteSourceTypes e) const
+CvVoteSourceInfo& CvGlobals::getVoteSourceInfo(VoteSourceTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumVoteSourceInfos(), "VoteSourceInfo index out of bounds");
 	return *(m_paVoteSourceInfo[e]);
 }
 
 
-int cvInternalGlobals::getNumUnitCombatInfos() const
+int CvGlobals::getNumUnitCombatInfos() const
 {
 	return (int)m_paUnitCombatInfo.size();
 }
 
-CvUnitCombatInfo& cvInternalGlobals::getUnitCombatInfo(UnitCombatTypes e) const
+CvUnitCombatInfo& CvGlobals::getUnitCombatInfo(UnitCombatTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumUnitCombatInfos(), "UnitCombatInfo index out of bounds");
 	return *(m_paUnitCombatInfo[e]);
 }
 
 
-CvInfoBase& cvInternalGlobals::getDomainInfo(DomainTypes e) const
+CvInfoBase& CvGlobals::getDomainInfo(DomainTypes e) const
 {
 	FAssertMsg(e >= 0 && e < NUM_DOMAIN_TYPES, "DomainInfo index out of bounds");
 	return *(m_paDomainInfo[e]);
 }
 
 //TB Promotion Line Mod begin
-int cvInternalGlobals::getNumPromotionLineInfos() const
+int CvGlobals::getNumPromotionLineInfos() const
 {
 	return (int)m_paPromotionLineInfo.size();
 }
 
-CvPromotionLineInfo& cvInternalGlobals::getPromotionLineInfo(PromotionLineTypes e) const
+CvPromotionLineInfo& CvGlobals::getPromotionLineInfo(PromotionLineTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumPromotionLineInfos(), "PromotionLineInfo index out of bounds");
 	return *(m_paPromotionLineInfo[e]);
 }
 //TB Promotion Line Mod end
 
-int cvInternalGlobals::getNumMapCategoryInfos() const
+int CvGlobals::getNumMapCategoryInfos() const
 {
 	return (int)m_paMapCategoryInfo.size();
 }
 
-CvMapCategoryInfo& cvInternalGlobals::getMapCategoryInfo(MapCategoryTypes e) const
+CvMapCategoryInfo& CvGlobals::getMapCategoryInfo(MapCategoryTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumMapCategoryInfos(), "MapCategoryInfo index out of bounds");
 	return *(m_paMapCategoryInfo[e]);
 }
 
-int cvInternalGlobals::getNumIdeaClassInfos() const
+int CvGlobals::getNumIdeaClassInfos() const
 {
 	return (int)m_paIdeaClassInfo.size();
 }
 
-CvIdeaClassInfo& cvInternalGlobals::getIdeaClassInfo(IdeaClassTypes e) const
+CvIdeaClassInfo& CvGlobals::getIdeaClassInfo(IdeaClassTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumIdeaClassInfos(), "IdeaClassInfo index out of bounds");
 	return *(m_paIdeaClassInfo[e]);
 }
 
-int cvInternalGlobals::getNumIdeaInfos() const
+int CvGlobals::getNumIdeaInfos() const
 {
 	return (int)m_paIdeaInfo.size();
 }
 
-CvIdeaInfo& cvInternalGlobals::getIdeaInfo(IdeaTypes e) const
+CvIdeaInfo& CvGlobals::getIdeaInfo(IdeaTypes e) const
 {
 	FAssertMsg(e >= 0 && e < GC.getNumIdeaInfos(), "IdeaInfo index out of bounds");
 	return *(m_paIdeaInfo[e]);
 }
-//int cvInternalGlobals::getNumTraitOptionEditsInfos() const
+//int CvGlobals::getNumTraitOptionEditsInfos() const
 //{
 //	return (int)m_paTraitOptionEditsInfo.size();
 //}
 //
-//CvTraitOptionEditsInfo& cvInternalGlobals::getTraitOptionEditsInfo(TraitOptionEditsTypes e) const
+//CvTraitOptionEditsInfo& CvGlobals::getTraitOptionEditsInfo(TraitOptionEditsTypes e) const
 //{
 //	FAssert(e > -1);
 //	FAssert(e < GC.getNumTraitOptionEditsInfos());
 //	return *(m_paTraitOptionEditsInfo[e]);
 //}
 
-CvInfoBase& cvInternalGlobals::getUnitAIInfo(UnitAITypes eUnitAINum) const
+CvInfoBase& CvGlobals::getUnitAIInfo(UnitAITypes eUnitAINum) const
 {
 	FAssertMsg(eUnitAINum >= 0 && eUnitAINum < NUM_UNITAI_TYPES, "UnitAIInfo index out of bounds");
 	return *(m_paUnitAIInfos[eUnitAINum]);
@@ -1535,7 +1515,7 @@ CvInfoBase& cvInternalGlobals::getUnitAIInfo(UnitAITypes eUnitAINum) const
 
 //	Koshling - added internal registration of supported UnitAI types, not reliant
 //	on external definition in XML
-void cvInternalGlobals::registerUnitAI(const char* szType, int enumVal)
+void CvGlobals::registerUnitAI(const char* szType, int enumVal)
 {
 	FAssertMsg(m_paUnitAIInfos.size() == enumVal, "enumVal not expected value");
 
@@ -1547,7 +1527,7 @@ void cvInternalGlobals::registerUnitAI(const char* szType, int enumVal)
 
 #define	REGISTER_UNITAI(x)	registerUnitAI(#x,x)
 
-void cvInternalGlobals::registerUnitAIs()
+void CvGlobals::registerUnitAIs()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_UNITAI(UNITAI_UNKNOWN);
@@ -1612,7 +1592,7 @@ void cvInternalGlobals::registerUnitAIs()
 //	AIAndy - added internal registration of supported AIScale types similar to UnitAIs but without info class
 #define	REGISTER_AISCALE(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerAIScales()
+void CvGlobals::registerAIScales()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_AISCALE(AISCALE_NONE);
@@ -1625,7 +1605,7 @@ void cvInternalGlobals::registerAIScales()
 //	AIAndy: Register game object types
 #define	REGISTER_GAMEOBJECT(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerGameObjects()
+void CvGlobals::registerGameObjects()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_GAMEOBJECT(NO_GAMEOBJECT);
@@ -1640,7 +1620,7 @@ void cvInternalGlobals::registerGameObjects()
 //	AIAndy: Register game object types
 #define	REGISTER_GOM(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerGOMs()
+void CvGlobals::registerGOMs()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_GOM(NO_GOM);
@@ -1666,7 +1646,7 @@ void cvInternalGlobals::registerGOMs()
 //	AIAndy: Register game object relation types
 #define	REGISTER_RELATION(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerRelations()
+void CvGlobals::registerRelations()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_RELATION(NO_RELATION);
@@ -1680,7 +1660,7 @@ void cvInternalGlobals::registerRelations()
 //	AIAndy: Register game object attribute types
 #define	REGISTER_ATTRIBUTE(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerAttributes()
+void CvGlobals::registerAttributes()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_ATTRIBUTE(NO_ATTRIBUTE);
@@ -1694,7 +1674,7 @@ void cvInternalGlobals::registerAttributes()
 //	AIAndy: Register game object tag types
 #define	REGISTER_TAG(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerTags()
+void CvGlobals::registerTags()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_TAG(NO_TAG);
@@ -1721,7 +1701,7 @@ void cvInternalGlobals::registerTags()
 //	AIAndy: Register property source types
 #define	REGISTER_PROPERTYSOURCE(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerPropertySources()
+void CvGlobals::registerPropertySources()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_PROPERTYSOURCE(NO_PROPERTYSOURCE);
@@ -1734,7 +1714,7 @@ void cvInternalGlobals::registerPropertySources()
 //	AIAndy: Register property interaction types
 #define	REGISTER_PROPERTYINTERACTION(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerPropertyInteractions()
+void CvGlobals::registerPropertyInteractions()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_PROPERTYINTERACTION(NO_PROPERTYINTERACTION);
@@ -1746,7 +1726,7 @@ void cvInternalGlobals::registerPropertyInteractions()
 //	AIAndy: Register property propagator types
 #define	REGISTER_PROPERTYPROPAGATOR(x)	setInfoTypeFromString(#x,x)
 
-void cvInternalGlobals::registerPropertyPropagators()
+void CvGlobals::registerPropertyPropagators()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_PROPERTYPROPAGATOR(NO_PROPERTYPROPAGATOR);
@@ -1756,7 +1736,7 @@ void cvInternalGlobals::registerPropertyPropagators()
 }
 
 //	AlbertS2: Register mission types
-void cvInternalGlobals::registerMission(const char* szType, int enumVal)
+void CvGlobals::registerMission(const char* szType, int enumVal)
 {
 	FAssert(m_paMissionInfo.size() == enumVal);
 
@@ -1768,7 +1748,7 @@ void cvInternalGlobals::registerMission(const char* szType, int enumVal)
 
 #define	REGISTER_MISSION(x)	registerMission(#x,x)
 
-void cvInternalGlobals::registerMissions()
+void CvGlobals::registerMissions()
 {
 	//	Sadly C++ doesn't have any reflection capability so need to do this explicitly
 	REGISTER_MISSION(MISSION_MOVE_TO);
@@ -1883,7 +1863,7 @@ void cvInternalGlobals::registerMissions()
 	REGISTER_MISSION(MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_TRACKER);
 }
 
-CvInfoBase& cvInternalGlobals::getAttitudeInfo(AttitudeTypes eAttitudeNum) const
+CvInfoBase& CvGlobals::getAttitudeInfo(AttitudeTypes eAttitudeNum) const
 {
 	FAssert(eAttitudeNum >= 0);
 	FAssert(eAttitudeNum < NUM_ATTITUDE_TYPES);
@@ -1891,7 +1871,7 @@ CvInfoBase& cvInternalGlobals::getAttitudeInfo(AttitudeTypes eAttitudeNum) const
 }
 
 
-CvInfoBase& cvInternalGlobals::getMemoryInfo(MemoryTypes eMemoryNum) const
+CvInfoBase& CvGlobals::getMemoryInfo(MemoryTypes eMemoryNum) const
 {
 	FAssert(eMemoryNum >= 0);
 	FAssert(eMemoryNum < NUM_MEMORY_TYPES);
@@ -1899,234 +1879,234 @@ CvInfoBase& cvInternalGlobals::getMemoryInfo(MemoryTypes eMemoryNum) const
 }
 
 
-int cvInternalGlobals::getNumGameOptionInfos() const
+int CvGlobals::getNumGameOptionInfos() const
 {
 	return (int)m_paGameOptionInfos.size();
 }
 
-CvGameOptionInfo& cvInternalGlobals::getGameOptionInfo(GameOptionTypes eGameOptionNum) const
+CvGameOptionInfo& CvGlobals::getGameOptionInfo(GameOptionTypes eGameOptionNum)
 {
 	FAssert(eGameOptionNum >= 0);
 	FAssert(eGameOptionNum < GC.getNumGameOptionInfos());
 	return *(m_paGameOptionInfos[eGameOptionNum]);
 }
 
-int cvInternalGlobals::getNumMPOptionInfos() const
+int CvGlobals::getNumMPOptionInfos() const
 {
 	return (int)m_paMPOptionInfos.size();
 }
 
-CvMPOptionInfo& cvInternalGlobals::getMPOptionInfo(MultiplayerOptionTypes eMPOptionNum) const
+CvMPOptionInfo& CvGlobals::getMPOptionInfo(MultiplayerOptionTypes eMPOptionNum)
 {
 	FAssert(eMPOptionNum >= 0);
 	FAssert(eMPOptionNum < GC.getNumMPOptionInfos());
 	return *(m_paMPOptionInfos[eMPOptionNum]);
 }
 
-int cvInternalGlobals::getNumForceControlInfos() const
+int CvGlobals::getNumForceControlInfos() const
 {
 	return (int)m_paForceControlInfos.size();
 }
 
-CvForceControlInfo& cvInternalGlobals::getForceControlInfo(ForceControlTypes eForceControlNum) const
+CvForceControlInfo& CvGlobals::getForceControlInfo(ForceControlTypes eForceControlNum) const
 {
 	FAssert(eForceControlNum >= 0);
 	FAssert(eForceControlNum < GC.getNumForceControlInfos());
 	return *(m_paForceControlInfos[eForceControlNum]);
 }
 
-CvPlayerOptionInfo& cvInternalGlobals::getPlayerOptionInfo(PlayerOptionTypes ePlayerOptionNum) const
+CvPlayerOptionInfo& CvGlobals::getPlayerOptionInfo(PlayerOptionTypes ePlayerOptionNum)
 {
 	FAssert(ePlayerOptionNum >= 0);
 	FAssert(ePlayerOptionNum < NUM_PLAYEROPTION_TYPES);
 	return *(m_paPlayerOptionInfos[ePlayerOptionNum]);
 }
 
-CvGraphicOptionInfo& cvInternalGlobals::getGraphicOptionInfo(GraphicOptionTypes eGraphicOptionNum) const
+CvGraphicOptionInfo& CvGlobals::getGraphicOptionInfo(GraphicOptionTypes eGraphicOptionNum)
 {
 	FAssert(eGraphicOptionNum >= 0);
 	FAssert(eGraphicOptionNum < NUM_GRAPHICOPTION_TYPES);
 	return *(m_paGraphicOptionInfos[eGraphicOptionNum]);
 }
 
-CvYieldInfo& cvInternalGlobals::getYieldInfo(YieldTypes eYieldNum) const
+CvYieldInfo& CvGlobals::getYieldInfo(YieldTypes eYieldNum) const
 {
 	FAssert(eYieldNum > -1);
 	FAssert(eYieldNum < NUM_YIELD_TYPES);
 	return *(m_paYieldInfo[eYieldNum]);
 }
 
-CvCommerceInfo& cvInternalGlobals::getCommerceInfo(CommerceTypes eCommerceNum) const
+CvCommerceInfo& CvGlobals::getCommerceInfo(CommerceTypes eCommerceNum) const
 {
 	FAssert(eCommerceNum > -1);
 	FAssert(eCommerceNum < NUM_COMMERCE_TYPES);
 	return *(m_paCommerceInfo[eCommerceNum]);
 }
 
-int cvInternalGlobals::getNumRouteInfos() const
+int CvGlobals::getNumRouteInfos()
 {
 	return (int)m_paRouteInfo.size();
 }
 
-CvRouteInfo& cvInternalGlobals::getRouteInfo(RouteTypes eRouteNum) const
+CvRouteInfo& CvGlobals::getRouteInfo(RouteTypes eRouteNum) const
 {
 	FAssert(eRouteNum > -1);
 	FAssert(eRouteNum < GC.getNumRouteInfos());
 	return *(m_paRouteInfo[eRouteNum]);
 }
 
-int cvInternalGlobals::getNumImprovementInfos() const
+int CvGlobals::getNumImprovementInfos()
 {
 	return (int)m_paImprovementInfo.size();
 }
 
-CvImprovementInfo& cvInternalGlobals::getImprovementInfo(ImprovementTypes eImprovementNum) const
+CvImprovementInfo& CvGlobals::getImprovementInfo(ImprovementTypes eImprovementNum)
 {
 	FAssert(eImprovementNum > -1);
 	FAssert(eImprovementNum < GC.getNumImprovementInfos());
 	return *(m_paImprovementInfo[eImprovementNum]);
 }
 
-int cvInternalGlobals::getNumGoodyInfos() const
+int CvGlobals::getNumGoodyInfos() const
 {
 	return (int)m_paGoodyInfo.size();
 }
 
-CvGoodyInfo& cvInternalGlobals::getGoodyInfo(GoodyTypes eGoodyNum) const
+CvGoodyInfo& CvGlobals::getGoodyInfo(GoodyTypes eGoodyNum) const
 {
 	FAssert(eGoodyNum > -1);
 	FAssert(eGoodyNum < GC.getNumGoodyInfos());
 	return *(m_paGoodyInfo[eGoodyNum]);
 }
 
-int cvInternalGlobals::getNumBuildInfos() const
+int CvGlobals::getNumBuildInfos() const
 {
 	return (int)m_paBuildInfo.size();
 }
 
-CvBuildInfo& cvInternalGlobals::getBuildInfo(BuildTypes eBuildNum) const
+CvBuildInfo& CvGlobals::getBuildInfo(BuildTypes eBuildNum)
 {
 	FAssert(eBuildNum > -1);
 	FAssert(eBuildNum < GC.getNumBuildInfos());
 	return *(m_paBuildInfo[eBuildNum]);
 }
 
-int cvInternalGlobals::getNumHandicapInfos() const
+int CvGlobals::getNumHandicapInfos()
 {
 	return (int)m_paHandicapInfo.size();
 }
 
-CvHandicapInfo& cvInternalGlobals::getHandicapInfo(HandicapTypes eHandicapNum) const
+CvHandicapInfo& CvGlobals::getHandicapInfo(HandicapTypes eHandicapNum)
 {
 	FAssert(eHandicapNum > -1);
 	FAssert(eHandicapNum < GC.getNumHandicapInfos());
 	return *(m_paHandicapInfo[eHandicapNum]);
 }
 
-int cvInternalGlobals::getNumGameSpeedInfos() const
+int CvGlobals::getNumGameSpeedInfos()
 {
 	return (int)m_paGameSpeedInfo.size();
 }
 
-CvGameSpeedInfo& cvInternalGlobals::getGameSpeedInfo(GameSpeedTypes eGameSpeedNum) const
+CvGameSpeedInfo& CvGlobals::getGameSpeedInfo(GameSpeedTypes eGameSpeedNum)
 {
 	FAssert(eGameSpeedNum > -1);
 	FAssert(eGameSpeedNum < GC.getNumGameSpeedInfos());
 	return *(m_paGameSpeedInfo[eGameSpeedNum]);
 }
 
-int cvInternalGlobals::getNumTurnTimerInfos() const
+int CvGlobals::getNumTurnTimerInfos()
 {
 	return (int)m_paTurnTimerInfo.size();
 }
 
-CvTurnTimerInfo& cvInternalGlobals::getTurnTimerInfo(TurnTimerTypes eTurnTimerNum) const
+CvTurnTimerInfo& CvGlobals::getTurnTimerInfo(TurnTimerTypes eTurnTimerNum)
 {
 	FAssert(eTurnTimerNum > -1);
 	FAssert(eTurnTimerNum < GC.getNumTurnTimerInfos());
 	return *(m_paTurnTimerInfo[eTurnTimerNum]);
 }
 
-int cvInternalGlobals::getNumProcessInfos() const
+int CvGlobals::getNumProcessInfos() const
 {
 	return (int)m_paProcessInfo.size();
 }
 
-CvProcessInfo& cvInternalGlobals::getProcessInfo(ProcessTypes e) const
+CvProcessInfo& CvGlobals::getProcessInfo(ProcessTypes e) const
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumProcessInfos());
 	return *(m_paProcessInfo[e]);
 }
 
-int cvInternalGlobals::getNumVoteInfos() const
+int CvGlobals::getNumVoteInfos() const
 {
 	return (int)m_paVoteInfo.size();
 }
 
-CvVoteInfo& cvInternalGlobals::getVoteInfo(VoteTypes e) const
+CvVoteInfo& CvGlobals::getVoteInfo(VoteTypes e) const
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumVoteInfos());
 	return *(m_paVoteInfo[e]);
 }
 
-int cvInternalGlobals::getNumProjectInfos() const
+int CvGlobals::getNumProjectInfos() const
 {
 	return (int)m_paProjectInfo.size();
 }
 
-CvProjectInfo& cvInternalGlobals::getProjectInfo(ProjectTypes e) const
+CvProjectInfo& CvGlobals::getProjectInfo(ProjectTypes e) const
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumProjectInfos());
 	return *(m_paProjectInfo[e]);
 }
 
-int cvInternalGlobals::getNumBuildingInfos() const
+int CvGlobals::getNumBuildingInfos() const
 {
 	return (int)m_paBuildingInfo.size();
 }
 
-CvBuildingInfo& cvInternalGlobals::getBuildingInfo(BuildingTypes eBuildingNum) const
+CvBuildingInfo& CvGlobals::getBuildingInfo(BuildingTypes eBuildingNum) const
 {
 	FAssert(eBuildingNum > -1);
 	FAssert(eBuildingNum < GC.getNumBuildingInfos());
 	return *(m_paBuildingInfo[eBuildingNum]);
 }
 
-int cvInternalGlobals::getNumSpecialBuildingInfos() const
+int CvGlobals::getNumSpecialBuildingInfos() const
 {
 	return (int)m_paSpecialBuildingInfo.size();
 }
 
-CvSpecialBuildingInfo& cvInternalGlobals::getSpecialBuildingInfo(SpecialBuildingTypes eSpecialBuildingNum) const
+CvSpecialBuildingInfo& CvGlobals::getSpecialBuildingInfo(SpecialBuildingTypes eSpecialBuildingNum) const
 {
 	FAssert(eSpecialBuildingNum > -1);
 	FAssert(eSpecialBuildingNum < GC.getNumSpecialBuildingInfos());
 	return *(m_paSpecialBuildingInfo[eSpecialBuildingNum]);
 }
 
-int cvInternalGlobals::getNumActionInfos() const
+int CvGlobals::getNumActionInfos()
 {
 	return (int)m_paActionInfo.size();
 }
 
-CvActionInfo& cvInternalGlobals::getActionInfo(int i) const
+CvActionInfo& CvGlobals::getActionInfo(int i)
 {
 	FAssertMsg(i < getNumActionInfos(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return *(m_paActionInfo[i]);
 }
 
-CvMissionInfo& cvInternalGlobals::getMissionInfo(MissionTypes eMissionNum) const
+CvMissionInfo& CvGlobals::getMissionInfo(MissionTypes eMissionNum)
 {
 	FAssert(eMissionNum > -1);
 	FAssert(eMissionNum < NUM_MISSION_TYPES);
 	return *(m_paMissionInfo[eMissionNum]);
 }
 
-CvControlInfo& cvInternalGlobals::getControlInfo(ControlTypes eControlNum) const
+CvControlInfo& CvGlobals::getControlInfo(ControlTypes eControlNum) const
 {
 	FAssert(eControlNum > -1);
 	FAssert(eControlNum < NUM_CONTROL_TYPES);
@@ -2134,38 +2114,38 @@ CvControlInfo& cvInternalGlobals::getControlInfo(ControlTypes eControlNum) const
 	return *(m_paControlInfo[eControlNum]);
 }
 
-CvCommandInfo& cvInternalGlobals::getCommandInfo(CommandTypes eCommandNum) const
+CvCommandInfo& CvGlobals::getCommandInfo(CommandTypes eCommandNum) const
 {
 	FAssert(eCommandNum > -1);
 	FAssert(eCommandNum < NUM_COMMAND_TYPES);
 	return *(m_paCommandInfo[eCommandNum]);
 }
 
-int cvInternalGlobals::getNumAutomateInfos() const
+int CvGlobals::getNumAutomateInfos() const
 {
 	return (int)m_paAutomateInfo.size();
 }
 
-CvAutomateInfo& cvInternalGlobals::getAutomateInfo(int iAutomateNum) const
+CvAutomateInfo& CvGlobals::getAutomateInfo(int iAutomateNum) const
 {
 	FAssertMsg(iAutomateNum < getNumAutomateInfos(), "Index out of bounds");
 	FAssertMsg(iAutomateNum > -1, "Index out of bounds");
 	return *(m_paAutomateInfo[iAutomateNum]);
 }
 
-int cvInternalGlobals::getNumPromotionInfos() const
+int CvGlobals::getNumPromotionInfos() const
 {
 	return (int)m_paPromotionInfo.size();
 }
 
-CvPromotionInfo& cvInternalGlobals::getPromotionInfo(PromotionTypes ePromotionNum) const
+CvPromotionInfo& CvGlobals::getPromotionInfo(PromotionTypes ePromotionNum) const
 {
 	FAssert(ePromotionNum > -1);
 	FAssert(ePromotionNum < GC.getNumPromotionInfos());
 	return *(m_paPromotionInfo[ePromotionNum]);
 }
 
-PromotionTypes cvInternalGlobals::findPromotion(PromotionPredicateFn predicateFn) const
+PromotionTypes CvGlobals::findPromotion(PromotionPredicateFn predicateFn) const
 {
 	for (int idx = 0; idx < static_cast<int>(m_paPromotionInfo.size()); ++idx)
 	{
@@ -2177,421 +2157,421 @@ PromotionTypes cvInternalGlobals::findPromotion(PromotionPredicateFn predicateFn
 	return static_cast<PromotionTypes>(-1);
 }
 
-int cvInternalGlobals::getNumTechInfos() const
+int CvGlobals::getNumTechInfos() const
 {
 	return (int)m_paTechInfo.size();
 }
 
-CvTechInfo& cvInternalGlobals::getTechInfo(TechTypes eTechNum) const
+CvTechInfo& CvGlobals::getTechInfo(TechTypes eTechNum) const
 {
 	FAssert(eTechNum > -1);
 	FAssert(eTechNum < GC.getNumTechInfos());
 	return *(m_paTechInfo[eTechNum]);
 }
 
-int cvInternalGlobals::getNumReligionInfos() const
+int CvGlobals::getNumReligionInfos() const
 {
 	return (int)m_paReligionInfo.size();
 }
 
-CvReligionInfo& cvInternalGlobals::getReligionInfo(ReligionTypes eReligionNum) const
+CvReligionInfo& CvGlobals::getReligionInfo(ReligionTypes eReligionNum) const
 {
 	FAssert(eReligionNum > -1);
 	FAssert(eReligionNum < GC.getNumReligionInfos());
 	return *(m_paReligionInfo[eReligionNum]);
 }
 
-int cvInternalGlobals::getNumCorporationInfos() const
+int CvGlobals::getNumCorporationInfos() const
 {
 	return (int)m_paCorporationInfo.size();
 }
 
-CvCorporationInfo& cvInternalGlobals::getCorporationInfo(CorporationTypes eCorporationNum) const
+CvCorporationInfo& CvGlobals::getCorporationInfo(CorporationTypes eCorporationNum) const
 {
 	FAssert(eCorporationNum > -1);
 	FAssert(eCorporationNum < GC.getNumCorporationInfos());
 	return *(m_paCorporationInfo[eCorporationNum]);
 }
 
-int cvInternalGlobals::getNumSpecialistInfos() const
+int CvGlobals::getNumSpecialistInfos() const
 {
 	return (int)m_paSpecialistInfo.size();
 }
 
-CvSpecialistInfo& cvInternalGlobals::getSpecialistInfo(SpecialistTypes eSpecialistNum) const
+CvSpecialistInfo& CvGlobals::getSpecialistInfo(SpecialistTypes eSpecialistNum) const
 {
 	FAssert(eSpecialistNum > -1);
 	FAssert(eSpecialistNum < GC.getNumSpecialistInfos());
 	return *(m_paSpecialistInfo[eSpecialistNum]);
 }
 
-int cvInternalGlobals::getNumCivicOptionInfos() const
+int CvGlobals::getNumCivicOptionInfos() const
 {
 	return (int)m_paCivicOptionInfo.size();
 }
 
-CvCivicOptionInfo& cvInternalGlobals::getCivicOptionInfo(CivicOptionTypes eCivicOptionNum) const
+CvCivicOptionInfo& CvGlobals::getCivicOptionInfo(CivicOptionTypes eCivicOptionNum) const
 {
 	FAssert(eCivicOptionNum > -1);
 	FAssert(eCivicOptionNum < GC.getNumCivicOptionInfos());
 	return *(m_paCivicOptionInfo[eCivicOptionNum]);
 }
 
-int cvInternalGlobals::getNumCivicInfos() const
+int CvGlobals::getNumCivicInfos() const
 {
 	return (int)m_paCivicInfo.size();
 }
 
-CvCivicInfo& cvInternalGlobals::getCivicInfo(CivicTypes eCivicNum) const
+CvCivicInfo& CvGlobals::getCivicInfo(CivicTypes eCivicNum) const
 {
 	FAssert(eCivicNum > -1);
 	FAssert(eCivicNum < GC.getNumCivicInfos());
 	return *(m_paCivicInfo[eCivicNum]);
 }
 
-int cvInternalGlobals::getNumDiplomacyInfos() const
+int CvGlobals::getNumDiplomacyInfos() const
 {
 	return (int)m_paDiplomacyInfo.size();
 }
 
-CvDiplomacyInfo& cvInternalGlobals::getDiplomacyInfo(int iDiplomacyNum) const
+CvDiplomacyInfo& CvGlobals::getDiplomacyInfo(int iDiplomacyNum) const
 {
 	FAssertMsg(iDiplomacyNum < getNumDiplomacyInfos(), "Index out of bounds");
 	FAssertMsg(iDiplomacyNum > -1, "Index out of bounds");
 	return *(m_paDiplomacyInfo[iDiplomacyNum]);
 }
 
-int cvInternalGlobals::getNumEraInfos() const
+int CvGlobals::getNumEraInfos()
 {
 	return (int)m_aEraInfo.size();
 }
 
-CvEraInfo& cvInternalGlobals::getEraInfo(EraTypes eEraNum) const
+CvEraInfo& CvGlobals::getEraInfo(EraTypes eEraNum)
 {
 	FAssert(eEraNum > -1);
 	FAssert(eEraNum < GC.getNumEraInfos());
 	return *(m_aEraInfo[eEraNum]);
 }
 
-int cvInternalGlobals::getNumHurryInfos() const
+int CvGlobals::getNumHurryInfos() const
 {
 	return (int)m_paHurryInfo.size();
 }
 
-CvHurryInfo& cvInternalGlobals::getHurryInfo(HurryTypes eHurryNum) const
+CvHurryInfo& CvGlobals::getHurryInfo(HurryTypes eHurryNum) const
 {
 	FAssert(eHurryNum > -1);
 	FAssert(eHurryNum < GC.getNumHurryInfos());
 	return *(m_paHurryInfo[eHurryNum]);
 }
 
-int cvInternalGlobals::getNumEmphasizeInfos() const
+int CvGlobals::getNumEmphasizeInfos() const
 {
 	return (int)m_paEmphasizeInfo.size();
 }
 
-CvEmphasizeInfo& cvInternalGlobals::getEmphasizeInfo(EmphasizeTypes eEmphasizeNum) const
+CvEmphasizeInfo& CvGlobals::getEmphasizeInfo(EmphasizeTypes eEmphasizeNum) const
 {
 	FAssert(eEmphasizeNum > -1);
 	FAssert(eEmphasizeNum < GC.getNumEmphasizeInfos());
 	return *(m_paEmphasizeInfo[eEmphasizeNum]);
 }
 
-int cvInternalGlobals::getNumUpkeepInfos() const
+int CvGlobals::getNumUpkeepInfos() const
 {
 	return (int)m_paUpkeepInfo.size();
 }
 
-CvUpkeepInfo& cvInternalGlobals::getUpkeepInfo(UpkeepTypes eUpkeepNum) const
+CvUpkeepInfo& CvGlobals::getUpkeepInfo(UpkeepTypes eUpkeepNum) const
 {
 	FAssert(eUpkeepNum > -1);
 	FAssert(eUpkeepNum < GC.getNumUpkeepInfos());
 	return *(m_paUpkeepInfo[eUpkeepNum]);
 }
 
-int cvInternalGlobals::getNumCultureLevelInfos() const
+int CvGlobals::getNumCultureLevelInfos() const
 {
 	return (int)m_paCultureLevelInfo.size();
 }
 
-CvCultureLevelInfo& cvInternalGlobals::getCultureLevelInfo(CultureLevelTypes eCultureLevelNum) const
+CvCultureLevelInfo& CvGlobals::getCultureLevelInfo(CultureLevelTypes eCultureLevelNum) const
 {
 	FAssert(eCultureLevelNum > -1);
 	FAssert(eCultureLevelNum < GC.getNumCultureLevelInfos());
 	return *(m_paCultureLevelInfo[eCultureLevelNum]);
 }
 
-int cvInternalGlobals::getNumVictoryInfos() const
+int CvGlobals::getNumVictoryInfos()
 {
 	return (int)m_paVictoryInfo.size();
 }
 
-CvVictoryInfo& cvInternalGlobals::getVictoryInfo(VictoryTypes eVictoryNum) const
+CvVictoryInfo& CvGlobals::getVictoryInfo(VictoryTypes eVictoryNum)
 {
 	FAssert(eVictoryNum > -1);
 	FAssert(eVictoryNum < GC.getNumVictoryInfos());
 	return *(m_paVictoryInfo[eVictoryNum]);
 }
 
-int cvInternalGlobals::getNumQuestInfos() const
+int CvGlobals::getNumQuestInfos() const
 {
 	return (int)m_paQuestInfo.size();
 }
 
-CvQuestInfo& cvInternalGlobals::getQuestInfo(int iIndex) const
+CvQuestInfo& CvGlobals::getQuestInfo(int iIndex) const
 {
 	FAssert(iIndex > -1);
 	FAssert(iIndex < GC.getNumQuestInfos());
 	return *(m_paQuestInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumTutorialInfos() const
+int CvGlobals::getNumTutorialInfos() const
 {
 	return (int)m_paTutorialInfo.size();
 }
 
-CvTutorialInfo& cvInternalGlobals::getTutorialInfo(int iIndex) const
+CvTutorialInfo& CvGlobals::getTutorialInfo(int iIndex) const
 {
 	FAssert(iIndex > -1);
 	FAssert(iIndex < GC.getNumTutorialInfos());
 	return *(m_paTutorialInfo[iIndex]);
 }
 
-int cvInternalGlobals::getNumEventTriggerInfos() const
+int CvGlobals::getNumEventTriggerInfos() const
 {
 	return (int)m_paEventTriggerInfo.size();
 }
 
-CvEventTriggerInfo& cvInternalGlobals::getEventTriggerInfo(EventTriggerTypes eEventTrigger) const
+CvEventTriggerInfo& CvGlobals::getEventTriggerInfo(EventTriggerTypes eEventTrigger) const
 {
 	FAssert(eEventTrigger > -1);
 	FAssert(eEventTrigger < GC.getNumEventTriggerInfos());
 	return *(m_paEventTriggerInfo[eEventTrigger]);
 }
 
-int cvInternalGlobals::getNumEventInfos() const
+int CvGlobals::getNumEventInfos() const
 {
 	return (int)m_paEventInfo.size();
 }
 
-CvEventInfo& cvInternalGlobals::getEventInfo(EventTypes eEvent) const
+CvEventInfo& CvGlobals::getEventInfo(EventTypes eEvent) const
 {
 	FAssert(eEvent > -1);
 	FAssert(eEvent < GC.getNumEventInfos());
 	return *(m_paEventInfo[eEvent]);
 }
 
-int cvInternalGlobals::getNumEspionageMissionInfos() const
+int CvGlobals::getNumEspionageMissionInfos() const
 {
 	return (int)m_paEspionageMissionInfo.size();
 }
 
-CvEspionageMissionInfo& cvInternalGlobals::getEspionageMissionInfo(EspionageMissionTypes eEspionageMissionNum) const
+CvEspionageMissionInfo& CvGlobals::getEspionageMissionInfo(EspionageMissionTypes eEspionageMissionNum) const
 {
 	FAssert(eEspionageMissionNum > -1);
 	FAssert(eEspionageMissionNum < GC.getNumEspionageMissionInfos());
 	return *(m_paEspionageMissionInfo[eEspionageMissionNum]);
 }
 
-int& cvInternalGlobals::getNumEntityEventTypes()
+int& CvGlobals::getNumEntityEventTypes()
 {
 	return m_iNumEntityEventTypes;
 }
 
-CvString*& cvInternalGlobals::getEntityEventTypes()
+CvString*& CvGlobals::getEntityEventTypes()
 {
 	return m_paszEntityEventTypes;
 }
 
-CvString& cvInternalGlobals::getEntityEventTypes(EntityEventTypes e)
+CvString& CvGlobals::getEntityEventTypes(EntityEventTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumEntityEventTypes());
 	return m_paszEntityEventTypes[e];
 }
 
-int& cvInternalGlobals::getNumAnimationOperatorTypes()
+int& CvGlobals::getNumAnimationOperatorTypes()
 {
 	return m_iNumAnimationOperatorTypes;
 }
 
-CvString*& cvInternalGlobals::getAnimationOperatorTypes()
+CvString*& CvGlobals::getAnimationOperatorTypes()
 {
 	return m_paszAnimationOperatorTypes;
 }
 
-CvString& cvInternalGlobals::getAnimationOperatorTypes(AnimationOperatorTypes e)
+CvString& CvGlobals::getAnimationOperatorTypes(AnimationOperatorTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumAnimationOperatorTypes());
 	return m_paszAnimationOperatorTypes[e];
 }
 
-CvString*& cvInternalGlobals::getFunctionTypes()
+CvString*& CvGlobals::getFunctionTypes()
 {
 	return m_paszFunctionTypes;
 }
 
-CvString& cvInternalGlobals::getFunctionTypes(FunctionTypes e)
+CvString& CvGlobals::getFunctionTypes(FunctionTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < NUM_FUNC_TYPES);
 	return m_paszFunctionTypes[e];
 }
 
-int& cvInternalGlobals::getNumFlavorTypes()
+int& CvGlobals::getNumFlavorTypes()
 {
 	return m_iNumFlavorTypes;
 }
 
-CvString*& cvInternalGlobals::getFlavorTypes()
+CvString*& CvGlobals::getFlavorTypes()
 {
 	return m_paszFlavorTypes;
 }
 
-CvString& cvInternalGlobals::getFlavorTypes(FlavorTypes e)
+CvString& CvGlobals::getFlavorTypes(FlavorTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumFlavorTypes());
 	return m_paszFlavorTypes[e];
 }
 
-int& cvInternalGlobals::getNumArtStyleTypes()
+int& CvGlobals::getNumArtStyleTypes()
 {
 	return m_iNumArtStyleTypes;
 }
 
-CvString*& cvInternalGlobals::getArtStyleTypes()
+CvString*& CvGlobals::getArtStyleTypes()
 {
 	return m_paszArtStyleTypes;
 }
 
-CvString& cvInternalGlobals::getArtStyleTypes(ArtStyleTypes e)
+CvString& CvGlobals::getArtStyleTypes(ArtStyleTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < GC.getNumArtStyleTypes());
 	return m_paszArtStyleTypes[e];
 }
 
-int cvInternalGlobals::getNumUnitArtStyleTypeInfos() const
+int CvGlobals::getNumUnitArtStyleTypeInfos() const
 {
 	return (int)m_paUnitArtStyleTypeInfo.size();
 }
 
-CvUnitArtStyleTypeInfo& cvInternalGlobals::getUnitArtStyleTypeInfo(UnitArtStyleTypes eUnitArtStyleTypeNum) const
+CvUnitArtStyleTypeInfo& CvGlobals::getUnitArtStyleTypeInfo(UnitArtStyleTypes eUnitArtStyleTypeNum) const
 {
 	FAssert(eUnitArtStyleTypeNum > -1);
 	FAssert(eUnitArtStyleTypeNum < GC.getNumUnitArtStyleTypeInfos());
 	return *(m_paUnitArtStyleTypeInfo[eUnitArtStyleTypeNum]);
 }
 
-int& cvInternalGlobals::getNumCitySizeTypes()
+int& CvGlobals::getNumCitySizeTypes()
 {
 	return m_iNumCitySizeTypes;
 }
 
-CvString*& cvInternalGlobals::getCitySizeTypes()
+CvString*& CvGlobals::getCitySizeTypes()
 {
 	return m_paszCitySizeTypes;
 }
 
-CvString& cvInternalGlobals::getCitySizeTypes(int i)
+CvString& CvGlobals::getCitySizeTypes(int i)
 {
 	FAssertMsg(i < getNumCitySizeTypes(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_paszCitySizeTypes[i];
 }
 
-CvString*& cvInternalGlobals::getContactTypes()
+CvString*& CvGlobals::getContactTypes()
 {
 	return m_paszContactTypes;
 }
 
-CvString& cvInternalGlobals::getContactTypes(ContactTypes e)
+CvString& CvGlobals::getContactTypes(ContactTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < NUM_CONTACT_TYPES);
 	return m_paszContactTypes[e];
 }
 
-CvString*& cvInternalGlobals::getDiplomacyPowerTypes()
+CvString*& CvGlobals::getDiplomacyPowerTypes()
 {
 	return m_paszDiplomacyPowerTypes;
 }
 
-CvString& cvInternalGlobals::getDiplomacyPowerTypes(DiplomacyPowerTypes e)
+CvString& CvGlobals::getDiplomacyPowerTypes(DiplomacyPowerTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < NUM_DIPLOMACYPOWER_TYPES);
 	return m_paszDiplomacyPowerTypes[e];
 }
 
-CvString*& cvInternalGlobals::getAutomateTypes()
+CvString*& CvGlobals::getAutomateTypes()
 {
 	return m_paszAutomateTypes;
 }
 
-CvString& cvInternalGlobals::getAutomateTypes(AutomateTypes e)
+CvString& CvGlobals::getAutomateTypes(AutomateTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < NUM_AUTOMATE_TYPES);
 	return m_paszAutomateTypes[e];
 }
 
-CvString*& cvInternalGlobals::getDirectionTypes()
+CvString*& CvGlobals::getDirectionTypes()
 {
 	return m_paszDirectionTypes;
 }
 
-CvString& cvInternalGlobals::getDirectionTypes(AutomateTypes e)
+CvString& CvGlobals::getDirectionTypes(AutomateTypes e)
 {
 	FAssert(e > -1);
 	FAssert(e < NUM_AUTOMATE_TYPES);
 	return m_paszDirectionTypes[e];
 }
 
-int cvInternalGlobals::getNumPropertyInfos() const
+int CvGlobals::getNumPropertyInfos() const
 {
 	return (int)m_paPropertyInfo.size();
 }
 
-CvPropertyInfo& cvInternalGlobals::getPropertyInfo(PropertyTypes ePropertyNum) const
+CvPropertyInfo& CvGlobals::getPropertyInfo(PropertyTypes ePropertyNum) const
 {
 	FAssert(ePropertyNum > -1);
 	FAssert(ePropertyNum < GC.getNumPropertyInfos());
 	return *(m_paPropertyInfo[ePropertyNum]);
 }
 
-int cvInternalGlobals::getNumOutcomeInfos() const
+int CvGlobals::getNumOutcomeInfos() const
 {
 	return (int)m_paOutcomeInfo.size();
 }
 
-CvOutcomeInfo& cvInternalGlobals::getOutcomeInfo(OutcomeTypes eOutcomeNum) const
+CvOutcomeInfo& CvGlobals::getOutcomeInfo(OutcomeTypes eOutcomeNum) const
 {
 	FAssert(eOutcomeNum > -1);
 	FAssert(eOutcomeNum < GC.getNumOutcomeInfos());
 	return *(m_paOutcomeInfo[eOutcomeNum]);
 }
 
-int& cvInternalGlobals::getNumFootstepAudioTypes()
+int& CvGlobals::getNumFootstepAudioTypes()
 {
 	return m_iNumFootstepAudioTypes;
 }
 
-CvString*& cvInternalGlobals::getFootstepAudioTypes()
+CvString*& CvGlobals::getFootstepAudioTypes()
 {
 	return m_paszFootstepAudioTypes;
 }
 
-CvString& cvInternalGlobals::getFootstepAudioTypes(int i)
+CvString& CvGlobals::getFootstepAudioTypes(int i)
 {
 	FAssertMsg(i < getNumFootstepAudioTypes(), "Index out of bounds");
 	FAssertMsg(i > -1, "Index out of bounds");
 	return m_paszFootstepAudioTypes[i];
 }
 
-int cvInternalGlobals::getFootstepAudioTypeByTag(const CvString strTag) const
+int CvGlobals::getFootstepAudioTypeByTag(const CvString strTag) const
 {
 	if (strTag.GetLength() > 0)
 	{
@@ -2606,12 +2586,12 @@ int cvInternalGlobals::getFootstepAudioTypeByTag(const CvString strTag) const
 	return -1;
 }
 
-CvString*& cvInternalGlobals::getFootstepAudioTags()
+CvString*& CvGlobals::getFootstepAudioTags()
 {
 	return m_paszFootstepAudioTags;
 }
 
-CvString& cvInternalGlobals::getFootstepAudioTags(int i) const
+CvString& CvGlobals::getFootstepAudioTags(int i) const
 {
 	static CvString* emptyString = NULL;
 
@@ -2624,29 +2604,24 @@ CvString& cvInternalGlobals::getFootstepAudioTags(int i) const
 	return m_paszFootstepAudioTags ? m_paszFootstepAudioTags[i] : *emptyString;
 }
 
-void cvInternalGlobals::setCurrentXMLFile(const TCHAR* szFileName)
+void CvGlobals::setCurrentXMLFile(const TCHAR* szFileName)
 {
 	m_szCurrentXMLFile = szFileName;
 }
 
-const CvString& cvInternalGlobals::getCurrentXMLFile() const
+const CvString& CvGlobals::getCurrentXMLFile() const
 {
 	return m_szCurrentXMLFile;
 }
 
-FVariableSystem* cvInternalGlobals::getDefinesVarSystem() const
-{
-	return m_VarSystem;
-}
-
-void cvInternalGlobals::cacheEnumGlobals()
+void CvGlobals::cacheEnumGlobals()
 {
 #define CACHE_ENUM_GLOBAL_DEFINE(dataType, VAR) \
 	m_##VAR = getDefineINT(#VAR);
 	DO_FOR_EACH_ENUM_GLOBAL_DEFINE(CACHE_ENUM_GLOBAL_DEFINE)
 }
 
-void cvInternalGlobals::cacheGlobals()
+void CvGlobals::cacheGlobals()
 {
 	OutputDebugString("Caching Globals: Start/n");
 
@@ -2699,7 +2674,7 @@ void cvInternalGlobals::cacheGlobals()
 /*                                                                                              */
 /* Return true/false from                                                                       */
 /************************************************************************************************/
-bool cvInternalGlobals::getDefineBOOL( const char * szName ) const
+bool CvGlobals::getDefineBOOL( const char * szName ) const
 {
 	bool bReturn = false;
 	bool success = GC.getDefinesVarSystem()->GetValue( szName, bReturn );
@@ -2715,7 +2690,7 @@ bool cvInternalGlobals::getDefineBOOL( const char * szName ) const
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-int cvInternalGlobals::getDefineINT( const char * szName, const int iDefault ) const
+int CvGlobals::getDefineINT( const char * szName, const int iDefault ) const
 {
 	int iReturn = 0;
 
@@ -2731,7 +2706,7 @@ int cvInternalGlobals::getDefineINT( const char * szName, const int iDefault ) c
 /************************************************************************************************/
 
 
-int cvInternalGlobals::getDefineINT( const char * szName ) const
+int CvGlobals::getDefineINT( const char * szName ) const
 {
 	int iReturn = 0;
 	bool success = GC.getDefinesVarSystem()->GetValue( szName, iReturn );
@@ -2739,7 +2714,7 @@ int cvInternalGlobals::getDefineINT( const char * szName ) const
 	return iReturn;
 }
 
-float cvInternalGlobals::getDefineFLOAT( const char * szName ) const
+float CvGlobals::getDefineFLOAT( const char * szName ) const
 {
 	float fReturn = 0;
 	bool success = GC.getDefinesVarSystem()->GetValue( szName, fReturn );
@@ -2747,7 +2722,7 @@ float cvInternalGlobals::getDefineFLOAT( const char * szName ) const
 	return fReturn;
 }
 
-const char * cvInternalGlobals::getDefineSTRING( const char * szName ) const
+const char * CvGlobals::getDefineSTRING( const char * szName ) const
 {
 	const char * szReturn = NULL;
 	bool success = GC.getDefinesVarSystem()->GetValue( szName, szReturn );
@@ -2759,7 +2734,7 @@ const char * cvInternalGlobals::getDefineSTRING( const char * szName ) const
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-void cvInternalGlobals::setDefineINT( const char * szName, int iValue, bool bUpdate )
+void CvGlobals::setDefineINT( const char * szName, int iValue, bool bUpdate )
 {
 	if (getDefineINT(szName) != iValue)
 	{
@@ -2772,7 +2747,7 @@ void cvInternalGlobals::setDefineINT( const char * szName, int iValue, bool bUpd
 	}
 }
 
-void cvInternalGlobals::setDefineFLOAT( const char * szName, float fValue, bool bUpdate )
+void CvGlobals::setDefineFLOAT( const char * szName, float fValue, bool bUpdate )
 {
 	if (getDefineFLOAT(szName) != fValue)
 	{
@@ -2784,7 +2759,7 @@ void cvInternalGlobals::setDefineFLOAT( const char * szName, float fValue, bool 
 	}
 }
 
-void cvInternalGlobals::setDefineSTRING( const char * szName, const char * szValue, bool bUpdate )
+void CvGlobals::setDefineSTRING( const char * szName, const char * szValue, bool bUpdate )
 {
 	if (getDefineSTRING(szName) != szValue)
 	{
@@ -2799,7 +2774,7 @@ void cvInternalGlobals::setDefineSTRING( const char * szName, const char * szVal
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
 
-float cvInternalGlobals::getPLOT_SIZE() const
+float CvGlobals::getPLOT_SIZE()
 {
 	CvMapExternal& kMap = GC.getMapExternal();
 	kMap.mapCoordinates(true);
@@ -2807,17 +2782,17 @@ float cvInternalGlobals::getPLOT_SIZE() const
 	return m_fPLOT_SIZE;
 }
 
-void cvInternalGlobals::setDLLProfiler(FProfiler* prof)
+void CvGlobals::setDLLProfiler(FProfiler* prof)
 {
 	m_Profiler = prof;
 }
 
-FProfiler* cvInternalGlobals::getDLLProfiler() const
+FProfiler* CvGlobals::getDLLProfiler() const
 {
 	return m_Profiler;
 }
 
-void cvInternalGlobals::enableDLLProfiler(bool bEnable)
+void CvGlobals::enableDLLProfiler(bool bEnable)
 {
 	m_bDLLProfiler = bEnable;
 
@@ -2829,142 +2804,142 @@ void cvInternalGlobals::enableDLLProfiler(bool bEnable)
 #endif
 }
 
-bool cvInternalGlobals::isDLLProfilerEnabled() const
+bool CvGlobals::isDLLProfilerEnabled() const
 {
 	return m_bDLLProfiler;
 }
 
-const char* cvInternalGlobals::alternateProfileSampleName() const
+const char* CvGlobals::alternateProfileSampleName() const
 {
 	return m_szAlternateProfilSampleName;
 }
 
-bool cvInternalGlobals::readBuildingInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readBuildingInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paBuildingInfo, "CvBuildingInfo");
 }
 
-void cvInternalGlobals::writeBuildingInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeBuildingInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paBuildingInfo);
 }
 
-bool cvInternalGlobals::readTechInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readTechInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paTechInfo, "CvTechInfo");
 }
 
-void cvInternalGlobals::writeTechInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeTechInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paTechInfo);
 }
 
-bool cvInternalGlobals::readUnitInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readUnitInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paUnitInfo, "CvUnitInfo");
 }
 
-void cvInternalGlobals::writeUnitInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeUnitInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paUnitInfo);
 }
 
-bool cvInternalGlobals::readLeaderHeadInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readLeaderHeadInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paLeaderHeadInfo, "CvLeaderHeadInfo");
 }
 
-void cvInternalGlobals::writeLeaderHeadInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeLeaderHeadInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paLeaderHeadInfo);
 }
 
-bool cvInternalGlobals::readCivilizationInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readCivilizationInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paCivilizationInfo, "CvCivilizationInfo");
 }
 
-void cvInternalGlobals::writeCivilizationInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeCivilizationInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paCivilizationInfo);
 }
 
-bool cvInternalGlobals::readPromotionInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readPromotionInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paPromotionInfo, "CvPromotionInfo");
 }
 
-void cvInternalGlobals::writePromotionInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writePromotionInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paPromotionInfo);
 }
 
-bool cvInternalGlobals::readDiplomacyInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readDiplomacyInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paDiplomacyInfo, "CvDiplomacyInfo");
 }
 
-void cvInternalGlobals::writeDiplomacyInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeDiplomacyInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paDiplomacyInfo);
 }
 
-bool cvInternalGlobals::readCivicInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readCivicInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paCivicInfo, "CvCivicInfo");
 }
 
-void cvInternalGlobals::writeCivicInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeCivicInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paCivicInfo);
 }
 
-bool cvInternalGlobals::readHandicapInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readHandicapInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paHandicapInfo, "CvHandicapInfo");
 }
 
-void cvInternalGlobals::writeHandicapInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeHandicapInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paHandicapInfo);
 }
 
-bool cvInternalGlobals::readBonusInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readBonusInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paBonusInfo, "CvBonusInfo");
 }
 
-void cvInternalGlobals::writeBonusInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeBonusInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paBonusInfo);
 }
 
-bool cvInternalGlobals::readImprovementInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readImprovementInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paImprovementInfo, "CvImprovementInfo");
 }
 
-void cvInternalGlobals::writeImprovementInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeImprovementInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paImprovementInfo);
 }
 
-bool cvInternalGlobals::readEventInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readEventInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paEventInfo, "CvEventInfo");
 }
 
-void cvInternalGlobals::writeEventInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeEventInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paEventInfo);
 }
 
-bool cvInternalGlobals::readEventTriggerInfoArray(FDataStreamBase* pStream)
+bool CvGlobals::readEventTriggerInfoArray(FDataStreamBase* pStream)
 {
 	return readInfoArray(pStream, m_paEventTriggerInfo, "CvEventTriggerInfo");
 }
 
-void cvInternalGlobals::writeEventTriggerInfoArray(FDataStreamBase* pStream)
+void CvGlobals::writeEventTriggerInfoArray(FDataStreamBase* pStream)
 {
 	writeInfoArray(pStream, m_paEventTriggerInfo);
 }
@@ -2974,7 +2949,7 @@ void cvInternalGlobals::writeEventTriggerInfoArray(FDataStreamBase* pStream)
 // Global Types Hash Map
 //
 
-int cvInternalGlobals::getTypesEnum(const char* szType) const
+int CvGlobals::getTypesEnum(const char* szType) const
 {
 	FAssertMsg(szType, "null type string");
 	TypesMap::const_iterator it = m_typesMap.find(szType);
@@ -2987,7 +2962,7 @@ int cvInternalGlobals::getTypesEnum(const char* szType) const
 	return -1;
 }
 
-void cvInternalGlobals::setTypesEnum(const char* szType, int iEnum)
+void CvGlobals::setTypesEnum(const char* szType, int iEnum)
 {
 	FAssertMsg(szType, "null type string");
 	FAssertMsg(m_typesMap.find(szType)==m_typesMap.end(), "types entry already exists");
@@ -2995,7 +2970,7 @@ void cvInternalGlobals::setTypesEnum(const char* szType, int iEnum)
 }
 
 
-void cvInternalGlobals::deleteInfoArrays()
+void CvGlobals::deleteInfoArrays()
 {
 	deleteInfoArray(m_paBuildingInfo);
 	deleteInfoArray(m_paSpecialBuildingInfo);
@@ -3149,7 +3124,7 @@ void cvInternalGlobals::deleteInfoArrays()
 /*                                                                                              */
 /* Savegame compatibility                                                                       */
 /************************************************************************************************/
-void cvInternalGlobals::doResetInfoClasses(int iNumSaveGameVector, std::vector<CvString> m_aszSaveGameVector)
+void CvGlobals::doResetInfoClasses(int iNumSaveGameVector, std::vector<CvString> m_aszSaveGameVector)
 {
 	// Store stuff being set by the exe in temp arrays
 	StoreExeSettings();
@@ -3182,7 +3157,7 @@ void cvInternalGlobals::doResetInfoClasses(int iNumSaveGameVector, std::vector<C
 	// Load stuff being set by the exe from temp arrays
 	LoadExeSettings();
 }
-void cvInternalGlobals::StoreExeSettings()
+void CvGlobals::StoreExeSettings()
 {
 	// Chars from TGA files, CommerceInfo
 	m_iStoreExeSettingsCommerceInfo =  new int[NUM_COMMERCE_TYPES];
@@ -3215,7 +3190,7 @@ void cvInternalGlobals::StoreExeSettings()
 		m_iStoreExeSettingsBonusInfo[i] = getBonusInfo((BonusTypes)i).getChar();
 	}
 }
-void cvInternalGlobals::LoadExeSettings()
+void CvGlobals::LoadExeSettings()
 {
 	// Chars from TGA files, CommerceInfo
 	for ( int i = 0; i < NUM_COMMERCE_TYPES; i++ )
@@ -3257,7 +3232,7 @@ void cvInternalGlobals::LoadExeSettings()
 // Global Infos Hash Map
 //
 
-int cvInternalGlobals::getInfoTypeForString(const char* szType, bool hideAssert) const
+int CvGlobals::getInfoTypeForString(const char* szType, bool hideAssert) const
 {
 	FAssertMsg(szType, "null info type string");
 	InfosMap::const_iterator it = m_infosMap.find(szType);
@@ -3278,7 +3253,7 @@ int cvInternalGlobals::getInfoTypeForString(const char* szType, bool hideAssert)
 	return -1;
 }
 
-bool cvInternalGlobals::hasInfoTypeForString(const char* szType, bool hideAssert) const
+bool CvGlobals::hasInfoTypeForString(const char* szType, bool hideAssert) const
 {
 	FAssertMsg(szType, "null info type string");
 	InfosMap::const_iterator it = m_infosMap.find(szType);
@@ -3301,7 +3276,7 @@ bool cvInternalGlobals::hasInfoTypeForString(const char* szType, bool hideAssert
 	return false;
 }
 
-void cvInternalGlobals::LogMissingType( const char* szType ) const
+void CvGlobals::LogMissingType( const char* szType ) const
 {
 	CvString szError;
 	szError.Format("info type '%s' not found, Current XML file is: %s", szType, GC.getCurrentXMLFile().GetCString());
@@ -3314,7 +3289,7 @@ void cvInternalGlobals::LogMissingType( const char* szType ) const
 /* Rearranging the infos map                                                                    */
 /************************************************************************************************/
 /*
-void cvInternalGlobals::setInfoTypeFromString(const char* szType, int idx)
+void CvGlobals::setInfoTypeFromString(const char* szType, int idx)
 {
 	FAssertMsg(szType, "null info type string");
 #ifdef _DEBUG
@@ -3325,7 +3300,7 @@ void cvInternalGlobals::setInfoTypeFromString(const char* szType, int idx)
 	m_infosMap[szType] = idx;
 }
 */
-void cvInternalGlobals::setInfoTypeFromString(const char* szType, int idx)
+void CvGlobals::setInfoTypeFromString(const char* szType, int idx)
 {
 	FAssertMsg(szType, "null info type string");
 #ifdef _DEBUG
@@ -3337,7 +3312,7 @@ void cvInternalGlobals::setInfoTypeFromString(const char* szType, int idx)
 }
 
 // returns the ID if it exists, otherwise assigns a new ID
-int cvInternalGlobals::getOrCreateInfoTypeForString(const char* szType)
+int CvGlobals::getOrCreateInfoTypeForString(const char* szType)
 {
 	int iID = getInfoTypeForString(szType, true);
 	if (iID < 0)
@@ -3349,13 +3324,13 @@ int cvInternalGlobals::getOrCreateInfoTypeForString(const char* szType)
 	return iID;
 }
 
-void cvInternalGlobals::logInfoTypeMap(const char* tagMsg)
+void CvGlobals::logInfoTypeMap(const char* tagMsg)
 {
 	if (GC.isXMLLogging())
 	{
 		CvString szDebugBuffer;
 		szDebugBuffer.Format(" === Info Type Map Dump BEGIN: %s ===", tagMsg);
-		gDLL->logMsg("cvInternalGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
+		gDLL->logMsg("CvGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
 
 		int iCnt = 0;
 		std::vector<std::string> vInfoMapKeys;
@@ -3372,21 +3347,21 @@ void cvInternalGlobals::logInfoTypeMap(const char* tagMsg)
 			std::string sKey = *it;
 			int iVal = m_infosMap[sKey.c_str()];
 			szDebugBuffer.Format(" * %i --  %s: %i", iCnt, sKey.c_str(), iVal);
-			gDLL->logMsg("cvInternalGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
+			gDLL->logMsg("CvGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
 			iCnt++;
 		}
 
 		szDebugBuffer.Format("Entries in total: %i", iCnt);
-		gDLL->logMsg("cvInternalGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
+		gDLL->logMsg("CvGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
 		szDebugBuffer.Format(" === Info Type Map Dump END: %s ===", tagMsg);
-		gDLL->logMsg("cvInternalGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
+		gDLL->logMsg("CvGlobals_logInfoTypeMap.log", szDebugBuffer.c_str());
 	}
 }
 /************************************************************************************************/
 /* SORT_ALPHABET                           END                                                  */
 /************************************************************************************************/
 
-void cvInternalGlobals::infoTypeFromStringReset()
+void CvGlobals::infoTypeFromStringReset()
 {
 	for (InfosMap::const_iterator it = m_infosMap.begin(); it != m_infosMap.end(); ++it)
 	{
@@ -3396,13 +3371,13 @@ void cvInternalGlobals::infoTypeFromStringReset()
 	m_infosMap.clear();
 }
 
-void cvInternalGlobals::addToInfosVectors(void *infoVector)
+void CvGlobals::addToInfosVectors(void *infoVector)
 {
 	std::vector<CvInfoBase *> *infoBaseVector = (std::vector<CvInfoBase *> *) infoVector;
 	m_aInfoVectors.push_back(infoBaseVector);
 }
 
-void cvInternalGlobals::infosReset()
+void CvGlobals::infosReset()
 {
 	for(int i=0;i<(int)m_aInfoVectors.size();i++)
 	{
@@ -3415,7 +3390,7 @@ void cvInternalGlobals::infosReset()
 /***** Parallel Maps - Begin *****/
 /*********************************/
 
-void cvInternalGlobals::switchMap(MapTypes eMap)
+void CvGlobals::switchMap(MapTypes eMap)
 {	
 	//bool bInitial = false;
 
@@ -3427,33 +3402,33 @@ void cvInternalGlobals::switchMap(MapTypes eMap)
 	GC.getMap().afterSwitch();
 }
 
-CvViewport* cvInternalGlobals::getCurrentViewport() const
+CvViewport* CvGlobals::getCurrentViewport() const
 {
 	return m_maps[GC.getGame().getCurrentMap()]->getCurrentViewport();
 }
 
-int	cvInternalGlobals::getViewportSizeX() const
+int	CvGlobals::getViewportSizeX() const
 {
 	return GC.viewportsEnabled() ? std::min(m_iViewportSizeX, m_maps[GC.getGame().getCurrentMap()]->getGridWidth()) : m_maps[GC.getGame().getCurrentMap()]->getGridWidth();
 }
 
-int	cvInternalGlobals::getViewportSizeY() const
+int	CvGlobals::getViewportSizeY() const
 {
 	return GC.viewportsEnabled() ? std::min(m_iViewportSizeY, m_maps[GC.getGame().getCurrentMap()]->getGridHeight()) : m_maps[GC.getGame().getCurrentMap()]->getGridHeight();
 }
 
-int	cvInternalGlobals::getViewportSelectionBorder() const
+int	CvGlobals::getViewportSelectionBorder() const
 {
 	return m_iViewportFocusBorder;
 }
 
-int	cvInternalGlobals::getViewportCenteringBorder() const
+int	CvGlobals::getViewportCenteringBorder() const
 {
 	return m_iViewportCenterOnSelectionCenterBorder;
 }
 
 
-CvMapExternal& cvInternalGlobals::getMapExternal() const
+CvMapExternal& CvGlobals::getMapExternal() const
 {
 	CvViewport* currentViewport = getCurrentViewport();
 
@@ -3462,21 +3437,21 @@ CvMapExternal& cvInternalGlobals::getMapExternal() const
 	return *(currentViewport->getProxy());
 }
 
-CvMap& cvInternalGlobals::getMapByIndex(MapTypes eIndex) const
+CvMap& CvGlobals::getMapByIndex(MapTypes eIndex) const
 {
 	FAssert(eIndex > NO_MAP);
 	FAssert(eIndex < GC.getNumMapInfos());
 	return *m_maps[eIndex];
 }
 
-void cvInternalGlobals::clearSigns()
+void CvGlobals::clearSigns()
 {
 	gDLL->getEngineIFace()->clearSigns();
 
 	m_bSignsCleared = true;
 }
 
-void cvInternalGlobals::reprocessSigns()
+void CvGlobals::reprocessSigns()
 {
 	if ( m_bSignsCleared )
 	{
@@ -3485,7 +3460,7 @@ void cvInternalGlobals::reprocessSigns()
 	}
 }
 
-void cvInternalGlobals::initializeMap(MapTypes eMap)
+void CvGlobals::initializeMap(MapTypes eMap)
 {
 	OutputDebugString("Initializing Map: Start\n");
 	while ( m_maps.size() < (size_t)eMap )
@@ -3500,7 +3475,7 @@ void cvInternalGlobals::initializeMap(MapTypes eMap)
 	OutputDebugString("Initializing Map: End\n");
 }
 
-bool cvInternalGlobals::mapInitialized(MapTypes eMap) const
+bool CvGlobals::mapInitialized(MapTypes eMap) const
 {
 	return (m_maps.size() > (size_t)eMap && m_maps[eMap] != NULL);
 }
@@ -3511,13 +3486,13 @@ bool cvInternalGlobals::mapInitialized(MapTypes eMap) const
 /*******************************/
 
 
-void cvInternalGlobals::addDelayedResolution(int *pType, CvString szString)
+void CvGlobals::addDelayedResolution(int *pType, CvString szString)
 {
 	m_delayedResolutionMap[pType] = std::make_pair(szString,  GC.getCurrentXMLFile());
 	//m_delayedResolutionMap.insert(DelayedResolutionMap::value_type(pType, szString));
 }
 
-CvString* cvInternalGlobals::getDelayedResolution(int *pType)
+CvString* CvGlobals::getDelayedResolution(int *pType)
 {
 	DelayedResolutionMap::iterator it = m_delayedResolutionMap.find(pType);
 	if (it == m_delayedResolutionMap.end())
@@ -3527,12 +3502,12 @@ CvString* cvInternalGlobals::getDelayedResolution(int *pType)
 	return &(it->second.first);
 }
 
-void cvInternalGlobals::removeDelayedResolution(int *pType)
+void CvGlobals::removeDelayedResolution(int *pType)
 {
 	m_delayedResolutionMap.erase(pType);
 }
 
-void cvInternalGlobals::copyNonDefaultDelayedResolution(int* pTypeSelf, int* pTypeOther)
+void CvGlobals::copyNonDefaultDelayedResolution(int* pTypeSelf, int* pTypeOther)
 {
 	if (getDelayedResolution(pTypeSelf) == NULL)
 	{
@@ -3544,7 +3519,7 @@ void cvInternalGlobals::copyNonDefaultDelayedResolution(int* pTypeSelf, int* pTy
 	}
 }
 	
-void cvInternalGlobals::resolveDelayedResolution()
+void CvGlobals::resolveDelayedResolution()
 {
 	for (DelayedResolutionMap::iterator it = m_delayedResolutionMap.begin(); it != m_delayedResolutionMap.end(); ++it)
 	{
@@ -3554,53 +3529,52 @@ void cvInternalGlobals::resolveDelayedResolution()
 	m_delayedResolutionMap.clear();
 }
 
-int cvInternalGlobals::getNumMissionInfos() const
+int CvGlobals::getNumMissionInfos() const
 { 
-#ifdef FIXED_MISSION_NUMBER
-	return NUM_MISSION_TYPES;
-#else
 	return (int) m_paMissionInfo.size();
-#endif
 }
 
-inline CvMap& cvInternalGlobals::getMap() const
+inline CvMap& CvGlobals::getMap()
 {
 	return *m_maps[GC.getGame().getCurrentMap()];
 }
 
-CvGameAI* cvInternalGlobals::getGamePointer() { return m_game; }
+inline const CvMap& CvGlobals::getMap() const
+{
+	return *m_maps[GC.getGame().getCurrentMap()];
+}
 
-bool cvInternalGlobals::IsGraphicsInitialized() const { return m_bGraphicsInitialized; }
-void cvInternalGlobals::SetGraphicsInitialized(bool bVal) { m_bGraphicsInitialized = bVal; }
-void cvInternalGlobals::setInterface(CvInterface* pVal) { m_interface = pVal; }
-void cvInternalGlobals::setDiplomacyScreen(CvDiplomacyScreen* pVal) { m_diplomacyScreen = pVal; }
-void cvInternalGlobals::setMPDiplomacyScreen(CMPDiplomacyScreen* pVal) { m_mpDiplomacyScreen = pVal; }
-void cvInternalGlobals::setMessageQueue(CMessageQueue* pVal) { m_messageQueue = pVal; }
-void cvInternalGlobals::setHotJoinMessageQueue(CMessageQueue* pVal) { m_hotJoinMsgQueue = pVal; }
-void cvInternalGlobals::setMessageControl(CMessageControl* pVal) { m_messageControl = pVal; }
-void cvInternalGlobals::setSetupData(CvSetupData* pVal) { m_setupData = pVal; }
-void cvInternalGlobals::setMessageCodeTranslator(CvMessageCodeTranslator* pVal) { m_messageCodes = pVal; }
-void cvInternalGlobals::setDropMgr(CvDropMgr* pVal) { m_dropMgr = pVal; }
-void cvInternalGlobals::setPortal(CvPortal* pVal) { m_portal = pVal; }
-void cvInternalGlobals::setStatsReport(CvStatsReporter* pVal) { m_statsReporter = pVal; }
-void cvInternalGlobals::setPathFinder(FAStar* pVal) { m_pathFinder = pVal; }
-void cvInternalGlobals::setInterfacePathFinder(FAStar* pVal) { m_interfacePathFinder = pVal; }
-void cvInternalGlobals::setStepFinder(FAStar* pVal) { m_stepFinder = pVal; }
-void cvInternalGlobals::setRouteFinder(FAStar* pVal) { m_routeFinder = pVal; }
-void cvInternalGlobals::setBorderFinder(FAStar* pVal) { m_borderFinder = pVal; }
-void cvInternalGlobals::setAreaFinder(FAStar* pVal) { m_areaFinder = pVal; }
-void cvInternalGlobals::setPlotGroupFinder(FAStar* pVal) { m_plotGroupFinder = pVal; }
-CvDLLUtilityIFaceBase* cvInternalGlobals::getDLLIFaceNonInl() { return g_DLL; }
+bool CvGlobals::IsGraphicsInitialized() const { return m_bGraphicsInitialized; }
+void CvGlobals::SetGraphicsInitialized(bool bVal) { m_bGraphicsInitialized = bVal; }
+void CvGlobals::setInterface(CvInterface* pVal) { m_interface = pVal; }
+void CvGlobals::setDiplomacyScreen(CvDiplomacyScreen* pVal) { m_diplomacyScreen = pVal; }
+void CvGlobals::setMPDiplomacyScreen(CMPDiplomacyScreen* pVal) { m_mpDiplomacyScreen = pVal; }
+void CvGlobals::setMessageQueue(CMessageQueue* pVal) { m_messageQueue = pVal; }
+void CvGlobals::setHotJoinMessageQueue(CMessageQueue* pVal) { m_hotJoinMsgQueue = pVal; }
+void CvGlobals::setMessageControl(CMessageControl* pVal) { m_messageControl = pVal; }
+void CvGlobals::setSetupData(CvSetupData* pVal) { m_setupData = pVal; }
+void CvGlobals::setMessageCodeTranslator(CvMessageCodeTranslator* pVal) { m_messageCodes = pVal; }
+void CvGlobals::setDropMgr(CvDropMgr* pVal) { m_dropMgr = pVal; }
+void CvGlobals::setPortal(CvPortal* pVal) { m_portal = pVal; }
+void CvGlobals::setStatsReport(CvStatsReporter* pVal) { m_statsReporter = pVal; }
+void CvGlobals::setPathFinder(FAStar* pVal) { m_pathFinder = pVal; }
+void CvGlobals::setInterfacePathFinder(FAStar* pVal) { m_interfacePathFinder = pVal; }
+void CvGlobals::setStepFinder(FAStar* pVal) { m_stepFinder = pVal; }
+void CvGlobals::setRouteFinder(FAStar* pVal) { m_routeFinder = pVal; }
+void CvGlobals::setBorderFinder(FAStar* pVal) { m_borderFinder = pVal; }
+void CvGlobals::setAreaFinder(FAStar* pVal) { m_areaFinder = pVal; }
+void CvGlobals::setPlotGroupFinder(FAStar* pVal) { m_plotGroupFinder = pVal; }
+CvDLLUtilityIFaceBase* CvGlobals::getDLLIFaceNonInl() { return g_DLL; }
 
 // BUG - BUG Info - start
 static bool bBugInitCalled = false;
 
-bool cvInternalGlobals::bugInitCalled() const
+bool CvGlobals::bugInitCalled() const
 {
 	return bBugInitCalled;
 }
 
-void cvInternalGlobals::setIsBug(bool bIsBug)
+void CvGlobals::setIsBug(bool bIsBug)
 {
 	bBugInitCalled = true;
 
@@ -3643,23 +3617,23 @@ void cvInternalGlobals::setIsBug(bool bIsBug)
 /* Efficiency, Options                                                                          */
 /************************************************************************************************/
 // BBAI Options
-bool cvInternalGlobals::getBBAI_AIR_COMBAT() const
+bool CvGlobals::getBBAI_AIR_COMBAT() const
 {
 	return m_bBBAI_AIR_COMBAT;
 }
 
-bool cvInternalGlobals::getBBAI_HUMAN_VASSAL_WAR_BUILD() const
+bool CvGlobals::getBBAI_HUMAN_VASSAL_WAR_BUILD() const
 {
 	return m_bBBAI_HUMAN_VASSAL_WAR_BUILD;
 }
 
-bool cvInternalGlobals::getBBAI_HUMAN_AS_VASSAL_OPTION() const
+bool CvGlobals::getBBAI_HUMAN_AS_VASSAL_OPTION() const
 {
 	return m_bBBAI_HUMAN_AS_VASSAL_OPTION;
 }
 
 // Tech Diffusion
-bool cvInternalGlobals::getTECH_DIFFUSION_ENABLE() const
+bool CvGlobals::getTECH_DIFFUSION_ENABLE() const
 {
 	return m_bTECH_DIFFUSION_ENABLE;
 }
@@ -3667,33 +3641,33 @@ bool cvInternalGlobals::getTECH_DIFFUSION_ENABLE() const
 /* BETTER_BTS_AI_MOD                       END                                                  */
 /************************************************************************************************/
 
-void cvInternalGlobals::setXMLLogging(bool bNewVal)
+void CvGlobals::setXMLLogging(bool bNewVal)
 {
 	m_bXMLLogging = bNewVal;
 }
 
-bool cvInternalGlobals::isXMLLogging() const
+bool CvGlobals::isXMLLogging() const
 {
 	return m_bXMLLogging;
 }
 
-void cvInternalGlobals::setGraphicalDetailPagingEnabled(bool bEnabled)
+void CvGlobals::setGraphicalDetailPagingEnabled(bool bEnabled)
 {
 	m_bGraphicalDetailPagingEnabled = bEnabled;
 }
 
-bool cvInternalGlobals::getGraphicalDetailPagingEnabled() const
+bool CvGlobals::getGraphicalDetailPagingEnabled() const
 {
 	return m_bGraphicalDetailPagingEnabled;
 }
 
-int cvInternalGlobals::getGraphicalDetailPageInRange() const
+int CvGlobals::getGraphicalDetailPageInRange() const
 {
 	return std::max(getGame().getXResolution(), getGame().getYResolution())/150;
 }
 
 // calculate asset checksum
-unsigned int cvInternalGlobals::getAssetCheckSum()
+unsigned int CvGlobals::getAssetCheckSum()
 {
 	CvString szLog;
 	unsigned int iSum = 0;
@@ -3707,4 +3681,27 @@ unsigned int cvInternalGlobals::getAssetCheckSum()
 		}
 	}
 	return iSum;
+}
+
+void CvGlobals::setDLLIFace(CvDLLUtilityIFaceBase* pDll)
+{
+	if (pDll != NULL)
+	{
+		FAssertMsg(g_DLL == NULL, "Dll interface already set?");
+
+		OutputDebugString("setDLLIFace()\n");
+		if (gGlobals == NULL)
+		{
+			OutputDebugString("Constructing internal globals\n");
+			gGlobals = new CvGlobals();
+		}
+
+		g_DLL = pDll;
+	}
+	else
+	{
+		FAssertMsg(g_DLL != NULL, "Dll interface not set?");
+		g_DLL = NULL;
+		delete gGlobals;
+	}
 }
