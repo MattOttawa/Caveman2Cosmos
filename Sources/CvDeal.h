@@ -21,14 +21,14 @@ public:
 	void reset(int iID = 0, PlayerTypes eFirstPlayer = NO_PLAYER, PlayerTypes eSecondPlayer = NO_PLAYER);
 	DllExport void kill(bool bKillTeam = true);
 
-	void addTrades(CLinkList<TradeData>* pFirstList, CLinkList<TradeData>* pSecondList, bool bCheckAllowed);
+	void addTrades(const CLinkList<TradeData>* pFirstList, const CLinkList<TradeData>* pSecondList, bool bCheckAllowed);
 
 	void doTurn();
 
 	void verify();
 
 	bool isPeaceDeal() const;
-	bool isPeaceDealBetweenOthers(CLinkList<TradeData>* pFirstList, CLinkList<TradeData>* pSecondList) const;
+	bool isPeaceDealBetweenOthers(const CLinkList<TradeData>* pFirstList, const CLinkList<TradeData>* pSecondList) const;
 	bool isVassalDeal() const;
 	bool isUncancelableVassalDeal(PlayerTypes eByPlayer, CvWString* pszReason = NULL) const;
 	DllExport static bool isVassalTributeDeal(const CLinkList<TradeData>* pList);
@@ -59,9 +59,11 @@ public:
 	const CLinkList<TradeData>* getSecondTrades() const;
 
 	DllExport bool isCancelable(PlayerTypes eByPlayer = NO_PLAYER, CvWString* pszReason = NULL);
-	int turnsToCancel(PlayerTypes eByPlayer = NO_PLAYER);
+	int turnsToCancel(PlayerTypes eByPlayer = NO_PLAYER) const;
 
 	static bool isAnnual(TradeableItems eItem);
+	static bool isSingleOption(TradeableItems eItem);
+	bool isEmbassy() const;
 	DllExport static bool isDual(TradeableItems eItem, bool bExcludePeace = false);
 	DllExport static bool hasData(TradeableItems eItem);
 	DllExport static bool isGold(TradeableItems eItem);
@@ -71,16 +73,6 @@ public:
 	DllExport static TradeableItems getGoldItem();
 	DllExport static TradeableItems getGoldPerTurnItem();
 
-/************************************************************************************************/
-/* Afforess	                  Start		 07/17/10                                               */
-/*                                                                                              */
-/* Advanced Diplomacy                                                                           */
-/************************************************************************************************/
-	static bool isSingleOption(TradeableItems eItem);
-	bool isEmbassy();
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 	void read(FDataStreamBase* pStream);
 	void write(FDataStreamBase* pStream);
 

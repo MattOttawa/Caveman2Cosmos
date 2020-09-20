@@ -584,9 +584,18 @@ public:
 	DllExport CvDeal* getDeal(int iID); // Exposed to Python
 	CvDeal* addDeal();
 	void deleteDeal(int iID);
-	// iteration
-	CvDeal* firstDeal(int *pIterIdx, bool bRev=false) const; // Exposed to Python
-	CvDeal* nextDeal(int *pIterIdx, bool bRev=false) const; // Exposed to Python
+
+	// deal iteration
+	DECLARE_INDEX_ITERATOR(const CvGame, CvDeal, deal_iterator, firstDeal, nextDeal);
+	deal_iterator beginDeals() const { return deal_iterator(this); }
+	deal_iterator endDeals() const { return deal_iterator(); }
+	typedef bst::iterator_range<deal_iterator> deal_range;
+	deal_range deals() const { return deal_range(beginDeals(), endDeals()); }
+
+	// deprecated, use deal_range
+	CvDeal* firstDeal(int *pIterIdx, bool bRev=false) const;
+	// deprecated, use deal_range
+	CvDeal* nextDeal(int *pIterIdx, bool bRev=false) const;
 
 	VoteSelectionData* getVoteSelection(int iID) const;
 	VoteSelectionData* addVoteSelection(VoteSourceTypes eVoteSource);

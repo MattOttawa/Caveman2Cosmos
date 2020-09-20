@@ -973,11 +973,6 @@ void CvPlayerAI::AI_doPeace()
 								FAssertMsg(iI != getID(), "iI is not expected to be equal with getID()");
 								FAssert(GET_PLAYER((PlayerTypes)iI).getTeam() != getTeam());
 
-/************************************************************************************************/
-/* Afforess					  Start		 04/06/10											   */
-/*																							  */
-/*																							  */
-/************************************************************************************************/
 								bool bConsiderPeace;
 								if (GC.getGame().isOption(GAMEOPTION_ADVANCED_DIPLOMACY))
 								{
@@ -989,9 +984,6 @@ void CvPlayerAI::AI_doPeace()
 									bConsiderPeace = (GET_TEAM(getTeam()).AI_getAtWarCounter(GET_PLAYER((PlayerTypes)iI).getTeam()) > 10);
 								}
 								if (bConsiderPeace)
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
 								{
 									if (AI_getContactTimer(((PlayerTypes)iI), CONTACT_PEACE_TREATY) == 0)
 									{
@@ -1019,35 +1011,13 @@ void CvPlayerAI::AI_doPeace()
 													pDiplo->setAIContact(true);
 													pDiplo->setOurOfferList(theirList);
 													pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-													// RevolutionDCM start - new diplomacy option
 													AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-													// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-													// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/
 													abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 												}
 											}
-											else
+											else if (GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).AI_acceptSurrender(getTeam()))
 											{
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					  01/22/09								jdog5000	  */
-/*																							  */
-/* War Strategy AI																			  */
-/************************************************************************************************/
-												if( GET_TEAM(GET_PLAYER((PlayerTypes)iI).getTeam()).AI_acceptSurrender(getTeam()) )
-												{
-													GC.getGame().implementDeal(getID(), ((PlayerTypes)iI), &ourList, &theirList);
-												}
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					   END												  */
-/************************************************************************************************/
+												GC.getGame().implementDeal(getID(), ((PlayerTypes)iI), &ourList, &theirList);
 											}
 										}
 
@@ -1260,18 +1230,7 @@ void CvPlayerAI::AI_doPeace()
 																pDiplo->setAIContact(true);
 																pDiplo->setOurOfferList(theirList);
 																pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																// RevolutionDCM start - new diplomacy option
 																AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/
 																abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 															}
 														}
@@ -11373,21 +11332,16 @@ DenialTypes CvPlayerAI::AI_cityTrade(CvCity* pCity, PlayerTypes ePlayer) const
 
 int CvPlayerAI::AI_stopTradingTradeVal(TeamTypes eTradeTeam, PlayerTypes ePlayer) const
 {
-	CvDeal* pLoopDeal;
-	int iModifier;
-	int iValue;
-	int iLoop;
-
 	FAssertMsg(ePlayer != getID(), "shouldn't call this function on ourselves");
 	FAssertMsg(GET_PLAYER(ePlayer).getTeam() != getTeam(), "shouldn't call this function on ourselves");
 	FAssertMsg(eTradeTeam != getTeam(), "shouldn't call this function on ourselves");
 	FAssertMsg(GET_TEAM(eTradeTeam).isAlive(), "GET_TEAM(eWarTeam).isAlive is expected to be true");
 	FAssertMsg(!atWar(eTradeTeam, GET_PLAYER(ePlayer).getTeam()), "eTeam should be at peace with eWarTeam");
 
-	iValue = (50 + (GC.getGame().getGameTurn() / 2));
+	int iValue = (50 + (GC.getGame().getGameTurn() / 2));
 	iValue += (GET_TEAM(eTradeTeam).getNumCities() * 5);
 
-	iModifier = 0;
+	int iModifier = 0;
 
 	switch (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).AI_getAttitude(eTradeTeam))
 	{
@@ -11428,7 +11382,7 @@ int CvPlayerAI::AI_stopTradingTradeVal(TeamTypes eTradeTeam, PlayerTypes ePlayer
 		iValue *= 3;
 	}
 
-	for(pLoopDeal = GC.getGame().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGame().nextDeal(&iLoop))
+	foreach_(CvDeal* pLoopDeal, GC.getGame().deals())
 	{
 		if (pLoopDeal->isCancelable(getID()) && !(pLoopDeal->isPeaceDeal()))
 		{
@@ -19985,9 +19939,7 @@ void CvPlayerAI::AI_doDiplo()
 {
 	PROFILE_FUNC();
 
-	CLLNode<TradeData>* pNode;
 	CvDiploParameters* pDiplo;
-	CvDeal* pLoopDeal;
 	CvPlot* pLoopPlot;
 	CLinkList<TradeData> ourList;
 	CLinkList<TradeData> theirList;
@@ -20100,7 +20052,7 @@ void CvPlayerAI::AI_doDiplo()
 						{
 							PROFILE("CvPlayerAI::AI_doDiplo.Existing");
 
-							for(pLoopDeal = GC.getGame().firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = GC.getGame().nextDeal(&iLoop))
+							foreach_(CvDeal* pLoopDeal, GC.getGame().deals())
 							{
 								if (pLoopDeal->isCancelable(getID()))
 								{
@@ -20119,7 +20071,7 @@ void CvPlayerAI::AI_doDiplo()
 											}
 											else
 											{
-												for (pNode = pLoopDeal->getFirstTrades()->head(); pNode; pNode = pLoopDeal->getFirstTrades()->next(pNode))
+												for (const CLLNode<TradeData>* pNode = pLoopDeal->getFirstTrades()->head(); pNode; pNode = pLoopDeal->getFirstTrades()->next(pNode))
 												{
 													if (getTradeDenial(((PlayerTypes)iI), pNode->m_data) != NO_DENIAL)
 													{
@@ -20140,7 +20092,7 @@ void CvPlayerAI::AI_doDiplo()
 											}
 											else
 											{
-												for (pNode = pLoopDeal->getSecondTrades()->head(); pNode; pNode = pLoopDeal->getSecondTrades()->next(pNode))
+												for (const CLLNode<TradeData>* pNode = pLoopDeal->getSecondTrades()->head(); pNode; pNode = pLoopDeal->getSecondTrades()->next(pNode))
 												{
 													if (getTradeDenial(((PlayerTypes)iI), pNode->m_data) != NO_DENIAL)
 													{
@@ -20160,7 +20112,7 @@ void CvPlayerAI::AI_doDiplo()
 													ourList.clear();
 													theirList.clear();
 
-													for (pNode = pLoopDeal->headFirstTradesNode(); (pNode != NULL); pNode = pLoopDeal->nextFirstTradesNode(pNode))
+													for (CLLNode<TradeData>* pNode = pLoopDeal->headFirstTradesNode(); (pNode != NULL); pNode = pLoopDeal->nextFirstTradesNode(pNode))
 													{
 														if (pLoopDeal->getFirstPlayer() == getID())
 														{
@@ -20172,7 +20124,7 @@ void CvPlayerAI::AI_doDiplo()
 														}
 													}
 
-													for (pNode = pLoopDeal->headSecondTradesNode(); (pNode != NULL); pNode = pLoopDeal->nextSecondTradesNode(pNode))
+													for (CLLNode<TradeData>* pNode = pLoopDeal->headSecondTradesNode(); (pNode != NULL); pNode = pLoopDeal->nextSecondTradesNode(pNode))
 													{
 														if (pLoopDeal->getSecondPlayer() == getID())
 														{
@@ -20191,18 +20143,7 @@ void CvPlayerAI::AI_doDiplo()
 													{
 														pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_NO_VASSAL"));
 														pDiplo->setAIContact(true);
-/***************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-														// RevolutionDCM start - new diplomacy option
 														AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-														// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-														// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/
 													}
 													else
 													{
@@ -20210,36 +20151,16 @@ void CvPlayerAI::AI_doDiplo()
 														pDiplo->setAIContact(true);
 														pDiplo->setOurOfferList(theirList);
 														pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-														// RevolutionDCM start - new diplomacy option
 														AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-														// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-														// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/													}
+													}
 													abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 												}
 											}
-/************************************************************************************************/
-/* Afforess					  Start		 07/29/10											   */
-/*																							  */
-/* Advanced Diplomacy																		   */
-/************************************************************************************************/
-											bool bEmbassyCanceled = pLoopDeal->isEmbassy();
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
+
+											const bool bEmbassyCanceled = pLoopDeal->isEmbassy();
+
 											pLoopDeal->kill(); // XXX test this for AI...
-/************************************************************************************************/
-/* Afforess					  Start		 07/29/10											   */
-/*																							  */
-/* Advanced Diplomacy																		   */
-/************************************************************************************************/
+
 											if (bEmbassyCanceled)
 											{
 												for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
@@ -20253,9 +20174,6 @@ void CvPlayerAI::AI_doDiplo()
 													}
 												}
 											}
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
 										}
 									}
 								}
@@ -20315,18 +20233,7 @@ void CvPlayerAI::AI_doDiplo()
 											pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_GIVE_HELP"));
 											pDiplo->setAIContact(true);
 											pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-											// RevolutionDCM start - new diplomacy option
 											AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-											// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-											// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/											abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 										}
 									}
 									else
@@ -20343,11 +20250,6 @@ void CvPlayerAI::AI_doDiplo()
 								iBestValue = 0;
 								eBestGiveTech = NO_TECH;
 
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					  12/06/09								jdog5000	  */
-/*																							  */
-/* Diplomacy																					*/
-/************************************************************************************************/
 								// Don't give techs for tree to advanced vassals ...
 								if( GET_PLAYER((PlayerTypes)iI).getTechScore()*10 < getTechScore()*9 )
 								{
@@ -20370,9 +20272,6 @@ void CvPlayerAI::AI_doDiplo()
 										}
 									}
 								}
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					   END												  */
-/************************************************************************************************/
 
 								if (eBestGiveTech != NO_TECH)
 								{
@@ -20391,18 +20290,7 @@ void CvPlayerAI::AI_doDiplo()
 											pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_GIVE_HELP"));
 											pDiplo->setAIContact(true);
 											pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-											// RevolutionDCM start - new diplomacy option
 											AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-											// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-											// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/											abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 										}
 									}
 									else
@@ -20514,18 +20402,7 @@ void CvPlayerAI::AI_doDiplo()
 																	pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_OFFER_CITY"));
 																	pDiplo->setAIContact(true);
 																	pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 															else
@@ -20571,18 +20448,7 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setAIContact(true);
 															pDiplo->setOurOfferList(theirList);
 															pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 													else
@@ -20615,37 +20481,26 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setAIContact(true);
 															pDiplo->setOurOfferList(theirList);
 															pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 													else
 													{
 														bool bAccepted = true;
-														TeamTypes eMasterTeam = GET_PLAYER((PlayerTypes)iI).getTeam();
+														const TeamTypes eMasterTeam = GET_PLAYER((PlayerTypes)iI).getTeam();
 														for (int iTeam = 0; iTeam < MAX_PC_TEAMS; iTeam++)
 														{
 															if (GET_TEAM((TeamTypes)iTeam).isAlive())
 															{
-															if (iTeam != getTeam() && iTeam != eMasterTeam && atWar(getTeam(), (TeamTypes)iTeam) && !atWar(eMasterTeam, (TeamTypes)iTeam))
-															{
-																if (GET_TEAM(eMasterTeam).AI_declareWarTrade((TeamTypes)iTeam, getTeam(), false) != NO_DENIAL)
+																if (iTeam != getTeam() && iTeam != eMasterTeam && atWar(getTeam(), (TeamTypes)iTeam) && !atWar(eMasterTeam, (TeamTypes)iTeam))
 																{
-																	bAccepted = false;
-																	break;
+																	if (GET_TEAM(eMasterTeam).AI_declareWarTrade((TeamTypes)iTeam, getTeam(), false) != NO_DENIAL)
+																	{
+																		bAccepted = false;
+																		break;
+																	}
 																}
 															}
-														}
 														}
 
 														if (bAccepted)
@@ -20677,18 +20532,7 @@ void CvPlayerAI::AI_doDiplo()
 															FAssertMsg(pDiplo != NULL, "pDiplo must be valid");
 															pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_RELIGION_PRESSURE"));
 															pDiplo->setAIContact(true);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 												}
@@ -20721,18 +20565,7 @@ void CvPlayerAI::AI_doDiplo()
 																	FAssertMsg(pDiplo != NULL, "pDiplo must be valid");
 																	pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_CIVIC_PRESSURE"), GC.getCivicInfo(eFavoriteCivic).getTextKeyWide());
 																	pDiplo->setAIContact(true);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 														}
@@ -20741,16 +20574,7 @@ void CvPlayerAI::AI_doDiplo()
 											}
 										}
 									}
-/************************************************************************************************/
-/* Afforess					  Start		 05/16/10												*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
 									if (GET_PLAYER((PlayerTypes)iI).isHuman() && (GET_TEAM(getTeam()).getLeaderID() == getID()) && GC.getDefineINT("CAN_TRADE_WAR") > 0)
-
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
 									{
 										PROFILE("CvPlayerAI::AI_doDiplo.WarWith");
 
@@ -20764,7 +20588,7 @@ void CvPlayerAI::AI_doDiplo()
 /* Advanced Diplomacy - make unfriendly AI's less likely to ask for help						*/
 /************************************************************************************************/
 												int iRand = GC.getLeaderHeadInfo(getPersonalityType()).getContactRand(CONTACT_JOIN_WAR);
-												AttitudeTypes eAttitude = AI_getAttitude((PlayerTypes)iI);
+												const AttitudeTypes eAttitude = AI_getAttitude((PlayerTypes)iI);
 												if (eAttitude != ATTITUDE_FRIENDLY)
 												{
 													iRand *= (eAttitude == ATTITUDE_PLEASED ? 10 : 100);
@@ -20804,33 +20628,15 @@ void CvPlayerAI::AI_doDiplo()
 													{
 														if (!(abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()]))
 														{
-/************************************************************************************************/
-/* Afforess					  Start		 05/23/10											   */
-/*																							  */
-/*																							  */
-/************************************************************************************************/
 															m_eDemandWarAgainstTeam = eBestTeam;
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
+
 															AI_changeContactTimer(((PlayerTypes)iI), CONTACT_JOIN_WAR, GC.getLeaderHeadInfo(getPersonalityType()).getContactDelay(CONTACT_JOIN_WAR));
 															pDiplo = new CvDiploParameters(getID());
 															FAssertMsg(pDiplo != NULL, "pDiplo must be valid");
 															pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_JOIN_WAR"), GET_PLAYER(GET_TEAM(eBestTeam).getLeaderID()).getCivilizationAdjectiveKey());
 															pDiplo->setAIContact(true);
 															pDiplo->setData(eBestTeam);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 												}
@@ -20850,7 +20656,7 @@ void CvPlayerAI::AI_doDiplo()
 /* Advanced Diplomacy - make unfriendly AI's less likely to ask for help						*/
 /************************************************************************************************/
 											int iRand = GC.getLeaderHeadInfo(getPersonalityType()).getContactRand(CONTACT_STOP_TRADING);
-											AttitudeTypes eAttitude = AI_getAttitude((PlayerTypes)iI);
+											const AttitudeTypes eAttitude = AI_getAttitude((PlayerTypes)iI);
 											if (eAttitude != ATTITUDE_FRIENDLY)
 											{
 												iRand *= (eAttitude == ATTITUDE_PLEASED ? 10 : 100);
@@ -20883,18 +20689,7 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_STOP_TRADING"), GET_PLAYER(GET_TEAM(eBestTeam).getLeaderID()).getCivilizationAdjectiveKey());
 															pDiplo->setAIContact(true);
 															pDiplo->setData(eBestTeam);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 												}
@@ -20950,18 +20745,7 @@ void CvPlayerAI::AI_doDiplo()
 																pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_GIVE_HELP"));
 																pDiplo->setAIContact(true);
 																pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																// RevolutionDCM start - new diplomacy option
 																AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 															}
 														}
 													}
@@ -20978,11 +20762,6 @@ void CvPlayerAI::AI_doDiplo()
 										{
 											if (AI_getContactTimer(((PlayerTypes)iI), CONTACT_ASK_FOR_HELP) == 0)
 											{
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					  02/12/10								jdog5000	  */
-/*																							  */
-/* Diplomacy																					*/
-/************************************************************************************************/
 												int iRand = GC.getLeaderHeadInfo(getPersonalityType()).getContactRand(CONTACT_ASK_FOR_HELP);
 												int iTechPerc = GET_TEAM(getTeam()).getBestKnownTechScorePercent();
 												if( iTechPerc < 90 )
@@ -20999,9 +20778,6 @@ void CvPlayerAI::AI_doDiplo()
 												}
 
 												if (GC.getGame().getSorenRandNum(iRand, "AI Diplo Ask For Help") == 0)
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					   END												  */
-/************************************************************************************************/
 												{
 													iBestValue = 0;
 													eBestReceiveTech = NO_TECH;
@@ -21033,18 +20809,7 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_ASK_FOR_HELP"));
 															pDiplo->setAIContact(true);
 															pDiplo->setOurOfferList(theirList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 												}
@@ -21105,18 +20870,7 @@ void CvPlayerAI::AI_doDiplo()
 																	pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_DEMAND_TRIBUTE"));
 																	pDiplo->setAIContact(true);
 																	pDiplo->setOurOfferList(theirList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 														}
@@ -21138,18 +20892,7 @@ void CvPlayerAI::AI_doDiplo()
 																	pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_DEMAND_TRIBUTE"));
 																	pDiplo->setAIContact(true);
 																	pDiplo->setOurOfferList(theirList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 														}
@@ -21193,18 +20936,7 @@ void CvPlayerAI::AI_doDiplo()
 																	pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_DEMAND_TRIBUTE"));
 																	pDiplo->setAIContact(true);
 																	pDiplo->setOurOfferList(theirList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 														}
@@ -21251,18 +20983,7 @@ void CvPlayerAI::AI_doDiplo()
 																	pDiplo->setDiploComment((DiploCommentTypes)GC.getInfoTypeForString("AI_DIPLOCOMMENT_DEMAND_TRIBUTE"));
 																	pDiplo->setAIContact(true);
 																	pDiplo->setOurOfferList(theirList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 														}
@@ -21304,18 +21025,7 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setAIContact(true);
 															pDiplo->setOurOfferList(theirList);
 															pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 													else
@@ -21356,18 +21066,7 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setAIContact(true);
 															pDiplo->setOurOfferList(theirList);
 															pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 													else
@@ -21385,11 +21084,6 @@ void CvPlayerAI::AI_doDiplo()
 
 										if (AI_getContactTimer(((PlayerTypes)iI), CONTACT_TRADE_TECH) == 0)
 										{
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					  04/24/10								jdog5000	  */
-/*																							  */
-/* Diplomacy																					*/
-/************************************************************************************************/
 											int iRand = GC.getLeaderHeadInfo(getPersonalityType()).getContactRand(CONTACT_TRADE_TECH);
 											int iTechPerc = GET_TEAM(getTeam()).getBestKnownTechScorePercent();
 											if( iTechPerc < 90 )
@@ -21405,9 +21099,6 @@ void CvPlayerAI::AI_doDiplo()
 
 											iRand = std::max(1, iRand);
 											if (GC.getGame().getSorenRandNum(iRand, "AI Diplo Trade Tech") == 0)
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD					   END												  */
-/************************************************************************************************/
 											{
 												iBestValue = 0;
 												eBestReceiveTech = NO_TECH;
@@ -21546,18 +21237,7 @@ void CvPlayerAI::AI_doDiplo()
 																	pDiplo->setAIContact(true);
 																	pDiplo->setOurOfferList(theirList);
 																	pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																	// RevolutionDCM start - new diplomacy option
 																	AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																	// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																	abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 																}
 															}
 															else
@@ -21571,11 +21251,6 @@ void CvPlayerAI::AI_doDiplo()
 										}
 									}
 
-/************************************************************************************************/
-/* Afforess					  Start		 06/16/10											   */
-/*																							  */
-/* Advanced Diplomacy																		   */
-/************************************************************************************************/
 									if (GC.getGame().isOption(GAMEOPTION_ADVANCED_DIPLOMACY) || GC.getGame().isOption(GAMEOPTION_RUTHLESS_AI))
 									{
 										PROFILE("CvPlayerAI::AI_doDiplo.AdvancedDiplomacyOrRuthless");
@@ -21980,10 +21655,7 @@ void CvPlayerAI::AI_doDiplo()
 																pDiplo->setAIContact(true);
 																pDiplo->setOurOfferList(theirList);
 																pDiplo->setTheirOfferList(ourList);
-																// RevolutionDCM start - new diplomacy option
 																AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// RevolutionDCM end
 																abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 															}
 														}
@@ -22023,10 +21695,7 @@ void CvPlayerAI::AI_doDiplo()
 																pDiplo->setAIContact(true);
 																pDiplo->setOurOfferList(theirList);
 																pDiplo->setTheirOfferList(ourList);
-																// RevolutionDCM start - new diplomacy option
 																AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// RevolutionDCM end
 																abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 															}
 														}
@@ -22370,9 +22039,7 @@ void CvPlayerAI::AI_doDiplo()
 											}
 										}
 									}
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
+
 									if (AI_getContactTimer(((PlayerTypes)iI), CONTACT_TRADE_BONUS) == 0)
 									{
 										PROFILE("CvPlayerAI::AI_doDiplo.ContactTradeBonus");
@@ -22394,18 +22061,8 @@ void CvPlayerAI::AI_doDiplo()
 
 															if (GET_PLAYER((PlayerTypes)iI).canTradeItem(getID(), item, true))
 															{
-/************************************************************************************************/
-/* Afforess					  Start		 06/16/10											   */
-/*																							  */
-/* Advanced Diplomacy																		   */
-/************************************************************************************************/
-										/*Original Code:
-																iValue = (1 + GC.getGame().getSorenRandNum(10000, "AI Bonus Trading #1"));
-										*/
 																iValue = (AI_bonusTradeVal(((BonusTypes)iJ), ((PlayerTypes)iI), 1) + GC.getGame().getSorenRandNum(200, "AI Bonus Trading #1"));
-/************************************************************************************************/
-/* Afforess						 END															*/
-/************************************************************************************************/
+
 																if (iValue > iBestValue)
 																{
 																	iBestValue = iValue;
@@ -22471,18 +22128,7 @@ void CvPlayerAI::AI_doDiplo()
 																pDiplo->setAIContact(true);
 																pDiplo->setOurOfferList(theirList);
 																pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-																// RevolutionDCM start - new diplomacy option
 																AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-																// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/																abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 															}
 														}
 														else
@@ -22527,18 +22173,7 @@ void CvPlayerAI::AI_doDiplo()
 															pDiplo->setAIContact(true);
 															pDiplo->setOurOfferList(theirList);
 															pDiplo->setTheirOfferList(ourList);
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 02/04/08							Glider1		*/
-/*																							  */
-/*																							  */
-/************************************************************************************************/
-															// RevolutionDCM start - new diplomacy option
 															AI_beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// gDLL->beginDiplomacy(pDiplo, (PlayerTypes)iI);
-															// RevolutionDCM end
-/************************************************************************************************/
-/* REVOLUTIONDCM_MOD						 END								 Glider1		*/
-/************************************************************************************************/															abContacted[GET_PLAYER((PlayerTypes)iI).getTeam()] = true;
 														}
 													}
 													else

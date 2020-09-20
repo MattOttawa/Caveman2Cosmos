@@ -2966,9 +2966,7 @@ void CvGame::implementDeal(PlayerTypes eWho, PlayerTypes eOtherWho, CLinkList<Tr
 
 void CvGame::verifyDeals()
 {
-	int iLoop;
-
-	for(CvDeal* pLoopDeal = firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = nextDeal(&iLoop))
+	foreach_(CvDeal* pLoopDeal, GC.getGame().deals())
 	{
 		pLoopDeal->verify();
 	}
@@ -6494,8 +6492,7 @@ void CvGame::doDeals()
 
 	verifyDeals();
 
-	int iLoop;
-	for(CvDeal* pLoopDeal = firstDeal(&iLoop); pLoopDeal != NULL; pLoopDeal = nextDeal(&iLoop))
+	foreach_(CvDeal* pLoopDeal, GC.getGame().deals())
 	{
 		pLoopDeal->doTurn();
 	}
