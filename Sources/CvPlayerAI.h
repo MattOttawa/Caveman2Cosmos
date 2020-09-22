@@ -68,9 +68,7 @@ public:
 
 class CvPlayerAI : public CvPlayer
 {
-
 public:
-
 	CvPlayerAI();
 	virtual ~CvPlayerAI();
 
@@ -78,7 +76,7 @@ public:
 	static CvPlayerAI& getPlayer(PlayerTypes ePlayer)
 	{
 		FASSERT_BOUNDS(0, MAX_PLAYERS, ePlayer)
-		return m_aPlayers[ePlayer];
+		return *m_aPlayers[ePlayer];
 	}
 
 	DllExport static CvPlayerAI& getPlayerNonInl(PlayerTypes ePlayer);
@@ -525,7 +523,7 @@ public:
 
 protected:
 
-	static CvPlayerAI* m_aPlayers;
+	static bst::array<CvPlayerAI*, MAX_PLAYERS> m_aPlayers;
 
 	int m_iPeaceWeight;
 	int m_iEspionageWeight;

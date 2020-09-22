@@ -29,30 +29,26 @@
 
 // statics
 
-CvPlayerAI* CvPlayerAI::m_aPlayers = NULL;
+bst::array<CvPlayerAI*, MAX_PLAYERS> CvPlayerAI::m_aPlayers;
 
 void CvPlayerAI::initStatics()
 {
-	m_aPlayers = new CvPlayerAI[MAX_PLAYERS];
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		m_aPlayers[iI].m_eID = ((PlayerTypes)iI);
+		m_aPlayers[iI] = new CvPlayerAI[MAX_PLAYERS];
+		m_aPlayers[iI]->m_eID = ((PlayerTypes)iI);
 	}
 }
 
 void CvPlayerAI::freeStatics()
 {
-	SAFE_DELETE_ARRAY(m_aPlayers);
+	//SAFE_DELETE_ARRAY(m_aPlayers);
 }
 
 bool CvPlayerAI::areStaticsInitialized()
 {
-	if(m_aPlayers == NULL)
-	{
-		return false;
-	}
-
-	return true;
+	//return m_aPlayers != NULL;
+	return false;
 }
 
 DllExport CvPlayerAI& CvPlayerAI::getPlayerNonInl(PlayerTypes ePlayer)
@@ -3701,23 +3697,20 @@ CvCity* CvPlayerAI::AI_findTargetCity(const CvArea* pArea) const
 	int iBestValue = 0;
 	CvCity* pBestCity = NULL;
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, m_aPlayers)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if (loopPlayer->isAlive() && isPotentialEnemy(getTeam(), loopPlayer->getTeam()))
 		{
-			if (isPotentialEnemy(getTeam(), GET_PLAYER((PlayerTypes)iI).getTeam()))
+			foreach_(CvCity* pLoopCity, loopPlayer->cities())
 			{
-				foreach_(CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+				if (pLoopCity->area() == pArea)
 				{
-					if (pLoopCity->area() == pArea)
-					{
-						const int iValue = AI_targetCityValue(pLoopCity, true);
+					const int iValue = AI_targetCityValue(pLoopCity, true);
 
-						if (iValue > iBestValue)
-						{
-							iBestValue = iValue;
-							pBestCity = pLoopCity;
-						}
+					if (iValue > iBestValue)
+					{
+						iBestValue = iValue;
+						pBestCity = pLoopCity;
 					}
 				}
 			}
