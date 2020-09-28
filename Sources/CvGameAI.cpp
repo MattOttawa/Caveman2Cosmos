@@ -44,15 +44,9 @@ void CvGameAI::AI_reset()
 
 void CvGameAI::AI_makeAssignWorkDirty()
 {
-	int iI;
-
-	for (iI = 0; iI < MAX_PLAYERS; iI++)
-	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
-		{
-			GET_PLAYER((PlayerTypes)iI).AI_makeAssignWorkDirty();
-		}
-	}
+	for_each(players() | filtered(CvPlayer::fn::isAlive()),
+		CvPlayer::fn::AI_makeAssignWorkDirty()
+	);
 }
 
 
@@ -60,14 +54,11 @@ void CvGameAI::AI_updateAssignWork()
 {
 	PROFILE_FUNC();
 
-	int iI;
-
-	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* player, players())
 	{
-		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
-		if (GET_TEAM(kLoopPlayer.getTeam()).isHuman() && kLoopPlayer.isAlive())
+		if (GET_TEAM(player->getTeam()).isHuman() && player->isAlive())
 		{
-			kLoopPlayer.AI_updateAssignWork();
+			player->AI_updateAssignWork();
 		}
 	}
 }

@@ -1211,9 +1211,9 @@ void CvInitCore::setType(GameType eType)
 
 		if(CvPlayerAI::areStaticsInitialized())
 		{
-			for (int i = 0; i < MAX_PLAYERS; i++)
+			foreach_(CvPlayer* loopPlayer, CvPlayerAI::players())
 			{
-				GET_PLAYER((PlayerTypes)i).updateHuman();
+				loopPlayer->updateHuman();
 			}
 		}
 	}
@@ -1244,9 +1244,9 @@ void CvInitCore::setMode(GameMode eMode)
 
 		if(CvPlayerAI::areStaticsInitialized())
 		{
-			for (int i = 0; i < MAX_PLAYERS; i++)
+			foreach_(CvPlayer* loopPlayer, CvPlayerAI::players())
 			{
-				GET_PLAYER((PlayerTypes)i).updateHuman();
+				loopPlayer->updateHuman();
 			}
 		}
 	}

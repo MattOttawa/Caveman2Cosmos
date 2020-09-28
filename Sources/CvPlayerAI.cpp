@@ -10748,13 +10748,13 @@ int CvPlayerAI::AI_baseBonusVal(BonusTypes eBonus, bool bForTrade) const
 			{
 				PROFILE("CvPlayerAI::AI_baseBonusVal::recalculate Bonus Scarcity");
 				int iTotalBonusCount = 0;
-				for (int iI = 0; iI < MAX_PLAYERS; iI++)
+				foreach_(const CvPlayer* loopPlayer, m_aPlayers)
 				{
-					if (GET_PLAYER((PlayerTypes)iI).isAlive())
+					if (loopPlayer->isAlive())
 					{
-						if (GET_TEAM(getTeam()).isHasMet((GET_PLAYER((PlayerTypes)iI).getTeam())))
+						if (GET_TEAM(getTeam()).isHasMet(loopPlayer->getTeam()))
 						{
-							iTotalBonusCount += GET_PLAYER((PlayerTypes)iI).getNumAvailableBonuses(eBonus);
+							iTotalBonusCount += loopPlayer->getNumAvailableBonuses(eBonus);
 						}
 					}
 				}
@@ -13301,11 +13301,11 @@ int CvPlayerAI::AI_totalWaterAreaUnitAIs(const CvArea* pArea, UnitAITypes eUnitA
 {
 	int iCount = AI_totalAreaUnitAIs(pArea, eUnitAI);
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, m_aPlayers)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if (loopPlayer->isAlive())
 		{
-			foreach_(const CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+			foreach_(const CvCity* pLoopCity, loopPlayer->cities())
 			{
 				if (pLoopCity->waterArea() == pArea)
 				{
@@ -13928,14 +13928,13 @@ int CvPlayerAI::AI_executiveValue(const CvArea* pArea, CorporationTypes eCorpora
 		iBonusValue /= 25;
 	}
 
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+	foreach_(const CvPlayer* loopPlayer, m_aPlayers)
 	{
-		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.isAlive() && (kLoopPlayer.getNumCities() > 0))
+		if (loopPlayer->isAlive() && loopPlayer->getNumCities() > 0)
 		{
-			if ((kLoopPlayer.getTeam() == getTeam()) || GET_TEAM(kLoopPlayer.getTeam()).isVassal(getTeam()))
+			if (loopPlayer->getTeam() == getTeam() || GET_TEAM(loopPlayer->getTeam()).isVassal(getTeam()))
 			{
-				if (kLoopPlayer.getHasCorporationCount(eCorporation) == 0)
+				if (loopPlayer->getHasCorporationCount(eCorporation) == 0)
 				{
 					iBonusValue += 1000;
 				}
@@ -28795,32 +28794,25 @@ CvCity* CvPlayerAI::getTeamInquisitionRevoltCity(const CvUnit* pUnit, const bool
 	CvCity* pBestCity = NULL;
 	CvPlot* pUnitPlot = pUnit->plot();
 	int iBestRevoltIndex = 100;
-	int iTempCityValue = 0;
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER(PlayerTypes(iI));
-		if(kLoopPlayer.isAlive())
+		if (loopPlayer->getTeam() == getTeam() || GET_TEAM(getTeam()).isVassal(loopPlayer->getTeam()))
 		{
-			if( (kLoopPlayer.getTeam() == getTeam()) ||
-			(GET_TEAM(getTeam()).isVassal((TeamTypes)kLoopPlayer.getTeam())) )
+			foreach_(CvCity* pLoopCity, loopPlayer->cities())
 			{
-				foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
+				if(pLoopCity->isInquisitionConditions())
 				{
-					if(pLoopCity->isInquisitionConditions())
+					if (pLoopCity->getRevTrend() > iTrendThreshold || pLoopCity->getRevolutionIndex() > 1000)
 					{
-						if( (pLoopCity->getRevTrend() > iTrendThreshold)
-						|| (pLoopCity->getRevolutionIndex() > 1000) )
+						int iTempCityValue = pLoopCity->getRevolutionIndex() + 7*(pLoopCity->getRevTrend());
+						iTempCityValue -= 10*(pUnitPlot->calculatePathDistanceToPlot(getTeam(), pLoopCity->plot()));
+						if(iTempCityValue > iBestRevoltIndex)
 						{
-							iTempCityValue = pLoopCity->getRevolutionIndex() + 7*(pLoopCity->getRevTrend());
-							iTempCityValue -= 10*(pUnitPlot->calculatePathDistanceToPlot(getTeam(), pLoopCity->plot()));
-							if(iTempCityValue > iBestRevoltIndex)
+							if (bNoUnit || pUnit->generatePath(pLoopCity->plot(), 0, false))
 							{
-								if ((bNoUnit) || (pUnit->generatePath(pLoopCity->plot(), 0, false)))
-								{
-									iBestRevoltIndex = iTempCityValue;
-									pBestCity = pLoopCity;
-								}
+								iBestRevoltIndex = iTempCityValue;
+								pBestCity = pLoopCity;
 							}
 						}
 					}
@@ -28853,7 +28845,7 @@ CvCity* CvPlayerAI::getReligiousVictoryTarget(const CvUnit *pUnit, const bool bN
 		const CvTeam& kLoopTeam = GET_TEAM(kLoopPlayer.getTeam());
 
 		if (kLoopPlayer.isAlive()
-			&& (TeamTypes(kLoopPlayer.getTeam()) == getTeam() || kLoopTeam.isVassal((TeamTypes)kLoopPlayer.getTeam()))
+			&& (kLoopPlayer.getTeam() == getTeam() || kLoopTeam.isVassal(kLoopPlayer.getTeam()))
 			&& pUnitPlot->isHasPathToPlayerCity(getTeam(), PlayerTypes(iI))
 			)
 		{
@@ -28866,11 +28858,11 @@ CvCity* CvPlayerAI::getReligiousVictoryTarget(const CvUnit *pUnit, const bool bN
 				{
 					int tempCityValue = pUnitPlot->calculatePathDistanceToPlot(getTeam(), pLoopPlot);
 					if (isNonStateReligionCommerce()
-						&& kLoopPlayer.getID() == getID())
+						&& iI == getID())
 					{
 						tempCityValue *= 2;
 					}
-					if (kLoopTeam.isVassal((TeamTypes)kLoopPlayer.getTeam()))
+					if (kLoopTeam.isVassal(kLoopPlayer.getTeam()))
 					{
 						tempCityValue -= 12;
 					}
@@ -29115,15 +29107,14 @@ void CvPlayerAI::AI_setHasInquisitionTarget()
 		return;
 	}
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, m_aPlayers)
 	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER(PlayerTypes(iI));
-		if(kLoopPlayer.isAlive())
+		if (loopPlayer->isAlive())
 		{
-			if( (kLoopPlayer.getTeam() == getTeam()) ||
-			(GET_TEAM(getTeam()).isVassal((TeamTypes)kLoopPlayer.getTeam())) )
+			if (loopPlayer->getTeam() == getTeam()
+			|| GET_TEAM(getTeam()).isVassal(loopPlayer->getTeam()))
 			{
-				foreach_(const CvCity* pLoopCity, kLoopPlayer.cities())
+				foreach_(const CvCity* pLoopCity, loopPlayer->cities())
 				{
 					if (pLoopCity->isInquisitionConditions())
 					{
@@ -29144,15 +29135,13 @@ void CvPlayerAI::AI_setHasInquisitionTarget()
 
 	if(isPushReligiousVictory() || isConsiderReligiousVictory())
 	{
-		for (int iI = 0; iI < MAX_PLAYERS; iI++)
+		foreach_(const CvPlayer* loopPlayer, m_aPlayers)
 		{
-			const CvPlayer& kLoopPlayer = GET_PLAYER(PlayerTypes(iI));
-			if(kLoopPlayer.isAlive())
+			if (loopPlayer->isAlive())
 			{
-				const CvTeam& kLoopTeam = GET_TEAM(kLoopPlayer.getTeam());
-				if( (TeamTypes(kLoopPlayer.getTeam()) == getTeam()) || kLoopTeam.isVassal((TeamTypes)kLoopPlayer.getTeam()) )
+				if (loopPlayer->getTeam() == getTeam() || GET_TEAM(loopPlayer->getTeam()).isVassal(loopPlayer->getTeam()))
 				{
-					foreach_(const CvCity* pLoopCity, kLoopPlayer.cities())
+					foreach_(const CvCity* pLoopCity, loopPlayer->cities())
 					{
 						if(pLoopCity->isInquisitionConditions())
 						{

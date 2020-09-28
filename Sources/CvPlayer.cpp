@@ -3266,9 +3266,9 @@ bool CvPlayer::isCityNameValid(CvWString& szName, bool bTestDestroyed) const
 			return false;
 		}
 
-		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+		foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 		{
-			if (algo::any_of(GET_PLAYER((PlayerTypes)iPlayer).cities(), CvCity::fn::getName() == szName))
+			if (algo::any_of(loopPlayer->cities(), CvCity::fn::getName() == szName))
 			{
 				return false;
 			}
@@ -18495,12 +18495,11 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 			{
 				GET_PLAYER(pCity->getOwner()).AI_changeMemoryCount(getID(), MEMORY_EVENT_BAD_TO_US, std::max(4, pCity->getPopulation()));
 
-				for (int iI = 0; iI < MAX_PLAYERS; iI++)
+				foreach_(CvPlayer* loopPlayer, CvPlayerAI::players())
 				{
-					if(GET_PLAYER((PlayerTypes)iI).isAlive()
-					&& GET_PLAYER((PlayerTypes)iI).AI_getAttitude(pCity->getOwner()) >= ATTITUDE_PLEASED)
+					if (loopPlayer->isAlive() && loopPlayer->AI_getAttitude(pCity->getOwner()) >= ATTITUDE_PLEASED)
 					{
-						GET_PLAYER((PlayerTypes)iI).AI_changeMemoryCount(getID(), MEMORY_EVENT_BAD_TO_US, std::max(2, pCity->getPopulation() / 3));
+						loopPlayer->AI_changeMemoryCount(getID(), MEMORY_EVENT_BAD_TO_US, std::max(2, pCity->getPopulation() / 3));
 					}
 				}
 				if (GET_PLAYER(pCity->getOwner()).AI_getMemoryCount(getID(), MEMORY_EVENT_BAD_TO_US) > 15)
@@ -28191,34 +28190,28 @@ void CvPlayer::getReligionLayerColors(ReligionTypes eSelectedReligion, std::vect
 	kRandom.init(42 * eSelectedReligion);
 	const NiColorA kBaseColor(kRandom.getFloat(), kRandom.getFloat(), kRandom.getFloat(), 1.0f);
 
-	for (int iI = 0; iI  < MAX_PLAYERS; iI ++)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		foreach_(const CvCity* pLoopCity, loopPlayer->cities())
 		{
-			foreach_(const CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+			if (pLoopCity->isRevealed(getTeam(), true) && pLoopCity->isHasReligion(eSelectedReligion))
 			{
-				if (pLoopCity->isRevealed(getTeam(), true))
+				float fAlpha = 0.8f;
+				if (!pLoopCity->isHolyCity(eSelectedReligion))
 				{
-					if (pLoopCity->isHasReligion(eSelectedReligion))
-					{
-						float fAlpha = 0.8f;
-						if (!pLoopCity->isHolyCity(eSelectedReligion))
-						{
-							fAlpha *= 0.5f;
-						}
+					fAlpha *= 0.5f;
+				}
 
-						foreach_(const CvPlot* pLoopPlot, pLoopCity->plots())
+				foreach_(const CvPlot* pLoopPlot, pLoopCity->plots())
+				{
+					// visibility query
+					if (pLoopPlot->isRevealed(getTeam(), true) && pLoopPlot->isInViewport())
+					{
+						const int iIndex = GC.getCurrentViewport()->plotNum(pLoopPlot->getViewportX(), pLoopPlot->getViewportY());
+						if (fAlpha > aColors[iIndex].a)
 						{
-							// visibility query
-							if (pLoopPlot->isRevealed(getTeam(), true) && pLoopPlot->isInViewport())
-							{
-								const int iIndex = GC.getCurrentViewport()->plotNum(pLoopPlot->getViewportX(), pLoopPlot->getViewportY());
-								if (fAlpha > aColors[iIndex].a)
-								{
-									aColors[iIndex] = kBaseColor;
-									aColors[iIndex].a = fAlpha;
-								}
-							}
+							aColors[iIndex] = kBaseColor;
+							aColors[iIndex].a = fAlpha;
 						}
 					}
 				}
@@ -29023,23 +29016,21 @@ Thus I'm not worrying overly about running speed.  I wouldn't recommend putting 
 
 int CvPlayer::getSevoWondersScore(int mode)
 {
-	int iI, iLoopBuilding;
-
 	int numWonders = 0;
 	int numWondersPossible = 0;
 	int numWondersBuiltByPlayer = 0;
-	// iI is the loop player ID.
-	for (iI = 0; iI < MAX_PLAYERS; iI++)
+
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 	{
-		if  ((GET_PLAYER((PlayerTypes)iI).isAlive()) && (!(GET_PLAYER((PlayerTypes)iI).isMinorCiv())))
+		if (loopPlayer->isAlive() && !loopPlayer->isMinorCiv())
 		{
-			foreach_(const CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+			foreach_(const CvCity* pLoopCity, loopPlayer->cities())
 			{
 				// All the code above is basically in place to loop through every city on earth.  There might be an easier way, but I didn't see one readily.
 				// Note that I'm not sure, but this might also loop through cities that HAVE been destroyed, thus civs will get credit for building wonders even if they get taken out.  have to check on that.
 				// Now we'll cycle through all the buildings IN THE GAME (not just this city).  Ugh.  This is PAINFULLY inefficient.  I hate ugly code, but I need this to work...
 				numWondersPossible = 0;
-				for (iLoopBuilding = 0; iLoopBuilding < GC.getNumBuildingInfos(); iLoopBuilding++)
+				for (int iLoopBuilding = 0; iLoopBuilding < GC.getNumBuildingInfos(); iLoopBuilding++)
 				{
 					if (isWorldWonder((BuildingTypes)iLoopBuilding))
 					{
@@ -29268,13 +29259,10 @@ void CvPlayer::changeWorldTradeRoutes(int iChange)
 {
     if (iChange != 0)
 	{
-		m_iWorldTradeRoutes = (m_iWorldTradeRoutes + iChange);
+		m_iWorldTradeRoutes += iChange;
 		FAssert(getWorldTradeRoutes() >= 0);
 
-		for (int iI = 0; iI < MAX_PLAYERS; iI++)
-		{
-			GET_PLAYER((PlayerTypes)iI).updateTradeRoutes();
-		}
+		for_each(CvPlayerAI::players(), CvPlayer::fn::updateTradeRoutes());
 	}
 }
 
@@ -30357,14 +30345,11 @@ void CvPlayer::clearTileCulture()
 
 void CvPlayer::clearCityCulture()
 {
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{
-			foreach_(CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
-			{
-				pLoopCity->setCulture(getID(), 0, true, true);
-			}
+			pLoopCity->setCulture(getID(), 0, true, true);
 		}
 	}
 }

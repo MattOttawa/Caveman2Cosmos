@@ -2420,10 +2420,10 @@ void CvPlot::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 
 	if (getReconCount() > 0)
 	{
-		int iRange = GC.getDefineINT("RECON_VISIBILITY_RANGE");
-		for (iI = 0; iI < MAX_PLAYERS; ++iI)
+		const int iRange = GC.getDefineINT("RECON_VISIBILITY_RANGE");
+		foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 		{
-			foreach_(CvUnit* pLoopUnit, GET_PLAYER((PlayerTypes)iI).units())
+			foreach_(CvUnit* pLoopUnit, loopPlayer->units())
 			{
 				if (pLoopUnit->getReconPlot() == this)
 				{
@@ -4459,13 +4459,13 @@ bool CvPlot::isHasPathToEnemyCity( TeamTypes eAttackerTeam, bool bIgnoreBarb ) c
 	}
 
 	// Check all other cities
-	for (iI = 0; !bFound && iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive() && GET_TEAM(eAttackerTeam).AI_getWarPlan(GET_PLAYER((PlayerTypes)iI).getTeam()) != NO_WARPLAN )
+		if (loopPlayer->isAlive() && GET_TEAM(eAttackerTeam).AI_getWarPlan(loopPlayer->getTeam()) != NO_WARPLAN)
 		{
-			if( !bIgnoreBarb || !(GET_PLAYER((PlayerTypes)iI).isNPC() || GET_PLAYER((PlayerTypes)iI).isMinorCiv()) )
+			if (!bIgnoreBarb || !(loopPlayer->isNPC() || loopPlayer->isMinorCiv()))
 			{
-				foreach_(const CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+				foreach_(const CvCity* pLoopCity, loopPlayer->cities())
 				{
 					if( (pLoopCity->area() == area()) && !(pLoopCity->isCapital()) )
 					{
@@ -13109,16 +13109,12 @@ int CvPlot::countFriendlyCulture(TeamTypes eTeam) const
 {
 	int iTotalCulture = 0;
 
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.isAlive())
+		const CvTeam& kLoopTeam = GET_TEAM(loopPlayer->getTeam());
+		if (loopPlayer->getTeam() == eTeam || kLoopTeam.isVassal(eTeam) || kLoopTeam.isOpenBorders(eTeam))
 		{
-			const CvTeam& kLoopTeam = GET_TEAM(kLoopPlayer.getTeam());
-			if (kLoopPlayer.getTeam() == eTeam || kLoopTeam.isVassal(eTeam) || kLoopTeam.isOpenBorders(eTeam))
-			{
-				iTotalCulture += getCulture((PlayerTypes)iPlayer);
-			}
+			iTotalCulture += getCulture(loopPlayer->getID());
 		}
 	}
 

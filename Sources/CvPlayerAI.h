@@ -69,7 +69,7 @@ public:
 class CvPlayerAI : public CvPlayer
 {
 public:
-	CvPlayerAI();
+	CvPlayerAI(PlayerTypes id);
 	virtual ~CvPlayerAI();
 
 	// inlined for performance reasons

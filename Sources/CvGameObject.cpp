@@ -157,13 +157,9 @@ void CvGameObjectGame::foreach(GameObjectTypes eType, bst::function<void (CvGame
 			break;
 
 		case GAMEOBJECT_PLAYER:
-			for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+			foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 			{
-				CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-				if (kLoopPlayer.isAlive())
-				{
-					func(kLoopPlayer.getGameObject());
-				}
+				func(loopPlayer->getGameObject());
 			}
 			break;
 
@@ -1024,17 +1020,7 @@ int CvGameObjectGame::getAttribute(AttributeTypes eAttribute) const
 	switch (eAttribute)
 	{
 	case ATTRIBUTE_PLAYERS:
-
-		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
-		{
-			const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-			if (kLoopPlayer.isAlive())
-			{
-				++iCount;
-			}
-		}
-		return iCount;
-		break;
+		return count_if(CvPlayerAI::players(), CvPlayer::fn::isAlive());
 
 	case ATTRIBUTE_TEAMS:
 		for (int iI = 0; iI < MAX_TEAMS; iI++)

@@ -9137,11 +9137,11 @@ bool CvUnit::canAirBombAt(const CvPlot* pPlot, int iX, int iY) const
 	{
 		if (GC.isDCM_AIR_BOMBING())
 		{
-			for (int iI = 0; iI < MAX_PLAYERS; ++iI)
+			foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 			{
-				if (atWar(GET_PLAYER((PlayerTypes)iI).getTeam(), getTeam()))
+				if (atWar(loopPlayer->getTeam(), getTeam()))
 				{
-					if (algo::any_of(GET_PLAYER((PlayerTypes)iI).units(),
+					if (algo::any_of(loopPlayer->units(),
 						CvUnit::fn::plot() == pTargetPlot && CvUnit::fn::getDomainType() == DOMAIN_SEA))
 					{
 						return true;
@@ -13082,8 +13082,7 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 				foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
 				{
 					// if coastal only, then make sure we are coast
-					CvArea* pWaterArea = NULL;
-					if (!bCoastalOnly || ((pWaterArea = pLoopCity->waterArea()) != NULL && !pWaterArea->isLake()))
+					if (!bCoastalOnly || ((const CvArea* pWaterArea = pLoopCity->waterArea()) != NULL && !pWaterArea->isLake()))
 					{
 						// can this city tran this unit?
 						if (pLoopCity->canTrain(eUnit, false, false, true))
@@ -15423,33 +15422,30 @@ CvUnit* CvUnit::bestInterceptor(const CvPlot* pPlot) const
 	int iBestValue = 0;
 	CvUnit* pBestUnit = NULL;
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if (!isInvisible(loopPlayer->getTeam(), false, false))
 		{
-			if (!isInvisible(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false))
+			foreach_(CvUnit* pLoopUnit, loopPlayer->units())
 			{
-				foreach_(CvUnit* pLoopUnit, GET_PLAYER((PlayerTypes)iI).units())
+				if (pLoopUnit->canAirDefend())
 				{
-					if (pLoopUnit->canAirDefend())
+					if (!pLoopUnit->isMadeInterception())
 					{
-						if (!pLoopUnit->isMadeInterception())
+						if (isEnemy(GET_PLAYER((PlayerTypes)iI).getTeam(), NULL, pLoopUnit))
 						{
-							if (isEnemy(GET_PLAYER((PlayerTypes)iI).getTeam(), NULL, pLoopUnit))
+							if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || !(pLoopUnit->hasMoved()))
 							{
-								if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || !(pLoopUnit->hasMoved()))
+								if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || (pLoopUnit->getGroup()->getActivityType() == ACTIVITY_INTERCEPT))
 								{
-									if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || (pLoopUnit->getGroup()->getActivityType() == ACTIVITY_INTERCEPT))
+									if (plotDistance(pLoopUnit->getX(), pLoopUnit->getY(), pPlot->getX(), pPlot->getY()) <= pLoopUnit->airRange())
 									{
-										if (plotDistance(pLoopUnit->getX(), pLoopUnit->getY(), pPlot->getX(), pPlot->getY()) <= pLoopUnit->airRange())
-										{
-											const int iValue = pLoopUnit->currInterceptionProbability();
+										const int iValue = pLoopUnit->currInterceptionProbability();
 
-											if (iValue > iBestValue)
-											{
-												iBestValue = iValue;
-												pBestUnit = pLoopUnit;
-											}
+										if (iValue > iBestValue)
+										{
+											iBestValue = iValue;
+											pBestUnit = pLoopUnit;
 										}
 									}
 								}
@@ -29497,11 +29493,11 @@ bool CvUnit::canAirBomb4At(const CvPlot* pPlot, int iX, int iY) const
 	const CvCity* pCity = pTargetPlot->getPlotCity();
 	if (pCity != NULL)
 	{
-		for (int iI = 0; iI < MAX_PLAYERS; ++iI)
+		foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 		{
-			if (atWar(GET_PLAYER((PlayerTypes)iI).getTeam(), getTeam()))
+			if (atWar(loopPlayer->getTeam(), getTeam()))
 			{
-				if (algo::any_of(GET_PLAYER((PlayerTypes)iI).units(),
+				if (algo::any_of(loopPlayer->units(),
 					CvUnit::fn::plot() == pTargetPlot && CvUnit::fn::getDomainType() == DOMAIN_SEA))
 				{
 					return true;
@@ -29513,11 +29509,11 @@ bool CvUnit::canAirBomb4At(const CvPlot* pPlot, int iX, int iY) const
 	{
 		if (GC.getImprovementInfo(pTargetPlot->getImprovementType()).isActsAsCity() && pCity == NULL)
 		{
-			for (int iI = 0; iI < MAX_PLAYERS; ++iI)
+			foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 			{
-				if (atWar(GET_PLAYER((PlayerTypes)iI).getTeam(), getTeam()))
+				if (atWar(loopPlayer->getTeam(), getTeam()))
 				{
-					if (algo::any_of(GET_PLAYER((PlayerTypes)iI).units(),
+					if (algo::any_of(loopPlayer->units(),
 						CvUnit::fn::plot() == pTargetPlot && CvUnit::fn::getDomainType() == DOMAIN_SEA))
 					{
 						return true;
@@ -30461,10 +30457,10 @@ bool CvUnit::canFEngageAt(const CvPlot* pPlot, int iX, int iY) const
 	{
 		return false;
 	}
-	for (int iI = 0; iI < MAX_PLAYERS; ++iI)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players())
 	{
-		if (atWar(GET_PLAYER((PlayerTypes)iI).getTeam(), getTeam())
-		&& algo::any_of(GET_PLAYER((PlayerTypes)iI).units(), CvUnit::fn::plot() == pTargetPlot && CvUnit::fn::getDomainType() == DOMAIN_AIR))
+		if (atWar(loopPlayer->getTeam(), getTeam())
+		&& algo::any_of(loopPlayer->units(), CvUnit::fn::plot() == pTargetPlot && CvUnit::fn::getDomainType() == DOMAIN_AIR))
 		{
 			return true;
 		}
@@ -31963,35 +31959,32 @@ int CvUnit::interceptionChance(const CvPlot* pPlot) const
 {
 	int iNoInterceptionChanceTimes100 = 10000;
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+		if (!isInvisible(loopPlayer->getTeam(), false, false))
 		{
-			if (!isInvisible(GET_PLAYER((PlayerTypes)iI).getTeam(), false, false))
+			foreach_(const CvUnit* pLoopUnit, loopPlayer->units())
 			{
-				foreach_(const CvUnit* pLoopUnit, GET_PLAYER((PlayerTypes)iI).units())
+				if (pLoopUnit->canAirDefend())
 				{
-					if (pLoopUnit->canAirDefend())
+					if (!pLoopUnit->isMadeInterception())
 					{
-						if (!pLoopUnit->isMadeInterception())
+						if (isEnemy(pLoopUnit->getTeam(), NULL, pLoopUnit))
 						{
-							if (isEnemy(pLoopUnit->getTeam(), NULL, pLoopUnit))
+							if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || !(pLoopUnit->hasMoved()))
 							{
-								if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || !(pLoopUnit->hasMoved()))
+								if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || (pLoopUnit->getGroup()->getActivityType() == ACTIVITY_INTERCEPT))
 								{
-									if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || (pLoopUnit->getGroup()->getActivityType() == ACTIVITY_INTERCEPT))
+									if (plotDistance(pLoopUnit->getX(), pLoopUnit->getY(), pPlot->getX(), pPlot->getY()) <= pLoopUnit->airRange())
 									{
-										if (plotDistance(pLoopUnit->getX(), pLoopUnit->getY(), pPlot->getX(), pPlot->getY()) <= pLoopUnit->airRange())
+										const int iValue = pLoopUnit->currInterceptionProbability();
+										if (iValue > 0 && iValue < 100)
 										{
-											const int iValue = pLoopUnit->currInterceptionProbability();
-											if (iValue > 0 && iValue < 100)
-											{
-												iNoInterceptionChanceTimes100 *= (100 - iValue);
-												iNoInterceptionChanceTimes100 /= 100;
-											}
-											else if (iValue > 100)
-												return 100;
+											iNoInterceptionChanceTimes100 *= (100 - iValue);
+											iNoInterceptionChanceTimes100 /= 100;
 										}
+										else if (iValue > 100)
+											return 100;
 									}
 								}
 							}
@@ -32673,7 +32666,7 @@ void CvUnit::doMADNukes(bool bForceRetarget)
 			int iBestValue = 0;
 			for (int iI = 0; iI < MAX_PLAYERS; iI++)
 			{
-				if (GET_PLAYER((PlayerTypes)iI).isAlive() && iI != GET_PLAYER(getOwner()).getID())
+				if (GET_PLAYER((PlayerTypes)iI).isAlive() && iI != getOwner())
 				{
 					if (GET_TEAM(getTeam()).AI_getWarPlan(GET_PLAYER((PlayerTypes)iI).getTeam()) != NO_WARPLAN || GET_PLAYER(getOwner()).AI_getAttitudeVal((PlayerTypes)iI) < 0)
 					{

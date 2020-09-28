@@ -12195,45 +12195,41 @@ int CvGame::getAverageCorporationInfluence(const CvCity* pCity, const Corporatio
 		return 100;
 	}
 
-	for (iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* player, players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
-		if (kPlayer.isAlive())
+		if (player->isNoCorporations())
 		{
-			if (kPlayer.isNoCorporations())
+			continue;
+		}
+		if (player->isNoForeignCorporations() && getHeadquarters(eCorporation)->getOwner() != pCity->getOwner())
+		{
+			continue;
+		}
+		iPlayerCount++;
+		foreach_(const CvCity* pLoopCity, player->cities())
+		{
+			if (pLoopCity->isConnectedTo(pCity))
 			{
-				continue;
-			}
-			if (kPlayer.isNoForeignCorporations() && getHeadquarters(eCorporation)->getOwner() != pCity->getOwner())
-			{
-				continue;
-			}
-			iPlayerCount++;
-			foreach_(const CvCity* pLoopCity, kPlayer.cities())
-			{
-				if (pLoopCity->isConnectedTo(pCity))
+				iSpread = pLoopCity->getCorporationInfluence(eCorporation);
+
+				iSpread *= GC.getCorporationInfo(eCorporation).getSpread();
+
+				iSpread /= 100;
+
+				if (iSpread > 0)
 				{
-					iSpread = pLoopCity->getCorporationInfluence(eCorporation);
+					iSpread /= std::max(1, (((GC.getDefineINT("CORPORATION_SPREAD_DISTANCE_DIVISOR") * plotDistance(pCity->getX(), pCity->getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
 
-					iSpread *= GC.getCorporationInfo(eCorporation).getSpread();
-
-					iSpread /= 100;
-
-					if (iSpread > 0)
-					{
-						iSpread /= std::max(1, (((GC.getDefineINT("CORPORATION_SPREAD_DISTANCE_DIVISOR") * plotDistance(pCity->getX(), pCity->getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
-
-						iRandThreshold = std::max(iRandThreshold, iSpread);
-					}
+					iRandThreshold = std::max(iRandThreshold, iSpread);
 				}
 			}
-			iRandThreshold *= GET_PLAYER(pCity->getOwner()).getCorporationSpreadModifier() + 100;
-			iRandThreshold /= 100;
-			iRandThreshold *= GET_PLAYER(pCity->getOwner()).getCorporationInfluence(eCorporation);
-			iRandThreshold /= 100;
-
-			iTotalSpread += iRandThreshold;
 		}
+		iRandThreshold *= GET_PLAYER(pCity->getOwner()).getCorporationSpreadModifier() + 100;
+		iRandThreshold /= 100;
+		iRandThreshold *= GET_PLAYER(pCity->getOwner()).getCorporationInfluence(eCorporation);
+		iRandThreshold /= 100;
+
+		iTotalSpread += iRandThreshold;
 	}
 
 	if (iPlayerCount > 0)
@@ -12632,13 +12628,9 @@ void CvGame::recalculateModifiers()
 	}
 
 	//	Inhibit plot group manipulation until we rebuild at the end of everything else
-	for(iI = 0; iI < MAX_PLAYERS; iI++ )
-	{
-		if ( GET_PLAYER((PlayerTypes)iI).isAlive() )
-		{
-			GET_PLAYER((PlayerTypes)iI).inhibitPlotGroupCalcsUntilFullRebuild();
-		}
-	}
+	for_each(players() | filtered(CvPlayer::fn::isAlive())
+		CvPlayer::fn::inhibitPlotGroupCalcsUntilFullRebuild()
+	);
 
 	// AIAndy: Recalculate which info class replacements are currently active
 	GC.updateReplacements();
@@ -12701,17 +12693,13 @@ void CvGame::recalculateModifiers()
 		}
 	}
 
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.isAlive())
-		{
-			kLoopPlayer.getProperties()->clearForRecalculate();
+		loopPlayer->getProperties()->clearForRecalculate();
 
-			foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
-			{
-				pLoopCity->getProperties()->clearForRecalculate();
-			}
+		foreach_(const CvCity* pLoopCity, loopPlayer->cities())
+		{
+			pLoopCity->getProperties()->clearForRecalculate();
 		}
 	}
 
@@ -12730,12 +12718,9 @@ void CvGame::recalculateModifiers()
 
 	for(iI = 0; iI < GC.getNumVoteSourceInfos(); iI++ )
 	{
-		for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+		foreach_(CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
 		{
-			if (GET_PLAYER((PlayerTypes)iPlayer).isAlive())
-			{
-				GET_PLAYER((PlayerTypes)iPlayer).processVoteSourceBonus((VoteSourceTypes)iI, true);
-			}
+			loopPlayer->processVoteSourceBonus((VoteSourceTypes)iI, true);
 		}
 	}
 
@@ -12745,16 +12730,12 @@ void CvGame::recalculateModifiers()
 	//	Recheck for disabled buildings everywhere (this has to be done after plot group establishment
 	//	or else resource dependencies will mean it gets the wrong answer, which will in turn force
 	//	(automatic) recalculation the following turn (which is very inefficient)
-	for (iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.isAlive())
+		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{
-			foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
-			{
-				pLoopCity->doVicinityBonus();
-				pLoopCity->checkBuildings(true, true, true, true, true, false);
-			}
+			pLoopCity->doVicinityBonus();
+			pLoopCity->checkBuildings(true, true, true, true, true, false);
 		}
 	}
 
@@ -12772,16 +12753,12 @@ void CvGame::recalculateModifiers()
 
 	//	Force a one-time reclaculation of all city commerce after coming out
 	//	of the in-recalc section (which inhibits this doing any work)
-	for (iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.isAlive())
+		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{
-			foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
-			{
-				pLoopCity->updateBuildingCommerce();
-				pLoopCity->updateCommerce(NO_COMMERCE, true);
-			}
+			pLoopCity->updateBuildingCommerce();
+			pLoopCity->updateCommerce(NO_COMMERCE, true);
 		}
 	}
 
@@ -12818,18 +12795,13 @@ void CvGame::setCurrentMap(MapTypes eNewMap)
 void CvGame::processGreatWall(bool bIn, bool bForce, bool bSeeded) const
 {
 #ifdef THE_GREAT_WALL
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
-		if (kLoopPlayer.isAlive())
+		foreach_(CvCity* pLoopCity, loopPlayer.cities())
 		{
-			foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
+			if (pLoopCity->processGreatWall(bIn, bForce, bSeeded))
 			{
-				if (pLoopCity->processGreatWall(bIn, bForce, bSeeded))
-				{
-					//	There can be only one!
-					return;
-				}
+				return; // There can be only one!
 			}
 		}
 	}

@@ -354,13 +354,12 @@ bool CvSelectionGroup::showMoves() const
 		return false;
 	}
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(const CvPlayer* player, CvPlayerAI::players())
 	{
-		const CvPlayer& pPlayer = GET_PLAYER((PlayerTypes)iI);
-		if (pPlayer.isAlive() && pPlayer.isHuman())
+		if (player->isAlive() && player->isHuman())
 		{
 			const CvUnit* pHeadUnit = getHeadUnit();
-			if (pHeadUnit && (pHeadUnit->isEnemy(pPlayer.getTeam()) ? pPlayer.isOption(PLAYEROPTION_SHOW_ENEMY_MOVES) : pPlayer.isOption(PLAYEROPTION_SHOW_FRIENDLY_MOVES)))
+			if (pHeadUnit && (pHeadUnit->isEnemy(player->getTeam()) ? player->isOption(PLAYEROPTION_SHOW_ENEMY_MOVES) : player->isOption(PLAYEROPTION_SHOW_FRIENDLY_MOVES)))
 			{
 				return true;
 			}
