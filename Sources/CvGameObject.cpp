@@ -158,7 +158,7 @@ void CvGameObjectGame::foreach(GameObjectTypes eType, bst::function<void (CvGame
 			break;
 
 		case GAMEOBJECT_PLAYER:
-			foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
+			foreach_(CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 			{
 				func(loopPlayer->getGameObject());
 			}

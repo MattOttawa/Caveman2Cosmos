@@ -2407,6 +2407,20 @@ public:
 	void setPlayerWideAfflictionCount(PromotionLineTypes ePromotionLineType, int iChange);
 	int countAfflictedUnits(PromotionLineTypes eAfflictionLine);
 	void recalculateAfflictedUnitCount();
+
+public:
+	//
+	// Algorithm/range helpers
+	//
+	struct fn {
+		DECLARE_MAP_FUNCTOR(CvPlayer, void, inhibitPlotGroupCalcsUntilFullRebuild);
+		DECLARE_MAP_FUNCTOR(CvPlayer, void, updateTradeRoutes);
+		DECLARE_MAP_FUNCTOR(CvPlayer, void, AI_makeAssignWorkDirty);
+
+		DECLARE_MAP_FUNCTOR_2(CvPlayer, void, processVoteSourceBonus, VoteSourceTypes, bool);
+
+		DECLARE_MAP_FUNCTOR_CONST(CvPlayer, bool, isAlive);
+	};
 };
 
 #endif

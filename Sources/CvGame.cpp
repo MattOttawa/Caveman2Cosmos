@@ -12112,7 +12112,6 @@ int CvGame::getAverageCorporationInfluence(const CvCity* pCity, const Corporatio
 {
 	int iSpread = GC.getCorporationInfo(eCorporation).getSpread();
 	int iTotalSpread = 0;
-	int iI;
 	int iPlayerCount = 0;
 	int iRandThreshold = 0;
 
@@ -12121,7 +12120,7 @@ int CvGame::getAverageCorporationInfluence(const CvCity* pCity, const Corporatio
 		return 100;
 	}
 
-	foreach_(const CvPlayer* player, players() | filtered(CvPlayer::fn::isAlive()))
+	foreach_(const CvPlayer* player, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
 		if (player->isNoCorporations())
 		{
@@ -12554,19 +12553,19 @@ void CvGame::recalculateModifiers()
 	}
 
 	//	Inhibit plot group manipulation until we rebuild at the end of everything else
-	for_each(players() | filtered(CvPlayer::fn::isAlive())
+	algo::for_each(CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()),
 		CvPlayer::fn::inhibitPlotGroupCalcsUntilFullRebuild()
 	);
 
 	// AIAndy: Recalculate which info class replacements are currently active
 	GC.updateReplacements();
 
-	for (iI = 0; iI < GC.getNumVoteSourceInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumVoteSourceInfos(); iI++)
 	{
 		m_aiDiploVote[iI] = 0;
 	}
 
-	for (iI = 0; iI < GC.getNumSpecialUnitInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumSpecialUnitInfos(); iI++)
 	{
 		m_pabSpecialUnitValid[iI] = false;
 		if (GC.getSpecialUnitInfo((SpecialUnitTypes)iI).isValid())
@@ -12575,7 +12574,7 @@ void CvGame::recalculateModifiers()
 		}
 	}
 
-	for (iI = 0; iI < GC.getNumSpecialBuildingInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumSpecialBuildingInfos(); iI++)
 	{
 		m_pabSpecialBuildingValid[iI] = false;
 		if (GC.getSpecialBuildingInfo((SpecialBuildingTypes)iI).isValid())
@@ -12591,7 +12590,7 @@ void CvGame::recalculateModifiers()
 	// units are not supposed to have that kind of property (needs extra code if that changes)
 	getProperties()->clearForRecalculate();
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
 	{
 		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
 		pLoopPlot->getProperties()->clearForRecalculate();
@@ -12611,7 +12610,7 @@ void CvGame::recalculateModifiers()
 		pLoopPlot->resetBlockadedCounts();
 	}
 
-	for(iI = 0; iI < MAX_TEAMS; iI++)
+	for (int iI = 0; iI < MAX_TEAMS; iI++)
 	{
 		if ( GET_TEAM((TeamTypes)iI).isAlive() )
 		{
@@ -12619,11 +12618,11 @@ void CvGame::recalculateModifiers()
 		}
 	}
 
-	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
+	foreach_(CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
 		loopPlayer->getProperties()->clearForRecalculate();
 
-		foreach_(const CvCity* pLoopCity, loopPlayer->cities())
+		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{
 			pLoopCity->getProperties()->clearForRecalculate();
 		}
@@ -12631,7 +12630,7 @@ void CvGame::recalculateModifiers()
 
 	algo::for_each(GC.getMap().areas(), CvArea::fn::clearModifierTotals());
 
-	for(iI = 0; iI < MAX_TEAMS; iI++)
+	for (int iI = 0; iI < MAX_TEAMS; iI++)
 	{
 		if ( GET_TEAM((TeamTypes)iI).isAlive() )
 		{
@@ -12639,12 +12638,11 @@ void CvGame::recalculateModifiers()
 		}
 	}
 
-	for(iI = 0; iI < GC.getNumVoteSourceInfos(); iI++ )
+	for (int iI = 0; iI < GC.getNumVoteSourceInfos(); iI++)
 	{
-		foreach_(CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
-		{
-			loopPlayer->processVoteSourceBonus((VoteSourceTypes)iI, true);
-		}
+		algo::for_each(CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()),
+			CvPlayer::fn::processVoteSourceBonus((VoteSourceTypes)iI, true)
+		);
 	}
 
 	updatePlotGroups(true);
@@ -12653,7 +12651,7 @@ void CvGame::recalculateModifiers()
 	//	Recheck for disabled buildings everywhere (this has to be done after plot group establishment
 	//	or else resource dependencies will mean it gets the wrong answer, which will in turn force
 	//	(automatic) recalculation the following turn (which is very inefficient)
-	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
 		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{
@@ -12676,7 +12674,7 @@ void CvGame::recalculateModifiers()
 
 	//	Force a one-time reclaculation of all city commerce after coming out
 	//	of the in-recalc section (which inhibits this doing any work)
-	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
 		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{

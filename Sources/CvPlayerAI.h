@@ -69,7 +69,7 @@ public:
 class CvPlayerAI : public CvPlayer
 {
 public:
-	CvPlayerAI(PlayerTypes id);
+	CvPlayerAI();
 	virtual ~CvPlayerAI();
 
 	// inlined for performance reasons
@@ -81,7 +81,7 @@ public:
 
 	DllExport static CvPlayerAI& getPlayerNonInl(PlayerTypes ePlayer);
 
-	inline const bst::array<CvPlayerAI*, MAX_PLAYERS> players() const { return m_aPlayers; }
+	static const bst::array<CvPlayerAI*, MAX_PLAYERS> players() { return m_aPlayers; }
 
 	static void initStatics();
 	static void freeStatics();

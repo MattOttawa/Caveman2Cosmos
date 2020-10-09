@@ -12996,7 +12996,8 @@ CvCity* CvUnit::getUpgradeCity(UnitTypes eUnit, bool bSearch, int* iSearchValue)
 				foreach_(CvCity* pLoopCity, kLoopPlayer.cities())
 				{
 					// if coastal only, then make sure we are coast
-					if (!bCoastalOnly || ((const CvArea* pWaterArea = pLoopCity->waterArea()) != NULL && !pWaterArea->isLake()))
+					const CvArea* pWaterArea;
+					if (!bCoastalOnly || ((pWaterArea = pLoopCity->waterArea()) != NULL && !pWaterArea->isLake()))
 					{
 						// can this city tran this unit?
 						if (pLoopCity->canTrain(eUnit, false, false, true))
@@ -15315,7 +15316,7 @@ CvUnit* CvUnit::bestInterceptor(const CvPlot* pPlot) const
 				{
 					if (!pLoopUnit->isMadeInterception())
 					{
-						if (isEnemy(GET_PLAYER((PlayerTypes)iI).getTeam(), NULL, pLoopUnit))
+						if (isEnemy(loopPlayer->getTeam(), NULL, pLoopUnit))
 						{
 							if ((pLoopUnit->getDomainType() != DOMAIN_AIR) || !(pLoopUnit->hasMoved()))
 							{

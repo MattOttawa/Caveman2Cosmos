@@ -15566,134 +15566,131 @@ bool CvUnitAI::AI_spreadReligion()
 		const bool bHasHolyCity = GET_TEAM(getTeam()).hasHolyCity(eReligion);
 
 		// BBAI TODO: Could also use CvPlayerAI::AI_missionaryValue to determine which player to target ...
-		for (int iI = 0; iI < MAX_PLAYERS; iI++)
+		foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 		{
-			if (GET_PLAYER((PlayerTypes)iI).isAlive())
+			int iPlayerMultiplierPercent = 0;
+
+			if (loopPlayer->getTeam() != getTeam() && canEnterTerritory(loopPlayer->getTeam()))
 			{
-				int iPlayerMultiplierPercent = 0;
-
-				if (GET_PLAYER((PlayerTypes)iI).getTeam() != getTeam() && canEnterTerritory(GET_PLAYER((PlayerTypes)iI).getTeam()))
-				{
-					if (bHasHolyCity)
-					{
-						iPlayerMultiplierPercent = 100;
-						// BBAI TODO: If going for cultural victory, don't spread to other teams?  Sure, this might decrease the chance of
-						// someone else winning by culture, but at the cost of $$ in holy city and diplomatic conversions (ie future wars!).
-						// Doesn't seem to up our odds of winning by culture really.  Also, no foreign spread after Free Religion?  Still get
-						// gold for city count.
-						if (!bCultureVictory || eReligion == GET_PLAYER(getOwner()).getStateReligion())
-						{
-							if (GET_PLAYER((PlayerTypes)iI).getStateReligion() == NO_RELIGION)
-							{
-								if (0 == (GET_PLAYER((PlayerTypes)iI).getNonStateReligionHappiness()))
-								{
-									iPlayerMultiplierPercent += 600;
-								}
-							}
-							else if (GET_PLAYER((PlayerTypes)iI).getStateReligion() == eReligion)
-							{
-								iPlayerMultiplierPercent += 300;
-							}
-							else if (GET_PLAYER((PlayerTypes)iI).hasHolyCity(GET_PLAYER((PlayerTypes)iI).getStateReligion()))
-							{
-								iPlayerMultiplierPercent += 50;
-							}
-							else
-							{
-								iPlayerMultiplierPercent += 300;
-							}
-
-							const int iCityCount = GET_PLAYER(getOwner()).getNumCities();
-							//magic formula to produce normalized adjustment factor based on religious infusion
-							int iAdjustment = 100 * (iCityCount + 1);
-							iAdjustment /= iCityCount + 1 + GET_PLAYER((PlayerTypes)iI).countTotalHasReligion();
-							iAdjustment = (iAdjustment - 25) * 4 / 3;
-
-							iAdjustment = std::max(10, iAdjustment);
-
-							iPlayerMultiplierPercent *= iAdjustment;
-							iPlayerMultiplierPercent /= 100;
-						}
-					}
-				}
-				else if (iI == getOwner())
+				if (bHasHolyCity)
 				{
 					iPlayerMultiplierPercent = 100;
-				}
-				else if (bHasHolyCity && GET_PLAYER((PlayerTypes)iI).getTeam() == getTeam())
-				{
-					iPlayerMultiplierPercent = 80;
-				}
-
-				if (iPlayerMultiplierPercent > 0)
-				{
-					foreach_(CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+					// BBAI TODO: If going for cultural victory, don't spread to other teams?  Sure, this might decrease the chance of
+					// someone else winning by culture, but at the cost of $$ in holy city and diplomatic conversions (ie future wars!).
+					// Doesn't seem to up our odds of winning by culture really.  Also, no foreign spread after Free Religion?  Still get
+					// gold for city count.
+					if (!bCultureVictory || eReligion == GET_PLAYER(getOwner()).getStateReligion())
 					{
-						if (AI_plotValid(pLoopCity->plot())
-						&& (itr = m_cachedMissionaryPlotset->find(pLoopCity->plot())) != m_cachedMissionaryPlotset->end()
-						&& canSpread(pLoopCity->plot(), eReligion)
-						&& !GET_PLAYER(getOwner()).AI_getAnyPlotDanger(pLoopCity->plot())
-						&& GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(pLoopCity->plot(), MISSIONAI_SPREAD, getGroup()) == 0)
+						if (loopPlayer->getStateReligion() == NO_RELIGION)
 						{
-							int iValue = (7 + (pLoopCity->getPopulation() * 4));
-
-							bool bOurCity = false;
-							// BBAI TODO: Why not just use iPlayerMultiplier??
-							if (pLoopCity->getOwner() == getOwner())
+							if (0 == (loopPlayer->getNonStateReligionHappiness()))
 							{
-								iValue *= (bCultureVictory ? 16 : 4);
-								bOurCity = true;
+								iPlayerMultiplierPercent += 600;
 							}
-							else if (pLoopCity->getTeam() == getTeam())
-							{
-								iValue *= 3;
-								bOurCity = true;
-							}
-							else
-							{
-								iValue *= iPlayerMultiplierPercent;
-								iValue /= 100;
-							}
-
-							const int iCityReligionCount = pLoopCity->getReligionCount();
-							int iReligionCountFactor = iCityReligionCount;
-
-							if (bOurCity)
-							{
-								// count cities with no religion the same as cities with 2 religions
-								// prefer a city with exactly 1 religion already
-								if (iCityReligionCount == 0)
-								{
-									iReligionCountFactor = 2;
-								}
-								else if (iCityReligionCount == 1)
-								{
-									iValue *= 2;
-								}
-							}
-							else
-							{
-								// absolutely prefer cities with zero religions
-								if (iCityReligionCount == 0)
-								{
-									iValue *= 2;
-								}
-
-								// not our city, so prefer the lowest number of religions (increment so no divide by zero)
-								iReligionCountFactor++;
-							}
-
-							iValue /= iReligionCountFactor;
-
-							//If human, prefer to spread to the player where automated from.
-							if (isHuman() && plot()->getOwner() == pLoopCity->getOwner())
-							{
-								iValue *= 10;
-							}
-							iValue *= 1000;
-
-							targetValues.insert(std::pair<int,CvCity*>(-iValue/(1+itr.stepDistance()), pLoopCity));
 						}
+						else if (loopPlayer->getStateReligion() == eReligion)
+						{
+							iPlayerMultiplierPercent += 300;
+						}
+						else if (loopPlayer->hasHolyCity(loopPlayer->getStateReligion()))
+						{
+							iPlayerMultiplierPercent += 50;
+						}
+						else
+						{
+							iPlayerMultiplierPercent += 300;
+						}
+
+						const int iCityCount = GET_PLAYER(getOwner()).getNumCities();
+						//magic formula to produce normalized adjustment factor based on religious infusion
+						int iAdjustment = 100 * (iCityCount + 1);
+						iAdjustment /= iCityCount + 1 + loopPlayer->countTotalHasReligion();
+						iAdjustment = (iAdjustment - 25) * 4 / 3;
+
+						iAdjustment = std::max(10, iAdjustment);
+
+						iPlayerMultiplierPercent *= iAdjustment;
+						iPlayerMultiplierPercent /= 100;
+					}
+				}
+			}
+			else if (loopPlayer->getID() == getOwner())
+			{
+				iPlayerMultiplierPercent = 100;
+			}
+			else if (bHasHolyCity && loopPlayer->getTeam() == getTeam())
+			{
+				iPlayerMultiplierPercent = 80;
+			}
+
+			if (iPlayerMultiplierPercent > 0)
+			{
+				foreach_(CvCity* pLoopCity, loopPlayer->cities())
+				{
+					if (AI_plotValid(pLoopCity->plot())
+					&& (itr = m_cachedMissionaryPlotset->find(pLoopCity->plot())) != m_cachedMissionaryPlotset->end()
+					&& canSpread(pLoopCity->plot(), eReligion)
+					&& !GET_PLAYER(getOwner()).AI_getAnyPlotDanger(pLoopCity->plot())
+					&& GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(pLoopCity->plot(), MISSIONAI_SPREAD, getGroup()) == 0)
+					{
+						int iValue = (7 + (pLoopCity->getPopulation() * 4));
+
+						bool bOurCity = false;
+						// BBAI TODO: Why not just use iPlayerMultiplier??
+						if (pLoopCity->getOwner() == getOwner())
+						{
+							iValue *= (bCultureVictory ? 16 : 4);
+							bOurCity = true;
+						}
+						else if (pLoopCity->getTeam() == getTeam())
+						{
+							iValue *= 3;
+							bOurCity = true;
+						}
+						else
+						{
+							iValue *= iPlayerMultiplierPercent;
+							iValue /= 100;
+						}
+
+						const int iCityReligionCount = pLoopCity->getReligionCount();
+						int iReligionCountFactor = iCityReligionCount;
+
+						if (bOurCity)
+						{
+							// count cities with no religion the same as cities with 2 religions
+							// prefer a city with exactly 1 religion already
+							if (iCityReligionCount == 0)
+							{
+								iReligionCountFactor = 2;
+							}
+							else if (iCityReligionCount == 1)
+							{
+								iValue *= 2;
+							}
+						}
+						else
+						{
+							// absolutely prefer cities with zero religions
+							if (iCityReligionCount == 0)
+							{
+								iValue *= 2;
+							}
+
+							// not our city, so prefer the lowest number of religions (increment so no divide by zero)
+							iReligionCountFactor++;
+						}
+
+						iValue /= iReligionCountFactor;
+
+						//If human, prefer to spread to the player where automated from.
+						if (isHuman() && plot()->getOwner() == pLoopCity->getOwner())
+						{
+							iValue *= 10;
+						}
+						iValue *= 1000;
+
+						targetValues.insert(std::pair<int,CvCity*>(-iValue/(1+itr.stepDistance()), pLoopCity));
 					}
 				}
 			}
@@ -27582,7 +27579,7 @@ bool CvUnitAI::AI_exploreAir()
 					if (canReconAt(plot(), pLoopCity->getX(), pLoopCity->getY()))
 					{
 						int iValue = 1 + GC.getGame().getSorenRandNum(15, "AI explore air");
-						if (isEnemy(GET_PLAYER((PlayerTypes)iI).getTeam()))
+						if (isEnemy(loopPlayer->getTeam()))
 						{
 							iValue += 10;
 							iValue += std::min(10,  pLoopCity->area()->getNumAIUnits(getOwner(), UNITAI_ATTACK_CITY));

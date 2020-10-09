@@ -44,7 +44,7 @@ void CvGameAI::AI_reset()
 
 void CvGameAI::AI_makeAssignWorkDirty()
 {
-	for_each(players() | filtered(CvPlayer::fn::isAlive()),
+	algo::for_each(CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()),
 		CvPlayer::fn::AI_makeAssignWorkDirty()
 	);
 }
@@ -54,7 +54,7 @@ void CvGameAI::AI_updateAssignWork()
 {
 	PROFILE_FUNC();
 
-	foreach_(const CvPlayer* player, players())
+	foreach_(CvPlayer* player, CvPlayerAI::players())
 	{
 		if (GET_TEAM(player->getTeam()).isHuman() && player->isAlive())
 		{

@@ -27253,7 +27253,7 @@ void CvPlayer::getReligionLayerColors(ReligionTypes eSelectedReligion, std::vect
 
 	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		foreach_(const CvCity* pLoopCity, loopPlayer->cities())
+		foreach_(const CvCity* pLoopCity, loopPlayer->cities()
 		| filtered(CvCity::fn::isRevealed(getTeam(), true) && CvCity::fn::isHasReligion(eSelectedReligion)))
 		{
 			float fAlpha = 0.8f;
@@ -27389,7 +27389,7 @@ void CvPlayer::changeEnslavementChance(int iChange)
 {
 	if (iChange != 0)
 	{
-		m_iEnslavementChance = (m_iEnslavementChance + iChange);
+		m_iEnslavementChance += iChange;
 	}
 }
 
@@ -27581,7 +27581,6 @@ DenialTypes CvPlayer::AI_pledgeVoteTrade(VoteTriggeredData* kData, PlayerVoteTyp
 
 DenialTypes CvPlayer::AI_corporationTrade(CorporationTypes eCorporation, PlayerTypes ePlayer) const
 {
-
 	if (isNoCorporations())
 	{
 		return DENIAL_NO_GAIN;
@@ -27658,14 +27657,11 @@ DenialTypes CvPlayer::AI_corporationTrade(CorporationTypes eCorporation, PlayerT
 		return DENIAL_ATTITUDE;
 	}
 
-
-
 	return NO_DENIAL;
 }
 
 DenialTypes CvPlayer::AI_secretaryGeneralTrade(VoteSourceTypes eVoteSource, PlayerTypes ePlayer) const
 {
-
 	if (GET_PLAYER(ePlayer).getTeam() == getTeam())
 	{
 		return NO_DENIAL;
@@ -27703,7 +27699,6 @@ DenialTypes CvPlayer::AI_secretaryGeneralTrade(VoteSourceTypes eVoteSource, Play
 
 DenialTypes CvPlayer::AI_workerTrade(const CvUnit* pUnit, PlayerTypes ePlayer) const
 {
-
 	if (isHuman())
 	{
 		return NO_DENIAL;
@@ -27900,7 +27895,7 @@ void CvPlayer::changeUnitCombatProductionModifier(UnitCombatTypes eIndex, int iC
 {
 	if (iChange != 0)
 	{
-		m_paiUnitCombatProductionModifier[eIndex] = (m_paiUnitCombatProductionModifier[eIndex] + iChange);
+		m_paiUnitCombatProductionModifier[eIndex] += iChange;
 	}
 }
 
@@ -27914,7 +27909,7 @@ void CvPlayer::changeUnitCombatFreeExperience(UnitCombatTypes eIndex, int iChang
 {
 	if (iChange != 0)
 	{
-		m_paiUnitCombatFreeExperience[eIndex] = (m_paiUnitCombatFreeExperience[eIndex] + iChange);
+		m_paiUnitCombatFreeExperience[eIndex] += iChange;
 	}
 }
 
@@ -27995,7 +27990,7 @@ void CvPlayer::changeCivicHappiness(int iChange)
 {
 	if (iChange != 0)
 	{
-		m_iCivicHappiness = (m_iCivicHappiness + iChange);
+		m_iCivicHappiness += iChange;
 
 		AI_makeAssignWorkDirty();
 	}
@@ -28032,7 +28027,7 @@ void CvPlayer::changeForeignTradeRouteModifier(int iChange)
 {
 	if (iChange != 0)
 	{
-		m_iForeignTradeRouteModifier = (m_iForeignTradeRouteModifier + iChange);
+		m_iForeignTradeRouteModifier += iChange;
 
 		updateTradeRoutes();
 	}
@@ -28047,7 +28042,7 @@ void CvPlayer::changeTaxRateUnhappiness(int iChange)
 {
 	if (iChange != 0)
 	{
-		m_iTaxRateUnhappiness = (m_iTaxRateUnhappiness + iChange);
+		m_iTaxRateUnhappiness += iChange;
 	}
 }
 
@@ -28317,7 +28312,7 @@ void CvPlayer::changeWorldTradeRoutes(int iChange)
 		m_iWorldTradeRoutes += iChange;
 		FAssert(getWorldTradeRoutes() >= 0);
 
-		for_each(CvPlayerAI::players(), CvPlayer::fn::updateTradeRoutes());
+		algo::for_each(CvPlayerAI::players(), CvPlayer::fn::updateTradeRoutes());
 	}
 }
 

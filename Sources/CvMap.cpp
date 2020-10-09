@@ -1305,7 +1305,7 @@ void CvMap::beforeSwitch()
 #endif
 	gDLL->getEngineIFace()->setResourceLayer(false);
 
-	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
 		foreach_(CvUnit* pLoopUnit, loopPlayer->units())
 		{
@@ -1342,7 +1342,7 @@ void CvMap::beforeSwitch()
 	
 	GC.clearSigns();
 
-	for (i = 0; i < numPlots(); i++)
+	for (int i = 0; i < numPlots(); i++)
 	{
 		plotByIndex(i)->destroyGraphics();
 	}
@@ -1431,7 +1431,7 @@ void CvMap::afterSwitch()
 		gDLL->getEngineIFace()->RebuildAllPlots();
 	}
 
-	foreach_(const CvPlayer* loopPlayer, players() | filtered(CvPlayer::fn::isAlive()))
+	foreach_(const CvPlayer* loopPlayer, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
 		foreach_(CvCity* pLoopCity, loopPlayer->cities())
 		{
@@ -1619,36 +1619,32 @@ void CvMap::calculateAreas()
 void CvMap::toggleCitiesDisplay()
 {
 	gDLL->getInterfaceIFace()->clearSelectedCities();
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+	foreach_(const CvPlayer* player, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		CvPlayer& kPlayer = GET_PLAYER((PlayerTypes) iPlayer);
-		if (kPlayer.isAlive())
+		int iI = 0;
+		foreach_(CvCity* pCity, player->cities())
 		{
-			int iI = 0;
-			foreach_(CvCity* pCity, kPlayer.cities())
-			{
-				iI++;
-				//if (iI > 1)
-				//	break;
+			iI++;
+			//if (iI > 1)
+			//	break;
 
-				if (m_bCitiesDisplayed)
-				{
-					//pCity->removeEntity();
-					//pCity->destroyEntity();
-					//pCity->plot()->setPlotCity(NULL);
-					//CvWString szBuffer = "Destroying: ";
-					//szBuffer.append(pCity->getName());
-					//AddDLLMessage(GC.getGame().getActivePlayer(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSED", MESSAGE_TYPE_INFO);
-					//pCity->killTestCheap();
-					pCity->setVisible(false);
-				}
-				else
-				{
-					//pCity->createCityEntity(pCity);
-					//pCity->setupGraphical();
-					//pCity->plot()->setPlotCity(pCity);
-					pCity->setVisible(true);
-				}
+			if (m_bCitiesDisplayed)
+			{
+				//pCity->removeEntity();
+				//pCity->destroyEntity();
+				//pCity->plot()->setPlotCity(NULL);
+				//CvWString szBuffer = "Destroying: ";
+				//szBuffer.append(pCity->getName());
+				//AddDLLMessage(GC.getGame().getActivePlayer(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSED", MESSAGE_TYPE_INFO);
+				//pCity->killTestCheap();
+				pCity->setVisible(false);
+			}
+			else
+			{
+				//pCity->createCityEntity(pCity);
+				//pCity->setupGraphical();
+				//pCity->plot()->setPlotCity(pCity);
+				pCity->setVisible(true);
 			}
 		}
 	}
@@ -1677,75 +1673,71 @@ void CvMap::toggleUnitsDisplay()
 		}
 	}
 
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; ++iPlayer)
+	foreach_(const CvPlayer* player, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		const CvPlayerAI& kPlayer = GET_PLAYER((PlayerTypes) iPlayer);
-		if (kPlayer.isAlive())
+		//foreach_(CvUnit* pUnit, player->units())
+		//{
+		//	if (m_bUnitsDisplayed)
+		//	{
+		//		//gDLL->getEntityIFace()->RemoveUnitFromBattle(pUnit);
+		//		//pUnit->removeEntity();
+		//		//pUnit->destroyEntity();
+		//		pUnit->kill(false);
+		//	}
+		//	else
+		//	{
+		//		//pUnit->createUnitEntity(pUnit);
+		//		//pUnit->setupGraphical();
+		//	}
+		//}
+		foreach_(const CvCity* pCity, player->cities())
 		{
-			//foreach_(CvUnit* pUnit, kPlayer.units())
-			//{
-			//	if (m_bUnitsDisplayed)
-			//	{
-			//		//gDLL->getEntityIFace()->RemoveUnitFromBattle(pUnit);
-			//		//pUnit->removeEntity();
-			//		//pUnit->destroyEntity();
-			//		pUnit->kill(false);
-			//	}
-			//	else
-			//	{
-			//		//pUnit->createUnitEntity(pUnit);
-			//		//pUnit->setupGraphical();
-			//	}
-			//}
-			foreach_(const CvCity* pCity, kPlayer.cities())
+			for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 			{
-				for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
+				if (pCity->getNumRealBuilding((BuildingTypes)iI) > 0)
 				{
-					if (pCity->getNumRealBuilding((BuildingTypes)iI) > 0)
+					int iBuiltTime = pCity->getBuildingOriginalTime((BuildingTypes)iI);
+					if (iBuiltTime < paiFirstBuilt[iI])
 					{
-						int iBuiltTime = pCity->getBuildingOriginalTime((BuildingTypes)iI);
-						if (iBuiltTime < paiFirstBuilt[iI])
-						{
-							paiFirstBuilt[iI] = pCity->getBuildingOriginalTime((BuildingTypes)iI);
-						}
-						if (iBuiltTime < 0)
-						{
-							paiBuiltNum[iI][0]++;
-						}
-						else if (iBuiltTime < 200)
-						{
-							paiBuiltNum[iI][1]++;
-						}
-						else if (iBuiltTime < 400)
-						{
-							paiBuiltNum[iI][2]++;
-						}
-						else if (iBuiltTime < 600)
-						{
-							paiBuiltNum[iI][3]++;
-						}
-						else if (iBuiltTime < 800)
-						{
-							paiBuiltNum[iI][4]++;
-						}
-						else if (iBuiltTime < 1000)
-						{
-							paiBuiltNum[iI][5]++;
-						}
-						else if (iBuiltTime < 1200)
-						{
-							paiBuiltNum[iI][6]++;
-						}
-						else
-						{
-							paiBuiltNum[iI][7]++;
-						}
-
-						//if (pCity->getBuildingOriginalTime((BuildingTypes)iI) > 1000)
-						//{
-						//	pCity->setNumRealBuilding((BuildingTypes)iI, 0);
-						//}
+						paiFirstBuilt[iI] = pCity->getBuildingOriginalTime((BuildingTypes)iI);
 					}
+					if (iBuiltTime < 0)
+					{
+						paiBuiltNum[iI][0]++;
+					}
+					else if (iBuiltTime < 200)
+					{
+						paiBuiltNum[iI][1]++;
+					}
+					else if (iBuiltTime < 400)
+					{
+						paiBuiltNum[iI][2]++;
+					}
+					else if (iBuiltTime < 600)
+					{
+						paiBuiltNum[iI][3]++;
+					}
+					else if (iBuiltTime < 800)
+					{
+						paiBuiltNum[iI][4]++;
+					}
+					else if (iBuiltTime < 1000)
+					{
+						paiBuiltNum[iI][5]++;
+					}
+					else if (iBuiltTime < 1200)
+					{
+						paiBuiltNum[iI][6]++;
+					}
+					else
+					{
+						paiBuiltNum[iI][7]++;
+					}
+
+					//if (pCity->getBuildingOriginalTime((BuildingTypes)iI) > 1000)
+					//{
+					//	pCity->setNumRealBuilding((BuildingTypes)iI, 0);
+					//}
 				}
 			}
 		}

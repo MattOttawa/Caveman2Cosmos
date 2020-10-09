@@ -13123,21 +13123,15 @@ int CvPlayerAI::AI_totalWaterAreaUnitAIs(const CvArea* pArea, UnitAITypes eUnitA
 {
 	int iCount = AI_totalAreaUnitAIs(pArea, eUnitAI);
 
-	foreach_(const CvPlayer* loopPlayer, m_aPlayers)
+	foreach_(const CvPlayer* player, players() | filtered(CvPlayer::fn::isAlive()))
 	{
-		if (loopPlayer->isAlive())
+		foreach_(const CvCity* city, player->cities() | filtered(CvCity::fn::waterArea() == pArea))
 		{
-			foreach_(const CvCity* pLoopCity, loopPlayer->cities())
-			{
-				if (pLoopCity->waterArea() == pArea)
-				{
-					iCount += pLoopCity->plot()->plotCount(PUF_isUnitAIType, eUnitAI, -1, NULL, getID());
+			iCount += city->plot()->plotCount(PUF_isUnitAIType, eUnitAI, -1, NULL, getID());
 
-					if (pLoopCity->getOwner() == getID())
-					{
-						iCount += pLoopCity->getNumTrainUnitAI(eUnitAI);
-					}
-				}
+			if (city->getOwner() == getID())
+			{
+				iCount += city->getNumTrainUnitAI(eUnitAI);
 			}
 		}
 	}
@@ -13182,9 +13176,8 @@ int CvPlayerAI::AI_neededExplorers(const CvArea* pArea, bool bIdeal) const
 		}
 		else if (getCapitalCity() != NULL && pArea->getID() == getCapitalCity()->getArea())
 		{
-			for (int iPlayer = 0; iPlayer < MAX_PC_PLAYERS; iPlayer++)
+			foreach_(const CvPlayer* kPlayer, players())
 			{
-				const CvPlayerAI& kPlayer = GET_PLAYER((PlayerTypes)iPlayer);
 				if (kPlayer.isAlive() && kPlayer.getTeam() != getTeam() && !GET_TEAM(getTeam()).isHasMet(kPlayer.getTeam()))
 				{
 					if (pArea->getCitiesPerPlayer(kPlayer.getID()) > 0)
@@ -22502,8 +22495,6 @@ void CvPlayerAI::read(FDataStreamBase* pStream)
 			WRAPPER_READ_ARRAY(wrapper, "CvPlayerAI", NUM_MEMORY_TYPES, m_aaiMemoryCount[i]);
 		}
 
-
-
 		WRAPPER_READ(wrapper, "CvPlayerAI", &m_bWasFinancialTrouble);
 		WRAPPER_READ(wrapper, "CvPlayerAI", &m_iTurnLastProductionDirty);
 
@@ -28449,7 +28440,7 @@ void CvPlayerAI::AI_invalidateAttitudeCache(PlayerTypes ePlayer)
 
 void CvPlayerAI::AI_invalidateAttitudeCache()
 {
-	for( int iI = 0; iI < MAX_PLAYERS; iI++ )
+	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
 		AI_invalidateAttitudeCache((PlayerTypes)iI);
 	}
