@@ -13176,11 +13176,11 @@ int CvPlayerAI::AI_neededExplorers(const CvArea* pArea, bool bIdeal) const
 		}
 		else if (getCapitalCity() != NULL && pArea->getID() == getCapitalCity()->getArea())
 		{
-			foreach_(const CvPlayer* kPlayer, players())
+			foreach_(const CvPlayer* player, players())
 			{
-				if (kPlayer.isAlive() && kPlayer.getTeam() != getTeam() && !GET_TEAM(getTeam()).isHasMet(kPlayer.getTeam()))
+				if (player->isAlive() && player->getTeam() != getTeam() && !GET_TEAM(getTeam()).isHasMet(player->getTeam()))
 				{
-					if (pArea->getCitiesPerPlayer(kPlayer.getID()) > 0)
+					if (pArea->getCitiesPerPlayer(player->getID()) > 0)
 					{
 						iNeeded++;
 						break;

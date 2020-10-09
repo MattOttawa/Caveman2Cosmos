@@ -2449,6 +2449,7 @@ public:
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getYieldRate, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getModifiedBaseYieldRate, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, const CvPlotGroup*, plotGroup, PlayerTypes);
+		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, const CvArea*, waterArea, bool);
 
 		DECLARE_MAP_FUNCTOR_CONST_2(CvCity, bool, isRevealed, TeamTypes, bool);
 	};
