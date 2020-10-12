@@ -23594,9 +23594,9 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 		changeExtraVisibleImprovementRange((InvisibleTypes)kPromotion.getVisibleImprovementRangeChange(iI).eInvisible,(ImprovementTypes)kPromotion.getVisibleImprovementRangeChange(iI).eImprovement, kPromotion.getVisibleImprovementRangeChange(iI).iIntensity * iChange);
 	}
 
-	for (iI = 0; iI < kPromotion.getNumDistanceAttackCommunicabilityTypeChanges(); iI++)
+	foreach_(const AfflictionLineChanges data, kPromotion.getDistanceAttackCommunicabilityTypeChanges())
 	{
-		changeDistanceAttackCommunicability((PromotionLineTypes)kPromotion.getDistanceAttackCommunicabilityTypeChange(iI).eAfflictionLine, kPromotion.getDistanceAttackCommunicabilityTypeChange(iI).iChange * iChange);
+		changeDistanceAttackCommunicability(data.eAfflictionLine, data.iChange * iChange);
 	}
 
 	const int numUnitCombatInfos = GC.getNumUnitCombatInfos();

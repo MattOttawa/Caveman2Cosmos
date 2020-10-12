@@ -1043,7 +1043,7 @@ public:
 
 	int getNumRoundStunVSUnitCombatChangeTypes() const;
 	int getRoundStunVSUnitCombatChangeType(int iUnitCombat) const;
-	const UnitCombatModifierArray getRoundStunVSUnitCombatChangeTypes() const { return m_aRoundStunVSUnitCombatChangeTypes.data(); }
+	const UnitCombatModifierArray getRoundStunVSUnitCombatChangeTypes() const { m_aRoundStunVSUnitCombatChangeTypes; }
 
 	int getNumTrapDisableUnitCombatTypes() const;
 	int getTrapDisableUnitCombatType(int iUnitCombat) const;
@@ -1090,30 +1090,39 @@ public:
 
 	int getNumInvisibleFeatureChanges() const;
 	const InvisibleFeatureChanges& getInvisibleFeatureChange(int iIndex) const;
+	const std::vector<const InvisibleFeatureChanges>& getInvisibleFeatureChanges() const { return m_aInvisibleFeatureChanges; }
 
 	int getNumInvisibleImprovementChanges() const;
 	const InvisibleImprovementChanges& getInvisibleImprovementChange(int iIndex) const;
+	const std::vector<const InvisibleImprovementChanges>& getInvisibleImprovementChanges() const { return m_aInvisibleImprovementChanges; }
 
 	int getNumVisibleTerrainChanges() const;
 	const InvisibleTerrainChanges& getVisibleTerrainChange(int iIndex) const;
+	const std::vector<const InvisibleTerrainChanges>& getVisibleTerrainChanges() const { return m_aVisibleTerrainChanges; }
 
 	int getNumVisibleFeatureChanges() const;
 	const InvisibleFeatureChanges& getVisibleFeatureChange(int iIndex) const;
+	const std::vector<const InvisibleFeatureChanges>& getVisibleFeatureChanges() const { return m_aVisibleFeatureChanges; }
 
 	int getNumVisibleImprovementChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementChange(int iIndex) const;
+	const std::vector<const InvisibleImprovementChanges>& getVisibleImprovementChanges() const { return m_aVisibleImprovementChanges; }
 
 	int getNumVisibleTerrainRangeChanges() const;
 	const InvisibleTerrainChanges& getVisibleTerrainRangeChange(int iIndex) const;
+	const std::vector<const InvisibleTerrainChanges>& getVisibleTerrainRangeChanges() const { return m_aVisibleTerrainRangeChanges; }
 
 	int getNumVisibleFeatureRangeChanges() const;
 	const InvisibleFeatureChanges& getVisibleFeatureRangeChange(int iIndex) const;
+	const std::vector<const InvisibleFeatureChanges>& getVisibleFeatureRangeChanges() const { return m_aVisibleFeatureRangeChanges; }
 
 	int getNumVisibleImprovementRangeChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
+	const std::vector<const InvisibleImprovementChanges> getVisibleImprovementRangeChanges() const { return m_aVisibleImprovementRangeChanges; }
 
-	int getNumDistanceAttackCommunicabilityTypeChanges() const;
-	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
+	//int getNumDistanceAttackCommunicabilityTypeChanges() const;
+	//const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
+	const std::vector<const AfflictionLineChanges>& getDistanceAttackCommunicabilityTypeChanges() const { return m_aDistanceAttackCommunicabilityTypeChanges; }
 
 	// TB Combat Mods End  TB SubCombat Mod end
 
@@ -1466,18 +1475,18 @@ protected:
 	IDValueMap<InvisibleTypes, int, 0> m_aInvisibilityIntensityChangeTypes;
 	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityRangeChangeTypes;
 	IDValueMap<PromotionLineModifier, int, 0> m_aAfflictionFortitudeChangeModifiers;
-	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
-	std::vector<HealUnitCombat> m_aHealUnitCombatChangeTypes;
-	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
-	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;
-	std::vector<InvisibleImprovementChanges> m_aInvisibleImprovementChanges;
-	std::vector<InvisibleFeatureChanges> m_aVisibleFeatureChanges;
-	std::vector<InvisibleImprovementChanges> m_aVisibleImprovementChanges;
-	std::vector<InvisibleTerrainChanges> m_aVisibleTerrainChanges;
-	std::vector<InvisibleFeatureChanges> m_aVisibleFeatureRangeChanges;
-	std::vector<InvisibleImprovementChanges> m_aVisibleImprovementRangeChanges;
-	std::vector<InvisibleTerrainChanges> m_aVisibleTerrainRangeChanges;
-	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
+	std::vector<const AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
+	std::vector<const HealUnitCombat> m_aHealUnitCombatChangeTypes;
+	std::vector<const InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
+	std::vector<const InvisibleFeatureChanges> m_aInvisibleFeatureChanges;
+	std::vector<const InvisibleImprovementChanges> m_aInvisibleImprovementChanges;
+	std::vector<const InvisibleFeatureChanges> m_aVisibleFeatureChanges;
+	std::vector<const InvisibleImprovementChanges> m_aVisibleImprovementChanges;
+	std::vector<const InvisibleTerrainChanges> m_aVisibleTerrainChanges;
+	std::vector<const InvisibleFeatureChanges> m_aVisibleFeatureRangeChanges;
+	std::vector<const InvisibleImprovementChanges> m_aVisibleImprovementRangeChanges;
+	std::vector<const InvisibleTerrainChanges> m_aVisibleTerrainRangeChanges;
+	std::vector<const AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
 	//TB Combat Mods End  TB SubCombat Mod end
 
 	//Pediahelp
@@ -2040,35 +2049,45 @@ public:
 	int getNumGroupSpawnUnitCombatTypes() const;
 	const GroupSpawnUnitCombat& getGroupSpawnUnitCombatType(int iIndex) const;
 
-	int getNumInvisibleTerrainChanges() const;
-	const InvisibleTerrainChanges& getInvisibleTerrainChange(int iIndex) const;
+	//int getNumInvisibleTerrainChanges() const;
+	//const InvisibleTerrainChanges& getInvisibleTerrainChange(int iIndex) const;
+	const std::vector<InvisibleTerrainChanges>& getInvisibleTerrainChanges() const { return m_aInvisibleTerrainChanges; }
 
-	int getNumInvisibleFeatureChanges() const;
-	const InvisibleFeatureChanges& getInvisibleFeatureChange(int iIndex) const;
+	//int getNumInvisibleFeatureChanges() const;
+	//const InvisibleFeatureChanges& getInvisibleFeatureChange(int iIndex) const;
+	const std::vector<InvisibleFeatureChanges>& getInvisibleFeatureChanges() const { return m_aInvisibleFeatureChanges; }
 
-	int getNumInvisibleImprovementChanges() const;
-	const InvisibleImprovementChanges& getInvisibleImprovementChange(int iIndex) const;
+	//int getNumInvisibleImprovementChanges() const;
+	//const InvisibleImprovementChanges& getInvisibleImprovementChange(int iIndex) const;
+	const std::vector<InvisibleImprovementChanges>& getInvisibleImprovementChanges() const { return m_aInvisibleImprovementChanges; }
 
-	int getNumVisibleTerrainChanges() const;
-	const InvisibleTerrainChanges& getVisibleTerrainChange(int iIndex) const;
+	//int getNumVisibleTerrainChanges() const;
+	//const InvisibleTerrainChanges& getVisibleTerrainChange(int iIndex) const;
+	const std::vector<InvisibleTerrainChanges>& getVisibleTerrainChanges() const { return m_aVisibleTerrainChanges; }
 
-	int getNumVisibleFeatureChanges() const;
-	const InvisibleFeatureChanges& getVisibleFeatureChange(int iIndex) const;
+	//int getNumVisibleFeatureChanges() const;
+	//const InvisibleFeatureChanges& getVisibleFeatureChange(int iIndex) const;
+	const std::vector<InvisibleFeatureChanges>& getVisibleFeatureChanges() const { return m_aVisibleFeatureChanges; }
 
-	int getNumVisibleImprovementChanges() const;
-	const InvisibleImprovementChanges& getVisibleImprovementChange(int iIndex) const;
+	//int getNumVisibleImprovementChanges() const;
+	//const InvisibleImprovementChanges& getVisibleImprovementChange(int iIndex) const;
+	const std::vector<InvisibleImprovementChanges>& getVisibleImprovementChanges() const { return m_aVisibleImprovementChanges; }
 
-	int getNumVisibleTerrainRangeChanges() const;
-	const InvisibleTerrainChanges& getVisibleTerrainRangeChange(int iIndex) const;
+	//int getNumVisibleTerrainRangeChanges() const;
+	//const InvisibleTerrainChanges& getVisibleTerrainRangeChange(int iIndex) const;
+	const std::vector<InvisibleTerrainChanges>& getVisibleTerrainRangeChanges() const { return m_aVisibleTerrainRangeChanges; }
 
-	int getNumVisibleFeatureRangeChanges() const;
-	const InvisibleFeatureChanges& getVisibleFeatureRangeChange(int iIndex) const;
+	//int getNumVisibleFeatureRangeChanges() const;
+	//const InvisibleFeatureChanges& getVisibleFeatureRangeChange(int iIndex) const;
+	const std::vector<InvisibleFeatureChanges>& getVisibleFeatureRangeChanges() const { return m_aVisibleFeatureRangeChanges; }
 
-	int getNumDistanceAttackCommunicabilityTypeChanges() const;
-	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
+	//int getNumVisibleImprovementRangeChanges() const;
+	//const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
+	const std::vector<InvisibleImprovementChanges>& getVisibleImprovementRangeChanges() const { return m_aVisibleImprovementRangeChanges; }
 
-	int getNumVisibleImprovementRangeChanges() const;
-	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
+	//int getNumDistanceAttackCommunicabilityTypeChanges() const;
+	//const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
+	const std::vector<AfflictionLineChanges>& getDistanceAttackCommunicabilityTypeChanges() const { return m_aDistanceAttackCommunicabilityTypeChanges; }
 
 	//Bool vector utilizing delayed resolution
 	int getNumEnabledCivilizationTypes() const;
@@ -9632,9 +9651,9 @@ public:
 
 	const std::vector<const InvisibleFeatureChanges>& getVisibleFeatureRangeChanges() const;
 
-	const std::vector<const InvisibleImprovementChanges>& getVisibleImprovementRangeChanges() const;
+	const std::vector<const InvisibleImprovementChanges>& getVisibleImprovementRangeChanges() const { return m_aVisibleImprovementRangeChanges; }
 
-	const std::vector<const AfflictionLineChanges>& getDistanceAttackCommunicabilityTypeChanges() const;
+	const std::vector<const AfflictionLineChanges>& getDistanceAttackCommunicabilityTypeChanges() const { return m_aDistanceAttackCommunicabilityTypeChanges; }
 
 	const CvPropertyManipulators* getPropertyManipulators() const { return &m_PropertyManipulators; }
 
@@ -9866,17 +9885,17 @@ protected:
 	IDValueMap<UnitCombatTypes, int, 0> m_aCriticalVSUnitCombatTypeChange;
 	IDValueMap<UnitCombatTypes, int, 0> m_aRoundStunVSUnitCombatTypeChange;
 	IDValueMap<UnitCombatTypes, int, 0> m_aTrapAvoidanceUnitCombatTypes;
-	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
-	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
-	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;
-	std::vector<InvisibleImprovementChanges> m_aInvisibleImprovementChanges;
-	std::vector<InvisibleFeatureChanges> m_aVisibleFeatureChanges;
-	std::vector<InvisibleImprovementChanges> m_aVisibleImprovementChanges;
-	std::vector<InvisibleTerrainChanges> m_aVisibleTerrainChanges;
-	std::vector<InvisibleFeatureChanges> m_aVisibleFeatureRangeChanges;
-	std::vector<InvisibleImprovementChanges> m_aVisibleImprovementRangeChanges;
-	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
-	std::vector<InvisibleTerrainChanges> m_aVisibleTerrainRangeChanges;
+	std::vector<const AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
+	std::vector<const InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
+	std::vector<const InvisibleFeatureChanges> m_aInvisibleFeatureChanges;
+	std::vector<const InvisibleImprovementChanges> m_aInvisibleImprovementChanges;
+	std::vector<const InvisibleFeatureChanges> m_aVisibleFeatureChanges;
+	std::vector<const InvisibleImprovementChanges> m_aVisibleImprovementChanges;
+	std::vector<const InvisibleTerrainChanges> m_aVisibleTerrainChanges;
+	std::vector<const InvisibleFeatureChanges> m_aVisibleFeatureRangeChanges;
+	std::vector<const InvisibleImprovementChanges> m_aVisibleImprovementRangeChanges;
+	std::vector<const AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
+	std::vector<const InvisibleTerrainChanges> m_aVisibleTerrainRangeChanges;
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

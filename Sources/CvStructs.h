@@ -11,15 +11,6 @@
 // XXX these should not be in the DLL per se (if the user changes them, we are screwed...)
 
 //TB Combat Mod
-typedef std::vector< std::pair<UnitCombatTypes, int> > UnitCombatModifierArray;
-typedef std::vector< std::pair<TechTypes, int> > TechModifierArray;
-typedef std::vector< std::pair<TerrainTypes, int> > TerrainModifierArray;
-typedef std::vector< std::pair<FeatureTypes, int> > FeatureModifierArray;
-typedef std::vector< std::pair<BuildTypes, int> > BuildModifierArray;
-typedef std::vector< std::pair<BonusTypes, int> > BonusModifierArray;
-//typedef std::vector< std::pair<PromotionTypes, int> > PromotionModifierArray;
-typedef std::vector< std::pair<PromotionLineTypes, int> > PromotionLineModifierArray;
-//typedef std::vector< std::pair<ImprovementTypes, int> > ImprovementModifierArray;
 typedef std::vector< std::pair<InvisibleTypes, int> > InvisibilityArray;
 typedef std::vector< std::pair<EraTypes, int> > EraArray;
 typedef std::vector< std::pair<PropertyTypes, int> > AidArray;
@@ -33,10 +24,10 @@ struct AidStruct
 };
 
 typedef std::pair<PromotionTypes, int> PromotionModifier;
-typedef std::vector<PromotionModifier> PromotionModifierArray;
+typedef std::vector<const PromotionModifier> PromotionModifierArray;
 
 typedef std::pair<PromotionLineTypes, int> PromotionLineModifier;
-typedef std::vector<PromotionLineModifier> PromotionLineModifierArray;
+typedef std::vector<const PromotionLineModifier> PromotionLineModifierArray;
 
 struct AfflictOnAttackChange
 {	
@@ -78,22 +69,22 @@ struct AfflictOnAttack
 };
 
 typedef std::pair<TerrainTypes, int> TerrainModifier;
-typedef std::vector<TerrainModifier> TerrainModifierArray;
+typedef std::vector<const TerrainModifier> TerrainModifierArray;
 
 typedef std::pair<FeatureTypes, int> FeatureModifier;
-typedef std::vector<FeatureModifier> FeatureModifierArray;
+typedef std::vector<const FeatureModifier> FeatureModifierArray;
 
 typedef std::pair<BuildTypes, int> BuildModifier;
-typedef std::vector<BuildModifier> BuildModifierArray;
+typedef std::vector<const BuildModifier> BuildModifierArray;
 
 typedef std::pair<UnitCombatTypes, int> UnitCombatModifier;
-typedef std::vector<UnitCombatModifier> UnitCombatModifierArray;
+typedef std::vector<const UnitCombatModifier> UnitCombatModifierArray;
 
 typedef std::pair<BonusTypes, int> BonusModifier;
-typedef std::vector<BonusModifier> BonusModifierArray;
+typedef std::vector<const BonusModifier> BonusModifierArray;
 
 typedef std::pair<ImprovementTypes, int> ImprovementModifier;
-typedef std::vector<ImprovementModifier> ImprovementModifierArray;
+typedef std::vector<const ImprovementModifier> ImprovementModifierArray;
 
 struct DisallowedTraitType
 {	

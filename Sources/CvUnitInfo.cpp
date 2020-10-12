@@ -2915,11 +2915,6 @@ int CvUnitInfo::getNumInvisibleFeatureChanges() const
 	return (int)m_aInvisibleFeatureChanges.size();
 }
 
-const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getInvisibleFeatureChanges() const
-{
-	return m_aInvisibleFeatureChanges.data();
-}
-
 const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getInvisibleImprovementChanges() const
 {
 	return m_aInvisibleImprovementChanges.data();
@@ -2938,26 +2933,6 @@ const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getVisibleFeatureC
 const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getVisibleImprovementChanges() const
 {
 	return m_aVisibleImprovementChanges.data();
-}
-
-const std::vector<const InvisibleTerrainChanges>& CvUnitInfo::getVisibleTerrainRangeChanges() const
-{
-	return m_aVisibleTerrainRangeChanges.data();
-}
-
-const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getVisibleFeatureRangeChanges() const
-{
-	return m_aVisibleFeatureRangeChanges.data();
-}
-
-const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getVisibleImprovementRangeChanges() const
-{
-	return m_aVisibleImprovementRangeChanges.data();
-}
-
-const std::vector<const AfflictionLineChanges>& CvUnitInfo::getDistanceAttackCommunicabilityTypeChanges() const
-{
-	return m_aDistanceAttackCommunicabilityTypeChanges.data();
 }
 
 // bool vector utilizing delayed resolution

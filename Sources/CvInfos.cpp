@@ -4970,15 +4970,15 @@ const InvisibleImprovementChanges& CvPromotionInfo::getVisibleImprovementRangeCh
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
-int CvPromotionInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
-{
-	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
-}
+//int CvPromotionInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
+//{
+//	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
+//}
 
-const AfflictionLineChanges& CvPromotionInfo::getDistanceAttackCommunicabilityTypeChange(int iIndex) const
-{
-	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
-}
+//const AfflictionLineChanges& CvPromotionInfo::getDistanceAttackCommunicabilityTypeChange(int iIndex) const
+//{
+//	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
+//}
 
 int CvPromotionInfo::getNumHealUnitCombatChangeTypes() const
 {
@@ -39285,11 +39285,6 @@ const std::vector<const InvisibleFeatureChanges>& CvUnitCombatInfo::getVisibleFe
 const std::vector<const InvisibleImprovementChanges>& CvUnitCombatInfo::getVisibleImprovementRangeChanges() const
 {
 	return m_aVisibleImprovementRangeChanges.data();
-}
-
-const std::vector<const AfflictionLineChanges>& CvUnitCombatInfo::getDistanceAttackCommunicabilityTypeChanges() const
-{
-	return m_aDistanceAttackCommunicabilityTypeChanges.data();
 }
 
 bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)

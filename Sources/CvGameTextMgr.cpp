@@ -31419,12 +31419,12 @@ void CvGameTextMgr::setUnitCombatHelp(CvWStringBuffer &szBuffer, UnitCombatTypes
 			szBuffer.append(info.getDescription());
 			bFirstDisplay = false;
 		}
-		for (iI = 0; iI < info.getNumCriticalVSUnitCombatTypesChange(); ++iI)
+		foreach_(const UnitCombatModifier modifier, info.getCriticalVSUnitCombatTypeChanges())
 		{
-			if (info.getCriticalVSUnitCombatTypeChange(iI).eUnitCombat != NO_UNITCOMBAT)
+			if (modifier.first != NO_UNITCOMBAT)
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_CRITICAL_VERSUS_TEXT", info.getCriticalVSUnitCombatTypeChange(iI).iModifier, CvWString(GC.getUnitCombatInfo((UnitCombatTypes)info.getCriticalVSUnitCombatTypeChange(iI).eUnitCombat).getType()).GetCString(), GC.getUnitCombatInfo((UnitCombatTypes)info.getCriticalVSUnitCombatTypeChange(iI).eUnitCombat).getTextKeyWide()));
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTION_CRITICAL_VERSUS_TEXT", modifier.second, CvWString(GC.getUnitCombatInfo(modifier.first).getType()).GetCString(), GC.getUnitCombatInfo(modifier.first).getTextKeyWide()));
 			}
 		}
 	}
@@ -31446,7 +31446,6 @@ void CvGameTextMgr::setUnitCombatHelp(CvWStringBuffer &szBuffer, UnitCombatTypes
 			}
 		}
 	}
-
 
 	if (info.getInsidiousnessChange() != 0)
 	{
