@@ -5936,14 +5936,13 @@ void CvCity::processSpecialist(SpecialistTypes eSpecialist, int iChange)
 	changeSpecialistInsidiousness(GC.getSpecialistInfo(eSpecialist).getInsidiousness() * iChange);
 	changeSpecialistInvestigation(GC.getSpecialistInfo(eSpecialist).getInvestigation() * iChange);
 
-	for (int iI = 0; iI < GC.getSpecialistInfo(eSpecialist).getNumUnitCombatExperienceTypes(); iI++)
+	foreach_(const UnitCombatModifier modifier, GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceTypes())
 	{
-		if (GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceType(iI, false).eUnitCombat != NO_UNITCOMBAT)
+		if (modifier.first != NO_UNITCOMBAT)
 		{
-			changeUnitCombatFreeExperience(GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceType(iI, false).eUnitCombat, GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceType(iI, false).iModifier * iChange);
+			changeUnitCombatFreeExperience(modifier.first, modifier.second * iChange);
 		}
 	}
-
 }
 
 

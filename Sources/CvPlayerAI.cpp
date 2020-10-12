@@ -29636,8 +29636,8 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 
 	iValue = 0;
 
-	CvPromotionInfo &kPromotion = GC.getPromotionInfo(ePromotion);
-	CvUnitInfo &kUnit = GC.getUnitInfo(eUnit);
+	const CvPromotionInfo& kPromotion = GC.getPromotionInfo(ePromotion);
+	const CvUnitInfo& kUnit = GC.getUnitInfo(eUnit);
 	int iMoves;
 	if (pUnit == NULL)
 	{
@@ -29653,23 +29653,15 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 		eUnitAI = (UnitAITypes)kUnit.getDefaultUnitAIType();
 	}
 
-	//for (iI = 0; iI < kPromotion.getNumAIWeightbyUnitCombatTypes(); iI++)
-	//{
-	//	if (kPromotion.getAIWeightbyUnitCombatType(iI).iModifier != 0)
-	//	{
-	//		iValue += kPromotion.getAIWeightbyUnitCombatType(iI).iModifier;
-	//	}
-	//}
-
 	if (pUnit != NULL)
 	{
-		for (iI = 0; iI < kPromotion.getNumAIWeightbyUnitCombatTypes(); iI++)
+		foreach_(const UnitCombatModifier modifier, kPromotion.getAIWeightbyUnitCombatTypes())
 		{
-			if (kPromotion.getAIWeightbyUnitCombatType(iI).iModifier != 0)
+			if (modifier.second != 0)
 			{
-				if ((pUnit->isHasUnitCombat(kPromotion.getAIWeightbyUnitCombatType(iI).eUnitCombat))||(kUnit.hasUnitCombat(kPromotion.getAIWeightbyUnitCombatType(iI).eUnitCombat)))
+				if (pUnit->isHasUnitCombat(modifier.first) || kUnit.hasUnitCombat(modifier.first))
 				{
-					iValue += kPromotion.getAIWeightbyUnitCombatType(iI).iModifier;
+					iValue += modifier.second;
 				}
 			}
 		}
@@ -37884,16 +37876,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 
 	if (GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT))
 	{
-		for (iI = 0; iI < kUnitCombat.getNumPursuitVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getNumPursuitVSUnitCombatTypesChange())
 		{
 			if (pUnit == NULL)
 			{
-				if (kUnit.hasUnitCombat(kUnitCombat.getPursuitVSUnitCombatTypeChange(iI).eUnitCombat))
+				if (kUnit.hasUnitCombat(modifier.first))
 				{
 					hasCombat = true;
 				}
 			}
-			else if (pUnit->isHasUnitCombat(kUnitCombat.getPursuitVSUnitCombatTypeChange(iI).eUnitCombat))
+			else if (pUnit->isHasUnitCombat(modifier.first))
 			{
 				hasCombat = true;
 			}
@@ -37910,11 +37902,11 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 			}
 		}
 
-		for (iI = 0; iI < kUnitCombat.getNumPursuitVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getPursuitVSUnitCombatTypeChanges())
 		{
 			for (int iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
 			{
-				iTemp = kUnitCombat.getPursuitVSUnitCombatTypeChange(iI).iModifier;
+				iTemp = modifier.second;
 				int iCombatWeight = 0;
 				//Fighting their own kind
 				if (hasCombat)
@@ -37972,16 +37964,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	iSameCombat = 0;
 	hasCombat = false;
 
-	for (iI = 0; iI < kUnitCombat.getNumRepelVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getRepelVSUnitCombatTypeChanges())
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat(kUnitCombat.getRepelVSUnitCombatTypeChange(iI).eUnitCombat))
+			if (kUnit.hasUnitCombat(modifier.eUnitCombat))
 			{
 				hasCombat = true;
 			}
 		}
-		else if (pUnit->isHasUnitCombat(kUnitCombat.getRepelVSUnitCombatTypeChange(iI).eUnitCombat))
+		else if (pUnit->isHasUnitCombat(modifier.eUnitCombat))
 		{
 			hasCombat = true;
 		}
@@ -38055,16 +38047,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		iSameCombat = 0;
 		hasCombat = false;
 
-		for (iI = 0; iI < kUnitCombat.getNumKnockbackVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getKnockbackVSUnitCombatTypeChanges())
 		{
 			if (pUnit == NULL)
 			{
-				if (kUnit.hasUnitCombat(kUnitCombat.getKnockbackVSUnitCombatTypeChange(iI).eUnitCombat))
+				if (kUnit.hasUnitCombat(modifier.first))
 				{
 					hasCombat = true;
 				}
 			}
-			else if (pUnit->isHasUnitCombat(kUnitCombat.getKnockbackVSUnitCombatTypeChange(iI).eUnitCombat))
+			else if (pUnit->isHasUnitCombat(modifier.first))
 			{
 				hasCombat = true;
 			}
@@ -38081,11 +38073,11 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 			}
 		}
 
-		for (iI = 0; iI < kUnitCombat.getNumKnockbackVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getKnockbackVSUnitCombatTypeChanges())
 		{
 			for (int iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
 			{
-				iTemp = kUnitCombat.getKnockbackVSUnitCombatTypeChange(iI).iModifier;
+				iTemp = modifier.second;
 				int iCombatWeight = 0;
 				//Fighting their own kind
 				if (hasCombat)
@@ -38132,16 +38124,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	iSameCombat = 0;
 	hasCombat = false;
 
-	for (iI = 0; iI < kUnitCombat.getNumPunctureVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getPunctureVSUnitCombatTypeChanges())
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat(kUnitCombat.getPunctureVSUnitCombatTypeChange(iI).eUnitCombat))
+			if (kUnit.hasUnitCombat(modifier.first))
 			{
 				hasCombat = true;
 			}
 		}
-		else if (pUnit->isHasUnitCombat(kUnitCombat.getPunctureVSUnitCombatTypeChange(iI).eUnitCombat))
+		else if (pUnit->isHasUnitCombat(modifier.first))
 		{
 			hasCombat = true;
 		}
@@ -38158,11 +38150,11 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		}
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumPunctureVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getPunctureVSUnitCombatTypeChanges())
 	{
 		for (int iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
 		{
-			iTemp = kUnitCombat.getPunctureVSUnitCombatTypeChange(iI).iModifier;
+			iTemp = modifier.second;
 			int iCombatWeight = 0;
 			//Fighting their own kind
 			if (hasCombat)
@@ -38199,16 +38191,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	iSameCombat = 0;
 	hasCombat = false;
 
-	for (iI = 0; iI < kUnitCombat.getNumArmorVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getArmorVSUnitCombatTypeChanges())
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat(kUnitCombat.getArmorVSUnitCombatTypeChange(iI).eUnitCombat))
+			if (kUnit.hasUnitCombat(modifier.first))
 			{
 				hasCombat = true;
 			}
 		}
-		else if (pUnit->isHasUnitCombat(kUnitCombat.getArmorVSUnitCombatTypeChange(iI).eUnitCombat))
+		else if (pUnit->isHasUnitCombat(modifier.first))
 		{
 			hasCombat = true;
 		}
@@ -38225,11 +38217,11 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		}
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumArmorVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getArmorVSUnitCombatTypeChanges())
 	{
 		for (int iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
 		{
-			iTemp = kUnitCombat.getArmorVSUnitCombatTypeChange(iI).iModifier;
+			iTemp = modifier.second;
 			int iCombatWeight = 0;
 			//Fighting their own kind
 			if (hasCombat)
@@ -38266,16 +38258,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	iSameCombat = 0;
 	hasCombat = false;
 
-	for (iI = 0; iI < kUnitCombat.getNumDodgeVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getDodgeVSUnitCombatTypeChanges())
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat(kUnitCombat.getDodgeVSUnitCombatTypeChange(iI).eUnitCombat))
+			if (kUnit.hasUnitCombat(modifier.first))
 			{
 				hasCombat = true;
 			}
 		}
-		else if (pUnit->isHasUnitCombat(kUnitCombat.getDodgeVSUnitCombatTypeChange(iI).eUnitCombat))
+		else if (pUnit->isHasUnitCombat(modifier.first))
 		{
 			hasCombat = true;
 		}
@@ -38426,11 +38418,11 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		}
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumCriticalVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getCriticalVSUnitCombatTypeChanges())
 	{
 		for (int iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
 		{
-			iTemp = kUnitCombat.getCriticalVSUnitCombatTypeChange(iI).iModifier;
+			iTemp = modifier.second;
 			int iCombatWeight = 0;
 			//Fighting their own kind
 			if (hasCombat)
@@ -38467,16 +38459,16 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	iSameCombat = 0;
 	hasCombat = false;
 
-	for (iI = 0; iI < kUnitCombat.getNumRoundStunVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier data, kUnit.getRoundStunVSUnitCombatTypes())
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat(kUnitCombat.getRoundStunVSUnitCombatTypeChange(iI).eUnitCombat))
+			if (kUnit.hasUnitCombat(data.getUnitCombat())
 			{
 				hasCombat = true;
 			}
 		}
-		else if (pUnit->isHasUnitCombat(kUnitCombat.getRoundStunVSUnitCombatTypeChange(iI).eUnitCombat))
+		else if (pUnit->isHasUnitCombat(data.getUnitCombat()))
 		{
 			hasCombat = true;
 		}

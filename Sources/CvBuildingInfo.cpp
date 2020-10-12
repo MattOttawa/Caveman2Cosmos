@@ -1783,7 +1783,6 @@ bool CvBuildingInfo::isMapCategoryType(int i) const
 	return true;
 }
 
-// int vector utilizing pairing without delayed resolution
 int CvBuildingInfo::getNumUnitCombatRepelModifiers() const
 {
 	return m_aUnitCombatRepelModifiers.size();
@@ -1795,15 +1794,7 @@ int CvBuildingInfo::getUnitCombatRepelModifier(int iUnitCombat, bool bForLoad) c
 	{
 		return 0;
 	}
-	for (UnitCombatModifierArray::const_iterator it = m_aUnitCombatRepelModifiers.begin(); it != m_aUnitCombatRepelModifiers.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aUnitCombatRepelModifiers.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvBuildingInfo::getNumUnitCombatRepelAgainstModifiers() const
@@ -1817,15 +1808,7 @@ int CvBuildingInfo::getUnitCombatRepelAgainstModifier(int iUnitCombat, bool bFor
 	{
 		return 0;
 	}
-	for (UnitCombatModifierArray::const_iterator it = m_aUnitCombatRepelAgainstModifiers.begin(); it != m_aUnitCombatRepelAgainstModifiers.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aUnitCombatRepelAgainstModifiers.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvBuildingInfo::getNumUnitCombatDefenseAgainstModifiers() const
@@ -1835,15 +1818,7 @@ int CvBuildingInfo::getNumUnitCombatDefenseAgainstModifiers() const
 
 int CvBuildingInfo::getUnitCombatDefenseAgainstModifier(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aUnitCombatDefenseAgainstModifiers.begin(); it != m_aUnitCombatDefenseAgainstModifiers.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aUnitCombatDefenseAgainstModifiers.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvBuildingInfo::getNumUnitCombatProdModifiers() const
@@ -1853,15 +1828,7 @@ int CvBuildingInfo::getNumUnitCombatProdModifiers() const
 
 int CvBuildingInfo::getUnitCombatProdModifier(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aUnitCombatProdModifiers.begin(); it != m_aUnitCombatProdModifiers.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aUnitCombatProdModifiers.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvBuildingInfo::getNumUnitCombatOngoingTrainingDurations() const
@@ -1875,15 +1842,7 @@ int CvBuildingInfo::getUnitCombatOngoingTrainingDuration(int iUnitCombat, bool b
 	{
 		return 0;
 	}
-	for (UnitCombatModifierArray::const_iterator it = m_aUnitCombatOngoingTrainingDurations.begin(); it != m_aUnitCombatOngoingTrainingDurations.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aUnitCombatOngoingTrainingDurations.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvBuildingInfo::getNumAfflictionOutbreakLevelChanges() const
@@ -1893,15 +1852,7 @@ int CvBuildingInfo::getNumAfflictionOutbreakLevelChanges() const
 
 int CvBuildingInfo::getAfflictionOutbreakLevelChange(int iAfflictionLine) const
 {
-	for (PromotionLineModifierArray::const_iterator it = m_aAfflictionOutbreakLevelChanges.begin(); it != m_aAfflictionOutbreakLevelChanges.end(); ++it)
-	{
-		if ((*it).first == (PromotionLineTypes)iAfflictionLine)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aAfflictionOutbreakLevelChanges.getValue((PromotionLineTypes)iAfflictionLine);
 }
 
 int CvBuildingInfo::getNumTechOutbreakLevelChanges() const
@@ -1911,17 +1862,9 @@ int CvBuildingInfo::getNumTechOutbreakLevelChanges() const
 
 int CvBuildingInfo::getTechOutbreakLevelChange(int iTech) const
 {
-	for (TechModifierArray::const_iterator it = m_aTechOutbreakLevelChanges.begin(); it != m_aTechOutbreakLevelChanges.end(); ++it)
-	{
-		if ((*it).first == (TechTypes)iTech)
-		{
-			return (*it).second;
-		}
-	}
-
-	return 0;
+	return m_aTechOutbreakLevelChanges.getValue((TechTypes)iTech);
 }
-//Team Project (1)
+
 int CvBuildingInfo::getNumTechHappinessTypes() const
 {
 	return m_aTechHappinessTypes.size();
@@ -1929,14 +1872,7 @@ int CvBuildingInfo::getNumTechHappinessTypes() const
 
 int CvBuildingInfo::getTechHappinessType(int iTech) const
 {
-	for (TechModifierArray::const_iterator it = m_aTechHappinessTypes.begin(); it != m_aTechHappinessTypes.end(); ++it)
-	{
-		if ((*it).first == (TechTypes)iTech)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
+	return m_aTechHappinessTypes.getValue((TechTypes)iTech);
 }
 
 int CvBuildingInfo::getNumTechHealthTypes() const
@@ -1946,17 +1882,9 @@ int CvBuildingInfo::getNumTechHealthTypes() const
 
 int CvBuildingInfo::getTechHealthType(int iTech) const
 {
-	for (TechModifierArray::const_iterator it = m_aTechHealthTypes.begin(); it != m_aTechHealthTypes.end(); ++it)
-	{
-		if ((*it).first == (TechTypes)iTech)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
+	return m_aTechHealthTypes.getValue((TechTypes)iTech);
 }
 
-//Arrays
 bool CvBuildingInfo::isAnySpecialistCommerceChanges() const
 {
 	return m_bAnySpecialistCommerceChanges;
@@ -2322,7 +2250,6 @@ void CvBuildingInfo::getCheckSum(unsigned int& iSum) const
 		}
 	}
 
-//Team Project (1)
 	if (m_ppaiLocalSpecialistYieldChange)
 	{
 		for(int i = 0; i < GC.getNumSpecialistInfos(); i++)
@@ -2541,18 +2468,17 @@ void CvBuildingInfo::getCheckSum(unsigned int& iSum) const
 	CheckSumC(iSum, m_aiUnitCombatRetrainTypes);
 	CheckSumC(iSum, m_aiMayDamageAttackingUnitCombatTypes);
 	CheckSumC(iSum, m_aiMapCategoryTypes);
-	// int vector utilizing pairing without delayed resolution
-	CheckSumC(iSum, m_aUnitCombatRepelModifiers);
-	CheckSumC(iSum, m_aUnitCombatRepelAgainstModifiers);
-	CheckSumC(iSum, m_aUnitCombatDefenseAgainstModifiers);
-	CheckSumC(iSum, m_aUnitCombatProdModifiers);
-	CheckSumC(iSum, m_aUnitCombatOngoingTrainingDurations);
-	CheckSumC(iSum, m_aAfflictionOutbreakLevelChanges);
-	CheckSumC(iSum, m_aTechOutbreakLevelChanges);
-//Team Project (1)
-	CheckSumC(iSum, m_aTechHappinessTypes);
-	CheckSumC(iSum, m_aTechHealthTypes);
-	//Arrays
+
+	m_aUnitCombatRepelModifiers.getCheckSum(iSum);
+	m_aUnitCombatRepelAgainstModifiers.getCheckSum(iSum);
+	m_aUnitCombatDefenseAgainstModifiers.getCheckSum(iSum);
+	m_aUnitCombatProdModifiers.getCheckSum(iSum);
+	m_aUnitCombatOngoingTrainingDurations.getCheckSum(iSum);
+	m_aAfflictionOutbreakLevelChanges.getCheckSum(iSum);
+	m_aTechOutbreakLevelChanges.getCheckSum(iSum);
+	m_aTechHappinessTypes.getCheckSum(iSum);
+	m_aTechHealthTypes.getCheckSum(iSum);
+
 	CheckSumI(iSum, GC.getNumHurryInfos(), m_pabHurry);
 
 	//if (m_pExprFreePromotionCondition)
@@ -4186,27 +4112,16 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetOptionalIntVector(&m_aiMayDamageAttackingUnitCombatTypes, L"MayDamageAttackingUnitCombatTypes");
 	pXML->SetOptionalIntVector(&m_aiMapCategoryTypes, L"MapCategoryTypes");
 
-	// int vector utilizing pairing without delayed resolution
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aUnitCombatRepelModifiers, L"UnitCombatRepelModifiers");
+	m_aUnitCombatRepelModifiers.read(pXML, L"UnitCombatRepelModifiers");
+	m_aUnitCombatRepelAgainstModifiers.read(pXML, L"UnitCombatRepelAgainstModifiers");
+	m_aUnitCombatDefenseAgainstModifiers.read(pXML, L"UnitCombatDefenseAgainstModifiers");
+	m_aUnitCombatProdModifiers.read(pXML, L"UnitCombatProdModifiers");
+	m_aUnitCombatOngoingTrainingDurations.read(pXML, L"UnitCombatOngoingTrainingDurations");
+	m_aAfflictionOutbreakLevelChanges.read(pXML, L"AfflictionOutbreakLevelChanges");
+	m_aTechOutbreakLevelChanges.read(pXML, L"TechOutbreakLevelChanges");
+	m_aTechHappinessTypes.read(pXML, L"TechHappinessTypes");
+	m_aTechHealthTypes.read(pXML, L"TechHealthTypes");
 
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aUnitCombatRepelAgainstModifiers, L"UnitCombatRepelAgainstModifiers");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aUnitCombatDefenseAgainstModifiers, L"UnitCombatDefenseAgainstModifiers");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aUnitCombatProdModifiers, L"UnitCombatProdModifiers");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aUnitCombatOngoingTrainingDurations, L"UnitCombatOngoingTrainingDurations");
-
-	pXML->SetOptionalPairVector<PromotionLineModifierArray, PromotionLineTypes, int>(&m_aAfflictionOutbreakLevelChanges, L"AfflictionOutbreakLevelChanges");
-
-	pXML->SetOptionalPairVector<TechModifierArray, TechTypes, int>(&m_aTechOutbreakLevelChanges, L"TechOutbreakLevelChanges");
-
-//Team Project (1)
-	pXML->SetOptionalPairVector<TechModifierArray, TechTypes, int>(&m_aTechHappinessTypes, L"TechHappinessTypes");
-
-	pXML->SetOptionalPairVector<TechModifierArray, TechTypes, int>(&m_aTechHealthTypes, L"TechHealthTypes");
-
-	//Arrays
 	pXML->SetVariableListTagPair(&m_pabHurry, L"Hurrys", GC.getNumHurryInfos());
 	//TB Combat Mods (Buildings) end
 
@@ -4370,11 +4285,11 @@ bool CvBuildingInfo::readPass3()
 
 void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo, CvXMLLoadUtility* pXML)
 {
-	bool bDefault = false;
-	int iDefault = 0;
-	int iTextDefault = -1;
-	float fDefault = 0.0f;
-	CvString cDefault = CvString::format("").GetCString();
+	const bool bDefault = false;
+	const int iDefault = 0;
+	const int iTextDefault = -1;
+	const float fDefault = 0.0f;
+	const CvString cDefault = CvString::format("").GetCString();
 
 	if ( getArtDefineTag() == cDefault ) // "ArtDefineTag"
 	{
@@ -5631,99 +5546,16 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo, CvXMLLoadUtilit
 		}
 	}
 
-	// int vector utilizing pairing without delayed resolution
-	if (getNumUnitCombatRepelModifiers()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumUnitCombatRepelModifiers(); i++)
-		{
-			const UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			const int iChange = pClassInfo->getUnitCombatRepelModifier(i, true);
-			m_aUnitCombatRepelModifiers.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
+	m_aUnitCombatRepelModifiers.copyNonDefaults(pClassInfo->m_aUnitCombatRepelModifiers);
+	m_aUnitCombatRepelAgainstModifiers.copyNonDefaults(pClassInfo->m_aUnitCombatRepelAgainstModifiers);
+	m_aUnitCombatDefenseAgainstModifiers.copyNonDefaults(pClassInfo->m_aUnitCombatDefenseAgainstModifiers);
+	m_aUnitCombatProdModifiers.copyNonDefaults(pClassInfo->m_aUnitCombatProdModifiers);
+	m_aUnitCombatOngoingTrainingDurations.copyNonDefaults(pClassInfo->m_aUnitCombatOngoingTrainingDurations);
+	m_aAfflictionOutbreakLevelChanges.copyNonDefaults(pClassInfo->m_aAfflictionOutbreakLevelChanges);
+	m_aTechOutbreakLevelChanges.copyNonDefaults(pClassInfo->m_aTechOutbreakLevelChanges);
+	m_aTechHappinessTypes.copyNonDefaults(pClassInfo->m_aTechHappinessTypes);
+	m_aTechHealthTypes.copyNonDefaults(pClassInfo->m_aTechHealthTypes);
 
-	if (getNumUnitCombatRepelAgainstModifiers()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumUnitCombatRepelAgainstModifiers(); i++)
-		{
-			const UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			const int iChange = pClassInfo->getUnitCombatRepelAgainstModifier(i, true);
-			m_aUnitCombatRepelAgainstModifiers.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumUnitCombatDefenseAgainstModifiers()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumUnitCombatDefenseAgainstModifiers(); i++)
-		{
-			const UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			const int iChange = pClassInfo->getUnitCombatDefenseAgainstModifier(i);
-			m_aUnitCombatDefenseAgainstModifiers.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumUnitCombatProdModifiers()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumUnitCombatProdModifiers(); i++)
-		{
-			const UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			const int iChange = pClassInfo->getUnitCombatProdModifier(i);
-			m_aUnitCombatProdModifiers.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumUnitCombatOngoingTrainingDurations()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumUnitCombatOngoingTrainingDurations(); i++)
-		{
-			const UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			const int iChange = pClassInfo->getUnitCombatOngoingTrainingDuration(i, true);
-			m_aUnitCombatOngoingTrainingDurations.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumAfflictionOutbreakLevelChanges()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumAfflictionOutbreakLevelChanges(); i++)
-		{
-			const PromotionLineTypes ePromotionLine = ((PromotionLineTypes)i);
-			const int iChange = pClassInfo->getAfflictionOutbreakLevelChange(i);
-			m_aAfflictionOutbreakLevelChanges.push_back(std::make_pair(ePromotionLine, iChange));
-		}
-	}
-
-	if (getNumTechOutbreakLevelChanges()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTechOutbreakLevelChanges(); i++)
-		{
-			const TechTypes eTech = ((TechTypes)i);
-			const int iChange = pClassInfo->getTechOutbreakLevelChange(i);
-			m_aTechOutbreakLevelChanges.push_back(std::make_pair(eTech, iChange));
-		}
-	}
-
-//Team Project (1)
-	if (getNumTechHappinessTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTechHappinessTypes(); i++)
-		{
-			const TechTypes eTech = ((TechTypes)i);
-			const int iChange = pClassInfo->getTechHappinessType(i);
-			m_aTechHappinessTypes.push_back(std::make_pair(eTech, iChange));
-		}
-	}
-
-	if (getNumTechHealthTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTechHealthTypes(); i++)
-		{
-			const TechTypes eTech = ((TechTypes)i);
-			const int iChange = pClassInfo->getTechHealthType(i);
-			m_aTechHealthTypes.push_back(std::make_pair(eTech, iChange));
-		}
-	}
-
-	//Arrays
 	for ( int i = 0; i < GC.getNumHurryInfos(); i++ )
 	{
 		if ( isHurry(i) == bDefault && pClassInfo->isHurry(i) != bDefault)
@@ -5772,9 +5604,9 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo, CvXMLLoadUtilit
 
 void CvBuildingInfo::copyNonDefaultsReadPass2(CvBuildingInfo* pClassInfo, CvXMLLoadUtility* pXML, bool bOver)
 {
-	bool bDefault = false;
-	int iDefault = 0;
-	int iTextDefault = -1;
+	const bool bDefault = false;
+	const int iDefault = 0;
+	const int iTextDefault = -1;
 	bool bNoDuplicate = true;
 
 	if (getFreeBuilding() == iTextDefault) m_iFreeBuilding = pClassInfo->getFreeBuilding();

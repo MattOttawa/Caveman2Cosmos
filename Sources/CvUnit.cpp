@@ -22870,9 +22870,9 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 		changeTrapImmunityUnitCombatCount((UnitCombatTypes)kUnitCombat.getTrapImmunityUnitCombatType(iI), iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumDistanceAttackCommunicabilityTypeChanges(); iI++)
+	foreach_(const AfflictionLineChanges data, kUnitCombat.getDistanceAttackCommunicabilityTypeChanges())
 	{
-		changeDistanceAttackCommunicability((PromotionLineTypes)kUnitCombat.getDistanceAttackCommunicabilityTypeChange(iI).eAfflictionLine, kUnitCombat.getDistanceAttackCommunicabilityTypeChange(iI).iChange * iChange);
+		changeDistanceAttackCommunicability(data.eAfflictionLine, data.iChange * iChange);
 	}
 
 	// int vector utilizing pairing without delayed resolution
@@ -22939,111 +22939,110 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 		changeExtraVisibleImprovementRange((InvisibleTypes)kUnitCombat.getVisibleImprovementRangeChange(iI).eInvisible,(ImprovementTypes)kUnitCombat.getVisibleImprovementRangeChange(iI).eImprovement, kUnitCombat.getVisibleImprovementRangeChange(iI).iIntensity * iChange);
 	}
 
-	// int vector utilizing struct with delayed resolution
-	for (iI = 0; iI < kUnitCombat.getNumTerrainAttackChangeModifiers(); iI++)
+	foreach_(const TerrainModifier modifier, kUnitCombat.getTerrainAttackChangeModifiers())
 	{
-		changeExtraTerrainAttackPercent(((TerrainTypes)kUnitCombat.getTerrainAttackChangeModifier(iI).eTerrain), kUnitCombat.getTerrainAttackChangeModifier(iI).iModifier * iChange);
+		changeExtraTerrainAttackPercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumTerrainDefenseChangeModifiers(); iI++)
+	foreach_(const TerrainModifier modifier, kUnitCombat.getTerrainDefenseChangeModifiers())
 	{
-		changeExtraTerrainDefensePercent(((TerrainTypes)kUnitCombat.getTerrainDefenseChangeModifier(iI).eTerrain), kUnitCombat.getTerrainDefenseChangeModifier(iI).iModifier * iChange);
+		changeExtraTerrainDefensePercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumTerrainWorkChangeModifiers(); iI++)
+	foreach_(const TerrainModifier modifier, kUnitCombat.getTerrainWorkChangeModifiers())
 	{
-		changeExtraTerrainWorkPercent(((TerrainTypes)kUnitCombat.getTerrainWorkChangeModifier(iI).eTerrain), kUnitCombat.getTerrainWorkChangeModifier(iI).iModifier * iChange);
+		changeExtraTerrainWorkPercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumBuildWorkChangeModifiers(); iI++)
+	foreach_(const BuildModifier modifier, kUnitCombat.getBuildWorkChangeModifiers())
 	{
-		changeExtraBuildWorkPercent(((BuildTypes)kUnitCombat.getBuildWorkChangeModifier(iI).eBuild), kUnitCombat.getBuildWorkChangeModifier(iI).iModifier * iChange);
+		changeExtraBuildWorkPercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumFeatureAttackChangeModifiers(); iI++)
+	foreach_(const FeatureModifier modifier, kUnitCombat.getFeatureAttackChangeModifiers())
 	{
-		changeExtraFeatureAttackPercent(((FeatureTypes)kUnitCombat.getFeatureAttackChangeModifier(iI).eFeature), kUnitCombat.getFeatureAttackChangeModifier(iI).iModifier * iChange);
+		changeExtraFeatureAttackPercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumFeatureDefenseChangeModifiers(); iI++)
+	foreach_(const FeatureModifier modifier, kUnitCombat.getFeatureDefenseChangeModifiers())
 	{
-		changeExtraFeatureDefensePercent(((FeatureTypes)kUnitCombat.getFeatureDefenseChangeModifier(iI).eFeature), kUnitCombat.getFeatureDefenseChangeModifier(iI).iModifier * iChange);
+		changeExtraFeatureDefensePercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumFeatureWorkChangeModifiers(); iI++)
+	foreach_(const FeatureModifier modifier, kUnitCombat.getFeatureWorkChangeModifiers())
 	{
-		changeExtraFeatureWorkPercent(((FeatureTypes)kUnitCombat.getFeatureWorkChangeModifier(iI).eFeature), kUnitCombat.getFeatureWorkChangeModifier(iI).iModifier * iChange);
+		changeExtraFeatureWorkPercent(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumUnitCombatChangeModifiers(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getUnitCombatChangeModifiers())
 	{
-		changeExtraUnitCombatModifier(((UnitCombatTypes)kUnitCombat.getUnitCombatChangeModifier(iI).eUnitCombat), kUnitCombat.getUnitCombatChangeModifier(iI).iModifier * iChange);
+		changeExtraUnitCombatModifier(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumFlankingStrengthbyUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getFlankingStrengthbyUnitCombatTypeChanges())
 	{
-		changeExtraFlankingStrengthbyUnitCombatType(((UnitCombatTypes)kUnitCombat.getFlankingStrengthbyUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getFlankingStrengthbyUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraFlankingStrengthbyUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumWithdrawVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getWithdrawVSUnitCombatTypeChanges())
 	{
-		changeExtraWithdrawVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getWithdrawVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getWithdrawVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraWithdrawVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
 	if (GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT))
 	{
-		for (iI = 0; iI < kUnitCombat.getNumPursuitVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getPursuitVSUnitCombatTypeChanges())
 		{
-			changeExtraPursuitVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getPursuitVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getPursuitVSUnitCombatTypeChange(iI).iModifier * iChange);
+			changeExtraPursuitVSUnitCombatType(modifier.first, modifier.second * iChange);
 		}
 	}
 
 	if (GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
 	{
-		for (iI = 0; iI < kUnitCombat.getNumRepelVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getRepelVSUnitCombatTypeChanges())
 		{
-			changeExtraRepelVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getRepelVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getRepelVSUnitCombatTypeChange(iI).iModifier * iChange);
+			changeExtraRepelVSUnitCombatType(modifier.first, modifier.second * iChange);
 		}
 
-		for (iI = 0; iI < kUnitCombat.getNumKnockbackVSUnitCombatTypesChange(); iI++)
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getKnockbackVSUnitCombatTypeChanges())
 		{
-			changeExtraKnockbackVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getKnockbackVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getKnockbackVSUnitCombatTypeChange(iI).iModifier * iChange);
+			changeExtraKnockbackVSUnitCombatType(modifier.first, modifier.second * iChange);
 		}
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumPunctureVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getPunctureVSUnitCombatTypeChanges())
 	{
-		changeExtraPunctureVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getPunctureVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getPunctureVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraPunctureVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumArmorVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getArmorVSUnitCombatTypeChanges())
 	{
-		changeExtraArmorVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getArmorVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getArmorVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraArmorVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumDodgeVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getDodgeVSUnitCombatTypeChanges())
 	{
-		changeExtraDodgeVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getDodgeVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getDodgeVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraDodgeVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumPrecisionVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getPrecisionVSUnitCombatTypeChanges())
 	{
-		changeExtraPrecisionVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getPrecisionVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getPrecisionVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraPrecisionVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumCriticalVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getCriticalVSUnitCombatTypeChanges())
 	{
-		changeExtraCriticalVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getCriticalVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getCriticalVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraCriticalVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumRoundStunVSUnitCombatTypesChange(); iI++)
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getRoundStunVSUnitCombatChangeTypes())
 	{
-		changeExtraRoundStunVSUnitCombatType(((UnitCombatTypes)kUnitCombat.getRoundStunVSUnitCombatTypeChange(iI).eUnitCombat), kUnitCombat.getRoundStunVSUnitCombatTypeChange(iI).iModifier * iChange);
+		changeExtraRoundStunVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
 	for (iI = 0; iI < kUnitCombat.getNumTrapAvoidanceUnitCombatTypes(); iI++)
 	{
-		changeExtraTrapAvoidanceUnitCombatType(((UnitCombatTypes)kUnitCombat.getTrapAvoidanceUnitCombatType(iI).eUnitCombat), kUnitCombat.getTrapAvoidanceUnitCombatType(iI).iModifier * iChange);
+		changeExtraTrapAvoidanceUnitCombatType(((UnitCombatTypes)kUnitCombat.getTrapAvoidanceUnitCombatType(iI).first), kUnitCombat.getTrapAvoidanceUnitCombatType(iI).second* iChange);
 	}
 
 	for (iI = 0; iI < kUnitCombat.getNumAfflictOnAttackChangeTypes(); iI++)
@@ -33159,14 +33158,12 @@ int CvUnit::getFortitudeModifierTypeAmount(PromotionLineTypes ePromotionLineType
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
 	int iEvaluation = (info == NULL ? 0 : info->m_iFortitudeModifierAmount);
-	const int iNum = m_pUnitInfo->getNumAfflictionFortitudeModifiers();
 
-	for (int iI = 0; iI < iNum; iI++)
+	foreach_(const PromotionLineModifier modifier, m_pUnitInfo->getAfflictionFortitudeModifiers())
 	{
-		const PromotionLineTypes eAfflictionLine = m_pUnitInfo->getAfflictionFortitudeModifier(iI).ePromotionLine;
-		if (eAfflictionLine == ePromotionLineType)
+		if (modifier.first == ePromotionLineType)
 		{
-			iEvaluation += m_pUnitInfo->getAfflictionFortitudeModifier(iI).iModifier;
+			iEvaluation += modifier.second;
 		}
 	}
 	return iEvaluation;
@@ -42800,11 +42797,11 @@ int CvUnit::getDistanceAttackCommunicability(PromotionLineTypes eAfflictionLine)
 
 	int iDistanceAttackCommunicability = (info == NULL ? 0 : info->m_iDistanceAttackCommunicability);
 
-	for (int iI = 0; iI < m_pUnitInfo->getNumDistanceAttackCommunicabilityTypeChanges(); iI++)
+	foreach_(const AfflictionLineChanges data, m_pUnitInfo->getDistanceAttackCommunicabilityTypeChanges())
 	{
-		if (m_pUnitInfo->getDistanceAttackCommunicabilityTypeChange(iI).eAfflictionLine == eAfflictionLine)
+		if (data.eAfflictionLine == eAfflictionLine)
 		{
-			iDistanceAttackCommunicability += m_pUnitInfo->getDistanceAttackCommunicabilityTypeChange(iI).iChange;
+			iDistanceAttackCommunicability += data.iChange;
 		}
 	}
 

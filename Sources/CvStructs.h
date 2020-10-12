@@ -23,6 +23,7 @@ typedef std::vector< std::pair<PromotionLineTypes, int> > PromotionLineModifierA
 typedef std::vector< std::pair<InvisibleTypes, int> > InvisibilityArray;
 typedef std::vector< std::pair<EraTypes, int> > EraArray;
 typedef std::vector< std::pair<PropertyTypes, int> > AidArray;
+
 struct AidStruct
 {	
 	PropertyTypes eProperty;
@@ -30,20 +31,13 @@ struct AidStruct
 	operator int() const {return (int)eProperty;}
 	bool operator< (const AidStruct& rhs) const {return (int)eProperty < (int)rhs.eProperty;}
 };
-struct PromotionModifier
-{	
-	PromotionTypes ePromotion;
-	int iModifier;
-	operator int() const {return (int)ePromotion;}
-	bool operator< (const PromotionModifier& rhs) const {return (int)ePromotion < (int)rhs.ePromotion;}
-};
-struct PromotionLineModifier
-{	
-	PromotionLineTypes ePromotionLine;
-	int iModifier;
-	operator int() const {return (int)ePromotionLine;}
-	bool operator< (const PromotionLineModifier& rhs) const {return (int)ePromotionLine < (int)rhs.ePromotionLine;}
-};
+
+typedef std::pair<PromotionTypes, int> PromotionModifier;
+typedef std::vector<PromotionModifier> PromotionModifierArray;
+
+typedef std::pair<PromotionLineTypes, int> PromotionLineModifier;
+typedef std::vector<PromotionLineModifier> PromotionLineModifierArray;
+
 struct AfflictOnAttackChange
 {	
 	PromotionLineTypes eAfflictionLine;
@@ -82,48 +76,25 @@ struct AfflictOnAttack
 	operator int() const {return (int)eAfflictionLine;}
 	bool operator< (const AfflictOnAttack& rhs) const {return (int)eAfflictionLine < (int)rhs.eAfflictionLine;}
 };
-struct TerrainModifier
-{	
-	TerrainTypes eTerrain;
-	int iModifier;
-	operator int() const {return (int)eTerrain;}
-	bool operator< (const TerrainModifier& rhs) const {return (int)eTerrain < (int)rhs.eTerrain;}
-};
-struct FeatureModifier
-{	
-	FeatureTypes eFeature;
-	int iModifier;
-	operator int() const {return (int)eFeature;}
-	bool operator< (const FeatureModifier& rhs) const {return (int)eFeature < (int)rhs.eFeature;}
-};
-struct BuildModifier
-{	
-	BuildTypes eBuild;
-	int iModifier;
-	operator int() const {return (int)eBuild;}
-	bool operator< (const BuildModifier& rhs) const {return (int)eBuild < (int)rhs.eBuild;}
-};
-struct UnitCombatModifier
-{	
-	UnitCombatTypes eUnitCombat;
-	int iModifier;
-	operator int() const {return (int)eUnitCombat;}
-	bool operator< (const UnitCombatModifier& rhs) const {return (int)eUnitCombat < (int)rhs.eUnitCombat;}
-};
-struct BonusModifier
-{	
-	BonusTypes eBonus;
-	int iModifier;
-	operator int() const {return (int)eBonus;}
-	bool operator< (const BonusModifier& rhs) const {return (int)eBonus < (int)rhs.eBonus;}
-};
-struct ImprovementModifier
-{	
-	ImprovementTypes eImprovement;
-	int iModifier;
-	operator int() const {return (int)eImprovement;}
-	bool operator< (const ImprovementModifier& rhs) const {return (int)eImprovement < (int)rhs.eImprovement;}
-};
+
+typedef std::pair<TerrainTypes, int> TerrainModifier;
+typedef std::vector<TerrainModifier> TerrainModifierArray;
+
+typedef std::pair<FeatureTypes, int> FeatureModifier;
+typedef std::vector<FeatureModifier> FeatureModifierArray;
+
+typedef std::pair<BuildTypes, int> BuildModifier;
+typedef std::vector<BuildModifier> BuildModifierArray;
+
+typedef std::pair<UnitCombatTypes, int> UnitCombatModifier;
+typedef std::vector<UnitCombatModifier> UnitCombatModifierArray;
+
+typedef std::pair<BonusTypes, int> BonusModifier;
+typedef std::vector<BonusModifier> BonusModifierArray;
+
+typedef std::pair<ImprovementTypes, int> ImprovementModifier;
+typedef std::vector<ImprovementModifier> ImprovementModifierArray;
+
 struct DisallowedTraitType
 {	
 	TraitTypes eTrait;
@@ -137,13 +108,10 @@ struct DomainModifier
 	operator int() const {return (int)eDomain;}
 	bool operator< (const DomainModifier& rhs) const {return (int)eDomain < (int)rhs.eDomain;}
 };
-struct TechModifier
-{	
-	TechTypes eTech;
-	int iModifier;
-	operator int() const {return (int)eTech;}
-	bool operator< (const TechModifier& rhs) const {return (int)eTech < (int)rhs.eTech;}
-};
+
+typedef std::pair<TechTypes, int> TechModifier;
+typedef std::vector<TechModifier> TechModifierArray;
+
 struct BuildingModifier
 {	
 	BuildingTypes eBuilding;

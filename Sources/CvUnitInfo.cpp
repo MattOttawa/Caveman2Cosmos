@@ -1677,7 +1677,6 @@ const TCHAR* CvUnitInfo::getLateArtDefineTag(int i, UnitArtStyleTypes eStyle) co
 				return pcTag;
 			}
 		}
-
 	}
 
 	return (m_paszLateArtDefineTags) ? m_paszLateArtDefineTags[i] : NULL;
@@ -1751,7 +1750,6 @@ const TCHAR* CvUnitInfo::getClassicalArtDefineTag(int i, UnitArtStyleTypes eStyl
 				return pcTag;
 			}
 		}
-
 	}
 
 	return (m_paszClassicalArtDefineTags) ? m_paszClassicalArtDefineTags[i] : NULL;
@@ -2373,8 +2371,7 @@ int CvUnitInfo::getCaptureResistanceModifier() const
 {
 	return m_iCaptureResistanceModifier;
 }
-//Team Project (4)
-//WorkRateMod
+
 int CvUnitInfo::getHillsWorkModifier() const
 {
 	return m_iHillsWorkModifier;
@@ -2860,16 +2857,15 @@ bool CvUnitInfo::isTrapImmunityUnitCombatType(int i) const
 	}
 	return true;
 }
-//struct vectors
+
 int CvUnitInfo::getNumAfflictionFortitudeModifiers() const
 {
 	return (int)m_aAfflictionFortitudeModifiers.size();
 }
 
-const PromotionLineModifier& CvUnitInfo::getAfflictionFortitudeModifier(int iAffliction) const
+const PromotionLineModifierArray& CvUnitInfo::getAfflictionFortitudeModifiers() const
 {
-	FASSERT_BOUNDS(0, getNumAfflictionFortitudeModifiers(), iAffliction)
-	return m_aAfflictionFortitudeModifiers[iAffliction];
+	return m_aAfflictionFortitudeModifiers.data();
 }
 
 int CvUnitInfo::getNumAfflictOnAttackTypes() const
@@ -2919,89 +2915,49 @@ int CvUnitInfo::getNumInvisibleFeatureChanges() const
 	return (int)m_aInvisibleFeatureChanges.size();
 }
 
-const InvisibleFeatureChanges& CvUnitInfo::getInvisibleFeatureChange(int iIndex) const
+const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getInvisibleFeatureChanges() const
 {
-	return m_aInvisibleFeatureChanges[iIndex];
+	return m_aInvisibleFeatureChanges.data();
 }
 
-int CvUnitInfo::getNumInvisibleImprovementChanges() const
+const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getInvisibleImprovementChanges() const
 {
-	return (int)m_aInvisibleImprovementChanges.size();
+	return m_aInvisibleImprovementChanges.data();
 }
 
-const InvisibleImprovementChanges& CvUnitInfo::getInvisibleImprovementChange(int iIndex) const
+const std::vector<const InvisibleTerrainChanges>& CvUnitInfo::getVisibleTerrainChanges() const
 {
-	return m_aInvisibleImprovementChanges[iIndex];
+	return m_aVisibleTerrainChanges.data();
 }
 
-int CvUnitInfo::getNumVisibleTerrainChanges() const
+const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getVisibleFeatureChanges() const
 {
-	return (int)m_aVisibleTerrainChanges.size();
+	return m_aVisibleFeatureChanges.data();
 }
 
-const InvisibleTerrainChanges& CvUnitInfo::getVisibleTerrainChange(int iIndex) const
+const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getVisibleImprovementChanges() const
 {
-	return m_aVisibleTerrainChanges[iIndex];
+	return m_aVisibleImprovementChanges.data();
 }
 
-int CvUnitInfo::getNumVisibleFeatureChanges() const
+const std::vector<const InvisibleTerrainChanges>& CvUnitInfo::getVisibleTerrainRangeChanges() const
 {
-	return (int)m_aVisibleFeatureChanges.size();
+	return m_aVisibleTerrainRangeChanges.data();
 }
 
-const InvisibleFeatureChanges& CvUnitInfo::getVisibleFeatureChange(int iIndex) const
+const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getVisibleFeatureRangeChanges() const
 {
-	return m_aVisibleFeatureChanges[iIndex];
+	return m_aVisibleFeatureRangeChanges.data();
 }
 
-int CvUnitInfo::getNumVisibleImprovementChanges() const
+const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getVisibleImprovementRangeChanges() const
 {
-	return (int)m_aVisibleImprovementChanges.size();
+	return m_aVisibleImprovementRangeChanges.data();
 }
 
-const InvisibleImprovementChanges& CvUnitInfo::getVisibleImprovementChange(int iIndex) const
+const std::vector<const AfflictionLineChanges>& CvUnitInfo::getDistanceAttackCommunicabilityTypeChanges() const
 {
-	return m_aVisibleImprovementChanges[iIndex];
-}
-
-int CvUnitInfo::getNumVisibleTerrainRangeChanges() const
-{
-	return (int)m_aVisibleTerrainRangeChanges.size();
-}
-
-const InvisibleTerrainChanges& CvUnitInfo::getVisibleTerrainRangeChange(int iIndex) const
-{
-	return m_aVisibleTerrainRangeChanges[iIndex];
-}
-
-int CvUnitInfo::getNumVisibleFeatureRangeChanges() const
-{
-	return (int)m_aVisibleFeatureRangeChanges.size();
-}
-
-const InvisibleFeatureChanges& CvUnitInfo::getVisibleFeatureRangeChange(int iIndex) const
-{
-	return m_aVisibleFeatureRangeChanges[iIndex];
-}
-
-int CvUnitInfo::getNumVisibleImprovementRangeChanges() const
-{
-	return (int)m_aVisibleImprovementRangeChanges.size();
-}
-
-const InvisibleImprovementChanges& CvUnitInfo::getVisibleImprovementRangeChange(int iIndex) const
-{
-	return m_aVisibleImprovementRangeChanges[iIndex];
-}
-
-int CvUnitInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
-{
-	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
-}
-
-const AfflictionLineChanges& CvUnitInfo::getDistanceAttackCommunicabilityTypeChange(int iIndex) const
-{
-	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
+	return m_aDistanceAttackCommunicabilityTypeChanges.data();
 }
 
 // bool vector utilizing delayed resolution
@@ -3015,7 +2971,6 @@ const EnabledCivilizations& CvUnitInfo::getEnabledCivilizationType(int iIndex) c
 	return m_aEnabledCivilizationTypes[iIndex];
 }
 
-// int vectors utilizing pairing without delayed resolution
 int CvUnitInfo::getNumFlankingStrikesbyUnitCombatTypes() const
 {
 	return m_aFlankingStrengthbyUnitCombatType.size();
@@ -3023,26 +2978,7 @@ int CvUnitInfo::getNumFlankingStrikesbyUnitCombatTypes() const
 
 int CvUnitInfo::getFlankingStrengthbyUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aFlankingStrengthbyUnitCombatType.begin(); it != m_aFlankingStrengthbyUnitCombatType.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isFlankingStrikebyUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aFlankingStrengthbyUnitCombatType.begin(); it != m_aFlankingStrengthbyUnitCombatType.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aFlankingStrengthbyUnitCombatType.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvUnitInfo::getNumWithdrawOnTerrainTypes() const
@@ -3052,14 +2988,7 @@ int CvUnitInfo::getNumWithdrawOnTerrainTypes() const
 
 int CvUnitInfo::getWithdrawOnTerrainType(int iTerrain) const
 {
-	for (TerrainModifierArray::const_iterator it = m_aWithdrawOnTerrainTypes.begin(); it != m_aWithdrawOnTerrainTypes.end(); ++it)
-	{
-		if ((*it).first == (TerrainTypes)iTerrain)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
+	return m_aWithdrawOnTerrainTypes.getValue((TerrainTypes)iTerrain);
 }
 
 int CvUnitInfo::getNumWithdrawOnFeatureTypes() const
@@ -3069,14 +2998,7 @@ int CvUnitInfo::getNumWithdrawOnFeatureTypes() const
 
 int CvUnitInfo::getWithdrawOnFeatureType(int iFeature) const
 {
-	for (FeatureModifierArray::const_iterator it = m_aWithdrawOnFeatureTypes.begin(); it != m_aWithdrawOnFeatureTypes.end(); ++it)
-	{
-		if ((*it).first == (FeatureTypes)iFeature)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
+	return m_aWithdrawOnFeatureTypes.getValue((FeatureTypes)iFeature);
 }
 
 int CvUnitInfo::getNumWithdrawVSUnitCombatTypes() const
@@ -3086,31 +3008,12 @@ int CvUnitInfo::getNumWithdrawVSUnitCombatTypes() const
 
 int CvUnitInfo::getWithdrawVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aWithdrawVSUnitCombatTypes.begin(); it != m_aWithdrawVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isWithdrawVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aWithdrawVSUnitCombatTypes.begin(); it != m_aWithdrawVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aWithdrawVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getWithdrawVSUnitCombatTypes() const
 {
-	return m_aWithdrawVSUnitCombatTypes;
+	return m_aWithdrawVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumPursuitVSUnitCombatTypes() const
@@ -3124,35 +3027,12 @@ int CvUnitInfo::getPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad) const
 	{
 		return 0;
 	}
-	for (UnitCombatModifierArray::const_iterator it = m_aPursuitVSUnitCombatTypes.begin(); it != m_aPursuitVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad) const
-{
-	if (!bForLoad && !GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT))
-	{
-		return false;
-	}
-	for (UnitCombatModifierArray::const_iterator it = m_aPursuitVSUnitCombatTypes.begin(); it != m_aPursuitVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aPursuitVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getPursuitVSUnitCombatTypes() const
 {
-	return m_aPursuitVSUnitCombatTypes;
+	return m_aPursuitVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumRepelVSUnitCombatTypes() const
@@ -3166,35 +3046,12 @@ int CvUnitInfo::getRepelVSUnitCombatType(int iUnitCombat, bool bForLoad) const
 	{
 		return 0;
 	}
-	for (UnitCombatModifierArray::const_iterator it = m_aRepelVSUnitCombatTypes.begin(); it != m_aRepelVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isRepelVSUnitCombatType(int iUnitCombat, bool bForLoad) const
-{
-	if (!bForLoad && !GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
-	{
-		return false;
-	}
-	for (UnitCombatModifierArray::const_iterator it = m_aRepelVSUnitCombatTypes.begin(); it != m_aRepelVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aRepelVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getRepelVSUnitCombatTypes() const
 {
-	return m_aRepelVSUnitCombatTypes;
+	return m_aRepelVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumKnockbackVSUnitCombatTypes() const
@@ -3208,35 +3065,12 @@ int CvUnitInfo::getKnockbackVSUnitCombatType(int iUnitCombat, bool bForLoad) con
 	{
 		return 0;
 	}
-	for (UnitCombatModifierArray::const_iterator it = m_aKnockbackVSUnitCombatTypes.begin(); it != m_aKnockbackVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isKnockbackVSUnitCombatType(int iUnitCombat, bool bForLoad) const
-{
-	if (!bForLoad && !GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
-	{
-		return false;
-	}
-	for (UnitCombatModifierArray::const_iterator it = m_aKnockbackVSUnitCombatTypes.begin(); it != m_aKnockbackVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aKnockbackVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getKnockbackVSUnitCombatTypes() const
 {
-	return m_aKnockbackVSUnitCombatTypes;
+	return m_aKnockbackVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumPunctureVSUnitCombatTypes() const
@@ -3246,31 +3080,12 @@ int CvUnitInfo::getNumPunctureVSUnitCombatTypes() const
 
 int CvUnitInfo::getPunctureVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aPunctureVSUnitCombatTypes.begin(); it != m_aPunctureVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isPunctureVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aPunctureVSUnitCombatTypes.begin(); it != m_aPunctureVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aPunctureVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getPunctureVSUnitCombatTypes() const
 {
-	return m_aPunctureVSUnitCombatTypes;
+	return m_aPunctureVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumArmorVSUnitCombatTypes() const
@@ -3280,31 +3095,12 @@ int CvUnitInfo::getNumArmorVSUnitCombatTypes() const
 
 int CvUnitInfo::getArmorVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aArmorVSUnitCombatTypes.begin(); it != m_aArmorVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isArmorVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aArmorVSUnitCombatTypes.begin(); it != m_aArmorVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aArmorVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getArmorVSUnitCombatTypes() const
 {
-	return m_aArmorVSUnitCombatTypes;
+	return m_aArmorVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumDodgeVSUnitCombatTypes() const
@@ -3314,31 +3110,12 @@ int CvUnitInfo::getNumDodgeVSUnitCombatTypes() const
 
 int CvUnitInfo::getDodgeVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aDodgeVSUnitCombatTypes.begin(); it != m_aDodgeVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isDodgeVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aDodgeVSUnitCombatTypes.begin(); it != m_aDodgeVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aDodgeVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getDodgeVSUnitCombatTypes() const
 {
-	return m_aDodgeVSUnitCombatTypes;
+	return m_aDodgeVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumPrecisionVSUnitCombatTypes() const
@@ -3348,31 +3125,12 @@ int CvUnitInfo::getNumPrecisionVSUnitCombatTypes() const
 
 int CvUnitInfo::getPrecisionVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aPrecisionVSUnitCombatTypes.begin(); it != m_aPrecisionVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isPrecisionVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aPrecisionVSUnitCombatTypes.begin(); it != m_aPrecisionVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aPrecisionVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getPrecisionVSUnitCombatTypes() const
 {
-	return m_aPrecisionVSUnitCombatTypes;
+	return m_aPrecisionVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumCriticalVSUnitCombatTypes() const
@@ -3382,31 +3140,12 @@ int CvUnitInfo::getNumCriticalVSUnitCombatTypes() const
 
 int CvUnitInfo::getCriticalVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aCriticalVSUnitCombatTypes.begin(); it != m_aCriticalVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isCriticalVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aCriticalVSUnitCombatTypes.begin(); it != m_aCriticalVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aCriticalVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getCriticalVSUnitCombatTypes() const
 {
-	return m_aCriticalVSUnitCombatTypes;
+	return m_aCriticalVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumRoundStunVSUnitCombatTypes() const
@@ -3416,31 +3155,12 @@ int CvUnitInfo::getNumRoundStunVSUnitCombatTypes() const
 
 int CvUnitInfo::getRoundStunVSUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aRoundStunVSUnitCombatTypes.begin(); it != m_aRoundStunVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isRoundStunVSUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aRoundStunVSUnitCombatTypes.begin(); it != m_aRoundStunVSUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aRoundStunVSUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 const UnitCombatModifierArray& CvUnitInfo::getRoundStunVSUnitCombatTypes() const
 {
-	return m_aRoundStunVSUnitCombatTypes;
+	return m_aRoundStunVSUnitCombatTypes.data();
 }
 
 int CvUnitInfo::getNumTrapDisableUnitCombatTypes() const
@@ -3450,31 +3170,7 @@ int CvUnitInfo::getNumTrapDisableUnitCombatTypes() const
 
 int CvUnitInfo::getTrapDisableUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapDisableUnitCombatTypes.begin(); it != m_aTrapDisableUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isTrapDisableUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapDisableUnitCombatTypes.begin(); it != m_aTrapDisableUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-const UnitCombatModifierArray& CvUnitInfo::getTrapDisableUnitCombatTypes() const
-{
-	return m_aTrapDisableUnitCombatTypes;
+	return m_aTrapDisableUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvUnitInfo::getNumTrapAvoidanceUnitCombatTypes() const
@@ -3484,31 +3180,7 @@ int CvUnitInfo::getNumTrapAvoidanceUnitCombatTypes() const
 
 int CvUnitInfo::getTrapAvoidanceUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapAvoidanceUnitCombatTypes.begin(); it != m_aTrapAvoidanceUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isTrapAvoidanceUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapAvoidanceUnitCombatTypes.begin(); it != m_aTrapAvoidanceUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-const UnitCombatModifierArray& CvUnitInfo::getTrapAvoidanceUnitCombatTypes() const
-{
-	return m_aTrapAvoidanceUnitCombatTypes;
+	return m_aTrapAvoidanceUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvUnitInfo::getNumTrapTriggerUnitCombatTypes() const
@@ -3518,31 +3190,7 @@ int CvUnitInfo::getNumTrapTriggerUnitCombatTypes() const
 
 int CvUnitInfo::getTrapTriggerUnitCombatType(int iUnitCombat) const
 {
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapTriggerUnitCombatTypes.begin(); it != m_aTrapTriggerUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isTrapTriggerUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapTriggerUnitCombatTypes.begin(); it != m_aTrapTriggerUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-const UnitCombatModifierArray& CvUnitInfo::getTrapTriggerUnitCombatTypes() const
-{
-	return m_aTrapTriggerUnitCombatTypes;
+	return m_aTrapTriggerUnitCombatTypes.getValue((UnitCombatTypes)iUnitCombat);
 }
 
 int CvUnitInfo::getNumVisibilityIntensityTypes() const
@@ -3552,31 +3200,7 @@ int CvUnitInfo::getNumVisibilityIntensityTypes() const
 
 int CvUnitInfo::getVisibilityIntensityType(int iInvisibility) const
 {
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityTypes.begin(); it != m_aVisibilityIntensityTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isVisibilityIntensityType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityTypes.begin(); it != m_aVisibilityIntensityTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-const InvisibilityArray& CvUnitInfo::getVisibilityIntensityTypes() const
-{
-	return m_aVisibilityIntensityTypes;
+	return m_aVisibilityIntensityTypes.getValue((InvisibleTypes)iInvisibility);
 }
 
 int CvUnitInfo::getNumInvisibilityIntensityTypes() const
@@ -3586,31 +3210,7 @@ int CvUnitInfo::getNumInvisibilityIntensityTypes() const
 
 int CvUnitInfo::getInvisibilityIntensityType(int iInvisibility) const
 {
-	for (InvisibilityArray::const_iterator it = m_aInvisibilityIntensityTypes.begin(); it != m_aInvisibilityIntensityTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isInvisibilityIntensityType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aInvisibilityIntensityTypes.begin(); it != m_aInvisibilityIntensityTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-const InvisibilityArray& CvUnitInfo::getInvisibilityIntensityTypes() const
-{
-	return m_aInvisibilityIntensityTypes;
+	return m_aInvisibilityIntensityTypes.getValue((InvisibleTypes)iInvisibility);
 }
 
 int CvUnitInfo::getNumVisibilityIntensityRangeTypes() const
@@ -3620,35 +3220,9 @@ int CvUnitInfo::getNumVisibilityIntensityRangeTypes() const
 
 int CvUnitInfo::getVisibilityIntensityRangeType(int iInvisibility) const
 {
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityRangeTypes.begin(); it != m_aVisibilityIntensityRangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
+	return m_aVisibilityIntensityRangeTypes.getValue((InvisibleTypes)iInvisibility);
 }
 
-bool CvUnitInfo::isVisibilityIntensityRangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityRangeTypes.begin(); it != m_aVisibilityIntensityRangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-const InvisibilityArray& CvUnitInfo::getVisibilityIntensityRangeTypes() const
-{
-	return m_aVisibilityIntensityRangeTypes;
-}
-
-//Team Project (4)
-	//WorkRateMod
 int CvUnitInfo::getNumTerrainWorkRateModifierTypes() const
 {
 	return m_aTerrainWorkRateModifierTypes.size();
@@ -3656,26 +3230,7 @@ int CvUnitInfo::getNumTerrainWorkRateModifierTypes() const
 
 int CvUnitInfo::getTerrainWorkRateModifierType(int iTerrain) const
 {
-	for (TerrainModifierArray::const_iterator it = m_aTerrainWorkRateModifierTypes.begin(); it != m_aTerrainWorkRateModifierTypes.end(); ++it)
-	{
-		if ((*it).first == (TerrainTypes)iTerrain)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isTerrainWorkRateModifierType(int iTerrain) const
-{
-	for (TerrainModifierArray::const_iterator it = m_aTerrainWorkRateModifierTypes.begin(); it != m_aTerrainWorkRateModifierTypes.end(); ++it)
-	{
-		if ((*it).first == (TerrainTypes)iTerrain)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aTerrainWorkRateModifierTypes.getValue((TerrainTypes)iTerrain);
 }
 
 int CvUnitInfo::getNumFeatureWorkRateModifierTypes() const
@@ -3685,26 +3240,7 @@ int CvUnitInfo::getNumFeatureWorkRateModifierTypes() const
 
 int CvUnitInfo::getFeatureWorkRateModifierType(int iFeature) const
 {
-	for (FeatureModifierArray::const_iterator it = m_aFeatureWorkRateModifierTypes.begin(); it != m_aFeatureWorkRateModifierTypes.end(); ++it)
-	{
-		if ((*it).first == (FeatureTypes)iFeature)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isFeatureWorkRateModifierType(int iFeature) const
-{
-	for (FeatureModifierArray::const_iterator it = m_aFeatureWorkRateModifierTypes.begin(); it != m_aFeatureWorkRateModifierTypes.end(); ++it)
-	{
-		if ((*it).first == (FeatureTypes)iFeature)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aFeatureWorkRateModifierTypes.getValue((FeatureTypes)iFeature);
 }
 
 int CvUnitInfo::getNumBuildWorkRateModifierTypes() const
@@ -3714,26 +3250,7 @@ int CvUnitInfo::getNumBuildWorkRateModifierTypes() const
 
 int CvUnitInfo::getBuildWorkRateModifierType(int iBuild) const
 {
-	for (BuildModifierArray::const_iterator it = m_aBuildWorkRateModifierTypes.begin(); it != m_aBuildWorkRateModifierTypes.end(); ++it)
-	{
-		if ((*it).first == (BuildTypes)iBuild)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isBuildWorkRateModifierType(int iBuild) const
-{
-	for (BuildModifierArray::const_iterator it = m_aBuildWorkRateModifierTypes.begin(); it != m_aBuildWorkRateModifierTypes.end(); ++it)
-	{
-		if ((*it).first == (BuildTypes)iBuild)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aBuildWorkRateModifierTypes.getValue((BuildTypes)iBuild);
 }
 
 int CvUnitInfo::getNumAidChanges() const
@@ -3743,26 +3260,7 @@ int CvUnitInfo::getNumAidChanges() const
 
 int CvUnitInfo::getAidChange(int iProperty) const
 {
-	for (AidArray::const_iterator it = m_aAidChanges.begin(); it != m_aAidChanges.end(); ++it)
-	{
-		if ((*it).first == (PropertyTypes)iProperty)
-		{
-			return (*it).second;
-		}
-	}
-	return 0;
-}
-
-bool CvUnitInfo::isAidChange(int iProperty) const
-{
-	for (AidArray::const_iterator it = m_aAidChanges.begin(); it != m_aAidChanges.end(); ++it)
-	{
-		if ((*it).first == (PropertyTypes)iProperty)
-		{
-			return true;
-		}
-	}
-	return false;
+	return m_aAidChanges.getValue((PropertyTypes)iProperty);
 }
 //TB Combat Mods End  TB SubCombat Mod end
 
@@ -4106,12 +3604,7 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum) const
 	// int vectors utilizing struct with delayed resolution
 	int iNumElements;
 
-	iNumElements = m_aAfflictionFortitudeModifiers.size();
-	for (int i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aAfflictionFortitudeModifiers[i].ePromotionLine);
-		CheckSum(iSum, m_aAfflictionFortitudeModifiers[i].iModifier);
-	}
+	m_aAfflictionFortitudeModifiers.checkSum(iSum);
 
 	iNumElements = m_aAfflictOnAttackTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -4221,31 +3714,28 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum) const
 	{
 		CheckSum(iSum, m_aEnabledCivilizationTypes[i].eCivilization);
 	}
-	// int vectors utilizing pairing without delayed resolution
-	CheckSumC(iSum, m_aWithdrawOnTerrainTypes);
-	CheckSumC(iSum, m_aWithdrawOnFeatureTypes);
-	CheckSumC(iSum, m_aFlankingStrengthbyUnitCombatType);
-	CheckSumC(iSum, m_aWithdrawVSUnitCombatTypes);
-	CheckSumC(iSum, m_aPursuitVSUnitCombatTypes);
-	CheckSumC(iSum, m_aRepelVSUnitCombatTypes);
-	CheckSumC(iSum, m_aKnockbackVSUnitCombatTypes);
-	CheckSumC(iSum, m_aPunctureVSUnitCombatTypes);
-	CheckSumC(iSum, m_aArmorVSUnitCombatTypes);
-	CheckSumC(iSum, m_aDodgeVSUnitCombatTypes);
-	CheckSumC(iSum, m_aPrecisionVSUnitCombatTypes);
-	CheckSumC(iSum, m_aCriticalVSUnitCombatTypes);
-	CheckSumC(iSum, m_aRoundStunVSUnitCombatTypes);
-	CheckSumC(iSum, m_aTrapDisableUnitCombatTypes);
-	CheckSumC(iSum, m_aTrapAvoidanceUnitCombatTypes);
-	CheckSumC(iSum, m_aTrapTriggerUnitCombatTypes);
-	CheckSumC(iSum, m_aVisibilityIntensityTypes);
-	CheckSumC(iSum, m_aInvisibilityIntensityTypes);
-//Team Project (4)
-		//WorkRateMod
-	CheckSumC(iSum, m_aTerrainWorkRateModifierTypes);
-	CheckSumC(iSum, m_aFeatureWorkRateModifierTypes);
-	CheckSumC(iSum, m_aBuildWorkRateModifierTypes);
-	CheckSumC(iSum, m_aAidChanges);
+	m_aWithdrawOnTerrainTypes.getCheckSum(iSum);
+	m_aWithdrawOnFeatureTypes.getCheckSum(iSum);
+	m_aFlankingStrengthbyUnitCombatType.getCheckSum(iSum);
+	m_aWithdrawVSUnitCombatTypes.getCheckSum(iSum);
+	m_aPursuitVSUnitCombatTypes.getCheckSum(iSum);
+	m_aRepelVSUnitCombatTypes.getCheckSum(iSum);
+	m_aKnockbackVSUnitCombatTypes.getCheckSum(iSum);
+	m_aPunctureVSUnitCombatTypes.getCheckSum(iSum);
+	m_aArmorVSUnitCombatTypes.getCheckSum(iSum);
+	m_aDodgeVSUnitCombatTypes.getCheckSum(iSum);
+	m_aPrecisionVSUnitCombatTypes.getCheckSum(iSum);
+	m_aCriticalVSUnitCombatTypes.getCheckSum(iSum);
+	m_aRoundStunVSUnitCombatTypes.getCheckSum(iSum);
+	m_aTrapDisableUnitCombatTypes.getCheckSum(iSum);
+	m_aTrapAvoidanceUnitCombatTypes.getCheckSum(iSum);
+	m_aTrapTriggerUnitCombatTypes.getCheckSum(iSum);
+	m_aVisibilityIntensityTypes.getCheckSum(iSum);
+	m_aInvisibilityIntensityTypes.getCheckSum(iSum);
+	m_aTerrainWorkRateModifierTypes.getCheckSum(iSum);
+	m_aFeatureWorkRateModifierTypes.getCheckSum(iSum);
+	m_aBuildWorkRateModifierTypes.getCheckSum(iSum);
+	m_aAidChanges.getCheckSum(iSum);
 	//TB Combat Mods End  TB SubCombat Mod end
 
 	CheckSum(iSum, m_szExtraHoverTextKey);
@@ -4885,28 +4375,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetOptionalIntVector(&m_aiTrapImmunityUnitCombatTypes, L"TrapImmunityUnitCombatTypes");
 
-	// int vectors utilizing struct with delayed resolution
-	if(pXML->TryMoveToXmlFirstChild(L"AfflictionFortitudeModifiers"))
-	{
-		int i = 0;
-		const int iNum = pXML->GetXmlChildrenNumber(L"AfflictionFortitudeModifier" );
-		m_aAfflictionFortitudeModifiers.resize(iNum);
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"AfflictionFortitudeModifier"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"PromotionLineType");
-					m_aAfflictionFortitudeModifiers[i].ePromotionLine = (PromotionLineTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aAfflictionFortitudeModifiers[i].iModifier), L"iModifier");
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"AfflictionFortitudeModifier"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
+	m_aAfflictionFortitudeModifiers.read(pXML, L"AfflictionFortitudeModifiers");
 
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictOnAttackTypes"))
 	{
@@ -5239,53 +4708,28 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-	// int vector utilizing pairing without delayed resolution
-	pXML->SetOptionalPairVector<TerrainModifierArray, TerrainTypes, int>(&m_aWithdrawOnTerrainTypes, L"WithdrawModifierOnTerrainTypes");
-
-	pXML->SetOptionalPairVector<FeatureModifierArray, FeatureTypes, int>(&m_aWithdrawOnFeatureTypes, L"WithdrawModifierOnFeatureTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aFlankingStrengthbyUnitCombatType, L"FlankingStrikesbyUnitCombat");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aWithdrawVSUnitCombatTypes, L"WithdrawVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aPursuitVSUnitCombatTypes, L"PursuitVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aRepelVSUnitCombatTypes, L"RepelVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aKnockbackVSUnitCombatTypes, L"KnockbackVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aPunctureVSUnitCombatTypes, L"PunctureVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aArmorVSUnitCombatTypes, L"ArmorVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aDodgeVSUnitCombatTypes, L"DodgeVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aPrecisionVSUnitCombatTypes, L"PrecisionVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aCriticalVSUnitCombatTypes, L"CriticalVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aRoundStunVSUnitCombatTypes, L"RoundStunVSUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aTrapDisableUnitCombatTypes, L"TrapDisableUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aTrapAvoidanceUnitCombatTypes, L"TrapAvoidanceUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aTrapTriggerUnitCombatTypes, L"TrapTriggerUnitCombatTypes");
-
-	pXML->SetOptionalPairVector<InvisibilityArray, InvisibleTypes, int>(&m_aVisibilityIntensityTypes, L"VisibilityIntensityTypes");
-
-	pXML->SetOptionalPairVector<InvisibilityArray, InvisibleTypes, int>(&m_aInvisibilityIntensityTypes, L"InvisibilityIntensityTypes");
-
-//Team Project (4)
-		//WorkRateMod
-	pXML->SetOptionalPairVector<TerrainModifierArray, TerrainTypes, int>(&m_aTerrainWorkRateModifierTypes, L"TerrainWorkRateModifierTypes");
-
-	pXML->SetOptionalPairVector<FeatureModifierArray, FeatureTypes, int>(&m_aFeatureWorkRateModifierTypes, L"FeatureWorkRateModifierTypes");
-
-	pXML->SetOptionalPairVector<BuildModifierArray, BuildTypes, int>(&m_aBuildWorkRateModifierTypes, L"BuildWorkRateModifierTypes");
-
-	pXML->SetOptionalPairVector<AidArray, PropertyTypes, int>(&m_aAidChanges, L"AidChanges");
-
+	m_aWithdrawOnTerrainTypes.read(pXML, L"WithdrawModifierOnTerrainTypes");
+	m_aWithdrawOnFeatureTypes.read(pXML, L"WithdrawModifierOnFeatureTypes");
+	m_aFlankingStrengthbyUnitCombatType.read(pXML, L"FlankingStrikesbyUnitCombat");
+	m_aWithdrawVSUnitCombatTypes.read(pXML, L"WithdrawVSUnitCombatTypes");
+	m_aPursuitVSUnitCombatTypes.read(pXML, L"PursuitVSUnitCombatTypes");
+	m_aRepelVSUnitCombatTypes.read(pXML, L"RepelVSUnitCombatTypes");
+	m_aKnockbackVSUnitCombatTypes.read(pXML, L"KnockbackVSUnitCombatTypes");
+	m_aPunctureVSUnitCombatTypes.read(pXML, L"PunctureVSUnitCombatTypes");
+	m_aArmorVSUnitCombatTypes.read(pXML, L"ArmorVSUnitCombatTypes");
+	m_aDodgeVSUnitCombatTypes.read(pXML, L"DodgeVSUnitCombatTypes");
+	m_aPrecisionVSUnitCombatTypes.read(pXML, L"PrecisionVSUnitCombatTypes");
+	m_aCriticalVSUnitCombatTypes.read(pXML, L"CriticalVSUnitCombatTypes");
+	m_aRoundStunVSUnitCombatTypes.read(pXML, L"RoundStunVSUnitCombatTypes");
+	m_aTrapDisableUnitCombatTypes.read(pXML, L"TrapDisableUnitCombatTypes");
+	m_aTrapAvoidanceUnitCombatTypes.read(pXML, L"TrapAvoidanceUnitCombatTypes");
+	m_aTrapTriggerUnitCombatTypes.read(pXML, L"TrapTriggerUnitCombatTypes");
+	m_aVisibilityIntensityTypes.read(pXML, L"VisibilityIntensityTypes");
+	m_aInvisibilityIntensityTypes.read(pXML, L"InvisibilityIntensityTypes");
+	m_aTerrainWorkRateModifierTypes.read(pXML, L"TerrainWorkRateModifierTypes");
+	m_aFeatureWorkRateModifierTypes.read(pXML, L"FeatureWorkRateModifierTypes");
+	m_aBuildWorkRateModifierTypes.read(pXML, L"BuildWorkRateModifierTypes");
+	m_aAidChanges.read(pXML, L"AidChanges");
 	//TB Combat Mods End  TB SubCombat Mod end
 
 	m_KillOutcomeList.read(pXML, L"KillOutcomes");
@@ -6107,228 +5551,29 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo, CvXMLLoadUtility* pXML)
 			GC.copyNonDefaultDelayedResolution((int*)&(m_aEnabledCivilizationTypes[i].eCivilization), (int*)&(pClassInfo->m_aEnabledCivilizationTypes[i].eCivilization));
 		}
 	}
-	// int vectors utilizing pairing without delayed resolution
-	if (getNumWithdrawOnTerrainTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumWithdrawOnTerrainTypes(); i++)
-		{
-			TerrainTypes eTerrain = ((TerrainTypes)i);
-			int iChange = pClassInfo->getWithdrawOnTerrainType(i);
-			m_aWithdrawOnTerrainTypes.push_back(std::make_pair(eTerrain, iChange));
-		}
-	}
 
-	if (getNumWithdrawOnFeatureTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumWithdrawOnFeatureTypes(); i++)
-		{
-			FeatureTypes eFeature = ((FeatureTypes)i);
-			int iChange = pClassInfo->getWithdrawOnFeatureType(i);
-			m_aWithdrawOnFeatureTypes.push_back(std::make_pair(eFeature, iChange));
-		}
-	}
-
-	if (getNumFlankingStrikesbyUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumFlankingStrikesbyUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getFlankingStrengthbyUnitCombatType(i);
-			m_aFlankingStrengthbyUnitCombatType.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumWithdrawVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumWithdrawVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getWithdrawVSUnitCombatType(i);
-			m_aWithdrawVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumPursuitVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumPursuitVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getPursuitVSUnitCombatType(i, true);
-			m_aPursuitVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumRepelVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumRepelVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getRepelVSUnitCombatType(i, true);
-			m_aRepelVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumKnockbackVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumKnockbackVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getKnockbackVSUnitCombatType(i, true);
-			m_aKnockbackVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumPunctureVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumPunctureVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getPunctureVSUnitCombatType(i);
-			m_aPunctureVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumArmorVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumArmorVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getArmorVSUnitCombatType(i);
-			m_aArmorVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumDodgeVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumDodgeVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getDodgeVSUnitCombatType(i);
-			m_aDodgeVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumPrecisionVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumPrecisionVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getPrecisionVSUnitCombatType(i);
-			m_aPrecisionVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumCriticalVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumCriticalVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getCriticalVSUnitCombatType(i);
-			m_aCriticalVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumRoundStunVSUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumRoundStunVSUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getRoundStunVSUnitCombatType(i);
-			m_aRoundStunVSUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumTrapDisableUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTrapDisableUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getTrapDisableUnitCombatType(i);
-			m_aTrapDisableUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumTrapAvoidanceUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTrapAvoidanceUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getTrapAvoidanceUnitCombatType(i);
-			m_aTrapAvoidanceUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumTrapTriggerUnitCombatTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTrapTriggerUnitCombatTypes(); i++)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)i);
-			int iChange = pClassInfo->getTrapTriggerUnitCombatType(i);
-			m_aTrapTriggerUnitCombatTypes.push_back(std::make_pair(eUnitCombat, iChange));
-		}
-	}
-
-	if (getNumVisibilityIntensityTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumVisibilityIntensityTypes(); i++)
-		{
-			InvisibleTypes eInvisible = ((InvisibleTypes)i);
-			int iChange = pClassInfo->getVisibilityIntensityType(i);
-			m_aVisibilityIntensityTypes.push_back(std::make_pair(eInvisible, iChange));
-		}
-	}
-
-	if (getNumInvisibilityIntensityTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumInvisibilityIntensityTypes(); i++)
-		{
-			InvisibleTypes eInvisible = ((InvisibleTypes)i);
-			int iChange = pClassInfo->getInvisibilityIntensityType(i);
-			m_aInvisibilityIntensityTypes.push_back(std::make_pair(eInvisible, iChange));
-		}
-	}
-
-	//Team Project (4)
-		//WorkRateMod
-	if (getNumTerrainWorkRateModifierTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumTerrainWorkRateModifierTypes(); i++)
-		{
-			TerrainTypes eTerrain = ((TerrainTypes)i);
-			int iChange = pClassInfo->getTerrainWorkRateModifierType(i);
-			m_aTerrainWorkRateModifierTypes.push_back(std::make_pair(eTerrain, iChange));
-		}
-	}
-
-	if (getNumFeatureWorkRateModifierTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumFeatureWorkRateModifierTypes(); i++)
-		{
-			FeatureTypes eFeature = ((FeatureTypes)i);
-			int iChange = pClassInfo->getFeatureWorkRateModifierType(i);
-			m_aFeatureWorkRateModifierTypes.push_back(std::make_pair(eFeature, iChange));
-		}
-	}
-
-	if (getNumBuildWorkRateModifierTypes()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumBuildWorkRateModifierTypes(); i++)
-		{
-			BuildTypes eBuild = ((BuildTypes)i);
-			int iChange = pClassInfo->getBuildWorkRateModifierType(i);
-			m_aBuildWorkRateModifierTypes.push_back(std::make_pair(eBuild, iChange));
-		}
-	}
-
-	if (getNumAidChanges()==0)
-	{
-		for (int i=0; i < pClassInfo->getNumAidChanges(); i++)
-		{
-			PropertyTypes eProperty = ((PropertyTypes)i);
-			int iChange = pClassInfo->getAidChange(i);
-			m_aAidChanges.push_back(std::make_pair(eProperty, iChange));
-		}
-	}
+	m_aWithdrawOnTerrainTypes.copyNonDefaults(pClassInfo->m_aWithdrawOnTerrainTypes);
+	m_aWithdrawOnFeatureTypes.copyNonDefaults(pClassInfo->m_aWithdrawOnFeatureTypes);
+	m_aFlankingStrengthbyUnitCombatType.copyNonDefaults(pClassInfo->m_aFlankingStrengthbyUnitCombatType);
+	m_aWithdrawVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aWithdrawVSUnitCombatTypes);
+	m_aPursuitVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aPursuitVSUnitCombatTypes);
+	m_aRepelVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aRepelVSUnitCombatTypes);
+	m_aKnockbackVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aKnockbackVSUnitCombatTypes);
+	m_aPunctureVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aPunctureVSUnitCombatTypes);
+	m_aArmorVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aArmorVSUnitCombatTypes);
+	m_aDodgeVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aDodgeVSUnitCombatTypes);
+	m_aPrecisionVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aPrecisionVSUnitCombatTypes);
+	m_aCriticalVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aCriticalVSUnitCombatTypes);
+	m_aRoundStunVSUnitCombatTypes.copyNonDefaults(pClassInfo->m_aRoundStunVSUnitCombatTypes);
+	m_aTrapDisableUnitCombatTypes.copyNonDefaults(pClassInfo->m_aTrapDisableUnitCombatTypes);
+	m_aTrapAvoidanceUnitCombatTypes.copyNonDefaults(pClassInfo->m_aTrapAvoidanceUnitCombatTypes);
+	m_aTrapTriggerUnitCombatTypes.copyNonDefaults(pClassInfo->m_aTrapTriggerUnitCombatTypes);
+	m_aVisibilityIntensityTypes.copyNonDefaults(pClassInfo->m_aVisibilityIntensityTypes);
+	m_aInvisibilityIntensityTypes.copyNonDefaults(pClassInfo->m_aInvisibilityIntensityTypes);
+	m_aTerrainWorkRateModifierTypes.copyNonDefaults(pClassInfo->m_aTerrainWorkRateModifierTypes);
+	m_aFeatureWorkRateModifierTypes.copyNonDefaults(pClassInfo->m_aFeatureWorkRateModifierTypes);
+	m_aBuildWorkRateModifierTypes.copyNonDefaults(pClassInfo->m_aBuildWorkRateModifierTypes);
+	m_aAidChanges.copyNonDefaults(pClassInfo->m_aAidChanges);
 	//TB Combat Mods End  TB SubCombat Mod end
 	//setTotalModifiedCombatStrengthDetails();
 

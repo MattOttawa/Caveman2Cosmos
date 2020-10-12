@@ -15,116 +15,193 @@ class CvXMLLoadUtility;
 
 // ValueType will usually be int, only value types that are supported by FDataStreamBase as overloaded read and write will work without template specialization
 // The maps are assumed to be small, so a vector of pairs is used
-template <class ValueType, ValueType& defaultValue>
+template <class IndexType, class Value_T, Value_T defaultValue>
 class IDValueMap
 {
+	typedef std::pair<IndexType, Value_T> Pair_t;
+
 public:
 	void read(FDataStreamBase* pStream)
 	{
-		unsigned int iSize = 0;
+		size_t iSize = 0;
 		pStream->Read(&iSize);
 		m_map.resize(iSize);
-		for (unsigned int i = 0; i < iSize; i++)
+		foreach_(Pair_t& pair, m_map)
 		{
-			pStream->Read(&(m_map[i].first));
-			pStream->Read(&(m_map[i].second));
+			pStream->Read(&pair.first);
+			pStream->Read(&pair.second);
 		}
 	}
 
 	void write(FDataStreamBase* pStream)
 	{
-		pStream->Write(m_map.size());
-		for (unsigned int i = 0; i < m_map.size(); i++)
+		pStream->Write(m_map);
+		foreach_(const Pair_t pair, m_map)
 		{
-			pStream->Write(m_map[i].first);
-			pStream->Write(m_map[i].second);
+			pStream->Write(pair.first);
+			pStream->Write(pair.second);
 		}
 	}
 
-	// Call this method with the XML set to the parent node
-	void read(CvXMLLoadUtility* pXML)
+	void read(CvXMLLoadUtility* pXML, const wchar_t* szRootTagName)
 	{
-		CvString szTextVal;
-		m_map.clear();
-		if (pXML->TryMoveToXmlFirstChild())
+		if (pXML->TryMoveToXmlFirstChild(szRootTagName))
 		{
-			do
+			CvString szTextVal;
+			m_map.clear();
+			if (pXML->TryMoveToXmlFirstChild())
 			{
-				if (pXML->TryMoveToXmlFirstChild())
+				do
 				{
-					pXML->GetXmlVal(szTextVal);
-					int iID = GC.getOrCreateInfoTypeForString(szTextVal);
-					ValueType val = defaultValue;
-					pXML->GetNextXmlVal(&val);
-					setValue(iID, val);
+					if (pXML->TryMoveToXmlFirstChild())
+					{
+						pXML->GetXmlVal(szTextVal);
+						const IndexType iID = static_cast<IndexType>(GC.getOrCreateInfoTypeForString(szTextVal));
+						Value_T val = defaultValue;
+						pXML->GetNextXmlVal(&val);
+						m_map.push_back(std::make_pair(iID, val));
 
-					pXML->MoveToXmlParent();
-				}
-			} while (pXML->TryMoveToXmlNextSibling());
+						pXML->MoveToXmlParent();
+					}
+				} while (pXML->TryMoveToXmlNextSibling());
+				pXML->MoveToXmlParent();
+			}
 			pXML->MoveToXmlParent();
 		}
 	}
 
-	void copyNonDefaults(IDValueMap<ValueType, defaultValue>* pMap, CvXMLLoadUtility* pXML)
+	void copyNonDefaults(const IDValueMap<IndexType, Value_T, defaultValue>& pMap)
 	{
-		for (unsigned int i = 0; i < pMap->m_map.size(); i++)
+		foreach_(const Pair_t otherPair, pMap.m_map)
 		{
-			bool bNotFound = true;
-			int iID = pMap->m_map[i].first;
-			for (unsigned int j = 0; j < m_map.size(); j++)
+			const IndexType otherID = otherPair.first;
+			if (getValue(otherID) == defaultValue)
 			{
-				if (iID == m_map[j].first)
-				{
-					bNotFound = false;
-					break;
-				}
-			}
-			if (bNotFound)
-			{
-				m_map.push_back(std::make_pair(iID, pMap->m_map[i].second));
+				m_map.push_back(std::make_pair(otherID, otherPair.second));
 			}
 		}
 	}
 
-	void getCheckSum(unsigned int& iSum) const
+	void copyNonDefaultDelayedResolution(const IDValueMap<IndexType, Value_T, defaultValue>& pMap)
 	{
-		for (unsigned int i = 0; i < m_map.size(); i++)
+		if (size() == 0)
 		{
-			CheckSum(iSum, m_map[i].first);
-			CheckSum(iSum, m_map[i].second);
+			const size_t iNum = pMap.size();
+			m_map.resize(iNum);
+			for (size_t i = 0; i < iNum; i++)
+			{
+				m_map[i].second = pMap.m_map[i].second;
+				GC.copyNonDefaultDelayedResolution(m_map[i].first, pMap.m_map[i].first);
+			}
 		}
 	}
 
-	ValueType getValue(int iID) const
+	void removeDelayedResolution()
 	{
-		for (unsigned int i = 0; i < m_map.size(); i++)
-			if (m_map[i].first == iID)
-				return m_map[i].second;
+		for (size_t i = 0; i < size(); i++)
+			GC.removeDelayedResolution(m_map[i].first);
+	}
+
+	void getCheckSum(uint32_t& iSum) const
+	{
+		foreach_(const Pair_t pair, m_map)
+		{
+			CheckSum(iSum, pair);
+			//CheckSum(iSum, pair.first);
+			//CheckSum(iSum, pair.second);
+		}
+	}
+
+	Value_T getValue(IndexType iID) const
+	{
+		foreach_(const Pair_t pair, m_map)
+			if (pair.first == iID)
+				return pair.second;
 		return defaultValue;
 	}
 
-	void setValue(int iID, ValueType val)
+	bool hasValue(IndexType iID) const
 	{
-		for (unsigned int i = 0; i < m_map.size(); i++)
-		{
-			if (m_map[i].first == iID)
-			{
-				m_map[i].second = val;
-				return;
-			}
-		}
-		m_map.push_back(std::make_pair(iID, val));
+		foreach_(const Pair_t pair, m_map)
+			if (pair.first == iID)
+				return true;
+		return false;
 	}
 
+	Pair_t& operator[](int index) const { return m_map[index]; }
+
+	//std::vector<Pair_T>::const_iterator begin() const
+	//{
+	//	return m_map.begin();
+	//}
+
+	//std::vector<Pair_T>::const_iterator end() const
+	//{
+	//	return m_map.end();
+	//}
+
+	const Pair_t begin() const
+	{
+		return static_cast<const Pair_t>(m_map.begin());
+	}
+
+	const Pair_t end() const
+	{
+		return static_cast<const Pair_t>(m_map.end());
+	}
+
+	const std::vector<Pair_t> data() const
+	{
+		return m_map;
+	}
+
+	size_t size() const
+	{
+		return m_map.size();
+	}
 
 protected:
-	std::vector<std::pair<int, ValueType> > m_map;
+	std::vector<Pair_t> m_map;
 };
 
-extern int g_iPercentDefault;
-extern int g_iModifierDefault;
 
-typedef IDValueMap<int, g_iPercentDefault> IDValueMapPercent;
-typedef IDValueMap<int, g_iModifierDefault> IDValueMapModifier;
+#define DECLARE_PAIR_STRUCT(className, firstDataType, firstGetMethod, secondDataType, secondGetMethod) \
+																	\
+	struct className												\
+	{																\
+	public:															\
+		className(firstDataType id, secondDataType value)			\
+			: m_id(id), m_value(value) { }							\
+																	\
+		firstDataType firstGetMethod() const { return m_id; }		\
+		secondDataType secondGetMethod() const { return m_value; }	\
+																	\
+		firstDataType getID() const { return m_id; }				\
+		secondDataType getValue() const { return m_value; }			\
+																	\
+	protected:														\
+		firstDataType m_id;											\
+		secondDataType m_value;										\
+	};																\
+																	\
+	typedef std::vector<className> className##Array;
+
+/*
+DECLARE_PAIR_STRUCT(UnitCombatModifier, UnitCombatTypes, getUnitCombat, int, getModifier)
+DECLARE_PAIR_STRUCT(TechModifier, TechTypes, getTech, int, getModifier)
+DECLARE_PAIR_STRUCT(TerrainModifier, TerrainTypes, getTerrain, int, getModifier)
+DECLARE_PAIR_STRUCT(FeatureModifier, FeatureTypes, getFeature, int, getModifier)
+DECLARE_PAIR_STRUCT(BuildModifier, BuildTypes, getBuild, int, getModifier)
+DECLARE_PAIR_STRUCT(BonusModifier, BonusTypes, getBonus, int, getModifier)
+DECLARE_PAIR_STRUCT(ImprovementModifier, ImprovementTypes, getImprovement, int, getModifier)
+*/
+//extern int g_iPercentDefault;
+//extern int g_iModifierDefault;
+
+//typedef IDValueMap<int, int, g_iPercentDefault> IDValueMapPercent;
+//typedef IDValueMap<int, int, g_iModifierDefault> IDValueMapModifier;
+
+typedef IDValueMap<int, int, 100> IDValueMapPercent;
+typedef IDValueMap<int, int, 100> IDValueMapModifier;
 
 #endif

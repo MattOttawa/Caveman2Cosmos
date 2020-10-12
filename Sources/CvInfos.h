@@ -294,15 +294,15 @@ public:
 	// int
 	int getInsidiousness() const;
 	int getInvestigation() const;
-	// int vector utilizing struct with delayed resolution
+
 	int getNumTechHappinessTypes() const;
-	const TechModifier& getTechHappinessType(int iTech) const;
+	const TechModifierArray& getTechHappinessTypes(int iTech) const;
 
 	int getNumTechHealthTypes() const;
-	const TechModifier& getTechHealthType(int iTech) const;
+	const TechModifierArray& getTechHealthTypes(int iTech) const;
 
 	int getNumUnitCombatExperienceTypes() const;
-	const UnitCombatModifier& getUnitCombatExperienceType(int iUnitCombat, bool bForLoad = true) const;
+	const UnitCombatModifierArray& getUnitCombatExperienceTypes(bool bForLoad = true) const;
 
 	//TB Specialist Tags end
 
@@ -344,11 +344,9 @@ protected:
 	int* m_piCommerceChange;
 	int* m_piFlavorValue;
 
-	//Team Project (1)
 	//TB Specialist Tags
-	// int vector utilizing struct with delayed resolution
-	std::vector<TechModifier> m_aTechHappinessTypes;
-	std::vector<TechModifier> m_aTechHealthTypes;
+	IDValueMap<TechTypes, int, 0> m_aTechHappinessTypes;
+	IDValueMap<TechTypes, int, 0> m_aTechHealthTypes;
 	std::vector<UnitCombatModifier> m_aUnitCombatExperienceTypes;
 	std::vector<UnitCombatModifier> m_aUnitCombatExperienceTypesNull;
 
@@ -917,9 +915,6 @@ public:
 	bool isPlotPrereqsKeepAfter() const;
 	bool isRemoveAfterSet() const;
 	bool isQuick() const;
-	//Arrays
-	//int getAIWeightbyUnitCombatType(int i) const;
-	//bool isAnyAIWeightbyUnitCombatType() const;
 
 	// bool vector without delayed resolution
 	int getSubCombatChangeType(int i) const;
@@ -1011,7 +1006,6 @@ public:
 
 	int getNumFlankingStrikesbyUnitCombatTypesChange() const;
 	int getFlankingStrengthbyUnitCombatTypeChange(int iUnitCombat) const;
-	bool isFlankingStrikebyUnitCombatTypeChange(int iUnitCombat) const;
 
 	int getNumWithdrawOnTerrainTypeChanges() const;
 	int getWithdrawOnTerrainTypeChange(int iTerrain) const;
@@ -1025,86 +1019,65 @@ public:
 
 	int getNumPursuitVSUnitCombatChangeTypes() const;
 	int getPursuitVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
-	bool isPursuitVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
 
 	int getNumRepelVSUnitCombatChangeTypes() const;
 	int getRepelVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
-	bool isRepelVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
 
 	int getNumKnockbackVSUnitCombatChangeTypes() const;
 	int getKnockbackVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
-	bool isKnockbackVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
 
 	int getNumPunctureVSUnitCombatChangeTypes() const;
 	int getPunctureVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isPunctureVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumArmorVSUnitCombatChangeTypes() const;
 	int getArmorVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isArmorVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumDodgeVSUnitCombatChangeTypes() const;
 	int getDodgeVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isDodgeVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumPrecisionVSUnitCombatChangeTypes() const;
 	int getPrecisionVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isPrecisionVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumCriticalVSUnitCombatChangeTypes() const;
 	int getCriticalVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isCriticalVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumRoundStunVSUnitCombatChangeTypes() const;
 	int getRoundStunVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isRoundStunVSUnitCombatChangeType(int iUnitCombat) const;
+	const UnitCombatModifierArray getRoundStunVSUnitCombatChangeTypes() const { return m_aRoundStunVSUnitCombatChangeTypes.data(); }
 
 	int getNumTrapDisableUnitCombatTypes() const;
 	int getTrapDisableUnitCombatType(int iUnitCombat) const;
-	bool isTrapDisableUnitCombatType(int iUnitCombat) const;
 
 	int getNumTrapAvoidanceUnitCombatTypes() const;
 	int getTrapAvoidanceUnitCombatType(int iUnitCombat) const;
-	bool isTrapAvoidanceUnitCombatType(int iUnitCombat) const;
 
 	int getNumTrapTriggerUnitCombatTypes() const;
 	int getTrapTriggerUnitCombatType(int iUnitCombat) const;
-	bool isTrapTriggerUnitCombatType(int iUnitCombat) const;
 
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
-	bool isAidChange(int iProperty) const;
-	//Team Project (4)
-	//WorkRateMod
+
 	int getNumTerrainWorkRateModifierChangeTypes() const;
 	int getTerrainWorkRateModifierChangeType(int iTerrain) const;
-	bool isTerrainWorkRateModifierChangeType(int iTerrain) const;
 
 	int getNumFeatureWorkRateModifierChangeTypes() const;
 	int getFeatureWorkRateModifierChangeType(int iFeature) const;
-	bool isFeatureWorkRateModifierChangeType(int iFeature) const;
 
 	int getNumBuildWorkRateModifierChangeTypes() const;
 	int getBuildWorkRateModifierChangeType(int iBuild) const;
-	bool isBuildWorkRateModifierChangeType(int iBuild) const;
 
 	int getNumVisibilityIntensityChangeTypes() const;
 	int getVisibilityIntensityChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumInvisibilityIntensityChangeTypes() const;
 	int getInvisibilityIntensityChangeType(int iInvisibility) const;
-	bool isInvisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumVisibilityIntensityRangeChangeTypes() const;
 	int getVisibilityIntensityRangeChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityRangeChangeType(int iInvisibility) const;
 
-	int getNumAIWeightbyUnitCombatTypes() const;
-	const UnitCombatModifier& getAIWeightbyUnitCombatType(int iUnitCombat) const;
+	const UnitCombatModifierArray& getAIWeightbyUnitCombatTypes() const;
 
-	int getNumAfflictionFortitudeChangeModifiers() const;
-	const PromotionLineModifier& getAfflictionFortitudeChangeModifier(int iAfflictionLine) const;
+	const UnitCombatModifierArray& getAfflictionFortitudeChangeModifiers() const;
 
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
@@ -1468,34 +1441,31 @@ protected:
 	std::vector<int> m_aiTrapImmunityUnitCombatTypes;
 	std::vector<int> m_aiTargetUnitCombatTypes;
 	// int vectors utilizing pairing without delayed resolution
-	UnitCombatModifierArray m_aFlankingStrengthbyUnitCombatTypeChange;
-	TerrainModifierArray m_aWithdrawOnTerrainTypesChange;
-	FeatureModifierArray m_aWithdrawOnFeatureTypesChange;
-	UnitCombatModifierArray m_aWithdrawVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aPursuitVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aRepelVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aKnockbackVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aPunctureVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aArmorVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aDodgeVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aPrecisionVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aCriticalVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aRoundStunVSUnitCombatChangeTypes;
-	UnitCombatModifierArray m_aTrapDisableUnitCombatTypes;
-	UnitCombatModifierArray m_aTrapAvoidanceUnitCombatTypes;
-	UnitCombatModifierArray m_aTrapTriggerUnitCombatTypes;
-	AidArray m_aAidChanges;
-	//Team Project (4)
-		//WorkRateMod
-	TerrainModifierArray m_aTerrainWorkRateModifierChangeTypes;
-	FeatureModifierArray m_aFeatureWorkRateModifierChangeTypes;
-	BuildModifierArray m_aBuildWorkRateModifierChangeTypes;
-	InvisibilityArray m_aVisibilityIntensityChangeTypes;
-	InvisibilityArray m_aInvisibilityIntensityChangeTypes;
-	InvisibilityArray m_aVisibilityIntensityRangeChangeTypes;
-	// int vector utilizing struct with delayed resolution
-	std::vector<UnitCombatModifier> m_aAIWeightbyUnitCombatTypes;
-	std::vector<PromotionLineModifier> m_aAfflictionFortitudeChangeModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aFlankingStrengthbyUnitCombatTypeChange;
+	IDValueMap<TerrainTypes, int, 0> m_aWithdrawOnTerrainTypesChange;
+	IDValueMap<FeatureTypes, int, 0> m_aWithdrawOnFeatureTypesChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aWithdrawVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPursuitVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aRepelVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aKnockbackVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPunctureVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aArmorVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aDodgeVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPrecisionVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aCriticalVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aRoundStunVSUnitCombatChangeTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapDisableUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapAvoidanceUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapTriggerUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aAIWeightbyUnitCombatTypes;
+	IDValueMap<PropertyTypes, int, 0> m_aAidChanges;
+	IDValueMap<TerrainTypes, int, 0> m_aTerrainWorkRateModifierChangeTypes;
+	IDValueMap<FeatureTypes, int, 0> m_aFeatureWorkRateModifierChangeTypes;
+	IDValueMap<BuildTypes, int, 0> m_aBuildWorkRateModifierChangeTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityChangeTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aInvisibilityIntensityChangeTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityRangeChangeTypes;
+	IDValueMap<PromotionLineModifier, int, 0> m_aAfflictionFortitudeChangeModifiers;
 	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
 	std::vector<HealUnitCombat> m_aHealUnitCombatChangeTypes;
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
@@ -2059,7 +2029,7 @@ public:
 	bool isTrapImmunityUnitCombatType(int i) const;
 
 	int getNumAfflictionFortitudeModifiers() const;
-	const PromotionLineModifier& getAfflictionFortitudeModifier(int iAffliction) const;
+	const std::vector<PromotionLineModifier>& getAfflictionFortitudeModifiers() const;
 
 	int getNumAfflictOnAttackTypes() const;
 	const AfflictOnAttack& getAfflictOnAttackType(int iAfflictionLine) const;
@@ -2104,10 +2074,8 @@ public:
 	int getNumEnabledCivilizationTypes() const;
 	const EnabledCivilizations& getEnabledCivilizationType(int iIndex) const;
 
-	// int vector utilizing pairing without delayed resolution
 	int getNumFlankingStrikesbyUnitCombatTypes() const;
 	int getFlankingStrengthbyUnitCombatType(int iUnitCombat) const;
-	bool isFlankingStrikebyUnitCombatType(int iUnitCombat) const;
 
 	int getNumWithdrawOnTerrainTypes() const;
 	int getWithdrawOnTerrainType(int iTerrain) const;
@@ -2117,101 +2085,73 @@ public:
 
 	int getNumWithdrawVSUnitCombatTypes() const;
 	int getWithdrawVSUnitCombatType(int iUnitCombat) const;
-	bool isWithdrawVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getWithdrawVSUnitCombatTypes() const;
 
 	int getNumPursuitVSUnitCombatTypes() const;
 	int getPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
-	bool isPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
 	const UnitCombatModifierArray& getPursuitVSUnitCombatTypes() const;
 
 	int getNumRepelVSUnitCombatTypes() const;
 	int getRepelVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
-	bool isRepelVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
 	const UnitCombatModifierArray& getRepelVSUnitCombatTypes() const;
 
 	int getNumKnockbackVSUnitCombatTypes() const;
 	int getKnockbackVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
-	bool isKnockbackVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
 	const UnitCombatModifierArray& getKnockbackVSUnitCombatTypes() const;
 
 	int getNumPunctureVSUnitCombatTypes() const;
 	int getPunctureVSUnitCombatType(int iUnitCombat) const;
-	bool isPunctureVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getPunctureVSUnitCombatTypes() const;
 
 	int getNumArmorVSUnitCombatTypes() const;
 	int getArmorVSUnitCombatType(int iUnitCombat) const;
-	bool isArmorVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getArmorVSUnitCombatTypes() const;
 
 	int getNumDodgeVSUnitCombatTypes() const;
 	int getDodgeVSUnitCombatType(int iUnitCombat) const;
-	bool isDodgeVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getDodgeVSUnitCombatTypes() const;
 
 	int getNumPrecisionVSUnitCombatTypes() const;
 	int getPrecisionVSUnitCombatType(int iUnitCombat) const;
-	bool isPrecisionVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getPrecisionVSUnitCombatTypes() const;
 
 	int getNumCriticalVSUnitCombatTypes() const;
 	int getCriticalVSUnitCombatType(int iUnitCombat) const;
-	bool isCriticalVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getCriticalVSUnitCombatTypes() const;
 
 	int getNumRoundStunVSUnitCombatTypes() const;
 	int getRoundStunVSUnitCombatType(int iUnitCombat) const;
-	bool isRoundStunVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getRoundStunVSUnitCombatTypes() const;
 
 	int getNumTrapDisableUnitCombatTypes() const;
 	int getTrapDisableUnitCombatType(int iUnitCombat) const;
-	bool isTrapDisableUnitCombatType(int iUnitCombat) const;
-	const UnitCombatModifierArray& getTrapDisableUnitCombatTypes() const;
 
 	int getNumTrapAvoidanceUnitCombatTypes() const;
 	int getTrapAvoidanceUnitCombatType(int iUnitCombat) const;
-	bool isTrapAvoidanceUnitCombatType(int iUnitCombat) const;
-	const UnitCombatModifierArray& getTrapAvoidanceUnitCombatTypes() const;
 
 	int getNumTrapTriggerUnitCombatTypes() const;
 	int getTrapTriggerUnitCombatType(int iUnitCombat) const;
-	bool isTrapTriggerUnitCombatType(int iUnitCombat) const;
-	const UnitCombatModifierArray& getTrapTriggerUnitCombatTypes() const;
 
 	int getNumVisibilityIntensityTypes() const;
 	int getVisibilityIntensityType(int iInvisibility) const;
-	bool isVisibilityIntensityType(int iInvisibility) const;
-	const InvisibilityArray& getVisibilityIntensityTypes() const;
 
 	int getNumInvisibilityIntensityTypes() const;
 	int getInvisibilityIntensityType(int iInvisibility) const;
-	bool isInvisibilityIntensityType(int iInvisibility) const;
-	const InvisibilityArray& getInvisibilityIntensityTypes() const;
 
 	int getNumVisibilityIntensityRangeTypes() const;
 	int getVisibilityIntensityRangeType(int iInvisibility) const;
-	bool isVisibilityIntensityRangeType(int iInvisibility) const;
-	const InvisibilityArray& getVisibilityIntensityRangeTypes() const;
 
-	//Team Project (4)
-		//WorkRateMod
 	int getNumTerrainWorkRateModifierTypes() const;
 	int getTerrainWorkRateModifierType(int iTerrain) const;
-	bool isTerrainWorkRateModifierType(int iTerrain) const;
 
 	int getNumFeatureWorkRateModifierTypes() const;
 	int getFeatureWorkRateModifierType(int iFeature) const;
-	bool isFeatureWorkRateModifierType(int iFeature) const;
 
 	int getNumBuildWorkRateModifierTypes() const;
 	int getBuildWorkRateModifierType(int iBuild) const;
-	bool isBuildWorkRateModifierType(int iBuild) const;
 
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
-	bool isAidChange(int iProperty) const;
 
 
 	// TB Combat Mod End TB SubCombat Mod end
@@ -2315,9 +2255,9 @@ public:
 
 	bool isPrereqOrCivics(int i) const; // Exposed to Python
 
-	int CvUnitInfo::getPrereqAndBuilding(int i) const;
-	int CvUnitInfo::getNumPrereqAndBuildings() const;
-	bool CvUnitInfo::isPrereqAndBuilding(int i) const;
+	int getPrereqAndBuilding(int i) const;
+	int getNumPrereqAndBuildings() const;
+	bool isPrereqAndBuilding(int i) const;
 
 	int getTargetUnit(int i) const;
 	int getNumTargetUnits() const;
@@ -2336,7 +2276,7 @@ public:
 	bool isUnitUpgrade(int i) const;			//Exposed to Python
 
 	std::vector<int> getUnitUpgradeChain() const;
-	void CvUnitInfo::addUnitToUpgradeChain(int i);
+	void addUnitToUpgradeChain(int i);
 
 	bool getTargetUnitCombat(int i) const; // Exposed to Python
 	bool getDefenderUnitCombat(int i) const; // Exposed to Python
@@ -2729,32 +2669,29 @@ protected:
 	std::vector<InvisibleImprovementChanges> m_aVisibleImprovementRangeChanges;
 	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
 	std::vector<EnabledCivilizations> m_aEnabledCivilizationTypes;
-	// int vectors utilizing pairing without delayed resolution
-	UnitCombatModifierArray m_aFlankingStrengthbyUnitCombatType;
-	TerrainModifierArray m_aWithdrawOnTerrainTypes;
-	FeatureModifierArray m_aWithdrawOnFeatureTypes;
-	UnitCombatModifierArray m_aWithdrawVSUnitCombatTypes;
-	UnitCombatModifierArray m_aPursuitVSUnitCombatTypes;
-	UnitCombatModifierArray m_aRepelVSUnitCombatTypes;
-	UnitCombatModifierArray m_aKnockbackVSUnitCombatTypes;
-	UnitCombatModifierArray m_aPunctureVSUnitCombatTypes;
-	UnitCombatModifierArray m_aArmorVSUnitCombatTypes;
-	UnitCombatModifierArray m_aDodgeVSUnitCombatTypes;
-	UnitCombatModifierArray m_aPrecisionVSUnitCombatTypes;
-	UnitCombatModifierArray m_aCriticalVSUnitCombatTypes;
-	UnitCombatModifierArray m_aRoundStunVSUnitCombatTypes;
-	UnitCombatModifierArray m_aTrapDisableUnitCombatTypes;
-	UnitCombatModifierArray m_aTrapAvoidanceUnitCombatTypes;
-	UnitCombatModifierArray m_aTrapTriggerUnitCombatTypes;
-	InvisibilityArray m_aVisibilityIntensityTypes;
-	InvisibilityArray m_aInvisibilityIntensityTypes;
-	InvisibilityArray m_aVisibilityIntensityRangeTypes;
-	//Team Project (4)
-		//WorkRateMod
-	TerrainModifierArray m_aTerrainWorkRateModifierTypes;
-	FeatureModifierArray m_aFeatureWorkRateModifierTypes;
-	BuildModifierArray m_aBuildWorkRateModifierTypes;
-	AidArray m_aAidChanges;
+	IDValueMap<UnitCombatTypes, int, 0> m_aFlankingStrengthbyUnitCombatType;
+	IDValueMap<TerrainTypes, int, 0> m_aWithdrawOnTerrainTypes;
+	IDValueMap<FeatureTypes, int, 0> m_aWithdrawOnFeatureTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aWithdrawVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPursuitVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aRepelVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aKnockbackVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPunctureVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aArmorVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aDodgeVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPrecisionVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aCriticalVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aRoundStunVSUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapDisableUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapAvoidanceUnitCombatTypes;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapTriggerUnitCombatTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aInvisibilityIntensityTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityRangeTypes;
+	IDValueMap<TerrainTypes, int, 0> m_aTerrainWorkRateModifierTypes;
+	IDValueMap<FeatureTypes, int, 0> m_aFeatureWorkRateModifierTypes;
+	IDValueMap<BuildTypes, int, 0> m_aBuildWorkRateModifierTypes;
+	IDValueMap<PropertyTypes, int, 0> m_aAidChanges;
 	//TB Combat Mods End  TB SubCombat Mod end
 	//Pediahelp
 	std::vector<int> m_aiQualifiedPromotionTypes;
@@ -9139,7 +9076,7 @@ protected:
 
 	std::vector<PropertyBuilding> m_aPropertyBuildings;
 	std::vector<PropertyPromotion> m_aPropertyPromotions;
-	EraArray m_aTargetLevelbyEraTypes;
+	IDValueMap<EraTypes, int, 0> m_aTargetLevelbyEraTypes;
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -9274,11 +9211,9 @@ public:
 	// int vector utilizing pairing without delayed resolution
 	int getNumUnitCombatContractChanceChanges() const;
 	int getUnitCombatContractChanceChange(int iUnitCombat) const;
-	bool isUnitCombatContractChanceChange(int iUnitCombat) const;
 
 	int getNumUnitCombatOvercomeChanges() const;
 	int getUnitCombatOvercomeChange(int iUnitCombat) const;
-	bool isUnitCombatOvercomeChange(int iUnitCombat) const;
 
 	int getNumTechContractChanceChanges() const;
 	int getTechContractChanceChange(int iTech) const;
@@ -9335,8 +9270,6 @@ protected:
 	bool m_bBuildUp;
 	bool m_bPoison;
 
-
-	// bool vectors without delayed resolution
 	std::vector<int> m_aiUnitCombatPrereqTypes;
 	std::vector<int> m_aiNotOnUnitCombatTypes;
 	std::vector<int> m_aiNotOnDomainTypes;
@@ -9346,11 +9279,10 @@ protected:
 	std::vector<int> m_aiPromotions;
 	std::vector<int> m_aiBuildings;
 
-	// int vector utilizing pairing without delayed resolution
-	UnitCombatModifierArray m_aUnitCombatContractChanceChanges;
-	UnitCombatModifierArray m_aUnitCombatOvercomeChanges;
-	TechModifierArray m_aTechContractChanceChanges;
-	TechModifierArray m_aTechOvercomeChanges;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatContractChanceChanges;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatOvercomeChanges;
+	IDValueMap<TechTypes, int, 0> m_aTechContractChanceChanges;
+	IDValueMap<TechTypes, int, 0> m_aTechOvercomeChanges;
 };
 //TB Promotion Line Mod end
 
@@ -9627,123 +9559,82 @@ public:
 
 	int getNumVisibilityIntensityChangeTypes() const;
 	int getVisibilityIntensityChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumInvisibilityIntensityChangeTypes() const;
 	int getInvisibilityIntensityChangeType(int iInvisibility) const;
-	bool isInvisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumVisibilityIntensityRangeChangeTypes() const;
 	int getVisibilityIntensityRangeChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityRangeChangeType(int iInvisibility) const;
 
 	int getNumVisibilityIntensitySameTileChangeTypes() const;
 	int getVisibilityIntensitySameTileChangeType(int iInvisibility) const;
-	bool isVisibilityIntensitySameTileChangeType(int iInvisibility) const;
 
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
-	bool isAidChange(int iProperty) const;
 
-	// int vector utilizing struct with delayed resolution
-	int getNumAfflictionFortitudeChangeModifiers() const;
-	const PromotionLineModifier& getAfflictionFortitudeChangeModifier(int iAfflictionLine) const;
+	const std::vector<const PromotionLineModifier>& getAfflictionFortitudeChangeModifiers() const;
 
-	int getNumTerrainAttackChangeModifiers() const;
-	const TerrainModifier& getTerrainAttackChangeModifier(int iTerrain) const;
+	const std::vector<const TerrainModifier>& getTerrainAttackChangeModifiers() const;
 
-	int getNumTerrainDefenseChangeModifiers() const;
-	const TerrainModifier& getTerrainDefenseChangeModifier(int iTerrain) const;
+	const std::vector<const TerrainModifier>& getTerrainDefenseChangeModifiers() const;
 
-	int getNumTerrainWorkChangeModifiers() const;
-	const TerrainModifier& getTerrainWorkChangeModifier(int iTerrain) const;
+	const std::vector<const TerrainModifier>& getTerrainWorkChangeModifiers() const;
 
-	int getNumBuildWorkChangeModifiers() const;
-	const BuildModifier& getBuildWorkChangeModifier(int iBuild) const;
+	const std::vector<const BuildModifier>& getBuildWorkChangeModifiers() const;
 
-	int getNumFeatureAttackChangeModifiers() const;
-	const FeatureModifier& getFeatureAttackChangeModifier(int iFeature) const;
+	const FeatureModifierArray& getFeatureAttackChangeModifiers() const;
 
-	int getNumFeatureDefenseChangeModifiers() const;
-	const FeatureModifier& getFeatureDefenseChangeModifier(int iFeature) const;
+	const FeatureModifierArray& getFeatureDefenseChangeModifiers() const;
 
-	int getNumFeatureWorkChangeModifiers() const;
-	const FeatureModifier& getFeatureWorkChangeModifier(int iFeature) const;
+	const FeatureModifierArray& getFeatureWorkChangeModifiers() const;
 
-	int getNumUnitCombatChangeModifiers() const;
-	const UnitCombatModifier& getUnitCombatChangeModifier(int iUnitCombat) const;
+	const UnitCombatModifierArray& getUnitCombatChangeModifiers() const;
 
-	int getNumFlankingStrengthbyUnitCombatTypesChange() const;
-	const UnitCombatModifier& getFlankingStrengthbyUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getFlankingStrengthbyUnitCombatTypeChanges() const;
 
-	int getNumWithdrawVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getWithdrawVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getWithdrawVSUnitCombatTypeChanges() const;
 
-	//Fight or Flight only
-	int getNumPursuitVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getPursuitVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getPursuitVSUnitCombatTypeChanges() const;	//Fight or Flight only
 
-	//Heart of War only
-	int getNumRepelVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getRepelVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getRepelVSUnitCombatTypeChanges() const;		//Heart of War only
 
-	//Heart of War only
-	int getNumKnockbackVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getKnockbackVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getKnockbackVSUnitCombatTypeChanges() const;	//Heart of War only
 
-	int getNumPunctureVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getPunctureVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getPunctureVSUnitCombatTypeChanges() const;
 
-	int getNumArmorVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getArmorVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getArmorVSUnitCombatTypeChanges() const;
 
-	int getNumDodgeVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getDodgeVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getDodgeVSUnitCombatTypeChanges() const;
 
-	int getNumPrecisionVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getPrecisionVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getPrecisionVSUnitCombatTypeChanges() const;
 
-	int getNumCriticalVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getCriticalVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getCriticalVSUnitCombatTypeChanges() const;
 
-	int getNumRoundStunVSUnitCombatTypesChange() const;
-	const UnitCombatModifier& getRoundStunVSUnitCombatTypeChange(int iUnitCombat) const;
+	const UnitCombatModifierArray& getRoundStunVSUnitCombatTypeChanges() const;
 
-	int getNumTrapAvoidanceUnitCombatTypes() const;
-	const UnitCombatModifier& getTrapAvoidanceUnitCombatType(int iIndex) const;
+	const UnitCombatModifierArray& getTrapAvoidanceUnitCombatTypes() const;
 
-	int getNumAfflictOnAttackChangeTypes() const;
-	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
+	const AfflictOnAttackChange& getAfflictOnAttackChangeType() const;
 
-	int getNumInvisibleTerrainChanges() const;
-	const InvisibleTerrainChanges& getInvisibleTerrainChange(int iIndex) const;
+	const std::vector<const InvisibleTerrainChanges>& getInvisibleTerrainChanges() const;
 
-	int getNumInvisibleFeatureChanges() const;
-	const InvisibleFeatureChanges& getInvisibleFeatureChange(int iIndex) const;
+	const std::vector<const InvisibleFeatureChanges>& getInvisibleFeatureChanges() const;
 
-	int getNumInvisibleImprovementChanges() const;
-	const InvisibleImprovementChanges& getInvisibleImprovementChange(int iIndex) const;
+	const std::vector<const InvisibleImprovementChanges>& getInvisibleImprovementChanges() const;
 
-	int getNumVisibleTerrainChanges() const;
-	const InvisibleTerrainChanges& getVisibleTerrainChange(int iIndex) const;
+	const std::vector<const InvisibleTerrainChanges>& getVisibleTerrainChanges() const;
 
-	int getNumVisibleFeatureChanges() const;
-	const InvisibleFeatureChanges& getVisibleFeatureChange(int iIndex) const;
+	const std::vector<const InvisibleFeatureChanges>& getVisibleFeatureChanges() const;
 
-	int getNumVisibleImprovementChanges() const;
-	const InvisibleImprovementChanges& getVisibleImprovementChange(int iIndex) const;
+	const std::vector<const InvisibleImprovementChanges>& getVisibleImprovementChanges() const;
 
-	int getNumVisibleTerrainRangeChanges() const;
-	const InvisibleTerrainChanges& getVisibleTerrainRangeChange(int iIndex) const;
+	const std::vector<const InvisibleTerrainChanges>& getVisibleTerrainRangeChanges() const;
 
-	int getNumVisibleFeatureRangeChanges() const;
-	const InvisibleFeatureChanges& getVisibleFeatureRangeChange(int iIndex) const;
+	const std::vector<const InvisibleFeatureChanges>& getVisibleFeatureRangeChanges() const;
 
-	int getNumVisibleImprovementRangeChanges() const;
-	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
+	const std::vector<const InvisibleImprovementChanges>& getVisibleImprovementRangeChanges() const;
 
-	int getNumDistanceAttackCommunicabilityTypeChanges() const;
-	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
+	const std::vector<const AfflictionLineChanges>& getDistanceAttackCommunicabilityTypeChanges() const;
 
 	const CvPropertyManipulators* getPropertyManipulators() const { return &m_PropertyManipulators; }
 
@@ -9934,12 +9825,9 @@ protected:
 	bool m_bHealsAs;
 	bool m_bNoSelfHeal;
 
-	//Arrays
 	int* m_piDomainModifierPercent;
 	bool m_bAnyDomainModifierPercent;
 
-	// bool vectors without delayed resolution
-	// bool vector with delayed resolution
 	std::vector<int> m_aiCureAfflictionChangeTypes;
 	std::vector<int> m_aiTerrainIgnoreDamageChangeTypes;
 	std::vector<int> m_aiTerrainDoubleMoveChangeTypes;
@@ -9949,36 +9837,35 @@ protected:
 	std::vector<int> m_aiGGptsforUnitTypes;
 	std::vector<int> m_aiDefaultStatusTypes;
 	std::vector<int> m_aiTrapImmunityUnitCombatTypes;
-	// int vectors utilizing pairing without delayed resolution
-	TerrainModifierArray m_aWithdrawOnTerrainTypesChange;
-	FeatureModifierArray m_aWithdrawOnFeatureTypesChange;
-	InvisibilityArray m_aVisibilityIntensityChangeTypes;
-	InvisibilityArray m_aInvisibilityIntensityChangeTypes;
-	InvisibilityArray m_aVisibilityIntensityRangeChangeTypes;
-	InvisibilityArray m_aVisibilityIntensitySameTileChangeTypes;
-	AidArray m_aAidChanges;
-	// int vector utilizing struct with delayed resolution
-	std::vector<PromotionLineModifier> m_aAfflictionFortitudeChangeModifiers;
-	std::vector<TerrainModifier> m_aTerrainAttackChangeModifiers;
-	std::vector<TerrainModifier> m_aTerrainDefenseChangeModifiers;
-	std::vector<TerrainModifier> m_aTerrainWorkChangeModifiers;
-	std::vector<BuildModifier> m_aBuildWorkChangeModifiers;
-	std::vector<FeatureModifier> m_aFeatureAttackChangeModifiers;
-	std::vector<FeatureModifier> m_aFeatureDefenseChangeModifiers;
-	std::vector<FeatureModifier> m_aFeatureWorkChangeModifiers;
-	std::vector<UnitCombatModifier> m_aUnitCombatChangeModifiers;
-	std::vector<UnitCombatModifier> m_aFlankingStrengthbyUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aWithdrawVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aPursuitVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aRepelVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aKnockbackVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aPunctureVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aArmorVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aDodgeVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aPrecisionVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aCriticalVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aRoundStunVSUnitCombatTypeChange;
-	std::vector<UnitCombatModifier> m_aTrapAvoidanceUnitCombatTypes;
+
+	IDValueMap<TerrainTypes, int, 0> m_aWithdrawOnTerrainTypesChange;
+	IDValueMap<FeatureTypes, int, 0> m_aWithdrawOnFeatureTypesChange;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityChangeTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aInvisibilityIntensityChangeTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensityRangeChangeTypes;
+	IDValueMap<InvisibleTypes, int, 0> m_aVisibilityIntensitySameTileChangeTypes;
+	IDValueMap<PropertyTypes, int, 0> m_aAidChanges;
+	IDValueMap<PromotionLineModifier, int, 0> m_aAfflictionFortitudeChangeModifiers;
+	IDValueMap<TerrainTypes, int, 0> m_aTerrainAttackChangeModifiers;
+	IDValueMap<TerrainTypes, int, 0> m_aTerrainDefenseChangeModifiers;
+	IDValueMap<TerrainTypes, int, 0> m_aTerrainWorkChangeModifiers;
+	IDValueMap<BuildTypes, int, 0> m_aBuildWorkChangeModifiers;
+	IDValueMap<FeatureTypes, int, 0> m_aFeatureAttackChangeModifiers;
+	IDValueMap<FeatureTypes, int, 0> m_aFeatureDefenseChangeModifiers;
+	IDValueMap<FeatureTypes, int, 0> m_aFeatureWorkChangeModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatChangeModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aFlankingStrengthbyUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aWithdrawVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPursuitVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aRepelVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aKnockbackVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPunctureVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aArmorVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aDodgeVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aPrecisionVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aCriticalVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aRoundStunVSUnitCombatTypeChange;
+	IDValueMap<UnitCombatTypes, int, 0> m_aTrapAvoidanceUnitCombatTypes;
 	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
 	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;

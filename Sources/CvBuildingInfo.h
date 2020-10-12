@@ -474,11 +474,11 @@ public:
 
 	int getNumTechHappinessTypes() const;
 	int getTechHappinessType(int iTech) const;
-	const TechModifierArray& getTechHappinessTypeArray() const { return m_aTechHappinessTypes; }
+	const TechModifierArray& getTechHappinessTypeArray() const { return m_aTechHappinessTypes.data(); }
 
 	int getNumTechHealthTypes() const;
 	int getTechHealthType(int iTech) const;
-	const TechModifierArray& getTechHealthTypeArray() const { return m_aTechHealthTypes; }
+	const TechModifierArray& getTechHealthTypeArray() const { return m_aTechHealthTypes.data(); }
 
 	int getLocalSpecialistYieldChange(int i, int j) const;
 	int* getLocalSpecialistYieldChangeArray(int i) const;
@@ -881,16 +881,16 @@ protected:
 	std::vector<int> m_aiUnitCombatRetrainTypes;
 	std::vector<int> m_aiMayDamageAttackingUnitCombatTypes;
 	std::vector<int> m_aiMapCategoryTypes;
-	//integer vectors with pairing without delayed resolution
-	UnitCombatModifierArray m_aUnitCombatRepelModifiers;
-	UnitCombatModifierArray m_aUnitCombatRepelAgainstModifiers;
-	UnitCombatModifierArray m_aUnitCombatDefenseAgainstModifiers;
-	UnitCombatModifierArray m_aUnitCombatProdModifiers;
-	UnitCombatModifierArray m_aUnitCombatOngoingTrainingDurations;
-	PromotionLineModifierArray m_aAfflictionOutbreakLevelChanges;
-	TechModifierArray m_aTechOutbreakLevelChanges;
-	TechModifierArray m_aTechHappinessTypes;
-	TechModifierArray m_aTechHealthTypes;
+
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatRepelModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatRepelAgainstModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatDefenseAgainstModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatProdModifiers;
+	IDValueMap<UnitCombatTypes, int, 0> m_aUnitCombatOngoingTrainingDurations;
+	IDValueMap<PromotionLineTypes, int, 0> m_aAfflictionOutbreakLevelChanges;
+	IDValueMap<TechTypes, int, 0> m_aTechOutbreakLevelChanges;
+	IDValueMap<TechTypes, int, 0> m_aTechHappinessTypes;
+	IDValueMap<TechTypes, int, 0> m_aTechHealthTypes;
 
 	int** m_ppaiLocalSpecialistYieldChange;
 	int** m_ppaiLocalSpecialistCommerceChange;
