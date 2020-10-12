@@ -2865,7 +2865,7 @@ int CvUnitInfo::getNumAfflictionFortitudeModifiers() const
 
 const PromotionLineModifierArray& CvUnitInfo::getAfflictionFortitudeModifiers() const
 {
-	return m_aAfflictionFortitudeModifiers.data();
+	return m_aAfflictionFortitudeModifiers;
 }
 
 int CvUnitInfo::getNumAfflictOnAttackTypes() const
@@ -2917,22 +2917,22 @@ int CvUnitInfo::getNumInvisibleFeatureChanges() const
 
 const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getInvisibleImprovementChanges() const
 {
-	return m_aInvisibleImprovementChanges.data();
+	return m_aInvisibleImprovementChanges;
 }
 
 const std::vector<const InvisibleTerrainChanges>& CvUnitInfo::getVisibleTerrainChanges() const
 {
-	return m_aVisibleTerrainChanges.data();
+	return m_aVisibleTerrainChanges;
 }
 
 const std::vector<const InvisibleFeatureChanges>& CvUnitInfo::getVisibleFeatureChanges() const
 {
-	return m_aVisibleFeatureChanges.data();
+	return m_aVisibleFeatureChanges;
 }
 
 const std::vector<const InvisibleImprovementChanges>& CvUnitInfo::getVisibleImprovementChanges() const
 {
-	return m_aVisibleImprovementChanges.data();
+	return m_aVisibleImprovementChanges;
 }
 
 // bool vector utilizing delayed resolution
@@ -3007,7 +3007,7 @@ int CvUnitInfo::getPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad) const
 
 const UnitCombatModifierArray& CvUnitInfo::getPursuitVSUnitCombatTypes() const
 {
-	return m_aPursuitVSUnitCombatTypes.data();
+	return m_aPursuitVSUnitCombatTypes;
 }
 
 int CvUnitInfo::getNumRepelVSUnitCombatTypes() const
@@ -3026,7 +3026,7 @@ int CvUnitInfo::getRepelVSUnitCombatType(int iUnitCombat, bool bForLoad) const
 
 const UnitCombatModifierArray& CvUnitInfo::getRepelVSUnitCombatTypes() const
 {
-	return m_aRepelVSUnitCombatTypes.data();
+	return m_aRepelVSUnitCombatTypes;
 }
 
 int CvUnitInfo::getNumKnockbackVSUnitCombatTypes() const

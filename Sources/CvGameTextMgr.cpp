@@ -10809,7 +10809,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// Extra Happiness by Bonuses
-		for (iI = 0; iI < GC.getTraitInfo(eTrait).getNumBonusHappinessChanges(); iI++)
+		foreach_(iI = 0; iI < GC.getTraitInfo(eTrait).getNumBonusHappinessChanges(); iI++)
 		{
 			iCurrentModifier = GC.getTraitInfo(eTrait).getBonusHappinessChange(iI).iModifier;
 			if (iCurrentModifier != 0)
@@ -12737,11 +12737,11 @@ void CvGameTextMgr::parseFreeSpecialistHelp(CvWStringBuffer &szHelpString, const
 			{
 				iUnitCombatExperience = 0;
 				UnitCombatTypes eUnitCombat = ((UnitCombatTypes)iI);
-				for (int iJ = 0; iJ < GC.getSpecialistInfo(eSpecialist).getNumUnitCombatExperienceTypes(); iJ++)
+				foreach_(const UnitCombatModifier modifier, GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceTypes())
 				{
-					if (GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceType(iJ, false).eUnitCombat == eUnitCombat)
+					if (modifier.first == eUnitCombat)
 					{
-						iUnitCombatExperience += GC.getSpecialistInfo(eSpecialist).getUnitCombatExperienceType(iJ, false).iModifier;
+						iUnitCombatExperience += modifier.first;
 					}
 				}
 				if (iUnitCombatExperience > 0)

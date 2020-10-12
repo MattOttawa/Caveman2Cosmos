@@ -37876,7 +37876,7 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 
 	if (GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT))
 	{
-		foreach_(const UnitCombatModifier modifier, kUnitCombat.getNumPursuitVSUnitCombatTypesChange())
+		foreach_(const UnitCombatModifier modifier, kUnitCombat.getPursuitVSUnitCombatTypesChanges())
 		{
 			if (pUnit == NULL)
 			{
@@ -37968,12 +37968,12 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat(modifier.eUnitCombat))
+			if (kUnit.hasUnitCombat(modifier.first))
 			{
 				hasCombat = true;
 			}
 		}
-		else if (pUnit->isHasUnitCombat(modifier.eUnitCombat))
+		else if (pUnit->isHasUnitCombat(modifier.first))
 		{
 			hasCombat = true;
 		}
@@ -38485,7 +38485,8 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		}
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumRoundStunVSUnitCombatTypesChange(); iI++)
+	foreach_(const TerrainModifier modifier, kUnitCombat.getTerrainAttackChangeModifiers())
+		for (iI = 0; iI < kUnitCombat.getNumRoundStunVSUnitCombatTypesChange(); iI++)
 	{
 		for (int iJ = 0; iJ < GC.getNumUnitCombatInfos(); iJ++)
 		{

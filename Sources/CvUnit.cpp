@@ -22929,7 +22929,7 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 		changeExtraVisibleTerrainRange((InvisibleTypes)kUnitCombat.getVisibleTerrainRangeChange(iI).eInvisible,(TerrainTypes)kUnitCombat.getVisibleTerrainRangeChange(iI).eTerrain, kUnitCombat.getVisibleTerrainRangeChange(iI).iIntensity * iChange);
 	}
 
-	for (iI = 0; iI < kUnitCombat.getNumVisibleFeatureRangeChanges(); iI++)
+	for (iI = 0; iI < kUnitCombat.getVisibleFeatureRangeChanges(); iI++)
 	{
 		changeExtraVisibleFeatureRange((InvisibleTypes)kUnitCombat.getVisibleFeatureRangeChange(iI).eInvisible,(FeatureTypes)kUnitCombat.getVisibleFeatureRangeChange(iI).eFeature, kUnitCombat.getVisibleFeatureRangeChange(iI).iIntensity * iChange);
 	}
@@ -23035,7 +23035,7 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 		changeExtraCriticalVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}
 
-	foreach_(const UnitCombatModifier modifier, kUnitCombat.getRoundStunVSUnitCombatChangeTypes())
+	foreach_(const UnitCombatModifier modifier, kUnitCombat.getRoundStunVSUnitCombatTypeChanges())
 	{
 		changeExtraRoundStunVSUnitCombatType(modifier.first, modifier.second * iChange);
 	}

@@ -4861,12 +4861,12 @@ int CvPromotionInfo::getVisibilityIntensityRangeChangeType(int iInvisibility) co
 
 const UnitCombatModifierArray& CvPromotionInfo::getAIWeightbyUnitCombatTypes() const
 {
-	return m_aAIWeightbyUnitCombatTypes.data();
+	return m_aAIWeightbyUnitCombatTypes;
 }
 
 const PromotionLineModifierArray& CvPromotionInfo::getAfflictionFortitudeChangeModifiers() const
 {
-	return m_aAfflictionFortitudeChangeModifiers.data();
+	return m_aAfflictionFortitudeChangeModifiers;
 }
 
 int CvPromotionInfo::getNumAfflictOnAttackChangeTypes() const
@@ -6803,8 +6803,8 @@ void CvPromotionInfo::getCheckSum(unsigned int &iSum) const
 	iNumElements = m_aAfflictionFortitudeChangeModifiers.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
-		CheckSum(iSum, m_aAfflictionFortitudeChangeModifiers[i].ePromotionLine);
-		CheckSum(iSum, m_aAfflictionFortitudeChangeModifiers[i].iModifier);
+		CheckSum(iSum, m_aAfflictionFortitudeChangeModifiers[i].first);
+		CheckSum(iSum, m_aAfflictionFortitudeChangeModifiers[i].second);
 	}
 
 	iNumElements = m_aAfflictOnAttackChangeTypes.size();
@@ -25285,13 +25285,13 @@ ImprovementModifier CvTraitInfo::getImprovementUpgradeModifier(int iImprovement)
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
 	{
 		ImprovementModifier kMod = m_aImprovementUpgradeModifierTypes[iImprovement];
-		if (isNegativeTrait() && kMod.iModifier > 0)
+		if (isNegativeTrait() && kMod.second > 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		else if (!isNegativeTrait() && kMod.second < 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
 		return kMod;
 	}
@@ -25311,13 +25311,13 @@ BuildModifier CvTraitInfo::getBuildWorkerSpeedModifier(int iBuild)
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
 	{
 		BuildModifier kMod = m_aBuildWorkerSpeedModifierTypes[iBuild];
-		if (isNegativeTrait() && kMod.iModifier > 0)
+		if (isNegativeTrait() && kMod.second > 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		else if (!isNegativeTrait() && kMod.second < 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
 		return kMod;
 	}
@@ -25398,13 +25398,13 @@ TechModifier CvTraitInfo::getTechResearchModifier(int iTech)
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
 	{
 		TechModifier kMod = m_aTechResearchModifiers[iTech];
-		if (isNegativeTrait() && kMod.iModifier > 0)
+		if (isNegativeTrait() && kMod.second > 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		else if (!isNegativeTrait() && kMod.second < 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
 		return kMod;
 	}
@@ -25574,13 +25574,13 @@ UnitCombatModifier CvTraitInfo::getUnitCombatFreeExperience(int iUnitCombat)
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
 	{
 		UnitCombatModifier kMod = m_aUnitCombatFreeExperiences[iUnitCombat];
-		if (isNegativeTrait() && kMod.iModifier > 0)
+		if (isNegativeTrait() && kMod.second > 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		else if (!isNegativeTrait() && kMod.second < 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
 		return kMod;
 	}
@@ -25599,13 +25599,13 @@ UnitCombatModifier CvTraitInfo::getUnitCombatProductionModifier(int iUnitCombat)
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
 	{
 		UnitCombatModifier kMod = m_aUnitCombatProductionModifiers[iUnitCombat];
-		if (isNegativeTrait() && kMod.iModifier > 0)
+		if (isNegativeTrait() && kMod.second > 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		else if (!isNegativeTrait() && kMod.second < 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
 		return kMod;
 	}
@@ -25624,13 +25624,13 @@ BonusModifier CvTraitInfo::getBonusHappinessChange(int iBonus)
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
 	{
 		BonusModifier kMod = m_aBonusHappinessChanges[iBonus];
-		if (isNegativeTrait() && kMod.iModifier > 0)
+		if (isNegativeTrait() && kMod.second > 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		else if (!isNegativeTrait() && kMod.second < 0)
 		{
-			kMod.iModifier = 0;
+			kMod.second = 0;
 		}
 		return kMod;
 	}
@@ -26444,7 +26444,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 		if(pXML->TryMoveToXmlFirstChild())
 		{
 
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"UnitCombatFreeExperience"))
+			if (pXML->TryMoveToXmlFirstOfSiblings(L"UnitCombatFreeExperience"))-
 			{
 				do
 				{
@@ -26484,25 +26484,7 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 
 	if (pXML->TryMoveToXmlFirstChild(L"BonusHappinessChanges"))
 	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"BonusHappinessChange");
-		m_aBonusHappinessChanges.resize(iNum);
-		if (pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"BonusHappinessChange"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"BonusType");
-					m_aBonusHappinessChanges[i].eBonus = (BonusTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aBonusHappinessChanges[i].iModifier), L"iHappinessChange");
-					i++;
-				} while (pXML->TryMoveToXmlNextSibling(L"BonusHappinessChange"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
+		m_aBonusHappinessChanges.read(pXML);
 	}
 
 	//For Pure Traits
@@ -27355,7 +27337,6 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo, CvXMLLoadUtility* pXM
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aSpecialUnitProductionModifiers, pClassInfo->m_aSpecialUnitProductionModifiers);
 	}
 
-//Team Project (8)
 	if (getNumUnitCombatFreeExperiences() == 0)
 	{
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aUnitCombatFreeExperiences, pClassInfo->m_aUnitCombatFreeExperiences);
@@ -27366,9 +27347,9 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo, CvXMLLoadUtility* pXM
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aUnitCombatProductionModifiers, pClassInfo->m_aUnitCombatProductionModifiers);
 	}
 
-	if (getNumBonusHappinessChanges() == 0)
+	if (m_aBonusHappinessChanges.size() == 0)
 	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aBonusHappinessChanges, pClassInfo->m_aBonusHappinessChanges);
+		m_aBonusHappinessChanges.copyNonDefaults(pClassInfo->m_aBonusHappinessChanges);
 	}
 
 	// Readpass2 stuff
@@ -27660,12 +27641,7 @@ void CvTraitInfo::getCheckSum(unsigned int& iSum) const
 		CheckSum(iSum, m_aUnitCombatProductionModifiers[i].iModifier);
 	}
 
-	iNumElements = m_aBonusHappinessChanges.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aBonusHappinessChanges[i].eBonus);
-		CheckSum(iSum, m_aBonusHappinessChanges[i].iModifier);
-	}
+	m_aBonusHappinessChanges.checkSum(iSum);
 
 	//For Pure Traits
 	CheckSum(iSum, m_paiExtraYieldThresholdFiltered, NUM_YIELD_TYPES);

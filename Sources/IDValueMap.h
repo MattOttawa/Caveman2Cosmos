@@ -70,28 +70,30 @@ public:
 		}
 	}
 
-	void copyNonDefaults(const IDValueMap<IndexType, Value_T, defaultValue>& pMap)
+	void copyNonDefaults(const IDValueMap<IndexType, Value_T, defaultValue>& source)
 	{
-		foreach_(const Pair_t otherPair, pMap.m_map)
+		foreach_(const Pair_t pair, source[])
 		{
-			const IndexType otherID = otherPair.first;
-			if (getValue(otherID) == defaultValue)
+			const IndexType id = pair.first;
+			if (getValue(id) == defaultValue)
 			{
-				m_map.push_back(std::make_pair(otherID, otherPair.second));
+				m_map.push_back(std::make_pair(id, pair.second));
 			}
 		}
 	}
 
-	void copyNonDefaultDelayedResolution(const IDValueMap<IndexType, Value_T, defaultValue>& pMap)
+	void copyNonDefaultDelayedResolution(const IDValueMap<IndexType, Value_T, defaultValue>& source)
 	{
-		if (size() == 0)
+		if (m_map.size() == 0)
 		{
-			const size_t iNum = pMap.size();
+			const size_t iNum = source.size();
 			m_map.resize(iNum);
 			for (size_t i = 0; i < iNum; i++)
 			{
-				m_map[i].second = pMap.m_map[i].second;
-				GC.copyNonDefaultDelayedResolution(m_map[i].first, pMap.m_map[i].first);
+				Pair_t& pair = m_map[i];
+				const Pair_t sourcePair = source.m_map[i];
+				pair.second = sourcePair.second;
+				GC.copyNonDefaultDelayedResolution(pair.first, sourcePair.first);
 			}
 		}
 	}
@@ -120,7 +122,7 @@ public:
 		return defaultValue;
 	}
 
-	bool hasValue(IndexType iID) const
+	bool hasValue(Index_T iID) const
 	{
 		foreach_(const Pair_t pair, m_map)
 			if (pair.first == iID)
@@ -129,36 +131,16 @@ public:
 	}
 
 	Pair_t& operator[](int index) const { return m_map[index]; }
+	//std::vector<Pair_t>& operator[]() const { return m_map; }
 
-	//std::vector<Pair_T>::const_iterator begin() const
-	//{
-	//	return m_map.begin();
-	//}
+	const std::vector<Pair_t> data() const { return m_map; }
+	size_t size() const { return m_map.size(); }
 
-	//std::vector<Pair_T>::const_iterator end() const
-	//{
-	//	return m_map.end();
-	//}
-
-	const Pair_t begin() const
-	{
-		return static_cast<const Pair_t>(m_map.begin());
-	}
-
-	const Pair_t end() const
-	{
-		return static_cast<const Pair_t>(m_map.end());
-	}
-
-	const std::vector<Pair_t> data() const
-	{
-		return m_map;
-	}
-
-	size_t size() const
-	{
-		return m_map.size();
-	}
+	DECLARE_INDEX_ITERATOR(const IDValueMap<Index_T, Value_T, defaultValue>, Pair_t, pair_iterator, firstPair, nextPair);
+	pair_iterator beginPairs() const { return pair_iterator(this); }
+	pair_iterator endPairs() const { return pair_iterator(); }
+	typedef bst::iterator_range<pair_iterator> pair_range;
+	pair_range units() const { return pair_range(beginPairs(), endPairs()); }
 
 protected:
 	std::vector<Pair_t> m_map;

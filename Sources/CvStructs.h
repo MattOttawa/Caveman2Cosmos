@@ -24,10 +24,10 @@ struct AidStruct
 };
 
 typedef std::pair<PromotionTypes, int> PromotionModifier;
-typedef std::vector<const PromotionModifier> PromotionModifierArray;
+typedef std::vector<PromotionModifier> PromotionModifierArray;
 
 typedef std::pair<PromotionLineTypes, int> PromotionLineModifier;
-typedef std::vector<const PromotionLineModifier> PromotionLineModifierArray;
+typedef std::vector<PromotionLineModifier> PromotionLineModifierArray;
 
 struct AfflictOnAttackChange
 {	
@@ -69,22 +69,22 @@ struct AfflictOnAttack
 };
 
 typedef std::pair<TerrainTypes, int> TerrainModifier;
-typedef std::vector<const TerrainModifier> TerrainModifierArray;
+typedef std::vector<TerrainModifier> TerrainModifierArray;
 
 typedef std::pair<FeatureTypes, int> FeatureModifier;
-typedef std::vector<const FeatureModifier> FeatureModifierArray;
+typedef std::vector<FeatureModifier> FeatureModifierArray;
 
 typedef std::pair<BuildTypes, int> BuildModifier;
-typedef std::vector<const BuildModifier> BuildModifierArray;
+typedef std::vector<BuildModifier> BuildModifierArray;
 
 typedef std::pair<UnitCombatTypes, int> UnitCombatModifier;
-typedef std::vector<const UnitCombatModifier> UnitCombatModifierArray;
+typedef std::vector<UnitCombatModifier> UnitCombatModifierArray;
 
 typedef std::pair<BonusTypes, int> BonusModifier;
-typedef std::vector<const BonusModifier> BonusModifierArray;
+typedef std::vector<BonusModifier> BonusModifierArray;
 
 typedef std::pair<ImprovementTypes, int> ImprovementModifier;
-typedef std::vector<const ImprovementModifier> ImprovementModifierArray;
+typedef std::vector<ImprovementModifier> ImprovementModifierArray;
 
 struct DisallowedTraitType
 {	

@@ -474,11 +474,11 @@ public:
 
 	int getNumTechHappinessTypes() const;
 	int getTechHappinessType(int iTech) const;
-	const TechModifierArray& getTechHappinessTypeArray() const { return m_aTechHappinessTypes.data(); }
+	const TechModifierArray getTechHappinessTypeArray() const { return m_aTechHappinessTypes.data(); }
 
 	int getNumTechHealthTypes() const;
 	int getTechHealthType(int iTech) const;
-	const TechModifierArray& getTechHealthTypeArray() const { return m_aTechHealthTypes.data(); }
+	const TechModifierArray getTechHealthTypeArray() const { return m_aTechHealthTypes.data(); }
 
 	int getLocalSpecialistYieldChange(int i, int j) const;
 	int* getLocalSpecialistYieldChangeArray(int i) const;
