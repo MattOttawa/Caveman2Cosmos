@@ -663,11 +663,6 @@ void CyTeam::changeWarWeariness(int /*TeamTypes*/ eIndex, int iChange)
 		m_pTeam->changeWarWeariness((TeamTypes)eIndex, iChange);
 }
 
-int CyTeam::getTechShareCount(int iIndex)
-{
-	return m_pTeam ? m_pTeam->getTechShareCount(iIndex) : -1;
-}
-
 bool CyTeam::isTechShare(int iIndex)
 {
 	return m_pTeam ? m_pTeam->isTechShare(iIndex) : false;
@@ -870,11 +865,6 @@ bool CyTeam::isBuildingMaxedOut(int /*BuildingTypes*/ eIndex, int iExtra)
 	return m_pTeam ? m_pTeam->isBuildingMaxedOut((BuildingTypes)eIndex, iExtra) : false;
 }
 
-int CyTeam::getObsoleteBuildingCount(int /*BuildingTypes*/ eIndex)
-{
-	return m_pTeam ? m_pTeam->getObsoleteBuildingCount((BuildingTypes)eIndex) : -1;
-}
-
 bool CyTeam::isObsoleteBuilding(int /*BuildingTypes*/ eIndex)
 {
 	return m_pTeam ? m_pTeam->isObsoleteBuilding((BuildingTypes)eIndex) : false;
@@ -1025,12 +1015,6 @@ int CyTeam::getCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex)
 	return m_pTeam ? m_pTeam->getCounterespionageTurnsLeftAgainstTeam((TeamTypes) eIndex) : -1;
 }
 
-void CyTeam::setCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex, int iValue)
-{
-	if (m_pTeam)
-		m_pTeam->setCounterespionageTurnsLeftAgainstTeam((TeamTypes) eIndex, iValue);
-}
-
 void CyTeam::changeCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex, int iChange)
 {
 	if (m_pTeam)
@@ -1042,18 +1026,11 @@ int CyTeam::getCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex)
 	return m_pTeam ? m_pTeam->getCounterespionageModAgainstTeam((TeamTypes) eIndex) : -1;
 }
 
-void CyTeam::setCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex, int iValue)
-{
-	if (m_pTeam)
-		m_pTeam->setCounterespionageModAgainstTeam((TeamTypes) eIndex, iValue);
-}
-
 void CyTeam::changeCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex, int iChange)
 {
 	if (m_pTeam)
 		m_pTeam->changeCounterespionageModAgainstTeam((TeamTypes) eIndex, iChange);
 }
-
 
 bool CyTeam::AI_shareWar(int /*TeamTypes*/ eTeam)
 {

@@ -167,7 +167,6 @@ public:
 	int getWarWeariness(int /*TeamTypes*/ eIndex);								 
 	void setWarWeariness(int /*TeamTypes*/ eIndex, int iNewValue);	 
 	void changeWarWeariness(int /*TeamTypes*/ eIndex, int iChange);	 
-	int getTechShareCount(int iIndex);
 	bool isTechShare(int iIndex);
 	void changeTechShareCount(int iIndex, int iChange);
 	int getCommerceFlexibleCount(int /*CommerceTypes*/ eIndex);
@@ -205,7 +204,6 @@ public:
 	bool isBuildingMaxedOut(int /*BuildingTypes*/ eIndex, int iExtra);
 	int getUnitCount(int /*UnitTypes*/ eIndex);
 	bool isUnitMaxedOut(int /*UnitTypes*/ eIndex, int iExtra);
-	int getObsoleteBuildingCount(int /*BuildingTypes*/ eIndex);
 	bool isObsoleteBuilding(int /*BuildingTypes*/ eIndex);
 
 	int getResearchProgress(int /*TechTypes*/ eIndex);
@@ -244,10 +242,8 @@ public:
 	void setEspionagePointsEver(int iValue);
 	void changeEspionagePointsEver(int iChange);
 	int getCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex);
-	void setCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex, int iValue);
 	void changeCounterespionageTurnsLeftAgainstTeam(int /*TeamTypes*/ eIndex, int iChange);
 	int getCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex);
-	void setCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex, int iValue);
 	void changeCounterespionageModAgainstTeam(int /*TeamTypes*/ eIndex, int iChange);
 
 	bool AI_shareWar(int /*TeamTypes*/ eTeam);
