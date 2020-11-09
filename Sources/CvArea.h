@@ -121,11 +121,9 @@ public:
 	int getNumRevealedFeatureTiles(TeamTypes eTeam, FeatureTypes eFeature) const;
 	int getNumRevealedTerrainTiles(TeamTypes eTeam, TerrainTypes eTerrain) const;
 
-	int getCleanPowerCount(TeamTypes eIndex) const;
 	bool isCleanPower(TeamTypes eIndex) const;																// Exposed to Python
 	void changeCleanPowerCount(TeamTypes eIndex, int iChange);
 
-	int getBorderObstacleCount(TeamTypes eIndex) const;
 	bool isBorderObstacle(TeamTypes eIndex) const;																// Exposed to Python
 	void changeBorderObstacleCount(TeamTypes eIndex, int iChange);
 
