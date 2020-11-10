@@ -474,55 +474,6 @@
 		<DefineName>ACO_SHOW_SHIFT_INSTRUCTIONS</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
-	<!-- GW Mod Variables -->
-	<Define>
-		<DefineName>GW_MOD_ENABLED</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>FROZEN_TERRAIN</DefineName>
-		<DefineTextVal>TERRAIN_ICE</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>COLD_TERRAIN</DefineName>
-		<DefineTextVal>TERRAIN_TAIGA</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>TEMPERATE_TERRAIN</DefineName>
-		<DefineTextVal>TERRAIN_GRASSLAND</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>DRY_TERRAIN</DefineName>
-		<DefineTextVal>TERRAIN_PLAINS</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>BARREN_TERRAIN</DefineName>
-		<DefineTextVal>TERRAIN_DESERT</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>COLD_FEATURE</DefineName>
-		<DefineTextVal>FEATURE_ICE</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>TEMPERATE_FEATURE</DefineName>
-		<DefineTextVal>FEATURE_FOREST</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>WARM_FEATURE</DefineName>
-		<DefineTextVal>FEATURE_JUNGLE</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>MARSH_TERRAIN</DefineName>
-		<DefineTextVal>TERRAIN_MARSH</DefineTextVal>
-	</Define>
-	<Define>
-		<DefineName>NUCLEAR_WINTER_PROB</DefineName>
-		<iDefineIntVal>20</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>TREEHUGGER_DEFENSE_BONUS</DefineName>
-		<iDefineIntVal>2</iDefineIntVal>
-	</Define>
 	<Define>
 		<!-- Allows rebels and single city civs to found multiple religions when limited religions is on-->
 		<DefineName>LIMITED_RELIGIONS_EXCEPTIONS</DefineName>

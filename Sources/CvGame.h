@@ -873,9 +873,6 @@ protected:
 	void doTurn();
 	void doDeals();
 	void doSpawns(PlayerTypes ePlayer);
-#ifdef GLOBAL_WARMING
-	void doGlobalWarming();
-#endif
 
 	void checkGameStart();
 
