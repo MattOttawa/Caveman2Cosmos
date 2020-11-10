@@ -39746,21 +39746,27 @@ void CvPlayerAI::AI_recalculateUnitCounts()
 	{
 		AI_changeNumAIUnits( (UnitAITypes)iI, -AI_getNumAIUnits((UnitAITypes)iI) );
 
-		foreach_(CvArea* pLoopArea, GC.getMap().areas())
+		foreach_(const CvMap* map, GC.maps())
 		{
-			pLoopArea->changeNumAIUnits(m_eID, (UnitAITypes)iI, -pLoopArea->getNumAIUnits(m_eID, (UnitAITypes)iI));
+			foreach_(CvArea* area, map->areas())
+			{
+				area->changeNumAIUnits(m_eID, (UnitAITypes)iI, -area->getNumAIUnits(m_eID, (UnitAITypes)iI));
+			}
 		}
 	}
 
-	foreach_(const CvUnit* pLoopUnit, units())
+	for (int iMap = MAP_INITIAL; iMap < GC.getNumMaps(); iMap++)
 	{
-		const UnitAITypes eAIType = pLoopUnit->AI_getUnitAIType();
-
-		if ( NO_UNITAI != eAIType )
+		foreach_(const CvUnit* pLoopUnit, units((MapTypes)iMap))
 		{
-			AI_changeNumAIUnits( eAIType, 1 );
+			const UnitAITypes eAIType = pLoopUnit->AI_getUnitAIType();
 
-			pLoopUnit->area()->changeNumAIUnits(m_eID, eAIType, 1);
+			if (NO_UNITAI != eAIType)
+			{
+				AI_changeNumAIUnits(eAIType, 1);
+
+				pLoopUnit->area()->changeNumAIUnits(m_eID, eAIType, 1);
+			}
 		}
 	}
 
