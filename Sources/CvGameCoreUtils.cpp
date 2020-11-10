@@ -1639,12 +1639,6 @@ bool PUF_isPlayer(const CvUnit* pUnit, int iData1, int iData2, const CvUnit* pTh
 	return (pUnit->getOwner() == iData1);
 }
 
-bool PUF_isTeam(const CvUnit* pUnit, int iData1, int iData2, const CvUnit* pThis)
-{
-	FAssertMsg(iData1 != -1, "Invalid data argument, should be >= 0");
-	return (pUnit->getTeam() == iData1);
-}
-
 bool PUF_isCombatTeam(const CvUnit* pUnit, int iData1, int iData2, const CvUnit* pThis)
 {
 	FAssertMsg(iData1 != -1, "Invalid data argument, should be >= 0");
