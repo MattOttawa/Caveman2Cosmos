@@ -185,9 +185,6 @@ public:
 	bool canConvert(int /*ReligionTypes*/ iIndex);
 	void convert(int /*ReligionTypes*/ iIndex);
 	bool hasHolyCity(int /*ReligionTypes*/ eReligion);
-	bool hasAnyHolyCity();
-	bool hasStateReligionHolyCity();
-	bool hasStateReligionShrine();
 	int countHolyCities();
 
 	void foundReligion(int /*ReligionTypes*/ eReligion, int /*ReligionTypes*/ iSlotReligion, bool bAward);

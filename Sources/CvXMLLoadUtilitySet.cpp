@@ -132,7 +132,7 @@ bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObje
 //------------------------------------------------------------------------------------------------------
 bool CvXMLLoadUtility::SetGlobalDefines()
 {
-	OutputDebugString("Setting Global Defines: Start");
+	OutputDebugString("Setting Global Defines: Start\n");
 
 	bool bLoaded = false;
 
@@ -229,7 +229,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 			{
 				if (!ReadGlobalDefines(*it, cache))
 				{
-					OutputDebugString("Setting Global Defines: End");
+					OutputDebugString("Setting Global Defines: End\n");
 					return false;
 				}
 			}
@@ -241,7 +241,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 			{
 				if (!ReadGlobalDefines(*it, cache))
 				{
-					OutputDebugString("Setting Global Defines: End");
+					OutputDebugString("Setting Global Defines: End\n");
 					return false;
 				}
 			}
@@ -263,7 +263,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 				if (!ReadGlobalDefines(*it, cache))
 				{
 					SAFE_DELETE(pModEnumVector);
-					OutputDebugString("Setting Global Defines: End");
+					OutputDebugString("Setting Global Defines: End\n");
 					return false;
 				}
 			}
@@ -277,7 +277,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 			{
 				if (!ReadGlobalDefines(*it, cache))
 				{
-					OutputDebugString("Setting Global Defines: End");
+					OutputDebugString("Setting Global Defines: End\n");
 					return false;
 				}
 			}
@@ -294,7 +294,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 
 	GC.cacheGlobals();
 
-	OutputDebugString("Setting Global Defines: End");
+	OutputDebugString("Setting Global Defines: End\n");
 
 	return true;
 }

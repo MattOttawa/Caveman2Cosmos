@@ -350,8 +350,6 @@ public:
 	void convert(ReligionTypes eReligion); // Exposed to Python
 	bool hasHolyCity(ReligionTypes eReligion) const; // Exposed to Python
 	bool hasHolyCity() const; // Exposed to Python
-	bool hasStateReligionHolyCity() const; // Exposed to Python
-	bool hasStateReligionShrine() const; // Exposed to Python
 
 	int countHolyCities() const; // Exposed to Python
 	void foundReligion(ReligionTypes eReligion, ReligionTypes eSlotReligion, bool bAward); // Exposed to Python
@@ -1227,7 +1225,6 @@ public:
 
 	void launch(VictoryTypes victoryType);
 
-	bool hasShrine(ReligionTypes eReligion) const;
 	int getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const; // Exposed to Python
 	void processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive);
 	bool canDoResolution(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kData) const;

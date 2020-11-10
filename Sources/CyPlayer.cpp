@@ -775,28 +775,6 @@ bool CyPlayer::hasHolyCity(int /*ReligionTypes*/ eReligion)
 {
 	return m_pPlayer ? m_pPlayer->hasHolyCity((ReligionTypes)eReligion) : false;
 }
-/************************************************************************************************/
-/* REVDCM                                 04/29/10                                phungus420    */
-/*                                                                                              */
-/* Player Functions                                                                             */
-/************************************************************************************************/
-bool CyPlayer::hasAnyHolyCity()
-{
-	return m_pPlayer ? m_pPlayer->hasHolyCity() : false;
-}
-
-bool CyPlayer::hasStateReligionHolyCity()
-{
-	return m_pPlayer ? m_pPlayer->hasStateReligionHolyCity() : false;
-}
-
-bool CyPlayer::hasStateReligionShrine()
-{
-	return m_pPlayer ? m_pPlayer->hasStateReligionShrine() : false;
-}
-/************************************************************************************************/
-/* REVDCM                                  END                                                  */
-/************************************************************************************************/
 
 int CyPlayer::countHolyCities()
 {

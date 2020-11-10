@@ -9120,35 +9120,6 @@ bool CvPlayer::hasHolyCity() const
 }
 
 
-bool CvPlayer::hasStateReligionHolyCity() const
-{
-	const ReligionTypes eStateReligion = getStateReligion();
-	return eStateReligion != NO_RELIGION && hasHolyCity(eStateReligion);
-}
-
-
-bool CvPlayer::hasStateReligionShrine() const
-{
-	const ReligionTypes eStateReligion = getStateReligion();
-
-	if (eStateReligion == NO_RELIGION)
-	{
-		return false;
-	}
-
-	const CvCity* pHolyCity = GC.getGame().getHolyCity(eStateReligion);
-
-	if (pHolyCity != NULL)
-	{
-		if (pHolyCity->hasShrine(eStateReligion))
-		{
-			return (pHolyCity->getOwner() == getID());
-		}
-	}
-	return false;
-}
-
-
 int CvPlayer::countHolyCities() const
 {
 	int iCount = 0;
@@ -25171,19 +25142,6 @@ void CvPlayer::setUnitExtraCost(UnitTypes eUnit, int iCost)
 	{
 		m_aUnitExtraCosts.push_back(std::make_pair(eUnit, iCost));
 	}
-}
-
-bool CvPlayer::hasShrine(ReligionTypes eReligion) const
-{
-	if (eReligion != NO_RELIGION)
-	{
-		const CvCity* pHolyCity = GC.getGame().getHolyCity(eReligion);
-
-		// if the holy city exists, and we own it
-		if (pHolyCity != NULL && pHolyCity->getOwner() == getID())
-			return pHolyCity->hasShrine(eReligion);
-	}
-	return false;
 }
 
 void CvPlayer::invalidatePopulationRankCache()
