@@ -148,23 +148,6 @@ public:
 	friend bool operator==(const CvPlot& lhs, const CvPlot& rhs) { return &lhs == &rhs; }
 	friend bool operator!=(const CvPlot& lhs, const CvPlot& rhs) { return &lhs != &rhs; }
 
-protected:
-	CvGameObjectPlot m_GameObject;
-
-public:
-	// Dale - Battle Effect
-	void changeBattleCountdown(int iValue);
-	void setBattleCountdown(int iValue);
-	int getBattleCountdown() const;
-	bool isBattle() const;
-	bool canHaveBattleEffect(const CvUnit* pAttacker = NULL, const CvUnit* pDefender = NULL) const;
-	EffectTypes getBattleEffect();
-	void setBattleEffect();
-protected:
-	int m_iBattleCountdown;
-	EffectTypes m_eBattleEffect;
-	// ! Dale
-public:
 	void init(int iX, int iY);
 	void uninit();
 	void reset(int iX = 0, int iY = 0, bool bConstructorCall=false);
@@ -236,7 +219,8 @@ public:
 
 	DllExport bool isLake() const; // Exposed to Python
 
-	bool isFreshWater() const; // Exposed to Python ?
+	bool isFreshWater() const; // Exposed to Python
+	bool isWaterAndIsFresh() const;
 
 	bool isPotentialIrrigation() const; // Exposed to Python
 	bool canHavePotentialIrrigation() const; // Exposed to Python
@@ -403,6 +387,8 @@ public:
 	int getVisibleNonAllyStrength(PlayerTypes ePlayer) const;
 
 protected:
+	CvGameObjectPlot m_GameObject;
+
 	char /*PlayerTypes*/ m_eClaimingOwner;
 	char* m_aiOccupationCultureRangeCities;
 	void doTerritoryClaiming();
@@ -1188,18 +1174,22 @@ public:
 		DECLARE_MAP_FUNCTOR_2(CvPlot, void, updateRiverSymbol, bool, bool);
 
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, ImprovementTypes, getImprovementType);
+		DECLARE_MAP_FUNCTOR_CONST(CvPlot, TerrainTypes, getTerrainType);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, FeatureTypes, getFeatureType);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, TeamTypes, getTeam);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, PlayerTypes, getOwner);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isOwned);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isImpassable);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isIrrigated);
+		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isFreshWater);
+		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isLake);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isWater);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, bool, isInViewport);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, int, getArea);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, const CvArea*, area);
 		DECLARE_MAP_FUNCTOR_CONST(CvPlot, const CvCity*, getWorkingCityOverride);
 
+		DECLARE_MAP_FUNCTOR_CONST_1(CvPlot, bool, isConnectedToCapital, PlayerTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvPlot, BonusTypes, getBonusType, TeamTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvPlot, int, getBlockadedCount, TeamTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvPlot, bool, isBombardable, const CvUnit*);

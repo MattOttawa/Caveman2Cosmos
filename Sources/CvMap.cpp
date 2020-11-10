@@ -5,9 +5,8 @@
 //-----------------------------------------------------------------------------
 //	Copyright (c) 2004 Firaxis Games, Inc. All rights reserved.
 //-----------------------------------------------------------------------------
-//
 
-
+#include "CvBuildingInfo.h"
 #include "CvGameCoreDLL.h"
 #include "CvGameAI.h"
 #include "CvMapGenerator.h"
@@ -851,16 +850,11 @@ bool CvMap::findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const
 {
 	PROFILE("CvMap::findWater()");
 
-	for (int iDX = -(iRange); iDX <= iRange; iDX++)
+	foreach_(const CvPlot* pLoopPlot, CvPlot::rect(pPlot->getX(), pPlot->getY(), iRange, iRange))
 	{
-		for (int iDY = -(iRange); iDY <= iRange; iDY++)
+		if (bFreshWater ? pLoopPlot->isFreshWater() : pLoopPlot->isWater())
 		{
-			const CvPlot* pLoopPlot = plotXY(pPlot->getX(), pPlot->getY(), iDX, iDY);
-
-			if (pLoopPlot != NULL && (bFreshWater ? pLoopPlot->isFreshWater() : pLoopPlot->isWater()))
-			{
-				return true;
-			}
+			return true;
 		}
 	}
 
@@ -1234,9 +1228,6 @@ void CvMap::read(FDataStreamBase* pStream)
 	// Init data before load
 	reset(&defaultMapData);
 
-	uint uiFlag=0;
-	WRAPPER_READ(wrapper, "CvMap", &uiFlag);	// flags for expansion
-
 	WRAPPER_READ(wrapper, "CvMap", &m_iGridWidth);
 	WRAPPER_READ(wrapper, "CvMap", &m_iGridHeight);
 
@@ -1265,8 +1256,6 @@ void CvMap::read(FDataStreamBase* pStream)
 		}
 	}
 
-	WRAPPER_SKIP_ELEMENT(wrapper, "CvPlot", &g_plotTypeZobristHashes, SAVE_VALUE_TYPE_INT_ARRAY);
-
 	// call the read of the free list CvArea class allocations
 	ReadStreamableFFreeListTrashArray(m_areas, pStream);
 
@@ -1287,9 +1276,6 @@ void CvMap::write(FDataStreamBase* pStream)
 	wrapper.AttachToStream(pStream);
 
 	WRAPPER_WRITE_OBJECT_START(wrapper);
-
-	uint uiFlag=0;
-	WRAPPER_WRITE(wrapper, "CvMap" ,uiFlag);		// flag for expansion
 
 	WRAPPER_WRITE(wrapper, "CvMap" ,m_iGridWidth);
 	WRAPPER_WRITE(wrapper, "CvMap" ,m_iGridHeight);

@@ -176,8 +176,6 @@ public:
 	DllExport void reviveActivePlayer(); // Exposed to Python
 	void reviveActivePlayer(PlayerTypes iPlayer); // Exposed to Python
 
-	void drawBattleEffects();
-
 	DllExport int getNumHumanPlayers(); // Exposed to Python
 
 	DllExport int getGameTurn(); // Exposed to Python
@@ -361,7 +359,6 @@ public:
 	bool canEverConstruct(BuildingTypes eBuilding) const;
 	bool canEverTrain(UnitTypes eUnit) const;
 	bool canEverSpread(CorporationTypes eCorporation) const;
-	void setFutureEras();
 
 	int getFlexibleDifficultyTimer(PlayerTypes eIndex) const;
 	void setFlexibleDifficultyTimer(PlayerTypes eIndex, int iNewValue);
@@ -939,5 +936,7 @@ public:
 
 	bool isValidByGameOption(const CvUnitCombatInfo& info) const;
 };
+
+#define CURRENT_MAP GC.getGame().getCurrentMap()
 
 #endif

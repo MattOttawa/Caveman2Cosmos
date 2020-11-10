@@ -314,14 +314,6 @@
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 	<Define>
-		<DefineName>SEAWATER_SEE_FROM_CHANGE</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>SEAWATER_SEE_THROUGH_CHANGE</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
 		<DefineName>MAX_YIELD_STACK</DefineName>
 		<iDefineIntVal>10</iDefineIntVal>
 	</Define>
@@ -1774,10 +1766,6 @@
 	<Define>
 		<DefineName>BONUS_OBSOLETE_VALUE_MODIFIER</DefineName>
 		<iDefineIntVal>150</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>NO_ESPIONAGE_CULTURE_LEVEL_MODIFIER</DefineName>
-		<iDefineIntVal>100</iDefineIntVal>
 	</Define>
 	<Define>
 		<DefineName>FORCE_UNOWNED_CITY_TIMER</DefineName>

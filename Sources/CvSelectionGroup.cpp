@@ -122,21 +122,12 @@ bool CvSelectionGroup::sentryAlert() const
 
 	if (NULL != pHeadUnit)
 	{
-		for (int iX = -iMaxRange; iX <= iMaxRange; ++iX)
+		foreach_(const CvPlot* pPlot, CvPlot::rect(pHeadUnit->getX(), pHeadUnit->getY(), iMaxRange, iMaxRange))
 		{
-			for (int iY = -iMaxRange; iY <= iMaxRange; ++iY)
+			if (pHeadUnit->plot()->canSeePlot(pPlot, pHeadUnit->getTeam(), iMaxRange - 1, NO_DIRECTION)
+			&& pPlot->isVisibleEnemyUnit(pHeadUnit))
 			{
-				CvPlot* pPlot = ::plotXY(pHeadUnit->getX(), pHeadUnit->getY(), iX, iY);
-				if (NULL != pPlot)
-				{
-					if (pHeadUnit->plot()->canSeePlot(pPlot, pHeadUnit->getTeam(), iMaxRange - 1, NO_DIRECTION))
-					{
-						if (pPlot->isVisibleEnemyUnit(pHeadUnit))
-						{
-							return true;
-						}
-					}
-				}
+				return true;
 			}
 		}
 	}
@@ -167,22 +158,15 @@ bool CvSelectionGroup::sentryAlertSameDomainType() const
 	const CvUnit* pHeadUnit = ((iIndex == -1) ? NULL : getUnitAt(iIndex));
 	if (NULL != pHeadUnit)
 	{
-		for (int iX = -iMaxRange; iX <= iMaxRange; ++iX)
+		foreach_(const CvPlot* pPlot, CvPlot::rect(pHeadUnit->getX(), pHeadUnit->getY(), iMaxRange, iMaxRange))
 		{
-			for (int iY = -iMaxRange; iY <= iMaxRange; ++iY)
+			if (pHeadUnit->plot()->canSeePlot(pPlot, pHeadUnit->getTeam(), iMaxRange - 1, NO_DIRECTION))
 			{
-				CvPlot* pPlot = ::plotXY(pHeadUnit->getX(), pHeadUnit->getY(), iX, iY);
-				if (NULL != pPlot)
+				if (pPlot->isVisibleEnemyUnit(pHeadUnit))
 				{
-					if (pHeadUnit->plot()->canSeePlot(pPlot, pHeadUnit->getTeam(), iMaxRange - 1, NO_DIRECTION))
+					if (pPlot->isWater() ? (getDomainType() == DOMAIN_SEA) : (getDomainType() == DOMAIN_LAND))
 					{
-						if (pPlot->isVisibleEnemyUnit(pHeadUnit))
-						{
-							if (pPlot->isWater() ? (getDomainType() == DOMAIN_SEA) : (getDomainType() == DOMAIN_LAND))
-							{
-								return true;
-							}
-						}
+						return true;
 					}
 				}
 			}
@@ -734,7 +718,7 @@ bool CvSelectionGroup::canStartMission(int iMission, int iData1, int iData2, CvP
 		pPlot = plot();
 	}
 #ifdef NOMADIC_START
-	static const TechTypes sedentaryLifestyle = static_cast<TechTypes>(GC.getInfoTypeForString("TECH_SEDENTARY_LIFESTYLE"));
+	const TechTypes sedentaryLifestyle = GC.getTECH_SEDENTARY_LIFESTYLE();
 #endif
 	CvUnit* pTargetUnit;
 
@@ -3540,7 +3524,7 @@ bool CvSelectionGroup::isHasPathToAreaPlayerCity(const PlayerTypes ePlayer, cons
 			{
 				if (bIgnoreDanger && bGo)
 				{
-					return pushMissionInternal(MISSION_MOVE_TO, cityX->plot()->getX(), cityX->plot()->getY(), iFlags);
+					return pushMissionInternal(MISSION_MOVE_TO, cityX->getX(), cityX->getY(), iFlags);
 				}
 				return true;
 			}
@@ -3548,8 +3532,8 @@ bool CvSelectionGroup::isHasPathToAreaPlayerCity(const PlayerTypes ePlayer, cons
 			(
 				CvString::format
 				(
-					"Pathing of player %d units (%S) from plot <%d, %d> to supposedly reachable city %S at <%d, %d> failed",
-					(int)ePlayer, headUnit->getDescription().c_str(), plot->getX(), plot->getY(), cityX->getName().c_str(), cityX->getX(), cityX->getY()
+					"Pathing of player %d unit-group of %d (led by %S) from plot <%d, %d> to supposedly reachable city %S, owned by player %d at <%d, %d>, failed.",
+					getOwner(), getNumUnits(), headUnit->getDescription().c_str(), getX(), getY(), cityX->getName().c_str(), ePlayer, cityX->getX(), cityX->getY()
 				).c_str()
 			);
 		}
@@ -3977,9 +3961,6 @@ bool CvSelectionGroup::groupAttack(int iX, int iY, int iFlags, bool& bFailedAlre
 				return false;
 			}
 
-			// Dale - BE: Battle Effect START
-			pBestAttackUnit->setBattlePlot(pDestPlot, pBestDefender);
-
 			// RevolutionDCM - attack support
 			if (GC.isDCM_ATTACK_SUPPORT())
 			{
@@ -4395,7 +4376,7 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 		{
 			if (GET_PLAYER(getOwner()).isOption(PLAYEROPTION_SAFE_AUTOMATION))
 			{
-				if ((pPlot->getImprovementType() != NO_IMPROVEMENT) && (pPlot->getImprovementType() != CvImprovementInfo::getImprovementRuins()))
+				if ((pPlot->getImprovementType() != NO_IMPROVEMENT) && (pPlot->getImprovementType() != GC.getIMPROVEMENT_CITY_RUINS()))
 				{
 					const BonusTypes eBonus = (BonusTypes)pPlot->getNonObsoleteBonusType(GET_PLAYER(getOwner()).getTeam());
 					if ((eBonus == NO_BONUS) || !GC.getImprovementInfo(eImprovement).isImprovementBonusTrade(eBonus))
@@ -4474,7 +4455,7 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 					MEMORY_TRACK_EXEMPT();
 
 					CvWString szBuffer = gDLL->getText("TXT_KEY_BUG_PRECLEARING_FEATURE_BONUS", GC.getFeatureInfo(eFeature).getTextKeyWide(), iProduction, pCity->getNameKey());
-					AddDLLMessage(getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer,  ARTFILEMGR.getInterfaceArtInfo("WORLDBUILDER_CITY_EDIT")->getPath(), MESSAGE_TYPE_INFO, GC.getFeatureInfo(eFeature).getButton(), CvColorInfo::white(), getX(), getY(), true, true);
+					AddDLLMessage(getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer,  ARTFILEMGR.getInterfaceArtInfo("WORLDBUILDER_CITY_EDIT")->getPath(), MESSAGE_TYPE_INFO, GC.getFeatureInfo(eFeature).getButton(), GC.getCOLOR_WHITE(), getX(), getY(), true, true);
 				}
 				bContinue = false;
 				bStopOtherWorkers = true;
@@ -6320,9 +6301,6 @@ void CvSelectionGroup::read(FDataStreamBase* pStream)
 	// Init saved data
 	reset();
 
-	uint uiFlag=0;
-	pStream->Read(&uiFlag);	// flags for expansion
-
 	pStream->Read(&m_iID);
 	pStream->Read(&m_iMissionTimer);
 
@@ -6389,9 +6367,6 @@ void CvSelectionGroup::read(FDataStreamBase* pStream)
 
 void CvSelectionGroup::write(FDataStreamBase* pStream)
 {
-	uint uiFlag=0;
-	pStream->Write(uiFlag);		// flag for expansion
-
 	pStream->Write(m_iID);
 	pStream->Write(m_iMissionTimer);
 
@@ -6509,28 +6484,21 @@ bool CvSelectionGroup::groupStackAttack(int iX, int iY, int iFlags, bool& bFaile
 					{
 						return true;
 					}
-					// RevDCM Battle Effects option
-					pBestAttackUnit->setBattlePlot(pDestPlot, pBestDefender);
 
 					// RevolutionDCM - attack support
 					if (GC.isDCM_ATTACK_SUPPORT())
 					{
-						if (pDestPlot->getNumUnits() > 0 && !bStealth)
-						{
-							bAction = performSupport(pDestPlot, pOrigPlot, NO_PLAYER, getTeam());
-						}
-						else
+						if (pDestPlot->getNumUnits() < 1 || bStealth)
 						{
 							return bAttack;
 						}
-						if (pOrigPlot->getNumUnits() > 0 && !bStealth)
-						{
-							bAction = performSupport(pOrigPlot, pDestPlot, getOwner(), NO_TEAM);
-						}
-						else
+						bAction = performSupport(pDestPlot, pOrigPlot, NO_PLAYER, getTeam());
+
+						if (pOrigPlot->getNumUnits() < 1 || bStealth)
 						{
 							return bAttack;
 						}
+						bAction = performSupport(pOrigPlot, pDestPlot, getOwner(), NO_TEAM);
 					}
 					// RevolutionDCM - attack support end
 					bool bBombardExhausted = false;
