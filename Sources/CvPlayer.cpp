@@ -3956,11 +3956,6 @@ void CvPlayer::doTurn()
 
 	doEspionagePoints();
 
-#if 0 // AI_doCentralizedProduction is unfinished, no point calling it. [11/12/2019 billw]
-	// New function to handle wonder construction in a centralized manner
-	GET_PLAYER(getID()).AI_doCentralizedProduction();
-#endif
-
 	//Clear the cache each turn.
 	recalculateAllResourceConsumption();
 

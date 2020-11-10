@@ -112,8 +112,6 @@ public:
 
 	void AI_makeProductionDirty();
 
-	void AI_doCentralizedProduction();
-
 	void AI_conquerCity(CvCity* pCity);
 
 	bool AI_acceptUnit(const CvUnit* pUnit) const;
