@@ -529,15 +529,15 @@ void CvGameObject::enumerate(std::vector<CvGameObject*> &kEnum, GameObjectTypes 
 	foreach(eType, bst::bind(addToVector, _1, &kEnum));
 }
 
-void CvGameObject::enumerateOn(std::vector<CvGameObject*> &kEnum, GameObjectTypes eType)
-{
-	foreachOn(eType, bst::bind(addToVector, _1, &kEnum));
-}
+//void CvGameObject::enumerateOn(std::vector<CvGameObject*> &kEnum, GameObjectTypes eType)
+//{
+//	foreachOn(eType, bst::bind(addToVector, _1, &kEnum));
+//}
 
-void CvGameObject::enumerateNear(std::vector<CvGameObject*> &kEnum, GameObjectTypes eType, int iDistance)
-{
-	foreachNear(eType, bst::bind(addToVector, _1, &kEnum), iDistance);
-}
+//void CvGameObject::enumerateNear(std::vector<CvGameObject*> &kEnum, GameObjectTypes eType, int iDistance)
+//{
+//	foreachNear(eType, bst::bind(addToVector, _1, &kEnum), iDistance);
+//}
 
 void CvGameObject::enumerateRelated(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType, RelationTypes eRelation, int iData)
 {

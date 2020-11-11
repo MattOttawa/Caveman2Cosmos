@@ -343,6 +343,338 @@ class PyPlayer:
 		return iCounter
 
  
+class PyCity:
+	"requires player instance & cityID"
+	def __init__(self, iPlayerID, iCityID):
+		self.player = gc.getPlayer(iPlayerID)
+		self.city = self.player.getCity(iCityID)
+
+	def isNone(self):
+		"bool - Is the city instance valid?"
+		return self.city is None
+
+	def GetCy(self):
+		' Cy instance of city '
+		return self.city
+
+#################### G E N E R A L	 C I T Y	 F U N C T I O N S ####################
+
+	def getID(self):
+		"int - City ID"
+		return self.city.getID()
+
+	def getX(self):
+		"int - City's X Location"
+		return self.city.getX()
+
+	def getY(self):
+		"int - City's Y Location"
+		return self.city.getY()
+
+	def getTradeRoutes(self):
+		"int - City's Trade Routes"
+		return self.city.getTradeRoutes()
+
+	def getIndex(self):
+		return self.city.getIndex()
+
+	def getName(self):
+		"str - Cities Name"
+		return self.city.getName()
+
+	def getNameKey(self):
+		"str - Cities Name"
+		return self.city.getNameKey()
+
+	def getScriptData(self):
+		"str - City's Script Data member"
+		return self.city.getScriptData()
+
+	def setScriptData(self, szScriptString):
+		"void - set City's Script Data member"
+		self.city.setScriptData(szScriptString)
+
+	def getOwner(self):
+		return self.city.getOwner()
+
+	def isBarbarian(self):
+		return self.city.isBarbarian()
+
+	def setName(self, newName):
+		"none - Set Cities Name"
+		return self.city.setName(newName, False)
+
+	def getPopulation(self):
+		"int - City Population"
+		return self.city.getPopulation()
+
+	def changePopulation(self, iChange):
+		"none - Change City Population by iChange"
+		return self.city.changePopulation(iChange)
+
+	def setPopulation(self, iValue):
+		"none - Set City Population"
+		return self.city.setPopulation(iValue)
+
+	def getAngryPopulation(self):
+		"int - Angry Population"
+		return self.city.angryPopulation(0)
+
+	def getHappyPopulation(self):
+		"int - Happy Population"
+		return self.city.happyLevel()
+
+	def getUnhappyPopulation(self):
+		"int - Unhappy Population"
+		return self.city.unhappyLevel(0)
+
+	def getNumBuilding(self, iBuildingID):
+		"int - Number of iBuildingIDs this city has"
+		return self.city.getNumBuilding(iBuildingID)
+
+	def canTrain (self, iUnit):
+		return self.city.canTrain(iUnit, False, False, False, False)
+
+	def getTradeCity (self, i):
+		return self.city.getTradeCity(i)
+
+
+	def canConstruct (self, iBuilding):
+		return self.city.canConstruct(iBuilding, False, False, False)
+
+	def canCreate (self, iProject):
+		return self.city.canCreate(iProject, False, False)
+
+	def canMaintain (self, iItem):
+		return self.city.canMaintain(iItem, False)
+
+	def getProductionBuilding(self):
+		"int - What building ID this city is working on"
+		return self.city.getProductionBuilding()
+
+	def getProductionProject(self):
+		"int - What Project ID this city is working on"
+		return self.city.getProductionProject()
+
+	def getUnitProductionTurnsLeft (self, iUnit, iNum):
+		return self.city.getUnitProductionTurnsLeft(iUnit, iNum)
+
+	def getBuildingProductionTurnsLeft (self, iBuilding, iNum):
+		return self.city.getBuildingProductionTurnsLeft( iBuilding, iNum )
+
+	def getBuildingOriginalTime(self, iBuildingID):
+		return self.city.getBuildingOriginalTime(iBuildingID)
+
+	def getProjectProductionTurnsLeft (self, iProject, iNum):
+		return self.city.getProjectProductionTurnsLeft( iProject, iNum )
+
+	def foodConsumption(self, bAngry, iExtra):
+		return self.city.foodConsumption(bAngry, iExtra)
+
+	def getGreatPeopleProgress(self):
+		return self.city.getGreatPeopleProgress()
+
+	def getGreatPeopleRate(self):
+		return self.city.getGreatPeopleRate()
+
+	def getGameTurnFounded (self):
+		return self.city.getGameTurnFounded()
+
+	def getBaseGreatPeopleRate(self):
+		return self.city.getBaseGreatPeopleRate()
+
+	def getFoodRate(self):
+		"int - Total Food Yield"
+		return self.city.getYieldRate(YieldTypes.YIELD_FOOD)
+
+	def changeFood( self, iChange ):
+		"int - change production"
+		self.city.changeFood( iChange )
+		return
+
+	def calculateGoldRate(self):
+		"int - Total Gold Yield"
+		return self.city.getYieldRate(YieldTypes.YIELD_COMMERCE)
+
+	def getProductionRate(self):
+		"int - Total Production Yield"
+		return self.city.getYieldRate(YieldTypes.YIELD_PRODUCTION)
+
+	def changeProduction( self, iChange ):
+		"int - change production"
+		self.city.changeProduction( iChange )
+		return
+
+	def getResearchRate(self):
+		"int - Total Production Yield"
+		return self.city.getCommerceRate(CommerceTypes.COMMERCE_RESEARCH)
+
+	def getGoldRate(self):
+		"int - Total Production Yield"
+		return self.city.getCommerceRate(CommerceTypes.COMMERCE_GOLD)
+
+	def getEspionageRate(self):
+		"int - Total Production Yield"
+		return self.city.getCommerceRate(CommerceTypes.COMMERCE_ESPIONAGE)
+
+	def getProductionName(self):
+		"str - Current Productions Name"
+		return self.city.getProductionName()
+
+	def getGeneralProductionTurnsLeft(self):
+		return self.city.getGeneralProductionTurnsLeft()
+
+	def getProductionNameKey(self):
+		"str - Current Productions Name"
+		return self.city.getProductionNameKey()
+
+	def isProductionProcess(self):
+		return self.city.isProductionProcess()
+
+	def getProductionTurnsLeft(self):
+		"int - Turns Remaining"
+		if self.isProductionProcess():
+			return "-"
+		return self.city.getProductionTurnsLeft()
+
+	def getCultureCommerce(self):
+		return self.city.getCommerceRate(CommerceTypes.COMMERCE_CULTURE)
+
+	def getCulture(self):
+		"int - Culture points"
+		return self.city.getCulture(self.player.getID())
+
+	def changeCulture(self, iChange, bPlots=True):
+		return self.city.changeCulture(self.player.getID(), iChange, bPlots)
+
+	def setCulture(self, iChange, bPlots=True):
+		self.city.setCulture(self.player.getID(), iChange, bPlots)
+
+	def getCultureThreshold(self):
+		return self.city.getCultureThreshold()
+
+	def getGoodHealth(self):
+		"int - Health rating"
+		return self.city.goodHealth()
+
+	def getBadHealth(self):
+		"int - Unhealthy rating"
+		return self.city.badHealth(False)
+
+	def getMaintenance(self):
+		"int - Maintenance rating"
+		return self.city.getMaintenance()
+
+	def plot(self):
+		"obj - Cities plot"
+		return self.city.plot()
+
+	def initUnit(self, iUnitID):
+		plot = self.plot()
+		gc.getActivePlayer().initUnit( iUnitID, plot.getX(), plot.getY(), UnitAITypes.NO_UNITAI, DirectionTypes.NO_DIRECTION )
+
+	def getNumBuildingIdx(self, buildingIdx):
+		"int - How many buildingIdx city has?"
+		if (self.city.getNumBuilding(buildingIdx)):
+			return True
+		return False
+
+	def hasReligion(self, religionIdx):
+		"bool - City has religionIdx?"
+		if (self.city.isHasReligion(religionIdx)):
+			return True
+		return False
+
+	def isHolyCityByType(self, iReligion):
+		if self.city.isHolyCityByType(iReligion):
+			return True
+		return False
+
+	def getHolyCity(self):
+		lHolyCity = []
+		for i in range(gc.getNumReligionInfos()):
+			if self.city.isHolyCityByType(i):
+				lHolyCity.append(i)
+		return lHolyCity
+
+	def getReligions(self):
+		lReligions = []
+		for i in range(gc.getNumReligionInfos()):
+			if self.hasReligion(i):
+				lReligions.append(i)
+		return lReligions
+
+	def hasCorporation(self, corporationIdx):
+		"bool - City has corporationIdx?"
+		if (self.city.isHasCorporation(corporationIdx)):
+			return True
+		return False
+
+	def getHeadquarters(self):
+		lHeadquarters = []
+		for i in range(gc.getNumCorporationInfos()):
+			if self.city.isHeadquartersByType(i):
+				lHeadquarters.append(i)
+		return lHeadquarters
+
+	def getCorporations(self):
+		lCorporations = []
+		for i in range(gc.getNumCorporationInfos()):
+			if self.hasCorporation(i):
+				lCorporations.append(i)
+		return lCorporations
+
+	def isCapital(self):
+		"bool - City is capital?"
+		if self.city.isCapital():
+			return True
+		return False
+
+	def isHealth(self):
+		"bool - City is healthy?"
+		if (self.getGoodHealth() > self.getBadHealth()):
+			return True
+		return False
+
+	def setNumRealBuildingIdx(self, buildingIdx, iNum):
+		"none - Add or Remove (bAdd) by buildingIdx"
+		return self.city.setNumRealBuilding(buildingIdx, iNum)
+
+	def getBuildingList(self):
+		"intList - List of all buildingIdx in the city"
+
+		numBuildingInfos = gc.getNumBuildingInfos()
+		buildingList=[]
+
+		for buildingIdx in range(numBuildingInfos):
+			if (self.getNumBuildingIdx( buildingIdx )):
+				buildingList.append( buildingIdx )
+		return buildingList
+
+	def hasBonusIdx(self, iBonus):
+		return self.city.hasBonus(iBonus)
+
+	def getBonusList(self):
+		"intList - all bonuses connected to city"
+		lBonus = []
+		for i in range(gc.getNumBonusInfos()):
+			if self.hasBonusIdx( i ):
+				lBonus.append(i)
+		return lBonus
+
+	def getStateReligionHappiness(self, iReligion):
+		return self.city.getStateReligionHappiness(iReligion)
+
+	def getReligionInfluence(self, iReligion):
+		return self.city.getReligionInfluence(iReligion)
+
+	def isRevealed(self, iTeam):
+		return self.city.isRevealed(iTeam, False)
+
+	def isConnectedToCapital(self, iPlayer):
+		return self.city.isConnectedToCapital(iPlayer)
+
+
 class PyInfo:
 
 	class UnitInfo:

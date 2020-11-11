@@ -41,8 +41,8 @@ public:
 	virtual void foreachRelated(GameObjectTypes eType, RelationTypes eRelation, bst::function<void (CvGameObject*)> func, int iData = 0);
 	virtual void foreachRelatedCond(GameObjectTypes eType, RelationTypes eRelation, bst::function<void (CvGameObject*)> func, BoolExpr* pExpr = NULL, int iData = 0);
 	virtual void enumerate(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType);
-	virtual void enumerateOn(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType);
-	virtual void enumerateNear(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType, int iDistance);
+	//virtual void enumerateOn(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType);
+	//virtual void enumerateNear(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType, int iDistance);
 	virtual void enumerateRelated(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType, RelationTypes eRelation, int iData = 0);
 	virtual void enumerateRelatedCond(std::vector<CvGameObject*>& kEnum, GameObjectTypes eType, RelationTypes eRelation, BoolExpr* pExpr = NULL, int iData = 0);
 

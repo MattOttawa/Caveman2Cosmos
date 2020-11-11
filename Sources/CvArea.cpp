@@ -819,8 +819,8 @@ void CvArea::changeCleanPowerCount(TeamTypes eIndex, int iChange)
 
 bool CvArea::isBorderObstacle(TeamTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, MAX_TEAMS, eIndex)
-	return /*(eIndex != NO_TEAM) &&*/ m_aiBorderObstacleCount[eIndex] > 0;
+	FASSERT_BOUNDS(NO_TEAM, MAX_TEAMS, eIndex)
+	return eIndex != NO_TEAM && m_aiBorderObstacleCount[eIndex] > 0;
 }
 
 
