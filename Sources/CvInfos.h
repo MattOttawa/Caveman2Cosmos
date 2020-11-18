@@ -1043,7 +1043,6 @@ public:
 
 	int getNumRoundStunVSUnitCombatChangeTypes() const;
 	int getRoundStunVSUnitCombatChangeType(int iUnitCombat) const;
-	const UnitCombatModifierArray& getRoundStunVSUnitCombatChangeTypes() const { return m_aRoundStunVSUnitCombatChangeTypes.data(); }
 
 	int getNumTrapDisableUnitCombatTypes() const;
 	int getTrapDisableUnitCombatType(int iUnitCombat) const;

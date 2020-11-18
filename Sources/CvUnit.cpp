@@ -23707,7 +23707,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue, bool bFree, 
 		return;
 	}
 
-	CvPromotionInfo& kPromotion = GC.getPromotionInfo(eIndex);
+	const CvPromotionInfo& kPromotion = GC.getPromotionInfo(eIndex);
 	// Disable spy promotions mechanism
 	//TB Combat Mods begin (first, regardless of remove, add, or ignore because they already have it, reset AfflictionTurnCount to 0,
 	//and another check is necessary here for equips and afflicts to ensure unusual means of reaching this point cannot bypass some necessary disqualifiers)
