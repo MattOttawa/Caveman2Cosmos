@@ -17438,16 +17438,14 @@ bool CvPlayer::doEspionageMission(EspionageMissionTypes eMission, PlayerTypes eT
 		if (NO_PLAYER != eTargetPlayer && pSpyUnit != NULL
 		&& kMission.getBuyUnitCostFactor() > 0 && pSpyUnit->canBribe(pPlot, false))
 		{
-			CvUnit* pTargetUnit;
+			CvUnit* pTargetUnit = NULL;
 			if (pPlot->plotCheck(PUF_isOtherTeam, getID(), -1, NULL, NO_PLAYER, NO_TEAM, PUF_isVisible, getID()))
 			{
-				for (int i = 0; i < pPlot->getNumUnits(); i++)
+				foreach_(pTargetUnit, pPlot->units())
 				{
-					pTargetUnit = pPlot->getUnitByIndex(i);
-					if (NULL != pTargetUnit && pTargetUnit->AI_getUnitAIType() == UNITAI_WORKER)
+					if (pTargetUnit->AI_getUnitAIType() == UNITAI_WORKER)
 					{
 						if (pTargetUnit->getTeam() == eTargetTeam) break;
-						pTargetUnit = NULL;
 					}
 				}
 			}

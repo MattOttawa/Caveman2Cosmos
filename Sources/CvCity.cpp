@@ -1175,11 +1175,9 @@ void CvCity::kill(bool bUpdatePlotGroups, bool bUpdateCulture)
 	{
 		if (GET_PLAYER((PlayerTypes)iI).isAlive())
 		{
-			for (int iJ = 0; iJ < GET_PLAYER((PlayerTypes)iI).getNumUnits(); iJ++)
+			foreach_(CvUnit* unitX, GET_PLAYER((PlayerTypes)iI).units())
 			{
-				CvUnit* unitX = GET_PLAYER((PlayerTypes)iI).getUnit(iJ);
-
-				if (unitX != NULL && unitX->getUnitInfo().getUnitAIType(UNITAI_ICBM) && unitX->isMADEnabled()
+				if (unitX->getUnitInfo().getUnitAIType(UNITAI_ICBM) && unitX->isMADEnabled()
 				&& at(unitX->getMADTargetPlotX(), unitX->getMADTargetPlotY())
 				&& (unitX->getX() != INVALID_PLOT_COORD || unitX->getY() != INVALID_PLOT_COORD))
 				{
