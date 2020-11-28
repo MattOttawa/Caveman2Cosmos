@@ -4,14 +4,12 @@
 */
 #include "CvGameCoreDLL.h"
 #include "CounterSet.h"
+#include "array.h"
 
 CounterSet::CounterSet() { init(8); }
 
-CounterSet::~CounterSet()
-{
-	SAFE_DELETE_ARRAY(iArrCounters);
-	SAFE_DELETE_ARRAY(iArrCurrentIDs);
-}
+CounterSet::~CounterSet() {}
+
 
 CounterSet::CounterSet(const int iNumCounters)
 {
@@ -22,14 +20,8 @@ void CounterSet::init(const int iNumCounters)
 {
 	iSize = safeCoercion(iNumCounters);
 	iNext = 0;
-	iArrCounters = new uint16_t[iSize];
-	iArrCurrentIDs = new int[iSize];
-
-	for (int iI = 0; iI < iSize; iI++)
-	{
-		iArrCounters[iI] = 0;
-		iArrCurrentIDs[iI] = 0;
-	}
+	iArrCounters.init(static_cast<size_t>(iSize), 0);
+	iArrCurrentIDs.init(static_cast<size_t>(iSize), 0);
 }
 
 uint16_t CounterSet::getCount(const int ID)

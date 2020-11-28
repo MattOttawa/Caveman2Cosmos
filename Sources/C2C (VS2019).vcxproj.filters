@@ -476,6 +476,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="array.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="BetterBTSAI.h">
       <Filter>Header Files</Filter>
     </ClInclude>

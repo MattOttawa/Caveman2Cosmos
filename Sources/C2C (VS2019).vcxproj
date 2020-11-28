@@ -342,6 +342,7 @@
     <ClCompile Include="IntExpr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="array.h" />
     <ClInclude Include="algorithm2.h" />
     <ClInclude Include="BetterBTSAI.h" />
     <ClInclude Include="copy_iterator.h" />
