@@ -3,57 +3,43 @@
 #ifndef custom_array_h__
 #define custom_array_h__
 
-template <class T>
-class array
+namespace seq
 {
-public:
-	array() { }
-
-	explicit array(const array<T>& source)
-		: m_array(source)
-	{ }
-
-	explicit array(const size_t& size, const T value)
+	template <class T>
+	class array
 	{
-		init(size, value);
-	}
+	public:
+		array() { }
 
-	~array()
-	{
-		delete[] m_array;
-	}
-
-	void init(const size_t& size, const T value)
-	{
-		m_array = new T[size];
-		for (uint32_t i = 0; i < size; i++)
+		~array()
 		{
-			m_array[i] = value;
+			if (m_array)
+				delete[] m_array;
 		}
-	}
 
-	void init(const size_t& size, const array<T>& source)
-	{
-		m_array = new T[size];
-		for (uint32_t i = 0; i < size; i++)
+		void init(size_t size, T value)
 		{
-			m_array[i] = source[i];
+			m_array = new T[size];
+			for (uint32_t i = 0; i < size; i++)
+			{
+				m_array[i] = value;
+			}
 		}
-	}
 
-	T& operator[](int index) const
-	{
-		FASSERT_BOUNDS(0, size(), static_cast<size_t>(index))
-		return m_array[index];
-	}
+		T& operator[](const uint32_t& index) const
+		{
+			FASSERT_BOUNDS(0, size(), index)
+			return m_array[index];
+		}
 
-protected:
-	size_t size() const
-	{
-		return sizeof(m_array) / sizeof(T);
-	}
+	protected:
+		size_t size() const
+		{
+			return sizeof(m_array) / sizeof(T);
+		}
 
-	T* m_array;
-};
+		T* m_array;
+	};
+}
 
 #endif

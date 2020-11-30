@@ -9,8 +9,8 @@ class CounterSet
 {
 	uint16_t iNext;
 	uint16_t iSize;
-	array<uint16_t> iArrCounters;
-	array<int> iArrCurrentIDs;
+	seq::array<uint16_t> iArrCounters;
+	seq::array<int> iArrCurrentIDs;
 
 	void assign(const int ID, const uint16_t iValue);
 
