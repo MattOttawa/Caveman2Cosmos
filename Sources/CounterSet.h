@@ -5,8 +5,6 @@
 
 #include "array.h"
 
-//class array;
-
 class CounterSet
 {
 	uint16_t iNext;

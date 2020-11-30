@@ -11,7 +11,7 @@ public:
 
 	explicit array(const array<T>& source)
 		: m_array(source)
-		{}
+	{ }
 
 	explicit array(const size_t& size, const T value)
 	{
