@@ -4163,7 +4163,7 @@ class CvMainInterface:
 				else:
 					szTxt = TRNSLTR.getText("INTERFACE_CITY_PRODUCTION_WHIP", (CyCity.getProductionNameKey(), CyCity.getProductionTurnsLeft(), iHurryPop, iOverflow))
 			elif bShowWhipAssist and CyCity.canHurry(HURRY_BUY, False):
-				iHurryCost = CyCity.hurryGold(HURRY_BUY)
+				iHurryCost = CyCity.getHurryGold(HURRY_BUY)
 				szTxt = TRNSLTR.getText("INTERFACE_CITY_PRODUCTION_BUY", (CyCity.getProductionNameKey(), CyCity.getProductionTurnsLeft(), iHurryCost))
 			else:
 				szTxt = TRNSLTR.getText("INTERFACE_CITY_PRODUCTION", (CyCity.getProductionNameKey(), CyCity.getProductionTurnsLeft()))
@@ -5239,18 +5239,17 @@ class CvMainInterface:
 			elif BASE == "PlotList":
 				if TYPE in ("Button", "Health"):
 					CyUnit = self.aPlotListList[ID][0]
-					if not CyUnit.getGroup().isNone():
-						if TYPE == "Button":
-							szTxt = CyGameTextMgr().getSpecificUnitHelp(CyUnit, False, False)
-							x = self.xRes / 4
-							y = self.yPlotListTT
-							self.dataTT = [bCtrl, bShift, bAlt, "spcfc", CyUnit]
-						elif TYPE == "Health":
-							szTxt = "HP: %d/%d" %(CyUnit.currHitPoints(), CyUnit.maxHitPoints())
-							x = -1
-							y = -1
-						else: return
-						self.updateTooltip(screen, szTxt, x, y)
+					if TYPE == "Button":
+						szTxt = CyGameTextMgr().getSpecificUnitHelp(CyUnit, False, False)
+						x = self.xRes / 4
+						y = self.yPlotListTT
+						self.dataTT = [bCtrl, bShift, bAlt, "spcfc", CyUnit]
+					elif TYPE == "Health":
+						szTxt = "HP: %d/%d" %(CyUnit.currHitPoints(), CyUnit.maxHitPoints())
+						x = -1
+						y = -1
+					else: return
+					self.updateTooltip(screen, szTxt, x, y)
 
 			elif BASE == "BldgList":
 				if TYPE == "Demolish":
