@@ -3,12 +3,14 @@
 #ifndef COUNTER_SET_H
 #define COUNTER_SET_H
 
+#include "array.h"
+
 class CounterSet
 {
 	uint16_t iNext;
 	uint16_t iSize;
-	uint16_t* iArrCounters;
-	int* iArrCurrentIDs;
+	seq::array<uint16_t> iArrCounters;
+	seq::array<int> iArrCurrentIDs;
 
 	void assign(const int ID, const uint16_t iValue);
 
