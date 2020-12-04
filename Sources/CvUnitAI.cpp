@@ -16155,14 +16155,9 @@ bool CvUnitAI::AI_spreadCorporationAirlift()
 		return false;
 	}
 
-	CvCity* pCity = plot()->getPlotCity();
+	const CvCity* pCity = plot()->getPlotCity();
 
-	if (pCity == NULL)
-	{
-		return false;
-	}
-
-	if (pCity->getMaxAirlift() == 0)
+	if (pCity == NULL || pCity->getMaxAirlift() == 0)
 	{
 		return false;
 	}
@@ -17599,7 +17594,7 @@ namespace {
 			const CvTeam& otherTeam = GET_TEAM(otherPlayer.getTeam());
 
 			if (otherPlayer.isAlive()
-				&& (TeamTypes(otherPlayer.getTeam()) == player.getTeam() || otherTeam.isVassal((TeamTypes)otherPlayer.getTeam()))
+				&& (otherPlayer.getTeam() == player.getTeam() || otherTeam.isVassal(otherPlayer.getTeam())) // is otherPlayer a vassal of itself?
 				&& pUnitPlot->isHasPathToPlayerCity(player.getTeam(), playerType)
 				)
 			{
@@ -21002,15 +20997,12 @@ bool CvUnitAI::AI_blockade()
 {
 	PROFILE_FUNC();
 
-	CvPlot* pBestPlot;
-	CvPlot* pBestBlockadePlot;
 	int iValue;
-	int iBestValue;
 	int iBestRange;
 
-	iBestValue = 0;
-	pBestPlot = NULL;
-	pBestBlockadePlot = NULL;
+	int iBestValue = 0;
+	CvPlot* pBestPlot = NULL;
+	CvPlot* pBestBlockadePlot = NULL;
 
 	CvReachablePlotSet plotSet(getGroup(), 0, MAX_INT);
 
@@ -27714,15 +27706,15 @@ bool CvUnitAI::AI_nuke()
 	const CvCity* pBestCity = NULL;
 	int iBestValue = 0;
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(CvPlayer* player, CvPlayerAI::players())
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive() && !GET_PLAYER((PlayerTypes)iI).isNPC())
+		if (player->isAlive() && !player->isNPC())
 		{
-			if (isEnemy(GET_PLAYER((PlayerTypes)iI).getTeam()))
+			if (isEnemy(player->getTeam()))
 			{
-				if (GET_PLAYER(getOwner()).AI_getAttitude((PlayerTypes)iI) == ATTITUDE_FURIOUS)
+				if (GET_PLAYER(getOwner()).AI_getAttitude(player->getID()) == ATTITUDE_FURIOUS)
 				{
-					foreach_(const CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
+					foreach_(const CvCity* pLoopCity, player->cities())
 					{
 						if (canNukeAt(plot(), pLoopCity->getX(), pLoopCity->getY()))
 						{

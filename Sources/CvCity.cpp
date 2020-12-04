@@ -15801,12 +15801,12 @@ void CvCity::setHasReligion(ReligionTypes eIndex, bool bNewValue, bool bAnnounce
 		checkReligiousDisablingAllBuildings();
 	}
 
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+	foreach_(CvPlayer* player, CvPlayerAI::players())
 	{
-		if (!GET_PLAYER((PlayerTypes) iI).isHuman()
-		&& (getTeam() == GET_PLAYER((PlayerTypes)iI).getTeam() || GET_TEAM(getTeam()).isVassal(GET_PLAYER((PlayerTypes)iI).getTeam())))
+		if (!player->isHuman()
+		&& (getTeam() == player->getTeam() || GET_TEAM(getTeam()).isVassal(player->getTeam())))
 		{
-			GET_PLAYER((PlayerTypes)iI).AI_setHasInquisitionTarget();
+			static_cast<CvPlayerAI*>(player)->AI_setHasInquisitionTarget();
 		}
 	}
 }
@@ -17395,26 +17395,23 @@ void CvCity::doReligion()
 				{
 					int iRandThreshold = 0;
 
-					for (int iJ = 0; iJ < MAX_PLAYERS; iJ++)
+					foreach_(const CvPlayer* player, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 					{
-						if (GET_PLAYER((PlayerTypes)iJ).isAlive())
+						foreach_(const CvCity* pLoopCity, player->cities())
 						{
-							foreach_(const CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iJ).cities())
+							if (pLoopCity->isConnectedTo(this))
 							{
-								if (pLoopCity->isConnectedTo(this))
+								int iSpread = pLoopCity->getReligionInfluence((ReligionTypes)iI);
+
+								iSpread *= GC.getReligionInfo((ReligionTypes)iI).getSpreadFactor();
+
+								if (iSpread > 0)
 								{
-									int iSpread = pLoopCity->getReligionInfluence((ReligionTypes)iI);
+									iSpread /= std::max(1, (((GC.getRELIGION_SPREAD_DISTANCE_DIVISOR() * plotDistance(getX(), getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
 
-									iSpread *= GC.getReligionInfo((ReligionTypes)iI).getSpreadFactor();
+									iSpread /= (getReligionCount() + 1);
 
-									if (iSpread > 0)
-									{
-										iSpread /= std::max(1, (((GC.getRELIGION_SPREAD_DISTANCE_DIVISOR() * plotDistance(getX(), getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
-
-										iSpread /= (getReligionCount() + 1);
-
-										iRandThreshold = std::max(iRandThreshold, iSpread);
-									}
+									iRandThreshold = std::max(iRandThreshold, iSpread);
 								}
 							}
 						}
@@ -22429,36 +22426,32 @@ void CvCity::doCorporation()
 				if (!kOwner.isNoCorporations() && (!kOwner.isNoForeignCorporations() || GC.getGame().getHeadquarters((CorporationTypes)iI)->getOwner() == getOwner()))
 				{
 					int iRandThreshold = 0;
-					for (int iJ = 0; iJ < MAX_PLAYERS; iJ++)
+					foreach_(const CvPlayer* player, CvPlayerAI::players() | filtered(CvPlayer::fn::isAlive()))
 					{
-						const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iJ);
-						if (kPlayer.isAlive())
+						foreach_(const CvCity* pLoopCity, player->cities())
 						{
-							foreach_(const CvCity* pLoopCity, kPlayer.cities())
+							if (pLoopCity->isConnectedTo(this))
 							{
-								if (pLoopCity->isConnectedTo(this))
+								int iSpread = pLoopCity->getCorporationInfluence((CorporationTypes)iI);
+
+								iSpread *= GC.getCorporationInfo((CorporationTypes)iI).getSpread();
+
+								iSpread /= 100;
+
+								if (player->getID() != kOwner.getID())
 								{
-									int iSpread = pLoopCity->getCorporationInfluence((CorporationTypes)iI);
-
-									iSpread *= GC.getCorporationInfo((CorporationTypes)iI).getSpread();
-
-									iSpread /= 100;
-
-									if (kPlayer.getID() != kOwner.getID())
+									if (GET_TEAM(player->getTeam()).isFreeTradeAgreement(kOwner.getTeam()))
 									{
-										if (GET_TEAM(kPlayer.getTeam()).isFreeTradeAgreement(kOwner.getTeam()))
-										{
-											iSpread *= (100 + GC.getFREE_TRADE_CORPORATION_SPREAD_MOD());
-											iSpread /= 100;
-										}
+										iSpread *= (100 + GC.getFREE_TRADE_CORPORATION_SPREAD_MOD());
+										iSpread /= 100;
 									}
+								}
 
-									if (iSpread > 0)
-									{
-										iSpread /= std::max(1, (((GC.getCORPORATION_SPREAD_DISTANCE_DIVISOR() * plotDistance(getX(), getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
+								if (iSpread > 0)
+								{
+									iSpread /= std::max(1, (((GC.getCORPORATION_SPREAD_DISTANCE_DIVISOR() * plotDistance(getX(), getY(), pLoopCity->getX(), pLoopCity->getY())) / GC.getMap().maxPlotDistance()) - 5));
 
-										iRandThreshold = std::max(iRandThreshold, iSpread);
-									}
+									iRandThreshold = std::max(iRandThreshold, iSpread);
 								}
 							}
 						}

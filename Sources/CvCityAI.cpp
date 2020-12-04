@@ -6990,21 +6990,23 @@ ProjectTypes CvCityAI::AI_bestProject() const
 
 int CvCityAI::AI_projectValue(ProjectTypes eProject) const
 {
+	const CvProjectInfo& kProject = GC.getProjectInfo(eProject);
+
 	int iValue = 0;
 
-	if (GC.getProjectInfo(eProject).getNukeInterception() > 0)
+	if (kProject.getNukeInterception() > 0)
 	{
 		if (GC.getGame().canTrainNukes())
 		{
-			iValue += (GC.getProjectInfo(eProject).getNukeInterception() / 10);
+			iValue += (kProject.getNukeInterception() / 10);
 		}
 	}
 
-	if (GC.getProjectInfo(eProject).getTechShare() > 0)
+	if (kProject.getTechShare() > 0)
 	{
-		if (GC.getProjectInfo(eProject).getTechShare() < GET_TEAM(getTeam()).getHasMetCivCount(true))
+		if (kProject.getTechShare() < GET_TEAM(getTeam()).getHasMetCivCount(true))
 		{
-			iValue += (20 / GC.getProjectInfo(eProject).getTechShare());
+			iValue += (20 / kProject.getTechShare());
 		}
 	}
 
@@ -7012,16 +7014,15 @@ int CvCityAI::AI_projectValue(ProjectTypes eProject) const
 	{
 		if (GC.getGame().isVictoryValid((VictoryTypes)iI))
 		{
-			iValue += (std::max(0, (GC.getProjectInfo(eProject).getVictoryThreshold(iI) - GET_TEAM(getTeam()).getProjectCount(eProject))) * 20);
+			iValue += (std::max(0, (kProject.getVictoryThreshold(iI) - GET_TEAM(getTeam()).getProjectCount(eProject))) * 20);
 		}
 	}
 
 	for (int iI = 0; iI < GC.getNumProjectInfos(); iI++)
 	{
-		iValue += (std::max(0, (GC.getProjectInfo((ProjectTypes)iI).getProjectsNeeded(eProject) - GET_TEAM(getTeam()).getProjectCount(eProject))) * 10);
+		iValue += (std::max(0, (kProject.getProjectsNeeded(eProject) - GET_TEAM(getTeam()).getProjectCount(eProject))) * 10);
 	}
 
-	const CvProjectInfo& kProject = GC.getProjectInfo(eProject);	//New Project Valuations Begin
 	int iOurNumCities = GET_PLAYER(getOwner()).getNumCities();
 	int iOurHappy = kProject.getGlobalHappiness();
 	int iOurHealth = kProject.getGlobalHealth();
@@ -7046,12 +7047,12 @@ int CvCityAI::AI_projectValue(ProjectTypes eProject) const
 	{
 		iTempValue += 4 * iOurNumCities * iWorldHappy;
 		iTempValue += 4 * iOurNumCities * iWorldHealth;
-		for (int iI = 0; iI < MAX_PLAYERS; iI++)
+		foreach_(const CvPlayer* player, CvPlayerAI::players())
 		{
-			if (GET_PLAYER((PlayerTypes)iI).isAlive() && !GET_PLAYER((PlayerTypes)iI).isMinorCiv() && GET_PLAYER((PlayerTypes)iI).getID() != getOwner())
+			if (player->isAlive() && !player->isMinorCiv() && player->getID() != getOwner())
 			{
-				int iNumCities = GET_PLAYER((PlayerTypes)iI).getNumCities();
-				int iAttitude = GET_PLAYER(getOwner()).AI_getAttitude((PlayerTypes)iI);
+				const int iNumCities = player->getNumCities();
+				const int iAttitude = GET_PLAYER(getOwner()).AI_getAttitude(player->getID());
 				switch(iAttitude)
 				{
 					case ATTITUDE_FURIOUS:
