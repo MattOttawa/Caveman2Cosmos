@@ -322,44 +322,7 @@ bool CvXMLLoadUtility::SetPostGlobalsGlobalDefines()
 		SetGlobalDefine("SHALLOW_WATER_TERRAIN", szVal);
 		idx = GetInfoClass(szVal);
 		GC.getDefinesVarSystem()->SetValue("SHALLOW_WATER_TERRAIN", idx);
-//GWMod Start M.A.
-		SetGlobalDefine("FROZEN_TERRAIN", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("FROZEN_TERRAIN", idx);
-		
-		SetGlobalDefine("COLD_TERRAIN", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("COLD_TERRAIN", idx);
-		
-		SetGlobalDefine("TEMPERATE_TERRAIN", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("TEMPERATE_TERRAIN", idx);
-		
-		SetGlobalDefine("DRY_TERRAIN", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("DRY_TERRAIN", idx);
-		
-		SetGlobalDefine("BARREN_TERRAIN", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("BARREN_TERRAIN", idx);
 
-		SetGlobalDefine("COLD_FEATURE", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("COLD_FEATURE", idx);
-
-		SetGlobalDefine("TEMPERATE_FEATURE", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("TEMPERATE_FEATURE", idx);
-
-		SetGlobalDefine("WARM_FEATURE", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("WARM_FEATURE", idx);
-		
-		SetGlobalDefine("MARSH_TERRAIN", szVal);
-		idx = GetInfoClass(szVal);
-		GC.getDefinesVarSystem()->SetValue("MARSH_TERRAIN", idx);
-
-//GWMod end M.A.
 		SetGlobalDefine("LAND_IMPROVEMENT", szVal);
 		idx = GetInfoClass(szVal);
 		GC.getDefinesVarSystem()->SetValue("LAND_IMPROVEMENT", idx);

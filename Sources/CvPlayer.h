@@ -354,8 +354,6 @@ public:
 	void convert(ReligionTypes eReligion);
 	bool hasHolyCity(ReligionTypes eReligion) const;
 	bool hasHolyCity() const;
-	bool hasStateReligionHolyCity() const;
-	bool hasStateReligionShrine() const;
 
 	int countHolyCities() const;
 	void foundReligion(ReligionTypes eReligion, ReligionTypes eSlotReligion, bool bAward);
@@ -1233,7 +1231,6 @@ public:
 
 	void launch(VictoryTypes victoryType);
 
-	bool hasShrine(ReligionTypes eReligion) const;
 	int getVotes(VoteTypes eVote, VoteSourceTypes eVoteSource) const;
 	void processVoteSourceBonus(VoteSourceTypes eVoteSource, bool bActive);
 	bool canDoResolution(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kData) const;
@@ -1666,9 +1663,6 @@ public:
 	virtual void AI_assignWorkingPlots() = 0;
 	virtual void AI_updateAssignWork() = 0;
 	virtual void AI_makeProductionDirty() = 0;
-
-	//virtual void AI_doCentralizedProduction() = 0;
-
 	virtual void AI_conquerCity(CvCity* pCity) = 0;
 	virtual int AI_foundValue(int iX, int iY, int iMinUnitRange = -1, bool bStartingLoc = false) const = 0;
 	virtual bool AI_isCommercePlot(const CvPlot* pPlot) const = 0;

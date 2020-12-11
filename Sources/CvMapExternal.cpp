@@ -75,12 +75,6 @@ void CvMapExternal::updateFog()
 }
 
 
-void CvMapExternal::updateVisibility()
-{
-	m_proxiedMap->updateVisibility();
-}
-
-
 void CvMapExternal::updateSymbolVisibility()
 {
 	m_proxiedMap->updateSymbolVisibility();
@@ -103,11 +97,6 @@ CvCity* CvMapExternal::findCity(int iX, int iY, PlayerTypes eOwner, TeamTypes eT
 	return m_proxiedMap->findCity(iX, iY, eOwner, eTeam, bSameArea, bCoastalOnly, eTeamAtWarWith, eDirection, pSkipCity);
 }
 
-CvSelectionGroup* CvMapExternal::findSelectionGroup(int iX, int iY, PlayerTypes eOwner, bool bReadyToSelect, bool bWorkers) const
-{
-	return m_proxiedMap->findSelectionGroup(iX, iY, eOwner, bReadyToSelect, bWorkers);
-}
-
 bool CvMapExternal::isPlot(int iX, int iY) const
 {
 	return m_proxiedMap->isPlot(iX, iY);
@@ -119,27 +108,9 @@ int CvMapExternal::numPlots() const
 }
 
 
-int CvMapExternal::plotNum(int iX, int iY) const
-{
-	return m_proxiedMap->plotNum(iX, iY);
-}
-
-
-int CvMapExternal::pointXToPlotX(float fX) const
-{
-	return m_proxiedMap->pointXToPlotX(fX);
-}
-
-
 float CvMapExternal::plotXToPointX(int iX)
 {
 	return m_proxiedMap->plotXToPointX(iX);
-}
-
-
-int CvMapExternal::pointYToPlotY(float fY) const
-{
-	return m_proxiedMap->pointYToPlotY(fY);
 }
 
 
@@ -158,18 +129,6 @@ int CvMapExternal::getGridWidth() const
 int CvMapExternal::getGridHeight() const
 {
 	return m_proxiedMap->getGridHeight();
-}
-
-
-int CvMapExternal::getLandPlots() const
-{
-	return m_proxiedMap->getLandPlots();
-}
-
-
-int CvMapExternal::getOwnedPlots() const
-{
-	return m_proxiedMap->getOwnedPlots();
 }
 
 
@@ -194,30 +153,6 @@ bool CvMapExternal::isWrap()
 WorldSizeTypes CvMapExternal::getWorldSize()
 {
 	return m_proxiedMap->getWorldSize();
-}
-
-
-ClimateTypes CvMapExternal::getClimate() const
-{
-	return m_proxiedMap->getClimate();
-}
-
-
-SeaLevelTypes CvMapExternal::getSeaLevel() const
-{
-	return m_proxiedMap->getSeaLevel();
-}
-
-
-int CvMapExternal::getNumCustomMapOptions() const
-{
-	return m_proxiedMap->getNumCustomMapOptions();
-}
-
-
-CustomMapOptionTypes CvMapExternal::getCustomMapOption(int iOption) const
-{
-	return m_proxiedMap->getCustomMapOption(iOption);
 }
 
 
@@ -250,18 +185,6 @@ CvPlot* CvMapExternal::plot(int iX, int iY) const
 CvPlot* CvMapExternal::pointToPlot(float fX, float fY)
 {
 	return m_proxiedMap->pointToPlot(fX, fY);
-}
-
-
-int CvMapExternal::getNumAreas() const
-{
-	return m_proxiedMap->getNumAreas();
-}
-
-
-int CvMapExternal::getNumLandAreas() const
-{
-	return m_proxiedMap->getNumLandAreas();
 }
 
 

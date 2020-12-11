@@ -164,19 +164,15 @@ public:
 	bool isMapTrading() const;
 	void changeMapTradingCount(int iChange);
 
-	int getCanPassPeaksCount() const;
 	bool isCanPassPeaks() const;
 	void changeCanPassPeaksCount(int iChange);
 
-	int getMoveFastPeaksCount() const;
 	bool isMoveFastPeaks() const;
 	void changeMoveFastPeaksCount(int iChange);
 
-	int getCanFoundOnPeaksCount() const;
 	bool isCanFoundOnPeaks() const;
 	void changeCanFoundOnPeaksCount(int iChange);
 
-	int getRebaseAnywhereCount() const;
 	bool isRebaseAnywhere() const;
 	void changeRebaseAnywhereCount(int iChange);
 
@@ -227,11 +223,9 @@ public:
 	int getBuildingYieldModifier(BuildingTypes eIndex1, YieldTypes eIndex2) const;
 	void changeBuildingYieldModifier(BuildingTypes eIndex1, YieldTypes eIndex2, int iChange);
 
-	int getLimitedBordersTradingCount() const;
 	bool isLimitedBordersTrading() const;
 	void changeLimitedBordersTradingCount(int iChange);
 
-	int getCanFarmDesertCount() const;
 	bool isCanFarmDesert() const;
 	void changeCanFarmDesertCount(int iChange);
 
@@ -324,7 +318,6 @@ public:
 	void changeWarWeariness(TeamTypes eIndex, int iChange);
 	void changeWarWearinessTimes100(TeamTypes eIndex, int iChange);
 
-	int getTechShareCount(int iIndex) const;
 	bool isTechShare(int iIndex) const;
 	void changeTechShareCount(int iIndex, int iChange);
 
@@ -390,7 +383,6 @@ public:
 	bool isBuildingMaxedOut(BuildingTypes eIndex, int iExtra = 0) const;
 	void changeBuildingCount(BuildingTypes eIndex, int iChange);
 
-	int getObsoleteBuildingCount(BuildingTypes eIndex) const;
 	bool isObsoleteBuilding(BuildingTypes eIndex) const;
 	void changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange);
 
@@ -402,11 +394,9 @@ public:
 	int getTechCount(TechTypes eIndex) const;
 	int getBestKnownTechScorePercent() const;
 
-	int getTerrainTradeCount(TerrainTypes eIndex) const;
 	bool isTerrainTrade(TerrainTypes eIndex) const;
 	void changeTerrainTradeCount(TerrainTypes eIndex, int iChange);
 
-	int getRiverTradeCount() const;
 	bool isRiverTrade() const;
 	void changeRiverTradeCount(int iChange);
 

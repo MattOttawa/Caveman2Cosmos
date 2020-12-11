@@ -139,7 +139,6 @@ DECLARE_FLAGS(ECacheAccess::flags);
 // Feature macros
 //
 // #define STRENGTH_IN_NUMBERS
-// #define GLOBAL_WARMING
 // #define THE_GREAT_WALL
 // #define NOMADIC_START
 

@@ -3772,16 +3772,10 @@ void CvTeam::changeWarWearinessTimes100(TeamTypes eOtherTeam, const CvPlot& kPlo
 }
 
 
-int CvTeam::getTechShareCount(int iIndex) const
-{
-	FASSERT_BOUNDS(0, MAX_TEAMS, iIndex)
-	return m_aiTechShareCount[iIndex];
-}
-
-
 bool CvTeam::isTechShare(int iIndex) const
 {
-	return (getTechShareCount(iIndex) > 0);
+	FASSERT_BOUNDS(0, MAX_TEAMS, iIndex)
+	return m_aiTechShareCount[iIndex] > 0;
 }
 
 
@@ -3792,7 +3786,7 @@ void CvTeam::changeTechShareCount(int iIndex, int iChange)
 	if (iChange != 0)
 	{
 		m_aiTechShareCount[iIndex] += iChange;
-		FAssert(getTechShareCount(iIndex) >= 0);
+		FAssert(m_aiTechShareCount[iIndex] >= 0);
 
 		if (isTechShare(iIndex))
 		{
@@ -4884,16 +4878,10 @@ void CvTeam::changeBuildingCount(BuildingTypes eIndex, int iChange)
 }
 
 
-int CvTeam::getObsoleteBuildingCount(BuildingTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, GC.getNumBuildingInfos(), eIndex)
-	return m_paiObsoleteBuildingCount[eIndex];
-}
-
-
 bool CvTeam::isObsoleteBuilding(BuildingTypes eIndex) const
 {
-	return (getObsoleteBuildingCount(eIndex) > 0);
+	FASSERT_BOUNDS(0, GC.getNumBuildingInfos(), eIndex)
+	return m_paiObsoleteBuildingCount[eIndex] > 0;
 }
 
 
@@ -4904,7 +4892,7 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 	if (iChange != 0)
 	{
 		m_paiObsoleteBuildingCount[eIndex] += iChange;
-		FAssert(getObsoleteBuildingCount(eIndex) >= 0);
+		FAssert(m_paiObsoleteBuildingCount[eIndex] >= 0);
 
 		for (int iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -5022,20 +5010,14 @@ int CvTeam::getBestKnownTechScorePercent() const
 }
 
 
-int CvTeam::getTerrainTradeCount(TerrainTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
-	return m_paiTerrainTradeCount[eIndex];
-}
-
-
 bool CvTeam::isTerrainTrade(TerrainTypes eIndex) const
 {
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
 	if (isNPC())
 	{
 		return false;
 	}
-	return (getTerrainTradeCount(eIndex) > 0);
+	return m_paiTerrainTradeCount[eIndex] > 0;
 }
 
 
@@ -5046,7 +5028,7 @@ void CvTeam::changeTerrainTradeCount(TerrainTypes eIndex, int iChange)
 	if (iChange != 0)
 	{
 		m_paiTerrainTradeCount[eIndex] += iChange;
-		FAssert(getTerrainTradeCount(eIndex) >= 0);
+		FAssert(m_paiTerrainTradeCount[eIndex] >= 0);
 
 		for (int iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -5059,15 +5041,9 @@ void CvTeam::changeTerrainTradeCount(TerrainTypes eIndex, int iChange)
 }
 
 
-int CvTeam::getRiverTradeCount() const
-{
-	return m_iRiverTradeCount;
-}
-
-
 bool CvTeam::isRiverTrade() const
 {
-	return (getRiverTradeCount() > 0);
+	return m_iRiverTradeCount > 0;
 }
 
 
@@ -5076,7 +5052,7 @@ void CvTeam::changeRiverTradeCount(int iChange)
 	if (iChange != 0)
 	{
 		m_iRiverTradeCount += iChange;
-		FAssert(getRiverTradeCount() >= 0);
+		FAssert(m_iRiverTradeCount >= 0);
 
 		for (int iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -6982,55 +6958,35 @@ bool CvTeam::hasLaunched() const
 
 bool CvTeam::isCanPassPeaks() const
 {
-	return (getCanPassPeaksCount() > 0);
-}
-
-int CvTeam::getCanPassPeaksCount() const
-{
-	return m_iCanPassPeaksCount;
+	return m_iCanPassPeaksCount > 0;
 }
 
 void CvTeam::changeCanPassPeaksCount(int iChange)
 {
 	m_iCanPassPeaksCount += iChange;
-	FAssert(getCanPassPeaksCount() >= 0);
+	FAssert(m_iCanPassPeaksCount >= 0);
 }
 
 bool CvTeam::isMoveFastPeaks() const
 {
-	return (getMoveFastPeaksCount() > 0);
-}
-
-int CvTeam::getMoveFastPeaksCount() const
-{
-	return m_iMoveFastPeaksCount;
+	return m_iMoveFastPeaksCount > 0;
 }
 
 void CvTeam::changeMoveFastPeaksCount(int iChange)
 {
 	m_iMoveFastPeaksCount += iChange;
-	FAssert(getMoveFastPeaksCount() >= 0);
+	FAssert(m_iMoveFastPeaksCount >= 0);
 }
 
 bool CvTeam::isCanFoundOnPeaks() const
 {
-	return (getCanFoundOnPeaksCount() > 0);
-}
-
-int CvTeam::getCanFoundOnPeaksCount() const
-{
-	return m_iCanFoundOnPeaksCount;
+	return m_iCanFoundOnPeaksCount > 0;
 }
 
 void CvTeam::changeCanFoundOnPeaksCount(int iChange)
 {
 	m_iCanFoundOnPeaksCount += iChange;
-	FAssert(getCanFoundOnPeaksCount() >= 0);
-}
-
-int CvTeam::getRebaseAnywhereCount() const
-{
-	return m_iRebaseAnywhereCount;
+	FAssert(m_iCanFoundOnPeaksCount >= 0);
 }
 
 bool CvTeam::isRebaseAnywhere() const
@@ -7188,36 +7144,26 @@ void CvTeam::setTechExtraBuildingHealth(BuildingTypes eIndex, int iNewValue)
 }
 
 
-int CvTeam::getCanFarmDesertCount() const
-{
-	return m_iCanFarmDesertCount;
-}
-
 bool CvTeam::isCanFarmDesert() const
 {
-	return (getCanFarmDesertCount() > 0);
+	return m_iCanFarmDesertCount > 0;
 }
 
 void CvTeam::changeCanFarmDesertCount(int iChange)
 {
 	m_iCanFarmDesertCount += iChange;
-	FAssert(getCanFarmDesertCount() >= 0);
-}
-
-int CvTeam::getLimitedBordersTradingCount() const
-{
-	return m_iLimitedBordersTradingCount;
+	FAssert(m_iCanFarmDesertCount >= 0);
 }
 
 bool CvTeam::isLimitedBordersTrading() const
 {
-	return (getLimitedBordersTradingCount() > 0);
+	return m_iLimitedBordersTradingCount > 0;
 }
 
 void CvTeam::changeLimitedBordersTradingCount(int iChange)
 {
 	m_iLimitedBordersTradingCount += iChange;
-	FAssert(getLimitedBordersTradingCount() >= 0);
+	FAssert(m_iLimitedBordersTradingCount >= 0);
 }
 
 void CvTeam::signLimitedBorders(TeamTypes eTeam)

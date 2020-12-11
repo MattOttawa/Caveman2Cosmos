@@ -943,16 +943,10 @@ void CvArea::changeNumRevealedTiles(TeamTypes eIndex, int iChange)
 }
 
 
-int CvArea::getCleanPowerCount(TeamTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, MAX_TEAMS, eIndex);
-	return m_aiCleanPowerCount[eIndex];
-}
-
-
 bool CvArea::isCleanPower(TeamTypes eIndex) const
 {
-	return (getCleanPowerCount(eIndex) > 0);
+	FASSERT_BOUNDS(0, MAX_TEAMS, eIndex)
+	return m_aiCleanPowerCount[eIndex] > 0;
 }
 
 
@@ -980,12 +974,6 @@ void CvArea::changeCleanPowerCount(TeamTypes eIndex, int iChange)
 	}
 }
 
-
-int CvArea::getBorderObstacleCount(TeamTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, MAX_TEAMS, eIndex);
-	return m_aiBorderObstacleCount[eIndex];
-}
 
 bool CvArea::isBorderObstacle(TeamTypes eIndex) const
 {

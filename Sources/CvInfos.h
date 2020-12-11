@@ -884,19 +884,15 @@ public:
 	// bool vector without delayed resolution
 	int getSubCombatChangeType(int i) const;
 	int getNumSubCombatChangeTypes() const;
-	bool isSubCombatChangeType(int i) const;
 
 	int getRemovesUnitCombatType(int i) const;
 	int getNumRemovesUnitCombatTypes() const;
-	bool isRemovesUnitCombatType(int i) const;
 
 	int getOnGameOption(int i) const;
 	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
 
 	int getNotOnGameOption(int i) const;
 	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
 
 	int getFreetoUnitCombat(int i) const;
 	int getNumFreetoUnitCombats() const;
@@ -912,7 +908,6 @@ public:
 
 	int getNoAutoEquiptoCombatClassType(int i) const;
 	int getNumNoAutoEquiptoCombatClassTypes() const;
-	bool isNoAutoEquiptoCombatClassType(int i) const;
 
 	int getMapCategoryType(int i) const;
 	int getNumMapCategoryTypes() const;
@@ -925,53 +920,41 @@ public:
 
 	int getPrereqBonusType(int i) const;
 	int getNumPrereqBonusTypes() const;
-	bool isPrereqBonusType(int i) const;
 
 	int getAddsBuildType(int i) const;
 	int getNumAddsBuildTypes() const;
-	bool isAddsBuildType(int i) const;
 
 	int getNegatesInvisibilityType(int i) const;
 	int getNumNegatesInvisibilityTypes() const;
-	bool isNegatesInvisibilityType(int i) const;
 
 	int getPrereqTerrainType(int i) const;
 	int getNumPrereqTerrainTypes() const;
-	bool isPrereqTerrainType(int i) const;
 
 	int getPrereqFeatureType(int i) const;
 	int getNumPrereqFeatureTypes() const;
-	bool isPrereqFeatureType(int i) const;
 
 	int getPrereqImprovementType(int i) const;
 	int getNumPrereqImprovementTypes() const;
-	bool isPrereqImprovementType(int i) const;
 
 	int getPrereqPlotBonusType(int i) const;
 	int getNumPrereqPlotBonusTypes() const;
-	bool isPrereqPlotBonusType(int i) const;
 
 	int getPrereqLocalBuildingType(int i) const;
 	int getNumPrereqLocalBuildingTypes() const;
-	bool isPrereqLocalBuildingType(int i) const;
 
 	int getTrapSetWithPromotionType(int i) const;
 	int getNumTrapSetWithPromotionTypes() const;
-	bool isTrapSetWithPromotionType(int i) const;
 
 	int getTrapImmunityUnitCombatType(int i) const;
 	int getNumTrapImmunityUnitCombatTypes() const;
-	bool isTrapImmunityUnitCombatType(int i) const;
 
 	int getTargetUnitCombatType(int i) const;
 	int getNumTargetUnitCombatTypes() const;
-	bool isTargetUnitCombatType(int i) const;
 
 	// int vector utilizing pairing without delayed resolution
 
 	int getNumFlankingStrikesbyUnitCombatTypesChange() const;
 	int getFlankingStrengthbyUnitCombatTypeChange(int iUnitCombat) const;
-	bool isFlankingStrikebyUnitCombatTypeChange(int iUnitCombat) const;
 
 	int getNumWithdrawOnTerrainTypeChanges() const;
 	int getWithdrawOnTerrainTypeChange(int iTerrain) const;
@@ -981,84 +964,63 @@ public:
 
 	int getNumWithdrawVSUnitCombatChangeTypes() const;
 	int getWithdrawVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isWithdrawVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumPursuitVSUnitCombatChangeTypes() const;
 	int getPursuitVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
-	bool isPursuitVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
 
 	int getNumRepelVSUnitCombatChangeTypes() const;
 	int getRepelVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
-	bool isRepelVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
 
 	int getNumKnockbackVSUnitCombatChangeTypes() const;
 	int getKnockbackVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
-	bool isKnockbackVSUnitCombatChangeType(int iUnitCombat, bool bForLoad = false) const;
 
 	int getNumPunctureVSUnitCombatChangeTypes() const;
 	int getPunctureVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isPunctureVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumArmorVSUnitCombatChangeTypes() const;
 	int getArmorVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isArmorVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumDodgeVSUnitCombatChangeTypes() const;
 	int getDodgeVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isDodgeVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumPrecisionVSUnitCombatChangeTypes() const;
 	int getPrecisionVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isPrecisionVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumCriticalVSUnitCombatChangeTypes() const;
 	int getCriticalVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isCriticalVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumRoundStunVSUnitCombatChangeTypes() const;
 	int getRoundStunVSUnitCombatChangeType(int iUnitCombat) const;
-	bool isRoundStunVSUnitCombatChangeType(int iUnitCombat) const;
 
 	int getNumTrapDisableUnitCombatTypes() const;
 	int getTrapDisableUnitCombatType(int iUnitCombat) const;
-	bool isTrapDisableUnitCombatType(int iUnitCombat) const;
 
 	int getNumTrapAvoidanceUnitCombatTypes() const;
 	int getTrapAvoidanceUnitCombatType(int iUnitCombat) const;
-	bool isTrapAvoidanceUnitCombatType(int iUnitCombat) const;
 
 	int getNumTrapTriggerUnitCombatTypes() const;
 	int getTrapTriggerUnitCombatType(int iUnitCombat) const;
-	bool isTrapTriggerUnitCombatType(int iUnitCombat) const;
 
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
-	bool isAidChange(int iProperty) const;
-	//Team Project (4)
-	//WorkRateMod
+
 	int getNumTerrainWorkRateModifierChangeTypes() const;
 	int getTerrainWorkRateModifierChangeType(int iTerrain) const;
-	bool isTerrainWorkRateModifierChangeType(int iTerrain) const;
 
 	int getNumFeatureWorkRateModifierChangeTypes() const;
 	int getFeatureWorkRateModifierChangeType(int iFeature) const;
-	bool isFeatureWorkRateModifierChangeType(int iFeature) const;
 
 	int getNumBuildWorkRateModifierChangeTypes() const;
 	int getBuildWorkRateModifierChangeType(int iBuild) const;
-	bool isBuildWorkRateModifierChangeType(int iBuild) const;
 
 	int getNumVisibilityIntensityChangeTypes() const;
 	int getVisibilityIntensityChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumInvisibilityIntensityChangeTypes() const;
 	int getInvisibilityIntensityChangeType(int iInvisibility) const;
-	bool isInvisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumVisibilityIntensityRangeChangeTypes() const;
 	int getVisibilityIntensityRangeChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityRangeChangeType(int iInvisibility) const;
 
 	int getNumAIWeightbyUnitCombatTypes() const;
 	const UnitCombatModifier& getAIWeightbyUnitCombatType(int iUnitCombat) const;
@@ -2008,11 +1970,9 @@ public:
 
 	int getTrapSetWithPromotionType(int i) const;
 	int getNumTrapSetWithPromotionTypes() const;
-	bool isTrapSetWithPromotionType(int i) const;
 
 	int getTrapImmunityUnitCombatType(int i) const;
 	int getNumTrapImmunityUnitCombatTypes() const;
-	bool isTrapImmunityUnitCombatType(int i) const;
 
 	int getNumAfflictionFortitudeModifiers() const;
 	const PromotionLineModifier& getAfflictionFortitudeModifier(int iAffliction) const;
@@ -2063,7 +2023,6 @@ public:
 	// int vector utilizing pairing without delayed resolution
 	int getNumFlankingStrikesbyUnitCombatTypes() const;
 	int getFlankingStrengthbyUnitCombatType(int iUnitCombat) const;
-	bool isFlankingStrikebyUnitCombatType(int iUnitCombat) const;
 
 	int getNumWithdrawOnTerrainTypes() const;
 	int getWithdrawOnTerrainType(int iTerrain) const;
@@ -2073,102 +2032,79 @@ public:
 
 	int getNumWithdrawVSUnitCombatTypes() const;
 	int getWithdrawVSUnitCombatType(int iUnitCombat) const;
-	bool isWithdrawVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getWithdrawVSUnitCombatTypes() const;
 
 	int getNumPursuitVSUnitCombatTypes() const;
 	int getPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
-	bool isPursuitVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
 	const UnitCombatModifierArray& getPursuitVSUnitCombatTypes() const;
 
 	int getNumRepelVSUnitCombatTypes() const;
 	int getRepelVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
-	bool isRepelVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
 	const UnitCombatModifierArray& getRepelVSUnitCombatTypes() const;
 
 	int getNumKnockbackVSUnitCombatTypes() const;
 	int getKnockbackVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
-	bool isKnockbackVSUnitCombatType(int iUnitCombat, bool bForLoad = false) const;
 	const UnitCombatModifierArray& getKnockbackVSUnitCombatTypes() const;
 
 	int getNumPunctureVSUnitCombatTypes() const;
 	int getPunctureVSUnitCombatType(int iUnitCombat) const;
-	bool isPunctureVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getPunctureVSUnitCombatTypes() const;
 
 	int getNumArmorVSUnitCombatTypes() const;
 	int getArmorVSUnitCombatType(int iUnitCombat) const;
-	bool isArmorVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getArmorVSUnitCombatTypes() const;
 
 	int getNumDodgeVSUnitCombatTypes() const;
 	int getDodgeVSUnitCombatType(int iUnitCombat) const;
-	bool isDodgeVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getDodgeVSUnitCombatTypes() const;
 
 	int getNumPrecisionVSUnitCombatTypes() const;
 	int getPrecisionVSUnitCombatType(int iUnitCombat) const;
-	bool isPrecisionVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getPrecisionVSUnitCombatTypes() const;
 
 	int getNumCriticalVSUnitCombatTypes() const;
 	int getCriticalVSUnitCombatType(int iUnitCombat) const;
-	bool isCriticalVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getCriticalVSUnitCombatTypes() const;
 
 	int getNumRoundStunVSUnitCombatTypes() const;
 	int getRoundStunVSUnitCombatType(int iUnitCombat) const;
-	bool isRoundStunVSUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getRoundStunVSUnitCombatTypes() const;
 
 	int getNumTrapDisableUnitCombatTypes() const;
 	int getTrapDisableUnitCombatType(int iUnitCombat) const;
-	bool isTrapDisableUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getTrapDisableUnitCombatTypes() const;
 
 	int getNumTrapAvoidanceUnitCombatTypes() const;
 	int getTrapAvoidanceUnitCombatType(int iUnitCombat) const;
-	bool isTrapAvoidanceUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getTrapAvoidanceUnitCombatTypes() const;
 
 	int getNumTrapTriggerUnitCombatTypes() const;
 	int getTrapTriggerUnitCombatType(int iUnitCombat) const;
-	bool isTrapTriggerUnitCombatType(int iUnitCombat) const;
 	const UnitCombatModifierArray& getTrapTriggerUnitCombatTypes() const;
 
 	int getNumVisibilityIntensityTypes() const;
 	int getVisibilityIntensityType(int iInvisibility) const;
-	bool isVisibilityIntensityType(int iInvisibility) const;
 	const InvisibilityArray& getVisibilityIntensityTypes() const;
 
 	int getNumInvisibilityIntensityTypes() const;
 	int getInvisibilityIntensityType(int iInvisibility) const;
-	bool isInvisibilityIntensityType(int iInvisibility) const;
 	const InvisibilityArray& getInvisibilityIntensityTypes() const;
 
 	int getNumVisibilityIntensityRangeTypes() const;
 	int getVisibilityIntensityRangeType(int iInvisibility) const;
-	bool isVisibilityIntensityRangeType(int iInvisibility) const;
 	const InvisibilityArray& getVisibilityIntensityRangeTypes() const;
 
-	//Team Project (4)
-		//WorkRateMod
 	int getNumTerrainWorkRateModifierTypes() const;
 	int getTerrainWorkRateModifierType(int iTerrain) const;
-	bool isTerrainWorkRateModifierType(int iTerrain) const;
 
 	int getNumFeatureWorkRateModifierTypes() const;
 	int getFeatureWorkRateModifierType(int iFeature) const;
-	bool isFeatureWorkRateModifierType(int iFeature) const;
 
 	int getNumBuildWorkRateModifierTypes() const;
 	int getBuildWorkRateModifierType(int iBuild) const;
-	bool isBuildWorkRateModifierType(int iBuild) const;
 
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
-	bool isAidChange(int iProperty) const;
-
 
 	// TB Combat Mod End TB SubCombat Mod end
 	bool hasUnitCombat(UnitCombatTypes eUnitCombat) const;
@@ -4037,7 +3973,6 @@ public:
 	// Vectors
 	int getPrereqBonusType(int i) const;
 	int getNumPrereqBonusTypes() const;
-	bool isPrereqBonusType(int i) const;
 
 	int getMapCategoryType(int i) const;
 	int getNumMapCategoryTypes() const;
@@ -8263,11 +8198,9 @@ public:
 	// bool vector without delayed resolution
 	int getNotOnGameOption(int i) const;
 	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
 
 	int getOnGameOption(int i) const;
 	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
 
 	bool read(CvXMLLoadUtility* pXML);
 
@@ -9052,11 +8985,9 @@ public:
 
 	int getOnGameOption(int i) const;
 	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
 
 	int getNotOnGameOption(int i) const;
 	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
 
 	int getCriticalOriginCombatClassType(int i) const;
 	int getNumCriticalOriginCombatClassTypes() const;
@@ -9385,11 +9316,9 @@ public:
 
 	int getOnGameOption(int i) const;
 	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
 
 	int getNotOnGameOption(int i) const;
 	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
 
 	int getGGptsforUnitType(int i) const;
 	int getNumGGptsforUnitTypes() const;
@@ -9412,23 +9341,18 @@ public:
 
 	int getNumVisibilityIntensityChangeTypes() const;
 	int getVisibilityIntensityChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumInvisibilityIntensityChangeTypes() const;
 	int getInvisibilityIntensityChangeType(int iInvisibility) const;
-	bool isInvisibilityIntensityChangeType(int iInvisibility) const;
 
 	int getNumVisibilityIntensityRangeChangeTypes() const;
 	int getVisibilityIntensityRangeChangeType(int iInvisibility) const;
-	bool isVisibilityIntensityRangeChangeType(int iInvisibility) const;
 
 	int getNumVisibilityIntensitySameTileChangeTypes() const;
 	int getVisibilityIntensitySameTileChangeType(int iInvisibility) const;
-	bool isVisibilityIntensitySameTileChangeType(int iInvisibility) const;
 
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
-	bool isAidChange(int iProperty) const;
 
 	// int vector utilizing struct with delayed resolution
 	int getNumAfflictionFortitudeChangeModifiers() const;

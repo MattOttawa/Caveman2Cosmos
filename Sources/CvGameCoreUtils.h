@@ -265,7 +265,6 @@ void setListHelp(CvWStringBuffer& szBuffer, const wchar_t* szStart, const wchar_
 // PlotUnitFunc's...
 bool PUF_isGroupHead( const CvUnit* pUnit, int iData1 = -1, int iData2 = -1, const CvUnit* pThis = NULL);
 bool PUF_isPlayer( const CvUnit* pUnit, int iData1, int iData2 = -1, const CvUnit* pThis = NULL);
-bool PUF_isTeam( const CvUnit* pUnit, int iData1, int iData2 = -1, const CvUnit* pThis = NULL);
 bool PUF_isCombatTeam(const CvUnit* pUnit, int iData1, int iData2, const CvUnit* pThis = NULL);
 bool PUF_isOtherPlayer( const CvUnit* pUnit, int iData1, int iData2 = -1, const CvUnit* pThis = NULL);
 bool PUF_isOtherTeam( const CvUnit* pUnit, int iData1, int iData2 = -1, const CvUnit* pThis = NULL);

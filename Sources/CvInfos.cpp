@@ -4065,16 +4065,6 @@ int CvPromotionInfo::getNumSubCombatChangeTypes() const
 	return (int)m_aiSubCombatChangeTypes.size();
 }
 
-bool CvPromotionInfo::isSubCombatChangeType(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
-	if (find(m_aiSubCombatChangeTypes.begin(), m_aiSubCombatChangeTypes.end(), i) == m_aiSubCombatChangeTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getRemovesUnitCombatType(int i) const
 {
 	return m_aiRemovesUnitCombatTypes[i];
@@ -4083,16 +4073,6 @@ int CvPromotionInfo::getRemovesUnitCombatType(int i) const
 int CvPromotionInfo::getNumRemovesUnitCombatTypes() const
 {
 	return (int)m_aiRemovesUnitCombatTypes.size();
-}
-
-bool CvPromotionInfo::isRemovesUnitCombatType(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
-	if (find(m_aiRemovesUnitCombatTypes.begin(), m_aiRemovesUnitCombatTypes.end(), i) == m_aiRemovesUnitCombatTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionInfo::getOnGameOption(int i) const
@@ -4105,16 +4085,6 @@ int CvPromotionInfo::getNumOnGameOptions() const
 	return (int)m_aiOnGameOptions.size();
 }
 
-bool CvPromotionInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getNotOnGameOption(int i) const
 {
 	return m_aiNotOnGameOptions[i];
@@ -4123,16 +4093,6 @@ int CvPromotionInfo::getNotOnGameOption(int i) const
 int CvPromotionInfo::getNumNotOnGameOptions() const
 {
 	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvPromotionInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionInfo::getFreetoUnitCombat(int i) const
@@ -4205,16 +4165,6 @@ int CvPromotionInfo::getNumNoAutoEquiptoCombatClassTypes() const
 	return (int)m_aiNoAutoEquiptoCombatClassTypes.size();
 }
 
-bool CvPromotionInfo::isNoAutoEquiptoCombatClassType(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
-	if (find(m_aiNoAutoEquiptoCombatClassTypes.begin(), m_aiNoAutoEquiptoCombatClassTypes.end(), i) == m_aiNoAutoEquiptoCombatClassTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getMapCategoryType(int i) const
 {
 	return m_aiMapCategoryTypes[i];
@@ -4277,15 +4227,6 @@ int CvPromotionInfo::getNumPrereqBonusTypes() const
 	return (int)m_aiPrereqBonusTypes.size();
 }
 
-bool CvPromotionInfo::isPrereqBonusType(int i) const
-{
-	if (find(m_aiPrereqBonusTypes.begin(), m_aiPrereqBonusTypes.end(), i) == m_aiPrereqBonusTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getAddsBuildType(int i) const
 {
 	return m_aiAddsBuildTypes[i];
@@ -4294,15 +4235,6 @@ int CvPromotionInfo::getAddsBuildType(int i) const
 int CvPromotionInfo::getNumAddsBuildTypes() const
 {
 	return (int)m_aiAddsBuildTypes.size();
-}
-
-bool CvPromotionInfo::isAddsBuildType(int i) const
-{
-	if (find(m_aiAddsBuildTypes.begin(), m_aiAddsBuildTypes.end(), i) == m_aiAddsBuildTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionInfo::getNegatesInvisibilityType(int i) const
@@ -4315,15 +4247,6 @@ int CvPromotionInfo::getNumNegatesInvisibilityTypes() const
 	return (int)m_aiNegatesInvisibilityTypes.size();
 }
 
-bool CvPromotionInfo::isNegatesInvisibilityType(int i) const
-{
-	if (find(m_aiNegatesInvisibilityTypes.begin(), m_aiNegatesInvisibilityTypes.end(), i) == m_aiNegatesInvisibilityTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getPrereqTerrainType(int i) const
 {
 	return m_aiPrereqTerrainTypes[i];
@@ -4332,15 +4255,6 @@ int CvPromotionInfo::getPrereqTerrainType(int i) const
 int CvPromotionInfo::getNumPrereqTerrainTypes() const
 {
 	return (int)m_aiPrereqTerrainTypes.size();
-}
-
-bool CvPromotionInfo::isPrereqTerrainType(int i) const
-{
-	if (find(m_aiPrereqTerrainTypes.begin(), m_aiPrereqTerrainTypes.end(), i) == m_aiPrereqTerrainTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionInfo::getPrereqFeatureType(int i) const
@@ -4353,15 +4267,6 @@ int CvPromotionInfo::getNumPrereqFeatureTypes() const
 	return (int)m_aiPrereqFeatureTypes.size();
 }
 
-bool CvPromotionInfo::isPrereqFeatureType(int i) const
-{
-	if (find(m_aiPrereqFeatureTypes.begin(), m_aiPrereqFeatureTypes.end(), i) == m_aiPrereqFeatureTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getPrereqImprovementType(int i) const
 {
 	return m_aiPrereqImprovementTypes[i];
@@ -4370,15 +4275,6 @@ int CvPromotionInfo::getPrereqImprovementType(int i) const
 int CvPromotionInfo::getNumPrereqImprovementTypes() const
 {
 	return (int)m_aiPrereqImprovementTypes.size();
-}
-
-bool CvPromotionInfo::isPrereqImprovementType(int i) const
-{
-	if (find(m_aiPrereqImprovementTypes.begin(), m_aiPrereqImprovementTypes.end(), i) == m_aiPrereqImprovementTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionInfo::getPrereqPlotBonusType(int i) const
@@ -4391,15 +4287,6 @@ int CvPromotionInfo::getNumPrereqPlotBonusTypes() const
 	return (int)m_aiPrereqPlotBonusTypes.size();
 }
 
-bool CvPromotionInfo::isPrereqPlotBonusType(int i) const
-{
-	if (find(m_aiPrereqPlotBonusTypes.begin(), m_aiPrereqPlotBonusTypes.end(), i) == m_aiPrereqPlotBonusTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getPrereqLocalBuildingType(int i) const
 {
 	return m_aiPrereqLocalBuildingTypes[i];
@@ -4408,15 +4295,6 @@ int CvPromotionInfo::getPrereqLocalBuildingType(int i) const
 int CvPromotionInfo::getNumPrereqLocalBuildingTypes() const
 {
 	return (int)m_aiPrereqLocalBuildingTypes.size();
-}
-
-bool CvPromotionInfo::isPrereqLocalBuildingType(int i) const
-{
-	if (find(m_aiPrereqLocalBuildingTypes.begin(), m_aiPrereqLocalBuildingTypes.end(), i) == m_aiPrereqLocalBuildingTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionInfo::getTrapSetWithPromotionType(int i) const
@@ -4429,15 +4307,6 @@ int CvPromotionInfo::getNumTrapSetWithPromotionTypes() const
 	return (int)m_aiTrapSetWithPromotionTypes.size();
 }
 
-bool CvPromotionInfo::isTrapSetWithPromotionType(int i) const
-{
-	if (find(m_aiTrapSetWithPromotionTypes.begin(), m_aiTrapSetWithPromotionTypes.end(), i) == m_aiTrapSetWithPromotionTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getTrapImmunityUnitCombatType(int i) const
 {
 	return m_aiTrapImmunityUnitCombatTypes[i];
@@ -4448,15 +4317,6 @@ int CvPromotionInfo::getNumTrapImmunityUnitCombatTypes() const
 	return (int)m_aiTrapImmunityUnitCombatTypes.size();
 }
 
-bool CvPromotionInfo::isTrapImmunityUnitCombatType(int i) const
-{
-	if (find(m_aiTrapImmunityUnitCombatTypes.begin(), m_aiTrapImmunityUnitCombatTypes.end(), i) == m_aiTrapImmunityUnitCombatTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionInfo::getTargetUnitCombatType(int i) const
 {
 	return m_aiTargetUnitCombatTypes[i];
@@ -4465,15 +4325,6 @@ int CvPromotionInfo::getTargetUnitCombatType(int i) const
 int CvPromotionInfo::getNumTargetUnitCombatTypes() const
 {
 	return (int)m_aiTargetUnitCombatTypes.size();
-}
-
-bool CvPromotionInfo::isTargetUnitCombatType(int i) const
-{
-	if (find(m_aiTargetUnitCombatTypes.begin(), m_aiTargetUnitCombatTypes.end(), i) == m_aiTargetUnitCombatTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 // int vectors utilizing pairing without delayed resolution
@@ -4492,18 +4343,6 @@ int CvPromotionInfo::getFlankingStrengthbyUnitCombatTypeChange(int iUnitCombat) 
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isFlankingStrikebyUnitCombatTypeChange(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aFlankingStrengthbyUnitCombatTypeChange.begin(); it != m_aFlankingStrengthbyUnitCombatTypeChange.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumWithdrawOnTerrainTypeChanges() const
@@ -4557,18 +4396,6 @@ int CvPromotionInfo::getWithdrawVSUnitCombatChangeType(int iUnitCombat) const
 	return 0;
 }
 
-bool CvPromotionInfo::isWithdrawVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aWithdrawVSUnitCombatChangeTypes.begin(); it != m_aWithdrawVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumPursuitVSUnitCombatChangeTypes() const
 {
 	return m_aPursuitVSUnitCombatChangeTypes.size();
@@ -4588,23 +4415,6 @@ int CvPromotionInfo::getPursuitVSUnitCombatChangeType(int iUnitCombat, bool bFor
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isPursuitVSUnitCombatChangeType(int iUnitCombat, bool bForLoad) const
-{
-	if (!bForLoad && !GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT))
-	{
-		return false;
-	}
-
-	for (UnitCombatModifierArray::const_iterator it = m_aPursuitVSUnitCombatChangeTypes.begin(); it != m_aPursuitVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumRepelVSUnitCombatChangeTypes() const
@@ -4628,22 +4438,6 @@ int CvPromotionInfo::getRepelVSUnitCombatChangeType(int iUnitCombat, bool bForLo
 	return 0;
 }
 
-bool CvPromotionInfo::isRepelVSUnitCombatChangeType(int iUnitCombat, bool bForLoad) const
-{
-	if (!bForLoad && !GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
-	{
-		return false;
-	}
-	for (UnitCombatModifierArray::const_iterator it = m_aRepelVSUnitCombatChangeTypes.begin(); it != m_aRepelVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumKnockbackVSUnitCombatChangeTypes() const
 {
 	return m_aKnockbackVSUnitCombatChangeTypes.size();
@@ -4665,22 +4459,6 @@ int CvPromotionInfo::getKnockbackVSUnitCombatChangeType(int iUnitCombat, bool bF
 	return 0;
 }
 
-bool CvPromotionInfo::isKnockbackVSUnitCombatChangeType(int iUnitCombat, bool bForLoad) const
-{
-	if (!bForLoad && !GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
-	{
-		return false;
-	}
-	for (UnitCombatModifierArray::const_iterator it = m_aKnockbackVSUnitCombatChangeTypes.begin(); it != m_aKnockbackVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumPunctureVSUnitCombatChangeTypes() const
 {
 	return m_aPunctureVSUnitCombatChangeTypes.size();
@@ -4696,18 +4474,6 @@ int CvPromotionInfo::getPunctureVSUnitCombatChangeType(int iUnitCombat) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isPunctureVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aPunctureVSUnitCombatChangeTypes.begin(); it != m_aPunctureVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumArmorVSUnitCombatChangeTypes() const
@@ -4727,18 +4493,6 @@ int CvPromotionInfo::getArmorVSUnitCombatChangeType(int iUnitCombat) const
 	return 0;
 }
 
-bool CvPromotionInfo::isArmorVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aArmorVSUnitCombatChangeTypes.begin(); it != m_aArmorVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumDodgeVSUnitCombatChangeTypes() const
 {
 	return m_aDodgeVSUnitCombatChangeTypes.size();
@@ -4754,18 +4508,6 @@ int CvPromotionInfo::getDodgeVSUnitCombatChangeType(int iUnitCombat) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isDodgeVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aDodgeVSUnitCombatChangeTypes.begin(); it != m_aDodgeVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumPrecisionVSUnitCombatChangeTypes() const
@@ -4785,18 +4527,6 @@ int CvPromotionInfo::getPrecisionVSUnitCombatChangeType(int iUnitCombat) const
 	return 0;
 }
 
-bool CvPromotionInfo::isPrecisionVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aPrecisionVSUnitCombatChangeTypes.begin(); it != m_aPrecisionVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumCriticalVSUnitCombatChangeTypes() const
 {
 	return m_aCriticalVSUnitCombatChangeTypes.size();
@@ -4812,18 +4542,6 @@ int CvPromotionInfo::getCriticalVSUnitCombatChangeType(int iUnitCombat) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isCriticalVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aCriticalVSUnitCombatChangeTypes.begin(); it != m_aCriticalVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumRoundStunVSUnitCombatChangeTypes() const
@@ -4843,18 +4561,6 @@ int CvPromotionInfo::getRoundStunVSUnitCombatChangeType(int iUnitCombat) const
 	return 0;
 }
 
-bool CvPromotionInfo::isRoundStunVSUnitCombatChangeType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aRoundStunVSUnitCombatChangeTypes.begin(); it != m_aRoundStunVSUnitCombatChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumTrapDisableUnitCombatTypes() const
 {
 	return m_aTrapDisableUnitCombatTypes.size();
@@ -4870,18 +4576,6 @@ int CvPromotionInfo::getTrapDisableUnitCombatType(int iUnitCombat) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isTrapDisableUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapDisableUnitCombatTypes.begin(); it != m_aTrapDisableUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumTrapAvoidanceUnitCombatTypes() const
@@ -4901,18 +4595,6 @@ int CvPromotionInfo::getTrapAvoidanceUnitCombatType(int iUnitCombat) const
 	return 0;
 }
 
-bool CvPromotionInfo::isTrapAvoidanceUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapAvoidanceUnitCombatTypes.begin(); it != m_aTrapAvoidanceUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumTrapTriggerUnitCombatTypes() const
 {
 	return m_aTrapTriggerUnitCombatTypes.size();
@@ -4928,18 +4610,6 @@ int CvPromotionInfo::getTrapTriggerUnitCombatType(int iUnitCombat) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isTrapTriggerUnitCombatType(int iUnitCombat) const
-{
-	for (UnitCombatModifierArray::const_iterator it = m_aTrapTriggerUnitCombatTypes.begin(); it != m_aTrapTriggerUnitCombatTypes.end(); ++it)
-	{
-		if ((*it).first == (UnitCombatTypes)iUnitCombat)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumAidChanges() const
@@ -4959,20 +4629,6 @@ int CvPromotionInfo::getAidChange(int iProperty) const
 	return 0;
 }
 
-bool CvPromotionInfo::isAidChange(int iProperty) const
-{
-	for (AidArray::const_iterator it = m_aAidChanges.begin(); it != m_aAidChanges.end(); ++it)
-	{
-		if ((*it).first == (PropertyTypes)iProperty)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-//Team Project (4)
-	//WorkRateMod
 int CvPromotionInfo::getNumTerrainWorkRateModifierChangeTypes() const
 {
 	return m_aTerrainWorkRateModifierChangeTypes.size();
@@ -4988,18 +4644,6 @@ int CvPromotionInfo::getTerrainWorkRateModifierChangeType(int iTerrain) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isTerrainWorkRateModifierChangeType(int iTerrain) const
-{
-	for (TerrainModifierArray::const_iterator it = m_aTerrainWorkRateModifierChangeTypes.begin(); it != m_aTerrainWorkRateModifierChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (TerrainTypes)iTerrain)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumFeatureWorkRateModifierChangeTypes() const
@@ -5019,18 +4663,6 @@ int CvPromotionInfo::getFeatureWorkRateModifierChangeType(int iFeature) const
 	return 0;
 }
 
-bool CvPromotionInfo::isFeatureWorkRateModifierChangeType(int iFeature) const
-{
-	for (FeatureModifierArray::const_iterator it = m_aFeatureWorkRateModifierChangeTypes.begin(); it != m_aFeatureWorkRateModifierChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (FeatureTypes)iFeature)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumBuildWorkRateModifierChangeTypes() const
 {
 	return m_aBuildWorkRateModifierChangeTypes.size();
@@ -5046,18 +4678,6 @@ int CvPromotionInfo::getBuildWorkRateModifierChangeType(int iBuild) const
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isBuildWorkRateModifierChangeType(int iBuild) const
-{
-	for (BuildModifierArray::const_iterator it = m_aBuildWorkRateModifierChangeTypes.begin(); it != m_aBuildWorkRateModifierChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (BuildTypes)iBuild)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumVisibilityIntensityChangeTypes() const
@@ -5077,18 +4697,6 @@ int CvPromotionInfo::getVisibilityIntensityChangeType(int iInvisibility) const
 	return 0;
 }
 
-bool CvPromotionInfo::isVisibilityIntensityChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityChangeTypes.begin(); it != m_aVisibilityIntensityChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumInvisibilityIntensityChangeTypes() const
 {
 	return m_aInvisibilityIntensityChangeTypes.size();
@@ -5106,18 +4714,6 @@ int CvPromotionInfo::getInvisibilityIntensityChangeType(int iInvisibility) const
 	return 0;
 }
 
-bool CvPromotionInfo::isInvisibilityIntensityChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aInvisibilityIntensityChangeTypes.begin(); it != m_aInvisibilityIntensityChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvPromotionInfo::getNumVisibilityIntensityRangeChangeTypes() const
 {
 	return m_aVisibilityIntensityRangeChangeTypes.size();
@@ -5133,18 +4729,6 @@ int CvPromotionInfo::getVisibilityIntensityRangeChangeType(int iInvisibility) co
 		}
 	}
 	return 0;
-}
-
-bool CvPromotionInfo::isVisibilityIntensityRangeChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityRangeChangeTypes.begin(); it != m_aVisibilityIntensityRangeChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvPromotionInfo::getNumAIWeightbyUnitCombatTypes() const
@@ -14527,15 +14111,6 @@ int CvBuildInfo::getPrereqBonusType(int i) const
 int CvBuildInfo::getNumPrereqBonusTypes() const
 {
 	return (int)m_aiPrereqBonusTypes.size();
-}
-
-bool CvBuildInfo::isPrereqBonusType(int i) const
-{
-	if (find(m_aiPrereqBonusTypes.begin(), m_aiPrereqBonusTypes.end(), i) == m_aiPrereqBonusTypes.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvBuildInfo::getMapCategoryType(int i) const
@@ -33493,16 +33068,6 @@ int CvEventTriggerInfo::getNumNotOnGameOptions() const
 	return (int)m_aiNotOnGameOptions.size();
 }
 
-bool CvEventTriggerInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvEventTriggerInfo::getOnGameOption(int i) const
 {
 	return m_aiOnGameOptions[i];
@@ -33513,17 +33078,6 @@ int CvEventTriggerInfo::getNumOnGameOptions() const
 	return (int)m_aiOnGameOptions.size();
 }
 
-bool CvEventTriggerInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-//TBSpot
 void CvEventTriggerInfo::getCheckSum(unsigned int& iSum) const
 {
 	CheckSum(iSum, m_iPercentGamesActive);
@@ -37926,16 +37480,6 @@ int CvPromotionLineInfo::getNumOnGameOptions() const
 	return (int)m_aiOnGameOptions.size();
 }
 
-bool CvPromotionLineInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvPromotionLineInfo::getNotOnGameOption(int i) const
 {
 	return m_aiNotOnGameOptions[i];
@@ -37944,16 +37488,6 @@ int CvPromotionLineInfo::getNotOnGameOption(int i) const
 int CvPromotionLineInfo::getNumNotOnGameOptions() const
 {
 	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvPromotionLineInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvPromotionLineInfo::getCriticalOriginCombatClassType(int i) const
@@ -39554,15 +39088,6 @@ int CvUnitCombatInfo::getNumOnGameOptions() const
 	return (int)m_aiOnGameOptions.size();
 }
 
-bool CvUnitCombatInfo::isOnGameOption(int i) const
-{
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 int CvUnitCombatInfo::getNotOnGameOption(int i) const
 {
 	return m_aiNotOnGameOptions[i];
@@ -39571,15 +39096,6 @@ int CvUnitCombatInfo::getNotOnGameOption(int i) const
 int CvUnitCombatInfo::getNumNotOnGameOptions() const
 {
 	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvUnitCombatInfo::isNotOnGameOption(int i) const
-{
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
 }
 
 int CvUnitCombatInfo::getGGptsforUnitType(int i) const
@@ -39692,18 +39208,6 @@ int CvUnitCombatInfo::getVisibilityIntensityChangeType(int iInvisibility) const
 	return 0;
 }
 
-bool CvUnitCombatInfo::isVisibilityIntensityChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityChangeTypes.begin(); it != m_aVisibilityIntensityChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvUnitCombatInfo::getNumInvisibilityIntensityChangeTypes() const
 {
 	return m_aInvisibilityIntensityChangeTypes.size();
@@ -39719,18 +39223,6 @@ int CvUnitCombatInfo::getInvisibilityIntensityChangeType(int iInvisibility) cons
 		}
 	}
 	return 0;
-}
-
-bool CvUnitCombatInfo::isInvisibilityIntensityChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aInvisibilityIntensityChangeTypes.begin(); it != m_aInvisibilityIntensityChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
 }
 
 int CvUnitCombatInfo::getNumVisibilityIntensityRangeChangeTypes() const
@@ -39750,18 +39242,6 @@ int CvUnitCombatInfo::getVisibilityIntensityRangeChangeType(int iInvisibility) c
 	return 0;
 }
 
-bool CvUnitCombatInfo::isVisibilityIntensityRangeChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensityRangeChangeTypes.begin(); it != m_aVisibilityIntensityRangeChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 int CvUnitCombatInfo::getNumVisibilityIntensitySameTileChangeTypes() const
 {
 	return m_aVisibilityIntensitySameTileChangeTypes.size();
@@ -39778,19 +39258,6 @@ int CvUnitCombatInfo::getVisibilityIntensitySameTileChangeType(int iInvisibility
 	}
 	return 0;
 }
-
-bool CvUnitCombatInfo::isVisibilityIntensitySameTileChangeType(int iInvisibility) const
-{
-	for (InvisibilityArray::const_iterator it = m_aVisibilityIntensitySameTileChangeTypes.begin(); it != m_aVisibilityIntensitySameTileChangeTypes.end(); ++it)
-	{
-		if ((*it).first == (InvisibleTypes)iInvisibility)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
 
 int CvUnitCombatInfo::getNumAidChanges() const
 {
@@ -39809,18 +39276,6 @@ int CvUnitCombatInfo::getAidChange(int iProperty) const
 	return 0;
 }
 
-bool CvUnitCombatInfo::isAidChange(int iProperty) const
-{
-	for (AidArray::const_iterator it = m_aAidChanges.begin(); it != m_aAidChanges.end(); ++it)
-	{
-		if ((*it).first == (PropertyTypes)iProperty)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-// int vector utilizing struct with delayed resolution
 int CvUnitCombatInfo::getNumAfflictionFortitudeChangeModifiers() const
 {
 	return (int)m_aAfflictionFortitudeChangeModifiers.size();
