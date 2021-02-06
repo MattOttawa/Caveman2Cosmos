@@ -87,7 +87,6 @@ public:
 	CyPlot* sPlotByIndex(int iIndex);
 	CyPlot* plot(int iX, int iY);
 	CyPlot* sPlot(int iX, int iY) ;
-	CyPlot* pointToPlot(float fX, float fY);
 
 	int getIndexAfterLastArea();
 	int getNumAreas();

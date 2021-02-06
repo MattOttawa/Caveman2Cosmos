@@ -309,11 +309,6 @@ CyPlot* CyMap::sPlot(int iX, int iY)
 	return &p;
 }
 
-CyPlot* CyMap::pointToPlot(float fX, float fY)
-{
-	return m_pMap ? new CyPlot(m_pMap->pointToPlot(fX, fY)) : NULL;
-}
-
 int CyMap::getIndexAfterLastArea()
 {
 	return m_pMap ? m_pMap->getIndexAfterLastArea() : -1;

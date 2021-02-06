@@ -567,7 +567,7 @@ int CvTeamAI::AI_calculatePlotWarValue(const TeamTypes eTeam) const
 
 	for (int iI = 0; iI < map.numPlots(); iI++)
 	{
-		CvPlot* plot = map.plotByIndex(iI);
+		const CvPlot* plot = map.plotByIndex(iI);
 
 		if (plot->getTeam() == eTeam)
 		{

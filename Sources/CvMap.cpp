@@ -36,7 +36,7 @@
 
 // Public Functions...
 
-CvMap::CvMap(MapTypes eType) /* Parallel Maps */
+CvMap::CvMap(MapTypes eType)
 	: m_iGridWidth(0)
 	, m_iGridHeight(0)
 	, m_iLandPlots(0)
@@ -101,7 +101,13 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init other game data
 	gDLL->logMemState("CvMap before init plots");
-	m_pMapPlots = new CvPlot[numPlots()];
+	//m_pMapPlots = std::vector<CvPlot>(numPlots(), CvPlot());
+	//m_pMapPlots.reserve(numPlots());
+	//m_pMapPlots.resize(numPlots());
+	for (int iI = 0; iI < numPlots(); iI++)
+	{
+		m_pMapPlots.push_back(CvPlot());
+	}
 	for (int iX = 0; iX < getGridWidth(); iX++)
 	{
 		gDLL->callUpdater();
@@ -121,8 +127,6 @@ void CvMap::uninit()
 {
 	SAFE_DELETE_ARRAY(m_paiNumBonus);
 	SAFE_DELETE_ARRAY(m_paiNumBonusOnLand);
-
-	SAFE_DELETE_ARRAY(m_pMapPlots);
 
 	m_areas.uninit();
 
@@ -301,7 +305,7 @@ void CvMap::setupGraphical()
 {
 	PROFILE_FUNC();
 
-	if (GC.IsGraphicsInitialized() && m_pMapPlots != NULL)
+	if (GC.IsGraphicsInitialized() && m_pMapPlots.size() > 0)
 	{
 		for (int iI = 0; iI < numPlots(); iI++)
 		{
@@ -1032,7 +1036,7 @@ void CvMap::changeNumBonusesOnLand(BonusTypes eIndex, int iChange)
 }
 
 
-CvPlot* CvMap::pointToPlot(float fX, float fY) const
+CvPlot* CvMap::pointToPlot(float fX, float fY)
 {
 	return plot(pointXToPlotX(fX), pointYToPlotY(fY));
 }
@@ -1240,8 +1244,12 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	if (numPlots() > 0)
 	{
-		m_pMapPlots = new CvPlot[numPlots()];
-
+		//m_pMapPlots = std::vector<CvPlot>(numPlots());
+		//m_pMapPlots.reserve(numPlots());
+		for (int iI = 0; iI < numPlots(); iI++)
+		{
+			m_pMapPlots.push_back(CvPlot());
+		}
 		for (int iI = 0; iI < numPlots(); iI++)
 		{
 			m_pMapPlots[iI].read(pStream);
@@ -1357,7 +1365,7 @@ void CvMap::afterSwitch()
 {
 	PROFILE_FUNC();
 
-	if (m_pMapPlots == NULL)		// if it hasn't been initialized yet...
+	if (m_pMapPlots.size() == 0)		// if it hasn't been initialized yet...
 	{
 		if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
 		{

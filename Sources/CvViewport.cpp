@@ -749,17 +749,27 @@ CustomMapOptionTypes CvViewport::getCustomMapOption(int iOption) const
 	return m_pMap->getCustomMapOption(iOption);
 }
 
-CvPlot* CvViewport::plotByIndex(int iIndex) const
+CvPlot* CvViewport::plotByIndex(int iIndex)
 {
 	return plot(iIndex % m_iXSize, iIndex/m_iXSize);
 }
 
-CvPlot* CvViewport::plot(int iX, int iY) const
+const CvPlot* CvViewport::plotByIndex(int iIndex) const
+{
+	return plot(iIndex % m_iXSize, iIndex/m_iXSize);
+}
+
+CvPlot* CvViewport::plot(int iX, int iY)
 {
 	return m_pMap->plot(getMapXFromViewportX(iX), getMapYFromViewportY(iY));
 }
 
-CvPlot* CvViewport::pointToPlot(float fX, float fY) const
+const CvPlot* CvViewport::plot(int iX, int iY) const
+{
+	return m_pMap->plot(getMapXFromViewportX(iX), getMapYFromViewportY(iY));
+}
+
+CvPlot* CvViewport::pointToPlot(float fX, float fY)
 {
 	return plot(pointXToPlotX(fX), pointYToPlotY(fY));
 }
