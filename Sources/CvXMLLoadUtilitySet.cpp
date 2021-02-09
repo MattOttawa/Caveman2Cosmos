@@ -12,9 +12,6 @@
 #include "FVariableSystem.h"
 #include <iostream>
 
-// Macro for Setting Global Art Defines
-#define INIT_XML_GLOBAL_LOAD(xmlInfoPath, infoArray, numInfos)  SetGlobalClassInfo(infoArray, xmlInfoPath, numInfos);
-
 bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObject* cache)
 {
 	OutputDebugString("Reading Global Defines: Start");
@@ -1718,7 +1715,7 @@ void CvXMLLoadUtility::SetGameText(const wchar_t* szTextGroup, const wchar_t* sz
 //
 //------------------------------------------------------------------------------------------------------
 template <class T>
-void CvXMLLoadUtility::SetGlobalClassInfo(std::vector<T*>& aInfos, const wchar_t* szTagName, bool bTwoPass, CvInfoReplacements<T>* pReplacements)
+void CvXMLLoadUtility::SetGlobalClassInfo(std::vector<T*>& aInfos, const wchar_t* szTagName, CvInfoReplacements<T>* pReplacements)
 {
 	char szLog[256];
 	char* tmp = xercesc::XMLString::transcode(szTagName);
@@ -2007,7 +2004,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			bTwoPassReplacement = false;
 		}
-		bTwoPass = false;
 	}
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
@@ -2040,7 +2036,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 			else
 			{
 				GC.setModDir("NONE");
-				SetGlobalClassInfo(aInfos, szXmlPath, bTwoPass, pReplacements);
+				SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 			}
 		}
 
@@ -2074,7 +2070,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
 /************************************************************************************************/
-						SetGlobalClassInfo(aInfos, szXmlPath, bTwoPass, pReplacements);
+						SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 					}
 				}
 
@@ -2173,7 +2169,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
 /************************************************************************************************/
-						SetGlobalClassInfo(aInfos, szXmlPath, bTwoPass, pReplacements);
+						SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 					}
 				}
 
