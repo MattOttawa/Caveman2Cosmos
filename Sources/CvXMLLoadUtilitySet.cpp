@@ -1996,39 +1996,96 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 	CvXMLLoadUtilitySetMod pModEnumVector;
 	CvXMLLoadUtilityModTools p_szDirName;
 
-	if (!bLoaded)
+	std::vector<CvString> aszFiles;
+	const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+	pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
+	if (aszFiles.size() == 0)
+		aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
+
+	foreach_(const CvString& szFile, aszFiles)
 	{
-		std::vector<CvString> aszFiles;
-		const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
-		pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
-		if (aszFiles.size() == 0)
-			aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
+		bLoaded = LoadCivXml(NULL, szFile);
 
-		foreach_(const CvString& szFile, aszFiles)
+		if (!bLoaded)
 		{
-			bLoaded = LoadCivXml(NULL, szFile);
-
-			if (!bLoaded)
-			{
-				char szMessage[1024];
-				sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-				gDLL->MessageBox(szMessage, "XML Load Error");
-				break;
-			}
-			else
-			{
-				GC.setModDir("NONE");
-				SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
-			}
+			char szMessage[1024];
+			sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+			gDLL->MessageBox(szMessage, "XML Load Error");
+			break;
 		}
-
-		if (bLoaded)
+		else
 		{
-			if (gDLL->isModularXMLLoading())
+			GC.setModDir("NONE");
+			SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
+		}
+	}
+
+	if (bLoaded)
+	{
+		if (gDLL->isModularXMLLoading())
+		{
+			std::vector<CvString> aszFiles;
+			gDLL->enumerateFiles(aszFiles, CvString::format("modules\\*_%s.xml", szFileRoot));  // search for the modular files
+
+			foreach_(const CvString& szFile, aszFiles)
+			{
+				if (!LoadCivXml(NULL, szFile))
+				{
+					char szMessage[1024];
+					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+					gDLL->MessageBox(szMessage, "XML Load Error");
+				}
+				else
+				{
+/************************************************************************************************/
+/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
+					CvString szDirName = szFile.GetCString();	
+					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
+					GC.setModDir(szDirName);
+/************************************************************************************************/
+/* XML_MODULAR_ART_LOADING                 END                                                  */
+/************************************************************************************************/
+					SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
+				}
+			}
+
+			//AIAndy: Moved to this place so module stuff first pass is loaded before the second pass to the base XML
+			if (bTwoPass)
 			{
 				std::vector<CvString> aszFiles;
-				gDLL->enumerateFiles(aszFiles, CvString::format("modules\\*_%s.xml", szFileRoot));  // search for the modular files
+				CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+				pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
+				if(aszFiles.size() == 0)
+					aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
+				foreach_(const CvString& szFile, aszFiles)
+				{
+					if (!LoadCivXml(NULL, szFile))
+					{
+						char szMessage[1024];
+						sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+						gDLL->MessageBox(szMessage, "XML Load Error");
+						break;
+					}
+					else
+					{
+						GC.setModDir("NONE");
+						SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
+					}
+				}					
+			}
+
+/************************************************************************************************/
+/* MODULAR_LOADING_CONTROL                 05/17/08                                MRGENIE      */
+/*                                                                                              */
+/* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
+/* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
+/************************************************************************************************/
+			if (bTwoPass)	// reloop through the modules!
+			{
 				foreach_(const CvString& szFile, aszFiles)
 				{
 					if (!LoadCivXml(NULL, szFile))
@@ -2039,87 +2096,87 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 					}
 					else
 					{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 						CvString szDirName = szFile.GetCString();	
 						szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 						GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
-						SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
+						SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
 					}
 				}
-
-				//AIAndy: Moved to this place so module stuff first pass is loaded before the second pass to the base XML
-				if (bTwoPass)
-				{
-					std::vector<CvString> aszFiles;
-					CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
-					pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
-					if(aszFiles.size() == 0)
-						aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
-
-					foreach_(const CvString& szFile, aszFiles)
-					{
-						if (!LoadCivXml(NULL, szFile))
-						{
-							char szMessage[1024];
-							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-							gDLL->MessageBox(szMessage, "XML Load Error");
-							break;
-						}
-						else
-						{
-							GC.setModDir("NONE");
-							SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
-						}
-					}					
-				}
-
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 05/17/08                                MRGENIE      */
-/*                                                                                              */
-/* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
-/* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
-/************************************************************************************************/
-				if (bTwoPass)	// reloop through the modules!
-				{
-					foreach_(const CvString& szFile, aszFiles)
-					{
-						if (!LoadCivXml(NULL, szFile))
-						{
-							char szMessage[1024];
-							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-							gDLL->MessageBox(szMessage, "XML Load Error");
-						}
-						else
-						{
-							CvString szDirName = szFile.GetCString();	
-							szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-							GC.setModDir(szDirName);
-							SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
-						}
-					}
-				}
+			}
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
-			}
+		}
 
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-			else
+		else
+		{
+			std::vector<CvString> aszFiles;
+			pModEnumVector.loadModControlArray(aszFiles, szFileRoot);
+
+			foreach_(const CvString& szFile, aszFiles)
+			{
+				if (!LoadCivXml(NULL, szFile))
+				{
+					char szMessage[1024];
+					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+					gDLL->MessageBox(szMessage, "XML Load Error");
+				}
+				else
+				{
+/************************************************************************************************/
+/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
+					CvString szDirName = szFile.GetCString();
+					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
+					GC.setModDir(szDirName);
+/************************************************************************************************/
+/* XML_MODULAR_ART_LOADING                 END                                                  */
+/************************************************************************************************/
+					SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
+				}
+			}
+
+			//AIAndy: Moved to this place so module stuff first pass is loaded before the second pass to the base XML
+			if (bTwoPass)
 			{
 				std::vector<CvString> aszFiles;
-				pModEnumVector.loadModControlArray(aszFiles, szFileRoot);
+				CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+				pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
+				if(aszFiles.size() == 0)
+					aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
+				foreach_(const CvString& szFile, aszFiles)
+				{
+					if (!LoadCivXml(NULL, szFile))
+					{
+						char szMessage[1024];
+						sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+						gDLL->MessageBox(szMessage, "XML Load Error");
+						break;
+					}
+					else
+					{
+						GC.setModDir("NONE");
+						SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
+					}
+				}	
+			}
+
+/************************************************************************************************/
+/* MODULAR_LOADING_CONTROL                 05/17/08                                MRGENIE      */
+/*                                                                                              */
+/* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
+/* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
+/************************************************************************************************/
+			if (bTwoPass)	// reloop through the modules!
+			{
 				foreach_(const CvString& szFile, aszFiles)
 				{
 					if (!LoadCivXml(NULL, szFile))
@@ -2130,79 +2187,19 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 					}
 					else
 					{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-						CvString szDirName = szFile.GetCString();
+						CvString szDirName = szFile.GetCString();	
 						szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 						GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
-						SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
+						SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
 					}
 				}
-
-				//AIAndy: Moved to this place so module stuff first pass is loaded before the second pass to the base XML
-				if (bTwoPass)
-				{
-					std::vector<CvString> aszFiles;
-					CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
-					pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
-					if(aszFiles.size() == 0)
-						aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
-
-					foreach_(const CvString& szFile, aszFiles)
-					{
-						if (!LoadCivXml(NULL, szFile))
-						{
-							char szMessage[1024];
-							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-							gDLL->MessageBox(szMessage, "XML Load Error");
-							break;
-						}
-						else
-						{
-							GC.setModDir("NONE");
-							SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
-						}
-					}	
-				}
-
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 05/17/08                                MRGENIE      */
-/*                                                                                              */
-/* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
-/* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
-/************************************************************************************************/
-				if (bTwoPass)	// reloop through the modules!
-				{
-					foreach_(const CvString& szFile, aszFiles)
-					{
-						if (!LoadCivXml(NULL, szFile))
-						{
-							char szMessage[1024];
-							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-							gDLL->MessageBox(szMessage, "XML Load Error");
-						}
-						else
-						{
-							CvString szDirName = szFile.GetCString();	
-							szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-							GC.setModDir(szDirName);
-							SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
-						}
-					}
-				}
+			}
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
-			}
-
-			m_pParser->resetDocumentPool();
 		}
+
+		m_pParser->resetDocumentPool();
 	}
 
 	//if (NULL != pArgFunction)
