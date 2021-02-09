@@ -3497,18 +3497,15 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const cha
 	bool bContinue = true;
 	int m_iDirDepth = 0;
 
-	CvXMLLoadUtilityModTools* pProgramDir = new CvXMLLoadUtilityModTools;
+	CvXMLLoadUtilityModTools* pProgramDir;
 
 	std::string szDirDepth = "modules\\";
 	std::string szModDirectory = "modules";
 	std::string szConfigString;
 
-	bool bLoaded = LoadCivXml(NULL, CvString::format("%s\\MLF_%s.xml", szModDirectory.c_str(), szFileRoot));
-
-	if (!bLoaded)
+	if (!LoadCivXml(NULL, CvString::format("%s\\MLF_%s.xml", szModDirectory.c_str(), szFileRoot)))
 	{
 		DEBUG_LOG("MLF.log", "MLF not found, you will now load the modules without Modular Loading Control");
-		SAFE_DELETE(pProgramDir);
 		return false;
 	}	
 	else
@@ -3523,21 +3520,18 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const cha
 			if (szConfigString == "NONE")
 			{
 				DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_%s.xml\" was set to \"NONE\", you will continue loading the regular Firaxian method", szModDirectory.c_str(), szFileRoot);
-				SAFE_DELETE(pProgramDir);
 				return false;   // abort without enumerating anything
 			}
 		}
 		else 
 		{
 			DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_%s.xml\" couldn't be found, you will continue loading using the regular Firaxian method", szModDirectory.c_str(), szFileRoot);
-			SAFE_DELETE(pProgramDir);
 			return false;
 		}
 
 		if (!SetModLoadControlInfo(aInfos, szXmlPath, szConfigString, szDirDepth, m_iDirDepth))
 		{
 			DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_%s.xml\" set by you could not be found, please check your XML settings!", szModDirectory.c_str(), szFileRoot);
-			SAFE_DELETE(pProgramDir);
 			return false;
 		}
 
@@ -3562,39 +3556,33 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const cha
 							//each new loop we load the previous dir, and check if a MLF file exist on a lower level
 							szModDirectory = GC.getModLoadControlInfos(iInfos).getModuleFolder(i);					
 							
+							bool bLoaded = false;
 							//Check if this Modulefolder is parent to a child MLF							
-							if ( pProgramDir->isModularArt(CvString::format("%s\\MLF_%s.xml", szModDirectory.c_str(), szFileRoot)))
+							if (pProgramDir.isModularArt(CvString::format("%s\\MLF_%s.xml", szModDirectory.c_str(), szFileRoot)))
 							{
 								bLoaded = LoadCivXml(NULL, CvString::format("%s\\MLF_%s.xml", szModDirectory.c_str(), szFileRoot));
-							}
-							else
-							{
-								bLoaded = false;
 							}
 
 							if (!bLoaded)
 							{
 								DEBUG_LOG("MLF.log", "Found module: \"%s\\\"", szModDirectory.c_str());
 							}
-							else
+							else if (TryMoveToXmlFirstMatchingElement(L"/Civ4ModularLoadControls/DefaultConfiguration"))
 							{
-								if ( TryMoveToXmlFirstMatchingElement(L"/Civ4ModularLoadControls/DefaultConfiguration"))
+								// call the function that sets the FXml pointer to the first non-comment child of
+								// the current tag and gets the value of that new node
+
+								GetXmlVal(szConfigString, "NONE");
+
+								if (szConfigString == "NONE") 
 								{
-									// call the function that sets the FXml pointer to the first non-comment child of
-									// the current tag and gets the value of that new node
-
-									GetXmlVal(szConfigString, "NONE");
-
-									if (szConfigString == "NONE") 
-									{
-										DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_%s.xml\" was set to \"NONE\", settings in this file will be disregarded", szModDirectory.c_str(), szFileRoot);
-									}
-									else
-									{
-										szDirDepth = CvString::format("%s\\", szModDirectory.c_str());
-										SetModLoadControlInfo(aInfos, szXmlPath, szConfigString.c_str(), szDirDepth.c_str(), m_iDirDepth);
-										bContinue = true; //found a new MLF in a subdir, continue the loop
-									}
+									DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_%s.xml\" was set to \"NONE\", settings in this file will be disregarded", szModDirectory.c_str(), szFileRoot);
+								}
+								else
+								{
+									szDirDepth = CvString::format("%s\\", szModDirectory.c_str());
+									SetModLoadControlInfo(aInfos, szXmlPath, szConfigString.c_str(), szDirDepth.c_str(), m_iDirDepth);
+									bContinue = true; //found a new MLF in a subdir, continue the loop
 								}
 							}
 						}
@@ -3603,7 +3591,6 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const cha
 			}
 		}		
 	}
-	SAFE_DELETE(pProgramDir);
 	return true;
 }
 
