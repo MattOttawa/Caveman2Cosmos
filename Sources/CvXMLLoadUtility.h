@@ -782,16 +782,6 @@ private:
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
-/************************************************************************************************/
-/* SORT_ALPHABET                           11/17/07                                MRGENIE      */
-/*                                                                                              */
-/* Method for alphabetically order tags                                                         */
-/************************************************************************************************/
-//	template <class T>
-//	void SortAlphabetGlobalClassInfo(std::vector<T*>& aInfos);
-/************************************************************************************************/
-/* SORT_ALPHABET                           END                                                  */
-/************************************************************************************************/
 	// find the tag name in the xml file and set the string parameter and num val parameter based on it's value
 	void SetGlobalStringArray(CvString** ppszString, wchar_t* szTagName, int* iNumVals, bool bUseEnum=false);
 	void SetDiplomacyCommentTypes(CvString** ppszString, int* iNumVals);	// sets diplomacy comments
@@ -822,17 +812,7 @@ private:
 /************************************************************************************************/
 	template <class T>
 	void LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bTwoPass, CvInfoReplacements<T>* pReplacements = NULL);
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 05/13/08                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	/*
-	template <class T>
-	void LoadGlobalClassInfoModular(std::vector<T*>& aInfos, const char* szFileRoot, const char* szFileDirectory, const char* szXmlPath, bool bTwoPass);*/
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
+
 	void SetDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const wchar_t* szTagName);
 	void LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bUseCaching);
 

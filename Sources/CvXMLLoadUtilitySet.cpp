@@ -3436,46 +3436,6 @@ bool CvXMLLoadUtility::SetModLoadControlInfo(std::vector<T*>& aInfos, const wcha
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
 
-/************************************************************************************************/
-/* SORT_ALPHABET                           11/17/07                                MRGENIE      */
-/*                                                                                              */
-/* Method for alphabetically order tags                                                         */
-/************************************************************************************************/
-//template <class T>
-//void CvXMLLoadUtility::SortAlphabetGlobalClassInfo(std::vector<T*>& aInfos)
-//{
-//	int iLenghtInfos = aInfos.size();	//Number of Elements
-//	T* pTempClassInfo = new T;	// Temp to store while swapping positions
-//
-//	for ( int iI = 0; iI < iLenghtInfos; iI++ )
-//	{
-//		int minIndex = iI; //stores index of the min array value		
-//	
-//		for ( int iJ = iI + 1; iJ < iLenghtInfos; iJ++ )
-//		{
-//			if ( CvWString::format(aInfos[iJ]->getTextKeyWide()) < CvWString::format(aInfos[minIndex]->getTextKeyWide()) )
-//			{
-//				minIndex = iJ;
-//			}
-//		}
-//	    
-//		//swap the Info classes at positions iI and minIndex		
-//		pTempClassInfo = aInfos[minIndex];
-//		aInfos[minIndex] = aInfos[iI];
-//		aInfos[iI] = pTempClassInfo;		// This is the actual new order
-//
-//		// Set the InfoTypeFromString map properly according to the new alphabetical order
-//		if (NULL != aInfos[iI]->getType())
-//		{
-//			// overwrite existing info maps with the proper id's
-//			GC.setInfoTypeFromString(aInfos[iI]->getType(), iI);
-//		}
-//	}
-//}
-/************************************************************************************************/
-/* SORT_ALPHABET                           END                                                  */
-/************************************************************************************************/
-
 /*************************************************************************************************/
 /**	New Tag Defs	(XMLInfos)				08/09/08								Xienwolf	**/
 /**																								**/
