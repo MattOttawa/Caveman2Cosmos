@@ -14,9 +14,7 @@
 
 bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObject* cache)
 {
-	OutputDebugString("Reading Global Defines: Start");
-
-	bool bLoaded = false;	// used to make sure that the xml file was loaded correctly
+	OutputDebugString("Reading Global Defines: Start\n");
 
 	if (!gDLL->cacheRead(cache, szXMLFileName))			// src data file name
 	{
@@ -27,16 +25,7 @@ bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObje
 		}
 
 		// load the new FXml variable with the szXMLFileName file
-		bLoaded = LoadCivXml(NULL, szXMLFileName);
-		if (!bLoaded)
-		{
-			char szMessage[1024];
-			sprintf( szMessage, "LoadXML call failed for %s \n Current XML file is: %s", szXMLFileName, GC.getCurrentXMLFile().GetCString());
-			gDLL->MessageBox(szMessage, "XML Load Error");
-		}
-
-		// if the load succeeded we will continue
-		else //if (bLoaded)
+		if (LoadCivXml(NULL, szXMLFileName))
 		{
 			// locate the first define tag in the xml
 			if (TryMoveToXmlFirstMatchingElement(L"/Civ4Defines/Define"))
@@ -93,10 +82,8 @@ bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObje
 				}
 				while(TryMoveToXmlNextSibling());
 
-
 				// write global defines info to cache
-				bool bOk = gDLL->cacheWrite(cache);
-				if (!bOk)
+				if (!gDLL->cacheWrite(cache))
 				{
 					char szMessage[1024];
 					sprintf( szMessage, "Failed writing to global defines cache. \n Current XML file is: %s", GC.getCurrentXMLFile().GetCString());
@@ -135,8 +122,6 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 {
 	OutputDebugString("Setting Global Defines: Start\n");
 
-	bool bLoaded = false;
-
 	UpdateProgressCB("GlobalDefines");
 
 	/////////////////////////////////
@@ -144,145 +129,141 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 	// use disk cache if possible.
 	// if no cache or cache is older than xml file, use xml file like normal, else read from cache
 	//
-	if ( !bLoaded )
+	CvCacheObject* cache = gDLL->createGlobalDefinesCacheObject("GlobalDefines.dat");	// cache file name
+
+	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: GlobalDefines\n");
+
+	if (!ReadGlobalDefines("xml\\GlobalDefines.xml", cache))
 	{
-		CvCacheObject* cache = gDLL->createGlobalDefinesCacheObject("GlobalDefines.dat");	// cache file name
-
-		DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: GlobalDefines\n");
-
-		if (!ReadGlobalDefines("xml\\GlobalDefines.xml", cache))
-		{
-			return false;
-		}
-
-		if (!ReadGlobalDefines("xml\\GlobalDefinesAlt.xml", cache))
-		{
-			return false;
-		}
-
-		if (!ReadGlobalDefines("xml\\PythonCallbackDefines.xml", cache))
-		{
-			return false;
-		}
-
-		//	Parallel maps
-		if (!ReadGlobalDefines("xml\\ParallelMaps_GlobalDefines.xml", cache))
-		{
-			FErrorMsg("ParallelMaps_GlobalDefines Failed to load!");
-		}
-
-		//Affores
-		if (!ReadGlobalDefines("xml\\A_New_Dawn_GlobalDefines.xml", cache))
-		{
-			FErrorMsg("A_New_Dawn_GlobalDefines Failed to load!");
-		}
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD                      02/21/10                                jdog5000      */
-	/*                                                                                              */
-	/* XML Options                                                                                  */
-	/************************************************************************************************/
-		if (!ReadGlobalDefines("xml\\BBAI_Game_Options_GlobalDefines.xml", cache))
-		{
-			FErrorMsg("BBAI_Game_Options_GlobalDefines Failed to load!");
-		}
-
-		if (!ReadGlobalDefines("xml\\BBAI_AI_Variables_GlobalDefines.xml", cache))
-		{
-			FErrorMsg("BBAI_AI_Variables_GlobalDefines Failed to load!");
-		}
-
-		if (!ReadGlobalDefines("xml\\TechDiffusion_GlobalDefines.xml", cache))
-		{
-			FErrorMsg("TechDiffusion_GlobalDefines Failed to load!");
-		}
-
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD                       END                                                  */
-	/************************************************************************************************/
-	/************************************************************************************************/
-	/* TGA_INDEXATION                          02/19/08                                MRGENIE      */
-	/*                                                                                              */
-	/* reading the Defines to know the modded TGA icons                                             */
-	/************************************************************************************************/
-		if (!ReadGlobalDefines("res\\Fonts\\GameFont_GlobalDefines.xml", cache))
-		{
-			FErrorMsg("The \"GameFont_GlobalDefines.xml\" must reside in the \"Mods\\World of Civilization\\Assets\\res\\Fonts\" directory next to the 2 GameFont.tga files");
-		}
-	/************************************************************************************************/
-	/* TGA_INDEXATION                          END                                                  */
-	/************************************************************************************************/
-
-		if (gDLL->isModularXMLLoading())
-		{
-			std::vector<CvString> aszFiles;
-			gDLL->enumerateFiles(aszFiles, "modules\\*_GlobalDefines.xml");
-
-			for (std::vector<CvString>::iterator it = aszFiles.begin(); it != aszFiles.end(); ++it)
-			{
-				if (!ReadGlobalDefines(*it, cache))
-				{
-					OutputDebugString("Setting Global Defines: End\n");
-					return false;
-				}
-			}
-
-			std::vector<CvString> aszModularFiles;
-			gDLL->enumerateFiles(aszModularFiles, "modules\\*_PythonCallbackDefines.xml");
-
-			for (std::vector<CvString>::iterator it = aszModularFiles.begin(); it != aszModularFiles.end(); ++it)
-			{
-				if (!ReadGlobalDefines(*it, cache))
-				{
-					OutputDebugString("Setting Global Defines: End\n");
-					return false;
-				}
-			}
-		}
-	/************************************************************************************************/
-	/* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
-	/*                                                                                              */
-	/*                                                                                              */
-	/************************************************************************************************/
-		else
-		{
-			std::vector<CvString> aszFiles;		
-			CvXMLLoadUtilitySetMod* pModEnumVector = new CvXMLLoadUtilitySetMod;
-			//aszFiles.reserve(10000);
-			pModEnumVector->loadModControlArray(aszFiles, "globaldefines");
-
-			for (std::vector<CvString>::iterator it = aszFiles.begin(); it != aszFiles.end(); ++it)
-			{
-				if (!ReadGlobalDefines(*it, cache))
-				{
-					SAFE_DELETE(pModEnumVector);
-					OutputDebugString("Setting Global Defines: End\n");
-					return false;
-				}
-			}
-
-			std::vector<CvString> aszModularFiles;
-			//aszModularFiles.reserve(10000);
-			pModEnumVector->loadModControlArray(aszModularFiles, "pythoncallbackdefines");
-			SAFE_DELETE(pModEnumVector);
-
-			for (std::vector<CvString>::iterator it = aszModularFiles.begin(); it != aszModularFiles.end(); ++it)
-			{
-				if (!ReadGlobalDefines(*it, cache))
-				{
-					OutputDebugString("Setting Global Defines: End\n");
-					return false;
-				}
-			}
-			aszFiles.clear();
-			aszModularFiles.clear();
-		}
-	/************************************************************************************************/
-	/* MODULAR_LOADING_CONTROL                 END                                                  */
-	/************************************************************************************************/
-
-		gDLL->destroyCache(cache);
+		return false;
 	}
-	////////////////////////////////////////////////////////////////////////
+
+	if (!ReadGlobalDefines("xml\\GlobalDefinesAlt.xml", cache))
+	{
+		return false;
+	}
+
+	if (!ReadGlobalDefines("xml\\PythonCallbackDefines.xml", cache))
+	{
+		return false;
+	}
+
+	//	Parallel maps
+	if (!ReadGlobalDefines("xml\\ParallelMaps_GlobalDefines.xml", cache))
+	{
+		FErrorMsg("ParallelMaps_GlobalDefines Failed to load!");
+	}
+
+	//Affores
+	if (!ReadGlobalDefines("xml\\A_New_Dawn_GlobalDefines.xml", cache))
+	{
+		FErrorMsg("A_New_Dawn_GlobalDefines Failed to load!");
+	}
+/************************************************************************************************/
+/* BETTER_BTS_AI_MOD                      02/21/10                                jdog5000      */
+/*                                                                                              */
+/* XML Options                                                                                  */
+/************************************************************************************************/
+	if (!ReadGlobalDefines("xml\\BBAI_Game_Options_GlobalDefines.xml", cache))
+	{
+		FErrorMsg("BBAI_Game_Options_GlobalDefines Failed to load!");
+	}
+
+	if (!ReadGlobalDefines("xml\\BBAI_AI_Variables_GlobalDefines.xml", cache))
+	{
+		FErrorMsg("BBAI_AI_Variables_GlobalDefines Failed to load!");
+	}
+
+	if (!ReadGlobalDefines("xml\\TechDiffusion_GlobalDefines.xml", cache))
+	{
+		FErrorMsg("TechDiffusion_GlobalDefines Failed to load!");
+	}
+
+/************************************************************************************************/
+/* BETTER_BTS_AI_MOD                       END                                                  */
+/************************************************************************************************/
+/************************************************************************************************/
+/* TGA_INDEXATION                          02/19/08                                MRGENIE      */
+/*                                                                                              */
+/* reading the Defines to know the modded TGA icons                                             */
+/************************************************************************************************/
+	if (!ReadGlobalDefines("res\\Fonts\\GameFont_GlobalDefines.xml", cache))
+	{
+		FErrorMsg("The \"GameFont_GlobalDefines.xml\" must reside in the \"Mods\\World of Civilization\\Assets\\res\\Fonts\" directory next to the 2 GameFont.tga files");
+	}
+/************************************************************************************************/
+/* TGA_INDEXATION                          END                                                  */
+/************************************************************************************************/
+
+	if (gDLL->isModularXMLLoading())
+	{
+		std::vector<CvString> aszFiles;
+		gDLL->enumerateFiles(aszFiles, "modules\\*_GlobalDefines.xml");
+
+		for (std::vector<CvString>::iterator it = aszFiles.begin(); it != aszFiles.end(); ++it)
+		{
+			if (!ReadGlobalDefines(*it, cache))
+			{
+				OutputDebugString("Setting Global Defines: End\n");
+				return false;
+			}
+		}
+
+		std::vector<CvString> aszModularFiles;
+		gDLL->enumerateFiles(aszModularFiles, "modules\\*_PythonCallbackDefines.xml");
+
+		for (std::vector<CvString>::iterator it = aszModularFiles.begin(); it != aszModularFiles.end(); ++it)
+		{
+			if (!ReadGlobalDefines(*it, cache))
+			{
+				OutputDebugString("Setting Global Defines: End\n");
+				return false;
+			}
+		}
+	}
+/************************************************************************************************/
+/* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
+	else
+	{
+		std::vector<CvString> aszFiles;		
+		CvXMLLoadUtilitySetMod* pModEnumVector = new CvXMLLoadUtilitySetMod;
+		//aszFiles.reserve(10000);
+		pModEnumVector->loadModControlArray(aszFiles, "globaldefines");
+
+		for (std::vector<CvString>::iterator it = aszFiles.begin(); it != aszFiles.end(); ++it)
+		{
+			if (!ReadGlobalDefines(*it, cache))
+			{
+				SAFE_DELETE(pModEnumVector);
+				OutputDebugString("Setting Global Defines: End\n");
+				return false;
+			}
+		}
+
+		std::vector<CvString> aszModularFiles;
+		//aszModularFiles.reserve(10000);
+		pModEnumVector->loadModControlArray(aszModularFiles, "pythoncallbackdefines");
+		SAFE_DELETE(pModEnumVector);
+
+		for (std::vector<CvString>::iterator it = aszModularFiles.begin(); it != aszModularFiles.end(); ++it)
+		{
+			if (!ReadGlobalDefines(*it, cache))
+			{
+				OutputDebugString("Setting Global Defines: End\n");
+				return false;
+			}
+		}
+		aszFiles.clear();
+		aszModularFiles.clear();
+	}
+/************************************************************************************************/
+/* MODULAR_LOADING_CONTROL                 END                                                  */
+/************************************************************************************************/
+
+	gDLL->destroyCache(cache);
 
 	GC.cacheGlobals();
 
@@ -534,8 +515,6 @@ bool CvXMLLoadUtility::SetGlobalTypes()
 
 	UpdateProgressCB("GlobalTypes");
 
-	bool bLoaded = false;	// used to make sure that the xml file was loaded correctly
-
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: GlobalTypes\n");
 
 	if (!CreateFXml())
@@ -544,14 +523,7 @@ bool CvXMLLoadUtility::SetGlobalTypes()
 	}
 
 	// load the new FXml variable with the GlobalTypes.xml file
-	bLoaded = LoadCivXml(NULL, "xml/GlobalTypes.xml");
-	if (!bLoaded)
-	{
-		char	szMessage[1024];
-		sprintf( szMessage, "LoadXML call failed for GlobalTypes.xml. \n Current XML file is: %s", GC.getCurrentXMLFile().GetCString());
-		gDLL->MessageBox(szMessage, "XML Load Error");
-	}
-
+	bool bLoaded = LoadCivXml(NULL, "xml/GlobalTypes.xml");
 /************************************************************************************************/
 /* XML_CHECK_DOUBLE_TYPE                   03/14/08                                MRGENIE      */
 /*                                                                                              */
@@ -783,15 +755,8 @@ bool CvXMLLoadUtility::LoadGlobalText()
 
 	foreach_(const CvString& szFile, aszFiles)
 	{
-		if (!LoadCivXml(NULL, szFile))
+		if (LoadCivXml(NULL, szFile))
 		{
-			char	szMessage[1024];
-			sprintf( szMessage, "LoadXML call failed for %s. \n Current XML file is: %s", szFile.c_str(), GC.getCurrentXMLFile().GetCString());
-			gDLL->MessageBox(szMessage, "XML Load Error");
-		}
-		else
-		{
-			// if the xml is successfully validated
 			SetGameText(L"/Civ4GameText", L"/Civ4GameText/TEXT", texts);
 		}
 	}
@@ -2002,14 +1967,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 	foreach_(const CvString& szFile, aszFiles)
 	{
-		if (!LoadCivXml(NULL, szFile))
-		{
-			char szMessage[1024];
-			sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-			gDLL->MessageBox(szMessage, "XML Load Error");
-			return;
-		}
-		else
+		if (LoadCivXml(NULL, szFile))
 		{
 			GC.setModDir("NONE");
 			SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
@@ -2023,13 +1981,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 		foreach_(const CvString& szFile, aszFiles)
 		{
-			if (!LoadCivXml(NULL, szFile))
-			{
-				char szMessage[1024];
-				sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-				gDLL->MessageBox(szMessage, "XML Load Error");
-			}
-			else
+			if (LoadCivXml(NULL, szFile))
 			{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
@@ -2057,14 +2009,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 			foreach_(const CvString& szFile, aszFiles)
 			{
-				if (!LoadCivXml(NULL, szFile))
-				{
-					char szMessage[1024];
-					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-					gDLL->MessageBox(szMessage, "XML Load Error");
-					break;
-				}
-				else
+				if (LoadCivXml(NULL, szFile))
 				{
 					GC.setModDir("NONE");
 					SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
@@ -2082,13 +2027,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			foreach_(const CvString& szFile, aszFiles)
 			{
-				if (!LoadCivXml(NULL, szFile))
-				{
-					char szMessage[1024];
-					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-					gDLL->MessageBox(szMessage, "XML Load Error");
-				}
-				else
+				if (LoadCivXml(NULL, szFile))
 				{
 					CvString szDirName = szFile.GetCString();	
 					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
@@ -2114,13 +2053,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 		foreach_(const CvString& szFile, aszFiles)
 		{
-			if (!LoadCivXml(NULL, szFile))
-			{
-				char szMessage[1024];
-				sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-				gDLL->MessageBox(szMessage, "XML Load Error");
-			}
-			else
+			if (LoadCivXml(NULL, szFile))
 			{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
@@ -2148,14 +2081,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 			foreach_(const CvString& szFile, aszFiles)
 			{
-				if (!LoadCivXml(NULL, szFile))
-				{
-					char szMessage[1024];
-					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-					gDLL->MessageBox(szMessage, "XML Load Error");
-					break;
-				}
-				else
+				if (LoadCivXml(NULL, szFile))
 				{
 					GC.setModDir("NONE");
 					SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
@@ -2173,13 +2099,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			foreach_(const CvString& szFile, aszFiles)
 			{
-				if (!LoadCivXml(NULL, szFile))
-				{
-					char szMessage[1024];
-					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-					gDLL->MessageBox(szMessage, "XML Load Error");
-				}
-				else
+				if (LoadCivXml(NULL, szFile))
 				{
 					CvString szDirName = szFile.GetCString();	
 					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
@@ -2251,13 +2171,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 {
 	CvXMLLoadUtilityModTools p_szDirName;
 
-	if (!LoadCivXml(NULL, CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot)))
-	{
-		char szMessage[1024];
-		sprintf(szMessage, "LoadXML call failed for %s.", CvString::format("%s/%s.xml", szFileDirectory, szFileRoot).GetCString());
-		gDLL->MessageBox(szMessage, "XML Load Error");
-	}
-	else
+	if (LoadCivXml(NULL, CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot)))
 	{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
@@ -2277,13 +2191,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 
 			foreach_(const CvString& szFile, aszFiles)
 			{
-				if (!LoadCivXml(NULL, szFile))
-				{
-					char szMessage[1024];
-					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-					gDLL->MessageBox(szMessage, "XML Load Error");
-				}
-				else
+				if (LoadCivXml(NULL, szFile))
 				{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
@@ -2291,7 +2199,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 /*                                                                                              */
 /************************************************************************************************/
 					CvString szDirName = szFile.GetCString();
-					szDirName = p_szDirName->deleteFileName(szDirName, '\\');
+					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 					GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
@@ -2314,13 +2222,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 
 			foreach_(const CvString& szFile, aszFiles)
 			{
-				if (!LoadCivXml(NULL, szFile))
-				{
-					char szMessage[1024];
-					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-					gDLL->MessageBox(szMessage, "XML Load Error");
-				}
-				else
+				if (LoadCivXml(NULL, szFile))
 				{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
@@ -2328,7 +2230,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 /*                                                                                              */
 /************************************************************************************************/
 					CvString szDirName = szFile.GetCString();	
-					szDirName = p_szDirName->deleteFileName(szDirName, '\\');
+					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 					GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
