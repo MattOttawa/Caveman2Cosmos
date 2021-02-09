@@ -783,14 +783,13 @@ bool CvXMLLoadUtility::LoadGlobalText()
 
 	foreach_(const CvString& szFile, aszFiles)
 	{
-		bool bLoaded = LoadCivXml(NULL, szFile); // Load the XML
-		if (!bLoaded)
+		if (!LoadCivXml(NULL, szFile))
 		{
 			char	szMessage[1024];
 			sprintf( szMessage, "LoadXML call failed for %s. \n Current XML file is: %s", szFile.c_str(), GC.getCurrentXMLFile().GetCString());
 			gDLL->MessageBox(szMessage, "XML Load Error");
 		}
-		if (bLoaded)
+		else
 		{
 			// if the xml is successfully validated
 			SetGameText(L"/Civ4GameText", L"/Civ4GameText/TEXT", texts);
@@ -2250,123 +2249,94 @@ void CvXMLLoadUtility::LoadGlobalClassInfoModular(std::vector<T*>& aInfos, const
 
 void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bUseCaching)
 {
-	bool bLoaded = false;
+	CvXMLLoadUtilityModTools* p_szDirName;
 
-	if (!bLoaded)
+	if (!LoadCivXml(NULL, CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot)))
+	{
+		char szMessage[1024];
+		sprintf(szMessage, "LoadXML call failed for %s.", CvString::format("%s/%s.xml", szFileDirectory, szFileRoot).GetCString());
+		gDLL->MessageBox(szMessage, "XML Load Error");
+	}
+	else
 	{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-		CvXMLLoadUtilityModTools* p_szDirName = new CvXMLLoadUtilityModTools;
-		CvXMLLoadUtilitySetMod* pModEnumVector = new CvXMLLoadUtilitySetMod;
+		GC.setModDir("NONE");
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
 /************************************************************************************************/
-		bLoaded = LoadCivXml(NULL, CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
+		SetDiplomacyInfo(DiploInfos, szXmlPath);
 
-		if (!bLoaded)
+		if (gDLL->isModularXMLLoading())
 		{
-			char szMessage[1024];
-			sprintf(szMessage, "LoadXML call failed for %s.", CvString::format("%s/%s.xml", szFileDirectory, szFileRoot).GetCString());
-			gDLL->MessageBox(szMessage, "XML Load Error");
+			std::vector<CvString> aszFiles;
+			gDLL->enumerateFiles(aszFiles, CvString::format("modules\\*_%s.xml", szFileRoot));  // search for the modular files
+
+			foreach_(const CvString& szFile, aszFiles)
+			{
+				if (!LoadCivXml(NULL, szFile))
+				{
+					char szMessage[1024];
+					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+					gDLL->MessageBox(szMessage, "XML Load Error");
+				}
+				else
+				{
+/************************************************************************************************/
+/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
+					CvString szDirName = szFile.GetCString();
+					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
+					GC.setModDir(szDirName);
+/************************************************************************************************/
+/* XML_MODULAR_ART_LOADING                 END                                                  */
+/************************************************************************************************/
+					SetDiplomacyInfo(DiploInfos, szXmlPath);
+				}
+			}
 		}
+
+/************************************************************************************************/
+/* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
+/*                                                                                              */
+/*                                                                                              */
+/************************************************************************************************/
 		else
 		{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-			GC.setModDir("NONE");
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
-			SetDiplomacyInfo(DiploInfos, szXmlPath);
+			std::vector<CvString> aszFiles;
+			CvXMLLoadUtilitySetMod* pModEnumVector;
+			pModEnumVector.loadModControlArray(aszFiles, szFileRoot);
 
-			if (gDLL->isModularXMLLoading())
+			foreach_(const CvString& szFile, aszFiles)
 			{
-				std::vector<CvString> aszFiles;
-				gDLL->enumerateFiles(aszFiles, CvString::format("modules\\*_%s.xml", szFileRoot));  // search for the modular files
-
-				foreach_(const CvString& szFile, aszFiles)
+				if (!LoadCivXml(NULL, szFile))
 				{
-					bLoaded = LoadCivXml(NULL, szFile);
-
-					if (!bLoaded)
-					{
-						char szMessage[1024];
-						sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-						gDLL->MessageBox(szMessage, "XML Load Error");
-					}
-					else
-					{
+					char szMessage[1024];
+					sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
+					gDLL->MessageBox(szMessage, "XML Load Error");
+				}
+				else
+				{
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-						CvString szDirName = szFile.GetCString();
-						szDirName = p_szDirName->deleteFileName(szDirName, '\\');
-						GC.setModDir(szDirName);
+					CvString szDirName = szFile.GetCString();	
+					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
+					GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
 /************************************************************************************************/
-						SetDiplomacyInfo(DiploInfos, szXmlPath);
-					}
+					SetDiplomacyInfo(DiploInfos, szXmlPath);
 				}
 			}
-
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-			else
-			{
-				std::vector<CvString> aszFiles;
-				//aszFiles.reserve(10000);
-				pModEnumVector->loadModControlArray(aszFiles, szFileRoot);
-
-				foreach_(const CvString& szFile, aszFiles)
-				{
-					bLoaded = LoadCivXml(NULL, szFile);
-
-					if (!bLoaded)
-					{
-						char szMessage[1024];
-						sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
-						gDLL->MessageBox(szMessage, "XML Load Error");
-					}
-					else
-					{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-						CvString szDirName = szFile.GetCString();	
-						szDirName = p_szDirName->deleteFileName(szDirName, '\\');
-						GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
-						SetDiplomacyInfo(DiploInfos, szXmlPath);
-					}
-				}
-			}
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 		}
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-		SAFE_DELETE(pModEnumVector);
-		SAFE_DELETE(p_szDirName);
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
