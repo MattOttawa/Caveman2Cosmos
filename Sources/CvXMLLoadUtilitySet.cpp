@@ -1957,7 +1957,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: %s\n", szFileRoot);
 
 	CvXMLLoadUtilitySetMod pModEnumVector;
-	CvXMLLoadUtilityModTools p_szDirName;
 
 	std::vector<CvString> aszFiles;
 	const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
@@ -1969,7 +1968,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 	{
 		if (LoadCivXml(NULL, szFile))
 		{
-			GC.setModDir("NONE");
 			SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 		}
 	}
@@ -1983,17 +1981,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			if (LoadCivXml(NULL, szFile))
 			{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-				CvString szDirName = szFile.GetCString();	
-				szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-				GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
 				SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 			}
 		}
@@ -2011,7 +1998,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 			{
 				if (LoadCivXml(NULL, szFile))
 				{
-					GC.setModDir("NONE");
 					SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
 				}
 			}					
@@ -2029,9 +2015,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 			{
 				if (LoadCivXml(NULL, szFile))
 				{
-					CvString szDirName = szFile.GetCString();	
-					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-					GC.setModDir(szDirName);
 					SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
 				}
 			}
@@ -2055,17 +2038,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			if (LoadCivXml(NULL, szFile))
 			{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-				CvString szDirName = szFile.GetCString();
-				szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-				GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
 				SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 			}
 		}
@@ -2083,7 +2055,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 			{
 				if (LoadCivXml(NULL, szFile))
 				{
-					GC.setModDir("NONE");
 					SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
 				}
 			}	
@@ -2101,9 +2072,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 			{
 				if (LoadCivXml(NULL, szFile))
 				{
-					CvString szDirName = szFile.GetCString();	
-					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-					GC.setModDir(szDirName);
 					SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
 				}
 			}
@@ -2116,72 +2084,11 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 	m_pParser->resetDocumentPool();
 }
 
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 05/13/08                                MRGENIE      */
-/* we use this for xml's that should only be loaded as a module                                 */
-/*                                                                                              */
-/************************************************************************************************/
-// AIAndy: Still unused, so no more maintained for now
-/*template <class T>
-void CvXMLLoadUtility::LoadGlobalClassInfoModular(std::vector<T*>& aInfos, const char* szFileRoot, const char* szFileDirectory, const char* szXmlPath, bool bTwoPass)
-{
-	// we don't wanna use cache for modular loading, could do that, but safer just to load modules from scratch..
-	bool bLoaded = false;
-	GC.addToInfosVectors(&aInfos);
-
-#ifdef _DEBUG	
-	logXmlCheckDoubleTypes("\nEntering: %s\n", szFileRoot);
-#endif
-	CvXMLLoadUtilitySetMod* pModEnumVector = new CvXMLLoadUtilitySetMod;
-	CvXMLLoadUtilityModTools* p_szDirName = new CvXMLLoadUtilityModTools;
-
-	std::vector<CvString> aszFiles;
-	//aszFiles.reserve(10000);
-	unsigned long ulCheckSum = 0;
-	pModEnumVector->loadModControlArray(aszFiles, szFileRoot, ulCheckSum);
-
-	for (std::vector<CvString>::iterator it = aszFiles.begin(); it != aszFiles.end(); ++it)
-	{
-
-		bLoaded = LoadCivXml(NULL, *it);
-
-		if (!bLoaded)
-		{
-			char szMessage[1024];
-			sprintf(szMessage, "LoadXML call failed for %s.", (*it).GetCString());
-			gDLL->MessageBox(szMessage, "XML Load Error");
-		}
-		else
-		{
-			CvString szDirName = (*it).GetCString();	
-			szDirName = p_szDirName->deleteFileName(szDirName, '\\');
-			GC.setModDir(szDirName);
-			SetGlobalClassInfo(aInfos, szXmlPath, bTwoPass);
-		}
-	}
-	
-	SAFE_DELETE(pModEnumVector);
-	SAFE_DELETE(p_szDirName);
-}*/
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 
 void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bUseCaching)
 {
-	CvXMLLoadUtilityModTools p_szDirName;
-
 	if (LoadCivXml(NULL, CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot)))
 	{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-		GC.setModDir("NONE");
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
 		SetDiplomacyInfo(DiploInfos, szXmlPath);
 
 		if (gDLL->isModularXMLLoading())
@@ -2193,22 +2100,10 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 			{
 				if (LoadCivXml(NULL, szFile))
 				{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-					CvString szDirName = szFile.GetCString();
-					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-					GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
 					SetDiplomacyInfo(DiploInfos, szXmlPath);
 				}
 			}
 		}
-
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 11/15/07                                MRGENIE      */
 /*                                                                                              */
@@ -2224,17 +2119,6 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 			{
 				if (LoadCivXml(NULL, szFile))
 				{
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-					CvString szDirName = szFile.GetCString();	
-					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
-					GC.setModDir(szDirName);
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
 					SetDiplomacyInfo(DiploInfos, szXmlPath);
 				}
 			}
@@ -2248,8 +2132,8 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 //
 // helper sort predicate
 //
-
 struct OrderIndex {int m_iPriority; int m_iIndex;};
+
 bool sortHotkeyPriority(const OrderIndex& orderIndex1, const OrderIndex& orderIndex2)
 {
 	return (orderIndex1.m_iPriority > orderIndex2.m_iPriority);
