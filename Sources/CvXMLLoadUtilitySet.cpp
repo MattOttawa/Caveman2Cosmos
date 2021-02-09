@@ -2249,7 +2249,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfoModular(std::vector<T*>& aInfos, const
 
 void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bUseCaching)
 {
-	CvXMLLoadUtilityModTools* p_szDirName;
+	CvXMLLoadUtilityModTools p_szDirName;
 
 	if (!LoadCivXml(NULL, CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot)))
 	{
@@ -2291,7 +2291,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 /*                                                                                              */
 /************************************************************************************************/
 					CvString szDirName = szFile.GetCString();
-					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
+					szDirName = p_szDirName->deleteFileName(szDirName, '\\');
 					GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
@@ -2309,7 +2309,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 		else
 		{
 			std::vector<CvString> aszFiles;
-			CvXMLLoadUtilitySetMod* pModEnumVector;
+			CvXMLLoadUtilitySetMod pModEnumVector;
 			pModEnumVector.loadModControlArray(aszFiles, szFileRoot);
 
 			foreach_(const CvString& szFile, aszFiles)
@@ -2328,7 +2328,7 @@ void CvXMLLoadUtility::LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInf
 /*                                                                                              */
 /************************************************************************************************/
 					CvString szDirName = szFile.GetCString();	
-					szDirName = p_szDirName.deleteFileName(szDirName, '\\');
+					szDirName = p_szDirName->deleteFileName(szDirName, '\\');
 					GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
@@ -3497,7 +3497,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const cha
 	bool bContinue = true;
 	int m_iDirDepth = 0;
 
-	CvXMLLoadUtilityModTools* pProgramDir;
+	CvXMLLoadUtilityModTools pProgramDir;
 
 	std::string szDirDepth = "modules\\";
 	std::string szModDirectory = "modules";
