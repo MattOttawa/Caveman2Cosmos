@@ -1991,24 +1991,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 	bool bLoaded = false;
 	GC.addToInfosVectors(&aInfos);
 
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 05/17/08                                MRGENIE      */
-/*                                                                                              */
-/* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
-/* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
-/************************************************************************************************/
-	bool bTwoPassReplacement = true; // Use this if you wanna use the regular Firaxis bTwoPass. AIAndy: Firaxis two pass no more maintained now
-	if ( bTwoPassReplacement )
-	{
-		if (!bTwoPass )
-		{
-			bTwoPassReplacement = false;
-		}
-	}
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
-
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: %s\n", szFileRoot);
 
 	CvXMLLoadUtilitySetMod* pModEnumVector = new CvXMLLoadUtilitySetMod;
@@ -2075,7 +2057,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 				}
 
 				//AIAndy: Moved to this place so module stuff first pass is loaded before the second pass to the base XML
-				if ( bTwoPassReplacement )
+				if (bTwoPass)
 				{
 					std::vector<CvString> aszFiles;
 					CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
@@ -2108,7 +2090,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 /* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
 /* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
 /************************************************************************************************/
-				if ( bTwoPassReplacement )	// reloop through the modules!
+				if (bTwoPass)	// reloop through the modules!
 				{
 					foreach_(const CvString& szFile, aszFiles)
 					{
@@ -2174,7 +2156,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 				}
 
 				//AIAndy: Moved to this place so module stuff first pass is loaded before the second pass to the base XML
-				if ( bTwoPassReplacement )
+				if (bTwoPass)
 				{
 					std::vector<CvString> aszFiles;
 					CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
@@ -2207,7 +2189,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 /* This method is a replacement for the bTwoPass, if stuff that is depending on each other in   */
 /* a loop, the bTwoPass would fail since it doesn't look first in the other Modules!            */
 /************************************************************************************************/
-				if ( bTwoPassReplacement )	// reloop through the modules!
+				if (bTwoPass)	// reloop through the modules!
 				{
 					foreach_(const CvString& szFile, aszFiles)
 					{
