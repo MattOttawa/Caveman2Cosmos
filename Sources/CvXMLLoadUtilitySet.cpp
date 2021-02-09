@@ -1993,15 +1993,15 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: %s\n", szFileRoot);
 
-	CvXMLLoadUtilitySetMod* pModEnumVector = new CvXMLLoadUtilitySetMod;
-	CvXMLLoadUtilityModTools* p_szDirName = new CvXMLLoadUtilityModTools;
+	CvXMLLoadUtilitySetMod pModEnumVector;
+	CvXMLLoadUtilityModTools p_szDirName;
 
 	if (!bLoaded)
 	{
 		std::vector<CvString> aszFiles;
-		CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
-		pModEnumVector->MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
-		if(aszFiles.size() == 0)
+		const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+		pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
+		if (aszFiles.size() == 0)
 			aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
 		foreach_(const CvString& szFile, aszFiles)
@@ -2031,9 +2031,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 
 				foreach_(const CvString& szFile, aszFiles)
 				{
-					bLoaded = LoadCivXml(NULL, szFile);
-
-					if (!bLoaded)
+					if (!LoadCivXml(NULL, szFile))
 					{
 						char szMessage[1024];
 						sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
@@ -2047,7 +2045,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 /*                                                                                              */
 /************************************************************************************************/
 						CvString szDirName = szFile.GetCString();	
-						szDirName = p_szDirName->deleteFileName(szDirName, '\\');
+						szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 						GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
@@ -2061,15 +2059,13 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 				{
 					std::vector<CvString> aszFiles;
 					CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
-					pModEnumVector->MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
+					pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
 					if(aszFiles.size() == 0)
 						aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
 					foreach_(const CvString& szFile, aszFiles)
 					{
-						bLoaded = LoadCivXml(NULL, szFile);
-
-						if (!bLoaded)
+						if (!LoadCivXml(NULL, szFile))
 						{
 							char szMessage[1024];
 							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
@@ -2094,9 +2090,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 				{
 					foreach_(const CvString& szFile, aszFiles)
 					{
-						bLoaded = LoadCivXml(NULL, szFile);
-
-						if (!bLoaded)
+						if (!LoadCivXml(NULL, szFile))
 						{
 							char szMessage[1024];
 							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
@@ -2104,12 +2098,10 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 						}
 						else
 						{
-
 							CvString szDirName = szFile.GetCString();	
-							szDirName = p_szDirName->deleteFileName(szDirName, '\\');
+							szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 							GC.setModDir(szDirName);
 							SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
-
 						}
 					}
 				}
@@ -2126,13 +2118,11 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 			else
 			{
 				std::vector<CvString> aszFiles;
-				pModEnumVector->loadModControlArray(aszFiles, szFileRoot);
+				pModEnumVector.loadModControlArray(aszFiles, szFileRoot);
 
 				foreach_(const CvString& szFile, aszFiles)
 				{
-					bLoaded = LoadCivXml(NULL, szFile);
-
-					if (!bLoaded)
+					if (!LoadCivXml(NULL, szFile))
 					{
 						char szMessage[1024];
 						sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
@@ -2146,7 +2136,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 /*                                                                                              */
 /************************************************************************************************/
 						CvString szDirName = szFile.GetCString();
-						szDirName = p_szDirName->deleteFileName(szDirName, '\\');
+						szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 						GC.setModDir(szDirName);
 /************************************************************************************************/
 /* XML_MODULAR_ART_LOADING                 END                                                  */
@@ -2160,15 +2150,13 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 				{
 					std::vector<CvString> aszFiles;
 					CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
-					pModEnumVector->MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
+					pModEnumVector.MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
 					if(aszFiles.size() == 0)
 						aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
 					foreach_(const CvString& szFile, aszFiles)
 					{
-						bLoaded = LoadCivXml(NULL, szFile);
-
-						if (!bLoaded)
+						if (!LoadCivXml(NULL, szFile))
 						{
 							char szMessage[1024];
 							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
@@ -2193,9 +2181,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 				{
 					foreach_(const CvString& szFile, aszFiles)
 					{
-						bLoaded = LoadCivXml(NULL, szFile);
-
-						if (!bLoaded)
+						if (!LoadCivXml(NULL, szFile))
 						{
 							char szMessage[1024];
 							sprintf(szMessage, "LoadXML call failed for %s.", szFile.GetCString());
@@ -2203,12 +2189,10 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 						}
 						else
 						{
-
 							CvString szDirName = szFile.GetCString();	
-							szDirName = p_szDirName->deleteFileName(szDirName, '\\');
+							szDirName = p_szDirName.deleteFileName(szDirName, '\\');
 							GC.setModDir(szDirName);
 							SetGlobalClassInfoTwoPassReplacement(aInfos, szXmlPath, pReplacements);
-
 						}
 					}
 				}
@@ -2225,16 +2209,6 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 	//{
 	//	gDLL->destroyCache(pCache);
 	//}
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/26/07                            MRGENIE          */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	SAFE_DELETE(pModEnumVector);
-	SAFE_DELETE(p_szDirName);
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 }
 
 /************************************************************************************************/
