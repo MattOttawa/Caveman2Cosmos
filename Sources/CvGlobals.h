@@ -467,6 +467,7 @@ public:
 
 	int getNumPropertyInfos() const;
 	CvPropertyInfo& getPropertyInfo(PropertyTypes ePropertyNum) const;
+	const std::vector<CvPropertyInfo*>& getPropertyInfos() const { return m_paPropertyInfo; }
 
 	int getNumOutcomeInfos() const;
 	CvOutcomeInfo& getOutcomeInfo(OutcomeTypes eOutcomeNum) const;
