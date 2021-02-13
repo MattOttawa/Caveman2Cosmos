@@ -4313,9 +4313,7 @@ void CvPlayer::updatePlotGroups(const CvArea* possibleNewInAreaOnly, bool reInit
 		{
 			//	Throw away all existing plot groups
 			algo::for_each(GC.getMap().plots(), bind(CvPlot::setPlotGroup, _1, getID(), nullptr, false));
-			//{
-			//	GC.getMap().plotByIndex(iI)->setPlotGroup(getID(), NULL, false);
-			//}
+
 			m_plotGroups[CURRENT_MAP]->removeAll();
 		}
 		else
@@ -29102,9 +29100,9 @@ void CvPlayer::clearCityCulture()
 	{
 		if (GET_PLAYER((PlayerTypes)iI).isAlive())
 		{
-			//algo::for_each(GET_PLAYER((PlayerTypes)iI).cities(),
-			//	bind(CvCity::setCulture, _1, getID(), 0, true, true)
-			//);
+			algo::for_each(GET_PLAYER((PlayerTypes)iI).cities(),
+				bind(CvCity::setCulture, _1, getID(), 0, true, true, false)
+			);
 		}
 	}
 }

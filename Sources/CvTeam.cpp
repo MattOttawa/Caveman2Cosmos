@@ -5302,10 +5302,9 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 		}
 		else
 		{
-			foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
-			//| filtered(bind(CvPlot::getBonusType, _1) != NO_BONUS && bind(CvPlot::getTeam, _1) == getID()))
-			//| filtered(bind(CvPlot::getBonusType, _1) != NO_BONUS)
-			//| filtered(bind(CvPlot::getTeam, _1) == getID()))
+			foreach_(CvPlot& pLoopPlot, GC.getMap().plots()
+			| filtered(bind(CvPlot::getBonusType, _1, NO_TEAM) != NO_BONUS)
+			| filtered(bind(CvPlot::getTeam, _1) == getID()))
 			{
 				const CvBonusInfo& bonus = GC.getBonusInfo(pLoopPlot.getBonusType());
 
@@ -5319,8 +5318,9 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 			m_pabHasTech[eIndex] = bNewValue;
 
-			foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
-			//| filtered(bind(CvPlot::getBonusType, _1) != NO_BONUS && bind(CvPlot::getTeam, _1) == getID()))
+			foreach_(CvPlot& pLoopPlot, GC.getMap().plots()
+			| filtered(bind(CvPlot::getBonusType, _1, NO_TEAM) != NO_BONUS)
+			| filtered(bind(CvPlot::getTeam, _1) == getID()))
 			{
 				const CvBonusInfo& bonus = GC.getBonusInfo(pLoopPlot.getBonusType());
 
@@ -6397,9 +6397,8 @@ void CvTeam::setForceRevealedBonus(BonusTypes eBonus, bool bRevealed)
 	}
 
 	algo::for_each(GC.getMap().plots()
-		//| filtered(bind(CvPlot::getBonusType, _1) == eBonus && bind(CvPlot::getTeam, _1) == getID())
-		//| filtered(bind(CvPlot::getBonusType, _1) == eBonus)
-		//| filtered(bind(CvPlot::getTeam, _1) == getID())
+		| filtered(bind(CvPlot::getBonusType, _1, NO_TEAM) == eBonus)
+		| filtered(bind(CvPlot::getTeam, _1) == getID())
 		, bind(CvPlot::updatePlotGroupBonus, _1, false)
 	);
 
@@ -6420,14 +6419,13 @@ void CvTeam::setForceRevealedBonus(BonusTypes eBonus, bool bRevealed)
 	}
 
 	algo::for_each(GC.getMap().plots()
-		//| filtered(bind(CvPlot::getBonusType, _1) == eBonus && bind(CvPlot::getTeam, _1) == getID())
-		//| filtered(bind(CvPlot::getBonusType, _1) == eBonus)
-		//| filtered(bind(CvPlot::getTeam, _1) == getID())
+		| filtered(bind(CvPlot::getBonusType, _1, NO_TEAM) == eBonus)
+		| filtered(bind(CvPlot::getTeam, _1) == getID())
 		, bind(CvPlot::updatePlotGroupBonus, _1, true)
 	);
 
-	foreach_(CvPlot& plot, GC.getMap().plots())
-	//| filtered(bind(CvPlot::getBonusType, _1) == eBonus))
+	foreach_(CvPlot& plot, GC.getMap().plots()
+	| filtered(bind(CvPlot::getBonusType, _1, NO_TEAM) == eBonus))
 	{
 		plot.updateYield();
 		plot.setLayoutDirty(true);

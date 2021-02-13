@@ -407,8 +407,10 @@ int CvArea::countCoastalLand() const
 	{
 		return 0;
 	}
-	//return algo::count_if(GC.getMap().plots(),
-	//	bind(CvPlot::getArea, _1) == getID() && bind(CvPlot::isCoastalLand, _1));
+	return algo::count_if(GC.getMap().plots()
+		| filtered(bind(CvPlot::getArea, _1) == getID())
+		, bind(CvPlot::isCoastalLand, _1, -1)
+	);
 }
 
 

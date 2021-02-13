@@ -846,7 +846,6 @@ void CvMapGenerator::eraseRivers()
 
 void CvMapGenerator::eraseFeatures()
 {
-	//algo::for_each(GC.getMap().plots(), bind(CvPlot::setFeatureType, _1, NO_FEATURE));
 	algo::for_each(GC.getMap().plots(), bind(CvPlot::setFeatureType, _1, NO_FEATURE, -1, false));
 }
 
@@ -858,7 +857,6 @@ void CvMapGenerator::eraseBonuses()
 void CvMapGenerator::eraseGoodies()
 {
 	algo::for_each(GC.getMap().plots()
-		//| filtered(bind(CvPlot::isGoody, _1))
 		| filtered(bind(CvPlot::isGoody, _1, NO_TEAM))
 		, bind(CvPlot::removeGoody, _1)
 	);

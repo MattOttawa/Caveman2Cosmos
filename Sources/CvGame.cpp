@@ -1172,16 +1172,7 @@ void CvGame::assignScenarioStartingPlots()
 	{
 		gDLL->callUpdater(); // allow window updates during launch
 
-		//foreach_(const CvPlayerAI* playerX, alivePlayers)
-		//{
-		//	if (playerX->getStartingPlot())
-		//	{
-		//		plot = NULL;
-		//		break;
-		//	}
-		//}
 		if (!algo::contains(alivePlayers | transformed(bind(CvPlayer::getStartingPlot, _1)), &plot))
-		//if (plot)
 		{
 			startingPlots.push_back(&plot);
 		}
