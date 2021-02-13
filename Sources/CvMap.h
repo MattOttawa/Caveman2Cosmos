@@ -115,7 +115,7 @@ public:
 	CvArea* findBiggestArea(bool bWater) const;
 
 	int getMapFractalFlags() const;
-	bool findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const;
+	bool findWater(const CvPlot& pPlot, int iRange) const;
 
 	inline bool isPlot(int iX, int iY) const
 	{
@@ -173,7 +173,7 @@ public:
 	int getNumBonusesOnLand(BonusTypes eIndex) const;
 	void changeNumBonusesOnLand(BonusTypes eIndex, int iChange);
 
-	//std::vector<CvPlot>& plots() { return m_pMapPlots; }
+	std::vector<CvPlot>& plots() { return m_pMapPlots; }
 	const std::vector<CvPlot>& plots() const { return m_pMapPlots; }
 
 	inline CvPlot* plotByIndex(int iIndex)

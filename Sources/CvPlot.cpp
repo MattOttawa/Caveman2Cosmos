@@ -10493,11 +10493,11 @@ PlotTeamVisibilityIntensity& CvPlot::getPlotTeamVisibilityIntensity(int iIndex)
 int CvPlot::getNumPlotTeamVisibilityIntensityCount(InvisibleTypes eInvisibility, TeamTypes eTeam, int iIntensity) const
 {
 	int iResult = 0;
-	for (int iI = 0; iI < getNumPlotTeamVisibilityIntensity(); iI++)
+	foreach_(const PlotTeamVisibilityIntensity& visibilityIntensity, getPlotTeamVisibilityIntensity())
 	{
-		if (m_aPlotTeamVisibilityIntensity[iI].eInvisibility == eInvisibility &&
-			m_aPlotTeamVisibilityIntensity[iI].eTeam == eTeam &&
-			m_aPlotTeamVisibilityIntensity[iI].iIntensity == iIntensity)
+		if (visibilityIntensity.eInvisibility == eInvisibility &&
+			visibilityIntensity.eTeam == eTeam &&
+			visibilityIntensity.iIntensity == iIntensity)
 		{
 			iResult++;
 			break;
@@ -10522,12 +10522,11 @@ int CvPlot::getHighestPlotTeamVisibilityIntensity(InvisibleTypes eInvisibility, 
 	//return iResult;
 	int iHighestResult = 0;
 
-	for (int iI = 0; iI < getNumPlotTeamVisibilityIntensity(); iI++)
+	foreach_(const PlotTeamVisibilityIntensity& visibilityIntensity, getPlotTeamVisibilityIntensity())
 	{
-		if (m_aPlotTeamVisibilityIntensity[iI].eInvisibility == eInvisibility &&
-			m_aPlotTeamVisibilityIntensity[iI].eTeam == eTeam)
+		if (visibilityIntensity.eInvisibility == eInvisibility && visibilityIntensity.eTeam == eTeam)
 		{
-			iResult = m_aPlotTeamVisibilityIntensity[iI].iIntensity;
+			iResult = visibilityIntensity.iIntensity;
 			if (iResult > iHighestResult)
 			{
 				iHighestResult = iResult;
@@ -10564,13 +10563,13 @@ int CvPlot::getHighestPlotTeamVisibilityIntensity(InvisibleTypes eInvisibility, 
 //	//{
 //		//int iHighestResult = 0;
 //		//int iResult = 0;
-//		for (int iI = 0; iI < getNumPlotTeamVisibilityIntensity(); iI++)
+//		foreach_(const PlotTeamVisibilityIntensity& visibilityIntensity, getPlotTeamVisibilityIntensity())
 //		{
-//			if (m_aPlotTeamVisibilityIntensity[iI].eInvisibility == eInvisibility &&
-//				m_aPlotTeamVisibilityIntensity[iI].eTeam == eTeam &&
-//				m_aPlotTeamVisibilityIntensity[iI].iCount > 0)
+//			if (visibilityIntensity.eInvisibility == eInvisibility &&
+//				visibilityIntensity.eTeam == eTeam &&
+//				visibilityIntensity.iCount > 0)
 //			{
-//				iResult = m_aPlotTeamVisibilityIntensity[iI].iIntensity;
+//				iResult = visibilityIntensity.iIntensity;
 //				if (iResult > iHighestResult)
 //				{
 //					iHighestResult = iResult;
@@ -10590,14 +10589,7 @@ CvUnit* CvPlot::getUnitByIndex(int iIndex) const
 {
 	const CLLNode<IDInfo>* pUnitNode = m_units.nodeNum(iIndex);
 
-	if (pUnitNode != NULL)
-	{
-		return ::getUnit(pUnitNode->m_data);
-	}
-	else
-	{
-		return NULL;
-	}
+	return pUnitNode ? ::getUnit(pUnitNode->m_data) : NULL;
 }
 
 
@@ -13554,7 +13546,7 @@ void CvPlot::setNull(bool bNull)
 
 bool CvPlot::bDeferPlotGroupRecalculation = false;
 
-void	CvPlot::setDeferredPlotGroupRecalculationMode(bool bDefer)
+void CvPlot::setDeferredPlotGroupRecalculationMode(bool bDefer)
 {
 	if ( bDeferPlotGroupRecalculation != bDefer )
 	{
@@ -13564,13 +13556,11 @@ void	CvPlot::setDeferredPlotGroupRecalculationMode(bool bDefer)
 		{
 			CvPlotGroup::startBulkRecalculate();
 
-			for(int iI = 0; iI < GC.getMap().numPlots(); iI++)
+			foreach_(CvPlot& plot, GC.getMap().plots())
 			{
-				CvPlot*	pPlot = GC.getMap().plotByIndex(iI);
-
-				if ( pPlot != NULL && pPlot->m_bPlotGroupsDirty )
+				if (plot.m_bPlotGroupsDirty)
 				{
-					pPlot->updatePlotGroup();
+					plot.updatePlotGroup();
 				}
 			}
 

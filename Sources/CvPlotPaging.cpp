@@ -239,15 +239,11 @@ void CvPlotPaging::UpdatePaging()
 
 		// Gather and sort all plots by distance to view center
 		std::vector<PlotDist> plots;
-		CvMap& map = GC.getMap();
+		const CvMap& map = GC.getMap();
 		plots.reserve(map.numPlots());
-		for (int i = 0; i < map.numPlots(); i++)
+		foreach_(CvPlot& plot, GC.getMap().plots())
 		{
-			CvPlot* plot = map.plotByIndex(i);
-			if (plot != NULL)
-			{
-				plots.push_back(PlotDist(plot, ToroidalDistanceSq(centerX, centerY, plot->getX(), plot->getY(), map.getGridWidth(), map.getGridHeight())));
-			}
+			plots.push_back(PlotDist(&plot, ToroidalDistanceSq(centerX, centerY, plot.getX(), plot.getY(), map.getGridWidth(), map.getGridHeight())));
 		}
 		std::sort(plots.begin(), plots.end());
 

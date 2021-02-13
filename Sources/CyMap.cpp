@@ -144,11 +144,6 @@ int CyMap::getMapFractalFlags()
 	return m_pMap ? m_pMap->getMapFractalFlags() : -1;
 }
 
-bool CyMap::findWater(CyPlot* pPlot, int iRange, bool bFreshWater)
-{
-	return m_pMap ? m_pMap->findWater(pPlot->getPlot(), iRange, bFreshWater) : false;
-}
-
 bool CyMap::isPlot(int iX, int iY)
 {
 	return m_pMap ? m_pMap->isPlot(iX, iY) : false;
@@ -268,9 +263,10 @@ int CyMap::getNumBonusesOnLand(int /* BonusTypes */ eIndex)
 python::list CyMap::plots() const
 {
 	python::list list = python::list();
-	for (int i = 0, numPlots = m_pMap->numPlots(); i < numPlots; i++)
+
+	foreach_(CvPlot& plot, m_pMap->plots())
 	{
-		list.append(new CyPlot(m_pMap->plotByIndex(i)));
+		list.append(new CyPlot(&plot));
 	}
 	return list;
 }

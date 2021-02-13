@@ -853,6 +853,7 @@ public:
 	bool isInvisibleVisible(TeamTypes eTeam, InvisibleTypes eInvisible) const;
 	void changeInvisibleVisibilityCount(TeamTypes eTeam, InvisibleTypes eInvisible, int iChange, int iIntensity, int iUnitID = 0);
 
+	const std::vector<PlotTeamVisibilityIntensity>& getPlotTeamVisibilityIntensity() const { return m_aPlotTeamVisibilityIntensity; }
 	int getNumPlotTeamVisibilityIntensity() const;
 	PlotTeamVisibilityIntensity& getPlotTeamVisibilityIntensity(int iIndex);
 	int getNumPlotTeamVisibilityIntensityCount(InvisibleTypes eInvisibility, TeamTypes eTeam, int iIntensity) const;

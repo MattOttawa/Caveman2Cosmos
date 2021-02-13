@@ -189,7 +189,8 @@ public:
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-	inline CvMap& getMap() const;
+	CvMap& getMap();
+	const CvMap& getMap() const;
 	CvViewport* getCurrentViewport() const;
 	int	getViewportSizeX() const;
 	int	getViewportSizeY() const;

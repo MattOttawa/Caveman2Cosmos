@@ -1312,13 +1312,11 @@ void CvPlayerAI::AI_updateFoundValues(bool bClear, const CvArea* area) const
 	{
 		m_bCitySitesNotCalculated = true;
 
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& plotX, GC.getMap().plots())
 		{
-			CvPlot* plotX = GC.getMap().plotByIndex(iI);
-
-			if (bSetup || plotX->isRevealed(getTeam(), false))
+			if (bSetup || plotX.isRevealed(getTeam(), false))
 			{
-				GC.getMap().plotByIndex(iI)->clearFoundValue(getID());
+				plotX.clearFoundValue(getID());
 			}
 		}
 		algo::for_each(GC.getMap().areas(), CvArea::fn::setBestFoundValue(getID(), -1));
@@ -1329,24 +1327,19 @@ void CvPlayerAI::AI_updateFoundValues(bool bClear, const CvArea* area) const
 
 		//logBBAI("Player %d (%S) Update Found Values ...", getID(), getCivilizationDescription(0));
 
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& plotX, GC.getMap().plots())
 		{
-			CvPlot* plotX = GC.getMap().plotByIndex(iI);
-			CvArea* areaX = plotX->area();
+			CvArea* areaX = plotX.area();
 
-			if ((area == NULL || areaX == area) && (bSetup || plotX->isRevealed(getTeam(), false)))
+			if ((area == NULL || areaX == area) && (bSetup || plotX.isRevealed(getTeam(), false)))
 			{
 				bool bNeedsCalculating = false;
 
 				if (areaX->hasBestFoundValue(getID()))
 				{
-					for (uint32_t iJ = 0; iJ < aUncalculatedAreas.size(); iJ++)
+					if (std::contains(aUncalculatedAreas, areaX))
 					{
-						if (aUncalculatedAreas[iJ] == areaX)
-						{
-							bNeedsCalculating = true;
-							break;
-						}
+						bNeedsCalculating = true;
 					}
 				}
 				else
@@ -1358,9 +1351,9 @@ void CvPlayerAI::AI_updateFoundValues(bool bClear, const CvArea* area) const
 
 				if (bNeedsCalculating)
 				{
-					const int iValue = AI_foundValue(plotX->getX(), plotX->getY());
+					const int iValue = AI_foundValue(plotX.getX(), plotX.getY());
 
-					plotX->setFoundValue(getID(), iValue);
+					plotX.setFoundValue(getID(), iValue);
 
 					//if (iValue > 1)
 					//{
@@ -4918,11 +4911,10 @@ int CvPlayerAI::AI_techValue( TechTypes eTech, int iPathLength, bool bIgnoreCost
 	iTempValue = 0;
 	if (kTech.isCanPassPeaks())
 	{
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(const CvPlot& plot, GC.getMap().plots())
 		{
-			CvPlot* pPlot = GC.getMap().plotByIndex(iI);
-			if (pPlot->isAsPeak() && pPlot->getOwner() != NO_PLAYER
-			&& GET_PLAYER(pPlot->getOwner()).getID() == getID())
+			if (plot.isAsPeak() && plot.getOwner() != NO_PLAYER
+			&& GET_PLAYER(plot.getOwner()).getID() == getID())
 			{
 				iTempValue += 35;
 			}
@@ -7504,11 +7496,9 @@ int CvPlayerAI::AI_calculateStolenCityRadiusPlots(PlayerTypes ePlayer) const
 
 	int iCount = 0;
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot->getOwner() == ePlayer && pLoopPlot->isPlayerCityRadius(getID()))
+		if (pLoopPlot.getOwner() == ePlayer && pLoopPlot.isPlayerCityRadius(getID()))
 		{
 			iCount++;
 		}
@@ -25023,20 +25013,16 @@ int CvPlayerAI::AI_getTotalAreaCityThreat(const CvArea* pArea, int* piLargestThr
 int CvPlayerAI::AI_countNumAreaHostileUnits(const CvArea* pArea, bool bPlayer, bool bTeam, bool bNeutral, bool bHostile, const CvPlot* pPlot, int iMaxDistance) const
 {
 	PROFILE_FUNC();
-	CvPlot* pLoopPlot;
-	int iCount;
-	int iI;
 
-	iCount = 0;
+	int iCount = 0;
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-		if ((pLoopPlot->area() == pArea) && pLoopPlot->isVisible(getTeam(), false) && stepDistance(pLoopPlot->getX(), pLoopPlot->getY(), pPlot->getX(), pPlot->getY()) <= iMaxDistance &&
-			((bPlayer && pLoopPlot->getOwner() == getID()) || (bTeam && pLoopPlot->getTeam() == getTeam())
-				|| (bNeutral && !pLoopPlot->isOwned()) || (bHostile && pLoopPlot->isOwned() && GET_TEAM(getTeam()).isAtWar(pLoopPlot->getTeam()))))
+		if (pLoopPlot.area() == pArea && pLoopPlot.isVisible(getTeam(), false) && stepDistance(pLoopPlot.getX(), pLoopPlot.getY(), pPlot->getX(), pPlot->getY()) <= iMaxDistance &&
+			((bPlayer && pLoopPlot.getOwner() == getID()) || (bTeam && pLoopPlot.getTeam() == getTeam())
+				|| (bNeutral && !pLoopPlot.isOwned()) || (bHostile && pLoopPlot.isOwned() && GET_TEAM(getTeam()).isAtWar(pLoopPlot.getTeam()))))
 		{
-			iCount += pLoopPlot->plotCount(PUF_isEnemy, getID(), 0, NULL, NO_PLAYER, NO_TEAM, PUF_isVisible, getID());
+			iCount += pLoopPlot.plotCount(PUF_isEnemy, getID(), 0, NULL, NO_PLAYER, NO_TEAM, PUF_isVisible, getID());
 		}
 	}
 	return iCount;
@@ -25327,8 +25313,8 @@ CvPlot* CvPlayerAI::AI_advancedStartFindCapitalPlot() const
 				{
 					if (getAdvancedStartCityCost(true, pLoopPlot) > 0)
 					{
-					int iX = pLoopPlot->getX();
-					int iY = pLoopPlot->getY();
+						int iX = pLoopPlot->getX();
+						int iY = pLoopPlot->getY();
 
 						int iValue = 1000;
 						if (iPlayer == getID())
@@ -25382,20 +25368,19 @@ CvPlot* CvPlayerAI::AI_advancedStartFindCapitalPlot() const
 
 	if (NULL != getStartingPlot())
 	{
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 		{
-			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-			if (pLoopPlot->getArea() == getStartingPlot()->getArea())
+			if (pLoopPlot.getArea() == getStartingPlot()->getArea())
 			{
-				int iValue = pLoopPlot->getFoundValue(getID());
+				const int iValue = pLoopPlot.getFoundValue(getID());
 				if (iValue > 0)
 				{
-					if (getAdvancedStartCityCost(true, pLoopPlot) > 0)
+					if (getAdvancedStartCityCost(true, &pLoopPlot) > 0)
 					{
 						if (iValue > iBestValue)
 						{
 							iBestValue = iValue;
-							pBestPlot = pLoopPlot;
+							pBestPlot = &pLoopPlot;
 						}
 					}
 				}
@@ -25703,63 +25688,54 @@ bool CvPlayerAI::AI_advancedStartDoRoute(const CvPlot* pFromPlot, const CvPlot* 
 	}
 	return true;
 }
+
 void CvPlayerAI::AI_advancedStartRouteTerritory()
 {
-	CvPlot* pLoopPlot;
-
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-		if ((pLoopPlot != NULL) && (pLoopPlot->getOwner() == getID()) && (pLoopPlot->getRouteType() == NO_ROUTE))
+		if (pLoopPlot.getOwner() == getID() && pLoopPlot.getRouteType() == NO_ROUTE)
 		{
-			if (pLoopPlot->getImprovementType() != NO_IMPROVEMENT)
+			if (pLoopPlot.getImprovementType() != NO_IMPROVEMENT)
 			{
-				BonusTypes eBonus = pLoopPlot->getBonusType(getTeam());
+				const BonusTypes eBonus = pLoopPlot.getBonusType(getTeam());
 				if (eBonus != NO_BONUS)
 				{
-					if (GC.getImprovementInfo(pLoopPlot->getImprovementType()).isImprovementBonusTrade(eBonus))
+					if (GC.getImprovementInfo(pLoopPlot.getImprovementType()).isImprovementBonusTrade(eBonus))
 					{
-						int iBonusValue = AI_bonusVal(eBonus, 1);
+						const int iBonusValue = AI_bonusVal(eBonus, 1);
 						if (iBonusValue > 9)
 						{
 							int iBestValue = 0;
-							CvPlot* pBestPlot = NULL;
-							int iRange = 2;
-							for (int iX = -iRange; iX <= iRange; iX++)
-							{
-								for (int iY = -iRange; iY <= iRange; iY++)
-								{
-									CvPlot* pLoopPlot2 = plotXY(pLoopPlot->getX(), pLoopPlot->getY(), iX, iY);
-									if (pLoopPlot2 != NULL)
-									{
-										if (pLoopPlot2->getOwner() == getID())
-										{
-											if ((pLoopPlot2->isConnectedToCapital()) || pLoopPlot2->isCity())
-											{
-												int iValue = 1000;
-												if (pLoopPlot2->isCity())
-												{
-													iValue += 100;
-													if (pLoopPlot2->getPlotCity()->isCapital())
-													{
-														iValue += 100;
-													}
-												}
-												if (pLoopPlot2->isRoute())
-												{
-													iValue += 100;
-												}
-												int iDistance = GC.getMap().calculatePathDistance(pLoopPlot, pLoopPlot2);
-												if (iDistance > 0)
-												{
-													iValue /= (1 + iDistance);
+							const CvPlot* pBestPlot = NULL;
 
-													if (iValue > iBestValue)
-													{
-														iBestValue = iValue;
-														pBestPlot = pLoopPlot2;
-													}
-												}
+							foreach_(const CvPlot* pLoopPlot2, CvPlot::rect(pLoopPlot.getX(), pLoopPlot.getY(), 2, 2))
+							{
+								if (pLoopPlot2->getOwner() == getID())
+								{
+									if (pLoopPlot2->isConnectedToCapital() || pLoopPlot2->isCity())
+									{
+										int iValue = 1000;
+										if (pLoopPlot2->isCity())
+										{
+											iValue += 100;
+											if (pLoopPlot2->getPlotCity()->isCapital())
+											{
+												iValue += 100;
+											}
+										}
+										if (pLoopPlot2->isRoute())
+										{
+											iValue += 100;
+										}
+										const int iDistance = GC.getMap().calculatePathDistance(&pLoopPlot, pLoopPlot2);
+										if (iDistance > 0)
+										{
+											iValue /= (1 + iDistance);
+
+											if (iValue > iBestValue)
+											{
+												iBestValue = iValue;
+												pBestPlot = pLoopPlot2;
 											}
 										}
 									}
@@ -25767,7 +25743,7 @@ void CvPlayerAI::AI_advancedStartRouteTerritory()
 							}
 							if (pBestPlot != NULL)
 							{
-								if (!AI_advancedStartDoRoute(pLoopPlot, pBestPlot))
+								if (!AI_advancedStartDoRoute(&pLoopPlot, pBestPlot))
 								{
 									return;
 								}
@@ -25775,13 +25751,13 @@ void CvPlayerAI::AI_advancedStartRouteTerritory()
 						}
 					}
 				}
-				if (pLoopPlot->getRouteType() == NO_ROUTE)
+				if (pLoopPlot.getRouteType() == NO_ROUTE)
 				{
 					int iRouteYieldValue = 0;
-					RouteTypes eRoute = (AI_bestAdvancedStartRoute(pLoopPlot, &iRouteYieldValue));
+					const RouteTypes eRoute = AI_bestAdvancedStartRoute(&pLoopPlot, &iRouteYieldValue);
 					if (eRoute != NO_ROUTE && iRouteYieldValue > 0)
 					{
-						doAdvancedStartAction(ADVANCEDSTARTACTION_ROUTE, pLoopPlot->getX(), pLoopPlot->getY(), eRoute, true);
+						doAdvancedStartAction(ADVANCEDSTARTACTION_ROUTE, pLoopPlot.getX(), pLoopPlot.getY(), eRoute, true);
 					}
 				}
 			}
@@ -25868,16 +25844,14 @@ void CvPlayerAI::AI_doAdvancedStart(bool bNoExit)
 			//Find a new starting plot for this player
 			setStartingPlot(findStartingPlot(), true);
 			//Redo Starting visibility
-			CvPlot* pStartingPlot = getStartingPlot();
+			const CvPlot* pStartingPlot = getStartingPlot();
 			if (NULL != pStartingPlot)
 			{
-				for (int iPlotLoop = 0; iPlotLoop < GC.getMap().numPlots(); ++iPlotLoop)
+				foreach_(CvPlot& plot, GC.getMap().plots())
 				{
-					CvPlot* pPlot = GC.getMap().plotByIndex(iPlotLoop);
-
-					if (plotDistance(pPlot->getX(), pPlot->getY(), pStartingPlot->getX(), pStartingPlot->getY()) <= GC.getDefineINT("ADVANCED_START_SIGHT_RANGE"))
+					if (plotDistance(plot.getX(), plot.getY(), pStartingPlot->getX(), pStartingPlot->getY()) <= GC.getDefineINT("ADVANCED_START_SIGHT_RANGE"))
 					{
-						pPlot->setRevealed(getTeam(), true, false, NO_TEAM, false);
+						plot.setRevealed(getTeam(), true, false, NO_TEAM, false);
 					}
 				}
 			}
@@ -25899,20 +25873,19 @@ void CvPlayerAI::AI_doAdvancedStart(bool bNoExit)
 
 	for (int iPass = 0; iPass < 6; iPass++)
 	{
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 		{
-			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-			if (pLoopPlot->isRevealed(getTeam(), false))
+			if (pLoopPlot.isRevealed(getTeam(), false))
 			{
-				if (pLoopPlot->getBonusType(getTeam()) != NO_BONUS)
+				if (pLoopPlot.getBonusType(getTeam()) != NO_BONUS)
 				{
-					AI_advancedStartRevealRadius(pLoopPlot, CITY_PLOTS_RADIUS);
+					AI_advancedStartRevealRadius(&pLoopPlot, CITY_PLOTS_RADIUS);
 				}
 				else
 				{
 					for (int iJ = 0; iJ < NUM_CARDINALDIRECTION_TYPES; iJ++)
 					{
-						CvPlot* pLoopPlot2 = plotCardinalDirection(pLoopPlot->getX(), pLoopPlot->getY(), (CardinalDirectionTypes)iJ);
+						CvPlot* pLoopPlot2 = plotCardinalDirection(pLoopPlot.getX(), pLoopPlot.getY(), (CardinalDirectionTypes)iJ);
 						if ((pLoopPlot2 != NULL) && (getAdvancedStartVisibilityCost(pLoopPlot2) > 0))
 						{
 							// Mildly maphackery but any smart human can see the terrain type of a tile.
@@ -25983,21 +25956,20 @@ void CvPlayerAI::AI_doAdvancedStart(bool bNoExit)
 			}
 		}
 		int iBestFoundValue = 0;
-		CvPlot* pBestFoundPlot = NULL;
+		const CvPlot* pBestFoundPlot = NULL;
 		AI_updateFoundValues(true);
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 		{
-			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
 			//if (pLoopPlot->area() == getStartingPlot()->area())
 			{
-				if (plotDistance(getStartingPlot()->getX(), getStartingPlot()->getY(), pLoopPlot->getX(), pLoopPlot->getY()) < 9)
+				if (plotDistance(getStartingPlot()->getX(), getStartingPlot()->getY(), pLoopPlot.getX(), pLoopPlot.getY()) < 9)
 				{
-					if (pLoopPlot->getFoundValue(getID()) > iBestFoundValue)
+					if (pLoopPlot.getFoundValue(getID()) > iBestFoundValue)
 					{
-						if (getAdvancedStartCityCost(true, pLoopPlot) > 0)
+						if (getAdvancedStartCityCost(true, &pLoopPlot) > 0)
 						{
-							pBestFoundPlot = pLoopPlot;
-							iBestFoundValue = pLoopPlot->getFoundValue(getID());
+							pBestFoundPlot = &pLoopPlot;
+							iBestFoundValue = pLoopPlot.getFoundValue(getID());
 						}
 					}
 				}
@@ -26191,9 +26163,6 @@ int CvPlayerAI::AI_bestCityValue(const CvPlot* pPlot, int iFoundValue) const
 
 void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) const
 {
-	int iValue;
-	int iI;
-
 	logBBAI("Player %d (%S) begin Update City Sites ...", getID(), getCivilizationDescription(0));
 
 	int iPass = 0;
@@ -26201,25 +26170,24 @@ void CvPlayerAI::AI_updateCitySites(int iMinFoundValueThreshold, int iMaxSites) 
 	{
 		//Add a city to the list.
 		int iBestFoundValue = 0;
-		CvPlot* pBestFoundPlot = NULL;
+		const CvPlot* pBestFoundPlot = NULL;
 
-		for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& plot, GC.getMap().plots())
 		{
-			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-			if (pLoopPlot->isRevealed(getTeam(), false))
+			if (plot.isRevealed(getTeam(), false))
 			{
-				iValue = pLoopPlot->getFoundValue(getID());
+				int iValue = plot.getFoundValue(getID());
 				if (iValue > iMinFoundValueThreshold)
 				{
-					if (!AI_isPlotCitySite(pLoopPlot))
+					if (!AI_isPlotCitySite(&plot))
 					{
-						iValue = AI_bestCityValue(pLoopPlot, iValue);
+						iValue = AI_bestCityValue(&plot, iValue);
 
 						if (iValue > iBestFoundValue)
 						{
 							iBestFoundValue = iValue;
-							pBestFoundPlot = pLoopPlot;
-							logBBAI("  City found value at (%d, %d) is %d", pLoopPlot->getX(), pLoopPlot->getY(), iValue);
+							pBestFoundPlot = &plot;
+							logBBAI("  City found value at (%d, %d) is %d", plot.getX(), plot.getY(), iValue);
 						}
 					}
 				}
@@ -26510,19 +26478,16 @@ void CvPlayerAI::AI_doEnemyUnitData()
 
 	std::vector<int> aiDomainSums(NUM_DOMAIN_TYPES, 0);
 
-	int iI;
-
 	int iOldTotal = 0;
 	int iNewTotal = 0;
 
 	// Count enemy land and sea units visible to us
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& plot, GC.getMap().plots())
 	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
 		int iAdjacentAttackers = -1;
-		if (pLoopPlot->isVisible(getTeam(), false))
+		if (plot.isVisible(getTeam(), false))
 		{
-			foreach_(const CvUnit* pLoopUnit, pLoopPlot->units())
+			foreach_(const CvUnit* pLoopUnit, plot.units())
 			{
 				if (pLoopUnit->canFight())
 				{
@@ -26532,15 +26497,15 @@ void CvPlayerAI::AI_doEnemyUnitData()
 					{
 						iUnitValue += 10;
 
-						if ((pLoopPlot->getOwner() == getID()))
+						if (plot.getOwner() == getID())
 						{
 							iUnitValue += 15;
 						}
-						else if (atWar(getTeam(), pLoopPlot->getTeam()))
+						else if (atWar(getTeam(), plot.getTeam()))
 						{
 							if (iAdjacentAttackers == -1)
 							{
-								iAdjacentAttackers = GET_PLAYER(pLoopPlot->getOwner()).AI_adjacentPotentialAttackers(pLoopPlot);
+								iAdjacentAttackers = GET_PLAYER(plot.getOwner()).AI_adjacentPotentialAttackers(&plot);
 							}
 							if (iAdjacentAttackers > 0)
 							{
@@ -26552,7 +26517,7 @@ void CvPlayerAI::AI_doEnemyUnitData()
 					else if (pLoopUnit->getTeam() != getTeam())
 					{
 						iUnitValue += pLoopUnit->canAttack() ? 4 : 1;
-						if (pLoopPlot->getCulture(getID()) > 0)
+						if (plot.getCulture(getID()) > 0)
 						{
 							iUnitValue += pLoopUnit->canAttack() ? 4 : 1;
 						}
@@ -26580,7 +26545,7 @@ void CvPlayerAI::AI_doEnemyUnitData()
 	}
 
 	//Decay
-	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 	{
 		m_aiUnitWeights[iI] -= 100;
 		m_aiUnitWeights[iI] *= 3;
@@ -26588,11 +26553,11 @@ void CvPlayerAI::AI_doEnemyUnitData()
 		m_aiUnitWeights[iI] = std::max(0, m_aiUnitWeights[iI]);
 	}
 
-	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 	{
 		if (aiUnitCounts[iI] > 0)
 		{
-			TechTypes eTech = (TechTypes)GC.getUnitInfo((UnitTypes)iI).getPrereqAndTech();
+			const TechTypes eTech = (TechTypes)GC.getUnitInfo((UnitTypes)iI).getPrereqAndTech();
 
 			int iEraDiff = (eTech == NO_TECH) ? 4 : std::min(4, getCurrentEra() - GC.getTechInfo(eTech).getEra());
 
@@ -26607,16 +26572,16 @@ void CvPlayerAI::AI_doEnemyUnitData()
 		}
 	}
 
-	for (iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
+	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); ++iI)
 	{
 		m_aiUnitCombatWeights[iI] = 0;
 	}
 
-	for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 	{
 		if (m_aiUnitWeights[iI] > 0)
 		{
-			int ctype = GC.getUnitInfo((UnitTypes)iI).getUnitCombatType();
+			const int ctype = GC.getUnitInfo((UnitTypes)iI).getUnitCombatType();
 			if (ctype >= 0 && ctype < GC.getNumUnitCombatInfos())
 			{
 				m_aiUnitCombatWeights[ctype] += m_aiUnitWeights[iI];
@@ -26624,7 +26589,7 @@ void CvPlayerAI::AI_doEnemyUnitData()
 		}
 	}
 
-	for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 	{
 		if (m_aiUnitCombatWeights[iI] > 2500)
 		{

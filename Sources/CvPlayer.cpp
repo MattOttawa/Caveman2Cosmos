@@ -646,19 +646,15 @@ void CvPlayer::initInGame(PlayerTypes eID, bool bSetAlive)
 //
 // Reset all data for this player stored in plot and city objects
 //
-void CvPlayer::resetPlotAndCityData( )
+void CvPlayer::resetPlotAndCityData()
 {
-	CvPlot* pLoopPlot;
-	CvCity* pLoopCity;
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); ++iPlot)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iPlot);
+		pLoopPlot.setCulture(getID(), 0, false, false);
+		pLoopPlot.setFoundValue(getID(), 0);
 
-		pLoopPlot->setCulture(getID(), 0, false, false);
-		pLoopPlot->setFoundValue(getID(), 0);
-
-		pLoopCity = pLoopPlot->getPlotCity();
-		if( pLoopCity != NULL )
+		CvCity* pLoopCity = pLoopPlot.getPlotCity();
+		if (pLoopCity != nullptr)
 		{
 			pLoopCity->setCulture(getID(), 0, false, false);
 			pLoopCity->changeNumRevolts(getID(), -pLoopCity->getNumRevolts(getID()));
@@ -22085,13 +22081,11 @@ EventTriggeredData* CvPlayer::initTriggeredData(EventTriggerTypes eEventTrigger,
 
 		if (bPickPlot)
 		{
-			for (int iPlot = 0; iPlot < GC.getMap().numPlots(); ++iPlot)
+			foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 			{
-				CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-
-				if (pLoopPlot->canTrigger(eEventTrigger, getID()))
+				if (pLoopPlot.canTrigger(eEventTrigger, getID()))
 				{
-					apPlots.push_back(pLoopPlot);
+					apPlots.push_back(&pLoopPlot);
 				}
 			}
 		}
@@ -23953,13 +23947,11 @@ bool CvPlayer::canTrigger(EventTriggerTypes eTrigger, PlayerTypes ePlayer, Relig
 	{
 		int iCount = 0;
 
-		for (int iI = 0; iI < GC.getMap().numPlots(); ++iI)
+		foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 		{
-			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-			if (!pLoopPlot->isWater())
+			if (!pLoopPlot.isWater())
 			{
-				if ((pLoopPlot->getOwner() == getID()) && pLoopPlot->isAdjacentPlayer(ePlayer, true))
+				if (pLoopPlot.getOwner() == getID() && pLoopPlot.isAdjacentPlayer(ePlayer, true))
 				{
 					++iCount;
 				}
@@ -24514,42 +24506,40 @@ bool CvPlayer::splitEmpire(int iAreaId)
 		AI_updateBonusValue();
 	}
 
-	std::vector< std::pair<int, int> > aCultures;
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); ++iPlot)
+	std::vector< std::pair<CvPlot*, int> > aCultures;
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-
-		bool bTranferPlot = pLoopPlot->area() == pArea;
+		bool bTranferPlot = pLoopPlot.area() == pArea;
 
 		if (!bTranferPlot)
 		{
-			const CvCity* pWorkingCity = pLoopPlot->getWorkingCity();
+			const CvCity* pWorkingCity = pLoopPlot.getWorkingCity();
 			if (NULL != pWorkingCity && pWorkingCity->getOwner() == getID() && pWorkingCity->area() == pArea)
 			{
 				bTranferPlot = true;
 			}
 		}
 
-		if (!bTranferPlot && pLoopPlot->isWater() && pLoopPlot->isAdjacentToArea(pArea))
+		if (!bTranferPlot && pLoopPlot.isWater() && pLoopPlot.isAdjacentToArea(pArea))
 		{
 			bTranferPlot = true;
 		}
 
 		if (bTranferPlot)
 		{
-			int iCulture = pLoopPlot->getCulture(getID());
+			int iCulture = pLoopPlot.getCulture(getID());
 
 			if (bPlayerExists)
 			{
-				iCulture = std::max(iCulture, pLoopPlot->getCulture(eNewPlayer));
+				iCulture = std::max(iCulture, pLoopPlot.getCulture(eNewPlayer));
 			}
 
-			aCultures.push_back(std::make_pair(iPlot, iCulture));
+			aCultures.push_back(std::make_pair(&pLoopPlot, iCulture));
 		}
 
-		if (pLoopPlot->isRevealed(getTeam(), false))
+		if (pLoopPlot.isRevealed(getTeam(), false))
 		{
-			pLoopPlot->setRevealed(GET_PLAYER(eNewPlayer).getTeam(), true, false, getTeam(), false);
+			pLoopPlot.setRevealed(GET_PLAYER(eNewPlayer).getTeam(), true, false, getTeam(), false);
 		}
 	}
 
@@ -24573,9 +24563,9 @@ bool CvPlayer::splitEmpire(int iAreaId)
 		}
 	}
 
-	for (uint i = 0; i < aCultures.size(); i++)
+	for (uint32_t i = 0; i < aCultures.size(); i++)
 	{
-		CvPlot* pPlot = GC.getMap().plotByIndex(aCultures[i].first);
+		CvPlot* pPlot = aCultures[i].first;
 		pPlot->setCulture(eNewPlayer, aCultures[i].second, true, false);
 		pPlot->setCulture(getID(), 0, true, false);
 
@@ -24610,7 +24600,6 @@ bool CvPlayer::splitEmpire(int iAreaId)
 			pLoopCity->initConscriptedUnit();
 		}
 	}
-
 
 	GC.getGame().updatePlotGroups();
 
@@ -24680,13 +24669,11 @@ bool CvPlayer::assimilatePlayer(PlayerTypes ePlayer)
 	}
 
 	// Share map
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot->isRevealed(kTeam.getID(), false))
+		if (pLoopPlot.isRevealed(kTeam.getID(), false))
 		{
-			pLoopPlot->setRevealed(getTeam(), true, false, kTeam.getID(), false);
+			pLoopPlot.setRevealed(getTeam(), true, false, kTeam.getID(), false);
 		}
 	}
 
@@ -24705,12 +24692,11 @@ bool CvPlayer::assimilatePlayer(PlayerTypes ePlayer)
 	kPlayer.killUnits();
 	kPlayer.killCities();
 
-	for (int i = 0; i < GC.getMap().numPlots(); ++i)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(i);
-		if (pLoopPlot && (pLoopPlot->getTeam() == getTeam() || pLoopPlot->getTeam() == kTeam.getID()))
+		if (pLoopPlot.getTeam() == getTeam() || pLoopPlot.getTeam() == kTeam.getID())
 		{
-			pLoopPlot->updateCulture(true, false);
+			pLoopPlot.updateCulture(true, false);
 		}
 	}
 
@@ -29116,10 +29102,9 @@ void CvPlayer::updateCache()
 
 void CvPlayer::clearTileCulture()
 {
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
-	{
-		GC.getMap().plotByIndex(iI)->setCulture(getID(), 0, true, true);
-	}
+	algo::for_each(GC.getMap().plots(),
+		bind(CvPlot::setCulture, _1, getID(), 0, true, true)
+	);
 }
 
 void CvPlayer::clearCityCulture()
@@ -29128,10 +29113,9 @@ void CvPlayer::clearCityCulture()
 	{
 		if (GET_PLAYER((PlayerTypes)iI).isAlive())
 		{
-			foreach_(CvCity* pLoopCity, GET_PLAYER((PlayerTypes)iI).cities())
-			{
-				pLoopCity->setCulture(getID(), 0, true, true);
-			}
+			//algo::for_each(GET_PLAYER((PlayerTypes)iI).cities(),
+			//	bind(CvCity::setCulture, _1, getID(), 0, true, true)
+			//);
 		}
 	}
 }

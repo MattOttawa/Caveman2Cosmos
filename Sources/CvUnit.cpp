@@ -6634,8 +6634,7 @@ void CvUnit::move(CvPlot* pPlot, bool bShow, bool bFree)
 		const CvString featureString(GC.getFeatureInfo(featureType).getOnUnitChangeTo());
 		if(!featureString.IsEmpty())
 		{
-			FeatureTypes newFeatureType = (FeatureTypes) GC.getInfoTypeForString(featureString);
-			pPlot->setFeatureType(newFeatureType);
+			pPlot->setFeatureType((FeatureTypes)GC.getInfoTypeForString(featureString));
 		}
 	}
 
@@ -6648,7 +6647,7 @@ void CvUnit::move(CvPlot* pPlot, bool bShow, bool bFree)
 			{
 				if (GC.getASyncRand().get(100) < GC.getFeatureInfo(featureType).getEffectProbability())
 				{
-					EffectTypes eEffect = (EffectTypes)GC.getInfoTypeForString(GC.getFeatureInfo(featureType).getEffectType());
+					const EffectTypes eEffect = (EffectTypes)GC.getInfoTypeForString(GC.getFeatureInfo(featureType).getEffectType());
 					gDLL->getEngineIFace()->TriggerEffect(eEffect, pPlot->getPoint(), (float)(GC.getASyncRand().get(360)));
 					gDLL->getInterfaceIFace()->playGeneralSound("AS3D_UN_BIRDS_SCATTER", pPlot->getPoint());
 				}
@@ -6660,57 +6659,40 @@ void CvUnit::move(CvPlot* pPlot, bool bShow, bool bFree)
 }
 
 // false if unit is killed
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 bool CvUnit::jumpToNearestValidPlot(bool bKill)
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 {
-	CvCity* pNearestCity;
-	CvPlot* pLoopPlot;
-	CvPlot* pBestPlot;
-	int iValue;
-	int iBestValue;
-	int iI;
-
 	FAssertMsg(!isAttacking(), "isAttacking did not return false as expected");
 	FAssertMsg(!isFighting(), "isFighting did not return false as expected");
 
 	//	If the jump is due to being in an incorrect doamin it implies there WILL be an area change, so the relevant nearest
 	//	city cannot possibly be in the same area, hence we need to search all
-	pNearestCity = GC.getMap().findCity(getX(), getY(), getOwner(), NO_TEAM, plot()->isValidDomainForAction(*this));
+	const CvCity* pNearestCity = GC.getMap().findCity(getX(), getY(), getOwner(), NO_TEAM, plot()->isValidDomainForAction(*this));
 
-	iBestValue = MAX_INT;
-	pBestPlot = NULL;
+	int iBestValue = MAX_INT;
+	const CvPlot* pBestPlot = NULL;
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot->isValidDomainForLocation(*this))
+		if (pLoopPlot.isValidDomainForLocation(*this))
 		{
-			if (canMoveInto(pLoopPlot))
+			if (canMoveInto(&pLoopPlot))
 			{
-				if (canEnterArea(pLoopPlot->getTeam(), pLoopPlot->area()) && !isEnemy(pLoopPlot->getTeam(), pLoopPlot))
+				if (canEnterArea(pLoopPlot.getTeam(), pLoopPlot.area()) && !isEnemy(pLoopPlot.getTeam(), &pLoopPlot))
 				{
-					FAssertMsg(!atPlot(pLoopPlot), "atPlot(pLoopPlot) did not return false as expected");
+					FAssertMsg(!atPlot(&pLoopPlot), "atPlot(pLoopPlot) did not return false as expected");
 
-					if ((getDomainType() != DOMAIN_AIR) || pLoopPlot->isFriendlyCity(*this, true))
+					if (getDomainType() != DOMAIN_AIR || pLoopPlot.isFriendlyCity(*this, true))
 					{
-						if (pLoopPlot->isRevealed(getTeam(), false))
+						if (pLoopPlot.isRevealed(getTeam(), false))
 						{
-							iValue = (plotDistance(getX(), getY(), pLoopPlot->getX(), pLoopPlot->getY()) * 2);
+							int iValue = (plotDistance(getX(), getY(), pLoopPlot.getX(), pLoopPlot.getY()) * 2);
 
 							if (pNearestCity != NULL)
 							{
-								iValue += plotDistance(pLoopPlot->getX(), pLoopPlot->getY(), pNearestCity->getX(), pNearestCity->getY());
+								iValue += plotDistance(pLoopPlot.getX(), pLoopPlot.getY(), pNearestCity->getX(), pNearestCity->getY());
 
 								//	Try to at least favour the same landmass as the nearest city
-								if (pLoopPlot->area() != pNearestCity->area())
+								if (pLoopPlot.area() != pNearestCity->area())
 								{
 									iValue *= 3;
 								}
@@ -6718,32 +6700,21 @@ bool CvUnit::jumpToNearestValidPlot(bool bKill)
 
 							if (getDomainType() == DOMAIN_SEA && !plot()->isWater())
 							{
-								if (!pLoopPlot->isWater() || !pLoopPlot->isAdjacentToArea(area()))
+								if (!pLoopPlot.isWater() || !pLoopPlot.isAdjacentToArea(area()))
 								{
 									iValue *= 3;
 								}
 							}
-							else
+							else if (pLoopPlot.area() != area())
 							{
-								if (pLoopPlot->area() != area())
-								{
-									iValue *= 3;
-								}
+								iValue *= 3;
 							}
-/************************************************************************************************/
-/* Afforess	                  Start		 06/20/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-							iValue *= std::max(1, ((pLoopPlot->getTotalTurnDamage(this)) / 2));
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+							iValue *= std::max(1, pLoopPlot.getTotalTurnDamage(this) / 2);
 
 							if (iValue < iBestValue)
 							{
 								iBestValue = iValue;
-								pBestPlot = pLoopPlot;
+								pBestPlot = &pLoopPlot;
 							}
 						}
 					}
@@ -6752,39 +6723,18 @@ bool CvUnit::jumpToNearestValidPlot(bool bKill)
 		}
 	}
 
-	bool bValid = true;
 	if (pBestPlot != NULL)
 	{
 		//GC.getGame().logOOSSpecial(17, getID(), pBestPlot->getX(), pBestPlot->getY());
 		setXY(pBestPlot->getX(), pBestPlot->getY());
+		return true;
 	}
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 	else if (bKill)
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 	{
 		kill(false);
-		bValid = false;
 	}
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	else
-	{
-		bValid = false;
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
-	return bValid;
+	return false;
 }
 
 

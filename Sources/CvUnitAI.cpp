@@ -22871,25 +22871,23 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 	CvReachablePlotSet plotSet(getGroup(), iBasePathFlags, -1, true, iMaxDistFromBorder == -1 ? -1 : iMaxDistFromBorder/2+1);
 	bool bPlotSetPopulated = false;
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (bPlotSetPopulated && plotSet.find(pLoopPlot) == plotSet.end())
+		if (bPlotSetPopulated && plotSet.find(&pLoopPlot) == plotSet.end())
 		{
 			continue;
 		}
 		PROFILE("CvUnitAI::AI_improveBonus.ConsiderPlot");
-		const PlayerTypes ePlotOwner = pLoopPlot->getOwner();
+		const PlayerTypes ePlotOwner = pLoopPlot.getOwner();
 
-		if ((ePlotOwner == ePlayer || ePlotOwner == NO_PLAYER && pLoopPlot->isRevealed(getTeam(), false)) && AI_plotValid(pLoopPlot)
-		&& (pLoopPlot->area() == area() || DOMAIN_SEA == getDomainType() && pLoopPlot->isWater() && plot()->isAdjacentToArea(pLoopPlot->area())))
+		if ((ePlotOwner == ePlayer || ePlotOwner == NO_PLAYER && pLoopPlot.isRevealed(getTeam(), false)) && AI_plotValid(&pLoopPlot)
+		&& (pLoopPlot.area() == area() || DOMAIN_SEA == getDomainType() && pLoopPlot.isWater() && plot()->isAdjacentToArea(pLoopPlot.area())))
 		{
-			BonusTypes eNonObsoleteBonus = pLoopPlot->getNonObsoleteBonusType(getTeam());
+			const BonusTypes eNonObsoleteBonus = pLoopPlot.getNonObsoleteBonusType(getTeam());
 
 			if (eNonObsoleteBonus != NO_BONUS)
 			{
-				const bool bIsConnected = pLoopPlot->isConnectedToCapital(ePlayer);
+				const bool bIsConnected = pLoopPlot.isConnectedToCapital(ePlayer);
 				// Super Forts - This section makes sure the plot is "close enough" to a city to be worth building on
 				bool bCloseEnough = false;
 
@@ -22907,28 +22905,28 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 						plotSet.Populate(MAX_INT);
 						bPlotSetPopulated = true;
 
-						if (plotSet.find(pLoopPlot) == plotSet.end())
+						if (plotSet.find(&pLoopPlot) == plotSet.end())
 						{
 							continue;
 						}
 					}
 
-					CvCity* pNearestCity = GC.getMap().findCity(pLoopPlot->getX(), pLoopPlot->getY(), ePlayer, NO_TEAM, false);
+					CvCity* pNearestCity = GC.getMap().findCity(pLoopPlot.getX(), pLoopPlot.getY(), ePlayer, NO_TEAM, false);
 
-					if (pNearestCity != NULL && generatePath(pLoopPlot, 0, true, &iPathTurns, iMaxDistFromBorder/2)
+					if (pNearestCity != NULL && generatePath(&pLoopPlot, 0, true, &iPathTurns, iMaxDistFromBorder/2)
 
-					&& plotDistance(pLoopPlot->getX(), pLoopPlot->getY(), pNearestCity->getX(), pNearestCity->getY()) * (kOwner.hasBonus(eNonObsoleteBonus) ? 2 : 1) <= iMaxDistFromBorder)
+					&& plotDistance(pLoopPlot.getX(), pLoopPlot.getY(), pNearestCity->getX(), pNearestCity->getY()) * (kOwner.hasBonus(eNonObsoleteBonus) ? 2 : 1) <= iMaxDistFromBorder)
 					{
 						bCloseEnough = true;
 					}
 				}
 
-				if ((pLoopPlot->getWorkingCity() != NULL || bIsConnected || bCanRoute) && bCloseEnough && (!pLoopPlot->isVisible(getTeam(),false) || !pLoopPlot->isVisibleEnemyUnit(this)))
+				if ((pLoopPlot.getWorkingCity() != NULL || bIsConnected || bCanRoute) && bCloseEnough && (!pLoopPlot.isVisible(getTeam(),false) || !pLoopPlot.isVisibleEnemyUnit(this)))
 				{
 					PROFILE("CvUnitAI::AI_improveBonus.CheckImprovement");
 
-					const bool bCityRadius = pLoopPlot->isCityRadius();
-					const ImprovementTypes eImprovement = pLoopPlot->getImprovementType();
+					const bool bCityRadius = pLoopPlot.isCityRadius();
+					const ImprovementTypes eImprovement = pLoopPlot.getImprovementType();
 
 					bool bDoImprove = false;
 
@@ -22967,7 +22965,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 					else bDoImprove = eImprovement == eRuins;
 					// ! Super Forts
 
-					const FeatureTypes eFeature = pLoopPlot->getFeatureType();
+					const FeatureTypes eFeature = pLoopPlot.getFeatureType();
 					BuildTypes eBestTempBuild = NO_BUILD;
 
 					if (bDoImprove)
@@ -22978,7 +22976,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 
 						for (int iJ = 0; iJ < GC.getNumBuildInfos(); iJ++)
 						{
-							BuildTypes eBuild = (BuildTypes) iJ;
+							const BuildTypes eBuild = (BuildTypes) iJ;
 
 							if (GC.getBuildInfo(eBuild).getImprovement() != NO_IMPROVEMENT)
 							{
@@ -23021,7 +23019,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 							plotSet.Populate(MAX_INT);
 
 							bPlotSetPopulated = true;
-							if ( plotSet.find(pLoopPlot) == plotSet.end() )
+							if (plotSet.find(&pLoopPlot) == plotSet.end())
 							{
 								continue;
 							}
@@ -23044,8 +23042,8 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 								{
 									for (int iK = 0; iK < NUM_YIELD_TYPES; iK++)
 									{
-										iValue += 20 * pLoopPlot->calculateImprovementYieldChange(eImprovementX, (YieldTypes)iK, ePlayer, false);
-										iValue += 10 * pLoopPlot->calculateNatureYield((YieldTypes)iK, getTeam(), eFeature == NO_FEATURE ? true : GC.getBuildInfo(eBestTempBuild).isFeatureRemove(eFeature));
+										iValue += 20 * pLoopPlot.calculateImprovementYieldChange(eImprovementX, (YieldTypes)iK, ePlayer, false);
+										iValue += 10 * pLoopPlot.calculateNatureYield((YieldTypes)iK, getTeam(), eFeature == NO_FEATURE ? true : GC.getBuildInfo(eBestTempBuild).isFeatureRemove(eFeature));
 									}
 								}
 								//TB Super Forts AI fix: here we are evaluating the improvement but not previously giving any concession that a *fort* is a horrible thing to build within a city radius unless there's good cause.
@@ -23059,17 +23057,17 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 										iValue += iDefenseValue;
 										iValue += GC.getImprovementInfo(eImprovementX).getCulture();
 									}
-									else if (pLoopPlot->getWorkingCity() != NULL)
+									else if (pLoopPlot.getWorkingCity() != NULL)
 									{
 										//if the city is under threat then the priority to replace with forts grows
 										int iThreat = iDefenseValue;
-										iThreat *= pLoopPlot->getWorkingCity()->AI_cityThreat();
+										iThreat *= pLoopPlot.getWorkingCity()->AI_cityThreat();
 										iThreat /= 100;
 										iValue += iThreat;
 									}
 								}
 
-								if (pLoopPlot->getImprovementType() != NO_IMPROVEMENT)
+								if (pLoopPlot.getImprovementType() != NO_IMPROVEMENT)
 								{
 									/*
 									int iCountervalue = kOwner.AI_bonusVal(eNonObsoleteBonus);
@@ -23104,12 +23102,12 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 									//TB Note:establishes countervalue in a much processing cheaper fashion.
 									//Value gets set once when improvement is built and that's that.
 									//Defensive values based on threats when built will linger but that's a little interesting and could help to keep those odd forts from being so quickly rebuilt over.
-									int iCountervalue = pLoopPlot->getImprovementCurrentValue();
+									const int iCountervalue = pLoopPlot.getImprovementCurrentValue();
 									if (iCountervalue == 0)
 									{
 										//Compatibility check - if the game hasn't assigned a current value to the plot yet, assign one then recheck.
-										pLoopPlot->setImprovementCurrentValue();
-										iCountervalue = pLoopPlot->getImprovementCurrentValue();
+										pLoopPlot.setImprovementCurrentValue();
+										iCountervalue = pLoopPlot.getImprovementCurrentValue();
 									}
 
 									iValue -= iCountervalue;
@@ -23135,21 +23133,21 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 							if (eBestTempBuild != NO_BUILD && GC.getBuildInfo(eBestTempBuild).getTime() > 0)
 							{
 								//allow teaming.
-								iMaxWorkers = AI_calculatePlotWorkersNeeded(pLoopPlot, eBestTempBuild);
+								iMaxWorkers = AI_calculatePlotWorkersNeeded(&pLoopPlot, eBestTempBuild);
 								if (getPathMovementRemaining() == 0)
 								{
 									iMaxWorkers = std::min((iMaxWorkers + 1) / 2, 1 + kOwner.AI_baseBonusVal(eNonObsoleteBonus) / 20);
 								}
 							}
 
-							if (kOwner.AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_BUILD, getGroup()) < iMaxWorkers
-							&& (!bDoImprove || pLoopPlot->getBuildTurnsLeft(eBestTempBuild, 0, 0) > 2*iPathTurns - 1))
+							if (kOwner.AI_plotTargetMissionAIs(&pLoopPlot, MISSIONAI_BUILD, getGroup()) < iMaxWorkers
+							&& (!bDoImprove || pLoopPlot.getBuildTurnsLeft(eBestTempBuild, 0, 0) > 2*iPathTurns - 1))
 							{
 								if (bDoImprove)
 								{
 									iValue *= 1000;
 
-									if (atPlot(pLoopPlot))
+									if (atPlot(&pLoopPlot))
 									{
 										iValue *= 3;
 									}
@@ -23165,7 +23163,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 									{
 										iBestValue = iValue;
 										eBestBuild = eBestTempBuild;
-										pBestPlot = pLoopPlot;
+										pBestPlot = &pLoopPlot;
 										bBestBuildIsRoute = false;
 										iBestResourceValue = iValue;
 									}
@@ -23183,7 +23181,7 @@ bool CvUnitAI::AI_improveBonus(int iMinValue, CvPlot** ppBestPlot, BuildTypes* p
 										{
 											iBestValue = iValue;
 											eBestBuild = NO_BUILD;
-											pBestPlot = pLoopPlot;
+											pBestPlot = &pLoopPlot;
 											bBestBuildIsRoute = true;
 										}
 									}
@@ -23688,29 +23686,23 @@ bool CvUnitAI::AI_connectBonus(bool bTestTrade)
 {
 	PROFILE_FUNC();
 
-	CvPlot* pLoopPlot;
-	BonusTypes eNonObsoleteBonus;
-	int iI;
-
 	// XXX how do we make sure that we can build roads???
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-
 		if (pLoopPlot->getOwner() == getOwner()) // XXX team???
 		{
-			if (AI_plotValid(pLoopPlot) && pLoopPlot->area() == area())
+			if (AI_plotValid(&pLoopPlot) && pLoopPlot.area() == area())
 			{
-				eNonObsoleteBonus = pLoopPlot->getNonObsoleteBonusType(getTeam());
+				const BonusTypes eNonObsoleteBonus = pLoopPlot.getNonObsoleteBonusType(getTeam());
 
 				if (eNonObsoleteBonus != NO_BONUS)
 				{
-					if (!(pLoopPlot->isConnectedToCapital()))
+					if (!pLoopPlot.isConnectedToCapital())
 					{
-						if (!bTestTrade || ((pLoopPlot->getImprovementType() != NO_IMPROVEMENT) && (GC.getImprovementInfo(pLoopPlot->getImprovementType()).isImprovementBonusTrade(eNonObsoleteBonus))))
+						if (!bTestTrade || (pLoopPlot.getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pLoopPlot.getImprovementType()).isImprovementBonusTrade(eNonObsoleteBonus)))
 						{
-							if (AI_connectPlot(pLoopPlot))
+							if (AI_connectPlot(&pLoopPlot))
 							{
 								return true;
 							}
@@ -23835,45 +23827,36 @@ bool CvUnitAI::AI_routeTerritory(bool bImprovementOnly)
 {
 	PROFILE_FUNC();
 
-	CvPlot* pLoopPlot;
-	CvPlot* pBestPlot;
-	ImprovementTypes eImprovement;
-	RouteTypes eBestRoute;
 	bool bValid;
 	int iPathTurns;
-	int iValue;
-	int iBestValue;
-	int iI, iJ;
 
 	FAssert(canBuildRoute());
 
-	iBestValue = 0;
-	pBestPlot = NULL;
+	int iBestValue = 0;
+	const CvPlot* pBestPlot = NULL;
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot->getOwner() == getOwner())
+		if (pLoopPlot.getOwner() == getOwner())
 		{
-			if (pLoopPlot->area() == area() && AI_plotValid(pLoopPlot))
+			if (pLoopPlot.area() == area() && AI_plotValid(&pLoopPlot))
 			{
 				// Best route depends on Tech, Plot(Terrain/Feature, and Improvement in case of eRail v Highway)
-				eBestRoute = GET_PLAYER(getOwner()).getBestRoute(pLoopPlot, false, this);
+				const RouteTypes eBestRoute = GET_PLAYER(getOwner()).getBestRoute(&pLoopPlot, false, this);
 
 				if (eBestRoute != NO_ROUTE)
 				{
-					if (eBestRoute != pLoopPlot->getRouteType())
+					if (eBestRoute != pLoopPlot.getRouteType())
 					{
 						if (bImprovementOnly)
 						{
 							bValid = false;
 
-							eImprovement = pLoopPlot->getImprovementType();
+							const ImprovementTypes eImprovement = pLoopPlot.getImprovementType();
 
 							if (eImprovement != NO_IMPROVEMENT)
 							{
-								for (iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
+								for (int iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 								{
 									if (GC.getImprovementInfo(eImprovement).getRouteYieldChanges(eBestRoute, iJ) > 0)
 									{
@@ -23890,18 +23873,18 @@ bool CvUnitAI::AI_routeTerritory(bool bImprovementOnly)
 
 						if (bValid)
 						{
-							if (GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_BUILD, getGroup(), 1) == 0)
+							if (GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(&pLoopPlot, MISSIONAI_BUILD, getGroup(), 1) == 0)
 							{
-								if (generateSafePathforVulnerable(pLoopPlot, &iPathTurns))
+								if (generateSafePathforVulnerable(&pLoopPlot, &iPathTurns))
 								{
-									iValue = 10000;
+									int iValue = 10000;
 
 									iValue /= (iPathTurns + 1);
 
 									if (iValue > iBestValue)
 									{
 										iBestValue = iValue;
-										pBestPlot = pLoopPlot;
+										pBestPlot = &pLoopPlot;
 									}
 								}
 							}
@@ -24702,28 +24685,26 @@ bool CvUnitAI::AI_airOffensiveCity()
 	FAssert(canAirAttack() || nukeRange() >= 0);
 
 	int iBestValue = 0;
-	CvPlot* pBestPlot = NULL;
+	const CvPlot* pBestPlot = NULL;
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& plotX, GC.getMap().plots())
 	{
-		CvPlot* plotX = GC.getMap().plotByIndex(iI);
-
 		// Limit to cities and forts, true for any city but only this team's forts
-		if (plotX->isCity(true, getTeam())
+		if (plotX.isCity(true, getTeam())
 		&&
 		(
-			plotX->getTeam() == getTeam()
+			plotX.getTeam() == getTeam()
 			||
-			plotX->isOwned() && GET_TEAM(plotX->getTeam()).isVassal(getTeam())
+			plotX.isOwned() && GET_TEAM(plotX.getTeam()).isVassal(getTeam())
 		)
-		&& (atPlot(plotX) || canMoveInto(plotX)))
+		&& (atPlot(&plotX) || canMoveInto(&plotX)))
 		{
-			const int iValue = AI_airOffenseBaseValue(plotX);
+			const int iValue = AI_airOffenseBaseValue(&plotX);
 
 			if (iValue > iBestValue)
 			{
 				iBestValue = iValue;
-				pBestPlot = plotX;
+				pBestPlot = &plotX;
 			}
 		}
 	}
@@ -28835,36 +28816,28 @@ bool CvUnitAI::AI_AutomatedPillage(int iBonusValueThreshold)
 
 	FAssertMsg(isHuman(), "should not be called for AI's");
 
-	CvPlot* pLoopPlot;
-	CvPlot* pBestPlot;
-	CvPlot* pBestPillagePlot;
-	CvPlot* endTurnPlot = NULL;
+	const CvPlot* endTurnPlot = NULL;
 	int iPathTurns;
-	int iValue;
-	int iBestValue;
-	int iI;
 
-	iBestValue = 0;
-	pBestPlot = NULL;
-	pBestPillagePlot = NULL;
+	int iBestValue = 0;
+	const CvPlot* pBestPlot = NULL;
+	const CvPlot* pBestPillagePlot = NULL;
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (AI_plotValid(pLoopPlot) && getGroup()->canPillage(pLoopPlot) && pLoopPlot->area() == area())
+		if (AI_plotValid(&pLoopPlot) && getGroup()->canPillage(&pLoopPlot) && pLoopPlot.area() == area())
 		{
-			if (!pLoopPlot->isNPC() || !GET_PLAYER(getOwner()).isModderOption(MODDEROPTION_AUTO_PILLAGE_AVOID_BARBARIAN_CITIES))
+			if (!pLoopPlot.isNPC() || !GET_PLAYER(getOwner()).isModderOption(MODDEROPTION_AUTO_PILLAGE_AVOID_BARBARIAN_CITIES))
 			{
-				if (potentialWarAction(pLoopPlot))
+				if (potentialWarAction(&pLoopPlot))
 				{
-					if (GET_PLAYER(getOwner()).isModderOption(MODDEROPTION_AUTO_PILLAGE_AVOID_ENEMY_UNITS) || !pLoopPlot->isVisible(getTeam(),false) || !pLoopPlot->isVisibleEnemyUnit(this))
+					if (GET_PLAYER(getOwner()).isModderOption(MODDEROPTION_AUTO_PILLAGE_AVOID_ENEMY_UNITS) || !pLoopPlot.isVisible(getTeam(),false) || !pLoopPlot.isVisibleEnemyUnit(this))
 					{
-						if (GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_PILLAGE, getGroup(), 1) == 0)
+						if (GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(&pLoopPlot, MISSIONAI_PILLAGE, getGroup(), 1) == 0)
 						{
-							if (generatePath(pLoopPlot, 0, true, &iPathTurns))
+							if (generatePath(&pLoopPlot, 0, true, &iPathTurns))
 							{
-								iValue = AI_pillageValue(pLoopPlot, iBonusValueThreshold);
+								int iValue = AI_pillageValue(&pLoopPlot, iBonusValueThreshold);
 
 								iValue *= 1000;
 
@@ -28872,7 +28845,7 @@ bool CvUnitAI::AI_AutomatedPillage(int iBonusValueThreshold)
 
 								// if not at war with this plot owner, then devalue plot if we already inside this owner's borders
 								// (because declaring war will pop us some unknown distance away)
-								if (!isEnemy(pLoopPlot->getTeam()) && plot()->getTeam() == pLoopPlot->getTeam())
+								if (!isEnemy(pLoopPlot.getTeam()) && plot()->getTeam() == pLoopPlot.getTeam())
 								{
 									iValue /= 10;
 								}
@@ -28881,11 +28854,11 @@ bool CvUnitAI::AI_AutomatedPillage(int iBonusValueThreshold)
 								{
 									endTurnPlot = getPathEndTurnPlot();
 
-									if ( endTurnPlot == pLoopPlot || !exposedToDanger(endTurnPlot, 60) )
+									if (endTurnPlot == &pLoopPlot || !exposedToDanger(endTurnPlot, 60))
 									{
 										iBestValue = iValue;
 										pBestPlot = endTurnPlot;
-										pBestPillagePlot = pLoopPlot;
+										pBestPillagePlot = &pLoopPlot;
 									}
 								}
 							}
