@@ -1875,13 +1875,11 @@ void CvPlayer::initFreeUnits()
 		const CvPlot* pStartingPlot = getStartingPlot();
 		if (NULL != pStartingPlot)
 		{
-			for (int iPlotLoop = 0; iPlotLoop < GC.getMap().numPlots(); ++iPlotLoop)
+			foreach_(CvPlot& plot, GC.getMap().plots())
 			{
-				CvPlot* pPlot = GC.getMap().plotByIndex(iPlotLoop);
-
-				if (plotDistance(pPlot->getX(), pPlot->getY(), pStartingPlot->getX(), pStartingPlot->getY()) <= GC.getADVANCED_START_SIGHT_RANGE())
+				if (plotDistance(plot.getX(), plot.getY(), pStartingPlot->getX(), pStartingPlot->getY()) <= GC.getADVANCED_START_SIGHT_RANGE())
 				{
-					pPlot->setRevealed(getTeam(), true, false, NO_TEAM, false);
+					plot.setRevealed(getTeam(), true, false, NO_TEAM, false);
 				}
 			}
 		}
@@ -2177,21 +2175,19 @@ CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 
 	for (int iPass = 0; iPass < 2; iPass++)
 	{
-		CvPlot *pBestPlot = NULL;
+		CvPlot* pBestPlot = NULL;
 		int iBestValue = 0;
 
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& plot, GC.getMap().plots())
 		{
-			CvPlot* plot = GC.getMap().plotByIndex(iI);
-
-			if (plot->isStartingPlot()
-			|| !plot->isMapCategoryType(earth)
-			|| iBestArea != -1 && plot->getArea() != iBestArea)
+			if (plot.isStartingPlot()
+			|| !plot.isMapCategoryType(earth)
+			|| iBestArea != -1 && plot.getArea() != iBestArea)
 			{
 				continue;
 			}
 			// The distance factor is now done inside foundValue
-			int iValue = plot->getFoundValue(getID());
+			int iValue = plot.getFoundValue(getID());
 
 			if (iValue > 0)
 			{
@@ -2203,7 +2199,7 @@ CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 				{
 					//FErrorMsg(CvString::format("iBestValue=%d", iValue).c_str());
 					iBestValue = iValue;
-					pBestPlot = plot;
+					pBestPlot = &plot;
 				}
 			}
 		}
@@ -2889,12 +2885,11 @@ void CvPlayer::killCities()
 
 	// Super Forts begin *culture* - Clears culture from forts when a player dies
 	const PlayerTypes ePlayer = getID();
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& plot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-		if (pLoopPlot->getOwner() == ePlayer)
+		if (plot.getOwner() == ePlayer)
 		{
-			pLoopPlot->setOwner(pLoopPlot->calculateCulturalOwner(), true, false);
+			plot.setOwner(plot.calculateCulturalOwner(), true, false);
 		}
 	}
 	// Super Forts end
@@ -3800,11 +3795,9 @@ void CvPlayer::doTurn()
 	PROFILE_FUNC();
 
 #ifdef VALIDATION_FOR_PLOT_GROUPS
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if ( pLoopPlot->getPlotGroupId(getID()) != -1 && pLoopPlot->getPlotGroup(getID()) == NULL )
+		if (pLoopPlot.getPlotGroupId(getID()) != -1 && pLoopPlot.getPlotGroup(getID()) == NULL)
 		{
 			::MessageBox(NULL, "Invalid plot group id found!", "CvGameCoreDLL", MB_OK);
 		}
@@ -4319,10 +4312,10 @@ void CvPlayer::updatePlotGroups(const CvArea* possibleNewInAreaOnly, bool reInit
 		if ( reInitialize )
 		{
 			//	Throw away all existing plot groups
-			for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
-			{
-				GC.getMap().plotByIndex(iI)->setPlotGroup(getID(), NULL, false);
-			}
+			algo::for_each(GC.getMap().plots(), bind(CvPlot::setPlotGroup, _1, getID(), nullptr, false));
+			//{
+			//	GC.getMap().plotByIndex(iI)->setPlotGroup(getID(), NULL, false);
+			//}
 			m_plotGroups[CURRENT_MAP]->removeAll();
 		}
 		else
@@ -4331,26 +4324,22 @@ void CvPlayer::updatePlotGroups(const CvArea* possibleNewInAreaOnly, bool reInit
 		}
 	}
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if ( possibleNewInAreaOnly == NULL || pLoopPlot->area() == possibleNewInAreaOnly )
+		if (possibleNewInAreaOnly == NULL || pLoopPlot.area() == possibleNewInAreaOnly)
 		{
-			if ( pLoopPlot->getPlotGroup(getID()) == NULL )
+			if (pLoopPlot.getPlotGroup(getID()) == NULL)
 			{
-				CvPlotGroup::colorRegion(pLoopPlot, getID(), true);
+				CvPlotGroup::colorRegion(&pLoopPlot, getID(), true);
 			}
-			//pLoopPlot->updatePlotGroup(getID(), false);
+			//pLoopPlot.updatePlotGroup(getID(), false);
 		}
 	}
 
 #ifdef VALIDATION_FOR_PLOT_GROUPS
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if ( pLoopPlot->getPlotGroupId(getID()) != -1 && pLoopPlot->getPlotGroup(getID()) == NULL )
+		if (pLoopPlot.getPlotGroupId(getID()) != -1 && pLoopPlot.getPlotGroup(getID()) == NULL)
 		{
 			::MessageBox(NULL, "Invalid plot group id found after recalc!", "CvGameCoreDLL", MB_OK);
 		}

@@ -323,7 +323,7 @@ protected:
 	bool AI_specialSeaTransportMissionary();
 	bool AI_specialSeaTransportSpy();
 	bool AI_carrierSeaTransport();
-	bool AI_connectPlot(CvPlot* pPlot, int iRange = 0);
+	bool AI_connectPlot(const CvPlot* pPlot, int iRange = 0);
 	bool AI_improveCity(CvCity* pCity);
 	bool AI_improveLocalPlot(int iRange, const CvCity* pIgnoreCity);
 	bool AI_nextCityToImprove(CvCity* pCity);
@@ -331,7 +331,7 @@ protected:
 	bool AI_irrigateTerritory();
 	bool AI_fortTerritory(bool bCanal, bool bAirbase);
 	bool AI_improveBonus(int iMinValue = 0, CvPlot** ppBestPlot = NULL, BuildTypes* peBestBuild = NULL, int* piBestValue = NULL);
-	bool AI_improvePlot(CvPlot* pPlot, BuildTypes eBuild);
+	bool AI_improvePlot(const CvPlot& pPlot, BuildTypes eBuild);
 	BuildTypes AI_betterPlotBuild(const CvPlot* pPlot, BuildTypes eBuild) const;
 	bool AI_connectBonus(bool bTestTrade = true);
 	bool AI_connectCity();
