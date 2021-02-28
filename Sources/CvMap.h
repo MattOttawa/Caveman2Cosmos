@@ -118,7 +118,7 @@ public:
 	CvArea* findBiggestArea(bool bWater) const;
 
 	int getMapFractalFlags() const;
-	bool findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const;
+	bool findWater(const CvPlot& pPlot, int iRange) const;
 
 	inline bool isPlot(int iX, int iY) const
 	{
@@ -176,12 +176,22 @@ public:
 	int getNumBonusesOnLand(BonusTypes eIndex) const;
 	void changeNumBonusesOnLand(BonusTypes eIndex, int iChange);
 
-	inline CvPlot* plotByIndex(int iIndex) const
+	std::vector<CvPlot>& plots() { return m_pMapPlots; }
+	const std::vector<CvPlot>& plots() const { return m_pMapPlots; }
+
+	inline CvPlot* plotByIndex(int iIndex)
 	{
-		return (iIndex >= 0 && iIndex < getGridWidth() * getGridHeight()) ? &(m_pMapPlots[iIndex]) : NULL;
+		FASSERT_BOUNDS(0, getGridWidth() * getGridHeight(), iIndex)
+		return &m_pMapPlots[iIndex];
 	}
 
-	__forceinline CvPlot* plot(int iX, int iY) const
+	inline const CvPlot* plotByIndex(int iIndex) const
+	{
+		FASSERT_BOUNDS(0, getGridWidth() * getGridHeight(), iIndex)
+		return &m_pMapPlots[iIndex];
+	}
+
+	inline CvPlot* plot(int iX, int iY)
 	{
 		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
 		{
@@ -189,19 +199,36 @@ public:
 		}
 		const int iMapX = coordRange(iX, getGridWidth(), isWrapX());
 		const int iMapY = coordRange(iY, getGridHeight(), isWrapY());
-		return isPlot(iMapX, iMapY) ? &(m_pMapPlots[plotNum(iMapX, iMapY)]) : NULL;
+		return isPlot(iMapX, iMapY) ? &m_pMapPlots[plotNum(iMapX, iMapY)] : NULL;
 	}
 
-	__forceinline CvPlot* plotSorenINLINE(int iX, int iY) const
+	inline const CvPlot* plot(int iX, int iY) const
 	{
 		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
 		{
 			return NULL;
 		}
-		return &(m_pMapPlots[plotNum(iX, iY)]);
+		const int iMapX = coordRange(iX, getGridWidth(), isWrapX());
+		const int iMapY = coordRange(iY, getGridHeight(), isWrapY());
+		return isPlot(iMapX, iMapY) ? &m_pMapPlots[plotNum(iMapX, iMapY)] : NULL;
 	}
 
-	CvPlot* pointToPlot(float fX, float fY) const;
+	inline CvPlot* plotSorenINLINE(int iX, int iY)
+	{
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
+		return &m_pMapPlots[plotNum(iX, iY)];
+	}
+
+	inline const CvPlot* plotSorenINLINE(int iX, int iY) const
+	{
+		FAssert(iX != INVALID_PLOT_COORD && iY != INVALID_PLOT_COORD)
+		return &m_pMapPlots[plotNum(iX, iY)];
+	}
+
+	CvPlot* pointToPlot(float fX, float fY);
 
 	int getIndexAfterLastArea() const;
 	int getNumAreas() const;
@@ -271,7 +298,7 @@ protected:
 	bool m_bCitiesDisplayed;
 	bool m_bUnitsDisplayed;
 
-	CvPlot* m_pMapPlots;
+	std::vector<CvPlot> m_pMapPlots;
 
 	FFreeListTrashArray<CvArea> m_areas;
 

@@ -3047,7 +3047,12 @@ int cvInternalGlobals::getNumMissionInfos() const
 	return (int) m_paMissionInfo.size();
 }
 
-inline CvMap& cvInternalGlobals::getMap() const
+CvMap& cvInternalGlobals::getMap()
+{
+	return *m_maps[GC.getGame().getCurrentMap()];
+}
+
+const CvMap& cvInternalGlobals::getMap() const
 {
 	return *m_maps[GC.getGame().getCurrentMap()];
 }

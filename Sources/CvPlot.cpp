@@ -137,6 +137,93 @@ CvPlot::CvPlot()
 	reset(0, 0, true);
 }
 
+CvPlot::CvPlot(const CvPlot& plot)
+	: m_GameObject(this)
+	, m_Properties(this)
+	, m_visibleGraphics(ECvPlotGraphics::NONE)
+	, m_requiredVisibleGraphics(ECvPlotGraphics::NONE)
+	, m_pagingHandle(CvPlotPaging::INVALID_HANDLE)
+{
+	if ( m_resultHashMap == NULL )
+	{
+		m_resultHashMap = new stdext::hash_map<int,int>();
+	}
+
+	if ( g_bestDefenderCache == NULL )
+	{
+		g_bestDefenderCache = new DefenderScoreCache();
+	}
+
+	m_aiYield = new short[NUM_YIELD_TYPES];
+
+	// Plot danger cache
+	m_abIsTeamBorderCache = new bool[MAX_TEAMS];
+
+	m_aiFoundValue = NULL;
+	m_aiPlayerCityRadiusCount = NULL;
+	m_aiPlotGroup = NULL;
+	m_aiVisibilityCount = new short[MAX_TEAMS];
+	m_aiLastSeenTurn = NULL;
+	m_aiDangerCount = NULL;
+	m_aiStolenVisibilityCount = NULL;
+	m_aiBlockadedCount = NULL;
+	m_aiRevealedOwner = NULL;
+	m_abRiverCrossing = NULL;
+	m_abRevealed = NULL;
+	m_aeRevealedImprovementType = NULL;
+	m_aeRevealedRouteType = NULL;
+	m_paiBuildProgress = NULL;
+	m_apaiCultureRangeCities = NULL;
+	m_apaiInvisibleVisibilityCount = NULL;
+	//m_apaiCachedHighestTeamInvisibilityIntensity = NULL;
+
+	m_aiOccupationCultureRangeCities = NULL;
+
+	m_aiMountainLeaderCount = NULL;	//	Koshling - mountain mod efficiency
+	m_pFeatureSymbol = NULL;
+	m_pPlotBuilder = NULL;
+	m_pRouteSymbol = NULL;
+	m_pRiverSymbol = NULL;
+	m_pFlagSymbol = NULL;
+	m_pFlagSymbolOffset = NULL;
+	m_pCenterUnit = NULL;
+	m_bInhibitCenterUnitCalculation = false;
+	// Toffer - These doesn't recalculate, perhaps they should?
+	m_bImprovementUpgradable = false;
+	m_iImprovementUpgradeHash = 0;
+	m_iCurrentRoundofUpgradeCache = -1;
+	// ! Toffer
+	m_iImprovementCurrentValue = 0;
+
+	m_szScriptData = NULL;
+	//Afforess: use async rand so as to not pollute mp games
+	m_zobristContribution = GC.getASyncRand().getInt();
+
+	if ( !g_plotTypeZobristHashesSet )
+	{
+		for(int i = 0; i < NUM_PLOT_TYPES; i++)
+		{
+			//Afforess: use async rand so as to not pollute mp games
+			g_plotTypeZobristHashes[i] = GC.getASyncRand().getInt();
+		}
+
+		g_plotTypeZobristHashesSet = true;
+	}
+
+	if (!g_riverDirectionZobristHashesSet)
+	{
+		for (int i = 0; i < NUM_CARDINALDIRECTION_TYPES; i++)
+		{
+			//Afforess: use async rand so as to not pollute mp games
+			g_riverDirectionZobristHashes[i] = GC.getASyncRand().getInt();
+		}
+
+		g_riverDirectionZobristHashesSet = true;
+	}
+
+	reset(0, 0, true);
+}
+
 CvPlot::~CvPlot()
 {
 	pageGraphicsOut();
@@ -311,6 +398,10 @@ void CvPlot::reset(int iX, int iY, bool bConstructorCall)
 	}
 }
 
+const CvPlot& CvPlot::operator=(const CvPlot& other)
+{
+	return *this;
+}
 
 void CvPlot::pageGraphicsOut()
 {
@@ -10388,11 +10479,11 @@ PlotTeamVisibilityIntensity& CvPlot::getPlotTeamVisibilityIntensity(int iIndex)
 int CvPlot::getNumPlotTeamVisibilityIntensityCount(InvisibleTypes eInvisibility, TeamTypes eTeam, int iIntensity) const
 {
 	int iResult = 0;
-	for (int iI = 0; iI < getNumPlotTeamVisibilityIntensity(); iI++)
+	foreach_(const PlotTeamVisibilityIntensity& visibilityIntensity, getPlotTeamVisibilityIntensity())
 	{
-		if (m_aPlotTeamVisibilityIntensity[iI].eInvisibility == eInvisibility &&
-			m_aPlotTeamVisibilityIntensity[iI].eTeam == eTeam &&
-			m_aPlotTeamVisibilityIntensity[iI].iIntensity == iIntensity)
+		if (visibilityIntensity.eInvisibility == eInvisibility &&
+			visibilityIntensity.eTeam == eTeam &&
+			visibilityIntensity.iIntensity == iIntensity)
 		{
 			iResult++;
 			break;
@@ -10417,12 +10508,11 @@ int CvPlot::getHighestPlotTeamVisibilityIntensity(InvisibleTypes eInvisibility, 
 	//return iResult;
 	int iHighestResult = 0;
 
-	for (int iI = 0; iI < getNumPlotTeamVisibilityIntensity(); iI++)
+	foreach_(const PlotTeamVisibilityIntensity& visibilityIntensity, getPlotTeamVisibilityIntensity())
 	{
-		if (m_aPlotTeamVisibilityIntensity[iI].eInvisibility == eInvisibility &&
-			m_aPlotTeamVisibilityIntensity[iI].eTeam == eTeam)
+		if (visibilityIntensity.eInvisibility == eInvisibility && visibilityIntensity.eTeam == eTeam)
 		{
-			iResult = m_aPlotTeamVisibilityIntensity[iI].iIntensity;
+			iResult = visibilityIntensity.iIntensity;
 			if (iResult > iHighestResult)
 			{
 				iHighestResult = iResult;
@@ -10459,13 +10549,13 @@ int CvPlot::getHighestPlotTeamVisibilityIntensity(InvisibleTypes eInvisibility, 
 //	//{
 //		//int iHighestResult = 0;
 //		//int iResult = 0;
-//		for (int iI = 0; iI < getNumPlotTeamVisibilityIntensity(); iI++)
+//		foreach_(const PlotTeamVisibilityIntensity& visibilityIntensity, getPlotTeamVisibilityIntensity())
 //		{
-//			if (m_aPlotTeamVisibilityIntensity[iI].eInvisibility == eInvisibility &&
-//				m_aPlotTeamVisibilityIntensity[iI].eTeam == eTeam &&
-//				m_aPlotTeamVisibilityIntensity[iI].iCount > 0)
+//			if (visibilityIntensity.eInvisibility == eInvisibility &&
+//				visibilityIntensity.eTeam == eTeam &&
+//				visibilityIntensity.iCount > 0)
 //			{
-//				iResult = m_aPlotTeamVisibilityIntensity[iI].iIntensity;
+//				iResult = visibilityIntensity.iIntensity;
 //				if (iResult > iHighestResult)
 //				{
 //					iHighestResult = iResult;
@@ -10485,14 +10575,7 @@ CvUnit* CvPlot::getUnitByIndex(int iIndex) const
 {
 	const CLLNode<IDInfo>* pUnitNode = m_units.nodeNum(iIndex);
 
-	if (pUnitNode != NULL)
-	{
-		return ::getUnit(pUnitNode->m_data);
-	}
-	else
-	{
-		return NULL;
-	}
+	return pUnitNode ? ::getUnit(pUnitNode->m_data) : NULL;
 }
 
 
@@ -13449,7 +13532,7 @@ void CvPlot::setNull(bool bNull)
 
 bool CvPlot::bDeferPlotGroupRecalculation = false;
 
-void	CvPlot::setDeferredPlotGroupRecalculationMode(bool bDefer)
+void CvPlot::setDeferredPlotGroupRecalculationMode(bool bDefer)
 {
 	if ( bDeferPlotGroupRecalculation != bDefer )
 	{
@@ -13459,13 +13542,11 @@ void	CvPlot::setDeferredPlotGroupRecalculationMode(bool bDefer)
 		{
 			CvPlotGroup::startBulkRecalculate();
 
-			for(int iI = 0; iI < GC.getMap().numPlots(); iI++)
+			foreach_(CvPlot& plot, GC.getMap().plots())
 			{
-				CvPlot*	pPlot = GC.getMap().plotByIndex(iI);
-
-				if ( pPlot != NULL && pPlot->m_bPlotGroupsDirty )
+				if (plot.m_bPlotGroupsDirty)
 				{
-					pPlot->updatePlotGroup();
+					plot.updatePlotGroup();
 				}
 			}
 

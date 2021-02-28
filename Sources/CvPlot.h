@@ -137,10 +137,13 @@ class CvPlot : bst::noncopyable
 friend CvPathPlotInfoStore;
 public:
 	CvPlot();
+	CvPlot(const CvPlot& plot);
 	virtual ~CvPlot();
 
 	CvGameObjectPlot* getGameObject() { return &m_GameObject; };
 	const CvGameObjectPlot* getGameObject() const { return &m_GameObject; };
+
+	const CvPlot& operator=(const CvPlot& other);
 
 	// Comparison operators
 	// Use address identity for now (more than one map means x/y compare wouldn't work)
@@ -850,6 +853,7 @@ public:
 	bool isInvisibleVisible(TeamTypes eTeam, InvisibleTypes eInvisible) const;
 	void changeInvisibleVisibilityCount(TeamTypes eTeam, InvisibleTypes eInvisible, int iChange, int iIntensity, int iUnitID = 0);
 
+	const std::vector<PlotTeamVisibilityIntensity>& getPlotTeamVisibilityIntensity() const { return m_aPlotTeamVisibilityIntensity; }
 	int getNumPlotTeamVisibilityIntensity() const;
 	PlotTeamVisibilityIntensity& getPlotTeamVisibilityIntensity(int iIndex);
 	int getNumPlotTeamVisibilityIntensityCount(InvisibleTypes eInvisibility, TeamTypes eTeam, int iIntensity) const;

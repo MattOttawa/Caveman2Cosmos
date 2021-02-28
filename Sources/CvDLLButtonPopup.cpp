@@ -2375,10 +2375,9 @@ bool CvDLLButtonPopup::launchMainMenuPopup(CvPopup* pPopup, CvPopupInfo &info)
 	if ((GC.getGame().getElapsedGameTurns() == 0) && !(GC.getGame().isGameMultiPlayer()) && !(GC.getInitCore().getWBMapScript()))
 	{
 		bool bShow = true;
-		for (int i = 0; i < GC.getMap().numPlots(); ++i)
+		foreach_(const CvPlot& plot, GC.getMap().plots())
 		{
-			CvPlot* pPlot = GC.getMap().plotByIndex(i);
-			if (!pPlot->getScriptData().empty())
+			if (!plot.getScriptData().empty())
 			{
 				bShow = false;
 				break;

@@ -1162,43 +1162,25 @@ void CvGame::assignScenarioStartingPlots()
 
 	std::vector<CvPlot*> startingPlots;
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& plot, GC.getMap().plots() | filtered(bind(CvPlot::isStartingPlot, _1)))
 	{
 		gDLL->callUpdater(); // allow window updates during launch
 
-		CvPlot* pPlot = GC.getMap().plotByIndex(iI);
-
-		if (pPlot->isStartingPlot())
+		if (!algo::contains(alivePlayers | transformed(bind(CvPlayer::getStartingPlot, _1)), &plot))
 		{
-			for (int iJ = 0; iJ < iNumPlayers; iJ++)
-			{
-				if (alivePlayers[iJ]->getStartingPlot() == pPlot)
-				{
-					pPlot = NULL;
-					break;
-				}
-			}
-			if (pPlot)
-			{
-				startingPlots.push_back(pPlot);
-			}
+			startingPlots.push_back(&plot);
 		}
 	}
 	std::vector<CvPlayerAI*> aliveAIs;
 	std::vector< std::pair<int, CvPlayerAI*> > aliveHumans;
 
-	for (int iI = 0; iI < iNumPlayers; iI++)
+	foreach_(CvPlayerAI* playerX, alivePlayers | filtered(bind(CvPlayer::getStartingPlot, _1) == nullptr))
 	{
-		CvPlayerAI* playerX = alivePlayers[iI];
-
-		if (playerX->getStartingPlot() == NULL)
+		if (playerX->isHuman())
 		{
-			if (playerX->isHuman())
-			{
-				aliveHumans.push_back(std::make_pair(GC.getHandicapInfo(playerX->getHandicapType()).getStartingLocationPercent(), playerX));
-			}
-			else aliveAIs.push_back(playerX);
+			aliveHumans.push_back(std::make_pair(GC.getHandicapInfo(playerX->getHandicapType()).getStartingLocationPercent(), playerX));
 		}
+		else aliveAIs.push_back(playerX);
 	}
 	std::sort(aliveHumans.begin(), aliveHumans.end());
 
@@ -1438,22 +1420,19 @@ void CvGame::normalizeAddRiver()
 				}
 
 				// add floodplains to any desert tiles the new river passes through
-				for (int iK = 0; iK < GC.getMap().numPlots(); iK++)
+				foreach_(CvPlot& plot, GC.getMap().plots())
 				{
-					CvPlot* pPlot = GC.getMap().plotByIndex(iK);
-					FAssert(pPlot != NULL);
-
 					for (int iJ = 0; iJ < GC.getNumFeatureInfos(); iJ++)
 					{
-						if (GC.getFeatureInfo((FeatureTypes)iJ).isRequiresRiver() && pPlot->canHaveFeature((FeatureTypes)iJ))
+						if (GC.getFeatureInfo((FeatureTypes)iJ).isRequiresRiver() && plot.canHaveFeature((FeatureTypes)iJ))
 						{
 							if (GC.getFeatureInfo((FeatureTypes)iJ).getAppearanceProbability() == 10000)
 							{
-								if (pPlot->getBonusType() != NO_BONUS)
+								if (plot.getBonusType() != NO_BONUS)
 								{
-									pPlot->setBonusType(NO_BONUS);
+									plot.setBonusType(NO_BONUS);
 								}
-								pPlot->setFeatureType((FeatureTypes)iJ);
+								plot.setFeatureType((FeatureTypes)iJ);
 								break;
 							}
 						}
@@ -2286,12 +2265,11 @@ void CvGame::update()
 		// Recalculate vision on load (a stickytape - can't find where it's dropping visibility on loading)
 
 		//The tracking really cannot work unless it starts right.  Plus, this is not a bad procedural step just in case it's coming from an old save or somesuch.  Doesn't cost us much time on load.
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 		{
-			CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-			pLoopPlot->unitGameStateCorrections();
-			pLoopPlot->clearVisibilityCounts();
-			CvCity* pCity = pLoopPlot->getPlotCity();
+			pLoopPlot.unitGameStateCorrections();
+			pLoopPlot.clearVisibilityCounts();
+			CvCity* pCity = pLoopPlot.getPlotCity();
 			if (pCity != NULL && pCity->isNPC() && pCity->isRevealed(GET_PLAYER(getActivePlayer()).getTeam(), false))
 			{
 				pCity->updateVisibility();
@@ -3965,12 +3943,11 @@ void CvGame::initScoreCalculation()
 {
 	// initialize score calculation
 	int iMaxFood = 0;
-	for (int i = 0; i < GC.getMap().numPlots(); i++)
+	foreach_(const CvPlot& plot, GC.getMap().plots())
 	{
-		const CvPlot* pPlot = GC.getMap().plotByIndex(i);
-		if (!pPlot->isWater() || pPlot->isAdjacentToLand())
+		if (!plot.isWater() || plot.isAdjacentToLand())
 		{
-			iMaxFood += pPlot->calculateBestNatureYield(YIELD_FOOD, NO_TEAM);
+			iMaxFood += plot.calculateBestNatureYield(YIELD_FOOD, NO_TEAM);
 		}
 	}
 	m_iMaxPopulation = iMaxFood / std::max(1, GC.getFOOD_CONSUMPTION_PER_POPULATION());
@@ -5948,10 +5925,8 @@ void CvGame::doTurn()
 			//Hopefully won't create a noteable delay but it may
 			//disabled when debugging only - units should now be tracking and staying within a range of 0-1 for number of positive updates - negative updates.
 			//TBVIS
-			for (int iJ = 0; iJ < nextMap.numPlots(); iJ++)
-			{
-				nextMap.plotByIndex(iJ)->clearVisibilityCounts();
-			}
+			algo::for_each(nextMap.plots(), bind(CvPlot::clearVisibilityCounts, _1));
+
 			nextMap.updateSight(true, false);
 		}
 	}
@@ -6146,13 +6121,11 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 	const bool bWildAnimal = unitInfo.isWildAnimal();
 	const bool bAnimalBarred = spawnInfo.getNeutralOnly() || bWildAnimal && GC.getGame().isOption(GAMEOPTION_ANIMALS_STAY_OUT);
 
-	for (int i = 0; i < GC.getMap().numPlots(); ++i)
+	foreach_(CvPlot& plot, GC.getMap().plots())
 	{
-		CvPlot* pPlot = GC.getMap().plotByIndex(i);
-
-		if (pPlot->plotCount(PUF_isOtherPlayer, ePlayer) == 0)
+		if (plot.plotCount(PUF_isOtherPlayer, ePlayer) == 0)
 		{
-			if (bAnimalBarred && pPlot->getOwner() != NO_PLAYER && pPlot->getOwner() != ePlayer)
+			if (bAnimalBarred && plot.getOwner() != NO_PLAYER && plot.getOwner() != ePlayer)
 			{
 				continue;
 			}
@@ -6161,29 +6134,29 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 				bWildAnimal
 				&&
 				(
-					pPlot->isOwned()
+					plot.isOwned()
 					&&
 					(
 						!unitInfo.canAnimalIgnoresBorders()
 
-						|| pPlot->getImprovementType() != NO_IMPROVEMENT
+						|| plot.getImprovementType() != NO_IMPROVEMENT
 						&& !unitInfo.canAnimalIgnoresImprovements()
 					)
-					|| pPlot->isCity(true)
+					|| plot.isCity(true)
 					&& !unitInfo.canAnimalIgnoresCities()
 				)
 			) continue;
 
-			bool bValid = pPlot->isHills() ? bHills : (pPlot->isFlatlands() ? bFlatLand : true);
+			bool bValid = plot.isHills() ? bHills : (plot.isFlatlands() ? bFlatLand : true);
 			if (!bValid) continue;
 
 			// Check latitude
-			const int lat = spawnInfo.getLatitudeAbs() ? pPlot->getLatitude() : pPlot->getLatitudeRaw();
+			const int lat = spawnInfo.getLatitudeAbs() ? plot.getLatitude() : plot.getLatitudeRaw();
 
 			bValid = lat >= spawnInfo.getMinLatitude() && lat <= spawnInfo.getMaxLatitude();
 			if (!bValid) continue;
 
-			const int iLongitude = pPlot->getLongitudeMinutes() / 60;
+			const int iLongitude = plot.getLongitudeMinutes() / 60;
 			const int iMinLongitude = spawnInfo.getMinLongitude();
 			const int iMaxLongitude = spawnInfo.getMaxLongitude();
 			if (iMinLongitude <= iMaxLongitude)
@@ -6192,17 +6165,17 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 			}
 			else bValid = iLongitude >= iMinLongitude || iLongitude <= iMaxLongitude;
 
-			if (!bValid || bFreshWaterOnly && !pPlot->isFreshWater())
+			if (!bValid || bFreshWaterOnly && !plot.isFreshWater())
 			{
 				continue;
 			}
 
 			if (!bNoTerrainFeatureBonus)
 			{
-				if (!pPlot->isAsPeak())
+				if (!plot.isAsPeak())
 				{
 					bValid = false;
-					BonusTypes bonusType = pPlot->getBonusType();
+					const BonusTypes bonusType = plot.getBonusType();
 					for (int k = 0; k < spawnInfo.getNumBonuses(); k++)
 					{
 						if (spawnInfo.getBonus(k) == bonusType)
@@ -6214,8 +6187,8 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 
 					if (!bValid)
 					{
-						const FeatureTypes featureType = pPlot->getFeatureType();
-						const TerrainTypes terrainType = pPlot->getTerrainType();
+						const FeatureTypes featureType = plot.getFeatureType();
+						const TerrainTypes terrainType = plot.getTerrainType();
 						if (featureType == NO_FEATURE)
 						{
 							for(int k = 0; k < spawnInfo.getNumTerrains(); k++)
@@ -6257,19 +6230,19 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 				else bValid = spawnInfo.getPeaks();
 			}
 
-			if (!bValid || bNotInView && pPlot->isVisibleToCivTeam())
+			if (!bValid || bNotInView && plot.isVisibleToCivTeam())
 			{
 				continue;
 			}
 
 			BoolExpr* pCondition = spawnInfo.getSpawnCondition();
 
-			if (pCondition && !pCondition->evaluate(pPlot->getGameObject()))
+			if (pCondition && !pCondition->evaluate(plot.getGameObject()))
 			{
 				continue;
 			}
 
-			plots->push_back(pPlot); // Valid spawning spot
+			plots->push_back(&plot); // Valid spawning spot
 		}
 	}
 }
@@ -6298,17 +6271,15 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 	//	can do (nor worth implementing it there), so do a pre-pass here to build that data
 	std::map< int, std::map<int,int> >	areaPopulationMap;
 
-	for (int i = 0; i < GC.getMap().numPlots(); ++i)
+	foreach_(const CvPlot& plot, GC.getMap().plots())
 	{
-		CvPlot* pPlot = GC.getMap().plotByIndex(i);
-
-		foreach_(const CvUnit* pLoopUnit, pPlot->units() | filtered(CvUnit::fn::getOwner() == ePlayer))
+		foreach_(const CvUnit* pLoopUnit, plot.units() | filtered(CvUnit::fn::getOwner() == ePlayer))
 		{
-			if (areaPopulationMap[pPlot->getArea()].find(pLoopUnit->getUnitType()) != areaPopulationMap[pPlot->getArea()].end())
+			if (areaPopulationMap[plot.getArea()].find(pLoopUnit->getUnitType()) != areaPopulationMap[plot.getArea()].end())
 			{
-				areaPopulationMap[pPlot->getArea()][pLoopUnit->getUnitType()]++;
+				areaPopulationMap[plot.getArea()][pLoopUnit->getUnitType()]++;
 			}
-			else areaPopulationMap[pPlot->getArea()][pLoopUnit->getUnitType()] = 1;
+			else areaPopulationMap[plot.getArea()][pLoopUnit->getUnitType()] = 1;
 		}
 	}
 
@@ -6673,25 +6644,17 @@ void CvGame::doGlobalWarming()
 
 		const int iTreeHuggerDefenseBonus = GC.getDefineINT("TREEHUGGER_DEFENSE_BONUS");
 		int iGlobalWarmingDefense = 0;
-		for (int i = 0; i < iNumPlots; ++i)
+		foreach_(const CvPlot& plot, GC.getMap().plots() | filtered(bind(CvPlot::getFeatureType, _1) != NO_FEATURE))
 		{
-			const CvPlot* pPlot = GC.getMap().plotByIndex(i);
-			if (pPlot->getFeatureType() != NO_FEATURE)
+			const int iFeatureWarmingDefense = GC.getFeatureInfo(plot.getFeatureType()).getWarmingDefense();
+			if (iFeatureWarmingDefense > 0)
 			{
-				const int iFeatureWarmingDefense = GC.getFeatureInfo(pPlot->getFeatureType()).getWarmingDefense();
-				if (iFeatureWarmingDefense > 0)
+				const PlayerTypes eCulturalOwner = plot.getOwner();
+				if (eCulturalOwner != NO_PLAYER && abTreeHugger[eCulturalOwner])
 				{
-					PlayerTypes eCulturalOwner = pPlot->getOwner();
-					if (eCulturalOwner != NO_PLAYER)
-					{
-						if (abTreeHugger[eCulturalOwner])
-						{
-							iGlobalWarmingDefense += iFeatureWarmingDefense * iTreeHuggerDefenseBonus;
-						}
-						else iGlobalWarmingDefense += iFeatureWarmingDefense;
-					}
-					else iGlobalWarmingDefense += iFeatureWarmingDefense;
+					iGlobalWarmingDefense += iFeatureWarmingDefense * iTreeHuggerDefenseBonus;
 				}
+				else iGlobalWarmingDefense += iFeatureWarmingDefense;
 			}
 		}
 		iGlobalWarmingDefense *= GC.getDefineINT("GLOBAL_WARMING_FOREST");
@@ -7101,22 +7064,21 @@ void CvGame::createBarbarianCities(bool bNeanderthal)
 	const int iUnownedTilesThreshold = GC.getHandicapInfo(getHandicapType()).getUnownedTilesPerBarbarianCity();
 
 	int iBestValue = 0;
-	CvPlot* pBestPlot = NULL;
+	const CvPlot* pBestPlot = NULL;
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot->isMapType(earth) && !pLoopPlot->isWater() && !pLoopPlot->isVisibleToCivTeam())
+		if (pLoopPlot.isMapType(earth) && !pLoopPlot.isWater() && !pLoopPlot.isVisibleToCivTeam())
 		{
-			int iTargetCities = pLoopPlot->area()->getNumUnownedTiles();
+			const CvArea& loopArea = *pLoopPlot.area();
+			int iTargetCities = loopArea.getNumUnownedTiles();
 
-			if (pLoopPlot->area()->getNumCities() == pLoopPlot->area()->getCitiesPerPlayer(eBarb))
+			if (loopArea.getNumCities() == loopArea.getCitiesPerPlayer(eBarb))
 			{
 				iTargetCities *= 3;
 			}
 
-			if (pLoopPlot->area()->getNumTiles() < iUnownedTilesThreshold / 3)
+			if (loopArea.getNumTiles() < iUnownedTilesThreshold / 3)
 			{
 				iTargetCities *= iTargetCitiesMultiplier;
 				iTargetCities /= 100;
@@ -7124,15 +7086,15 @@ void CvGame::createBarbarianCities(bool bNeanderthal)
 
 			iTargetCities /= std::max(1, iUnownedTilesThreshold);
 
-			if (pLoopPlot->area()->getCitiesPerPlayer(eBarb) < iTargetCities)
+			if (loopArea.getCitiesPerPlayer(eBarb) < iTargetCities)
 			{
-				int iValue = pBarb.AI_foundValue(pLoopPlot->getX(), pLoopPlot->getY(), GC.getMIN_BARBARIAN_CITY_STARTING_DISTANCE());
+				int iValue = pBarb.AI_foundValue(pLoopPlot.getX(), pLoopPlot.getY(), GC.getMIN_BARBARIAN_CITY_STARTING_DISTANCE());
 				iValue *= 100 + getSorenRandNum(50, "Variance");
 				iValue /= 100;
 
 				if (bBarbCiv)
 				{
-					if (pLoopPlot->area()->getNumCities() == pLoopPlot->area()->getCitiesPerPlayer(eBarb))
+					if (loopArea.getNumCities() == loopArea.getCitiesPerPlayer(eBarb))
 					{
 						// Counteracts the AI_foundValue emphasis on empty areas
 						iValue *= 2;
@@ -7142,18 +7104,18 @@ void CvGame::createBarbarianCities(bool bNeanderthal)
 					if (iTargetCitiesMultiplier > 100) // Either raging barbs is set or fewer barb cities than desired
 					{
 						// Emphasis on placing barb cities in populated areas
-						iValue += iOccupiedAreaMultiplier * (pLoopPlot->area()->getNumCities() - pLoopPlot->area()->getCitiesPerPlayer(eBarb)) / iCivCities;
+						iValue += iOccupiedAreaMultiplier * (loopArea.getNumCities() - loopArea.getCitiesPerPlayer(eBarb)) / iCivCities;
 					}
 				}
 				else if (iTargetCitiesMultiplier > 100)
 				{
-					iValue *= pLoopPlot->area()->getNumOwnedTiles();
+					iValue *= loopArea.getNumOwnedTiles();
 				}
 
 				if (iValue > iBestValue)
 				{
 					iBestValue = iValue;
-					pBestPlot = pLoopPlot;
+					pBestPlot = &pLoopPlot;
 				}
 			}
 		}
@@ -10205,12 +10167,11 @@ bool CvGame::pythonIsBonusIgnoreLatitudes() const
 bool CvGame::foundBarbarianCity()
 {
 	int iBestValue = 0;
-	CvPlot* pBestPlot = NULL;
+	const CvPlot* pBestPlot = NULL;
 
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(const CvPlot& plotX, GC.getMap().plots())
 	{
-		CvPlot* plotX = GC.getMap().plotByIndex(iPlot);
-		if (plotX->isWater() || plotX->isImpassable() || plotX->isCity() || plotX->getImprovementType() != NO_IMPROVEMENT)
+		if (plotX.isWater() || plotX.isImpassable() || plotX.isCity() || plotX.getImprovementType() != NO_IMPROVEMENT)
 		{
 			continue;
 		}
@@ -10225,7 +10186,7 @@ bool CvGame::foundBarbarianCity()
 
 				if (pPlotI != NULL)
 				{
-					const int iDist = GC.getMap().calculatePathDistance(pPlotI, plotX);
+					const int iDist = GC.getMap().calculatePathDistance(pPlotI, &plotX);
 					if (iDist >= 0)
 					{
 						bOccupiedArea = true;
@@ -10254,12 +10215,12 @@ bool CvGame::foundBarbarianCity()
 
 		if (bValid)
 		{
-			iValue += GET_PLAYER(BARBARIAN_PLAYER).AI_foundValue(plotX->getX(), plotX->getY(), GC.getDefineINT("MIN_BARBARIAN_CITY_STARTING_DISTANCE"));
+			iValue += GET_PLAYER(BARBARIAN_PLAYER).AI_foundValue(plotX.getX(), plotX.getY(), GC.getDefineINT("MIN_BARBARIAN_CITY_STARTING_DISTANCE"));
 			iValue += getSorenRandNum(250, "Barb City Found");
 			if (iValue > iBestValue)
 			{
 				iBestValue = iValue;
-				pBestPlot = plotX;
+				pBestPlot = &plotX;
 			}
 		}
 	}
@@ -10653,40 +10614,25 @@ void CvGame::setMercyRuleCounter(int iNewVal)
 	m_iMercyRuleCounter = iNewVal;
 }
 
-void CvGame::clearLandmarks(bool bClear)
+void CvGame::clearLandmarks()
 {
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& plot, GC.getMap().plots()
+	| filtered(bind(CvPlot::getLandmarkType, _1) != NO_LANDMARK))
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (bClear)
-		{
-			if (pLoopPlot->getLandmarkType() != NO_LANDMARK)
-			{
-				pLoopPlot->setLandmarkType(NO_LANDMARK);
-				pLoopPlot->setLandmarkMessage("");
-				pLoopPlot->setLandmarkName("");
-				pLoopPlot->removeSignForAllPlayers();
-			}
-		}
-		else if (!CvWString(pLoopPlot->getLandmarkName()).empty() && pLoopPlot->getLandmarkType() == NO_LANDMARK)
-		{
-			pLoopPlot->removeSignForAllPlayers();
-		}
+		plot.setLandmarkType(NO_LANDMARK);
+		plot.setLandmarkMessage("");
+		plot.setLandmarkName("");
+		plot.removeSignForAllPlayers();
 	}
 }
 
 
 void CvGame::pruneLandmarks()
 {
-	int iWorldSize = GC.getMap().getWorldSize();
-
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(const CvPlot& plot, GC.getMap().plots()
+	| filtered(bind(CvPlot::getLandmarkType, _1) != NO_LANDMARK))
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (pLoopPlot->getLandmarkType() != NO_LANDMARK)
-		{
-			removeAdjacentLandmarks(pLoopPlot, pLoopPlot, std::max(1, iWorldSize / 2));
-		}
+		removeAdjacentLandmarks(&plot, &plot, std::max(1, GC.getMap().getWorldSize() / 2));
 	}
 }
 
@@ -10713,63 +10659,52 @@ void CvGame::removeAdjacentLandmarks(const CvPlot* pCenterPlot, const CvPlot* pE
 
 void CvGame::findMountainRanges()
 {
-	int iMinimumRangeSize = GC.getDefineINT("MINIMUM_MOUNTAIN_RANGE_SIZE");
-	iMinimumRangeSize += (int)GC.getMap().getWorldSize();
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	const int iMinimumRangeSize = GC.getDefineINT("MINIMUM_MOUNTAIN_RANGE_SIZE") + (int)GC.getMap().getWorldSize();
+
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots() | filtered(!bind(CvPlot::isCountedPlot, _1)))
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
 		int iPeakCount = 0;
-		if (!pLoopPlot->isCountedPlot())
+		//Mountain Ranges
+		if (pLoopPlot.isPeak())
 		{
-			//Mountain Ranges
-			if (pLoopPlot->isPeak())
-			{
-				iPeakCount += countPeaks(pLoopPlot);
-				pLoopPlot->setCountedPlot(true);
-			}
+			iPeakCount += countPeaks(&pLoopPlot);
+			pLoopPlot.setCountedPlot(true);
+
 			if (iPeakCount > iMinimumRangeSize)
 			{
-				pLoopPlot->setLandmarkType(LANDMARK_MOUNTAIN_RANGE);
+				pLoopPlot.setLandmarkType(LANDMARK_MOUNTAIN_RANGE);
 			}
 		}
 	}
 	//Clear Plot Cache when done
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		pLoopPlot->setCountedPlot(false);
-	}
+	algo::for_each(GC.getMap().plots(), bind(CvPlot::setCountedPlot, _1, false));
 }
 
 void CvGame::findLonePeaks()
 {
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots() | filtered(bind(CvPlot::isPeak, _1)))
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (pLoopPlot->isPeak())
-		{
-			bool bFoundPeak = false;
-			int iHillCount = 0;
-			foreach_(const CvPlot* pAdjacentPlot, pLoopPlot->adjacent())
-			{//Check to see if it is alone
-				if (pAdjacentPlot->isPeak())
-				{
-					bFoundPeak = true;
-					break;
-				}
-				if (pAdjacentPlot->isHills())
-					iHillCount++;
-				//if a peak is surrounded by hills, don't count it as alone
-				if (iHillCount > 2)
-				{
-					bFoundPeak = true;
-					break;
-				}
-			}//Lone Peak Found
-			if (!bFoundPeak)
+		bool bFoundPeak = false;
+		int iHillCount = 0;
+		foreach_(const CvPlot* pAdjacentPlot, pLoopPlot.adjacent())
+		{//Check to see if it is alone
+			if (pAdjacentPlot->isPeak())
 			{
-				pLoopPlot->setLandmarkType(LANDMARK_PEAK);
+				bFoundPeak = true;
+				break;
 			}
+			if (pAdjacentPlot->isHills())
+				iHillCount++;
+			//if a peak is surrounded by hills, don't count it as alone
+			if (iHillCount > 2)
+			{
+				bFoundPeak = true;
+				break;
+			}
+		}//Lone Peak Found
+		if (!bFoundPeak)
+		{
+			pLoopPlot.setLandmarkType(LANDMARK_PEAK);
 		}
 	}
 }
@@ -10780,15 +10715,14 @@ void CvGame::findLonePeaks()
 //(X and Y are land, O, water. We are looking for Y, which should only be adjacent to 1 water tile... the bay!)
 void CvGame::findBays()
 {
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (!pLoopPlot->isCountedPlot() && pLoopPlot->isCoastalLand())
+		if (!pLoopPlot.isCountedPlot() && pLoopPlot.isCoastalLand())
 		{
 			//Find the Water
 			int iCoastCount = 0;
 			CvPlot* pCoast = NULL;
-			foreach_(CvPlot* pAdjacentPlot, pLoopPlot->adjacent())
+			foreach_(CvPlot* pAdjacentPlot, pLoopPlot.adjacent())
 			{
 				if (pAdjacentPlot->isWater() && !pAdjacentPlot->isLake())
 				{
@@ -10806,11 +10740,7 @@ void CvGame::findBays()
 		}
 	}
 	//Clear Plot Cache when done
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		pLoopPlot->setCountedPlot(false);
-	}
+	algo::for_each(GC.getMap().plots(), bind(CvPlot::setCountedPlot, _1, false));
 }
 
 void CvGame::findForests()
@@ -10818,26 +10748,21 @@ void CvGame::findForests()
 	const FeatureTypes eForest = GC.getFEATURE_FOREST();
 	int iMinimumForestSize = GC.getMINIMUM_FOREST_SIZE();
 	iMinimumForestSize += (int)GC.getMap().getWorldSize() * 2;
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
 		int iForestCount = 0;
-		if (!pLoopPlot->isCountedPlot() && pLoopPlot->getFeatureType() == eForest)
+		if (!pLoopPlot.isCountedPlot() && pLoopPlot.getFeatureType() == eForest)
 		{
 			iForestCount++;
-			pLoopPlot->setCountedPlot(true);
-			iForestCount += countForest(pLoopPlot, iForestCount);
+			pLoopPlot.setCountedPlot(true);
+			iForestCount += countForest(&pLoopPlot, iForestCount);
 			if (iForestCount > iMinimumForestSize)
 			{
-				pLoopPlot->setLandmarkType(LANDMARK_FOREST);
+				pLoopPlot.setLandmarkType(LANDMARK_FOREST);
 			}
 		}
 	}
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		pLoopPlot->setCountedPlot(false);
-	}
+	algo::for_each(GC.getMap().plots(), bind(CvPlot::setCountedPlot, _1, false));
 }
 
 void CvGame::findJungles()
@@ -10845,27 +10770,22 @@ void CvGame::findJungles()
 	const FeatureTypes eJungle = GC.getFEATURE_JUNGLE();
 	int iMinimumJungleSize = GC.getMINIMUM_JUNGLE_SIZE();
 	iMinimumJungleSize += (int)GC.getMap().getWorldSize() * 2;
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
 		int iJungleCount = 0;
-		if (!pLoopPlot->isCountedPlot() && pLoopPlot->getFeatureType() == eJungle)
+		if (!pLoopPlot.isCountedPlot() && pLoopPlot.getFeatureType() == eJungle)
 		{
 			iJungleCount++;
-			pLoopPlot->setCountedPlot(true);
-			iJungleCount += countJungle(pLoopPlot, iJungleCount);
+			pLoopPlot.setCountedPlot(true);
+			iJungleCount += countJungle(&pLoopPlot, iJungleCount);
 			if (iJungleCount > iMinimumJungleSize)
 			{
-				pLoopPlot->setCountedPlot(true);
-				pLoopPlot->setLandmarkType(LANDMARK_JUNGLE);
+				pLoopPlot.setCountedPlot(true);
+				pLoopPlot.setLandmarkType(LANDMARK_JUNGLE);
 			}
 		}
 	}
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		pLoopPlot->setCountedPlot(false);
-	}
+	algo::for_each(GC.getMap().plots(), bind(CvPlot::setCountedPlot, _1, false));
 }
 
 void CvGame::findDeserts()
@@ -10873,48 +10793,38 @@ void CvGame::findDeserts()
 	const TerrainTypes eDesert = GC.getTERRAIN_DESERT();
 	int iMinimumDesertSize = GC.getMINIMUM_DESERT_SIZE();
 	iMinimumDesertSize += (int)GC.getMap().getWorldSize() * 2;
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
 		int iDesertCount = 0;
-		if (pLoopPlot->getTerrainType() == eDesert && !pLoopPlot->isHills() && !pLoopPlot->isPeak() && !pLoopPlot->isCountedPlot())
+		if (pLoopPlot.getTerrainType() == eDesert && !pLoopPlot.isHills() && !pLoopPlot.isPeak() && !pLoopPlot.isCountedPlot())
 		{
 			iDesertCount++;
-			pLoopPlot->setCountedPlot(true);
-			iDesertCount += countDesert(pLoopPlot);
+			pLoopPlot.setCountedPlot(true);
+			iDesertCount += countDesert(&pLoopPlot);
 			if (iDesertCount > 5)
 			{
-				pLoopPlot->setLandmarkType(LANDMARK_DESERT);
+				pLoopPlot.setLandmarkType(LANDMARK_DESERT);
 			}
 		}
 	}
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		pLoopPlot->setCountedPlot(false);
-	}
+	algo::for_each(GC.getMap().plots(), bind(CvPlot::setCountedPlot, _1, false));
 }
 
 void CvGame::findLakes()
 {
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (pLoopPlot->isLake())
+		if (pLoopPlot.isLake())
 		{
-			if (!pLoopPlot->isCountedPlot())
+			if (!pLoopPlot.isCountedPlot())
 			{
-				pLoopPlot->setCountedPlot(true);
-				markLakePlots(pLoopPlot);
-				pLoopPlot->setLandmarkType(LANDMARK_LAKE);
+				pLoopPlot.setCountedPlot(true);
+				markLakePlots(&pLoopPlot);
+				pLoopPlot.setLandmarkType(LANDMARK_LAKE);
 			}
 		}
 	}
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		pLoopPlot->setCountedPlot(false);
-	}
+	algo::for_each(GC.getMap().plots(), bind(CvPlot::setCountedPlot, _1, false));
 }
 
 //Finds all adjacent lake plots to the given plot and marks them as counted.
@@ -11182,61 +11092,57 @@ void CvGame::addLandmarkSigns()
 	CvWString szSign;
 	CvWString szName;
 	CvWString szTextKey;
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots() | filtered(bind(CvPlot::getLandmarkType, _1) != NO_LANDMARK))
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (pLoopPlot->getLandmarkType() != NO_LANDMARK)
+		szTextKey = "TXT_KEY_LANDMARK";
+		szSign.clear();
+		szName.clear();
+		switch (pLoopPlot.getLandmarkType())
 		{
-			szTextKey = "TXT_KEY_LANDMARK";
-			szSign.clear();
-			szName.clear();
-			switch (pLoopPlot->getLandmarkType())
-			{
-				case LANDMARK_BAY:
-					szTextKey.append((CvWString)"_BAY");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_BAY_NAMES"), "Landmark Naming"))));
-					break;
-				case LANDMARK_ISLAND:
-					break;
-				case LANDMARK_FOREST:
-					szTextKey.append((CvWString)"_FOREST");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_FOREST_NAMES"), "Landmark Naming"))));
-					break;
-				case LANDMARK_JUNGLE:
-					szTextKey.append((CvWString)"_JUNGLE");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_JUNGLE_NAMES"), "Landmark Naming"))));
-					break;
-				case LANDMARK_PEAK:
-					szTextKey.append((CvWString)"_PEAK");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_PEAK_NAMES"), "Landmark Naming"))));
-					break;
-				case LANDMARK_MOUNTAIN_RANGE:
-					szTextKey.append((CvWString)"_MOUNTAINS");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_MOUNTAINS_NAMES"), "Landmark Naming"))));
-					break;
-				case LANDMARK_PLAINS:
-					break;
-				case LANDMARK_DESERT:
-					szTextKey.append((CvWString)"_DESERT");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_DESERT_NAMES"), "Landmark Naming"))));
-					break;
-				case LANDMARK_OCEAN:
-				case LANDMARK_LAKE:
-					szTextKey.append((CvWString)"_LAKE");
-					szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_LAKE_NAMES"), "Landmark Naming"))));
-					break;
-				default:
-					FErrorMsg("Unknown Landmark Type");
-			}
-			szSign = szTextKey;
-			CvWString szDummy = " ";
-			szTextKey = gDLL->getText(szTextKey, szDummy.GetCString());
-			szName = getRandomName(21- szTextKey.length());
-			szSign = gDLL->getText(szSign, szName.GetCString());
-
-			pLoopPlot->setLandmarkMessage(szSign);
-			pLoopPlot->setLandmarkName(szName);
+			case LANDMARK_BAY:
+				szTextKey.append((CvWString)"_BAY");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_BAY_NAMES"), "Landmark Naming"))));
+				break;
+			case LANDMARK_ISLAND:
+				break;
+			case LANDMARK_FOREST:
+				szTextKey.append((CvWString)"_FOREST");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_FOREST_NAMES"), "Landmark Naming"))));
+				break;
+			case LANDMARK_JUNGLE:
+				szTextKey.append((CvWString)"_JUNGLE");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_JUNGLE_NAMES"), "Landmark Naming"))));
+				break;
+			case LANDMARK_PEAK:
+				szTextKey.append((CvWString)"_PEAK");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_PEAK_NAMES"), "Landmark Naming"))));
+				break;
+			case LANDMARK_MOUNTAIN_RANGE:
+				szTextKey.append((CvWString)"_MOUNTAINS");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_MOUNTAINS_NAMES"), "Landmark Naming"))));
+				break;
+			case LANDMARK_PLAINS:
+				break;
+			case LANDMARK_DESERT:
+				szTextKey.append((CvWString)"_DESERT");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_DESERT_NAMES"), "Landmark Naming"))));
+				break;
+			case LANDMARK_OCEAN:
+			case LANDMARK_LAKE:
+				szTextKey.append((CvWString)"_LAKE");
+				szTextKey.append(CvWString::format(L"_%d", (getSorenRandNum(GC.getDefineINT("NUM_LAKE_NAMES"), "Landmark Naming"))));
+				break;
+			default:
+				FErrorMsg("Unknown Landmark Type");
 		}
+		szSign = szTextKey;
+		CvWString szDummy = " ";
+		szTextKey = gDLL->getText(szTextKey, szDummy.GetCString());
+		szName = getRandomName(21- szTextKey.length());
+		szSign = gDLL->getText(szSign, szName.GetCString());
+
+		pLoopPlot.setLandmarkMessage(szSign);
+		pLoopPlot.setLandmarkName(szName);
 	}
 }
 
@@ -11288,17 +11194,13 @@ void CvGame::updateInitialSigns()
 {
 	PROFILE_FUNC();
 
-	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots() | filtered(bind(CvPlot::getLandmarkType, _1) != NO_LANDMARK))
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iPlot);
-		if (pLoopPlot->getLandmarkType() != NO_LANDMARK)
+		for (int iJ = 0; iJ < MAX_PC_PLAYERS; iJ++)
 		{
-			for (int iJ = 0; iJ < MAX_PC_PLAYERS; iJ++)
+			if (GET_PLAYER((PlayerTypes)iJ).isAlive() && pLoopPlot.isRevealed(GET_PLAYER((PlayerTypes)iJ).getTeam(), false))
 			{
-				if (GET_PLAYER((PlayerTypes)iJ).isAlive() && pLoopPlot->isRevealed(GET_PLAYER((PlayerTypes)iJ).getTeam(), false))
-				{
-					pLoopPlot->addSign((PlayerTypes)iJ, pLoopPlot->getLandmarkMessage());
-				}
+				pLoopPlot.addSign((PlayerTypes)iJ, pLoopPlot.getLandmarkMessage());
 			}
 		}
 	}
@@ -11838,24 +11740,23 @@ void CvGame::recalculateModifiers()
 	// units are not supposed to have that kind of property (needs extra code if that changes)
 	getProperties()->clearForRecalculate();
 
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-		pLoopPlot->getProperties()->clearForRecalculate();
+		pLoopPlot.getProperties()->clearForRecalculate();
 
 		//	We will recalculate visibility from first principles
-		pLoopPlot->clearVisibilityCounts();
+		pLoopPlot.clearVisibilityCounts();
 
 		//	Fix any spurious routes that are on water tiles
-		const RouteTypes eRoute = pLoopPlot->getRouteType();
-		if (eRoute != NO_ROUTE && pLoopPlot->isWater() && !GC.getRouteInfo(eRoute).isSeaTunnel() )
+		const RouteTypes eRoute = pLoopPlot.getRouteType();
+		if (eRoute != NO_ROUTE && pLoopPlot.isWater() && !GC.getRouteInfo(eRoute).isSeaTunnel() )
 		{
-			pLoopPlot->setRouteType(NO_ROUTE, false);
+			pLoopPlot.setRouteType(NO_ROUTE, false);
 		}
-		pLoopPlot->unitGameStateCorrections();
+		pLoopPlot.unitGameStateCorrections();
 
 		//	Recalc blockades from scratch
-		pLoopPlot->resetBlockadedCounts();
+		pLoopPlot.resetBlockadedCounts();
 	}
 
 	for (int iI = 0; iI < MAX_TEAMS; iI++)

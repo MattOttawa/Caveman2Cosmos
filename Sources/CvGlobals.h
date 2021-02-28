@@ -177,7 +177,8 @@ public:
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-	inline CvMap& getMap() const;
+	CvMap& getMap();
+	const CvMap& getMap() const;
 	CvMap& getMapByIndex(MapTypes eIndex) const;
 	//int getNumMaps() const						{ return m_maps.size(); }
 	std::vector<CvMap*>& getMaps()				{ return m_maps; }
@@ -454,6 +455,7 @@ public:
 
 	int getNumPropertyInfos() const;
 	CvPropertyInfo& getPropertyInfo(PropertyTypes ePropertyNum) const;
+	const std::vector<CvPropertyInfo*>& getPropertyInfos() const { return m_paPropertyInfo; }
 
 	int getNumOutcomeInfos() const;
 	CvOutcomeInfo& getOutcomeInfo(OutcomeTypes eOutcomeNum) const;

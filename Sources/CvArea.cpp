@@ -393,17 +393,11 @@ void CvArea::setID(int iID)
 
 int CvArea::calculateTotalBestNatureYield() const
 {
-	int iCount = 0;
-
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
-	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-		if (pLoopPlot->getArea() == getID())
-		{
-			iCount += pLoopPlot->calculateTotalBestNatureYield(NO_TEAM);
-		}
-	}
-	return iCount;
+	return algo::accumulate(GC.getMap().plots()
+		| filtered(bind(CvPlot::getArea, _1) == getID())
+		| transformed(bind(CvPlot::calculateTotalBestNatureYield, _1, NO_TEAM))
+		, 0
+	);
 }
 
 
@@ -413,17 +407,10 @@ int CvArea::countCoastalLand() const
 	{
 		return 0;
 	}
-	int iCount = 0;
-
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
-	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-		if (pLoopPlot->getArea() == getID() && pLoopPlot->isCoastalLand())
-		{
-			iCount++;
-		}
-	}
-	return iCount;
+	return algo::count_if(GC.getMap().plots()
+		| filtered(bind(CvPlot::getArea, _1) == getID())
+		, bind(CvPlot::isCoastalLand, _1, -1)
+	);
 }
 
 
@@ -881,13 +868,11 @@ int CvArea::getNumRevealedFeatureTiles(TeamTypes eTeam, FeatureTypes eFeature) c
 	{
 		int	iResult = 0;
 
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(const CvPlot& plot, GC.getMap().plots())
 		{
-			const CvPlot* pPlot = GC.getMap().plotByIndex(iI);
-			if (pPlot != NULL &&
-				pPlot->area() == this &&
-				pPlot->isRevealed(eTeam, false) &&
-				pPlot->getFeatureType() == eFeature)
+			if (plot.area() == this &&
+				plot.isRevealed(eTeam, false) &&
+				plot.getFeatureType() == eFeature)
 			{
 				iResult++;
 			}
@@ -917,13 +902,11 @@ int CvArea::getNumRevealedTerrainTiles(TeamTypes eTeam, TerrainTypes eTerrain) c
 	{
 		int	iResult = 0;
 
-		for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+		foreach_(const CvPlot& plot, GC.getMap().plots())
 		{
-			const CvPlot* pPlot = GC.getMap().plotByIndex(iI);
-			if (pPlot != NULL &&
-				pPlot->area() == this &&
-				pPlot->isRevealed(eTeam, false) &&
-				pPlot->getTerrainType() == eTerrain)
+			if (plot.area() == this &&
+				plot.isRevealed(eTeam, false) &&
+				plot.getTerrainType() == eTerrain)
 			{
 				iResult++;
 			}

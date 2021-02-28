@@ -7161,8 +7161,7 @@ void CvUnit::move(CvPlot* pPlot, bool bShow, bool bFree)
 		const CvString featureString(GC.getFeatureInfo(featureType).getOnUnitChangeTo());
 		if(!featureString.IsEmpty())
 		{
-			FeatureTypes newFeatureType = (FeatureTypes) GC.getInfoTypeForString(featureString);
-			pPlot->setFeatureType(newFeatureType);
+			pPlot->setFeatureType((FeatureTypes)GC.getInfoTypeForString(featureString));
 		}
 	}
 
@@ -7175,7 +7174,7 @@ void CvUnit::move(CvPlot* pPlot, bool bShow, bool bFree)
 			{
 				if (GC.getASyncRand().get(100) < GC.getFeatureInfo(featureType).getEffectProbability())
 				{
-					EffectTypes eEffect = (EffectTypes)GC.getInfoTypeForString(GC.getFeatureInfo(featureType).getEffectType());
+					const EffectTypes eEffect = (EffectTypes)GC.getInfoTypeForString(GC.getFeatureInfo(featureType).getEffectType());
 					gDLL->getEngineIFace()->TriggerEffect(eEffect, pPlot->getPoint(), (float)(GC.getASyncRand().get(360)));
 					gDLL->getInterfaceIFace()->playGeneralSound("AS3D_UN_BIRDS_SCATTER", pPlot->getPoint());
 				}
@@ -7187,57 +7186,40 @@ void CvUnit::move(CvPlot* pPlot, bool bShow, bool bFree)
 }
 
 // false if unit is killed
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 bool CvUnit::jumpToNearestValidPlot(bool bKill)
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 {
-	CvCity* pNearestCity;
-	CvPlot* pLoopPlot;
-	CvPlot* pBestPlot;
-	int iValue;
-	int iBestValue;
-	int iI;
-
 	FAssertMsg(!isAttacking(), "isAttacking did not return false as expected");
 	FAssertMsg(!isFighting(), "isFighting did not return false as expected");
 
 	//	If the jump is due to being in an incorrect doamin it implies there WILL be an area change, so the relevant nearest
 	//	city cannot possibly be in the same area, hence we need to search all
-	pNearestCity = GC.getMap().findCity(getX(), getY(), getOwner(), NO_TEAM, plot()->isValidDomainForAction(*this));
+	const CvCity* pNearestCity = GC.getMap().findCity(getX(), getY(), getOwner(), NO_TEAM, plot()->isValidDomainForAction(*this));
 
-	iBestValue = MAX_INT;
-	pBestPlot = NULL;
+	int iBestValue = MAX_INT;
+	const CvPlot* pBestPlot = NULL;
 
-	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
+	foreach_(const CvPlot& pLoopPlot, GC.getMap().plots())
 	{
-		pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot->isValidDomainForLocation(*this))
+		if (pLoopPlot.isValidDomainForLocation(*this))
 		{
-			if (canMoveInto(pLoopPlot))
+			if (canMoveInto(&pLoopPlot))
 			{
-				if (canEnterArea(pLoopPlot->getTeam(), pLoopPlot->area()) && !isEnemy(pLoopPlot->getTeam(), pLoopPlot))
+				if (canEnterArea(pLoopPlot.getTeam(), pLoopPlot.area()) && !isEnemy(pLoopPlot.getTeam(), &pLoopPlot))
 				{
-					FAssertMsg(!atPlot(pLoopPlot), "atPlot(pLoopPlot) did not return false as expected");
+					FAssertMsg(!atPlot(&pLoopPlot), "atPlot(pLoopPlot) did not return false as expected");
 
-					if ((getDomainType() != DOMAIN_AIR) || pLoopPlot->isFriendlyCity(*this, true))
+					if (getDomainType() != DOMAIN_AIR || pLoopPlot.isFriendlyCity(*this, true))
 					{
-						if (pLoopPlot->isRevealed(getTeam(), false))
+						if (pLoopPlot.isRevealed(getTeam(), false))
 						{
-							iValue = (plotDistance(getX(), getY(), pLoopPlot->getX(), pLoopPlot->getY()) * 2);
+							int iValue = (plotDistance(getX(), getY(), pLoopPlot.getX(), pLoopPlot.getY()) * 2);
 
 							if (pNearestCity != NULL)
 							{
-								iValue += plotDistance(pLoopPlot->getX(), pLoopPlot->getY(), pNearestCity->getX(), pNearestCity->getY());
+								iValue += plotDistance(pLoopPlot.getX(), pLoopPlot.getY(), pNearestCity->getX(), pNearestCity->getY());
 
 								//	Try to at least favour the same landmass as the nearest city
-								if (pLoopPlot->area() != pNearestCity->area())
+								if (pLoopPlot.area() != pNearestCity->area())
 								{
 									iValue *= 3;
 								}
@@ -7245,32 +7227,21 @@ bool CvUnit::jumpToNearestValidPlot(bool bKill)
 
 							if (getDomainType() == DOMAIN_SEA && !plot()->isWater())
 							{
-								if (!pLoopPlot->isWater() || !pLoopPlot->isAdjacentToArea(area()))
+								if (!pLoopPlot.isWater() || !pLoopPlot.isAdjacentToArea(area()))
 								{
 									iValue *= 3;
 								}
 							}
-							else
+							else if (pLoopPlot.area() != area())
 							{
-								if (pLoopPlot->area() != area())
-								{
-									iValue *= 3;
-								}
+								iValue *= 3;
 							}
-/************************************************************************************************/
-/* Afforess	                  Start		 06/20/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-							iValue *= std::max(1, ((pLoopPlot->getTotalTurnDamage(this)) / 2));
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+							iValue *= std::max(1, pLoopPlot.getTotalTurnDamage(this) / 2);
 
 							if (iValue < iBestValue)
 							{
 								iBestValue = iValue;
-								pBestPlot = pLoopPlot;
+								pBestPlot = &pLoopPlot;
 							}
 						}
 					}
@@ -7279,39 +7250,18 @@ bool CvUnit::jumpToNearestValidPlot(bool bKill)
 		}
 	}
 
-	bool bValid = true;
 	if (pBestPlot != NULL)
 	{
 		//GC.getGame().logOOSSpecial(17, getID(), pBestPlot->getX(), pBestPlot->getY());
 		setXY(pBestPlot->getX(), pBestPlot->getY());
+		return true;
 	}
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 	else if (bKill)
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 	{
 		kill(false);
-		bValid = false;
 	}
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	else
-	{
-		bValid = false;
-	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
-	return bValid;
+	return false;
 }
 
 
@@ -12461,7 +12411,7 @@ bool CvUnit::testSpyIntercepted(PlayerTypes eTargetPlayer, int iModifier)
 	{
 		if (!isEnemy(kTargetPlayer.getTeam()))
 		{
-			GET_PLAYER(eTargetPlayer).AI_changeMemoryCount(getOwner(), MEMORY_SPY_CAUGHT, 1);
+			kTargetPlayer.AI_changeMemoryCount(getOwner(), MEMORY_SPY_CAUGHT, 1);
 		}
 
 		MEMORY_TRACK_EXEMPT();
@@ -17543,7 +17493,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		}
 
 		//	Koshling - modified a little to merge Super Forts logic
-		ImprovementTypes eImprovement = pNewPlot->getImprovementType();
+		const ImprovementTypes eImprovement = pNewPlot->getImprovementType();
 		if(eImprovement != NO_IMPROVEMENT && GC.getImprovementInfo(eImprovement).isActsAsCity() && !isNoCapture()  && !isBlendIntoCity() && !isHiddenNationality() && GET_PLAYER(getOwner()).isInvasionCapablePlayer() && !isCargo())
 		{
 			PROFILE("CvUnit::setXY.NewPlot2.ActAsCity");
@@ -17556,7 +17506,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 			}
 			else
 			{
-				CvPlayer& pNewPlotOwner = GET_PLAYER(pNewPlot->getOwner());
+				const CvPlayer& pNewPlotOwner = GET_PLAYER(pNewPlot->getOwner());
 				if ((isEnemy(pNewPlotOwner.getTeam()) || !pNewPlotOwner.isAlive())
 					&& !canCoexistWithTeamOnPlot(pNewPlotOwner.getTeam(), *pNewPlot)
 					&& canFight()
@@ -17564,7 +17514,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 				{
 					bDoAcquireFort = true;
 
-					CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_CITY_CAPTURED_BY", GC.getImprovementInfo(eImprovement).getText(), GET_PLAYER(getOwner()).getCivilizationDescriptionKey());
+					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_CITY_CAPTURED_BY", GC.getImprovementInfo(eImprovement).getText(), GET_PLAYER(getOwner()).getCivilizationDescriptionKey());
 					AddDLLMessage(pNewPlot->getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_CITYCAPTURED", MESSAGE_TYPE_MAJOR_EVENT, GC.getImprovementInfo(eImprovement).getButton(), GC.getCOLOR_RED(), pNewPlot->getX(), pNewPlot->getY(), true, true);
 				}
 			}
@@ -27491,7 +27441,7 @@ bool CvUnit::canRangeStrikeAt(const CvPlot* pPlot, int iX, int iY) const
 		return false;
 	}
 
-	CvPlot* pTargetPlot = GC.getMap().plot(iX, iY);
+	const CvPlot* pTargetPlot = GC.getMap().plot(iX, iY);
 
 	if (NULL == pTargetPlot)
 	{
@@ -27523,7 +27473,7 @@ bool CvUnit::canRangeStrikeAt(const CvPlot* pPlot, int iX, int iY) const
 		return false;
 	}
 
-	CvUnit* pDefender = airStrikeTarget(pTargetPlot);
+	const CvUnit* pDefender = airStrikeTarget(pTargetPlot);
 	if (NULL == pDefender)
 	{
 		return false;
@@ -27995,21 +27945,10 @@ bool CvUnit::isSuicide() const
 
 int CvUnit::getDropRange() const
 {
-/*****************************************************************************************************/
-/**  Author: TheLadiesOgre                                                                          **/
-/**  Date: 16.09.2009                                                                               **/
-/**  ModComp: TLOTags                                                                               **/
-/**  Reason Added: Implement iExtraDropRange                                                        **/
-/**  Notes:                                                                                         **/
-/*****************************************************************************************************
-	return (m_pUnitInfo->getDropRange());*/
 	return (m_pUnitInfo->getDropRange() + getExtraDropRange());
-/*****************************************************************************************************/
-/**  TheLadiesOgre; 16.09.2009; TLOTags                                                             **/
-/*****************************************************************************************************/
 }
 
-void CvUnit::getDefenderCombatValues(CvUnit& kDefender, const CvPlot* pPlot, int iOurStrength, int iOurFirepower, int& iTheirOdds, int& iTheirStrength, int& iOurDamage, int& iTheirDamage, CombatDetails* pTheirDetails, CvUnit* pDefender, bool bSamePlot) const
+void CvUnit::getDefenderCombatValues(const CvUnit& kDefender, const CvPlot* pPlot, int iOurStrength, int iOurFirepower, int& iTheirOdds, int& iTheirStrength, int& iOurDamage, int& iTheirDamage, CombatDetails* pTheirDetails, const CvUnit* pDefender, bool bSamePlot) const
 {
 	//TB Combat Mod begin
 	iTheirStrength = std::max(1,kDefender.currCombatStr(pPlot, this, pTheirDetails));
@@ -30541,7 +30480,7 @@ bool CvUnit::performInquisition()
 
 		for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 		{
-			CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
+			const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iI);
 			if (kLoopPlayer.isAlive()
 			&& (pPlot->isVisible(kLoopPlayer.getTeam(), true) || pPlot->isRevealed(kLoopPlayer.getTeam(), true)))
 			{
@@ -37740,7 +37679,7 @@ void CvUnit::doSetUnitCombats()
 void CvUnit::setFreePromotion(PromotionTypes ePromotion, bool bAdding, TraitTypes eTrait)
 {
 	const int numTraitInfos = GC.getNumTraitInfos();
-	CvPlayer& pPlayer = GET_PLAYER(getOwner());
+	const CvPlayer& pPlayer = GET_PLAYER(getOwner());
 
 	if (bAdding && !isHasPromotion(ePromotion))
 	{
