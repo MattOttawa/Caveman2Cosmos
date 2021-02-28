@@ -362,19 +362,46 @@ void CvMap::setAllPlotTypes(PlotTypes ePlotType)
 
 
 #ifdef PARALLEL_MAPS
+void CvMap::generatePlots()
+{
+	if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
+	{
+		CyArgsList argsList;
+		long lResult;
+
+		char mapPath[1024];
+		getcwd(mapPath, 1024);
+		strcat(mapPath, GC.getMapInfo(getType()).getInitialWBMap().GetCString());
+
+		argsList.add(mapPath);
+		gDLL->getPythonIFace()->callFunction(PYWorldBuilderModule, "readAndApplyDesc", argsList.makeFunctionArgs(), &lResult);
+		if (lResult < 0) // failed
+		{
+			AddDLLMessage((PlayerTypes)0, true, GC.getEVENT_MESSAGE_TIME(), L"Worldbuilder map failed to load");
+		}
+	}
+	else
+	{
+		init();
+		CvMapGenerator& kGenerator = CvMapGenerator::GetInstance();
+		kGenerator.generateRandomMap();
+		kGenerator.addGameElements();
+	}
+}
+
 void CvMap::updateIncomingUnits()
 {
 	for (std::vector<IncomingUnit>::iterator itr = m_IncomingUnits.begin(), itrEnd = m_IncomingUnits.end(); itr != itrEnd; ++itr)
 	{
 		if ((*itr).second-- <= 0)
 		{
-			if (m_pMapPlots == NULL)
+			if (!plotsInitialized())
 			{
-				GC.switchMap(getType());
+				generatePlots();
 			}
 			CvUnit& offMapUnit = (*itr).first;
 			CvPlayer& owner = GET_PLAYER(offMapUnit.getOwner());
-			CvPlot* startingPlot = owner.findStartingPlot(*this);
+			CvPlot* startingPlot = owner.findStartingPlot();
 			//CvUnit& onMapUnit = owner.addUnit(offMapUnit);
 			CvUnit* onMapUnit = owner.initUnit(offMapUnit.getUnitType(), startingPlot->getX(), startingPlot->getY(), offMapUnit.AI_getUnitAIType(), NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
 			if (onMapUnit == NULL)
@@ -396,27 +423,32 @@ void CvMap::doTurn()
 	MEMORY_TRACE_FUNCTION();
 	PROFILE("CvMap::doTurn()")
 
-	//for (int iI = 0; iI < MAX_TEAMS; iI++)
-	//{
-	//	CvTeam& team = GET_TEAM((TeamTypes)iI);
-	//	if (team.isAlive())
-	//	{
-	//		team.doMapTurn();
-	//	}
-	//}
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
-	{
-		CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
-		if (player.isAlive())
-		{
-			player.doMapTurn();
-		}
-	}
-	algo::for_each(plots(), bind(CvPlot::doTurn, _1));
-
 #ifdef PARALLEL_MAPS
 	updateIncomingUnits();
 #endif
+
+	if (plotsInitialized())
+	{
+		//for (int iI = 0; iI < MAX_TEAMS; iI++)
+		//{
+		//	CvTeam& team = GET_TEAM((TeamTypes)iI);
+		//	if (team.isAlive())
+		//	{
+		//		team.doMapTurn();
+		//	}
+		//}
+
+		for (int iI = 0; iI < MAX_PLAYERS; iI++)
+		{
+			CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
+			if (player.isAlive())
+			{
+				player.doMapTurn();
+			}
+		}
+
+		algo::for_each(plots(), bind(CvPlot::doTurn, _1));
+	}
 }
 
 
@@ -1293,37 +1325,9 @@ void CvMap::beforeSwitch()
 }
 
 void CvMap::afterSwitch()
-{
-	if (m_pMapPlots.size() == 0)		// if it hasn't been initialized yet...
-	{
-		if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
-		{
-			CyArgsList argsList;
-			long lResult;
-
-			char mapPath[1024];
-			getcwd(mapPath, 1024);
-			strcat(mapPath, GC.getMapInfo(getType()).getInitialWBMap().GetCString());
-
-			argsList.add(mapPath);
-			gDLL->getPythonIFace()->callFunction(PYWorldBuilderModule, "readAndApplyDesc", argsList.makeFunctionArgs(), &lResult);
-			if (lResult < 0) // failed
-			{
-				AddDLLMessage((PlayerTypes)0, true, GC.getEVENT_MESSAGE_TIME(), L"Worldbuilder map failed to load");
-			}
-		}
-		else
-		{
-			init();
-			CvMapGenerator& kGenerator = CvMapGenerator::GetInstance();
-			kGenerator.generateRandomMap();
-			kGenerator.addGameElements();
-		}
-	}
-	
+{	
 	gDLL->getInterfaceIFace()->clearSelectionList();
 	gDLL->getInterfaceIFace()->makeSelectionListDirty();
-
 	gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
@@ -1480,7 +1484,7 @@ void CvMap::addIncomingUnit(CvUnitAI& unit, int numTravelTurns)
 
 bool CvMap::plotsInitialized() const
 {
-	return m_pMapPlots != nullptr;
+	return !m_pMapPlots.empty();
 }
 #endif
 /*******************************/

@@ -130,7 +130,6 @@ public:
 	int startingPlotDistanceFactor(const CvPlot* pPlot, PlayerTypes ePlayer, int iRange) const;
 	int findStartingArea(const CvMap& map) const;
 	CvPlot* findStartingPlot(bool bRandomize = false);
-	CvPlot* findStartingPlot(const CvMap& map, bool bRandomize = false);
 
 	CvPlotGroup* initPlotGroup(CvPlot* pPlot, bool bRecalculateBonuses);
 

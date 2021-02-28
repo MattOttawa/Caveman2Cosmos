@@ -224,7 +224,10 @@ public:
 
 	inline const CvPlot* plotSorenINLINE(int iX, int iY) const
 	{
-		FAssert(iX != INVALID_PLOT_COORD && iY != INVALID_PLOT_COORD)
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
 		return &m_pMapPlots[plotNum(iX, iY)];
 	}
 
@@ -306,7 +309,7 @@ protected:
 	typedef std::pair<CvUnitAI, int> IncomingUnit;
 	std::vector<IncomingUnit> m_IncomingUnits;
 #endif
-
+	void generatePlots();
 	void calculateAreas();
 };
 

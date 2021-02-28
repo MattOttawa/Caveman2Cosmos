@@ -2136,19 +2136,14 @@ int CvPlayer::findStartingArea(const CvMap& map) const
 
 CvPlot* CvPlayer::findStartingPlot(bool bRandomize)
 {
-	return findStartingPlot(GC.getMap(), bRandomize);
-}
-
-CvPlot* CvPlayer::findStartingPlot(const CvMap& map, bool bRandomize)
-{
 	PROFILE_FUNC();
 	{
 		int result = -1;
-		if (Cy::call_override(map.getMapScript(), "findStartingPlot", Cy::Args() << getID(), result))
+		if (Cy::call_override(GC.getMap().getMapScript(), "findStartingPlot", Cy::Args() << getID(), result))
 		{
-			if (result > -1 && result < map.numPlots())
+			if (result > -1 && result < GC.getMap().numPlots())
 			{
-				return map.plotByIndex(result);
+				return GC.getMap().plotByIndex(result);
 			}
 			FErrorMsg("python findStartingPlot() returned an invalid plot index!");
 		}
@@ -2167,7 +2162,7 @@ CvPlot* CvPlayer::findStartingPlot(const CvMap& map, bool bRandomize)
 
 	if (!bNew)
 	{
-		iBestArea = findStartingArea(map);
+		iBestArea = findStartingArea(GC.getMap());
 	}
 #ifndef PARALLEL_MAPS
 	const MapTypes earth = GC.getMAPCATEGORY_EARTH();

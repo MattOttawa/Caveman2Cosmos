@@ -5859,21 +5859,13 @@ void CvGame::doTurn()
 	}
 
 #ifdef PARALLEL_MAPS
-	for (int i = 0; i < NUM_MAPS; i++)
+	for (int i = MAP_EARTH; i < NUM_MAPS; i++)
 	{
-		const MapTypes nextMapType = getNextMap();
-		CvMap& nextMap = GC.getMapByIndex(nextMapType);
+		m_eCurrentMap = getNextMap();
 
-		if (nextMap.plotsInitialized())
-		{
-			//GC.switchMap(getNextMap());
-			m_eCurrentMap = nextMapType;
+		m_PropertySolver.doTurn(); // solve property system
 
-			// solve property system
-			m_PropertySolver.doTurn();
-
-			nextMap.doTurn();
-		}
+		GC.getMap().doTurn();
 	}
 #endif
 /*
@@ -5912,7 +5904,7 @@ void CvGame::doTurn()
 	doDiploVote();
 
 #ifdef PARALLEL_MAPS
-	for (int i = 0; i < NUM_MAPS; i++)
+	for (int i = MAP_EARTH; i < NUM_MAPS; i++)
 	{
 		const MapTypes nextMapType = getNextMap();
 		CvMap& nextMap = GC.getMapByIndex(nextMapType);

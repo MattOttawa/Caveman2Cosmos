@@ -1337,7 +1337,7 @@ void CvPlayerAI::AI_updateFoundValues(bool bClear, const CvArea* area) const
 
 				if (areaX->hasBestFoundValue(getID()))
 				{
-					if (std::contains(aUncalculatedAreas, areaX))
+					if (algo::contains(aUncalculatedAreas, areaX))
 					{
 						bNeedsCalculating = true;
 					}
