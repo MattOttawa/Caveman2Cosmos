@@ -102,10 +102,6 @@ public:
 	inline ViewportMode getState() const { return m_mode; }
 
 	virtual void erasePlots();
-	virtual void setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly = false);
-	virtual void setAllPlotTypes(PlotTypes ePlotType);
-
-	virtual void doTurn();
 
 	virtual void updateFlagSymbols();
 

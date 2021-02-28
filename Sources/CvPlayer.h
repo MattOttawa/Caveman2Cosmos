@@ -185,6 +185,12 @@ public:
 
 	void doTurn();
 	void doTurnUnits();
+#ifdef PARALLEL_MAPS_TURN
+	void doMapTurn();
+#endif
+
+	int getCurrentInflationCostModifier() const;
+	int getEquilibriumInflationCostModifier() const;
 
 	//	Dump stats to BBAI log
 	void dumpStats() const;

@@ -3803,32 +3803,13 @@ void CvPlayer::doTurn()
 {
 	PROFILE_FUNC();
 
-#ifdef VALIDATION_FOR_PLOT_GROUPS
-	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
-	{
-		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if ( pLoopPlot->getPlotGroupId(getID()) != -1 && pLoopPlot->getPlotGroup(getID()) == NULL )
-		{
-			::MessageBox(NULL, "Invalid plot group id found!", "CvGameCoreDLL", MB_OK);
-		}
-	}
-#endif
-
-	//	Each turn flush the movement cost cache for each player to avoid it getting too large
-	CvPlot::flushMovementCostCache();
-
-#ifdef CAN_TRAIN_CACHING
-	//	Clear training caches at the start of each turn
-	algo::for_each(cities(), CvCity::fn::clearCanTrainCache());
-#endif
-
 	m_canHaveBuilder.clear();
 
+ 
 	FAssertMsg(isAlive(), "isAlive is expected to be true");
 	FAssertMsg(!hasBusyUnit() || GC.getGame().isMPOption(MPOPTION_SIMULTANEOUS_TURNS)  || GC.getGame().isSimultaneousTeamTurns(), "End of turn with busy units in a sequential-turn game");
 
-	CvEventReporter::getInstance().beginPlayerTurn( GC.getGame().getGameTurn(),  getID());
+	CvEventReporter::getInstance().beginPlayerTurn(GC.getGame().getGameTurn(),  getID());
 
 	if (isEnabledMAD())
 	{
@@ -3846,10 +3827,6 @@ void CvPlayer::doTurn()
 	//	Reset cache of best route type to build
 	m_eBestRoute = NO_ROUTE;
 
-#ifdef CAN_BUILD_VALUE_CACHING
-	CvPlot::ClearCanBuildCache();
-#endif
-
 	if (!isNPC())
 	{
 		while (canLeaderPromote())
@@ -3857,8 +3834,6 @@ void CvPlayer::doTurn()
 			doPromoteLeader();
 		}
 	}
-
-	doUpdateCacheOnTurn();
 
 	GC.getGame().verifyDeals();
 
@@ -3873,8 +3848,6 @@ void CvPlayer::doTurn()
 	{
 		changeConversionTimer(-1);
 	}
-
-	algo::for_each(units(), CvUnit::fn::clearCommanderCache());
 
 	setConscriptCount(0);
 
@@ -3910,23 +3883,6 @@ void CvPlayer::doTurn()
 
 	doAdvancedEconomy();
 
-	{
-		PROFILE("CvPlayer::doTurn.DoCityTurn");
-
-		algo::for_each(cities(), CvCity::fn::doTurn());
-	}
-
-	// Johny Smith 04/19/09
-	if (GC.isDCM_OPP_FIRE())
-	{
-		algo::for_each(units(), CvUnit::fn::doOpportunityFire());
-	}
-	if (GC.isDCM_ACTIVE_DEFENSE())
-	{
-		algo::for_each(units(), CvUnit::fn::doActiveDefense());
-	}
-	// ! Johny Smith
-
 	if (getGoldenAgeTurns() > 0)
 	{
 		changeGoldenAgeTurns(-1);
@@ -3939,8 +3895,6 @@ void CvPlayer::doTurn()
 	}
 
 	verifyCivics();
-
-	updateTradeRoutes();
 
 	updateWarWearinessPercentAnger();
 
@@ -3972,6 +3926,48 @@ void CvPlayer::doTurn()
 		dumpStats();
 	}
 	CvEventReporter::getInstance().endPlayerTurn( GC.getGame().getGameTurn(),  getID());
+}
+
+
+void CvPlayer::doMapTurn()
+{
+#ifdef VALIDATION_FOR_PLOT_GROUPS
+	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
+	{
+		const CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
+
+		if (pLoopPlot->getPlotGroupId(getID()) != -1 && pLoopPlot->getPlotGroup(getID()) == NULL)
+		{
+			::MessageBox(NULL, "Invalid plot group id found!", "CvGameCoreDLL", MB_OK);
+		}
+	}
+#endif
+	//	Each turn flush the movement cost cache for each player to avoid it getting too large
+	CvPlot::flushMovementCostCache();
+
+#ifdef CAN_BUILD_VALUE_CACHING
+	CvPlot::ClearCanBuildCache();
+#endif
+
+#ifdef CAN_TRAIN_CACHING
+	//	Clear training caches at the start of each turn
+	algo::for_each(cities(), CvCity::fn::clearCanTrainCache());
+#endif
+	doUpdateCacheOnTurn();
+
+	algo::for_each(units(), CvUnit::fn::clearCommanderCache());
+
+	algo::for_each(cities(), CvCity::fn::doTurn());
+
+	if (GC.isDCM_OPP_FIRE())
+	{
+		algo::for_each(units(), CvUnit::fn::doOpportunityFire());
+	}
+	if (GC.isDCM_ACTIVE_DEFENSE())
+	{
+		algo::for_each(units(), CvUnit::fn::doActiveDefense());
+	}
+	updateTradeRoutes();
 }
 
 //	Dump stats to BBAI log

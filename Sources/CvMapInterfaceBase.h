@@ -67,13 +67,8 @@ public:
 /*******************************/
 
 	virtual void erasePlots() = 0;
-	virtual void setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly = false) = 0;
-	virtual void setAllPlotTypes(PlotTypes ePlotType) = 0;
-
-	virtual void doTurn() = 0;
 
 	virtual void updateFlagSymbols() = 0;
-
 	virtual void updateFog() = 0;
 	virtual void updateVisibility() = 0;
 	virtual void updateSymbolVisibility() = 0;

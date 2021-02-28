@@ -5862,6 +5862,10 @@ void CvGame::doTurn()
 	MEMORY_TRACE_FUNCTION();
 	PROFILE_BEGIN("CvGame::doTurn()");
 
+#ifdef PARALLEL_MAPS	// XXX Cycle to the next map each turn.
+//	if (GC.getNumMaps() > 1)
+//		GC.switchMap(getNextMap());
+#endif
 	// END OF TURN
 	CvEventReporter::getInstance().beginGameTurn( getGameTurn() );
 
@@ -5870,7 +5874,7 @@ void CvGame::doTurn()
 	updateScore();
 
 	// solve property system
-	m_PropertySolver.doTurn();
+	//m_PropertySolver.doTurn();
 
 	doDeals();
 
@@ -5882,7 +5886,23 @@ void CvGame::doTurn()
 		}
 	}
 
-	GC.getMap().doTurn();
+#ifdef PARALLEL_MAPS
+	const int numMaps = GC.getNumMaps();
+	const bool multipleMaps = numMaps > 1;
+
+	for (int i = MAP_INITIAL; i < numMaps; i++)
+	{
+		if (multipleMaps)
+		{
+			GC.switchMap(getNextMap());
+			//m_eCurrentMap = getNextMap();
+		}
+		// solve property system
+		m_PropertySolver.doTurn();
+
+		GC.getMap().doTurn();
+	}
+#endif
 
 	createBarbarianCities(false);
 	if (isOption(GAMEOPTION_NEANDERTHAL_CITIES))
@@ -5913,12 +5933,21 @@ void CvGame::doTurn()
 	//Hopefully won't create a noteable delay but it may
 	//disabled when debugging only - units should now be tracking and staying within a range of 0-1 for number of positive updates - negative updates.
 	//TBVIS
-	for (int iJ = 0; iJ < GC.getMap().numPlots(); iJ++)
+#ifdef PARALLEL_MAPS
+	for (int i = MAP_INITIAL; i < numMaps; i++)
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iJ);
-		pLoopPlot->clearVisibilityCounts();
+		if (multipleMaps)
+		{
+			GC.switchMap(getNextMap());
+			//m_eCurrentMap = getNextMap();
+		}
+		for (int iJ = 0; iJ < GC.getMap().numPlots(); iJ++)
+		{
+			GC.getMap().plotByIndex(iJ)->clearVisibilityCounts();
+		}
+		GC.getMap().updateSight(true, false);
 	}
-	GC.getMap().updateSight(true, false);
+#endif
 
 	CvEventReporter::getInstance().preEndGameTurn(getGameTurn());
 
@@ -11921,6 +11950,11 @@ const CvProperties* CvGame::getPropertiesConst() const
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
+MapTypes CvGame::getNextMap() const
+{
+	const int nextMap = m_eCurrentMap +1;
+	return nextMap < GC.getNumMaps() ? (MapTypes)nextMap : MAP_INITIAL;
+}
 
 MapTypes CvGame::getCurrentMap() const
 {

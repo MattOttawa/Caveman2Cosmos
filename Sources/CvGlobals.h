@@ -185,11 +185,14 @@ public:
 	CvInterface& getInterface() const 					{ return *m_interface; }
 	CvInterface* getInterfacePtr() const 				{ return m_interface; }
 	
-
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
 	inline CvMap& getMap() const;
+	CvMap& getMapByIndex(MapTypes eIndex) const;
+	int getNumMaps() const { return m_maps.size(); }
+	const std::vector<CvMap*>& maps() const { return m_maps; }
+
 	CvViewport* getCurrentViewport() const;
 	int	getViewportSizeX() const;
 	int	getViewportSizeY() const;
@@ -208,8 +211,6 @@ public:
 	CvMapSwitchInfo& getMapSwitchInfo(MapSwitchTypes eMapSwitch) const;
 
 	void switchMap(MapTypes eMap);
-	CvMap& getMapByIndex(MapTypes eIndex) const;
-	int getNumMaps() const { return m_maps.size(); }
 	void updateMaps();
 	void initializeMap(MapTypes eMap);
 	bool mapInitialized(MapTypes eMap) const;
@@ -220,6 +221,7 @@ public:
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
+
 	inline CvGameAI& getGame() const 			{ return *m_game; }
 	CvGameAI* getGamePointer();
 	CvRandom& getASyncRand() const 				{ return *m_asyncRand; }

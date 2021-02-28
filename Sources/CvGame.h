@@ -78,6 +78,7 @@ public:
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
+	MapTypes getNextMap() const;
 	MapTypes getCurrentMap() const;
 	void setCurrentMap(MapTypes eNewMap);
 
