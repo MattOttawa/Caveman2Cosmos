@@ -3985,7 +3985,7 @@ void CvPlayer::doTurn()
 	CvEventReporter::getInstance().endPlayerTurn( GC.getGame().getGameTurn(),  getID());
 }
 
-#ifdef PARALLEL_MAPS_TURN
+
 void CvPlayer::doMapTurn()
 {
 #ifdef VALIDATION_FOR_PLOT_GROUPS
@@ -4026,7 +4026,6 @@ void CvPlayer::doMapTurn()
 	}
 	updateTradeRoutes();
 }
-#endif
 
 //	Dump stats to BBAI log
 void CvPlayer::dumpStats() const

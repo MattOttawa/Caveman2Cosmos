@@ -39217,7 +39217,7 @@ void CvPlayerAI::AI_recalculateUnitCounts()
 
 	for (int iMap = MAP_INITIAL; iMap < GC.getNumMaps(); iMap++)
 	{
-		foreach_(const CvUnit* pLoopUnit, units((MapTypes)iMap))
+		foreach_(const CvUnit* pLoopUnit, units(/*(MapTypes)iMap*/))
 		{
 			const UnitAITypes eAIType = pLoopUnit->AI_getUnitAIType();
 
