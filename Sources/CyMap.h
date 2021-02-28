@@ -16,14 +16,16 @@ class CyMap
 public:
 	CyMap();
 	explicit CyMap(CvMap* pMap); // Call from C++
+	void setMap(CvMap& map);
 	//const CvMapInterfaceBase* getMap() const { return m_pMap; } // Call from C++
-	bool isNone() const { return m_pMap == NULL; }
 
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
 	int getType();
 	CyMap& operator = (CvMap& kMap);
+
+	bool plotsInitialized() const;
 
 	bool viewportsEnabled();
 	int	getViewportWidth();

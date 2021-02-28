@@ -10,7 +10,6 @@
 //-----------------------------------------------------------------------------
 //	Copyright (c) 2004 Firaxis Games, Inc. All rights reserved.
 //-----------------------------------------------------------------------------
-//
 
 #include "CvMapInterfaceBase.h"
 #include "CvPlot.h"
@@ -19,6 +18,10 @@ class CvArea;
 class CvCity;
 class CvPlotGroup;
 class CvSelectionGroup;
+#ifdef PARALLEL_MAPS
+class CvUnit;
+class CvUnitAI;
+#endif
 class CvViewport;
 
 inline int coordRange(int iCoord, int iRange, bool bWrap)
@@ -37,7 +40,6 @@ inline int coordRange(int iCoord, int iRange, bool bWrap)
 	return iCoord;
 }
 
-
 //
 // CvMap
 //
@@ -46,7 +48,7 @@ class CvMap : public CvMapInterfaceBase
 	friend class CyMap;
 
 public:
-	explicit CvMap(/* Parallel Maps */ MapTypes eMap);
+	explicit CvMap(MapTypes eMap);
 	virtual ~CvMap();
 
 	CvMapInterfaceBase*	getUnderlyingMap() const { return const_cast<CvMap*>(this); }
@@ -61,13 +63,17 @@ protected:
 	void setup();
 
 public:
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 	MapTypes getType() const;
 
 	void beforeSwitch();
 	void afterSwitch();
+
+	void updateIncomingUnits();
+	void addIncomingUnit(CvUnitAI& unit, int numTravelTurns);
+
+	bool plotsInitialized() const;
+
+	const char* getMapScript() const;
 
 	//	Viewports are owned by their underlying maps
 	int	getNumViewports() const;
@@ -76,9 +82,6 @@ public:
 	void deleteViewport(int iIndex);
 	void setCurrentViewport(int iIndex);
 	CvViewport* getCurrentViewport() const;
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 	void erasePlots();
 	void setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly = false);
@@ -271,6 +274,11 @@ protected:
 	CvPlot* m_pMapPlots;
 
 	FFreeListTrashArray<CvArea> m_areas;
+
+#ifdef PARALLEL_MAPS
+	typedef std::pair<CvUnitAI, int> IncomingUnit;
+	std::vector<IncomingUnit> m_IncomingUnits;
+#endif
 
 	void calculateAreas();
 };

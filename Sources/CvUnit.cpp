@@ -204,6 +204,117 @@ m_Properties(this)
 }
 
 
+CvUnit::CvUnit(const CvUnit& other)
+	: m_GameObject(this)
+	, m_Properties(this)
+{
+	m_aiExtraDomainModifier = new int[NUM_DOMAIN_TYPES];
+	m_aiExtraVisibilityIntensity = new int[GC.getNumInvisibleInfos()];
+	m_aiExtraInvisibilityIntensity = new int[GC.getNumInvisibleInfos()];
+	m_aiExtraVisibilityIntensityRange = new int[GC.getNumInvisibleInfos()];
+	m_aiExtraVisibilityIntensitySameTile = new int[GC.getNumInvisibleInfos()];
+	m_aiNegatesInvisibleCount = new int[GC.getNumInvisibleInfos()];
+	m_aExtraInvisibleTerrains.clear();
+	m_aExtraInvisibleFeatures.clear();
+	m_aExtraInvisibleImprovements.clear();
+	m_aExtraVisibleTerrains.clear();
+	m_aExtraVisibleFeatures.clear();
+	m_aExtraVisibleImprovements.clear();
+	m_aExtraVisibleTerrainRanges.clear();
+	m_aExtraVisibleFeatureRanges.clear();
+	m_aExtraVisibleImprovementRanges.clear();
+
+	m_iMaxMoveCacheTurn = -1;
+
+	if (g_dummyUnit == NULL)
+	{
+		g_dummyUnit = new CvUnitAI(true);
+
+		if (GC.getENABLE_DYNAMIC_UNIT_ENTITIES())
+		{
+			g_bUseDummyEntities = true;
+		}
+	}
+
+	if (!g_bUseDummyEntities)
+	{
+		CvDLLEntity::createUnitEntity(this); // create and attach entity to unit
+	}
+	else if (g_dummyEntity == NULL)
+	{
+		CvDLLEntity::createUnitEntity(this); // create and attach entity to unit
+
+		g_dummyEntity = getEntity();
+	}
+	else
+	{
+		setEntity(g_dummyEntity);
+		g_dummyUsage++;
+	}
+
+	bGraphicsSetup = false;
+
+	reset(0, NO_UNIT, NO_PLAYER, true);
+
+	*this = other;
+
+	if (!m_staticsInitialized)
+	{
+		//	Allocate static buffers to be used during read and write
+		g_paiTempPromotionFreeCount = new int[GC.getNumPromotionInfos()];
+		g_paiTempAfflictOnAttackCount = new int[GC.getNumPromotionInfos()];
+		g_paiTempCureAfflictionCount = new int[GC.getNumPromotionInfos()];
+		g_paiTempCureAfflictionTypeCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictionLineCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictionTurnCount = new int[GC.getNumPromotionInfos()];
+		g_paiTempAfflictionTurnTypeCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictionHitCount = new int[GC.getNumPromotionInfos()];
+		g_paiTempAfflictionTolerance = new int[GC.getNumPromotionInfos()];
+		g_paiTempTrapImmunityUnitCombatCount = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempTargetUnitCombatCount = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraTrapDisableUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraTrapAvoidanceUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraTrapTriggerUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempAfflictionTypeTolerance = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempFortitudeModifierTypeAmount = new int[GC.getNumPromotionInfos()];
+		g_paiTempFortitudeModifierAmount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempTrapSetWithPromotionCount = new int[GC.getNumPromotionInfos()];
+		g_paiTempPromotionFromTraitCount = new int [GC.getNumPromotionInfos()];
+		g_paiTempAfflictOnAttackTypeProbability = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictOnAttackTypeCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictOnAttackTypeImmediateCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictOnAttackTypeMeleeCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictOnAttackTypeDistanceCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempAfflictOnAttackTypeAttemptedCount = new int[GC.getNumPromotionLineInfos()];
+		g_paiTempDistanceAttackCommunicability = new int[GC.getNumPromotionLineInfos()];
+		g_pabTempValidBuildUp = new bool[GC.getNumPromotionLineInfos()];
+		g_paiTempExtraBuildWorkPercent = new int [GC.getNumBuildInfos()];
+		g_paiTempExtraUnitCombatModifier = new int[GC.getNumUnitCombatInfos()];
+		g_pabTempHasPromotion = new bool[GC.getNumPromotionInfos()];
+		g_pabTempHasUnitCombat = new bool[GC.getNumUnitCombatInfos()];
+		g_paiTempSubCombatTypeCount = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempOngoingTrainingCount = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempRemovesUnitCombatTypeCount = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraFlankingStrengthbyUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraWithdrawVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraPursuitVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraRepelVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraKnockbackVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraPunctureVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraArmorVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraDodgeVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraPrecisionVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraCriticalVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempExtraRoundStunVSUnitCombatType = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempHealUnitCombatTypeVolume = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempHealUnitCombatTypeAdjacentVolume = new int[GC.getNumUnitCombatInfos()];
+		g_paiTempHealAsDamage = new int[GC.getNumUnitCombatInfos()];
+
+		m_staticsInitialized = true;
+	}
+}
+
+
 CvUnit::~CvUnit()
 {
 	if ( !isUsingDummyEntities() )
@@ -322,7 +433,7 @@ void CvUnit::changeIdentity(UnitTypes eUnit)
 
 void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOwner, int iX, int iY, DirectionTypes eFacingDirection, int iBirthmark)
 {
-	FAssert(NO_UNIT != eUnit);
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), eUnit)
 
 	//	If the current viewport is not yet initialized center it on the first unit created for the active player
 	if (GC.getGame().getActivePlayer() == eOwner
@@ -904,6 +1015,416 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_Properties.clear();
 }
 
+CvUnit& CvUnit::operator=(const CvUnit& other)
+{
+	//uninit();
+	//clearCityOfOrigin();
+
+	//static_cast<CvUnitAI&>(*this) = static_cast<const CvUnitAI&>(other);
+
+	m_iHealUnitCombatCount = other.m_iHealUnitCombatCount;
+	m_iDCMBombRange = other.m_iDCMBombRange;
+	m_iDCMBombAccuracy = other.m_iDCMBombAccuracy;
+	m_bMADEnabled = other.m_bMADEnabled;
+	m_iMADTargetPlotX = other.m_iMADTargetPlotX;
+	m_iMADTargetPlotY = other.m_iMADTargetPlotY;
+	m_pMADTargetPlotOwner = other.m_pMADTargetPlotOwner;
+	//m_iID = other.m_iID;
+	//if (!bIdentityChange)
+	//{
+	//	m_iGroupID = other.m_iGroupID;
+	//}
+	m_iHotKeyNumber = other.m_iHotKeyNumber;
+	//m_iX = other.m_iX;
+	//m_iY = other.m_iY;
+	m_iLastMoveTurn = other.m_iLastMoveTurn;
+	m_iReconX = other.m_iReconX;
+	m_iReconY = other.m_iReconY;
+	m_iGameTurnCreated = other.m_iGameTurnCreated;
+	m_iDamage = other.m_iDamage;
+	m_iMoves = other.m_iMoves;
+	m_iExperience = other.m_iExperience;
+	m_iLevel = other.m_iLevel;
+	m_iCargo = other.m_iCargo;
+	m_iSMCargo = other.m_iSMCargo;
+	m_iAttackPlotX = other.m_iAttackPlotX;
+	m_iAttackPlotY = other.m_iAttackPlotY;
+	m_iCombatTimer = other.m_iCombatTimer;
+	m_iCombatFirstStrikes = other.m_iCombatFirstStrikes;
+	m_iFortifyTurns = other.m_iFortifyTurns;
+	m_iBlitzCount = other.m_iBlitzCount;
+	m_iRBombardForceAbilityCount = other.m_iRBombardForceAbilityCount;
+	m_iAmphibCount = other.m_iAmphibCount;
+	m_iRiverCount = other.m_iRiverCount;
+	m_iEnemyRouteCount = other.m_iEnemyRouteCount;
+	m_iAlwaysHealCount = other.m_iAlwaysHealCount;
+	m_iHillsDoubleMoveCount = other.m_iHillsDoubleMoveCount;
+	m_iImmuneToFirstStrikesCount = other.m_iImmuneToFirstStrikesCount;
+	m_iAlwaysInvisibleCount = other.m_iAlwaysInvisibleCount;
+	m_iDefensiveVictoryMoveCount = other.m_iDefensiveVictoryMoveCount;
+	m_iFreeDropCount = other.m_iFreeDropCount;
+	m_iOffensiveVictoryMoveCount = other.m_iOffensiveVictoryMoveCount;
+	m_iOneUpCount = other.m_iOneUpCount;
+	m_iPillageCultureCount = other.m_iPillageCultureCount;
+	m_iPillageEspionageCount = other.m_iPillageEspionageCount;
+	m_iPillageMarauderCount = other.m_iPillageMarauderCount;
+	m_iPillageOnMoveCount = other.m_iPillageOnMoveCount;
+	m_iPillageOnVictoryCount = other.m_iPillageOnVictoryCount;
+	m_iPillageResearchCount = other.m_iPillageResearchCount;
+	m_iAirCombatLimitChange = other.m_iAirCombatLimitChange;
+	m_iCelebrityHappy = other.m_iCelebrityHappy;
+	m_iCollateralDamageLimitChange = other.m_iCollateralDamageLimitChange;
+	m_iCollateralDamageMaxUnitsChange = other.m_iCollateralDamageMaxUnitsChange;
+	m_iCombatLimitChange = other.m_iCombatLimitChange;
+	m_iExtraDropRange = other.m_iExtraDropRange;
+	m_iSurvivorChance = other.m_iSurvivorChance;
+	m_iVictoryAdjacentHeal = other.m_iVictoryAdjacentHeal;
+	m_iVictoryHeal = other.m_iVictoryHeal;
+	m_iVictoryStackHeal = other.m_iVictoryStackHeal;
+	m_iExtraVisibilityRange = other.m_iExtraVisibilityRange;
+	m_iExtraMoves = other.m_iExtraMoves;
+	m_iExtraMoveDiscount = other.m_iExtraMoveDiscount;
+	m_iExtraAirRange = other.m_iExtraAirRange;
+	m_iExtraIntercept = other.m_iExtraIntercept;
+	m_iExtraEvasion = other.m_iExtraEvasion;
+	m_iExtraFirstStrikes = other.m_iExtraFirstStrikes;
+	m_iExtraChanceFirstStrikes = other.m_iExtraChanceFirstStrikes;
+	m_iExtraWithdrawal = other.m_iExtraWithdrawal;
+	m_iExtraAttackCombatModifier = other.m_iExtraAttackCombatModifier;
+	m_iExtraDefenseCombatModifier = other.m_iExtraDefenseCombatModifier;
+	m_iExtraPursuit = other.m_iExtraPursuit;
+	m_iExtraEarlyWithdraw = other.m_iExtraEarlyWithdraw;
+	m_iExtraVSBarbs = other.m_iExtraVSBarbs;
+	m_iExtraReligiousCombatModifier = other.m_iExtraReligiousCombatModifier;
+	m_iExtraArmor = other.m_iExtraArmor;
+	m_iExtraPuncture = other.m_iExtraPuncture;
+	m_iExtraOverrun = other.m_iExtraOverrun;
+	m_iExtraRepel = other.m_iExtraRepel;
+	m_iExtraFortRepel = other.m_iExtraFortRepel;
+	m_iExtraRepelRetries = other.m_iExtraRepelRetries;
+	m_iExtraUnyielding = other.m_iExtraUnyielding;
+	m_iExtraKnockback = other.m_iExtraKnockback;
+	m_iExtraKnockbackRetries = other.m_iExtraKnockbackRetries;
+	m_iStampedeCount = other.m_iStampedeCount;
+	m_iAttackOnlyCitiesCount = other.m_iAttackOnlyCitiesCount;
+	m_iIgnoreNoEntryLevelCount = other.m_iIgnoreNoEntryLevelCount;
+	m_iIgnoreZoneofControlCount = other.m_iIgnoreZoneofControlCount;
+	m_iFliesToMoveCount = other.m_iFliesToMoveCount;
+	m_iExtraStrAdjperRnd = other.m_iExtraStrAdjperRnd;
+	m_iExtraStrAdjperAtt = other.m_iExtraStrAdjperAtt;
+	m_iExtraStrAdjperDef = other.m_iExtraStrAdjperDef;
+	m_iExtraWithdrawAdjperAtt = other.m_iExtraWithdrawAdjperAtt;
+	m_iExtraUnnerve = other.m_iExtraUnnerve;
+	m_iExtraEnclose = other.m_iExtraEnclose;
+	m_iExtraLunge = other.m_iExtraLunge;
+	m_iExtraDynamicDefense = other.m_iExtraDynamicDefense;
+	m_iExtraStrength = other.m_iExtraStrength;
+	m_iSMStrength = other.m_iSMStrength;
+	m_iAnimalIgnoresBordersCount = other.m_iAnimalIgnoresBordersCount;
+	m_iOnslaughtCount = other.m_iOnslaughtCount;
+	m_iExtraFortitude = other.m_iExtraFortitude;
+#ifdef STRENGTH_IN_NUMBERS
+	m_iExtraFrontSupportPercent = other.m_iExtraFrontSupportPercent;
+	m_iExtraShortRangeSupportPercent = other.m_iExtraShortRangeSupportPercent;
+	m_iExtraMediumRangeSupportPercent = other.m_iExtraMediumRangeSupportPercent;
+	m_iExtraLongRangeSupportPercent = other.m_iExtraLongRangeSupportPercent;
+	m_iExtraFlankSupportPercent = other.m_iExtraFlankSupportPercent;
+	m_iSupportCount = other.m_iSupportCount;
+	m_iAttackFromPlotX = other.m_iAttackFromPlotX;
+	m_iAttackFromPlotY = other.m_iAttackFromPlotY;
+#endif // STRENGTH_IN_NUMBERS
+	m_iExtraDodgeModifier = other.m_iExtraDodgeModifier;
+	m_iExtraPrecisionModifier = other.m_iExtraPrecisionModifier;
+	m_iExtraPowerShots = other.m_iExtraPowerShots;
+	m_iExtraPowerShotCombatModifier = other.m_iExtraPowerShotCombatModifier;
+	m_iExtraPowerShotPunctureModifier = other.m_iExtraPowerShotPunctureModifier;
+	m_iExtraPowerShotPrecisionModifier = other.m_iExtraPowerShotPrecisionModifier;
+	m_iExtraPowerShotCriticalModifier = other.m_iExtraPowerShotCriticalModifier;
+	m_iExtraCriticalModifier = other.m_iExtraCriticalModifier;
+	m_iExtraEndurance = other.m_iExtraEndurance;
+	m_iColdDamage = other.m_iColdDamage;
+	m_iDealColdDamageCount = other.m_iDealColdDamageCount;
+	m_iColdImmuneCount = other.m_iColdImmuneCount;
+	m_iCombatPowerShots = other.m_iCombatPowerShots;
+	m_iCombatKnockbacks = other.m_iCombatKnockbacks;
+	m_iCombatRepels = other.m_iCombatRepels;
+	m_iExtraRoundStunProb = other.m_iExtraRoundStunProb;
+	m_iCombatStuns = other.m_iCombatStuns;
+	m_iExtraPoisonProbabilityModifier = other.m_iExtraPoisonProbabilityModifier;
+	m_iRetrainsAvailable = other.m_iRetrainsAvailable;
+	m_iQualityBaseTotal = other.m_iQualityBaseTotal;
+	m_iGroupBaseTotal = other.m_iGroupBaseTotal;
+	m_iSizeBaseTotal = other.m_iSizeBaseTotal;
+	m_iExtraQuality = other.m_iExtraQuality;
+	m_iExtraGroup = other.m_iExtraGroup;
+	m_iExtraSize = other.m_iExtraSize;
+	m_iSMCargoVolume = other.m_iSMCargoVolume;
+	m_iSMExtraCargoVolume = other.m_iSMExtraCargoVolume;
+	m_iSMCargoVolumeModifier = other.m_iSMCargoVolumeModifier;
+	m_iCannotMergeSplitCount = other.m_iCannotMergeSplitCount;
+	m_iExtraCaptureProbabilityModifier = other.m_iExtraCaptureProbabilityModifier;
+	m_iExtraCaptureResistanceModifier = other.m_iExtraCaptureResistanceModifier;
+	m_iExtraBreakdownChance = other.m_iExtraBreakdownChance;
+	m_iExtraBreakdownDamage = other.m_iExtraBreakdownDamage;
+	m_iExtraTaunt = other.m_iExtraTaunt;
+	m_iExtraCombatModifierPerSizeMore = other.m_iExtraCombatModifierPerSizeMore;
+	m_iExtraCombatModifierPerSizeLess = other.m_iExtraCombatModifierPerSizeLess;
+	m_iExtraCombatModifierPerVolumeMore = other.m_iExtraCombatModifierPerVolumeMore;
+	m_iExtraCombatModifierPerVolumeLess = other.m_iExtraCombatModifierPerVolumeLess;
+	m_iExtraMaxHP = other.m_iExtraMaxHP;
+	m_iExtraStrengthModifier = other.m_iExtraStrengthModifier;
+	m_iExtraDamageModifier = other.m_iExtraDamageModifier;
+	m_iExtraUpkeep100 = other.m_iExtraUpkeep100;
+	m_iUpkeepModifier = other.m_iUpkeepModifier;
+	m_iUpkeepMultiplierSM = other.m_iUpkeepMultiplierSM;
+	m_iUpkeep100 = other.m_iUpkeep100;
+	m_iExtraPowerValue = other.m_iExtraPowerValue;
+	m_iExtraAssetValue = other.m_iExtraAssetValue;
+	m_iSMAssetValue = other.m_iSMAssetValue;
+	m_iSMPowerValue = other.m_iSMPowerValue;
+	m_iSMHPValue = other.m_iSMHPValue;
+	m_iExtraRBombardDamage = other.m_iExtraRBombardDamage;
+	m_iExtraRBombardDamageLimit = other.m_iExtraRBombardDamageLimit;
+	m_iExtraRBombardDamageMaxUnits = other.m_iExtraRBombardDamageMaxUnits;
+	m_iExtraDCMBombRange = other.m_iExtraDCMBombRange;
+	m_iExtraDCMBombAccuracy = other.m_iExtraDCMBombAccuracy;
+	m_iBaseRBombardDamage = other.m_iBaseRBombardDamage;
+	m_iBaseRBombardDamageLimit = other.m_iBaseRBombardDamageLimit;
+	m_iBaseRBombardDamageMaxUnits = other.m_iBaseRBombardDamageMaxUnits;
+	m_iBaseDCMBombRange = other.m_iBaseDCMBombRange;
+	m_iBaseDCMBombAccuracy = other.m_iBaseDCMBombAccuracy;
+	m_iBombardDirectCount = other.m_iBombardDirectCount;
+	m_iExtraCollateralDamage = other.m_iExtraCollateralDamage;
+	m_iExtraBombardRate = other.m_iExtraBombardRate;
+	m_iSMBombardRate = other.m_iSMBombardRate;
+	m_iSMAirBombBaseRate = other.m_iSMAirBombBaseRate;
+	m_iSMBaseWorkRate = other.m_iSMBaseWorkRate;
+	m_iSMRevoltProtection = other.m_iSMRevoltProtection;
+	m_iExtraEnemyHeal = other.m_iExtraEnemyHeal;
+	m_iExtraNeutralHeal = other.m_iExtraNeutralHeal;
+	m_iExtraFriendlyHeal = other.m_iExtraFriendlyHeal;
+	m_iSameTileHeal = other.m_iSameTileHeal;
+	m_iAdjacentTileHeal = other.m_iAdjacentTileHeal;
+	m_iExtraCombatPercent = other.m_iExtraCombatPercent;
+	m_iExtraCityAttackPercent = other.m_iExtraCityAttackPercent;
+	m_iExtraCityDefensePercent = other.m_iExtraCityDefensePercent;
+	m_iExtraHillsAttackPercent = other.m_iExtraHillsAttackPercent;
+	m_iExtraHillsDefensePercent = other.m_iExtraHillsDefensePercent;
+	m_iExtraHillsWorkPercent = other.m_iExtraHillsWorkPercent;
+	m_iExtraPeaksWorkPercent = other.m_iExtraPeaksWorkPercent;
+	m_iExtraWorkPercent = other.m_iExtraWorkPercent;
+	m_iRevoltProtection = other.m_iRevoltProtection;
+	m_iCollateralDamageProtection = other.m_iCollateralDamageProtection;
+	m_iPillageChange = other.m_iPillageChange;
+	m_iUpgradeDiscount = other.m_iUpgradeDiscount;
+	m_iExperiencePercent = other.m_iExperiencePercent;
+	m_iKamikazePercent = other.m_iKamikazePercent;
+	m_eFacingDirection = other.m_eFacingDirection;
+	m_iImmobileTimer = other.m_iImmobileTimer;
+	m_bCanRespawn = other.m_bCanRespawn;
+	m_bSurvivor = other.m_bSurvivor;
+	m_bMadeAttack = other.m_bMadeAttack;
+	m_iRoundCount = other.m_iRoundCount;
+	m_iAttackCount = other.m_iAttackCount;
+	m_iDefenseCount = other.m_iDefenseCount;
+	m_bMadeInterception = other.m_bMadeInterception;
+	m_bPromotionReady = other.m_bPromotionReady;
+	m_bDeathDelay = other.m_bDeathDelay;
+	m_bCombatFocus = other.m_bCombatFocus;
+	m_bInfoBarDirty = other.m_bInfoBarDirty;
+	m_bBlockading = other.m_bBlockading;
+	m_bAirCombat = other.m_bAirCombat;
+	m_bHasBuildUp = other.m_bHasBuildUp;
+	m_bInhibitMerge = other.m_bInhibitMerge;
+	m_bInhibitSplit = other.m_bInhibitSplit;
+	m_bIsBuildUp = other.m_bIsBuildUp;
+	m_bIsReligionLocked = other.m_bIsReligionLocked;
+	m_iCanMovePeaksCount = other.m_iCanMovePeaksCount;
+	m_iCanLeadThroughPeaksCount = other.m_iCanLeadThroughPeaksCount;
+	m_movementCharacteristicsHash = other.m_movementCharacteristicsHash;
+	m_iSleepTimer = other.m_iSleepTimer;
+	m_iExtraCommandRange = other.m_iExtraCommandRange;
+	m_iExtraControlPoints = other.m_iExtraControlPoints;
+	m_iControlPointsLeft = other.m_iControlPointsLeft;
+	m_iCommanderID = other.m_iCommanderID;
+	m_iCommanderCacheTurn = other.m_iCommanderCacheTurn;
+	m_eOriginalOwner = other.m_eOriginalOwner;
+	m_eNewDomainCargo = other.m_eNewDomainCargo;
+	m_eNewSpecialCargo = other.m_eNewSpecialCargo;
+	m_eNewSMSpecialCargo = other.m_eNewSMSpecialCargo;
+	m_eNewSMNotSpecialCargo = other.m_eNewSMNotSpecialCargo;
+	m_eSpecialUnit = other.m_eSpecialUnit;
+	m_eSleepType = other.m_eSleepType;
+	m_bCommander = other.m_bCommander;
+	m_iZoneOfControlCount = other.m_iZoneOfControlCount;
+	m_iExcileCount = other.m_iExcileCount;
+	m_iPassageCount = other.m_iPassageCount;
+	m_iNoNonOwnedCityEntryCount = other.m_iNoNonOwnedCityEntryCount;
+	m_iBarbCoExistCount = other.m_iBarbCoExistCount;
+	m_iBlendIntoCityCount = other.m_iBlendIntoCityCount;
+	m_iUpgradeAnywhereCount = other.m_iUpgradeAnywhereCount;
+	m_bAutoPromoting = other.m_bAutoPromoting;
+	m_bAutoUpgrading = other.m_bAutoUpgrading;
+	m_iHiddenNationalityCount = other.m_iHiddenNationalityCount;
+	m_bHasHNCapturePromotion = other.m_bHasHNCapturePromotion;
+	m_bHasAnyInvisibility = other.m_bHasAnyInvisibility;
+	m_bHasAnyInvisibilityAbility = other.m_bHasAnyInvisibilityAbility;
+	m_bRevealed = other.m_bRevealed;
+	m_shadowUnit = other.m_shadowUnit;
+	m_eDesiredDiscoveryTech = other.m_eDesiredDiscoveryTech;
+	m_eOwner = other.m_eOwner;
+	m_eCapturingPlayer = other.m_eCapturingPlayer;
+	m_eUnitType = other.m_eUnitType;
+	m_eReligionType = other.m_eReligionType;
+	m_pUnitInfo = other.m_pUnitInfo;
+	m_iBaseCombat = other.m_iBaseCombat;
+	m_eLeaderUnitType = other.m_eLeaderUnitType;
+	m_eGGExperienceEarnedTowardsType = other.m_eGGExperienceEarnedTowardsType;
+	m_iCargoCapacity = other.m_iCargoCapacity;
+	m_iSMCargoCapacity = other.m_iSMCargoCapacity;
+	m_iExtraSelfHealModifier = other.m_iExtraSelfHealModifier;
+	m_iExtraNumHealSupport = other.m_iExtraNumHealSupport;
+	m_iHealSupportUsed = other.m_iHealSupportUsed;
+	m_iExtraInsidiousness = other.m_iExtraInsidiousness;
+	m_iExtraInvestigation = other.m_iExtraInvestigation;
+	m_iNoSelfHealCount = other.m_iNoSelfHealCount;
+	m_iDebugCount = other.m_iDebugCount;
+	m_iAssassinCount = other.m_iAssassinCount;
+	m_iExtraStealthStrikes = other.m_iExtraStealthStrikes;
+	m_iExtraStealthCombatModifier = other.m_iExtraStealthCombatModifier;
+	m_iStealthDefenseCount = other.m_iStealthDefenseCount;
+	m_iOnlyDefensiveCount = other.m_iOnlyDefensiveCount;
+	m_iNoInvisibilityCount = other.m_iNoInvisibilityCount;
+	m_iNoCaptureCount = other.m_iNoCaptureCount;
+	m_iExtraTrapDamageMax = other.m_iExtraTrapDamageMax;
+	m_iExtraTrapDamageMin = other.m_iExtraTrapDamageMin;
+	m_iExtraTrapComplexity = other.m_iExtraTrapComplexity;
+	m_iExtraNumTriggers = other.m_iExtraNumTriggers;
+	m_iNumTimesTriggered = other.m_iNumTimesTriggered;
+	m_iTriggerBeforeAttackCount = other.m_iTriggerBeforeAttackCount;
+	m_iExtraNoDefensiveBonusCount = other.m_iExtraNoDefensiveBonusCount;
+	m_iExtraGatherHerdCount = other.m_iExtraGatherHerdCount;
+	m_bIsArmed = other.m_bIsArmed;
+	m_eCurrentBuildUpType = other.m_eCurrentBuildUpType;
+	m_eCapturingUnit = other.m_eCapturingUnit;
+	m_combatUnit = other.m_combatUnit;
+	m_transportUnit = other.m_transportUnit;
+#ifdef STRENGTH_IN_NUMBERS
+	afIUnit = other.afIUnit;
+	afIIUnit = other.afIIUnit;
+	asrIUnit = other.asrIUnit;
+	asrIIUnit = other.asrIIUnit;
+	amrIUnit = other.amrIUnit;
+	amrIIUnit = other.amrIIUnit;
+	alrIUnit = other.alrIUnit;
+	alrIIUnit = other.alrIIUnit;
+	aflIUnit = other.aflIUnit;
+	aflIIUnit = other.aflIIUnit;
+	dfIUnit = other.dfIUnit;
+	dfIIUnit = other.dfIIUnit;
+	dsrIUnit = other.dsrIUnit;
+	dsrIIUnit = other.dsrIIUnit;
+	dmrIUnit = other.dmrIUnit;
+	dmrIIUnit = other.dmrIIUnit;
+	dlrIUnit = other.dlrIUnit;
+	dlrIIUnit = other.dlrIIUnit;
+	dflIUnit = other.dflIUnit;
+	dflIIUnit = other.dflIIUnit;
+#endif // STRENGTH_IN_NUMBERS
+/*
+	if (other.m_aiExtraDomainModifier == nullptr)
+		m_aiExtraDomainModifier = nullptr;
+	else
+	{
+		m_aiExtraDomainModifier = new int[NUM_DOMAIN_TYPES];
+		memcpy(m_aiExtraDomainModifier, other.m_aiExtraDomainModifier, NUM_DOMAIN_TYPES * sizeof(int));
+	}
+	if (other.m_aiExtraVisibilityIntensity == nullptr)
+		m_aiExtraVisibilityIntensity = nullptr;
+	else
+	{
+		m_aiExtraVisibilityIntensity = new int[GC.getNumInvisibleInfos()];
+		memcpy(m_aiExtraVisibilityIntensity, other.m_aiExtraVisibilityIntensity, GC.getNumInvisibleInfos() * sizeof(int));
+	}
+	if (other.m_aiExtraInvisibilityIntensity == nullptr)
+		m_aiExtraInvisibilityIntensity = nullptr;
+	else
+	{
+		m_aiExtraInvisibilityIntensity = new int[GC.getNumInvisibleInfos()];
+		memcpy(m_aiExtraInvisibilityIntensity, other.m_aiExtraInvisibilityIntensity, GC.getNumInvisibleInfos() * sizeof(int));
+	}
+	if (other.m_aiExtraVisibilityIntensityRange == nullptr)
+		m_aiExtraVisibilityIntensityRange = nullptr;
+	else
+	{
+		m_aiExtraVisibilityIntensityRange = new int[GC.getNumInvisibleInfos()];
+		memcpy(m_aiExtraVisibilityIntensityRange, other.m_aiExtraVisibilityIntensityRange, GC.getNumInvisibleInfos() * sizeof(int));
+	}
+	if (other.m_aiExtraVisibilityIntensitySameTile == nullptr)
+		m_aiExtraVisibilityIntensitySameTile = nullptr;
+	else
+	{
+		m_aiExtraVisibilityIntensitySameTile = new int[GC.getNumInvisibleInfos()];
+		memcpy(m_aiExtraVisibilityIntensitySameTile, other.m_aiExtraVisibilityIntensitySameTile, GC.getNumInvisibleInfos() * sizeof(int));
+	}
+	if (other.m_aiNegatesInvisibleCount == nullptr)
+		m_aiNegatesInvisibleCount = nullptr;
+	else
+	{
+		m_aiNegatesInvisibleCount = new int[GC.getNumInvisibleInfos()];
+		memcpy(m_aiNegatesInvisibleCount, other.m_aiNegatesInvisibleCount, GC.getNumInvisibleInfos() * sizeof(int));
+	}
+*/
+	m_aExtraInvisibleTerrains = other.m_aExtraInvisibleTerrains;
+	m_aExtraInvisibleFeatures = other.m_aExtraInvisibleFeatures;
+	m_aExtraInvisibleImprovements = other.m_aExtraInvisibleImprovements;
+	m_aExtraVisibleTerrains = other.m_aExtraVisibleTerrains;
+	m_aExtraVisibleFeatures = other.m_aExtraVisibleFeatures;
+	m_aExtraVisibleImprovements = other.m_aExtraVisibleImprovements;
+	m_aExtraVisibleTerrainRanges = other.m_aExtraVisibleTerrainRanges;
+	m_aExtraVisibleFeatureRanges = other.m_aExtraVisibleFeatureRanges;
+	m_aExtraVisibleImprovementRanges = other.m_aExtraVisibleImprovementRanges;
+	m_szName = other.m_szName;
+	m_szScriptData = other.m_szScriptData;
+	m_aiExtraBuildTypes = other.m_aiExtraBuildTypes;
+	m_aExtraAidChanges = other.m_aExtraAidChanges;
+
+	if (!other.m_promotionKeyedInfo.empty())
+		m_promotionKeyedInfo = other.m_promotionKeyedInfo;
+
+	if (!other.m_promotionLineKeyedInfo.empty())
+		m_promotionLineKeyedInfo = other.m_promotionLineKeyedInfo;
+
+	if (!other.m_terrainKeyedInfo.empty())
+		m_terrainKeyedInfo = other.m_terrainKeyedInfo;
+
+	if (!other.m_featureKeyedInfo.empty())
+		m_featureKeyedInfo = other.m_featureKeyedInfo;
+
+	if (!other.m_unitCombatKeyedInfo.empty())
+		m_unitCombatKeyedInfo = other.m_unitCombatKeyedInfo;
+
+	m_pPlayerInvestigated = other.m_pPlayerInvestigated;
+	m_Properties = other.m_Properties;
+/*
+	m_iBirthmark = other.m_iBirthmark;
+	m_eUnitAIType = other.m_eUnitAIType;
+	m_iAutomatedAbortTurn = other.m_iAutomatedAbortTurn;
+	//int m_contractsLastEstablishedTurn;
+	//ContractualState m_contractualState;
+	m_iGarrisonCity = other.m_iGarrisonCity;
+	m_iAffirmedGarrisonCity = other.m_iAffirmedGarrisonCity;
+	m_eIntendedConstructBuilding = other.m_eIntendedConstructBuilding;
+	m_iGroupLeadOverride = other.m_iGroupLeadOverride;
+	m_iPredictedHitPoints = other.m_iPredictedHitPoints;
+	m_bHasAttacked = other.m_bHasAttacked;
+	m_bWaitingOnUnitAIAny = other.m_bWaitingOnUnitAIAny;
+	m_iGenericValue = other.m_iGenericValue;
+	m_eGenericValueFlagsCached = other.m_eGenericValueFlagsCached;
+	m_aiWaitingOnUnitAITypes = other.m_aiWaitingOnUnitAITypes;
+*/
+	return *this;
+}
 
 //////////////////////////////////////
 // graphical only setup
@@ -1386,7 +1907,7 @@ void CvUnit::killUnconditional(bool bDelay, PlayerTypes ePlayer, bool bMessaged)
 		owner.AI_changeNumAIUnits(AI_getUnitAIType(), -1);
 		AI_killed(); // Update AI counts for this unit
 		//GC.getGame().logOOSSpecial(15, getID(), INVALID_PLOT_COORD, INVALID_PLOT_COORD);
-		setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true);
+		setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true, false);
 
 		joinGroup(NULL, false, false);
 
@@ -5505,6 +6026,12 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 		return false;
 		break;
 
+#ifdef PARALLEL_MAPS
+#if 0
+	case INCOMPLETE:
+		
+#endif
+#endif
 	default:
 		FAssert(false);
 		break;
@@ -5845,11 +6372,11 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 		return false;
 	}
 
-	int iCount = m_pUnitInfo->getNumMapCategoryTypes();
+	const int iCount = m_pUnitInfo->getNumMapTypes();
 	bool bFound = (iCount < 1);
 	for (int iI = 0; iI < iCount; iI++)
 	{
-		if (pPlot->isMapCategoryType((MapCategoryTypes)m_pUnitInfo->getMapCategoryType(iI)))
+		if (pPlot->isMapType((MapTypes)m_pUnitInfo->getMapType(iI)))
 		{
 			bFound = true;
 			break;
@@ -7567,11 +8094,11 @@ bool CvUnit::canUnload() const
 		}
 	}
 
-	int iCount = m_pUnitInfo->getNumMapCategoryTypes();
+	const int iCount = m_pUnitInfo->getNumMapTypes();
 	bool bFound = (iCount < 1);
 	for (int iI = 0; iI < iCount; iI++)
 	{
-		if (kPlot.isMapCategoryType((MapCategoryTypes)m_pUnitInfo->getMapCategoryType(iI)))
+		if (kPlot.isMapType((MapTypes)m_pUnitInfo->getMapType(iI)))
 		{
 			bFound = true;
 			break;
@@ -13736,7 +14263,7 @@ int CvUnit::getExtraStrength() const
 void CvUnit::changeExtraStrength(int iChange)
 {
 	m_iExtraStrength += iChange;
-	FAssert(m_iExtraStrength >= 0);
+	FASSERT_NOT_NEGATIVE(m_iExtraStrength)
 }
 
 int CvUnit::getSMStrength() const
@@ -13748,7 +14275,7 @@ void CvUnit::setSMStrength()
 {
 	const int iStrength = getDomainType() == DOMAIN_AIR? baseAirCombatStrPreCheck() : baseCombatStrPreCheck();
 	m_iSMStrength = applySMRank(iStrength, getSizeMattersOffsetValue(), GC.getSIZE_MATTERS_MOST_MULTIPLIER());
-	FAssert(m_iSMStrength >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMStrength)
 }
 
 float CvUnit::fbaseCombatStr() const
@@ -16229,7 +16756,7 @@ void CvUnit::changeCargoSpace(int iChange)
 	if (iChange != 0)
 	{
 		m_iCargoCapacity += iChange;
-		FAssert(m_iCargoCapacity >= 0);
+		FASSERT_NOT_NEGATIVE(m_iCargoCapacity)
 		setInfoBarDirty(true);
 	}
 }
@@ -16782,8 +17309,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 						}
 						else
 						{
-							CvUnit* pDefender = NULL;
-							pDefender = pNewPlot->getBestDefender(NO_PLAYER, getOwner(), this, true, true, false, false, true);
+							CvUnit* pDefender = pNewPlot->getBestDefender(NO_PLAYER, getOwner(), this, true, true, false, false, true);
 							if (pDefender != NULL)
 							{
 								attack(pNewPlot, true, false, true);
@@ -17437,7 +17963,7 @@ int CvUnit::getLastMoveTurn() const
 void CvUnit::setLastMoveTurn(int iNewValue)
 {
 	m_iLastMoveTurn = iNewValue;
-	FAssert(getLastMoveTurn() >= 0);
+	FASSERT_NOT_NEGATIVE(getLastMoveTurn())
 }
 
 
@@ -17487,7 +18013,7 @@ int CvUnit::getGameTurnCreated() const
 void CvUnit::setGameTurnCreated(int iNewValue)
 {
 	m_iGameTurnCreated = iNewValue;
-	FAssert(getGameTurnCreated() >= 0);
+	FASSERT_NOT_NEGATIVE(getGameTurnCreated())
 }
 
 
@@ -17517,7 +18043,7 @@ void CvUnit::changeHealAsDamage(UnitCombatTypes eHealAsType, int iChange, Player
 
 		setHealAsDamage(eHealAsType, range(iNewValue, 0, maxHitPoints()), ePlayer);
 
-		FAssert(info->m_iHealAsDamage >= 0);
+		FASSERT_NOT_NEGATIVE(info->m_iHealAsDamage)
 	}
 }
 
@@ -17543,7 +18069,7 @@ void CvUnit::setHealAsDamage(UnitCombatTypes eHealAsType, int iNewValue, PlayerT
 	{
 		setDamage(iHighestDamage, ePlayer, bNotifyEntity, NO_UNITCOMBAT, true);
 	}
-	FAssert(info->m_iHealAsDamage >= 0);
+	FASSERT_NOT_NEGATIVE(info->m_iHealAsDamage)
 }
 
 int CvUnit::getDamagePercent() const
@@ -17655,7 +18181,7 @@ void CvUnit::setMoves(int iNewValue)
 
 		m_iMoves = iNewValue;
 
-		FAssert(getMoves() >= 0);
+		FASSERT_NOT_NEGATIVE(getMoves())
 
 		if (getTeam() == GC.getGame().getActiveTeam())
 		{
@@ -17704,7 +18230,7 @@ void CvUnit::setExperience100(int iNewValue, int iMax)
 	if (getExperience100() != iNewValue && getExperience100() < iMax)
 	{
 		m_iExperience = std::min(iMax, iNewValue);
-		FAssert(getExperience100() >= 0);
+		FASSERT_NOT_NEGATIVE(getExperience100())
 
 		if (IsSelected())
 		{
@@ -17988,7 +18514,7 @@ int CvUnit::getCombatTimer() const
 void CvUnit::setCombatTimer(int iNewValue)
 {
 	m_iCombatTimer = iNewValue;
-	FAssert(getCombatTimer() >= 0);
+	FASSERT_NOT_NEGATIVE(getCombatTimer())
 }
 
 void CvUnit::changeCombatTimer(int iChange)
@@ -18004,7 +18530,7 @@ int CvUnit::getCombatFirstStrikes() const
 void CvUnit::setCombatFirstStrikes(int iNewValue)
 {
 	m_iCombatFirstStrikes = iNewValue;
-	FAssert(getCombatFirstStrikes() >= 0);
+	FASSERT_NOT_NEGATIVE(getCombatFirstStrikes())
 }
 
 void CvUnit::changeCombatFirstStrikes(int iChange)
@@ -18149,7 +18675,7 @@ bool CvUnit::isBlitz() const
 void CvUnit::changeBlitzCount(int iChange)
 {
 	m_iBlitzCount += iChange;
-	FAssert(getBlitzCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getBlitzCount())
 }
 
 int CvUnit::getAmphibCount() const
@@ -18165,7 +18691,7 @@ bool CvUnit::isAmphib() const
 void CvUnit::changeAmphibCount(int iChange)
 {
 	m_iAmphibCount += iChange;
-	FAssert(getAmphibCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getAmphibCount())
 }
 
 int CvUnit::getRiverCount() const
@@ -18181,7 +18707,7 @@ bool CvUnit::isRiver() const
 void CvUnit::changeRiverCount(int iChange)
 {
 	m_iRiverCount += iChange;
-	FAssert(getRiverCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getRiverCount())
 }
 
 int CvUnit::getEnemyRouteCount() const
@@ -18197,7 +18723,7 @@ bool CvUnit::isEnemyRoute() const
 void CvUnit::changeEnemyRouteCount(int iChange)
 {
 	m_iEnemyRouteCount += iChange;
-	FAssert(getEnemyRouteCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getEnemyRouteCount())
 }
 
 int CvUnit::getAlwaysHealCount() const
@@ -18213,7 +18739,7 @@ bool CvUnit::isAlwaysHeal() const
 void CvUnit::changeAlwaysHealCount(int iChange)
 {
 	m_iAlwaysHealCount += iChange;
-	FAssert(getAlwaysHealCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getAlwaysHealCount())
 }
 
 int CvUnit::getHillsDoubleMoveCount() const
@@ -18229,7 +18755,7 @@ bool CvUnit::isHillsDoubleMove() const
 void CvUnit::changeHillsDoubleMoveCount(int iChange)
 {
 	m_iHillsDoubleMoveCount += iChange;
-	FAssert(getHillsDoubleMoveCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getHillsDoubleMoveCount())
 }
 
 int CvUnit::getImmuneToFirstStrikesCount() const
@@ -18240,7 +18766,7 @@ int CvUnit::getImmuneToFirstStrikesCount() const
 void CvUnit::changeImmuneToFirstStrikesCount(int iChange)
 {
 	m_iImmuneToFirstStrikesCount += iChange;
-	FAssert(getImmuneToFirstStrikesCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getImmuneToFirstStrikesCount())
 }
 
 
@@ -18252,7 +18778,7 @@ int CvUnit::getAlwaysInvisibleCount() const
 void CvUnit::changeAlwaysInvisibleCount(int iChange)
 {
 	m_iAlwaysInvisibleCount += iChange;
-	FAssert(getAlwaysInvisibleCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getAlwaysInvisibleCount())
 }
 
 
@@ -18269,7 +18795,7 @@ bool CvUnit::isDefensiveVictoryMove() const
 void CvUnit::changeDefensiveVictoryMoveCount(int iChange)
 {
 	m_iDefensiveVictoryMoveCount += iChange;
-	FAssert(getDefensiveVictoryMoveCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getDefensiveVictoryMoveCount())
 }
 
 
@@ -18286,7 +18812,7 @@ bool CvUnit::isFreeDrop() const
 void CvUnit::changeFreeDropCount(int iChange)
 {
 	m_iFreeDropCount += iChange;
-	FAssert(getFreeDropCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getFreeDropCount())
 }
 
 
@@ -18303,7 +18829,7 @@ bool CvUnit::isOffensiveVictoryMove() const
 void CvUnit::changeOffensiveVictoryMoveCount(int iChange)
 {
 	m_iOffensiveVictoryMoveCount += iChange;
-	FAssert(getOffensiveVictoryMoveCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getOffensiveVictoryMoveCount())
 }
 
 
@@ -18320,7 +18846,7 @@ bool CvUnit::isOneUp() const
 void CvUnit::changeOneUpCount(int iChange)
 {
 	m_iOneUpCount += iChange;
-	FAssert(getOneUpCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getOneUpCount())
 }
 
 int CvUnit::getPillageEspionageCount() const
@@ -18336,7 +18862,7 @@ bool CvUnit::isPillageEspionage() const
 void CvUnit::changePillageEspionageCount(int iChange)
 {
 	m_iPillageEspionageCount += iChange;
-	FAssert(getPillageEspionageCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getPillageEspionageCount())
 }
 
 
@@ -18353,7 +18879,7 @@ bool CvUnit::isPillageMarauder() const
 void CvUnit::changePillageMarauderCount(int iChange)
 {
 	m_iPillageMarauderCount += iChange;
-	FAssert(getPillageMarauderCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getPillageMarauderCount())
 }
 
 
@@ -18370,7 +18896,7 @@ bool CvUnit::isPillageOnMove() const
 void CvUnit::changePillageOnMoveCount(int iChange)
 {
 	m_iPillageOnMoveCount += iChange;
-	FAssert(getPillageOnMoveCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getPillageOnMoveCount())
 }
 
 
@@ -18387,7 +18913,7 @@ bool CvUnit::isPillageOnVictory() const
 void CvUnit::changePillageOnVictoryCount(int iChange)
 {
 	m_iPillageOnVictoryCount += iChange;
-	FAssert(getPillageOnVictoryCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getPillageOnVictoryCount())
 }
 
 
@@ -18404,7 +18930,7 @@ bool CvUnit::isPillageResearch() const
 void CvUnit::changePillageResearchCount(int iChange)
 {
 	m_iPillageResearchCount += iChange;
-	FAssert(getPillageResearchCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getPillageResearchCount())
 }
 
 
@@ -18583,7 +19109,7 @@ void CvUnit::changeExtraVisibilityRange(int iChange)
 		}
 
 		m_iExtraVisibilityRange += iChange;
-		FAssert(getExtraVisibilityRange() >= 0);
+		FASSERT_NOT_NEGATIVE(getExtraVisibilityRange())
 
 		if (plot() != NULL)
 		{
@@ -18611,7 +19137,7 @@ void CvUnit::changeExtraMoves(int iChange)
 	m_iExtraMoves += iChange;
 	m_iMaxMoveCacheTurn--;
 
-	FAssert(getExtraMoves() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraMoves())
 }
 
 int CvUnit::getExtraMoveDiscount() const
@@ -18630,7 +19156,7 @@ int CvUnit::getExtraMoveDiscount() const
 void CvUnit::changeExtraMoveDiscount(int iChange)
 {
 	m_iExtraMoveDiscount += iChange;
-	FAssert(getExtraMoveDiscount() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraMoveDiscount())
 }
 
 
@@ -18834,8 +19360,8 @@ int CvUnit::getExtraVSBarbs(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraVSBarbs(int iChange)
 {
-	m_iExtraVSBarbs +=iChange;
-	FAssert(getExtraVSBarbs() >= 0);
+	m_iExtraVSBarbs += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraVSBarbs())
 }
 
 int CvUnit::getExtraReligiousCombatModifier(bool bIgnoreCommanders) const
@@ -19037,8 +19563,8 @@ int CvUnit::getExtraOverrun(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraOverrun(int iChange)
 {
-	m_iExtraOverrun +=iChange;
-	FAssert(getExtraOverrun() >= 0);
+	m_iExtraOverrun += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraOverrun())
 }
 
 int CvUnit::getExtraRepel(bool bIgnoreCommanders) const
@@ -19060,8 +19586,8 @@ int CvUnit::getExtraRepel(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraRepel(int iChange)
 {
-	m_iExtraRepel +=iChange;
-	FAssert(getExtraRepel() >= 0);
+	m_iExtraRepel += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraRepel())
 }
 
 int CvUnit::getExtraFortRepel(bool bIgnoreCommanders) const
@@ -19083,8 +19609,8 @@ int CvUnit::getExtraFortRepel(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraFortRepel(int iChange)
 {
-	m_iExtraFortRepel +=iChange;
-	FAssert(getExtraFortRepel() >= 0);
+	m_iExtraFortRepel += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraFortRepel())
 }
 
 int CvUnit::getExtraRepelRetries(bool bIgnoreCommanders) const
@@ -19106,8 +19632,8 @@ int CvUnit::getExtraRepelRetries(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraRepelRetries(int iChange)
 {
-	m_iExtraRepelRetries +=iChange;
-	FAssert(getExtraRepelRetries() >= 0);
+	m_iExtraRepelRetries += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraRepelRetries())
 }
 
 int CvUnit::getExtraUnyielding(bool bIgnoreCommanders) const
@@ -19125,8 +19651,8 @@ int CvUnit::getExtraUnyielding(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraUnyielding(int iChange)
 {
-	m_iExtraUnyielding +=iChange;
-	FAssert(getExtraUnyielding() >= 0);
+	m_iExtraUnyielding += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraUnyielding())
 }
 
 int CvUnit::getExtraKnockback(bool bIgnoreCommanders) const
@@ -19144,8 +19670,8 @@ int CvUnit::getExtraKnockback(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraKnockback(int iChange)
 {
-	m_iExtraKnockback +=iChange;
-	FAssert(getExtraKnockback() >= 0);
+	m_iExtraKnockback += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraKnockback())
 }
 
 int CvUnit::getExtraKnockbackRetries(bool bIgnoreCommanders) const
@@ -19163,8 +19689,8 @@ int CvUnit::getExtraKnockbackRetries(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraKnockbackRetries(int iChange)
 {
-	m_iExtraKnockbackRetries +=iChange;
-	FAssert(getExtraKnockbackRetries() >= 0);
+	m_iExtraKnockbackRetries += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraKnockbackRetries())
 }
 
 int CvUnit::getStampedeCount() const
@@ -19262,8 +19788,8 @@ int CvUnit::getExtraStrAdjperRnd(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraStrAdjperRnd(int iChange)
 {
-	m_iExtraStrAdjperRnd +=iChange;
-	FAssert(getExtraStrAdjperRnd() >= 0);
+	m_iExtraStrAdjperRnd += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraStrAdjperRnd())
 }
 
 int CvUnit::getExtraStrAdjperAtt(bool bIgnoreCommanders) const
@@ -19281,8 +19807,8 @@ int CvUnit::getExtraStrAdjperAtt(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraStrAdjperAtt(int iChange)
 {
-	m_iExtraStrAdjperAtt +=iChange;
-	FAssert(getExtraStrAdjperAtt() >= 0);
+	m_iExtraStrAdjperAtt += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraStrAdjperAtt())
 }
 
 int CvUnit::getExtraStrAdjperDef(bool bIgnoreCommanders) const
@@ -19304,8 +19830,8 @@ int CvUnit::getExtraStrAdjperDef(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraStrAdjperDef(int iChange)
 {
-	m_iExtraStrAdjperDef +=iChange;
-	FAssert(getExtraStrAdjperDef() >= 0);
+	m_iExtraStrAdjperDef += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraStrAdjperDef())
 }
 
 int CvUnit::getExtraWithdrawAdjperAtt(bool bIgnoreCommanders) const
@@ -19323,8 +19849,8 @@ int CvUnit::getExtraWithdrawAdjperAtt(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraWithdrawAdjperAtt(int iChange)
 {
-	m_iExtraWithdrawAdjperAtt +=iChange;
-	FAssert(getExtraWithdrawAdjperAtt() >= 0);
+	m_iExtraWithdrawAdjperAtt += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraWithdrawAdjperAtt())
 }
 
 int CvUnit::getExtraUnnerve(bool bIgnoreCommanders) const
@@ -19342,8 +19868,8 @@ int CvUnit::getExtraUnnerve(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraUnnerve(int iChange)
 {
-	m_iExtraUnnerve +=iChange;
-	FAssert(getExtraUnnerve() >= 0);
+	m_iExtraUnnerve += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraUnnerve())
 }
 
 int CvUnit::getExtraEnclose(bool bIgnoreCommanders) const
@@ -19361,8 +19887,8 @@ int CvUnit::getExtraEnclose(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraEnclose(int iChange)
 {
-	m_iExtraEnclose +=iChange;
-	FAssert(getExtraEnclose() >= 0);
+	m_iExtraEnclose += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraEnclose())
 }
 
 int CvUnit::getExtraLunge(bool bIgnoreCommanders) const
@@ -19380,8 +19906,8 @@ int CvUnit::getExtraLunge(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraLunge(int iChange)
 {
-	m_iExtraLunge +=iChange;
-	FAssert(getExtraLunge() >= 0);
+	m_iExtraLunge += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraLunge())
 }
 
 int CvUnit::getExtraDynamicDefense(bool bIgnoreCommanders) const
@@ -19399,8 +19925,8 @@ int CvUnit::getExtraDynamicDefense(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraDynamicDefense(int iChange)
 {
-	m_iExtraDynamicDefense +=iChange;
-	FAssert(getExtraDynamicDefense() >= 0);
+	m_iExtraDynamicDefense += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraDynamicDefense())
 }
 
 int CvUnit::getAnimalIgnoresBordersCount() const
@@ -19433,7 +19959,7 @@ bool CvUnit::mayOnslaught() const
 void CvUnit::changeOnslaughtCount(int iChange)
 {
 	m_iOnslaughtCount += iChange;
-	FAssert(getOnslaughtCount() >= 0)
+	FASSERT_NOT_NEGATIVE(getOnslaughtCount())
 }
 
 int CvUnit::getDealColdDamageCount() const
@@ -19501,7 +20027,7 @@ void CvUnit::changeSubCombatTypeCount(UnitCombatTypes eCombatType, int iChange)
 		UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eCombatType);
 
 		info->m_iSubCombatTypeCount += iChange;
-		FAssert(info->m_iSubCombatTypeCount >= 0);
+		FASSERT_NOT_NEGATIVE(info->m_iSubCombatTypeCount)
 	}
 }
 
@@ -19529,7 +20055,7 @@ void CvUnit::changeRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType, int i
 		UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eCombatType);
 
 		info->m_iRemovesUnitCombatTypeCount += iChange;
-		FAssert(info->m_iRemovesUnitCombatTypeCount >= 0);
+		FASSERT_NOT_NEGATIVE(info->m_iRemovesUnitCombatTypeCount)
 	}
 }
 //TB SubCombat Mod End
@@ -19576,8 +20102,8 @@ int CvUnit::getExtraFortitude(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraFortitude(int iChange)
 {
-	m_iExtraFortitude +=iChange;
-	FAssert(getExtraFortitude() >= 0);
+	m_iExtraFortitude += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraFortitude())
 }
 
 int CvUnit::getExtraDodgeModifier (bool bIgnoreCommanders) const
@@ -19631,8 +20157,8 @@ int CvUnit::getExtraPowerShots(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraPowerShots(int iChange)
 {
-	m_iExtraPowerShots +=iChange;
-	FAssert(getExtraPowerShots() >= 0);
+	m_iExtraPowerShots += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraPowerShots())
 }
 
 int CvUnit::getExtraPowerShotCombatModifier(bool bIgnoreCommanders) const
@@ -19650,8 +20176,8 @@ int CvUnit::getExtraPowerShotCombatModifier(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraPowerShotCombatModifier(int iChange)
 {
-	m_iExtraPowerShotCombatModifier +=iChange;
-	FAssert(getExtraPowerShotCombatModifier() >= 0);
+	m_iExtraPowerShotCombatModifier += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotCombatModifier())
 }
 
 int CvUnit::getExtraPowerShotPunctureModifier(bool bIgnoreCommanders) const
@@ -19669,8 +20195,8 @@ int CvUnit::getExtraPowerShotPunctureModifier(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraPowerShotPunctureModifier(int iChange)
 {
-	m_iExtraPowerShotPunctureModifier +=iChange;
-	FAssert(getExtraPowerShotPunctureModifier() >= 0);
+	m_iExtraPowerShotPunctureModifier += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotPunctureModifier())
 }
 
 int CvUnit::getExtraPowerShotPrecisionModifier(bool bIgnoreCommanders) const
@@ -19688,8 +20214,8 @@ int CvUnit::getExtraPowerShotPrecisionModifier(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraPowerShotPrecisionModifier(int iChange)
 {
-	m_iExtraPowerShotPrecisionModifier +=iChange;
-	FAssert(getExtraPowerShotPrecisionModifier() >= 0);
+	m_iExtraPowerShotPrecisionModifier += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotPrecisionModifier())
 }
 
 int CvUnit::getExtraPowerShotCriticalModifier(bool bIgnoreCommanders) const
@@ -19707,8 +20233,8 @@ int CvUnit::getExtraPowerShotCriticalModifier(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraPowerShotCriticalModifier(int iChange)
 {
-	m_iExtraPowerShotCriticalModifier +=iChange;
-	FAssert(getExtraPowerShotCriticalModifier() >= 0);
+	m_iExtraPowerShotCriticalModifier += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotCriticalModifier())
 }
 
 int CvUnit::getExtraCriticalModifier(bool bIgnoreCommanders) const
@@ -19726,8 +20252,8 @@ int CvUnit::getExtraCriticalModifier(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraCriticalModifier(int iChange)
 {
-	m_iExtraCriticalModifier +=iChange;
-	FAssert(getExtraCriticalModifier() >= 0);
+	m_iExtraCriticalModifier += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraCriticalModifier())
 }
 
 int CvUnit::getExtraEndurance(bool bIgnoreCommanders) const
@@ -19745,8 +20271,8 @@ int CvUnit::getExtraEndurance(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraEndurance(int iChange)
 {
-	m_iExtraEndurance +=iChange;
-	FAssert(getExtraEndurance() >= 0);
+	m_iExtraEndurance += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraEndurance())
 }
 
 int CvUnit::getExtraPoisonProbabilityModifier(bool bIgnoreCommanders) const
@@ -19764,8 +20290,8 @@ int CvUnit::getExtraPoisonProbabilityModifier(bool bIgnoreCommanders) const
 
 void CvUnit::changeExtraPoisonProbabilityModifier(int iChange)
 {
-	m_iExtraPoisonProbabilityModifier +=iChange;
-	FAssert(getExtraPoisonProbabilityModifier() >= 0);
+	m_iExtraPoisonProbabilityModifier += iChange;
+	FASSERT_NOT_NEGATIVE(getExtraPoisonProbabilityModifier())
 }
 
 //TB Combat Mods End
@@ -19785,7 +20311,7 @@ int CvUnit::getExtraCollateralDamage() const
 void CvUnit::changeExtraCollateralDamage(int iChange)
 {
 	m_iExtraCollateralDamage += iChange;
-	FAssert(getExtraCollateralDamage() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraCollateralDamage())
 }
 
 int CvUnit::getExtraEnemyHeal() const
@@ -19802,7 +20328,7 @@ int CvUnit::getExtraEnemyHeal() const
 void CvUnit::changeExtraEnemyHeal(int iChange)
 {
 	m_iExtraEnemyHeal += iChange;
-	//FAssert(getExtraEnemyHeal() >= 0);
+	//FASSERT_NOT_NEGATIVE(getExtraEnemyHeal())
 }
 
 int CvUnit::getExtraNeutralHeal() const
@@ -19819,7 +20345,7 @@ int CvUnit::getExtraNeutralHeal() const
 void CvUnit::changeExtraNeutralHeal(int iChange)
 {
 	m_iExtraNeutralHeal += iChange;
-	//FAssert(getExtraNeutralHeal() >= 0);
+	//FASSERT_NOT_NEGATIVE(getExtraNeutralHeal())
 }
 
 int CvUnit::getExtraFriendlyHeal() const
@@ -19837,7 +20363,7 @@ int CvUnit::getExtraFriendlyHeal() const
 void CvUnit::changeExtraFriendlyHeal(int iChange)
 {
 	m_iExtraFriendlyHeal += iChange;
-	//FAssert(getExtraFriendlyHeal() >= 0);
+	//FASSERT_NOT_NEGATIVE(getExtraFriendlyHeal())
 }
 
 int CvUnit::getSameTileHeal() const
@@ -19848,7 +20374,7 @@ int CvUnit::getSameTileHeal() const
 void CvUnit::changeSameTileHeal(int iChange)
 {
 	m_iSameTileHeal += iChange;
-	FAssert(getSameTileHeal() >= 0);
+	FASSERT_NOT_NEGATIVE(getSameTileHeal())
 }
 
 int CvUnit::getAdjacentTileHeal() const
@@ -19859,7 +20385,7 @@ int CvUnit::getAdjacentTileHeal() const
 void CvUnit::changeAdjacentTileHeal(int iChange)
 {
 	m_iAdjacentTileHeal += iChange;
-	FAssert(getAdjacentTileHeal() >= 0);
+	FASSERT_NOT_NEGATIVE(getAdjacentTileHeal())
 }
 
 int CvUnit::getExtraCombatPercent() const
@@ -20970,7 +21496,7 @@ void CvUnit::changeTerrainDoubleMoveCount(TerrainTypes eIndex, int iChange)
 		TerrainKeyedInfo* info = findOrCreateTerrainKeyedInfo(eIndex);
 
 		info->m_iTerrainDoubleMoveCount += iChange;
-		FAssert(info->m_iTerrainDoubleMoveCount >= 0);
+		FASSERT_NOT_NEGATIVE(info->m_iTerrainDoubleMoveCount)
 	}
 }
 
@@ -21001,7 +21527,7 @@ void CvUnit::changeFeatureDoubleMoveCount(FeatureTypes eIndex, int iChange)
 		FeatureKeyedInfo* info = findOrCreateFeatureKeyedInfo(eIndex);
 
 		info->m_iFeatureDoubleMoveCount += iChange;
-		FAssert(info->m_iFeatureDoubleMoveCount >= 0);
+		FASSERT_NOT_NEGATIVE(info->m_iFeatureDoubleMoveCount)
 	}
 }
 
@@ -21412,13 +21938,13 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 
 	CvPlot* pPlot = plot();
 	{
-		const int iCount = kPromotion.getNumMapCategoryTypes();
+		const int iCount = kPromotion.getNumMapTypes();
 		bool bFound = (iCount < 1);
 		if (pPlot != NULL)
 		{
 			for (int iI = 0; iI < iCount; iI++)
 			{
-				if (pPlot->isMapCategoryType((MapCategoryTypes)kPromotion.getMapCategoryType(iI)))
+				if (pPlot->isMapType((MapTypes)kPromotion.getMapType(iI)))
 				{
 					bFound = true;
 					break;
@@ -21433,7 +21959,7 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 		bFound = (iCount < 1);
 		for (int iI = 0; iI < iCount; iI++)
 		{
-			if (m_pUnitInfo->isMapCategoryType((MapCategoryTypes)kPromotion.getMapCategoryType(iI)))
+			if (m_pUnitInfo->isMapType((MapTypes)kPromotion.getMapType(iI)))
 			{
 				bFound = true;
 				break;
@@ -30657,7 +31183,7 @@ bool CvUnit::isCanMovePeaks() const
 void CvUnit::changeCanMovePeaksCount(int iChange)
 {
 	m_iCanMovePeaksCount += iChange;
-	FAssert(getCanMovePeaksCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getCanMovePeaksCount())
 }
 
 //	Koshling - enhanced mountaineering mode to differentiate between ability to move through
@@ -30675,7 +31201,7 @@ bool CvUnit::isCanLeadThroughPeaks() const
 void CvUnit::changeCanLeadThroughPeaksCount(int iChange)
 {
 	m_iCanLeadThroughPeaksCount += iChange;
-	FAssert(getCanLeadThroughPeaksCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getCanLeadThroughPeaksCount())
 }
 
 void CvUnit::combatWon(CvUnit* pLoser, bool bAttacking)
@@ -31603,7 +32129,7 @@ void CvUnit::changeZoneOfControlCount(int iChange)
 		GC.getGame().toggleAnyoneHasUnitZoneOfControl();
 	}
 	//TB Combat Mod Debug
-	FAssert(getZoneOfControlCount() >= 0);
+	FASSERT_NOT_NEGATIVE(getZoneOfControlCount())
 }
 
 bool CvUnit::isAutoPromoting() const
@@ -32591,7 +33117,7 @@ int CvUnit::getExtraFrontSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraFrontSupportPercent(int iChange)
 {
 	m_iExtraFrontSupportPercent +=iChange;
-	FAssert(getExtraFrontSupportPercent() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraFrontSupportPercent())
 }
 
 int CvUnit::getExtraShortRangeSupportPercent(bool bIgnoreCommanders) const
@@ -32610,7 +33136,7 @@ int CvUnit::getExtraShortRangeSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraShortRangeSupportPercent(int iChange)
 {
 	m_iExtraShortRangeSupportPercent +=iChange;
-	FAssert(getExtraShortRangeSupportPercent() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraShortRangeSupportPercent())
 }
 
 int CvUnit::getExtraMediumRangeSupportPercent(bool bIgnoreCommanders) const
@@ -32629,7 +33155,7 @@ int CvUnit::getExtraMediumRangeSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraMediumRangeSupportPercent(int iChange)
 {
 	m_iExtraMediumRangeSupportPercent +=iChange;
-	FAssert(getExtraMediumRangeSupportPercent() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraMediumRangeSupportPercent())
 }
 
 int CvUnit::getExtraLongRangeSupportPercent(bool bIgnoreCommanders) const
@@ -32648,7 +33174,7 @@ int CvUnit::getExtraLongRangeSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraLongRangeSupportPercent(int iChange)
 {
 	m_iExtraLongRangeSupportPercent +=iChange;
-	FAssert(getExtraLongRangeSupportPercent() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraLongRangeSupportPercent())
 }
 
 int CvUnit::getExtraFlankSupportPercent(bool bIgnoreCommanders) const
@@ -32667,7 +33193,7 @@ int CvUnit::getExtraFlankSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraFlankSupportPercent(int iChange)
 {
 	m_iExtraFlankSupportPercent +=iChange;
-	FAssert(getExtraFlankSupportPercent() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraFlankSupportPercent())
 }
 
 int CvUnit::frontSupportPercentTotal() const
@@ -34288,7 +34814,7 @@ int CvUnit::getCombatPowerShots() const
 void CvUnit::setCombatPowerShots(int iNewValue)
 {
 	m_iCombatPowerShots = iNewValue;
-	FAssert(getCombatPowerShots() >= 0);
+	FASSERT_NOT_NEGATIVE(getCombatPowerShots())
 }
 
 void CvUnit::changeCombatPowerShots(int iChange)
@@ -34304,7 +34830,7 @@ int CvUnit::getCombatKnockbacks() const
 void CvUnit::setCombatKnockbacks(int iNewValue)
 {
 	m_iCombatKnockbacks = iNewValue;
-	FAssert(getCombatKnockbacks() >= 0);
+	FASSERT_NOT_NEGATIVE(getCombatKnockbacks())
 }
 
 void CvUnit::changeCombatKnockbacks(int iChange)
@@ -34324,7 +34850,7 @@ int CvUnit::getCombatRepels() const
 void CvUnit::setCombatRepels(int iNewValue)
 {
 	m_iCombatRepels = iNewValue;
-	FAssert(getCombatRepels() >= 0);
+	FASSERT_NOT_NEGATIVE(getCombatRepels())
 }
 
 void CvUnit::changeCombatRepels(int iChange)
@@ -36231,7 +36757,7 @@ int CvUnit::getExtraRoundStunProb(bool bIgnoreCommanders) const
 void CvUnit::changeExtraRoundStunProb(int iChange)
 {
 	m_iExtraRoundStunProb +=iChange;
-	FAssert(getExtraRoundStunProb() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraRoundStunProb())
 }
 
 int CvUnit::roundStunProbTotal() const
@@ -36267,7 +36793,7 @@ int CvUnit::getCombatStuns() const
 void CvUnit::setCombatStuns(int iNewValue)
 {
 	m_iCombatStuns = iNewValue;
-	FAssert(getCombatStuns() >= 0);
+	FASSERT_NOT_NEGATIVE(getCombatStuns())
 }
 
 void CvUnit::changeCombatStuns(int iChange)
@@ -37321,7 +37847,7 @@ int CvUnit::getRetrainsAvailable() const
 void CvUnit::setRetrainsAvailable(int iNewValue)
 {
 	m_iRetrainsAvailable = iNewValue;
-	FAssert(getRetrainsAvailable() >= 0);
+	FASSERT_NOT_NEGATIVE(getRetrainsAvailable())
 }
 
 void CvUnit::changeRetrainsAvailable(int iChange)
@@ -37860,19 +38386,19 @@ void CvUnit::changeExtraSize(int iChange)
 
 int CvUnit::qualityRank() const
 {
-	FAssert(getQualityBaseTotal() > -1);
+	FASSERT_NOT_NEGATIVE(getQualityBaseTotal())
 	return (getQualityBaseTotal() + getExtraQuality());
 }
 
 int CvUnit::groupRank() const
 {
-	FAssert(getGroupBaseTotal() > -1);
+	FASSERT_NOT_NEGATIVE(getGroupBaseTotal())
 	return (getGroupBaseTotal() + getExtraGroup());
 }
 
 int CvUnit::sizeRank() const
 {
-	FAssert(getSizeBaseTotal() > -1);
+	FASSERT_NOT_NEGATIVE(getSizeBaseTotal())
 	return (getSizeBaseTotal() + getExtraSize());
 }
 
@@ -38470,7 +38996,7 @@ void CvUnit::changeSMCargoSpace(int iChange)
 	if (iChange != 0)
 	{
 		m_iSMCargoCapacity += iChange;
-		FAssert(m_iSMCargoCapacity >= 0);
+		FASSERT_NOT_NEGATIVE(m_iSMCargoCapacity)
 		setInfoBarDirty(true);
 	}
 }
@@ -38542,7 +39068,7 @@ void CvUnit::setSMCargoCapacity()
 	m_iSMCargoCapacity = applySMRank(
 		SMcargoCapacityPreCheck(), getSizeMattersSpacialOffsetValue(), GC.getSIZE_MATTERS_MOST_VOLUMETRIC_MULTIPLIER()
 		);
-	FAssert(m_iSMCargoCapacity >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMCargoCapacity)
 }
 
 int CvUnit::getExtraMaxHP() const
@@ -38598,7 +39124,7 @@ void CvUnit::setSMHPValue()
 			GC.getSIZE_MATTERS_MOST_MULTIPLIER()
 		)
 	);
-	FAssert(m_iSMHPValue >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMHPValue)
 }
 
 int CvUnit::getExtraPowerValue() const
@@ -38646,7 +39172,7 @@ void CvUnit::setSMPowerValue(bool bForLoad)
 	const int m_iSMPowerValue = applySMRank(
 		getSMPowerValueTotalBase(), getSizeMattersOffsetValue(), GC.getSIZE_MATTERS_MOST_MULTIPLIER()
 		);
-	FAssert(m_iSMPowerValue >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMPowerValue)
 	if (!bForLoad)
 	{
 		const int iChange = m_iSMPowerValue - oldSMPowerValue;
@@ -38867,7 +39393,7 @@ void CvUnit::changeExtraBombardRate(int iChange)
 	{
 		setSMBombardRate();
 	}
-	FAssert(getExtraBombardRate() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraBombardRate())
 }
 
 void CvUnit::setExtraBombardRate(int iChange)
@@ -38918,7 +39444,7 @@ void CvUnit::setSMBombardRate()
 		GC.getSIZE_MATTERS_MOST_MULTIPLIER());
 
 	// optional but most of these should be above or equal to 0.
-	FAssert(m_iSMBombardRate >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMBombardRate)
 	m_iSMBombardRate = std::max(0, m_iSMBombardRate);
 }
 
@@ -38965,7 +39491,7 @@ void CvUnit::setSMAirBombBaseRate()
 		)
 	);
 	//optional but most of these should be above or equal to 0.
-	FAssert(m_iSMAirBombBaseRate >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMAirBombBaseRate)
 	m_iSMAirBombBaseRate = std::max(0, m_iSMAirBombBaseRate);
 }
 
@@ -39082,7 +39608,7 @@ void CvUnit::setSMBaseWorkRate()
 		)
 	);
 	//optional but most of these should be above or equal to 0.
-	FAssert(m_iSMBaseWorkRate >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMBaseWorkRate)
 	m_iSMBaseWorkRate = std::max(0, m_iSMBaseWorkRate);
 }
 
@@ -39148,7 +39674,7 @@ void CvUnit::setSMRevoltProtection()
 		)
 	);
 	// optional but most of these should be above or equal to 0.
-	FAssert(m_iSMRevoltProtection >= 0);
+	FASSERT_NOT_NEGATIVE(m_iSMRevoltProtection)
 	m_iSMRevoltProtection = std::max(0, m_iSMRevoltProtection);
 }
 
@@ -39209,7 +39735,7 @@ int CvUnit::getExtraRBombardDamage() const
 void CvUnit::changeExtraRBombardDamage(int iChange)
 {
 	m_iExtraRBombardDamage += iChange;
-	FAssert(getExtraRBombardDamage() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraRBombardDamage())
 }
 
 int CvUnit::getBaseRBombardDamage() const
@@ -39240,7 +39766,7 @@ void CvUnit::changeBaseRBombardDamage(int iChange, bool bAdding, UnitCombatTypes
 		}
 		m_iBaseRBombardDamage = iBestValue;
 	}
-	FAssert(getBaseRBombardDamage() >= 0);
+	FASSERT_NOT_NEGATIVE(getBaseRBombardDamage())
 }
 
 int CvUnit::rBombardDamageLimit() const
@@ -39276,7 +39802,7 @@ int CvUnit::getExtraRBombardDamageLimit() const
 void CvUnit::changeExtraRBombardDamageLimit(int iChange)
 {
 	m_iExtraRBombardDamageLimit += iChange;
-	FAssert(getExtraRBombardDamageLimit() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraRBombardDamageLimit())
 }
 
 int CvUnit::getBaseRBombardDamageLimit() const
@@ -39307,7 +39833,7 @@ void CvUnit::changeBaseRBombardDamageLimit(int iChange, bool bAdding, UnitCombat
 		}
 		m_iBaseRBombardDamageLimit = iBestValue;
 	}
-	FAssert(getBaseRBombardDamageLimit() >= 0);
+	FASSERT_NOT_NEGATIVE(getBaseRBombardDamageLimit())
 }
 
 int CvUnit::rBombardDamageMaxUnits() const
@@ -39340,7 +39866,7 @@ int CvUnit::getExtraRBombardDamageMaxUnits() const
 void CvUnit::changeExtraRBombardDamageMaxUnits(int iChange)
 {
 	m_iExtraRBombardDamageMaxUnits += iChange;
-	FAssert(getExtraRBombardDamageMaxUnits() >= 0);
+	FASSERT_NOT_NEGATIVE(getExtraRBombardDamageMaxUnits())
 }
 
 int CvUnit::getBaseRBombardDamageMaxUnits() const
@@ -39371,7 +39897,7 @@ void CvUnit::changeBaseRBombardDamageMaxUnits(int iChange, bool bAdding, UnitCom
 		}
 		m_iBaseRBombardDamageMaxUnits = iBestValue;
 	}
-	FAssert(getBaseRBombardDamageMaxUnits() >= 0);
+	FASSERT_NOT_NEGATIVE(getBaseRBombardDamageMaxUnits())
 }
 
 int CvUnit::getDCMBombRange() const
@@ -39425,7 +39951,7 @@ void CvUnit::changeBaseDCMBombRange(int iChange, bool bAdding, UnitCombatTypes e
 		}
 		m_iBaseDCMBombRange = iBestValue;
 	}
-	FAssert(getBaseDCMBombRange() >= 0);
+	FASSERT_NOT_NEGATIVE(getBaseDCMBombRange())
 }
 
 int CvUnit::getDCMBombAccuracy() const
@@ -39479,7 +40005,7 @@ void CvUnit::changeBaseDCMBombAccuracy(int iChange, bool bAdding, UnitCombatType
 		}
 		m_iBaseDCMBombAccuracy = iBestValue;
 	}
-	FAssert(getBaseDCMBombAccuracy() >= 0);
+	FASSERT_NOT_NEGATIVE(getBaseDCMBombAccuracy())
 }
 
 bool CvUnit::isRBombardDirect() const
@@ -39532,7 +40058,7 @@ bool CvUnit::hasNoSelfHeal() const
 void CvUnit::changeNoSelfHealCount(int iChange)
 {
 	m_iNoSelfHealCount += iChange;
-	FAssert(getNoSelfHealCount() >=0)
+	FASSERT_NOT_NEGATIVE(getNoSelfHealCount())
 }
 
 int CvUnit::getSelfHealModifierTotal() const
@@ -42221,3 +42747,29 @@ ReligionTypes CvUnit::getReligion() const
 {
 	return m_eReligionType;
 }
+
+#ifdef PARALLEL_MAPS
+bool CvUnit::canGoToMap(const CvMissionInfo& info) const
+{
+	const TechTypes requiredTech = info.getTechRequired();
+	if (requiredTech != NO_TECH && !GET_TEAM(getTeam()).isHasTech(requiredTech))
+		return false;
+
+	const BuildingTypes requiredBuilding = info.getBuildingRequired();
+	if (requiredBuilding == NO_BUILDING)
+		return true;
+
+	const CvCity* city = plot()->getPlotCity();
+	return city && city->getNumBuilding(requiredBuilding);
+}
+
+void CvUnit::goToMap(MapTypes eMap)
+{
+	GC.getMapByIndex(eMap).addIncomingUnit(static_cast<CvUnitAI&>(*this), 1);
+	//plot()->removeUnit(this);
+	//joinGroup(nullptr);
+	//setXY(INVALID_PLOT_COORD, INVALID_PLOT_COORD, true, false);
+	//GET_PLAYER(getOwner()).deleteUnit(getID(), eMap);
+	kill(false, NO_PLAYER);
+}
+#endif

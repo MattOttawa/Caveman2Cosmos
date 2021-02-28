@@ -7,9 +7,8 @@
 
 // CvTaggedSaveFormatWrapper.h
 
-
-//	Forward declarations
 class DictionaryEntry;
+class FDataStreamBase;
 
 //	Class types we know how to remap on load (so that
 //	if new classes of this type are added the load still ties up the old
@@ -57,7 +56,7 @@ typedef enum
 	REMAPPED_CLASS_TYPE_TRAITS,
 	//REMAPPED_CLASS_TYPE_TRAITOPTIONEDITS,
 	REMAPPED_CLASS_TYPE_INVISIBLES,
-	REMAPPED_CLASS_TYPE_MAPCATEGORIES,
+	REMAPPED_CLASS_TYPE_MAPS,
 	REMAPPED_CLASS_TYPE_IDEACLASSES,
 	REMAPPED_CLASS_TYPE_IDEAS,
 	//TB Promotion Line Mod end

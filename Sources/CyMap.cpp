@@ -23,6 +23,11 @@ CyMap::CyMap(CvMap* pMap) : m_pMap(pMap)
 {
 }
 
+void CyMap::setMap(CvMap& map)
+{
+	m_pMap = &map;
+}
+
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
@@ -36,6 +41,11 @@ CyMap& CyMap::operator=(CvMap& kMap)
 {
 	m_pMap = &kMap;
 	return *this;
+}
+
+bool CyMap::plotsInitialized() const
+{
+	return m_pMap->plotsInitialized();
 }
 
 bool CyMap::viewportsEnabled()

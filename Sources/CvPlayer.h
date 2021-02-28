@@ -128,8 +128,9 @@ public:
 	int startingPlotRange() const;
 	bool startingPlotWithinRange(CvPlot* pPlot, PlayerTypes ePlayer, int iRange, int iPass) const;
 	int startingPlotDistanceFactor(const CvPlot* pPlot, PlayerTypes ePlayer, int iRange) const;
-	int findStartingArea() const;
+	int findStartingArea(const CvMap& map) const;
 	CvPlot* findStartingPlot(bool bRandomize = false);
+	CvPlot* findStartingPlot(const CvMap& map, bool bRandomize = false);
 
 	CvPlotGroup* initPlotGroup(CvPlot* pPlot, bool bRecalculateBonuses);
 
@@ -1119,7 +1120,11 @@ public:
 	DllExport int getNumUnits() const;
 	CvUnit* getUnit(int iID) const;
 	CvUnit* addUnit();
+#ifdef PARALLEL_MAPS
+	CvUnit& addUnit(CvUnit& unit);
+#endif
 	void deleteUnit(int iID);
+	void deleteUnit(int iID, MapTypes map);
 
 	// selection groups iteration
 	DECLARE_INDEX_ITERATOR(const CvPlayer, CvSelectionGroup, group_iterator, firstSelectionGroup, nextSelectionGroup);
@@ -1733,8 +1738,8 @@ public:
 	virtual int AI_maxGoldTrade(PlayerTypes ePlayer) const = 0;
 protected:
 
-	int m_iStartingX;
-	int m_iStartingY;
+	std::vector<int> m_vStartingX;
+	std::vector<int> m_vStartingY;
 	int m_iTotalPopulation;
 	int m_iTotalLand;
 	int m_iTotalLandScored;

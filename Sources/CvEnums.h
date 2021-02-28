@@ -685,25 +685,30 @@ enum WorldSizeTypes
 	NUM_WORLDSIZE_TYPES
 };
 
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
-
 enum MapTypes
 {
 	NO_MAP = -1,
-	MAP_INITIAL,
-	MAX_MAPS = 10,
-};
 
-enum MapSwitchTypes
-{
-	NO_MAPSWITCH = -1,
-};
+	MAP_EARTH,
+	MAP_SUBTERRANEAN,
+	MAP_AQUATIC,
+	MAP_CISLUNAR,
+	MAP_LUNAR,
+	MAP_SOLAR_SYSTEM,
+	MAP_MARTIAN,
+	MAP_VENUSIAN,
+	MAP_JOVIAN,
+	MAP_TITANIC,
+	MAP_INTERSTELLAR,
+	MAP_PLASMA,
+	MAP_GALACTIC,
+	MAP_MILKY_WAY,
+	MAP_UNIVERSAL,
+	MAP_DISTANT,
+	MAP_HYPERSPACE,
 
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
+	NUM_MAPS
+};
 
 // This is our current relationship with each
 // one of our connected network peers
@@ -1408,15 +1413,10 @@ enum UnitCombatTypes
 {
 	NO_UNITCOMBAT = -1,
 };
-//TB Promotion Line Mod begin
+
 enum PromotionLineTypes
 {
 	NO_PROMOTIONLINE = -1,
-};
-
-enum MapCategoryTypes
-{
-	NO_MAPCATEGORY = -1,
 };
 
 enum IdeaClassTypes
@@ -1741,6 +1741,25 @@ enum MissionTypes
 	MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_GATHERER,
 	MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_TRACKER,
 	//TB Combat Mod and Mission fix end
+#ifdef PARALLEL_MAPS
+	MISSION_GO_TO_MAP_EARTH,
+	MISSION_GO_TO_MAP_SUBTERRANEAN,
+	MISSION_GO_TO_MAP_AQUATIC,
+	MISSION_GO_TO_MAP_CISLUNAR,
+	MISSION_GO_TO_MAP_LUNAR,
+	MISSION_GO_TO_MAP_SOLAR_SYSTEM,
+	MISSION_GO_TO_MAP_MARTIAN,
+	MISSION_GO_TO_MAP_VENUSIAN,
+	MISSION_GO_TO_MAP_JOVIAN,
+	MISSION_GO_TO_MAP_TITANIC,
+	MISSION_GO_TO_MAP_INTERSTELLAR,
+	MISSION_GO_TO_MAP_PLASMA,
+	MISSION_GO_TO_MAP_GALACTIC,
+	MISSION_GO_TO_MAP_MILKY_WAY,
+	MISSION_GO_TO_MAP_UNIVERSAL,
+	MISSION_GO_TO_MAP_DISTANT,
+	MISSION_GO_TO_MAP_HYPERSPACE,
+#endif
 };
 
 enum MissionAITypes

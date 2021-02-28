@@ -84,7 +84,7 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 		GC.getSeaLevelInfo(GC.getInitCore().getSeaLevel()).getDescription(),
 		GC.getInitCore().getNumCustomMapOptions()).c_str() );
 
-	Cy::call_optional(gDLL->getPythonIFace()->getMapScriptModule(), "beforeInit");
+	Cy::call_optional(getMapScript(), "beforeInit");
 
 	//--------------------------------
 	// Init saved data
@@ -162,7 +162,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 		if (GC.getInitCore().getWorldSize() != NO_WORLDSIZE)
 		{
 			std::vector<int> out;
-			if (Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getGridSize", Cy::Args() << GC.getInitCore().getWorldSize(), out)
+			if (Cy::call_override(getMapScript(), "getGridSize", Cy::Args() << GC.getInitCore().getWorldSize(), out)
 				&& out.size() == 2)
 			{
 				m_iGridWidth = out[0];
@@ -191,8 +191,8 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 	{
 		// Check map script for latitude override (map script beats ini file)	
 		long resultTop = 0, resultBottom = 0;
-		if(Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getTopLatitude", resultTop)
-			&& Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getBottomLatitude", resultBottom))
+		if (Cy::call_override(getMapScript(), "getTopLatitude", resultTop)
+		&&  Cy::call_override(getMapScript(), "getBottomLatitude", resultBottom))
 		{
 			m_iTopLatitude = resultTop;
 			m_iBottomLatitude = resultBottom;
@@ -220,8 +220,8 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 	{
 		// Check map script for wrap override (map script beats ini file)
 		long resultX = 0, resultY = 0;
-		if (Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getWrapX", resultX)
-			&& Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getWrapY", resultY))
+		if (Cy::call_override(getMapScript(), "getWrapX", resultX)
+		&&  Cy::call_override(getMapScript(), "getWrapY", resultY))
 		{
 			m_bWrapX = (resultX != 0);
 			m_bWrapY = (resultY != 0);
@@ -231,9 +231,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-	//Koshling - why do we ignore the map size in MapInfos if there is only 1???  Changed that for now
-	//if (GC.getNumMapInfos() > 1)
-	if (GC.multiMapsEnabled() /*&& GC.getMapInfos().size() > 0*/)
+	if (m_eType > MAP_EARTH)
 	{
 		if (GC.getMapInfo(getType()).getGridWidth() > 0 && GC.getMapInfo(getType()).getGridHeight() > 0)
 		{
@@ -376,7 +374,36 @@ void CvMap::setAllPlotTypes(PlotTypes ePlotType)
 }
 
 
-// XXX generalize these funcs? (macro?)
+#ifdef PARALLEL_MAPS
+void CvMap::updateIncomingUnits()
+{
+	for (std::vector<IncomingUnit>::iterator itr = m_IncomingUnits.begin(), itrEnd = m_IncomingUnits.end(); itr != itrEnd; ++itr)
+	{
+		if ((*itr).second-- <= 0)
+		{
+			if (m_pMapPlots == NULL)
+			{
+				GC.switchMap(getType());
+			}
+			CvUnit& offMapUnit = (*itr).first;
+			CvPlayer& owner = GET_PLAYER(offMapUnit.getOwner());
+			CvPlot* startingPlot = owner.findStartingPlot(*this);
+			//CvUnit& onMapUnit = owner.addUnit(offMapUnit);
+			CvUnit* onMapUnit = owner.initUnit(offMapUnit.getUnitType(), startingPlot->getX(), startingPlot->getY(), offMapUnit.AI_getUnitAIType(), NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
+			if (onMapUnit == NULL)
+			{
+				FErrorMsg("CvPlayer::initUnit returned NULL");
+				continue;
+			}
+			//onMapUnit.setXY(startingPlot->getX(), startingPlot->getY());
+			//onMapUnit.reloadEntity(true);
+			m_IncomingUnits.erase(itr);
+		}
+	}
+}
+#endif
+
+
 void CvMap::doTurn()
 {
 	MEMORY_TRACE_FUNCTION();
@@ -402,6 +429,9 @@ void CvMap::doTurn()
 	{
 		plotByIndex(iI)->doTurn();
 	}
+#ifdef PARALLEL_MAPS
+	updateIncomingUnits();
+#endif
 }
 
 
@@ -947,7 +977,7 @@ int CvMap::getLandPlots() const
 void CvMap::changeLandPlots(int iChange)
 {
 	m_iLandPlots += iChange;
-	FAssert(getLandPlots() >= 0);
+	FASSERT_NOT_NEGATIVE(getLandPlots())
 }
 
 
@@ -960,7 +990,7 @@ int CvMap::getOwnedPlots() const
 void CvMap::changeOwnedPlots(int iChange)
 {
 	m_iOwnedPlots += iChange;
-	FAssert(getOwnedPlots() >= 0);
+	FASSERT_NOT_NEGATIVE(getOwnedPlots())
 }
 
 
@@ -1029,7 +1059,7 @@ void CvMap::changeNumBonuses(BonusTypes eIndex, int iChange)
 {
 	FASSERT_BOUNDS(0, GC.getNumBonusInfos(), eIndex)
 	m_paiNumBonus[eIndex] += iChange;
-	FAssertMsg(m_paiNumBonus[eIndex] >= 0, "Negative bonus occurance on the map!");
+	FASSERT_NOT_NEGATIVE(m_paiNumBonus[eIndex])
 }
 
 
@@ -1044,7 +1074,7 @@ void CvMap::changeNumBonusesOnLand(BonusTypes eIndex, int iChange)
 {
 	FASSERT_BOUNDS(0, GC.getNumBonusInfos(), eIndex)
 	m_paiNumBonusOnLand[eIndex] += iChange;
-	FAssert(getNumBonusesOnLand(eIndex) >= 0);
+	FASSERT_NOT_NEGATIVE(getNumBonusesOnLand(eIndex))
 }
 
 
@@ -1224,7 +1254,7 @@ void CvMap::invalidateIsTeamBorderCache(TeamTypes eTeam)
 //
 void CvMap::read(FDataStreamBase* pStream)
 {
-	OutputDebugString("Reading Map: Start");
+	OutputDebugString("Reading Map: Start\n");
 	CvTaggedSaveFormatWrapper&	wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
 
 	wrapper.AttachToStream(pStream);
@@ -1269,9 +1299,19 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	setup();
 
+	size_t numUnits;
+	WRAPPER_READ_DECORATED(wrapper, "CvMap", &numUnits, "numUnits")
+	for (uint32_t i = 0; i < numUnits; i++)
+	{
+		int turns;
+		WRAPPER_READ_DECORATED(wrapper, "CvMap", &turns, "turns")
+		m_IncomingUnits.push_back(std::make_pair(CvUnitAI(), turns));
+		m_IncomingUnits[i].first.read(pStream);
+	}
+
 	WRAPPER_READ_OBJECT_END(wrapper);
 
-	OutputDebugString("Reading Map: End");
+	OutputDebugString("Reading Map: End\n");
 }
 
 // save object to a stream
@@ -1308,13 +1348,18 @@ void CvMap::write(FDataStreamBase* pStream)
 	// call the read of the free list CvArea class allocations
 	WriteStreamableFFreeListTrashArray(m_areas, pStream);
 
+	WRAPPER_WRITE_DECORATED(wrapper, "CvMap", m_IncomingUnits.size(), "numUnits")
+	foreach_(IncomingUnit& incomingUnit, m_IncomingUnits)
+	{
+		WRAPPER_WRITE_DECORATED(wrapper, "CvMap", incomingUnit.second, "turns")
+		incomingUnit.first.write(pStream);
+	}
+
 	WRAPPER_WRITE_OBJECT_END(wrapper);
 }
 
 void CvMap::beforeSwitch()
 {
-	PROFILE_FUNC();
-
 #ifdef THE_GREAT_WALL
 	if ( GC.getCurrentViewport()->getTransformType() == VIEWPORT_TRANSFORM_TYPE_WINDOW )
 	{
@@ -1371,8 +1416,6 @@ void CvMap::beforeSwitch()
 
 void CvMap::afterSwitch()
 {
-	PROFILE_FUNC();
-
 	if (m_pMapPlots == NULL)		// if it hasn't been initialized yet...
 	{
 		if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
@@ -1390,15 +1433,6 @@ void CvMap::afterSwitch()
 			{
 				AddDLLMessage((PlayerTypes)0, true, GC.getEVENT_MESSAGE_TIME(), L"Worldbuilder map failed to load");
 			}
-		}
-		else if (GC.getMapInfo(getType()).getMapScript().GetLength() > 0)
-		{
-			init();
-			CvMapGenerator& kGenerator = CvMapGenerator::GetInstance();
-			kGenerator.setUseDefaultMapScript(false);
-			kGenerator.generateRandomMap();
-			kGenerator.addGameElements();
-			kGenerator.setUseDefaultMapScript(true);
 		}
 		else
 		{
@@ -1492,6 +1526,17 @@ void CvMap::afterSwitch()
 	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 }
 
+const char* CvMap::getMapScript() const
+{
+	if (m_eType > MAP_EARTH)
+	{
+		const CvString& module = GC.getMapInfo(m_eType).getMapScript();
+		if (module.GetLength() > 0)
+			return module.c_str();
+	}
+	return gDLL->getPythonIFace()->getMapScriptModule();
+}
+
 int	CvMap::getNumViewports() const
 {
 	return m_viewports.size();
@@ -1549,12 +1594,23 @@ CvViewport* CvMap::getCurrentViewport() const
 
 	return (m_iCurrentViewportIndex == -1 ? NULL : m_viewports[m_iCurrentViewportIndex]);
 }
-	
+
 MapTypes CvMap::getType() const
 {
 	return m_eType;
 }
 
+#ifdef PARALLEL_MAPS
+void CvMap::addIncomingUnit(CvUnitAI& unit, int numTravelTurns)
+{
+	m_IncomingUnits.push_back(std::make_pair(unit, numTravelTurns));
+}
+
+bool CvMap::plotsInitialized() const
+{
+	return m_pMapPlots != nullptr;
+}
+#endif
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
