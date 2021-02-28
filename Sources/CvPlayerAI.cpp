@@ -38364,7 +38364,7 @@ void CvPlayerAI::AI_recalculateUnitCounts()
 	{
 		AI_changeNumAIUnits( (UnitAITypes)iI, -AI_getNumAIUnits((UnitAITypes)iI) );
 
-		foreach_(const CvMap* map, GC.maps())
+		foreach_(const CvMap* map, GC.getMaps())
 		{
 			foreach_(CvArea* area, map->areas())
 			{
@@ -38373,9 +38373,11 @@ void CvPlayerAI::AI_recalculateUnitCounts()
 		}
 	}
 
-	for (int iMap = MAP_INITIAL; iMap < GC.getNumMaps(); iMap++)
+	for (int iMap = 0; iMap < NUM_MAPS; iMap++)
 	{
-		foreach_(const CvUnit* pLoopUnit, units(/*(MapTypes)iMap*/))
+		GC.getGame().setCurrentMap(GC.getGame().getNextMap());
+
+		foreach_(const CvUnit* pLoopUnit, units())
 		{
 			const UnitAITypes eAIType = pLoopUnit->AI_getUnitAIType();
 

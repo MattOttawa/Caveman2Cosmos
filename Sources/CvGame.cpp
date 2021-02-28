@@ -5882,20 +5882,21 @@ void CvGame::doTurn()
 	}
 
 #ifdef PARALLEL_MAPS
-	const int numMaps = GC.getNumMaps();
-	const bool multipleMaps = numMaps > 1;
-
-	for (int i = MAP_INITIAL; i < numMaps; i++)
+	for (int i = 0; i < NUM_MAPS; i++)
 	{
-		if (multipleMaps)
-		{
-			GC.switchMap(getNextMap());
-			//m_eCurrentMap = getNextMap();
-		}
-		// solve property system
-		m_PropertySolver.doTurn();
+		const MapTypes nextMapType = getNextMap();
+		CvMap& nextMap = GC.getMapByIndex(nextMapType);
 
-		GC.getMap().doTurn();
+		if (nextMap.plotsInitialized())
+		{
+			//GC.switchMap(getNextMap());
+			m_eCurrentMap = nextMapType;
+
+			// solve property system
+			m_PropertySolver.doTurn();
+
+			nextMap.doTurn();
+		}
 	}
 #endif
 /*
@@ -5933,23 +5934,26 @@ void CvGame::doTurn()
 
 	doDiploVote();
 
-	// Recalculate vision on load (a stickytape - can't find where it's skewing visibility counts)
-	//Hopefully won't create a noteable delay but it may
-	//disabled when debugging only - units should now be tracking and staying within a range of 0-1 for number of positive updates - negative updates.
-	//TBVIS
 #ifdef PARALLEL_MAPS
-	for (int i = MAP_INITIAL; i < numMaps; i++)
+	for (int i = 0; i < NUM_MAPS; i++)
 	{
-		if (multipleMaps)
+		const MapTypes nextMapType = getNextMap();
+		CvMap& nextMap = GC.getMapByIndex(nextMapType);
+
+		if (nextMap.plotsInitialized())
 		{
-			GC.switchMap(getNextMap());
-			//m_eCurrentMap = getNextMap();
+			m_eCurrentMap = nextMapType;
+
+			// Recalculate vision on load (a stickytape - can't find where it's skewing visibility counts)
+			//Hopefully won't create a noteable delay but it may
+			//disabled when debugging only - units should now be tracking and staying within a range of 0-1 for number of positive updates - negative updates.
+			//TBVIS
+			for (int iJ = 0; iJ < nextMap.numPlots(); iJ++)
+			{
+				nextMap.plotByIndex(iJ)->clearVisibilityCounts();
+			}
+			nextMap.updateSight(true, false);
 		}
-		for (int iJ = 0; iJ < GC.getMap().numPlots(); iJ++)
-		{
-			GC.getMap().plotByIndex(iJ)->clearVisibilityCounts();
-		}
-		GC.getMap().updateSight(true, false);
 	}
 #endif
 
@@ -11963,7 +11967,7 @@ const CvProperties* CvGame::getPropertiesConst() const
 MapTypes CvGame::getNextMap() const
 {
 	const int nextMap = m_eCurrentMap +1;
-	return nextMap < GC.getNumMaps() ? (MapTypes)nextMap : MAP_INITIAL;
+	return nextMap < NUM_MAPS ? (MapTypes)nextMap : MAP_EARTH;
 }
 
 MapTypes CvGame::getCurrentMap() const
