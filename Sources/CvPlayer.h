@@ -189,7 +189,6 @@ public:
 	void doMapTurn();
 #endif
 
-	void doInflation();
 	int getCurrentInflationCostModifier() const;
 	int getEquilibriumInflationCostModifier() const;
 

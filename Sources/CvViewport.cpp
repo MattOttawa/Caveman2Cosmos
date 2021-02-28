@@ -486,16 +486,6 @@ void CvViewport::erasePlots()
 	m_pMap->erasePlots();
 }
 
-void CvViewport::setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly)
-{
-	m_pMap->setRevealedPlots(eTeam, bNewValue, bTerrainOnly);
-}
-
-void CvViewport::setAllPlotTypes(PlotTypes ePlotType)
-{
-	m_pMap->setAllPlotTypes(ePlotType);
-}
-
 void CvViewport::updateFlagSymbols()
 {
 	m_pMap->updateFlagSymbols();

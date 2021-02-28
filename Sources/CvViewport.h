@@ -101,6 +101,8 @@ public:
 
 	inline ViewportMode getState() const { return m_mode; }
 
+	virtual void erasePlots();
+
 	virtual void updateFlagSymbols();
 
 	virtual void updateFog();

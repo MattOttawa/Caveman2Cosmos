@@ -3883,8 +3883,6 @@ void CvPlayer::doTurn()
 
 	doAdvancedEconomy();
 
-	doInflation();
-
 	if (getGoldenAgeTurns() > 0)
 	{
 		changeGoldenAgeTurns(-1);
