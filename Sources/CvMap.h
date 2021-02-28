@@ -190,7 +190,10 @@ public:
 
 	inline CvPlot* plot(int iX, int iY)
 	{
-		FAssert(iX != INVALID_PLOT_COORD && iY != INVALID_PLOT_COORD)
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
 		const int iMapX = coordRange(iX, getGridWidth(), isWrapX());
 		const int iMapY = coordRange(iY, getGridHeight(), isWrapY());
 		return isPlot(iMapX, iMapY) ? &m_pMapPlots[plotNum(iMapX, iMapY)] : NULL;
@@ -198,7 +201,10 @@ public:
 
 	inline const CvPlot* plot(int iX, int iY) const
 	{
-		FAssert(iX != INVALID_PLOT_COORD && iY != INVALID_PLOT_COORD)
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
 		const int iMapX = coordRange(iX, getGridWidth(), isWrapX());
 		const int iMapY = coordRange(iY, getGridHeight(), isWrapY());
 		return isPlot(iMapX, iMapY) ? &m_pMapPlots[plotNum(iMapX, iMapY)] : NULL;
@@ -206,7 +212,10 @@ public:
 
 	inline CvPlot* plotSorenINLINE(int iX, int iY)
 	{
-		FAssert(iX != INVALID_PLOT_COORD && iY != INVALID_PLOT_COORD)
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
 		return &m_pMapPlots[plotNum(iX, iY)];
 	}
 
