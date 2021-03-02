@@ -5863,9 +5863,7 @@ void CvGame::doTurn()
 	{
 		m_eCurrentMap = getNextMap();
 
-		m_PropertySolver.doTurn(); // solve property system
-
-		GC.getMap().doTurn();
+		GC.getMap().doTurn(m_PropertySolver);
 	}
 #endif
 /*

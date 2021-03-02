@@ -13,6 +13,7 @@
 
 #include "CvMapInterfaceBase.h"
 #include "CvPlot.h"
+#include "CvPropertySolver.h"
 
 class CvArea;
 class CvCity;
@@ -88,7 +89,7 @@ public:
 	void resetRevealedPlots(TeamTypes eTeam);
 	void setAllPlotTypes(PlotTypes ePlotType);
 
-	void doTurn();
+	void doTurn(CvMainPropertySolver& pPropertySolver);
 
 	void updateFlagSymbolsInternal(bool bForce);
 	void updateFlagSymbols();

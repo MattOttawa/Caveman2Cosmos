@@ -397,7 +397,8 @@ void CvMap::updateIncomingUnits()
 		{
 			if (!plotsInitialized())
 			{
-				generatePlots();
+				GC.switchMap(getType());
+				//generatePlots();
 			}
 			CvUnit& offMapUnit = (*itr).first;
 			CvPlayer& owner = GET_PLAYER(offMapUnit.getOwner());
@@ -418,7 +419,7 @@ void CvMap::updateIncomingUnits()
 #endif
 
 
-void CvMap::doTurn()
+void CvMap::doTurn(CvMainPropertySolver& pPropertySolver)
 {
 	MEMORY_TRACE_FUNCTION();
 	PROFILE("CvMap::doTurn()")
@@ -429,6 +430,8 @@ void CvMap::doTurn()
 
 	if (plotsInitialized())
 	{
+		pPropertySolver.doTurn(); // solve property system
+
 		//for (int iI = 0; iI < MAX_TEAMS; iI++)
 		//{
 		//	CvTeam& team = GET_TEAM((TeamTypes)iI);
@@ -1326,6 +1329,10 @@ void CvMap::beforeSwitch()
 
 void CvMap::afterSwitch()
 {	
+	if (!plotsInitialized())
+	{
+		generatePlots();
+	}
 	gDLL->getInterfaceIFace()->clearSelectionList();
 	gDLL->getInterfaceIFace()->makeSelectionListDirty();
 	gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
