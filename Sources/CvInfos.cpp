@@ -13350,8 +13350,7 @@ void CvHandicapInfo::getCheckSum(unsigned int& iSum) const
 	CheckSum(iSum, m_iAIPerEraModifier);
 	CheckSum(iSum, m_iAIAdvancedStartPercent);
 	CheckSum(iSum, m_iNumGoodies);
-
-	m_Percent.getCheckSum(iSum);
+	CheckSumC(iSum, m_Percent);
 
 	m_PropertyManipulators.getCheckSum(iSum);
 
@@ -14000,11 +13999,8 @@ void CvGameSpeedInfo::getCheckSum(unsigned int &iSum) const
 		CheckSum(iSum, m_aIncrements[j].m_iIncrementDay);
 	}
 
-	//TB GameSpeed begin
 	CheckSum(iSum, m_iTraitGainPercent);
-	//TB GameSpeed end
-
-	m_Percent.getCheckSum(iSum);
+	CheckSumC(iSum, m_Percent);
 }
 
 
@@ -20413,25 +20409,16 @@ void CvWorldInfo::getCheckSum(unsigned int& iSum) const
 	CheckSum(iSum, m_iAdvancedStartPointsMod);
 	CheckSum(iSum, m_iCommandersLevelThresholdsPercent);
 	CheckSum(iSum, m_iOceanMinAreaSize);
-
-	m_Percent.getCheckSum(iSum);
+	CheckSumC(iSum, m_Percent);
 }
-
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 
 //======================================================================================================
 //					CvMapInfo
 //======================================================================================================
 
-CvMapInfo::CvMapInfo() :
-m_iGridWidth(0),
-m_iGridHeight(0),
-m_iWrapX(-1),
-m_iWrapY(-1),
-m_szInitialWBMap(NULL),
-m_szMapScript(NULL)
+CvMapInfo::CvMapInfo()
+	: m_szInitialWBMap(NULL)
+	, m_szMapScript(NULL)
 {
 }
 
@@ -20439,32 +20426,12 @@ CvMapInfo::~CvMapInfo()
 {
 }
 
-int CvMapInfo::getGridWidth() const
-{
-	return m_iGridWidth;
-}
-
-int CvMapInfo::getGridHeight() const
-{
-	return m_iGridHeight;
-}
-
-int CvMapInfo::getWrapX() const
-{
-	return m_iWrapX;
-}
-
-int CvMapInfo::getWrapY() const
-{
-	return m_iWrapY;
-}
-
-const CvString CvMapInfo::getInitialWBMap() const
+const CvString& CvMapInfo::getInitialWBMap() const
 {
 	return m_szInitialWBMap;
 }
 
-const CvString CvMapInfo::getMapScript() const
+const CvString& CvMapInfo::getMapScript() const
 {
 	return m_szMapScript;
 }
@@ -20475,19 +20442,10 @@ bool CvMapInfo::read(CvXMLLoadUtility* pXML)
 	{
 		return false;
 	}
-
-	pXML->GetOptionalChildXmlValByName(&m_iGridWidth, L"iGridWidth");
-	pXML->GetOptionalChildXmlValByName(&m_iGridHeight, L"iGridHeight");
-	pXML->GetOptionalChildXmlValByName(&m_iWrapX, L"bWrapX");
-	pXML->GetOptionalChildXmlValByName(&m_iWrapY, L"bWrapY");
 	pXML->GetOptionalChildXmlValByName(m_szInitialWBMap, L"InitialWBMap");
 	pXML->GetOptionalChildXmlValByName(m_szMapScript, L"MapScript");
 	return true;
 }
-
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 //======================================================================================================
 //					CvClimateInfo

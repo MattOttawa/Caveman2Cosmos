@@ -270,11 +270,15 @@ m_cachedBonusCount(NULL)
 	{
 		m_cachedTotalCityBaseCommerceRate[i] = MAX_INT;
 	}
-	m_groupCycles.push_back(new CLinkList<int>);
-	m_plotGroups.push_back(new FFreeListTrashArray<CvPlotGroup>);
-	m_cities.push_back(new FFreeListTrashArray<CvCityAI>);
-	m_units.push_back(new FFreeListTrashArray<CvUnitAI>);
-	m_selectionGroups.push_back(new FFreeListTrashArray<CvSelectionGroupAI>);
+
+	for (int i = 0; i < NUM_MAPS; i++)
+	{
+		m_groupCycles.push_back(new CLinkList<int>);
+		m_plotGroups.push_back(new FFreeListTrashArray<CvPlotGroup>);
+		m_cities.push_back(new FFreeListTrashArray<CvCityAI>);
+		m_units.push_back(new FFreeListTrashArray<CvUnitAI>);
+		m_selectionGroups.push_back(new FFreeListTrashArray<CvSelectionGroupAI>);
+	}
 
 	reset(NO_PLAYER, true);
 }
@@ -321,7 +325,7 @@ CvPlayer::~CvPlayer()
 
 	SAFE_DELETE_ARRAY(m_cachedBonusCount);
 
-	for (int i = 0, num = m_groupCycles.size(); i < num; i++)
+	for (int i = 0; i < NUM_MAPS; i++)
 	{
 		SAFE_DELETE(m_groupCycles[i]);
 		SAFE_DELETE(m_plotGroups[i]);
@@ -339,7 +343,13 @@ void CvPlayer::init(PlayerTypes eID)
 	reset(eID);
 	//--------------------------------
 	// Init containers
-	addContainersForEachMap();
+	for (int i = 0; i < NUM_MAPS; i++)
+	{
+		m_plotGroups[i]->init();
+		m_cities[i]->init();
+		m_units[i]->init();
+		m_selectionGroups[i]->init(); 
+	}
 	m_eventsTriggered.init();
 	//--------------------------------
 	// Init non-saved data
@@ -467,8 +477,13 @@ void CvPlayer::initInGame(PlayerTypes eID, bool bSetAlive)
 
 	//--------------------------------
 	// Init containers
-	addContainersForEachMap();
-
+	for (int i = 0; i < NUM_MAPS; i++)
+	{
+		m_plotGroups[i]->init();
+		m_cities[i]->init();
+		m_units[i]->init();
+		m_selectionGroups[i]->init(); 
+	}
 	m_eventsTriggered.init();
 
 	m_contractBroker.init(eID);
@@ -739,7 +754,7 @@ void CvPlayer::uninit()
 
 	m_contractBroker.reset();
 
-	for (int i = 0, num = m_groupCycles.size(); i < num; i++)
+	for (int i = 0; i < NUM_MAPS; i++)
 	{
 		m_groupCycles[i]->clear();
 		m_plotGroups[i]->uninit();
@@ -771,8 +786,6 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 	//--------------------------------
 	// Uninit class
 	uninit();
-
-	addContainersForEachMap();
 
 	m_iMADDeterrent = 0;
 	m_iMADIncoming = 0;
@@ -1460,7 +1473,7 @@ void CvPlayer::reset(PlayerTypes eID, bool bConstructorCall)
 		m_aUnitExtraCosts.clear();
 		m_triggersFired.clear();
 	}
-	for (int i = 0, num = m_groupCycles.size(); i < num; i++)
+	for (int i = 0; i < NUM_MAPS; i++)
 	{
 		m_plotGroups[i]->removeAll();
 		m_cities[i]->removeAll();
@@ -15663,33 +15676,6 @@ CLLNode<CvWString>* CvPlayer::headCityNameNode() const
 }
 
 
-void CvPlayer::addContainersForEachMap()
-{
-	for (int i = m_groupCycles.size(); i < NUM_MAPS; i++)
-	{
-		m_groupCycles.push_back(new CLinkList<int>);
-		m_plotGroups.push_back(new FFreeListTrashArray<CvPlotGroup>);
-		m_cities.push_back(new FFreeListTrashArray<CvCityAI>);
-		m_units.push_back(new FFreeListTrashArray<CvUnitAI>);
-		m_selectionGroups.push_back(new FFreeListTrashArray<CvSelectionGroupAI>);
-
-		m_plotGroups[i]->init();
-		m_cities[i]->init();
-		m_units[i]->init();
-		m_selectionGroups[i]->init(); 
-	}
-}
-
-void CvPlayer::initContainersForMap(MapTypes mapIndex)
-{
-	//const int index = static_cast<int>(mapIndex);
-	m_plotGroups[mapIndex]->init();
-	m_cities[mapIndex]->init();
-	m_units[mapIndex]->init();
-	m_selectionGroups[mapIndex]->init(); 
-}
-
-
 CvPlotGroup* CvPlayer::firstPlotGroup(int *pIterIdx, bool bRev) const
 {
 	return !bRev ? m_plotGroups[CURRENT_MAP]->beginIter(pIterIdx) : m_plotGroups[CURRENT_MAP]->endIter(pIterIdx);
@@ -19027,10 +19013,8 @@ void CvPlayer::doWarnings()
 {
 	PROFILE_FUNC();
 
-	CvCity* pNearestCity;
 	CvPlot* pLoopPlot;
 	wchar_t szBuffer[1024];
-	int iMaxCount;
 	int iI;
 
 	//update enemy unit in your territory glow
@@ -19039,6 +19023,7 @@ void CvPlayer::doWarnings()
 		//update glow
 		if ( !pLoopUnit->isUsingDummyEntities() )
 		{
+			FAssert(pLoopUnit->getUnitEntity() != nullptr)
 			gDLL->getEntityIFace()->updateEnemyGlow(pLoopUnit->getUnitEntity());
 		}
 	}
@@ -19049,7 +19034,7 @@ void CvPlayer::doWarnings()
 // BUG - Ignore Harmless Barbarians - end
 
 	//update enemy units close to your territory
-	iMaxCount = range(((getNumCities() + 4) / 7), 2, 5);
+	int iMaxCount = range(((getNumCities() + 4) / 7), 2, 5);
 	for (iI = 0; iI < GC.getMap().numPlots(); iI++)
 	{
 		if (iMaxCount == 0)
@@ -19078,7 +19063,7 @@ void CvPlayer::doWarnings()
 							}
 							if (bCheckBarbarians && pUnit->isHominid() && pUnit->getDomainType() == DOMAIN_LAND)
 							{
-								CvArea* pArea = pUnit->area();
+								const CvArea* pArea = pUnit->area();
 								if (pArea && pArea->isBorderObstacle(getTeam()))
 								{
 									// don't show warning for land-based barbarians when player has Great Wall
@@ -19087,7 +19072,7 @@ void CvPlayer::doWarnings()
 							}
 // BUG - Ignore Harmless Barbarians - end
 
-							pNearestCity = GC.getMap().findCity(pLoopPlot->getX(), pLoopPlot->getY(), getID(), NO_TEAM, !(pLoopPlot->isWater()));
+							const CvCity* pNearestCity = GC.getMap().findCity(pLoopPlot->getX(), pLoopPlot->getY(), getID(), NO_TEAM, !(pLoopPlot->isWater()));
 
 							if (pNearestCity != NULL)
 							{

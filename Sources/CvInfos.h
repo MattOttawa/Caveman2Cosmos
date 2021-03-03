@@ -5411,11 +5411,7 @@ protected:
 	int m_iOceanMinAreaSize;
 
 	IDValueMapPercent m_Percent;
-
 };
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  class : CvMapInfo
@@ -5427,29 +5423,15 @@ public:
 	CvMapInfo();
 	virtual ~CvMapInfo();
 
-	int getGridWidth() const;
-	int getGridHeight() const;
-
-	int getWrapX() const;
-	int getWrapY() const;
-
-	const CvString getInitialWBMap() const;
-	const CvString getMapScript() const;
+	const CvString& getInitialWBMap() const;
+	const CvString& getMapScript() const;
 
 	bool read(CvXMLLoadUtility* pXML);
 
 protected:
-	int m_iGridWidth;
-	int m_iGridHeight;
-	int m_iWrapX;
-	int m_iWrapY;
 	CvString m_szInitialWBMap;
 	CvString m_szMapScript;
 };
-
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //  class : CvClimateInfo

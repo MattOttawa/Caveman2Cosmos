@@ -235,6 +235,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
+/*
 	if (m_eType > MAP_EARTH)
 	{
 		if (GC.getMapInfo(getType()).getGridWidth() > 0 && GC.getMapInfo(getType()).getGridHeight() > 0)
@@ -248,6 +249,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 			m_bWrapY = GC.getMapInfo(getType()).getWrapY();
 		}
 	}
+*/
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
@@ -1343,16 +1345,10 @@ void CvMap::afterSwitch()
 	gDLL->getInterfaceIFace()->setDirty(SelectionCamera_DIRTY_BIT, true);
 	gDLL->getInterfaceIFace()->setDirty(HighlightPlot_DIRTY_BIT, true);
 	
-	const int infoWidth = GC.getMapInfo(getType()).getGridWidth();
-	const int width = infoWidth != 0 ? infoWidth : MAX_INT;
-
-	const int infoHeight = GC.getMapInfo(getType()).getGridHeight();
-	const int height = infoHeight != 0 ? infoHeight : MAX_INT;
-
 	foreach_(CvPlot& plot, GC.getMap().plots())
 	{
 		//	Koshlimg - this is no longer necesary (or correct) with viewports enabled
-		if (!GC.viewportsEnabled() && (plot.getX() > width || plot.getY() > height))
+		if (!GC.viewportsEnabled() && (plot.getX() > m_iGridWidth || plot.getY() > m_iGridHeight))
 		{
 			plot.setNull(true);
 		}

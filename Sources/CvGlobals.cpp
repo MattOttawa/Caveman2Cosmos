@@ -56,9 +56,6 @@ CvGlobals gGlobalsProxy;	// for debugging
 cvInternalGlobals* gGlobals = NULL;
 CvDLLUtilityIFaceBase* gDLL = NULL;
 
-int g_iPercentDefault = 100;
-int g_iModifierDefault = 0;
-
 #ifdef _DEBUG
 int inDLL = 0;
 const char* fnName = NULL;
@@ -423,13 +420,10 @@ void cvInternalGlobals::init()
 
 	m_game = new CvGameAI;
 	
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
-	m_maps.push_back(new CvMap(MAP_EARTH));
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
+	for (int i = 0; i < NUM_MAPS; i++)
+	{
+		m_maps.push_back(new CvMap((MapTypes)i));
+	}
 
 	CvPlayerAI::initStatics();
 	CvTeamAI::initStatics();
@@ -2896,24 +2890,6 @@ bool cvInternalGlobals::viewportsEnabled() const
 bool cvInternalGlobals::getReprocessGreatWallDynamically() const
 {
 	return m_bViewportsEnabled || getDefineBOOL("DYNAMIC_GREAT_WALL");
-}
-
-void cvInternalGlobals::updateMaps()
-{
-	if (getDefineINT("ENABLE_MULTI_MAPS"))
-	{
-		for (int i = 1; i < NUM_MAPS; i++)
-		{
-			m_maps.push_back(new CvMap((MapTypes)i));
-		}
-
-		FAssert(m_maps.size() == NUM_MAPS);
-
-		for (int i = 0; i < MAX_PLAYERS; i++)
-		{
-			GET_PLAYER((PlayerTypes)i).addContainersForEachMap();
-		}
-	}
 }
 
 void cvInternalGlobals::setResourceLayer(bool bOn)

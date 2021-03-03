@@ -203,16 +203,12 @@ void CyInfoPythonInterface3()
 		.def("getCorporationMaintenancePercent", &CvWorldInfo::getCorporationMaintenancePercent, "int ()")
 		.def("getOceanMinAreaSize", &CvWorldInfo::getOceanMinAreaSize, "int ()")
 	;
-
+/*
 	python::class_<CvMapInfo, python::bases<CvInfoBase> >("CvMapInfo")
 
-		.def("getGridWidth", &CvMapInfo::getGridWidth, "int ()")
-		.def("getGridHeight", &CvMapInfo::getGridHeight, "int ()")
-		.def("getWrapX", &CvMapInfo::getWrapX, "int ()")
-		.def("getWrapY", &CvMapInfo::getWrapY, "int ()")
 		.def("getMapScript", &CvMapInfo::getMapScript, "string ()")
 	;
-
+*/
 	python::class_<CvClimateInfo, python::bases<CvInfoBase> >("CvClimateInfo")
 
 		.def("getDesertPercentChange", &CvClimateInfo::getDesertPercentChange, "int ()")

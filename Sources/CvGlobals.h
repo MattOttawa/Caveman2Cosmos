@@ -198,9 +198,6 @@ public:
 	CvMapInfo& getMapInfo(MapTypes eMap) const;
 
 	void switchMap(MapTypes eMap);
-protected:
-	void updateMaps();
-public:
 	void clearSigns();
 	void reprocessSigns();
 	void setResourceLayer(bool bOn);
