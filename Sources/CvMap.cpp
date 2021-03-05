@@ -391,6 +391,11 @@ void CvMap::generatePlots()
 	}
 }
 
+bool CvMap::hasIncomingUnits() const
+{
+	return !m_IncomingUnits.empty();
+}
+
 void CvMap::updateIncomingUnits()
 {
 	for (std::vector<IncomingUnit>::iterator itr = m_IncomingUnits.begin(), itrEnd = m_IncomingUnits.end(); itr != itrEnd; ++itr)

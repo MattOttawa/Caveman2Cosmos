@@ -5834,11 +5834,6 @@ void CvGame::doTurn()
 	MEMORY_TRACE_FUNCTION();
 	PROFILE_BEGIN("CvGame::doTurn()");
 
-#ifdef PARALLEL_MAPS	// XXX Cycle to the next map each turn.
-//	if (GC.getNumMaps() > 1)
-//		GC.switchMap(getNextMap());
-#endif
-	// END OF TURN
 	CvEventReporter::getInstance().beginGameTurn( getGameTurn() );
 
 	doUpdateCacheOnTurn();
@@ -5861,9 +5856,16 @@ void CvGame::doTurn()
 #ifdef PARALLEL_MAPS
 	for (int i = MAP_EARTH; i < NUM_MAPS; i++)
 	{
-		m_eCurrentMap = getNextMap();
+		const MapTypes nextMapType = getNextMap();
+		CvMap& nextMap = GC.getMapByIndex(nextMapType);
 
-		GC.getMap().doTurn(m_PropertySolver);
+		if (nextMap.plotsInitialized())
+		{
+			//m_eCurrentMap = getNextMap();
+			GC.switchMap(nextMapType);
+
+			nextMap.doTurn(m_PropertySolver);
+		}
 	}
 #endif
 /*
@@ -6001,7 +6003,7 @@ void CvGame::doTurn()
 
 	foreach_(CvMap* map, GC.getMaps())
 	{
-		if (map != nullptr)
+		if (map->hasIncomingUnits())
 		{
 			map->updateIncomingUnits();
 		}

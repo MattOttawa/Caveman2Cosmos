@@ -58,9 +58,8 @@ public:
 	void setupGraphical();
 	void reset(CvMapInitData* pInitData);
 
-	void uninit();
 protected:
-
+	void uninit();
 	void setup();
 
 public:
@@ -69,6 +68,7 @@ public:
 	void beforeSwitch();
 	void afterSwitch();
 
+	bool hasIncomingUnits() const;
 	void updateIncomingUnits();
 	void addIncomingUnit(CvUnitAI& unit, int numTravelTurns);
 
