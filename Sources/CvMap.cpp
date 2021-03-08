@@ -402,7 +402,7 @@ void CvMap::updateIncomingUnits()
 	{
 		if ((*itr).second-- <= 0)
 		{
-			if (!plotsInitialized())
+			//if (!plotsInitialized())
 			{
 				GC.switchMap(getType());
 				//generatePlots();
