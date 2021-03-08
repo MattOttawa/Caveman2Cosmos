@@ -17,6 +17,7 @@
 #include "CvTeamAI.h"
 #include "CvViewport.h"
 #include "CvXMLLoadUtility.h"
+#include "CyGlobalContext.h"
 #include "FVariableSystem.h"
 #include <time.h> 
 #include <sstream>
@@ -54,9 +55,6 @@ void deleteInfoArray(std::vector<T*>& array)
 CvGlobals gGlobalsProxy;	// for debugging
 cvInternalGlobals* gGlobals = NULL;
 CvDLLUtilityIFaceBase* gDLL = NULL;
-
-int g_iPercentDefault = 100;
-int g_iModifierDefault = 0;
 
 #ifdef _DEBUG
 int inDLL = 0;
@@ -132,7 +130,6 @@ cvInternalGlobals::cvInternalGlobals()
 	, m_Profiler(NULL)
 	, m_VarSystem(NULL)
 	, m_fPLOT_SIZE(0)
-	, m_bMultimapsEnabled(false)
 	, m_bViewportsEnabled(false)
 	, m_iViewportFocusBorder(0)
 	, m_iViewportCenterOnSelectionCenterBorder(5)
@@ -423,13 +420,10 @@ void cvInternalGlobals::init()
 
 	m_game = new CvGameAI;
 	
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
-	m_maps.push_back(new CvMap(MAP_INITIAL));
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
+	for (int i = 0; i < NUM_MAPS; i++)
+	{
+		m_maps.push_back(new CvMap((MapTypes)i));
+	}
 
 	CvPlayerAI::initStatics();
 	CvTeamAI::initStatics();
@@ -609,75 +603,16 @@ DirectionTypes cvInternalGlobals::getXYDirection(int i, int j) const
 	return m_aaeXYDirection[i][j];
 }
 
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
-bool cvInternalGlobals::multiMapsEnabled() const
-{
-	return m_bMultimapsEnabled;
-}
-
-bool cvInternalGlobals::viewportsEnabled() const
-{
-	return m_bViewportsEnabled;
-}
-
-bool cvInternalGlobals::getReprocessGreatWallDynamically() const
-{
-	return m_bViewportsEnabled || (getDefineBOOL("DYNAMIC_GREAT_WALL") != 0);
-}
-
 int cvInternalGlobals::getNumMapInfos() const
 {
-	return multiMapsEnabled() ? m_paMapInfo.size() : 1;
-}
-
-int cvInternalGlobals::getNumMapSwitchInfos() const
-{
-	return m_paMapSwitchInfo.size();
+	return m_paMapInfo.size();
 }
 
 CvMapInfo& cvInternalGlobals::getMapInfo(MapTypes eMap) const
 {
-	FASSERT_BOUNDS(0, GC.getNumMapInfos(), eMap)
+	FASSERT_BOUNDS(0, NUM_MAPS, eMap)
 	return *(m_paMapInfo[eMap]);
 }
-
-CvMapSwitchInfo& cvInternalGlobals::getMapSwitchInfo(MapSwitchTypes eMapSwitch) const
-{
-	FASSERT_BOUNDS(0, GC.getNumMapSwitchInfos(), eMapSwitch)
-	return *(m_paMapSwitchInfo[eMapSwitch]);
-}
-
-void cvInternalGlobals::updateMaps()
-{
-	for (int i = 1; i < GC.getNumMapInfos(); i++)
-	{
-		m_maps.push_back(NULL);
-	}
-	FAssert(m_maps.size() == GC.getNumMapInfos());
-
-	for (int i = 0; i < MAX_PLAYERS; i++)
-	{
-		GET_PLAYER((PlayerTypes)i).addContainersForEachMap();
-	}
-}
-
-void cvInternalGlobals::setResourceLayer(bool bOn)
-{
-	m_bResourceLayerOn = bOn;
-
-	gDLL->getEngineIFace()->setResourceLayer(bOn);
-}
-
-bool cvInternalGlobals::getResourceLayer() const
-{
-	return m_bResourceLayerOn;
-}
-
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 int cvInternalGlobals::getNumWorldInfos() const
 {
@@ -1374,7 +1309,6 @@ CvInfoBase& cvInternalGlobals::getDomainInfo(DomainTypes e) const
 	return *(m_paDomainInfo[e]);
 }
 
-//TB Promotion Line Mod begin
 int cvInternalGlobals::getNumPromotionLineInfos() const
 {
 	return (int)m_paPromotionLineInfo.size();
@@ -1384,18 +1318,6 @@ CvPromotionLineInfo& cvInternalGlobals::getPromotionLineInfo(PromotionLineTypes 
 {
 	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), e)
 	return *(m_paPromotionLineInfo[e]);
-}
-//TB Promotion Line Mod end
-
-int cvInternalGlobals::getNumMapCategoryInfos() const
-{
-	return (int)m_paMapCategoryInfo.size();
-}
-
-CvMapCategoryInfo& cvInternalGlobals::getMapCategoryInfo(MapCategoryTypes e) const
-{
-	FASSERT_BOUNDS(0, GC.getNumMapCategoryInfos(), e)
-	return *(m_paMapCategoryInfo[e]);
 }
 
 int cvInternalGlobals::getNumIdeaClassInfos() const
@@ -1784,6 +1706,25 @@ void cvInternalGlobals::registerMissions()
 	REGISTER_MISSION(MISSION_BUILD_DOMESTICATED_HERD);
 	REGISTER_MISSION(MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_GATHERER);
 	REGISTER_MISSION(MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_TRACKER);
+#ifdef PARALLEL_MAPS
+	REGISTER_MISSION(MISSION_GO_TO_MAP_EARTH);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_SUBTERRANEAN);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_AQUATIC);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_CISLUNAR);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_LUNAR);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_SOLAR_SYSTEM);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_MARTIAN);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_VENUSIAN);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_JOVIAN);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_TITANIC);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_INTERSTELLAR);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_PLASMA);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_GALACTIC);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_MILKY_WAY);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_UNIVERSAL);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_DISTANT);
+	REGISTER_MISSION(MISSION_GO_TO_MAP_HYPERSPACE);
+#endif
 }
 
 CvInfoBase& cvInternalGlobals::getAttitudeInfo(AttitudeTypes eAttitudeNum) const
@@ -2752,10 +2693,7 @@ void cvInternalGlobals::deleteInfoArrays()
 	deleteInfoArray(m_paDenialInfo);
 	deleteInfoArray(m_paInvisibleInfo);
 	deleteInfoArray(m_paUnitCombatInfo);
-	//TB Promotion Line mod begin
 	deleteInfoArray(m_paPromotionLineInfo);
-	//TB Promotion Line mod end
-	deleteInfoArray(m_paMapCategoryInfo);
 	deleteInfoArray(m_paIdeaClassInfo);
 	deleteInfoArray(m_paIdeaInfo);
 	//deleteInfoArray(m_paTraitOptionEditsInfo);
@@ -2944,15 +2882,37 @@ void cvInternalGlobals::cacheInfoTypes()
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
+bool cvInternalGlobals::viewportsEnabled() const
+{
+	return m_bViewportsEnabled;
+}
+
+bool cvInternalGlobals::getReprocessGreatWallDynamically() const
+{
+	return m_bViewportsEnabled || getDefineBOOL("DYNAMIC_GREAT_WALL");
+}
+
+void cvInternalGlobals::setResourceLayer(bool bOn)
+{
+	m_bResourceLayerOn = bOn;
+
+	gDLL->getEngineIFace()->setResourceLayer(bOn);
+}
+
+bool cvInternalGlobals::getResourceLayer() const
+{
+	return m_bResourceLayerOn;
+}
 
 void cvInternalGlobals::switchMap(MapTypes eMap)
 {	
-	FASSERT_BOUNDS(0, GC.getNumMapInfos(), eMap);
-	FAssert(eMap != CURRENT_MAP);
+	FASSERT_BOUNDS(0, NUM_MAPS, eMap)
+	FAssert(eMap != CURRENT_MAP)
 
-	GC.getMap().beforeSwitch();
-	GC.getGame().setCurrentMap(eMap);
-	GC.getMap().afterSwitch();
+	getMap().beforeSwitch();
+	getGame().setCurrentMap(eMap);
+	*CyGlobalContext::getInstance().getCyMap() = getMap();
+	getMap().afterSwitch();
 }
 
 CvViewport* cvInternalGlobals::getCurrentViewport() const
@@ -2992,7 +2952,7 @@ CvMapExternal& cvInternalGlobals::getMapExternal() const
 
 CvMap& cvInternalGlobals::getMapByIndex(MapTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumMapInfos(), eIndex)
+	FASSERT_BOUNDS(0, NUM_MAPS, eIndex)
 	return *m_maps[eIndex];
 }
 
@@ -3011,36 +2971,9 @@ void cvInternalGlobals::reprocessSigns()
 		m_bSignsCleared = false;
 	}
 }
-
-void cvInternalGlobals::initializeMap(MapTypes eMap)
-{
-	OutputDebugString("Initializing Map: Start\n");
-	while ( m_maps.size() < (size_t)eMap )
-	{
-		//	Sparse or out of order initialization
-		m_maps.push_back(NULL);
-	}
-
-	FAssertMsg(m_maps[eMap] == NULL, "Memory leak allocating a map that already exists");
-
-	m_maps[eMap] = new CvMap(eMap);
-
-	for (int i = 0; i < MAX_PLAYERS; i++)
-	{
-		GET_PLAYER((PlayerTypes)i).initContainersForMap(eMap);
-	}
-	OutputDebugString("Initializing Map: End\n");
-}
-
-bool cvInternalGlobals::mapInitialized(MapTypes eMap) const
-{
-	return (m_maps.size() > (size_t)eMap && m_maps[eMap] != NULL);
-}
-
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
-
 
 void cvInternalGlobals::addDelayedResolution(int *pType, CvString szString)
 {
@@ -3090,7 +3023,12 @@ int cvInternalGlobals::getNumMissionInfos() const
 	return (int) m_paMissionInfo.size();
 }
 
-inline CvMap& cvInternalGlobals::getMap() const
+CvMap& cvInternalGlobals::getMap()
+{
+	return *m_maps[GC.getGame().getCurrentMap()];
+}
+
+const CvMap& cvInternalGlobals::getMap() const
 {
 	return *m_maps[GC.getGame().getCurrentMap()];
 }

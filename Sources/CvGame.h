@@ -78,6 +78,7 @@ public:
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
+	MapTypes getNextMap() const;
 	MapTypes getCurrentMap() const;
 	void setCurrentMap(MapTypes eNewMap);
 
@@ -339,7 +340,7 @@ public:
 	void findLakes();
 	void pruneLandmarks();
 	void removeAdjacentLandmarks(const CvPlot* pCenterPlot, const CvPlot* pExceptionPlot = NULL, int iRadius = 1);
-	void clearLandmarks(bool bClear = true);
+	void clearLandmarks();
 	void updateInitialSigns();
 
 	void doFoundCorporation(CorporationTypes eCorporation, bool bForce);

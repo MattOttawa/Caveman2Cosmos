@@ -128,7 +128,7 @@ public:
 	int startingPlotRange() const;
 	bool startingPlotWithinRange(CvPlot* pPlot, PlayerTypes ePlayer, int iRange, int iPass) const;
 	int startingPlotDistanceFactor(const CvPlot* pPlot, PlayerTypes ePlayer, int iRange) const;
-	int findStartingArea() const;
+	int findStartingArea(const CvMap& map) const;
 	CvPlot* findStartingPlot(bool bRandomize = false);
 
 	CvPlotGroup* initPlotGroup(CvPlot* pPlot, bool bRecalculateBonuses);
@@ -185,6 +185,12 @@ public:
 
 	void doTurn();
 	void doTurnUnits();
+#ifdef PARALLEL_MAPS_TURN
+	void doMapTurn();
+#endif
+
+	int getCurrentInflationCostModifier() const;
+	int getEquilibriumInflationCostModifier() const;
 
 	//	Dump stats to BBAI log
 	void dumpStats() const;
@@ -1053,9 +1059,6 @@ public:
 	CLLNode<CvWString>* nextCityNameNode(CLLNode<CvWString>* pNode) const;
 	CLLNode<CvWString>* headCityNameNode() const;
 
-	void addContainersForEachMap();
-	void initContainersForMap(MapTypes mapIndex);
-
 	// plot groups iteration
 	DECLARE_INDEX_ITERATOR(const CvPlayer, CvPlotGroup, plot_group_iterator, firstPlotGroup, nextPlotGroup);
 	plot_group_iterator beginPlotGroups() const { return plot_group_iterator(this); }
@@ -1113,7 +1116,11 @@ public:
 	DllExport int getNumUnits() const;
 	CvUnit* getUnit(int iID) const;
 	CvUnit* addUnit();
+#ifdef PARALLEL_MAPS
+	CvUnit& addUnit(CvUnit& unit);
+#endif
 	void deleteUnit(int iID);
+	void deleteUnit(int iID, MapTypes map);
 
 	// selection groups iteration
 	DECLARE_INDEX_ITERATOR(const CvPlayer, CvSelectionGroup, group_iterator, firstSelectionGroup, nextSelectionGroup);
@@ -1700,7 +1707,7 @@ public:
 	virtual int AI_totalUnitAIs(UnitAITypes eUnitAI) const = 0;
 	virtual int AI_totalAreaUnitAIs(const CvArea* pArea, UnitAITypes eUnitAI) const = 0;
 	virtual int AI_totalWaterAreaUnitAIs(const CvArea* pArea, UnitAITypes eUnitAI) const = 0;
-	virtual int AI_plotTargetMissionAIs(CvPlot* pPlot, MissionAITypes eMissionAI, const CvSelectionGroup* pSkipSelectionGroup = NULL, int iRange = 0, int* piClosest = NULL) const = 0;
+	virtual int AI_plotTargetMissionAIs(const CvPlot* pPlot, MissionAITypes eMissionAI, const CvSelectionGroup* pSkipSelectionGroup = NULL, int iRange = 0, int* piClosest = NULL) const = 0;
 	virtual int AI_unitTargetMissionAIs(const CvUnit* pUnit, MissionAITypes eMissionAI, const CvSelectionGroup* pSkipSelectionGroup = NULL) const = 0;
 
 	virtual int AI_civicValue(CivicTypes eCivic, bool bCivicOptionVacuum = false, CivicTypes* paeSelectedCivics = NULL) const = 0;
@@ -1727,8 +1734,8 @@ public:
 	virtual int AI_maxGoldTrade(PlayerTypes ePlayer) const = 0;
 protected:
 
-	int m_iStartingX;
-	int m_iStartingY;
+	std::vector<int> m_vStartingX;
+	std::vector<int> m_vStartingY;
 	int m_iTotalPopulation;
 	int m_iTotalLand;
 	int m_iTotalLandScored;

@@ -102,10 +102,6 @@ public:
 	inline ViewportMode getState() const { return m_mode; }
 
 	virtual void erasePlots();
-	virtual void setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly = false);
-	virtual void setAllPlotTypes(PlotTypes ePlotType);
-
-	virtual void doTurn();
 
 	virtual void updateFlagSymbols();
 
@@ -131,7 +127,6 @@ public:
 	virtual CvArea* findBiggestArea(bool bWater) const;
 
 	virtual int getMapFractalFlags() const;
-	virtual bool findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const;
 
 	virtual bool isPlot(int iX, int iY) const;
 	virtual int numPlots() const;
@@ -171,10 +166,23 @@ public:
 	virtual int getNumCustomMapOptions() const;
 	virtual CustomMapOptionTypes getCustomMapOption(int iOption) const;
 
-	virtual CvPlot* plotByIndex(int iIndex) const;
-	virtual CvPlot* plot(int iX, int iY) const;
-	virtual CvPlot* pointToPlot(float fX, float fY) const;
-	inline CvPlot* plotSorenINLINE(int iX, int iY) const
+	virtual CvPlot* plotByIndex(int iIndex);
+	virtual const CvPlot* plotByIndex(int iIndex) const;
+
+	virtual CvPlot* plot(int iX, int iY);
+	virtual const CvPlot* plot(int iX, int iY) const;
+
+	virtual CvPlot* pointToPlot(float fX, float fY);
+	inline CvPlot* plotSorenINLINE(int iX, int iY)
+	{
+		if ((iX == INVALID_PLOT_COORD) || (iY == INVALID_PLOT_COORD))
+		{
+			return NULL;
+		}
+		return plot(iX, iY);
+	}
+
+	inline const CvPlot* plotSorenINLINE(int iX, int iY) const
 	{
 		if ((iX == INVALID_PLOT_COORD) || (iY == INVALID_PLOT_COORD))
 		{

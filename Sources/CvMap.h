@@ -10,15 +10,19 @@
 //-----------------------------------------------------------------------------
 //	Copyright (c) 2004 Firaxis Games, Inc. All rights reserved.
 //-----------------------------------------------------------------------------
-//
 
 #include "CvMapInterfaceBase.h"
 #include "CvPlot.h"
+#include "CvPropertySolver.h"
 
 class CvArea;
 class CvCity;
 class CvPlotGroup;
 class CvSelectionGroup;
+#ifdef PARALLEL_MAPS
+class CvUnit;
+class CvUnitAI;
+#endif
 class CvViewport;
 
 inline int coordRange(int iCoord, int iRange, bool bWrap)
@@ -37,7 +41,6 @@ inline int coordRange(int iCoord, int iRange, bool bWrap)
 	return iCoord;
 }
 
-
 //
 // CvMap
 //
@@ -46,7 +49,7 @@ class CvMap : public CvMapInterfaceBase
 	friend class CyMap;
 
 public:
-	explicit CvMap(/* Parallel Maps */ MapTypes eMap);
+	explicit CvMap(MapTypes eMap);
 	virtual ~CvMap();
 
 	CvMapInterfaceBase*	getUnderlyingMap() const { return const_cast<CvMap*>(this); }
@@ -55,19 +58,23 @@ public:
 	void setupGraphical();
 	void reset(CvMapInitData* pInitData);
 
-	void uninit();
 protected:
-
+	void uninit();
 	void setup();
 
 public:
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 	MapTypes getType() const;
 
 	void beforeSwitch();
 	void afterSwitch();
+
+	bool hasIncomingUnits() const;
+	void updateIncomingUnits();
+	void addIncomingUnit(CvUnitAI& unit, int numTravelTurns);
+
+	bool plotsInitialized() const;
+
+	const char* getMapScript() const;
 
 	//	Viewports are owned by their underlying maps
 	int	getNumViewports() const;
@@ -76,16 +83,13 @@ public:
 	void deleteViewport(int iIndex);
 	void setCurrentViewport(int iIndex);
 	CvViewport* getCurrentViewport() const;
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 	void erasePlots();
 	void setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly = false);
 	void resetRevealedPlots(TeamTypes eTeam);
 	void setAllPlotTypes(PlotTypes ePlotType);
 
-	void doTurn();
+	void doTurn(CvMainPropertySolver& pPropertySolver);
 
 	void updateFlagSymbolsInternal(bool bForce);
 	void updateFlagSymbols();
@@ -115,7 +119,7 @@ public:
 	CvArea* findBiggestArea(bool bWater) const;
 
 	int getMapFractalFlags() const;
-	bool findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const;
+	bool findWater(const CvPlot& pPlot, int iRange) const;
 
 	inline bool isPlot(int iX, int iY) const
 	{
@@ -173,12 +177,22 @@ public:
 	int getNumBonusesOnLand(BonusTypes eIndex) const;
 	void changeNumBonusesOnLand(BonusTypes eIndex, int iChange);
 
-	inline CvPlot* plotByIndex(int iIndex) const
+	std::vector<CvPlot>& plots() { return m_pMapPlots; }
+	const std::vector<CvPlot>& plots() const { return m_pMapPlots; }
+
+	inline CvPlot* plotByIndex(int iIndex)
 	{
-		return (iIndex >= 0 && iIndex < getGridWidth() * getGridHeight()) ? &(m_pMapPlots[iIndex]) : NULL;
+		FASSERT_BOUNDS(0, getGridWidth() * getGridHeight(), iIndex)
+		return &m_pMapPlots[iIndex];
 	}
 
-	__forceinline CvPlot* plot(int iX, int iY) const
+	inline const CvPlot* plotByIndex(int iIndex) const
+	{
+		FASSERT_BOUNDS(0, getGridWidth() * getGridHeight(), iIndex)
+		return &m_pMapPlots[iIndex];
+	}
+
+	inline CvPlot* plot(int iX, int iY)
 	{
 		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
 		{
@@ -186,19 +200,39 @@ public:
 		}
 		const int iMapX = coordRange(iX, getGridWidth(), isWrapX());
 		const int iMapY = coordRange(iY, getGridHeight(), isWrapY());
-		return isPlot(iMapX, iMapY) ? &(m_pMapPlots[plotNum(iMapX, iMapY)]) : NULL;
+		return isPlot(iMapX, iMapY) ? &m_pMapPlots[plotNum(iMapX, iMapY)] : NULL;
 	}
 
-	__forceinline CvPlot* plotSorenINLINE(int iX, int iY) const
+	inline const CvPlot* plot(int iX, int iY) const
 	{
 		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
 		{
 			return NULL;
 		}
-		return &(m_pMapPlots[plotNum(iX, iY)]);
+		const int iMapX = coordRange(iX, getGridWidth(), isWrapX());
+		const int iMapY = coordRange(iY, getGridHeight(), isWrapY());
+		return isPlot(iMapX, iMapY) ? &m_pMapPlots[plotNum(iMapX, iMapY)] : NULL;
 	}
 
-	CvPlot* pointToPlot(float fX, float fY) const;
+	inline CvPlot* plotSorenINLINE(int iX, int iY)
+	{
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
+		return &m_pMapPlots[plotNum(iX, iY)];
+	}
+
+	inline const CvPlot* plotSorenINLINE(int iX, int iY) const
+	{
+		if (iX == INVALID_PLOT_COORD || iY == INVALID_PLOT_COORD)
+		{
+			return NULL;
+		}
+		return &m_pMapPlots[plotNum(iX, iY)];
+	}
+
+	CvPlot* pointToPlot(float fX, float fY);
 
 	int getIndexAfterLastArea() const;
 	int getNumAreas() const;
@@ -268,10 +302,15 @@ protected:
 	bool m_bCitiesDisplayed;
 	bool m_bUnitsDisplayed;
 
-	CvPlot* m_pMapPlots;
+	std::vector<CvPlot> m_pMapPlots;
 
 	FFreeListTrashArray<CvArea> m_areas;
 
+#ifdef PARALLEL_MAPS
+	typedef std::pair<CvUnitAI, int> IncomingUnit;
+	std::vector<IncomingUnit> m_IncomingUnits;
+#endif
+	void generatePlots();
 	void calculateAreas();
 };
 

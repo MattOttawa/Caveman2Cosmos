@@ -36,7 +36,7 @@
 
 // Public Functions...
 
-CvMap::CvMap(MapTypes eType) /* Parallel Maps */
+CvMap::CvMap(MapTypes eType)
 	: m_iGridWidth(0)
 	, m_iGridHeight(0)
 	, m_iLandPlots(0)
@@ -84,7 +84,7 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 		GC.getSeaLevelInfo(GC.getInitCore().getSeaLevel()).getDescription(),
 		GC.getInitCore().getNumCustomMapOptions()).c_str() );
 
-	Cy::call_optional(gDLL->getPythonIFace()->getMapScriptModule(), "beforeInit");
+	Cy::call_optional(getMapScript(), "beforeInit");
 
 	//--------------------------------
 	// Init saved data
@@ -101,7 +101,13 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init other game data
 	gDLL->logMemState("CvMap before init plots");
-	m_pMapPlots = new CvPlot[numPlots()];
+	//m_pMapPlots = std::vector<CvPlot>(numPlots(), CvPlot());
+	//m_pMapPlots.reserve(numPlots());
+	//m_pMapPlots.resize(numPlots());
+	for (int iI = 0; iI < numPlots(); iI++)
+	{
+		m_pMapPlots.push_back(CvPlot());
+	}
 	for (int iX = 0; iX < getGridWidth(); iX++)
 	{
 		gDLL->callUpdater();
@@ -121,8 +127,6 @@ void CvMap::uninit()
 {
 	SAFE_DELETE_ARRAY(m_paiNumBonus);
 	SAFE_DELETE_ARRAY(m_paiNumBonusOnLand);
-
-	SAFE_DELETE_ARRAY(m_pMapPlots);
 
 	m_areas.uninit();
 
@@ -162,7 +166,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 		if (GC.getInitCore().getWorldSize() != NO_WORLDSIZE)
 		{
 			std::vector<int> out;
-			if (Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getGridSize", Cy::Args() << GC.getInitCore().getWorldSize(), out)
+			if (Cy::call_override(getMapScript(), "getGridSize", Cy::Args() << GC.getInitCore().getWorldSize(), out)
 				&& out.size() == 2)
 			{
 				m_iGridWidth = out[0];
@@ -191,8 +195,8 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 	{
 		// Check map script for latitude override (map script beats ini file)	
 		long resultTop = 0, resultBottom = 0;
-		if(Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getTopLatitude", resultTop)
-			&& Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getBottomLatitude", resultBottom))
+		if (Cy::call_override(getMapScript(), "getTopLatitude", resultTop)
+		&&  Cy::call_override(getMapScript(), "getBottomLatitude", resultBottom))
 		{
 			m_iTopLatitude = resultTop;
 			m_iBottomLatitude = resultBottom;
@@ -220,8 +224,8 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 	{
 		// Check map script for wrap override (map script beats ini file)
 		long resultX = 0, resultY = 0;
-		if (Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getWrapX", resultX)
-			&& Cy::call_override(gDLL->getPythonIFace()->getMapScriptModule(), "getWrapY", resultY))
+		if (Cy::call_override(getMapScript(), "getWrapX", resultX)
+		&&  Cy::call_override(getMapScript(), "getWrapY", resultY))
 		{
 			m_bWrapX = (resultX != 0);
 			m_bWrapY = (resultY != 0);
@@ -231,9 +235,8 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-	//Koshling - why do we ignore the map size in MapInfos if there is only 1???  Changed that for now
-	//if (GC.getNumMapInfos() > 1)
-	if (GC.multiMapsEnabled() /*&& GC.getMapInfos().size() > 0*/)
+/*
+	if (m_eType > MAP_EARTH)
 	{
 		if (GC.getMapInfo(getType()).getGridWidth() > 0 && GC.getMapInfo(getType()).getGridHeight() > 0)
 		{
@@ -246,6 +249,7 @@ void CvMap::reset(CvMapInitData* pInitInfo)
 			m_bWrapY = GC.getMapInfo(getType()).getWrapY();
 		}
 	}
+*/
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
@@ -301,26 +305,18 @@ void CvMap::setupGraphical()
 {
 	PROFILE_FUNC();
 
-	if (GC.IsGraphicsInitialized() && m_pMapPlots != NULL)
+	if (GC.IsGraphicsInitialized() && m_pMapPlots.size() > 0)
 	{
-		for (int iI = 0; iI < numPlots(); iI++)
-		{
-			if ( (iI % 10) == 0 )
-			{
-				gDLL->callUpdater();	// allow windows msgs to update
-			}
-			plotByIndex(iI)->setupGraphical();
-		}
+		gDLL->callUpdater();	// allow windows msgs to update
+
+		algo::for_each(plots(), bind(CvPlot::setupGraphical, _1));
 	}
 }
 
 
 void CvMap::erasePlots()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->erase();
-	}
+	algo::for_each(plots(), bind(CvPlot::erase, _1));
 }
 
 
@@ -328,10 +324,7 @@ void CvMap::setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly)
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->setRevealed(eTeam, bNewValue, bTerrainOnly, NO_TEAM, false);
-	}
+	algo::for_each(plots(), bind(CvPlot::setRevealed, _1, eTeam, bNewValue, bTerrainOnly, NO_TEAM, false));
 
 	GC.getGame().updatePlotGroups();
 }
@@ -341,13 +334,10 @@ void CvMap::resetRevealedPlots(TeamTypes eTeam)
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		if (!plotByIndex(iI)->isVisible(eTeam, false))
-		{
-			plotByIndex(iI)->setRevealed(eTeam, false, false, NO_TEAM, false);
-		}
-	}
+	algo::for_each(plots()
+		| filtered(!bind(CvPlot::isVisible, _1, eTeam, false))
+		, bind(CvPlot::setRevealed, _1, eTeam, false, false, NO_TEAM, false)
+	);
 
 	GC.getGame().updatePlotGroups();
 }
@@ -357,10 +347,7 @@ void CvMap::setAllPlotTypes(PlotTypes ePlotType)
 {
 	//float startTime = (float) timeGetTime();
 
-	for(int i = 0; i < numPlots(); i++)
-	{
-		plotByIndex(i)->setPlotType(ePlotType, false, false);
-	}
+	algo::for_each(plots(), bind(CvPlot::setPlotType, _1, ePlotType, false, false));
 
 	recalculateAreas();
 
@@ -376,15 +363,101 @@ void CvMap::setAllPlotTypes(PlotTypes ePlotType)
 }
 
 
-// XXX generalize these funcs? (macro?)
-void CvMap::doTurn()
+#ifdef PARALLEL_MAPS
+void CvMap::generatePlots()
+{
+	if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
+	{
+		CyArgsList argsList;
+		long lResult;
+
+		char mapPath[1024];
+		getcwd(mapPath, 1024);
+		strcat(mapPath, GC.getMapInfo(getType()).getInitialWBMap().GetCString());
+
+		argsList.add(mapPath);
+		gDLL->getPythonIFace()->callFunction(PYWorldBuilderModule, "readAndApplyDesc", argsList.makeFunctionArgs(), &lResult);
+		if (lResult < 0) // failed
+		{
+			AddDLLMessage((PlayerTypes)0, true, GC.getEVENT_MESSAGE_TIME(), L"Worldbuilder map failed to load");
+		}
+	}
+	else
+	{
+		init();
+		CvMapGenerator& kGenerator = CvMapGenerator::GetInstance();
+		kGenerator.generateRandomMap();
+		kGenerator.addGameElements();
+	}
+}
+
+bool CvMap::hasIncomingUnits() const
+{
+	return !m_IncomingUnits.empty();
+}
+
+void CvMap::updateIncomingUnits()
+{
+	for (std::vector<IncomingUnit>::iterator itr = m_IncomingUnits.begin(), itrEnd = m_IncomingUnits.end(); itr != itrEnd; ++itr)
+	{
+		if ((*itr).second-- <= 0)
+		{
+			//if (!plotsInitialized())
+			{
+				GC.switchMap(getType());
+				//generatePlots();
+			}
+			CvUnit& offMapUnit = (*itr).first;
+			CvPlayer& owner = GET_PLAYER(offMapUnit.getOwner());
+			CvPlot* startingPlot = owner.findStartingPlot();
+			//CvUnit& onMapUnit = owner.addUnit(offMapUnit);
+			CvUnit* onMapUnit = owner.initUnit(offMapUnit.getUnitType(), startingPlot->getX(), startingPlot->getY(), offMapUnit.AI_getUnitAIType(), NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
+			if (onMapUnit == NULL)
+			{
+				FErrorMsg("CvPlayer::initUnit returned NULL");
+				continue;
+			}
+			//onMapUnit.setXY(startingPlot->getX(), startingPlot->getY());
+			//onMapUnit.reloadEntity(true);
+			m_IncomingUnits.erase(itr);
+		}
+	}
+}
+#endif
+
+
+void CvMap::doTurn(CvMainPropertySolver& pPropertySolver)
 {
 	MEMORY_TRACE_FUNCTION();
 	PROFILE("CvMap::doTurn()")
 
-	for (int iI = 0; iI < numPlots(); iI++)
+#ifdef PARALLEL_MAPS
+	updateIncomingUnits();
+#endif
+
+	if (plotsInitialized())
 	{
-		plotByIndex(iI)->doTurn();
+		pPropertySolver.doTurn(); // solve property system
+
+		//for (int iI = 0; iI < MAX_TEAMS; iI++)
+		//{
+		//	CvTeam& team = GET_TEAM((TeamTypes)iI);
+		//	if (team.isAlive())
+		//	{
+		//		team.doMapTurn();
+		//	}
+		//}
+
+		for (int iI = 0; iI < MAX_PLAYERS; iI++)
+		{
+			CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
+			if (player.isAlive())
+			{
+				player.doMapTurn();
+			}
+		}
+
+		algo::for_each(plots(), bind(CvPlot::doTurn, _1));
 	}
 }
 
@@ -398,14 +471,12 @@ void CvMap::updateFlagSymbolsInternal(bool bForce)
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
+	foreach_(CvPlot& plot, plots())
 	{
-		CvPlot* pLoopPlot = plotByIndex(iI);
-
-		if (bForce || pLoopPlot->isFlagDirty())
+		if (bForce || plot.isFlagDirty())
 		{
-			pLoopPlot->updateFlagSymbol();
-			pLoopPlot->setFlagDirty(false);
+			plot.updateFlagSymbol();
+			plot.setFlagDirty(false);
 		}
 	}
 }
@@ -415,28 +486,19 @@ void CvMap::updateFog()
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateFog();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateFog, _1));
 }
 
 
 void CvMap::updateVisibility()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateVisibility();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateVisibility, _1));
 }
 
 
 void CvMap::updateSymbolVisibility()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateSymbolVisibility();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateSymbolVisibility, _1));
 }
 
 
@@ -446,10 +508,7 @@ void CvMap::updateSymbols()
 
 	//	Ignore this while we are demand-creating symbols to minimize memory usage - REMOVED FOR NOW FOR VIEWPORTS
 	
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateSymbols();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateSymbols, _1));
 }
 
 
@@ -457,21 +516,15 @@ void CvMap::updateMinimapColor()
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateMinimapColor();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateMinimapColor, _1));
 }
 
 
 void CvMap::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateSight(bIncrement, false);
-	}
+	algo::for_each(plots(), bind(CvPlot::updateSight, _1, bIncrement, false));
 
-	if ( bUpdatePlotGroups )
+	if (bUpdatePlotGroups)
 	{
 		GC.getGame().updatePlotGroups();
 	}
@@ -480,28 +533,19 @@ void CvMap::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 
 void CvMap::updateIrrigated()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateIrrigated();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateIrrigated, _1));
 }
 
 
 void CvMap::updateCenterUnit()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateCenterUnit();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateCenterUnit, _1));
 }
 
 
 void CvMap::updateWorkingCity()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateWorkingCity();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateWorkingCity, _1));
 }
 
 
@@ -509,39 +553,26 @@ void CvMap::updateMinOriginalStartDist(const CvArea* pArea)
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		CvPlot* pLoopPlot = plotByIndex(iI);
+	algo::for_each(plots()
+		| filtered(bind(CvPlot::area, _1) == pArea)
+		, bind(CvPlot::setMinOriginalStartDist, _1, -1)
+	);
 
-		if (pLoopPlot->area() == pArea)
-		{
-			pLoopPlot->setMinOriginalStartDist(-1);
-		}
-	}
-
-	for (iI = 0; iI < MAX_PC_PLAYERS; iI++)
+	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 	{
 		const CvPlot* pStartingPlot = GET_PLAYER((PlayerTypes)iI).getStartingPlot();
 
 		if (pStartingPlot != NULL && pStartingPlot->area() == pArea)
 		{
-			for (int iJ = 0; iJ < numPlots(); iJ++)
+			foreach_(CvPlot& pLoopPlot, plots() | filtered(bind(CvPlot::area, _1) == pArea))
 			{
-				CvPlot* pLoopPlot = plotByIndex(iJ);
+				const int iDist = stepDistance(pStartingPlot->getX(), pStartingPlot->getY(), pLoopPlot.getX(), pLoopPlot.getY());
 
-				if (pLoopPlot->area() == pArea)
+				if (iDist != -1)
 				{
-					//iDist = GC.getMap().calculatePathDistance(pStartingPlot, pLoopPlot);
-					const int iDist = stepDistance(pStartingPlot->getX(), pStartingPlot->getY(), pLoopPlot->getX(), pLoopPlot->getY());
-
-					if (iDist != -1)
+					if ((pLoopPlot.getMinOriginalStartDist() == -1) || (iDist < pLoopPlot.getMinOriginalStartDist()))
 					{
-					    //int iCrowDistance = plotDistance(pStartingPlot->getX(), pStartingPlot->getY(), pLoopPlot->getX(), pLoopPlot->getY());
-					    //iDist = std::min(iDist,  iCrowDistance * 2);
-						if ((pLoopPlot->getMinOriginalStartDist() == -1) || (iDist < pLoopPlot->getMinOriginalStartDist()))
-						{
-							pLoopPlot->setMinOriginalStartDist(iDist);
-						}
+						pLoopPlot.setMinOriginalStartDist(iDist);
 					}
 				}
 			}
@@ -552,19 +583,13 @@ void CvMap::updateMinOriginalStartDist(const CvArea* pArea)
 
 void CvMap::updateYield()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->updateYield();
-	}
+	algo::for_each(plots(), bind(CvPlot::updateYield, _1));
 }
 
 
 void CvMap::verifyUnitValidPlot()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->verifyUnitValidPlot();
-	}
+	algo::for_each(plots(), bind(CvPlot::verifyUnitValidPlot, _1));
 }
 
 
@@ -602,18 +627,7 @@ CvPlot* CvMap::syncRandPlot(int iFlags, int iArea, int iMinUnitDistance, int iTi
 
 	while (iCount < iTimeout)
 	{
-/*************************************************************************************************/
-/**	Xienwolf Tweak							12/13/08											**/
-/**																								**/
-/**					Reduction in massive Random Spam in Logger files by using Map				**/
-/*************************************************************************************************/
-/**								---- Start Original Code ----									**
-		pTestPlot = plotSorenINLINE(GC.getGame().getSorenRandNum(getGridWidth(), "Rand Plot Width"), GC.getGame().getSorenRandNum(getGridHeight(), "Rand Plot Height"));
-/**								----  End Original Code  ----									**/
 		CvPlot* pTestPlot = plotSorenINLINE(GC.getGame().getMapRandNum(getGridWidth(), "Rand Plot Width"), GC.getGame().getMapRandNum(getGridHeight(), "Rand Plot Height"));
-/*************************************************************************************************/
-/**	Tweak									END													**/
-/*************************************************************************************************/
 
 		FAssertMsg(pTestPlot != NULL, "TestPlot is not assigned a valid value");
 
@@ -621,20 +635,10 @@ CvPlot* CvMap::syncRandPlot(int iFlags, int iArea, int iMinUnitDistance, int iTi
 		{
 			bool bValid = true;
 
-			if (iMinUnitDistance != -1)
+			if (iMinUnitDistance != -1
+			&& algo::any_of(CvPlot::rect(pTestPlot->getX(), pTestPlot->getY(), iMinUnitDistance, iMinUnitDistance), bind(CvPlot::isUnit, _1)))
 			{
-				for (int iDX = -(iMinUnitDistance); iDX <= iMinUnitDistance; iDX++)
-				{
-					for (int iDY = -(iMinUnitDistance); iDY <= iMinUnitDistance; iDY++)
-					{
-						const CvPlot* pLoopPlot = plotXY(pTestPlot->getX(), pTestPlot->getY(), iDX, iDY);
-
-						if (pLoopPlot != NULL && pLoopPlot->isUnit())
-						{
-							bValid = false;
-						}
-					}
-				}
+				bValid = false;
 			}
 
 			if (bValid)
@@ -838,19 +842,10 @@ int CvMap::getMapFractalFlags() const
 
 
 //"Check plots for wetlands or seaWater.  Returns true if found"
-bool CvMap::findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const
+bool CvMap::findWater(const CvPlot& pPlot, int iRange) const
 {
-	PROFILE("CvMap::findWater()");
-
-	foreach_(const CvPlot* pLoopPlot, CvPlot::rect(pPlot->getX(), pPlot->getY(), iRange, iRange))
-	{
-		if (bFreshWater ? pLoopPlot->isFreshWater() : pLoopPlot->isWater())
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return algo::any_of(CvPlot::rect(pPlot.getX(), pPlot.getY(), iRange, iRange),
+		bind(CvPlot::isFreshWater, _1) || bind(CvPlot::isWater, _1));
 }
 
 
@@ -931,7 +926,7 @@ int CvMap::getLandPlots() const
 void CvMap::changeLandPlots(int iChange)
 {
 	m_iLandPlots += iChange;
-	FAssert(getLandPlots() >= 0);
+	FASSERT_NOT_NEGATIVE(getLandPlots())
 }
 
 
@@ -944,7 +939,7 @@ int CvMap::getOwnedPlots() const
 void CvMap::changeOwnedPlots(int iChange)
 {
 	m_iOwnedPlots += iChange;
-	FAssert(getOwnedPlots() >= 0);
+	FASSERT_NOT_NEGATIVE(getOwnedPlots())
 }
 
 
@@ -1013,7 +1008,7 @@ void CvMap::changeNumBonuses(BonusTypes eIndex, int iChange)
 {
 	FASSERT_BOUNDS(0, GC.getNumBonusInfos(), eIndex)
 	m_paiNumBonus[eIndex] += iChange;
-	FAssertMsg(m_paiNumBonus[eIndex] >= 0, "Negative bonus occurance on the map!");
+	FASSERT_NOT_NEGATIVE(m_paiNumBonus[eIndex])
 }
 
 
@@ -1028,11 +1023,11 @@ void CvMap::changeNumBonusesOnLand(BonusTypes eIndex, int iChange)
 {
 	FASSERT_BOUNDS(0, GC.getNumBonusInfos(), eIndex)
 	m_paiNumBonusOnLand[eIndex] += iChange;
-	FAssert(getNumBonusesOnLand(eIndex) >= 0);
+	FASSERT_NOT_NEGATIVE(getNumBonusesOnLand(eIndex))
 }
 
 
-CvPlot* CvMap::pointToPlot(float fX, float fY) const
+CvPlot* CvMap::pointToPlot(float fX, float fY)
 {
 	return plot(pointXToPlotX(fX), pointYToPlotY(fY));
 }
@@ -1090,10 +1085,7 @@ void CvMap::recalculateAreas()
 {
 	PROFILE("CvMap::recalculateAreas");
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		plotByIndex(iI)->setArea(FFreeList::INVALID_INDEX);
-	}
+	algo::for_each(plots(), bind(CvPlot::setArea, _1, (int)FFreeList::INVALID_INDEX));
 
 	m_areas.removeAll();
 
@@ -1140,45 +1132,35 @@ int CvMap::calculatePathDistance(const CvPlot* pSource, const CvPlot* pDest, con
 // Super Forts begin *canal* *choke*
 void CvMap::calculateCanalAndChokePoints()
 {
-	for (int iI = 0; iI < numPlots(); iI++)
+	foreach_(CvPlot& plot, plots())
 	{
-		plotByIndex(iI)->calculateCanalValue();
-		plotByIndex(iI)->calculateChokeValue();
+		plot.calculateCanalValue();
+		plot.calculateChokeValue();
 		// TEMPORARY HARD CODE for testing purposes
-		/*if((plotByIndex(iI)->getChokeValue() > 0) || (plotByIndex(iI)->getCanalValue() > 0))
+		/*if((plot.getChokeValue() > 0) || (plot.getCanalValue() > 0))
 		{
-			ImprovementTypes eImprovement = (ImprovementTypes) (plotByIndex(iI)->isWater() ? GC.getInfoTypeForString("IMPROVEMENT_OFFSHORE_PLATFORM") : GC.getInfoTypeForString("IMPROVEMENT_FORT"));
-			plotByIndex(iI)->setImprovementType(eImprovement);
+			ImprovementTypes eImprovement = (ImprovementTypes) (plot.isWater() ? GC.getInfoTypeForString("IMPROVEMENT_OFFSHORE_PLATFORM") : GC.getInfoTypeForString("IMPROVEMENT_FORT"));
+			plot.setImprovementType(eImprovement);
 		}
 		else
 		{
-			plotByIndex(iI)->setImprovementType(NO_IMPROVEMENT);
+			plot.setImprovementType(NO_IMPROVEMENT);
 		}*/
 	}
 }
 // Super Forts end
 
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                      08/21/09                                jdog5000      */
-/*                                                                                              */
-/* Efficiency                                                                                   */
-/************************************************************************************************/
 // Plot danger cache
 void CvMap::invalidateIsActivePlayerNoDangerCache()
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
+	foreach_(CvPlot& plot, plots())
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot != NULL)
-		{
-			pLoopPlot->setIsActivePlayerNoDangerCache(false);
-			pLoopPlot->setIsActivePlayerHasDangerCache(false);
-			pLoopPlot->CachePathValidityResult(NULL,false,false);
-			pLoopPlot->CachePathValidityResult(NULL,true,false);
-		}
+		plot.setIsActivePlayerNoDangerCache(false);
+		plot.setIsActivePlayerHasDangerCache(false);
+		plot.CachePathValidityResult(NULL,false,false);
+		plot.CachePathValidityResult(NULL,true,false);
 	}
 }
 
@@ -1187,19 +1169,8 @@ void CvMap::invalidateIsTeamBorderCache(TeamTypes eTeam)
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
-
-		if (pLoopPlot != NULL)
-		{
-			pLoopPlot->setIsTeamBorderCache(eTeam, false);
-		}
-	}
+	algo::for_each(plots(), bind(CvPlot::setIsTeamBorderCache, _1, eTeam, false));
 }
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                       END                                                  */
-/************************************************************************************************/
 
 
 //
@@ -1208,8 +1179,8 @@ void CvMap::invalidateIsTeamBorderCache(TeamTypes eTeam)
 //
 void CvMap::read(FDataStreamBase* pStream)
 {
-	OutputDebugString("Reading Map: Start");
-	CvTaggedSaveFormatWrapper&	wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
+	OutputDebugString("Reading Map: Start\n");
+	CvTaggedSaveFormatWrapper& wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
 
 	wrapper.AttachToStream(pStream);
 
@@ -1240,12 +1211,13 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	if (numPlots() > 0)
 	{
-		m_pMapPlots = new CvPlot[numPlots()];
-
+		//m_pMapPlots = std::vector<CvPlot>(numPlots());
+		//m_pMapPlots.reserve(numPlots());
 		for (int iI = 0; iI < numPlots(); iI++)
 		{
-			m_pMapPlots[iI].read(pStream);
+			m_pMapPlots.push_back(CvPlot());
 		}
+		algo::for_each(plots(), bind(CvPlot::read, _1, pStream));
 	}
 
 	// call the read of the free list CvArea class allocations
@@ -1253,9 +1225,19 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	setup();
 
+	size_t numUnits;
+	WRAPPER_READ_DECORATED(wrapper, "CvMap", &numUnits, "numUnits")
+	for (uint32_t i = 0; i < numUnits; i++)
+	{
+		int turns;
+		WRAPPER_READ_DECORATED(wrapper, "CvMap", &turns, "turns")
+		m_IncomingUnits.push_back(std::make_pair(CvUnitAI(), turns));
+		m_IncomingUnits[i].first.read(pStream);
+	}
+
 	WRAPPER_READ_OBJECT_END(wrapper);
 
-	OutputDebugString("Reading Map: End");
+	OutputDebugString("Reading Map: End\n");
 }
 
 // save object to a stream
@@ -1284,21 +1266,23 @@ void CvMap::write(FDataStreamBase* pStream)
 	WRAPPER_WRITE_CLASS_ARRAY(wrapper, "CvMap" ,REMAPPED_CLASS_TYPE_BONUSES, GC.getNumBonusInfos(), m_paiNumBonus);
 	WRAPPER_WRITE_CLASS_ARRAY(wrapper, "CvMap" ,REMAPPED_CLASS_TYPE_BONUSES, GC.getNumBonusInfos(), m_paiNumBonusOnLand);
 
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		m_pMapPlots[iI].write(pStream);
-	}
+	algo::for_each(plots(), bind(CvPlot::write, _1, pStream));
 
 	// call the read of the free list CvArea class allocations
 	WriteStreamableFFreeListTrashArray(m_areas, pStream);
+
+	WRAPPER_WRITE_DECORATED(wrapper, "CvMap", m_IncomingUnits.size(), "numUnits")
+	foreach_(IncomingUnit& incomingUnit, m_IncomingUnits)
+	{
+		WRAPPER_WRITE_DECORATED(wrapper, "CvMap", incomingUnit.second, "turns")
+		incomingUnit.first.write(pStream);
+	}
 
 	WRAPPER_WRITE_OBJECT_END(wrapper);
 }
 
 void CvMap::beforeSwitch()
 {
-	PROFILE_FUNC();
-
 #ifdef THE_GREAT_WALL
 	if ( GC.getCurrentViewport()->getTransformType() == VIEWPORT_TRANSFORM_TYPE_WINDOW )
 	{
@@ -1347,55 +1331,17 @@ void CvMap::beforeSwitch()
 	
 	GC.clearSigns();
 
-	for (i = 0; i < numPlots(); i++)
-	{
-		plotByIndex(i)->destroyGraphics();
-	}
+	algo::for_each(plots(), bind(CvPlot::destroyGraphics, _1));
 }
 
 void CvMap::afterSwitch()
-{
-	PROFILE_FUNC();
-
-	if (m_pMapPlots == NULL)		// if it hasn't been initialized yet...
+{	
+	if (!plotsInitialized())
 	{
-		if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
-		{
-			CyArgsList argsList;
-			long lResult;
-
-			char mapPath[1024];
-			getcwd(mapPath, 1024);
-			strcat(mapPath, GC.getMapInfo(getType()).getInitialWBMap().GetCString());
-
-			argsList.add(mapPath);
-			gDLL->getPythonIFace()->callFunction(PYWorldBuilderModule, "readAndApplyDesc", argsList.makeFunctionArgs(), &lResult);
-			if (lResult < 0) // failed
-			{
-				AddDLLMessage((PlayerTypes)0, true, GC.getEVENT_MESSAGE_TIME(), L"Worldbuilder map failed to load");
-			}
-		}
-		else if (GC.getMapInfo(getType()).getMapScript().GetLength() > 0)
-		{
-			init();
-			CvMapGenerator& kGenerator = CvMapGenerator::GetInstance();
-			kGenerator.setUseDefaultMapScript(false);
-			kGenerator.generateRandomMap();
-			kGenerator.addGameElements();
-			kGenerator.setUseDefaultMapScript(true);
-		}
-		else
-		{
-			init();
-			CvMapGenerator& kGenerator = CvMapGenerator::GetInstance();
-			kGenerator.generateRandomMap();
-			kGenerator.addGameElements();
-		}
+		generatePlots();
 	}
-	
 	gDLL->getInterfaceIFace()->clearSelectionList();
 	gDLL->getInterfaceIFace()->makeSelectionListDirty();
-
 	gDLL->getEngineIFace()->SetDirty(GlobeTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(MinimapTexture_DIRTY_BIT, true);
 	gDLL->getEngineIFace()->SetDirty(CultureBorders_DIRTY_BIT, true);
@@ -1404,29 +1350,17 @@ void CvMap::afterSwitch()
 	gDLL->getInterfaceIFace()->setDirty(SelectionCamera_DIRTY_BIT, true);
 	gDLL->getInterfaceIFace()->setDirty(HighlightPlot_DIRTY_BIT, true);
 	
-	int iWidth = GC.getMapInfo(getType()).getGridWidth();
-	if (iWidth == 0)
-	{
-		iWidth = MAX_INT;
-	}
-
-	int iHeight = GC.getMapInfo(getType()).getGridHeight();
-	if (iHeight == 0)
-	{
-		iHeight = MAX_INT;
-	}
-
-	for (int i = 0; i < numPlots(); i++)
+	foreach_(CvPlot& plot, GC.getMap().plots())
 	{
 		//	Koshlimg - this is no longer necesary (or correct) with viewports enabled
-		if (!GC.viewportsEnabled() && (plotByIndex(i)->getX() > iWidth || plotByIndex(i)->getY() > iHeight))
+		if (!GC.viewportsEnabled() && (plot.getX() > m_iGridWidth || plot.getY() > m_iGridHeight))
 		{
-			plotByIndex(i)->setNull(true);
+			plot.setNull(true);
 		}
 		else
 		{
-			plotByIndex(i)->setLayoutDirty(true);
-			plotByIndex(i)->setFlagDirty(true);
+			plot.setLayoutDirty(true);
+			plot.setFlagDirty(true);
 		}
 	}
 	
@@ -1436,7 +1370,7 @@ void CvMap::afterSwitch()
 		gDLL->getEngineIFace()->RebuildAllPlots();
 	}
 
-	for (i = 0; i < MAX_PLAYERS; i++)
+	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		if (GET_PLAYER((PlayerTypes)i).isAlive())
 		{
@@ -1474,6 +1408,17 @@ void CvMap::afterSwitch()
 #endif
 	gDLL->getEngineIFace()->setResourceLayer(GC.getResourceLayer());
 	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
+}
+
+const char* CvMap::getMapScript() const
+{
+	if (m_eType > MAP_EARTH)
+	{
+		const CvString& module = GC.getMapInfo(m_eType).getMapScript();
+		if (module.GetLength() > 0)
+			return module.c_str();
+	}
+	return gDLL->getPythonIFace()->getMapScriptModule();
 }
 
 int	CvMap::getNumViewports() const
@@ -1533,12 +1478,23 @@ CvViewport* CvMap::getCurrentViewport() const
 
 	return (m_iCurrentViewportIndex == -1 ? NULL : m_viewports[m_iCurrentViewportIndex]);
 }
-	
+
 MapTypes CvMap::getType() const
 {
 	return m_eType;
 }
 
+#ifdef PARALLEL_MAPS
+void CvMap::addIncomingUnit(CvUnitAI& unit, int numTravelTurns)
+{
+	m_IncomingUnits.push_back(std::make_pair(unit, numTravelTurns));
+}
+
+bool CvMap::plotsInitialized() const
+{
+	return !m_pMapPlots.empty();
+}
+#endif
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
@@ -1570,23 +1526,19 @@ void CvMap::calculateAreas()
 {
 	PROFILE("CvMap::calculateAreas");
 
-	for (int iI = 0; iI < numPlots(); iI++)
+	foreach_(CvPlot& plot, plots()
+	| filtered(bind(CvPlot::getArea, _1) == (int)FFreeList::INVALID_INDEX))
 	{
-		CvPlot* pLoopPlot = plotByIndex(iI);
 		gDLL->callUpdater();
-		FAssertMsg(pLoopPlot != NULL, "LoopPlot is not assigned a valid value");
 
-		if (pLoopPlot->getArea() == FFreeList::INVALID_INDEX)
-		{
-			CvArea* pArea = addArea();
-			pArea->init(pArea->getID(), pLoopPlot->isWater());
+		CvArea* pArea = addArea();
+		pArea->init(pArea->getID(), plot.isWater());
 
-			const int iArea = pArea->getID();
+		const int iArea = pArea->getID();
 
-			pLoopPlot->setArea(iArea);
+		plot.setArea(iArea);
 
-			gDLL->getFAStarIFace()->GeneratePath(&GC.getAreaFinder(), pLoopPlot->getX(), pLoopPlot->getY(), -1, -1, pLoopPlot->isWater(), iArea);
-		}
+		gDLL->getFAStarIFace()->GeneratePath(&GC.getAreaFinder(), plot.getX(), plot.getY(), -1, -1, plot.isWater(), iArea);
 	}
 }
 

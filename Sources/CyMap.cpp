@@ -23,6 +23,11 @@ CyMap::CyMap(CvMap* pMap) : m_pMap(pMap)
 {
 }
 
+void CyMap::setMap(CvMap& map)
+{
+	m_pMap = &map;
+}
+
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
@@ -36,6 +41,11 @@ CyMap& CyMap::operator=(CvMap& kMap)
 {
 	m_pMap = &kMap;
 	return *this;
+}
+
+bool CyMap::plotsInitialized() const
+{
+	return m_pMap->plotsInitialized();
 }
 
 bool CyMap::viewportsEnabled()
@@ -142,11 +152,6 @@ CyArea* CyMap::findBiggestArea(bool bWater)
 int CyMap::getMapFractalFlags()
 {
 	return m_pMap ? m_pMap->getMapFractalFlags() : -1;
-}
-
-bool CyMap::findWater(CyPlot* pPlot, int iRange, bool bFreshWater)
-{
-	return m_pMap ? m_pMap->findWater(pPlot->getPlot(), iRange, bFreshWater) : false;
 }
 
 bool CyMap::isPlot(int iX, int iY)
@@ -268,9 +273,10 @@ int CyMap::getNumBonusesOnLand(int /* BonusTypes */ eIndex)
 python::list CyMap::plots() const
 {
 	python::list list = python::list();
-	for (int i = 0, numPlots = m_pMap->numPlots(); i < numPlots; i++)
+
+	foreach_(CvPlot& plot, m_pMap->plots())
 	{
-		list.append(new CyPlot(m_pMap->plotByIndex(i)));
+		list.append(new CyPlot(&plot));
 	}
 	return list;
 }
@@ -307,11 +313,6 @@ CyPlot* CyMap::sPlot(int iX, int iY)
 	static CyPlot p;
 	p.setPlot(m_pMap->plot(iX, iY));
 	return &p;
-}
-
-CyPlot* CyMap::pointToPlot(float fX, float fY)
-{
-	return m_pMap ? new CyPlot(m_pMap->pointToPlot(fX, fY)) : NULL;
 }
 
 int CyMap::getIndexAfterLastArea()

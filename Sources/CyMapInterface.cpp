@@ -13,12 +13,12 @@ void CyMapPythonInterface()
 	OutputDebugString("Python Extension Module - CyMapPythonInterface\n");
 
 	python::class_<CyMap>("CyMap")
-		.def("isNone", &CyMap::isNone, "bool () - valid CyMap() interface")
-
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
 		.def("getType", &CyMap::getType, "int ()")
+
+		.def("plotsInitialized", &CyMap::plotsInitialized)
 
 		.def("viewportsEnabled", &CyMap::viewportsEnabled, "bool ()")
 		.def("getViewportWidth", &CyMap::getViewportWidth, "int ()")
@@ -48,7 +48,6 @@ void CyMapPythonInterface()
 		.def("findBiggestArea", &CyMap::findBiggestArea, python::return_value_policy<python::manage_new_object>(), "CyArea* ()")
 
 		.def("getMapFractalFlags", &CyMap::getMapFractalFlags, "int ()")
-		.def("findWater", &CyMap::findWater, "bool (CyPlot* pPlot, int iRange, bool bFreshWater)")
 		.def("isPlot", &CyMap::isPlot, "bool (iX,iY) - is (iX, iY) a valid plot?")
 		.def("numPlots", &CyMap::numPlots, "int () - total plots in the map")
 		.def("plotNum", &CyMap::plotNum, "int (iX,iY) - the index for a given plot") 
@@ -84,7 +83,6 @@ void CyMapPythonInterface()
 		.def("sPlotByIndex", &CyMap::sPlotByIndex, python::return_value_policy<python::reference_existing_object>(), "CyPlot (iIndex) - static - get plot by iIndex")
 		.def("plot", &CyMap::plot, python::return_value_policy<python::manage_new_object>(), "CyPlot (iX,iY) - get CyPlot at (iX,iY)")
 		.def("sPlot", &CyMap::sPlot, python::return_value_policy<python::reference_existing_object>(), "CyPlot (iX,iY) - static - get CyPlot at (iX,iY)")
-		.def("pointToPlot", &CyMap::pointToPlot, python::return_value_policy<python::manage_new_object>())
 		.def("getIndexAfterLastArea", &CyMap::getIndexAfterLastArea, "int () - index for handling NULL areas")
 		.def("getNumAreas", &CyMap::getNumAreas, "int () - total areas")
 		.def("getNumLandAreas", &CyMap::getNumLandAreas, "int () - total land areas")

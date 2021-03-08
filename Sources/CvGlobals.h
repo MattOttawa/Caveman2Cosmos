@@ -120,10 +120,7 @@ class CvMainMenuInfo;
 class CvPropertyInfo;
 class CvOutcomeInfo;
 class CvUnitCombatInfo;
-//TB Promotion Line Mod begin
 class CvPromotionLineInfo;
-//TB Promotion Line Mod end
-class CvMapCategoryInfo;
 class CvIdeaClassInfo;
 class CvIdeaInfo;
 class CvInvisibleInfo;
@@ -138,15 +135,7 @@ class CvModLoadControlInfo;
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
-
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 class CvMapInfo;
-class CvMapSwitchInfo;
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 #include "CvInfoReplacements.h"
 #include "GlobalDefines.h"
@@ -185,11 +174,16 @@ public:
 	CvInterface& getInterface() const 					{ return *m_interface; }
 	CvInterface* getInterfacePtr() const 				{ return m_interface; }
 	
-
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-	inline CvMap& getMap() const;
+	CvMap& getMap();
+	const CvMap& getMap() const;
+	CvMap& getMapByIndex(MapTypes eIndex) const;
+	//int getNumMaps() const						{ return m_maps.size(); }
+	std::vector<CvMap*>& getMaps()				{ return m_maps; }
+	const std::vector<CvMap*>& getMaps() const	{ return m_maps; }
+
 	CvViewport* getCurrentViewport() const;
 	int	getViewportSizeX() const;
 	int	getViewportSizeY() const;
@@ -198,21 +192,12 @@ public:
 	CvMapExternal& getMapExternal() const;
 
 	bool bugInitCalled() const;
-	void enableMultiMaps() { m_bMultimapsEnabled = true; }
-	bool multiMapsEnabled() const;
 	bool viewportsEnabled() const;
 	bool getReprocessGreatWallDynamically() const;
 	int getNumMapInfos() const;
-	int getNumMapSwitchInfos() const;
 	CvMapInfo& getMapInfo(MapTypes eMap) const;
-	CvMapSwitchInfo& getMapSwitchInfo(MapSwitchTypes eMapSwitch) const;
 
 	void switchMap(MapTypes eMap);
-	CvMap& getMapByIndex(MapTypes eIndex) const;
-	int getNumMaps() const { return m_maps.size(); }
-	void updateMaps();
-	void initializeMap(MapTypes eMap);
-	bool mapInitialized(MapTypes eMap) const;
 	void clearSigns();
 	void reprocessSigns();
 	void setResourceLayer(bool bOn);
@@ -220,6 +205,7 @@ public:
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
+
 	inline CvGameAI& getGame() const 			{ return *m_game; }
 	CvGameAI* getGamePointer();
 	CvRandom& getASyncRand() const 				{ return *m_asyncRand; }
@@ -466,6 +452,7 @@ public:
 
 	int getNumPropertyInfos() const;
 	CvPropertyInfo& getPropertyInfo(PropertyTypes ePropertyNum) const;
+	const std::vector<CvPropertyInfo*>& getPropertyInfos() const { return m_paPropertyInfo; }
 
 	int getNumOutcomeInfos() const;
 	CvOutcomeInfo& getOutcomeInfo(OutcomeTypes eOutcomeNum) const;
@@ -504,13 +491,8 @@ public:
 
 	CvInfoBase& getDomainInfo(DomainTypes e) const;
 
-	//TB Promotion Line Mod begin
 	int getNumPromotionLineInfos() const;
 	CvPromotionLineInfo& getPromotionLineInfo(PromotionLineTypes e) const;
-	//TB Promotion Line Mod end
-
-	int getNumMapCategoryInfos() const;
-	CvMapCategoryInfo& getMapCategoryInfo(MapCategoryTypes e) const;
 
 	int getNumIdeaClassInfos() const;
 	CvIdeaClassInfo& getIdeaClassInfo(IdeaClassTypes e) const;
@@ -1024,10 +1006,7 @@ protected:
 	std::vector<CvInvisibleInfo*> m_paInvisibleInfo;
 	std::vector<CvVoteSourceInfo*> m_paVoteSourceInfo;
 	std::vector<CvUnitCombatInfo*> m_paUnitCombatInfo;
-	//TB Promotion Line Mod begin
 	std::vector<CvPromotionLineInfo*> m_paPromotionLineInfo;
-	//TB Promotion Line Mod end
-	std::vector<CvMapCategoryInfo*> m_paMapCategoryInfo;
 	std::vector<CvIdeaClassInfo*> m_paIdeaClassInfo;
 	std::vector<CvIdeaInfo*> m_paIdeaInfo;
 	std::vector<CvInfoBase*> m_paDomainInfo;
@@ -1088,15 +1067,7 @@ protected:
 	std::vector<CvUnitArtStyleTypeInfo*> m_paUnitArtStyleTypeInfo;
 	std::vector<CvPropertyInfo*> m_paPropertyInfo;
 	std::vector<CvOutcomeInfo*> m_paOutcomeInfo;
-
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 	std::vector<CvMapInfo*> m_paMapInfo;
-	std::vector<CvMapSwitchInfo*> m_paMapSwitchInfo;
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 	//////////////////////////////////////////////////////////////////////////
 	// GLOBAL TYPES
@@ -1152,7 +1123,6 @@ protected:
 
 	float m_fPLOT_SIZE;
 
-	bool m_bMultimapsEnabled;
 	bool m_bViewportsEnabled;
 	int	m_iViewportFocusBorder;
 	int m_iViewportSizeX;

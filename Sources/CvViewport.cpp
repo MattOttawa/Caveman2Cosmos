@@ -486,21 +486,6 @@ void CvViewport::erasePlots()
 	m_pMap->erasePlots();
 }
 
-void CvViewport::setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly)
-{
-	m_pMap->setRevealedPlots(eTeam, bNewValue, bTerrainOnly);
-}
-
-void CvViewport::setAllPlotTypes(PlotTypes ePlotType)
-{
-	m_pMap->setAllPlotTypes(ePlotType);
-}
-
-void CvViewport::doTurn()
-{
-	m_pMap->doTurn();
-}
-
 void CvViewport::updateFlagSymbols()
 {
 	m_pMap->updateFlagSymbols();
@@ -589,11 +574,6 @@ CvArea* CvViewport::findBiggestArea(bool bWater) const
 int CvViewport::getMapFractalFlags() const
 {
 	return m_pMap->getMapFractalFlags();
-}
-
-bool CvViewport::findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const
-{
-	return m_pMap->findWater(pPlot, iRange, bFreshWater);
 }
 
 bool CvViewport::isPlot(int iX, int iY) const
@@ -749,17 +729,27 @@ CustomMapOptionTypes CvViewport::getCustomMapOption(int iOption) const
 	return m_pMap->getCustomMapOption(iOption);
 }
 
-CvPlot* CvViewport::plotByIndex(int iIndex) const
+CvPlot* CvViewport::plotByIndex(int iIndex)
 {
 	return plot(iIndex % m_iXSize, iIndex/m_iXSize);
 }
 
-CvPlot* CvViewport::plot(int iX, int iY) const
+const CvPlot* CvViewport::plotByIndex(int iIndex) const
+{
+	return plot(iIndex % m_iXSize, iIndex/m_iXSize);
+}
+
+CvPlot* CvViewport::plot(int iX, int iY)
 {
 	return m_pMap->plot(getMapXFromViewportX(iX), getMapYFromViewportY(iY));
 }
 
-CvPlot* CvViewport::pointToPlot(float fX, float fY) const
+const CvPlot* CvViewport::plot(int iX, int iY) const
+{
+	return m_pMap->plot(getMapXFromViewportX(iX), getMapYFromViewportY(iY));
+}
+
+CvPlot* CvViewport::pointToPlot(float fX, float fY)
 {
 	return plot(pointXToPlotX(fX), pointYToPlotY(fY));
 }
