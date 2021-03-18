@@ -481,7 +481,7 @@ void CvMap::updateMinOriginalStartDist(const CvArea* pArea)
 
 				if (iDist != -1)
 				{
-					if ((pLoopPlot.getMinOriginalStartDist() == -1) || (iDist < pLoopPlot.getMinOriginalStartDist()))
+					if (pLoopPlot.getMinOriginalStartDist() == -1 || iDist < pLoopPlot.getMinOriginalStartDist())
 					{
 						pLoopPlot.setMinOriginalStartDist(iDist);
 					}
@@ -1559,11 +1559,6 @@ void CvMap::toggleUnitsDisplay()
 						{
 							paiBuiltNum[iI][7]++;
 						}
-
-						//if (pCity->getBuildingOriginalTime((BuildingTypes)iI) > 1000)
-						//{
-						//	pCity->setNumRealBuilding((BuildingTypes)iI, 0);
-						//}
 					}
 				}
 			}
