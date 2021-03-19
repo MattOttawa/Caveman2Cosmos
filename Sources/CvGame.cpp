@@ -10081,7 +10081,7 @@ bool CvGame::foundBarbarianCity()
 
 	foreach_(const CvPlot& plotX, GC.getMap().plots())
 	{
-		if (plotX->isWater() || plotX->isImpassable() || plotX->isCity() || plotX->getImprovementType() != NO_IMPROVEMENT || !plotX->isMapCategoryType(earth))
+		if (plotX.isWater() || plotX.isImpassable() || plotX.isCity() || plotX.getImprovementType() != NO_IMPROVEMENT || !plotX.isMapCategoryType(earth))
 		{
 			continue;
 		}
