@@ -266,7 +266,7 @@ python::list CyMap::plots() const
 
 	foreach_(CvPlot& plot, m_pMap->plots())
 	{
-		list.append(new CyPlot(&plot));
+		list.append(CyPlot(&plot));
 	}
 	return list;
 }
