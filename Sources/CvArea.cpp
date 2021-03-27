@@ -866,17 +866,11 @@ int CvArea::getNumRevealedFeatureTiles(TeamTypes eTeam, FeatureTypes eFeature) c
 	std::map<FeatureTypes, int>::const_iterator	itr = m_plotFeatureCountCache.find(eFeature);
 	if (itr == m_plotFeatureCountCache.end())
 	{
-		int	iResult = 0;
-
-		foreach_(const CvPlot& plot, GC.getMap().plots())
-		{
-			if (plot.area() == this &&
-				plot.isRevealed(eTeam, false) &&
-				plot.getFeatureType() == eFeature)
-			{
-				iResult++;
-			}
-		}
+		const int iResult = algo::count_if(GC.getMap().plots()
+			| filtered(bind(CvPlot::area, _1) == this)
+			| filtered(bind(CvPlot::isRevealed, _1, eTeam, false))
+			, bind(CvPlot::getFeatureType, _1) == eFeature
+		);
 
 		m_plotFeatureCountCache.insert(std::make_pair(eFeature, iResult));
 
@@ -900,17 +894,11 @@ int CvArea::getNumRevealedTerrainTiles(TeamTypes eTeam, TerrainTypes eTerrain) c
 	std::map<TerrainTypes, int>::const_iterator	itr = m_plotTerrainCountCache.find(eTerrain);
 	if (itr == m_plotTerrainCountCache.end())
 	{
-		int	iResult = 0;
-
-		foreach_(const CvPlot& plot, GC.getMap().plots())
-		{
-			if (plot.area() == this &&
-				plot.isRevealed(eTeam, false) &&
-				plot.getTerrainType() == eTerrain)
-			{
-				iResult++;
-			}
-		}
+		const int iResult = algo::count_if(GC.getMap().plots()
+			| filtered(bind(CvPlot::area, _1) == this)
+			| filtered(bind(CvPlot::isRevealed, _1, eTeam, false))
+			, bind(CvPlot::getTerrainType, _1) == eTerrain
+		);
 
 		m_plotTerrainCountCache.insert(std::make_pair(eTerrain, iResult));
 

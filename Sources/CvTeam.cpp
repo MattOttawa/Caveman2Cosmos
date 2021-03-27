@@ -6443,7 +6443,7 @@ void CvTeam::setForceRevealedBonus(BonusTypes eBonus, bool bRevealed)
 
 bool CvTeam::isForceRevealedBonus(BonusTypes eBonus) const
 {
-	return std::contains(m_aeRevealedBonuses, eBonus);
+	return algo::contains(m_aeRevealedBonuses, eBonus);
 }
 
 int CvTeam::countNumHumanGameTurnActive() const
