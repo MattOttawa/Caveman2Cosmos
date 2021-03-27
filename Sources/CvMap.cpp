@@ -101,13 +101,7 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init other game data
 	gDLL->logMemState("CvMap before init plots");
-	//m_pMapPlots = std::vector<CvPlot>(numPlots(), CvPlot());
-	//m_pMapPlots.reserve(numPlots());
-	//m_pMapPlots.resize(numPlots());
-	for (int iI = 0; iI < numPlots(); iI++)
-	{
-		m_pMapPlots.push_back(CvPlot());
-	}
+	m_pMapPlots.resize(numPlots());
 	for (int iX = 0; iX < getGridWidth(); iX++)
 	{
 		gDLL->callUpdater();
