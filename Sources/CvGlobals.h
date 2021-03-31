@@ -204,13 +204,14 @@ public:
 	CvStatsReporter* getStatsReporterPtr() const 		{ return m_statsReporter; }
 	CvInterface& getInterface() const 					{ return *m_interface; }
 	CvInterface* getInterfacePtr() const 				{ return m_interface; }
-	
 
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
 	CvMap& getMap();
 	const CvMap& getMap() const;
+	const bst::array<CvMap*, NUM_MAPS>& getMaps() const { return m_maps; }
+
 	CvViewport* getCurrentViewport() const;
 	int	getViewportSizeX() const;
 	int	getViewportSizeY() const;
@@ -219,8 +220,6 @@ public:
 	CvMapExternal& getMapExternal() const;
 
 	bool bugInitCalled() const;
-	void enableMultiMaps() { m_bMultimapsEnabled = true; }
-	bool multiMapsEnabled() const;
 	bool viewportsEnabled() const;
 	bool getReprocessGreatWallDynamically() const;
 	int getNumMapInfos() const;
@@ -228,10 +227,6 @@ public:
 
 	void switchMap(MapTypes eMap);
 	CvMap& getMapByIndex(MapTypes eIndex) const;
-	int getNumMaps() const { return m_maps.size(); }
-	void updateMaps();
-	void initializeMap(MapTypes eMap);
-	bool mapInitialized(MapTypes eMap) const;
 	void clearSigns();
 	void reprocessSigns();
 	void setResourceLayer(bool bOn);
@@ -239,7 +234,8 @@ public:
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
-	inline CvGameAI& getGame() const 			{ return *m_game; }
+
+	CvGameAI& getGame() const 					{ return *m_game; }
 	CvGameAI* getGamePointer();
 	CvRandom& getASyncRand() const 				{ return *m_asyncRand; }
 	CMessageQueue& getMessageQueue() const 		{ return *m_messageQueue; }
@@ -856,8 +852,8 @@ protected:
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/
-	std::vector<CvMap*> m_maps;
-	bool	m_bResourceLayerOn;
+	bst::array<CvMap*, NUM_MAPS> m_maps;
+	bool m_bResourceLayerOn;
 /*******************************/
 /***** Parallel Maps - End *****/
 /*******************************/
@@ -1145,7 +1141,6 @@ protected:
 
 	float m_fPLOT_SIZE;
 
-	bool m_bMultimapsEnabled;
 	bool m_bViewportsEnabled;
 	int	m_iViewportFocusBorder;
 	int m_iViewportSizeX;
