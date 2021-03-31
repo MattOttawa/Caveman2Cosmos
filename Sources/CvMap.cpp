@@ -52,7 +52,6 @@ CvMap::CvMap(MapTypes eType)
 	, m_paiNumBonusOnLand(NULL)
 	, m_bCitiesDisplayed(true)
 	, m_bUnitsDisplayed(true)
-	, m_pMapPlots(NULL)
 {
 	OutputDebugString("Calling constructor for Map: Start\n");
 
@@ -101,12 +100,12 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init other game data
 	gDLL->logMemState("CvMap before init plots");
-	//m_pMapPlots = std::vector<CvPlot>(numPlots());
+	m_pMapPlots = std::vector<CvPlot>(numPlots());
 	//m_pMapPlots.resize(numPlots());
-	for (int i = 0; i < numPlots(); i++)
-	{
-		m_pMapPlots.push_back(CvPlot());
-	}
+	//for (int i = 0; i < numPlots(); i++)
+	//{
+	//	m_pMapPlots.push_back(CvPlot());
+	//}
 	for (int iX = 0; iX < getGridWidth(); iX++)
 	{
 		gDLL->callUpdater();
@@ -127,16 +126,17 @@ void CvMap::uninit()
 	SAFE_DELETE_ARRAY(m_paiNumBonus);
 	SAFE_DELETE_ARRAY(m_paiNumBonusOnLand);
 
-	for (int i = 0; i < numPlots(); i++)
-	{
-		m_pMapPlots.pop_back();
-	}
+	m_pMapPlots.clear();
+	//for (int i = 0; i < numPlots(); i++)
+	//{
+	//	m_pMapPlots.pop_back();
+	//}
 
 	m_areas.uninit();
 
-	for(int iI = 0; iI < (int)m_viewports.size(); iI++)
+	foreach_(CvViewport* viewport, m_viewports)
 	{
-		delete m_viewports[iI];
+		delete viewport;
 	}
 
 	m_viewports.clear();
@@ -1124,14 +1124,15 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	if (numPlots() > 0)
 	{
-		//m_pMapPlots = std::vector<CvPlot>(numPlots(), CvPlot());
+		m_pMapPlots = std::vector<CvPlot>(numPlots());
+		algo::for_each(m_pMapPlots, bind(CvPlot::read, _1, pStream));
+
 		//m_pMapPlots.resize(numPlots());
-		for (int i = 0; i < numPlots(); i++)
-		{
-			m_pMapPlots.push_back(CvPlot());
-			m_pMapPlots[i].read(pStream);
-		}
-		//algo::for_each(plots(), bind(CvPlot::read, _1, pStream));
+		//for (int i = 0; i < numPlots(); i++)
+		//{
+		//	m_pMapPlots.push_back(CvPlot());
+		//	m_pMapPlots[i].read(pStream);
+		//}
 	}
 
 	// call the read of the free list CvArea class allocations
@@ -1417,7 +1418,7 @@ const char* CvMap::getMapScript() const
 
 bool CvMap::plotsInitialized() const
 {
-	return m_pMapPlots != NULL;
+	return m_pMapPlots.size() > 0;
 }
 
 //

@@ -139,6 +139,93 @@ CvPlot::CvPlot()
 }
 
 CvPlot::CvPlot(const CvPlot& other)
+	: m_GameObject(this)
+	, m_Properties(this)
+	, m_visibleGraphics(ECvPlotGraphics::NONE)
+	, m_requiredVisibleGraphics(ECvPlotGraphics::NONE)
+	, m_pagingHandle(CvPlotPaging::INVALID_HANDLE)
+{
+	if ( m_resultHashMap == NULL )
+	{
+		m_resultHashMap = new stdext::hash_map<int,int>();
+	}
+
+	if ( g_bestDefenderCache == NULL )
+	{
+		g_bestDefenderCache = new DefenderScoreCache();
+	}
+
+	m_aiYield = new short[NUM_YIELD_TYPES];
+
+	// Plot danger cache
+	m_abIsTeamBorderCache = new bool[MAX_TEAMS];
+
+	m_aiFoundValue = NULL;
+	m_aiPlayerCityRadiusCount = NULL;
+	m_aiPlotGroup = NULL;
+	//m_aiVisibilityCount = new short[MAX_TEAMS];
+	m_aiVisibilityCount = NULL;
+	m_aiLastSeenTurn = NULL;
+	m_aiDangerCount = NULL;
+	m_aiStolenVisibilityCount = NULL;
+	m_aiBlockadedCount = NULL;
+	m_aiRevealedOwner = NULL;
+	m_abRiverCrossing = NULL;
+	m_abRevealed = NULL;
+	m_aeRevealedImprovementType = NULL;
+	m_aeRevealedRouteType = NULL;
+	m_paiBuildProgress = NULL;
+	m_apaiCultureRangeCities = NULL;
+	m_apaiInvisibleVisibilityCount = NULL;
+	//m_apaiCachedHighestTeamInvisibilityIntensity = NULL;
+
+	m_aiOccupationCultureRangeCities = NULL;
+
+	m_aiMountainLeaderCount = NULL;	//	Koshling - mountain mod efficiency
+	m_pFeatureSymbol = NULL;
+	m_pPlotBuilder = NULL;
+	m_pRouteSymbol = NULL;
+	m_pRiverSymbol = NULL;
+	m_pFlagSymbol = NULL;
+	m_pFlagSymbolOffset = NULL;
+	m_pCenterUnit = NULL;
+	m_bInhibitCenterUnitCalculation = false;
+	// Toffer - These doesn't recalculate, perhaps they should?
+	m_bImprovementUpgradable = false;
+	m_iImprovementUpgradeHash = 0;
+	m_iCurrentRoundofUpgradeCache = -1;
+	// ! Toffer
+	m_iImprovementCurrentValue = 0;
+
+	m_szScriptData = NULL;
+	//Afforess: use async rand so as to not pollute mp games
+	m_zobristContribution = GC.getASyncRand().getInt();
+
+	if ( !g_plotTypeZobristHashesSet )
+	{
+		for(int i = 0; i < NUM_PLOT_TYPES; i++)
+		{
+			//Afforess: use async rand so as to not pollute mp games
+			g_plotTypeZobristHashes[i] = GC.getASyncRand().getInt();
+		}
+
+		g_plotTypeZobristHashesSet = true;
+	}
+
+	if (!g_riverDirectionZobristHashesSet)
+	{
+		for (int i = 0; i < NUM_CARDINALDIRECTION_TYPES; i++)
+		{
+			//Afforess: use async rand so as to not pollute mp games
+			g_riverDirectionZobristHashes[i] = GC.getASyncRand().getInt();
+		}
+
+		g_riverDirectionZobristHashesSet = true;
+	}
+
+	reset(0, 0, true);
+}
+/*
 	: m_GameObject(other.m_GameObject)
 	, m_eClaimingOwner(other.m_eClaimingOwner)
 	, m_aiOccupationCultureRangeCities(other.m_aiOccupationCultureRangeCities)
@@ -243,7 +330,7 @@ CvPlot::CvPlot(const CvPlot& other)
 	, m_pagingHandle(other.m_pagingHandle)
 {
 	*this = other;
-}
+}*/
 
 CvPlot::~CvPlot()
 {
