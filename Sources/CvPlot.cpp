@@ -2386,13 +2386,8 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 
 	if (!bAerial) iRange++; // check one extra outer ring
 
-	int iFinalIntensity = 0;
-	const int iNumInvisibleTypes = aSeeInvisibleTypes.size();
-
-	for (int i = 0; i < iNumInvisibleTypes; i++)
+	foreach_(const InvisibleTypes eInvisible, aSeeInvisibleTypes)
 	{
-		const InvisibleTypes eInvisible = aSeeInvisibleTypes[i];
-
 		for (int dx = -iRange; dx <= iRange; dx++)
 		{
 			for (int dy = -iRange; dy <= iRange; dy++)
@@ -2405,6 +2400,7 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 					CvPlot* pPlot = plotXY(getX(), getY(), dx, dy);
 					if (NULL != pPlot)
 					{
+						int iFinalIntensity = 0;
 						if (GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK) && pUnit != NULL)
 						{
 							if (eInvisible != NO_INVISIBLE)
@@ -2424,7 +2420,6 @@ void CvPlot::changeAdjacentSight(TeamTypes eTeam, int iRange, bool bIncrement, C
 								}
 								iFinalIntensity = std::max(0, iIntensity);
 							}
-							else iFinalIntensity = 0;
 						}
 						pPlot->changeVisibilityCount(eTeam, (bIncrement ? 1 : -1), eInvisible, bUpdatePlotGroups, iFinalIntensity, iUnitID);
 					}
