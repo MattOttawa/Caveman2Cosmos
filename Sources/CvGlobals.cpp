@@ -29,14 +29,6 @@ static char gVersionString[1024] = { 0 };
 #	define C2C_VERSION gVersionString
 #endif
 
-#define COPY(dst, src, typeName) \
-	{ \
-		int iNum = sizeof(src)/sizeof(typeName); \
-		dst = new typeName[iNum]; \
-		for (int i =0;i<iNum;i++) \
-			dst[i] = src[i]; \
-	}
-
 template <class T>
 void deleteInfoArray(std::vector<T*>& array)
 {

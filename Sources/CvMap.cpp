@@ -101,7 +101,12 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init other game data
 	gDLL->logMemState("CvMap before init plots");
-	m_pMapPlots.resize(numPlots());
+	//m_pMapPlots = std::vector<CvPlot>(numPlots());
+	//m_pMapPlots.resize(numPlots());
+	for (int i = 0; i < numPlots(); i++)
+	{
+		m_pMapPlots.push_back(CvPlot());
+	}
 	for (int iX = 0; iX < getGridWidth(); iX++)
 	{
 		gDLL->callUpdater();
@@ -121,6 +126,11 @@ void CvMap::uninit()
 {
 	SAFE_DELETE_ARRAY(m_paiNumBonus);
 	SAFE_DELETE_ARRAY(m_paiNumBonusOnLand);
+
+	for (int i = 0; i < numPlots(); i++)
+	{
+		m_pMapPlots.pop_back();
+	}
 
 	m_areas.uninit();
 
@@ -1116,13 +1126,14 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	if (numPlots() > 0)
 	{
-		//m_pMapPlots = std::vector<CvPlot>(numPlots());
-		//m_pMapPlots.reserve(numPlots());
-		for (int iI = 0; iI < numPlots(); iI++)
+		//m_pMapPlots = std::vector<CvPlot>(numPlots(), CvPlot());
+		//m_pMapPlots.resize(numPlots());
+		for (int i = 0; i < numPlots(); i++)
 		{
 			m_pMapPlots.push_back(CvPlot());
+			m_pMapPlots[i].read(pStream);
 		}
-		algo::for_each(plots(), bind(CvPlot::read, _1, pStream));
+		//algo::for_each(plots(), bind(CvPlot::read, _1, pStream));
 	}
 
 	// call the read of the free list CvArea class allocations

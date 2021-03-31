@@ -11,6 +11,37 @@
 // All globals and global types should be contained in this class
 //
 
+template <class T>
+void copyArray(T* dst, const T* src)
+{
+	if (src != NULL)
+	{ 
+		const int iNum = sizeof(src)/sizeof(T);
+		dst = new T[iNum];
+		for (int i = 0; i < iNum; i++)
+			dst[i] = src[i];
+	}
+}
+
+template <class T>
+void copyArray(T* dst, const T* src, int size)
+{
+	if (src != NULL)
+	{ 
+		dst = new T[size];
+		for (int i = 0; i < size; i++)
+			dst[i] = src[i];
+	}
+}
+
+#define COPY(dst, src, typeName) \
+	{ \
+		const int iNum = sizeof(src)/sizeof(typeName); \
+		dst = new typeName[iNum]; \
+		for (int i = 0; i < iNum; i++) \
+			dst[i] = src[i]; \
+	}
+
 class FProfiler;
 class CvDLLUtilityIFaceBase;
 class CvRandom;

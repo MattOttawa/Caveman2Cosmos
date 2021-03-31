@@ -75,7 +75,8 @@ CvPlot::CvPlot()
 	m_aiFoundValue = NULL;
 	m_aiPlayerCityRadiusCount = NULL;
 	m_aiPlotGroup = NULL;
-	m_aiVisibilityCount = new short[MAX_TEAMS];
+	//m_aiVisibilityCount = new short[MAX_TEAMS];
+	m_aiVisibilityCount = NULL;
 	m_aiLastSeenTurn = NULL;
 	m_aiDangerCount = NULL;
 	m_aiStolenVisibilityCount = NULL;
@@ -137,91 +138,111 @@ CvPlot::CvPlot()
 	reset(0, 0, true);
 }
 
-CvPlot::CvPlot(const CvPlot& plot)
-	: m_GameObject(this)
-	, m_Properties(this)
-	, m_visibleGraphics(ECvPlotGraphics::NONE)
-	, m_requiredVisibleGraphics(ECvPlotGraphics::NONE)
-	, m_pagingHandle(CvPlotPaging::INVALID_HANDLE)
+CvPlot::CvPlot(const CvPlot& other)
+	: m_GameObject(other.m_GameObject)
+	, m_eClaimingOwner(other.m_eClaimingOwner)
+	, m_aiOccupationCultureRangeCities(other.m_aiOccupationCultureRangeCities)
+	, m_szLandmarkMessage(other.m_szLandmarkMessage)
+	, m_szLandmarkName(other.m_szLandmarkName)
+	, m_eLandmarkType(other.m_eLandmarkType)
+	, m_bCounted(other.m_bCounted)
+	, m_bNull(other.m_bNull)
+	, m_iX(other.m_iX)
+	, m_iY(other.m_iY)
+	, m_iArea(other.m_iArea)
+	, m_pPlotArea(other.m_pPlotArea)
+	, m_iFeatureVariety(other.m_iFeatureVariety)
+	, m_iOwnershipDuration(other.m_iOwnershipDuration)
+	, m_iImprovementDuration(other.m_iImprovementDuration)
+	, m_iUpgradeProgress(other.m_iUpgradeProgress)
+	, m_iForceUnownedTimer(other.m_iForceUnownedTimer)
+	, m_iCityRadiusCount(other.m_iCityRadiusCount)
+	, m_iRiverID(other.m_iRiverID)
+	, m_iMinOriginalStartDist(other.m_iMinOriginalStartDist)
+	, m_iReconCount(other.m_iReconCount)
+	, m_iRiverCrossingCount(other.m_iRiverCrossingCount)
+	, m_iImprovementUpgradeHash(other.m_iImprovementUpgradeHash)
+	, m_iCurrentRoundofUpgradeCache(other.m_iCurrentRoundofUpgradeCache)
+	, m_iImprovementCurrentValue(other.m_iImprovementCurrentValue)
+	, m_iCanalValue(other.m_iCanalValue)
+	, m_iChokeValue(other.m_iChokeValue)
+	, m_iDefenseDamage(other.m_iDefenseDamage)
+	, m_bBombarded(other.m_bBombarded)
+	, m_bStartingPlot(other.m_bStartingPlot)
+	, m_bHills(other.m_bHills)
+	, m_bNOfRiver(other.m_bNOfRiver)
+	, m_bWOfRiver(other.m_bWOfRiver)
+	, m_bIrrigated(other.m_bIrrigated)
+	, m_bPotentialCityWork(other.m_bPotentialCityWork)
+	, m_bShowCitySymbols(other.m_bShowCitySymbols)
+	, m_bFlagDirty(other.m_bFlagDirty)
+	, m_bPlotLayoutDirty(other.m_bPlotLayoutDirty)
+	, m_bLayoutStateWorked(other.m_bLayoutStateWorked)
+	, m_eOwner(other.m_eOwner)
+	, m_ePlotType(other.m_ePlotType)
+	, m_eTerrainType(other.m_eTerrainType)
+	, m_eFeatureType(other.m_eFeatureType)
+	, m_eBonusType(other.m_eBonusType)
+	, m_eImprovementType(other.m_eImprovementType)
+	, m_eRouteType(other.m_eRouteType)
+	, m_eRiverNSDirection(other.m_eRiverNSDirection)
+	, m_eRiverWEDirection(other.m_eRiverWEDirection)
+	, m_plotCity(other.m_plotCity)
+	, m_workingCity(other.m_workingCity)
+	, m_workingCityOverride(other.m_workingCityOverride)
+	, m_bIsActivePlayerHasDangerCache(other.m_bIsActivePlayerHasDangerCache)
+	, m_bIsActivePlayerNoDangerCache(other.m_bIsActivePlayerNoDangerCache)
+	, m_abIsTeamBorderCache(other.m_abIsTeamBorderCache)
+	, m_iCachePathEpoch(other.m_iCachePathEpoch)
+	, m_cachedPathValidityEntity(other.m_cachedPathValidityEntity)
+	, m_cachedPathAlternateValidityEntity(other.m_cachedPathAlternateValidityEntity)
+	, m_cachedPathAlternateValidity(other.m_cachedPathAlternateValidity)
+	, m_cachedPathValidity(other.m_cachedPathValidity)
+	, m_aiYield(other.m_aiYield)
+	, m_aiCulture(other.m_aiCulture)
+	, m_aPlotTeamVisibilityIntensity(other.m_aPlotTeamVisibilityIntensity)
+	, m_aiFoundValue(other.m_aiFoundValue)
+	, m_aiPlayerCityRadiusCount(other.m_aiPlayerCityRadiusCount)
+	, m_aiPlotGroup(other.m_aiPlotGroup)
+	, m_aiVisibilityCount(other.m_aiVisibilityCount)
+	, m_aiStolenVisibilityCount(other.m_aiStolenVisibilityCount)
+	, m_aiBlockadedCount(other.m_aiBlockadedCount)
+	, m_aiRevealedOwner(other.m_aiRevealedOwner)
+	, m_abRiverCrossing(other.m_abRiverCrossing)
+	, m_abRevealed(other.m_abRevealed)
+	, m_aeRevealedImprovementType(other.m_aeRevealedImprovementType)
+	, m_aeRevealedRouteType(other.m_aeRevealedRouteType)
+	, m_szScriptData(other.m_szScriptData)
+	, m_paiBuildProgress(other.m_paiBuildProgress)
+	, m_aiLastSeenTurn(other.m_aiLastSeenTurn)
+	, m_aiDangerCount(other.m_aiDangerCount)
+	, m_pFeatureSymbol(other.m_pFeatureSymbol)
+	, m_pRouteSymbol(other.m_pRouteSymbol)
+	, m_pRiverSymbol(other.m_pRiverSymbol)
+	, m_pFlagSymbol(other.m_pFlagSymbol)
+	, m_pFlagSymbolOffset(other.m_pFlagSymbolOffset)
+	, m_pCenterUnit(other.m_pCenterUnit)
+	, m_pPlotBuilder(other.m_pPlotBuilder)
+	, m_apaiCultureRangeCities(other.m_apaiCultureRangeCities)
+	, m_apaiInvisibleVisibilityCount(other.m_apaiInvisibleVisibilityCount)
+	//, m_apaiCachedHighestTeamInvisibilityIntensity(other.m_apaiCachedHighestTeamInvisibilityIntensity)
+	, m_aiMountainLeaderCount(other.m_aiMountainLeaderCount)
+	, m_units(other.m_units)
+	, m_symbols(other.m_symbols)
+	, m_zobristContribution(other.m_zobristContribution)
+	, m_movementCharacteristicsHash(other.m_movementCharacteristicsHash)
+	, m_bPlotGroupsDirty(other.m_bPlotGroupsDirty)
+	, m_pathGenerationSeq(other.m_pathGenerationSeq)
+	, m_currentPathInfo(other.m_currentPathInfo)
+	, m_groupGenerationNumber(other.m_groupGenerationNumber)
+	, m_Properties(other.m_Properties)
+	, m_bInhibitCenterUnitCalculation(other.m_bInhibitCenterUnitCalculation)
+	, m_bImprovementUpgradable(other.m_bImprovementUpgradable)
+	, m_requiredVisibleGraphics(other.m_requiredVisibleGraphics)
+	, m_visibleGraphics(other.m_visibleGraphics)
+	, m_pagingHandle(other.m_pagingHandle)
 {
-	if ( m_resultHashMap == NULL )
-	{
-		m_resultHashMap = new stdext::hash_map<int,int>();
-	}
-
-	if ( g_bestDefenderCache == NULL )
-	{
-		g_bestDefenderCache = new DefenderScoreCache();
-	}
-
-	m_aiYield = new short[NUM_YIELD_TYPES];
-
-	// Plot danger cache
-	m_abIsTeamBorderCache = new bool[MAX_TEAMS];
-
-	m_aiFoundValue = NULL;
-	m_aiPlayerCityRadiusCount = NULL;
-	m_aiPlotGroup = NULL;
-	m_aiVisibilityCount = new short[MAX_TEAMS];
-	m_aiLastSeenTurn = NULL;
-	m_aiDangerCount = NULL;
-	m_aiStolenVisibilityCount = NULL;
-	m_aiBlockadedCount = NULL;
-	m_aiRevealedOwner = NULL;
-	m_abRiverCrossing = NULL;
-	m_abRevealed = NULL;
-	m_aeRevealedImprovementType = NULL;
-	m_aeRevealedRouteType = NULL;
-	m_paiBuildProgress = NULL;
-	m_apaiCultureRangeCities = NULL;
-	m_apaiInvisibleVisibilityCount = NULL;
-	//m_apaiCachedHighestTeamInvisibilityIntensity = NULL;
-
-	m_aiOccupationCultureRangeCities = NULL;
-
-	m_aiMountainLeaderCount = NULL;	//	Koshling - mountain mod efficiency
-	m_pFeatureSymbol = NULL;
-	m_pPlotBuilder = NULL;
-	m_pRouteSymbol = NULL;
-	m_pRiverSymbol = NULL;
-	m_pFlagSymbol = NULL;
-	m_pFlagSymbolOffset = NULL;
-	m_pCenterUnit = NULL;
-	m_bInhibitCenterUnitCalculation = false;
-	// Toffer - These doesn't recalculate, perhaps they should?
-	m_bImprovementUpgradable = false;
-	m_iImprovementUpgradeHash = 0;
-	m_iCurrentRoundofUpgradeCache = -1;
-	// ! Toffer
-	m_iImprovementCurrentValue = 0;
-
-	m_szScriptData = NULL;
-	//Afforess: use async rand so as to not pollute mp games
-	m_zobristContribution = GC.getASyncRand().getInt();
-
-	if ( !g_plotTypeZobristHashesSet )
-	{
-		for(int i = 0; i < NUM_PLOT_TYPES; i++)
-		{
-			//Afforess: use async rand so as to not pollute mp games
-			g_plotTypeZobristHashes[i] = GC.getASyncRand().getInt();
-		}
-
-		g_plotTypeZobristHashesSet = true;
-	}
-
-	if (!g_riverDirectionZobristHashesSet)
-	{
-		for (int i = 0; i < NUM_CARDINALDIRECTION_TYPES; i++)
-		{
-			//Afforess: use async rand so as to not pollute mp games
-			g_riverDirectionZobristHashes[i] = GC.getASyncRand().getInt();
-		}
-
-		g_riverDirectionZobristHashesSet = true;
-	}
-
-	reset(0, 0, true);
+	*this = other;
 }
 
 CvPlot::~CvPlot()
@@ -396,16 +417,16 @@ void CvPlot::reset(int iX, int iY, bool bConstructorCall)
 	}
 }
 
-const CvPlot& CvPlot::operator=(const CvPlot& other)
+CvPlot& CvPlot::operator=(const CvPlot& other)
 {
 	m_GameObject = other.m_GameObject;
 	m_eClaimingOwner = other.m_eClaimingOwner;
-	m_aiOccupationCultureRangeCities = other.m_aiOccupationCultureRangeCities;
+	//COPY(m_aiOccupationCultureRangeCities, other.m_aiOccupationCultureRangeCities, char)
+	copyArray(m_aiOccupationCultureRangeCities, other.m_aiOccupationCultureRangeCities, MAX_PLAYERS);
 	m_szLandmarkMessage = other.m_szLandmarkMessage;
 	m_szLandmarkName = other.m_szLandmarkName;
 	m_eLandmarkType = other.m_eLandmarkType;
 	m_bCounted = other.m_bCounted;
-	m_resultHashMap = other.m_resultHashMap;
 	m_bNull = other.m_bNull;
 	m_iX = other.m_iX;
 	m_iY = other.m_iY;
@@ -452,31 +473,30 @@ const CvPlot& CvPlot::operator=(const CvPlot& other)
 	m_workingCityOverride = other.m_workingCityOverride;
 	m_bIsActivePlayerHasDangerCache = other.m_bIsActivePlayerHasDangerCache;
 	m_bIsActivePlayerNoDangerCache = other.m_bIsActivePlayerNoDangerCache;
-	m_abIsTeamBorderCache = other.m_abIsTeamBorderCache;
-	m_iGlobalCachePathEpoch = other.m_iGlobalCachePathEpoch;
+	copyArray(m_abIsTeamBorderCache, other.m_abIsTeamBorderCache);
 	m_iCachePathEpoch = other.m_iCachePathEpoch;
 	m_cachedPathValidityEntity = other.m_cachedPathValidityEntity;
 	m_cachedPathAlternateValidityEntity = other.m_cachedPathAlternateValidityEntity;
 	m_cachedPathAlternateValidity = other.m_cachedPathAlternateValidity;
 	m_cachedPathValidity = other.m_cachedPathValidity;
-	m_aiYield = other.m_aiYield;
+	copyArray(m_aiYield, other.m_aiYield);
 	m_aiCulture = other.m_aiCulture;
 	m_aPlotTeamVisibilityIntensity = other.m_aPlotTeamVisibilityIntensity;
-	m_aiFoundValue = other.m_aiFoundValue;
-	m_aiPlayerCityRadiusCount = other.m_aiPlayerCityRadiusCount;
-	m_aiPlotGroup = other.m_aiPlotGroup;
-	m_aiVisibilityCount = other.m_aiVisibilityCount;
-	m_aiStolenVisibilityCount = other.m_aiStolenVisibilityCount;
-	m_aiBlockadedCount = other.m_aiBlockadedCount;
-	m_aiRevealedOwner = other.m_aiRevealedOwner;
-	m_abRiverCrossing = other.m_abRiverCrossing;
-	m_abRevealed = other.m_abRevealed;
-	m_aeRevealedImprovementType = other.m_aeRevealedImprovementType;
-	m_aeRevealedRouteType = other.m_aeRevealedRouteType;
-	m_szScriptData = other.m_szScriptData;
-	m_paiBuildProgress = other.m_paiBuildProgress;
-	m_aiLastSeenTurn = other.m_aiLastSeenTurn;
-	m_aiDangerCount = other.m_aiDangerCount;
+	copyArray(m_aiFoundValue, other.m_aiFoundValue);
+	copyArray(m_aiPlayerCityRadiusCount, other.m_aiPlayerCityRadiusCount);
+	copyArray(m_aiPlotGroup, other.m_aiPlotGroup);
+	copyArray(m_aiVisibilityCount, other.m_aiVisibilityCount);
+	copyArray(m_aiStolenVisibilityCount, other.m_aiStolenVisibilityCount);
+	copyArray(m_aiBlockadedCount, other.m_aiBlockadedCount);
+	copyArray(m_aiRevealedOwner, other.m_aiRevealedOwner);
+	copyArray(m_abRiverCrossing, other.m_abRiverCrossing);
+	copyArray(m_abRevealed, other.m_abRevealed);
+	copyArray(m_aeRevealedImprovementType, other.m_aeRevealedImprovementType);
+	copyArray(m_aeRevealedRouteType, other.m_aeRevealedRouteType);
+	copyArray(m_szScriptData, other.m_szScriptData);
+	copyArray(m_paiBuildProgress, other.m_paiBuildProgress);
+	copyArray(m_aiLastSeenTurn, other.m_aiLastSeenTurn);
+	copyArray(m_aiDangerCount, other.m_aiDangerCount);
 	m_pFeatureSymbol = other.m_pFeatureSymbol;
 	m_pRouteSymbol = other.m_pRouteSymbol;
 	m_pRiverSymbol = other.m_pRiverSymbol;
@@ -484,10 +504,10 @@ const CvPlot& CvPlot::operator=(const CvPlot& other)
 	m_pFlagSymbolOffset = other.m_pFlagSymbolOffset;
 	m_pCenterUnit = other.m_pCenterUnit;
 	m_pPlotBuilder = other.m_pPlotBuilder;
-	m_apaiCultureRangeCities = other.m_apaiCultureRangeCities;
-	m_apaiInvisibleVisibilityCount = other.m_apaiInvisibleVisibilityCount;
+	//m_apaiCultureRangeCities = other.m_apaiCultureRangeCities;
+	//m_apaiInvisibleVisibilityCount = other.m_apaiInvisibleVisibilityCount;
 	//m_apaiCachedHighestTeamInvisibilityIntensity = other.m_apaiCachedHighestTeamInvisibilityIntensity;
-	m_aiMountainLeaderCount = other.m_aiMountainLeaderCount;
+	copyArray(m_aiMountainLeaderCount, other.m_aiMountainLeaderCount);
 	m_units = other.m_units;
 	m_symbols = other.m_symbols;
 	m_zobristContribution = other.m_zobristContribution;
