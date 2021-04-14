@@ -402,6 +402,10 @@ void cvInternalGlobals::init()
 
 	FAssertMsg(gDLL != NULL, "Civ app needs to set gDLL");
 
+	logging::setOption(m_bLogging);
+	logging::createLogsFolder();
+	logging::deleteLogs();
+
 	m_VarSystem = new FVariableSystem;
 	m_asyncRand = new CvRandom;
 	m_initCore = new CvInitCore;
@@ -431,9 +435,6 @@ void cvInternalGlobals::init()
 	COPY(m_aeTurnRightDirection, aeTurnRightDirection, DirectionTypes);
 	memcpy(m_aaiXYCityPlot, aaiXYCityPlot, sizeof(m_aaiXYCityPlot));
 	memcpy(m_aaeXYDirection, aaeXYDirection,sizeof(m_aaeXYDirection));
-
-	m_bSignsCleared = false;
-	m_bResourceLayerOn = false;
 
 	DEBUG_LOG("Init.log", "Initializing Internal Globals: End");
 }
