@@ -80,4 +80,16 @@ namespace logging
 			} while (FindNextFile(hFile, &FileInfo));
 		}
 	}
+
+	namespace {
+		void cyLog(const char* file, const char* msg)
+		{
+			logMsg(file, msg);
+		}
+	}
+
+	void CyLoggingPythonInterface()
+	{
+		python::def("logMsg", cyLog);
+	}
 }

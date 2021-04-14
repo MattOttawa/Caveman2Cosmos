@@ -63,6 +63,7 @@ DllExport void DLLPublishToPython()
 	CyGameCoreUtilsPythonInterface();
 	CyMessageControlInterface();
 	CyPropertiesPythonInterface();
+	logging::CyLoggingPythonInterface();
 
 	SCyDebug::installInPython();
 

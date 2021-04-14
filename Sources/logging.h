@@ -97,6 +97,8 @@ namespace logging
 	void setOption(bool& option);
 	void createLogsFolder();
 	void deleteLogs();
+
+	void CyLoggingPythonInterface();
 }
 
 #ifdef _DEBUG
