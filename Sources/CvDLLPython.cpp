@@ -42,7 +42,7 @@ void CyPropertiesPythonInterface();
 
 DllExport void DLLPublishToPython()
 {
-	OutputDebugString("Publishing to Python: Start");
+	OutputDebugString("Publishing to Python: Start\n");
 
 	CyEnumsPythonInterface();
 	CyGamePythonInterface();
@@ -63,6 +63,7 @@ DllExport void DLLPublishToPython()
 	CyGameCoreUtilsPythonInterface();
 	CyMessageControlInterface();
 	CyPropertiesPythonInterface();
+	logging::CyLoggingPythonInterface();
 
 	SCyDebug::installInPython();
 
@@ -92,5 +93,5 @@ DllExport void DLLPublishToPython()
 	
 	Win32::pythonPublish();
 
-	OutputDebugString("Publishing to Python: End");
+	OutputDebugString("Publishing to Python: End\n");
 }
