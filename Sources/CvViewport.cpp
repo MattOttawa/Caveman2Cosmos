@@ -215,9 +215,9 @@ void CvViewport::setupGraphical()
 
 void CvViewport::reset(CvMapInitData* pInitData)
 {
-	OutputDebugString("Reseting Viewport: Start/n");
+	DEBUG_LOG("Init.log", "Reseting Viewport: Start");
 	m_pMap->reset(pInitData);
-	OutputDebugString("Reseting Viewport: End/n");
+	DEBUG_LOG("Init.log", "Reseting Viewport: End");
 }
 
 /*********************************/

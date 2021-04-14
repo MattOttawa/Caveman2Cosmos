@@ -8,8 +8,6 @@
 
 void CyInfoPythonInterface1()
 {
-	OutputDebugString("Python Extension Module - CyInfoPythonInterface1\n");
-
 	python::class_<CvInfoBase>("CvInfoBase")
 
 		.def("isGraphicalOnly", &CvInfoBase::isGraphicalOnly, "bool ()")

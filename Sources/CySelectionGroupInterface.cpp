@@ -10,8 +10,6 @@
 
 void CySelectionGroupInterface()
 {
-	OutputDebugString("Python Extension Module - CySelectionGroupInterface\n");
-
 	python::class_<CySelectionGroup>("CySelectionGroup")
 		.def("pushMission", &CySelectionGroup::pushMission, "void (eMission, iData1, iData2, iFlags, bAppend, bManual, eMissionAI, pMissionAIPlot, pMissionAIUnit)")
 		.def("canStartMission", &CySelectionGroup::canStartMission, "bool (int iMission, int iData1, int iData2, CyPlot* pPlot, bool bTestVisible)")

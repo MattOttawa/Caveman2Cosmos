@@ -9,7 +9,6 @@
 
 void CyCityPythonInterface1(python::class_<CyCity>& x)
 {
-	OutputDebugString("Python Extension Module - CyCityPythonInterface1\n");
 	x
 		.def("kill", &CyCity::kill, "void () - kill the city")
 

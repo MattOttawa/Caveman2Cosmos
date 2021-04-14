@@ -283,7 +283,7 @@ LONG WINAPI CustomFilter(EXCEPTION_POINTERS *ExceptionInfo)
 //
 void cvInternalGlobals::init()
 {
-	OutputDebugString("Initializing Internal Globals: Start");
+	DEBUG_LOG("Init.log", "Initializing Internal Globals: Start");
 
 #ifdef MINIDUMP
 	/* Enable our custom exception that will write the minidump for us. */
@@ -435,7 +435,7 @@ void cvInternalGlobals::init()
 	m_bSignsCleared = false;
 	m_bResourceLayerOn = false;
 
-	OutputDebugString("Initializing Internal Globals: End");
+	DEBUG_LOG("Init.log", "Initializing Internal Globals: End");
 }
 
 //
@@ -2394,7 +2394,7 @@ void cvInternalGlobals::cacheEnumGlobals()
 
 void cvInternalGlobals::cacheGlobals()
 {
-	OutputDebugString("Caching Globals: Start/n");
+	DEBUG_LOG("Init.log", "Caching Globals: Start");
 
 	strcpy(gVersionString, getDefineSTRING("C2C_VERSION"));
 
@@ -2427,7 +2427,7 @@ void cvInternalGlobals::cacheGlobals()
 		m_szAlternateProfilSampleName = "";
 	}
 
-	OutputDebugString("Caching Globals: End/n");
+	DEBUG_LOG("Init.log", "Caching Globals: End");
 }
 
 

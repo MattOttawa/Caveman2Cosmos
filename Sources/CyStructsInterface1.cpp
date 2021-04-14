@@ -8,8 +8,6 @@
 
 void CyStructsPythonInterface1()
 {
-	OutputDebugString("Python Extension Module - CyStructsPythonInterface1\n");
-
 	python::class_<NiPoint3>("NiPoint3")
 		.def(python::init<float, float, float>())	// ctor which takes 3 floats
 		.def_readwrite("x", &NiPoint3::x)

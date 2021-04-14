@@ -10,8 +10,6 @@
 
 void CyMapPythonInterface()
 {
-	OutputDebugString("Python Extension Module - CyMapPythonInterface\n");
-
 	python::class_<CyMap>("CyMap")
 		.def("getType", &CyMap::getType, "int ()")
 
@@ -100,5 +98,5 @@ void CyMapPythonInterface()
 
 		// Super Forts *canal* *choke*
 		.def("calculateCanalAndChokePoints", &CyMap::calculateCanalAndChokePoints, "void ()")
-		;
+	;
 }

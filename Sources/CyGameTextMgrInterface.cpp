@@ -7,8 +7,6 @@
 
 void CyGameTextMgrInterface()
 {
-	OutputDebugString("Python Extension Module - CyTextMgr\n");
-
 	python::class_<CyGameTextMgr>("CyGameTextMgr")
 		.def("Reset", &CyGameTextMgr::Reset, "void ()")
 		.def("getTimeStr", &CyGameTextMgr::getTimeStr, "wstring (int iGameTurn, bool bSave)")

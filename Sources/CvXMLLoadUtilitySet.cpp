@@ -17,7 +17,7 @@
 
 bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObject* cache)
 {
-	OutputDebugString("Reading Global Defines: Start");
+	DEBUG_LOG("Init.log", "Reading Global Defines: Start");
 
 	bool bLoaded = false;	// used to make sure that the xml file was loaded correctly
 
@@ -121,7 +121,7 @@ bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObje
 		logging::logMsg("xml.log", "Read GobalDefines from cache\n");
 	}
 
-	OutputDebugString("Reading Global Defines: End\n");
+	DEBUG_LOG("Init.log", "Reading Global Defines: End");
 
 	return true;
 }
@@ -136,7 +136,7 @@ bool CvXMLLoadUtility::ReadGlobalDefines(const TCHAR* szXMLFileName, CvCacheObje
 //------------------------------------------------------------------------------------------------------
 bool CvXMLLoadUtility::SetGlobalDefines()
 {
-	OutputDebugString("Setting Global Defines: Start\n");
+	DEBUG_LOG("Init.log", "Setting Global Defines: Start");
 
 	bool bLoaded = false;
 
@@ -224,7 +224,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 			{
 				if (!ReadGlobalDefines(szFile, cache))
 				{
-					OutputDebugString("Setting Global Defines: End\n");
+					DEBUG_LOG("Init.log", "Setting Global Defines: End");
 					return false;
 				}
 			}
@@ -236,7 +236,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 			{
 				if (!ReadGlobalDefines(szFile, cache))
 				{
-					OutputDebugString("Setting Global Defines: End\n");
+					DEBUG_LOG("Init.log", "Setting Global Defines: End");
 					return false;
 				}
 			}
@@ -258,7 +258,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 				if (!ReadGlobalDefines(szFile, cache))
 				{
 					SAFE_DELETE(pModEnumVector);
-					OutputDebugString("Setting Global Defines: End\n");
+					DEBUG_LOG("Init.log", "Setting Global Defines: End");
 					return false;
 				}
 			}
@@ -272,7 +272,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 			{
 				if (!ReadGlobalDefines(szFile, cache))
 				{
-					OutputDebugString("Setting Global Defines: End\n");
+					DEBUG_LOG("Init.log", "Setting Global Defines: End");
 					return false;
 				}
 			}
@@ -289,7 +289,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 
 	GC.cacheGlobals();
 
-	OutputDebugString("Setting Global Defines: End\n");
+	DEBUG_LOG("Init.log", "Setting Global Defines: End");
 
 	return true;
 }
@@ -305,7 +305,7 @@ bool CvXMLLoadUtility::SetGlobalDefines()
 //------------------------------------------------------------------------------------------------------
 bool CvXMLLoadUtility::SetPostGlobalsGlobalDefines()
 {
-	OutputDebugString("Setting Post Global Defines: Start");
+	DEBUG_LOG("Init.log", "Setting Post Global Defines: Start");
 
 	const char* szVal=NULL;		// holds the string value from the define queue
 	int idx;
@@ -518,7 +518,7 @@ bool CvXMLLoadUtility::SetPostGlobalsGlobalDefines()
 	sprintf( szMessage, "Size of Global Defines is not greater than 0. \n Current XML file is: %s", GC.getCurrentXMLFile().GetCString());
 	gDLL->MessageBox(szMessage, "XML Load Error");
 
-	OutputDebugString("Setting Post Global Defines: End");
+	DEBUG_LOG("Init.log", "Setting Post Global Defines: End");
 
 	return false;
 }
@@ -533,7 +533,7 @@ bool CvXMLLoadUtility::SetPostGlobalsGlobalDefines()
 //------------------------------------------------------------------------------------------------------
 bool CvXMLLoadUtility::SetGlobalTypes()
 {
-	OutputDebugString("Setting Global Types: Start\n");
+	DEBUG_LOG("Init.log", "Setting Global Types: Start");
 
 	UpdateProgressCB("GlobalTypes");
 
@@ -609,7 +609,7 @@ bool CvXMLLoadUtility::SetGlobalTypes()
 	// delete the pointer to the FXml variable
 	DestroyFXml();
 
-	OutputDebugString("Setting Global Types: End\n");
+	DEBUG_LOG("Init.log", "Setting Global Types: End");
 
 	return true;
 }
@@ -691,7 +691,7 @@ bool CvXMLLoadUtility::SetGlobalArtDefines()
 //------------------------------------------------------------------------------------------------------
 bool CvXMLLoadUtility::LoadGlobalText()
 {
-	OutputDebugString("Begin load global text\n");
+	DEBUG_LOG("Init.log", "Begin load global text");
 
 	// set language tag
 	CvString szLanguage = GC.getDefineSTRING("LANGUAGE");
@@ -802,14 +802,14 @@ bool CvXMLLoadUtility::LoadGlobalText()
 
 	DestroyFXml();
 
-	OutputDebugString("End load global text\n");
+	DEBUG_LOG("Init.log", "End load global text");
 
 	return true;
 }
 
 bool CvXMLLoadUtility::LoadBasicInfos()
 {
-	OutputDebugString("Loading Basic Infos: Start\n");
+	DEBUG_LOG("Init.log", "Loading Basic Infos: Start");
 
 	if (!CreateFXml())
 	{
@@ -843,7 +843,7 @@ bool CvXMLLoadUtility::LoadBasicInfos()
 
 	DestroyFXml();
 
-	OutputDebugString("Loading Basic Infos: End\n");
+	DEBUG_LOG("Init.log", "Loading Basic Infos: End");
 
 	return true;
 }
@@ -861,7 +861,7 @@ inline bool cmpInfoByAlphabet(CvInfoBase* lhs, CvInfoBase* rhs) { return CvWStri
 //
 bool CvXMLLoadUtility::LoadPreMenuGlobals()
 {
-	OutputDebugString("Loading PreMenu Infos: Start\n");
+	DEBUG_LOG("Init.log", "Loading PreMenu Infos: Start");
 
 	//ReplacementStep: search down here for 'InfoReplacements()'
 	if (!CreateFXml())
@@ -869,7 +869,7 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 		return false;
 	}
 
-	OutputDebugString("Begin load global infos\n");
+	DEBUG_LOG("Init.log", "Begin load global infos");
 	LoadGlobalClassInfo(GC.m_paInvisibleInfo, "CIV4InvisibleInfos", "Units", L"/Civ4InvisibleInfos/InvisibleInfos/InvisibleInfo", false);
 	LoadGlobalClassInfo(GC.m_paMapInfo, "CIV4MapInfo", "GameInfo", L"/Civ4MapInfos/MapInfos/MapInfo", false);
 	LoadGlobalClassInfo(GC.m_paGameSpeedInfo, "CIV4GameSpeedInfo", "GameInfo", L"/Civ4GameSpeedInfo/GameSpeedInfos/GameSpeedInfo", false, &GC.m_GameSpeedInfoReplacements);
@@ -949,13 +949,11 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-	OutputDebugString("Pre leaderhead sort\n");
 	std::sort(GC.m_paLeaderHeadInfo.begin(), GC.m_paLeaderHeadInfo.end(), cmpInfoByAlphabet);
 	for (int i = 0; i < GC.getNumLeaderHeadInfos(); i++)
 	{
 		GC.setInfoTypeFromString(GC.getLeaderHeadInfo((LeaderHeadTypes)i).getType(), i);
 	}
-	OutputDebugString("Post leaderhead sort\n");
 /************************************************************************************************/
 /* SORT_ALPHABET                           END                                                  */
 /************************************************************************************************/
@@ -970,13 +968,11 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 /*                                                                                              */
 /*                                                                                              */
 /************************************************************************************************/
-	OutputDebugString("Pre civ sort\n");
 	std::sort(GC.m_paCivilizationInfo.begin(), GC.m_paCivilizationInfo.end(), cmpInfoByAlphabet);
 	for (int i = 0; i < GC.getNumCivilizationInfos(); i++)
 	{
 		GC.setInfoTypeFromString(GC.getCivilizationInfo((CivilizationTypes)i).getType(), i);
 	}
-	OutputDebugString("Post civ sort\n");
 /************************************************************************************************/
 /* SORT_ALPHABET                           END                                                  */
 /************************************************************************************************/
@@ -997,11 +993,11 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 
 	LoadGlobalClassInfo(GC.m_paEventInfo, "CIV4EventInfos", "Events", L"/Civ4EventInfos/EventInfos/EventInfo", false, &GC.m_EventInfoReplacements);
 	LoadGlobalClassInfo(GC.m_paEventTriggerInfo, "CIV4EventTriggerInfos", "Events", L"/Civ4EventTriggerInfos/EventTriggerInfos/EventTriggerInfo", false, &GC.m_EventTriggerInfoReplacements);
-	OutputDebugString("Base load complete\n");
+	DEBUG_LOG("Init.log", "Base load complete");
 
 	// AIAndy: Resolve delayed resolutions of type strings
 	GC.resolveDelayedResolution();
-	OutputDebugString("Delayed resolution resolved\n");
+	DEBUG_LOG("Init.log", "Delayed resolution resolved");
 
 	for (int i=0; i < GC.getNumBuildingInfos(); ++i)
 	{
@@ -1038,7 +1034,7 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 		GC.getUnitInfo((UnitTypes)i).readPass3();
 		GC.m_UnitInfoReplacements.readPass3();
 	}
-	OutputDebugString("Pass3 processing complete\n");
+	DEBUG_LOG("Init.log", "Pass3 processing complete");
 
 	// add types to global var system
 	for (int i = 0; i < GC.getNumCursorInfos(); ++i)
@@ -1095,12 +1091,12 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	CvCorporationInfo* pCorporationBogus = new CvCorporationInfo();
 	aCorporationInfos.insert(aCorporationInfos.end(), GC.getGAMEFONT_TGA_CORPORATIONS() - aCorporationInfos.size(), pCorporationBogus);
 
-	OutputDebugString("Load globals complete\n");
+	DEBUG_LOG("Init.log", "Load globals complete");
 	UpdateProgressCB("GlobalOther");
 
 	DestroyFXml();
 
-	OutputDebugString("Loading PreMenu Infos: End\n");
+	DEBUG_LOG("Init.log", "Loading PreMenu Infos: End");
 
 	return true;
 }
@@ -1117,7 +1113,7 @@ bool CvXMLLoadUtility::LoadPostMenuGlobals()
 {
 	PROFILE_FUNC();
 
-	OutputDebugString("Loading PostMenu Infos: Start");
+	DEBUG_LOG("Init.log", "Loading PostMenu Infos: Start");
 
 	if (!CreateFXml())
 	{
@@ -1191,7 +1187,7 @@ bool CvXMLLoadUtility::LoadPostMenuGlobals()
 
 	GC.getInitCore().calculateAssetCheckSum();
 	
-	OutputDebugString("Loading PostMenu Infos: End");
+	DEBUG_LOG("Init.log", "Loading PostMenu Infos: End");
 
 	return true;
 }
@@ -3609,7 +3605,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const cha
 template <class T>
 bool CvXMLLoadUtility::SetModLoadControlInfo(std::vector<T*>& aInfos, const wchar_t* szTagName, CvString szConfigString, CvString szDirDepth, int iDirDepth)
 {
-	OutputDebugString("Setting Mod Control Infos");
+	DEBUG_LOG("Init.log", "Setting Mod Control Infos");
 
 	std::string szCandidateConfig;
 

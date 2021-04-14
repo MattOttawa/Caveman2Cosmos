@@ -27,7 +27,7 @@ bool CvInitCore::bPathsSet;
 
 CvInitCore::CvInitCore()
 {
-	OutputDebugString("Calling constructor for InitCore: Start\n");
+	DEBUG_LOG("Init.log", "Calling constructor for InitCore: Start");
 
 	// Moved to Init as the number is no more predetermined
 	//m_abOptions = new bool[NUM_GAMEOPTION_TYPES];
@@ -81,7 +81,7 @@ CvInitCore::CvInitCore()
 
 	reset(NO_GAMEMODE);
 
-	OutputDebugString("Calling constructor for InitCore: End\n");
+	DEBUG_LOG("Init.log", "Calling constructor for InitCore: End");
 }
 
 
@@ -119,7 +119,7 @@ CvInitCore::~CvInitCore()
 
 void CvInitCore::init(GameMode eMode)
 {
-	OutputDebugString("Initialize InitCore: Start\n");
+	DEBUG_LOG("Init.log", "Initialize InitCore: Start");
 
 	if (m_abOptions == NULL)
 		m_abOptions = new bool[NUM_GAMEOPTION_TYPES];
@@ -127,7 +127,7 @@ void CvInitCore::init(GameMode eMode)
 	// Init saved data
 	reset(eMode);
 
-	OutputDebugString("Initialize InitCore: Start\n");
+	DEBUG_LOG("Init.log", "Initialize InitCore: Start");
 }
 
 void CvInitCore::uninit()
@@ -141,7 +141,7 @@ void CvInitCore::uninit()
 // Initializes data members that are serialized.
 void CvInitCore::reset(GameMode eMode)
 {
-	OutputDebugString("Reseting InitCore: Start\n");
+	DEBUG_LOG("Init.log", "Reseting InitCore: Start");
 
 	//--------------------------------
 	// Uninit class
@@ -157,7 +157,7 @@ void CvInitCore::reset(GameMode eMode)
 		setDefaults();
 	}
 	CvXMLLoadUtility::RemoveTGAFiller();
-	OutputDebugString("Reseting InitCore: End\n");
+	DEBUG_LOG("Init.log", "Reseting InitCore: End");
 }
 
 void CvInitCore::setDefaults()
@@ -523,7 +523,7 @@ void CvInitCore::reopenInactiveSlots()
 
 void CvInitCore::resetGame()
 {
-	OutputDebugString("Reseting Game: Start");
+	DEBUG_LOG("Init.log", "Reseting Game: Start");
 
 	// Descriptive strings about game and map
 	m_eType = GAME_NONE;
@@ -588,12 +588,12 @@ void CvInitCore::resetGame()
 	// Temp vars
 	m_szTemp.clear();
 
-	OutputDebugString("Reseting Game: End");
+	DEBUG_LOG("Init.log", "Reseting Game: End");
 }
 
 void CvInitCore::resetGame(CvInitCore * pSource, bool bClear, bool bSaveGameType)
 {
-	OutputDebugString("Reseting Game with Source: Start");
+	DEBUG_LOG("Init.log", "Reseting Game with Source: Start");
 
 	FAssertMsg(pSource, "Passed null pointer to CvInitCore::resetGame");
 	FAssertMsg(!bClear || !bSaveGameType, "Should not be clearing data while trying to preserve gametype info in CvInitCore::resetGame");
@@ -660,17 +660,17 @@ void CvInitCore::resetGame(CvInitCore * pSource, bool bClear, bool bSaveGameType
 		setMapRandSeed(pSource->getMapRandSeed());
 	}
 
-	OutputDebugString("Reseting Game with Source: End");
+	DEBUG_LOG("Init.log", "Reseting Game with Source: End");
 }
 
 void CvInitCore::resetPlayers()
 {
-	OutputDebugString("Reseting Players: Start/n");
+	DEBUG_LOG("Init.log", "Reseting Players: Start");
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		resetPlayer((PlayerTypes)i);
 	}
-	OutputDebugString("Reseting Players: End/n");
+	DEBUG_LOG("Init.log", "Reseting Players: End");
 }
 
 void CvInitCore::resetPlayers(CvInitCore * pSource, bool bClear, bool bSaveSlotInfo)

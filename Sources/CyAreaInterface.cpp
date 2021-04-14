@@ -7,8 +7,6 @@
 
 void CyAreaPythonInterface()
 {
-	OutputDebugString("Python Extension Module - CyAreaPythonInterface\n");
-
 	python::class_<CyArea>("CyArea")
 		.def("isNone", &CyArea::isNone, "bool () - Returns whether the pointer points to a real Area")
 		
@@ -31,7 +29,6 @@ void CyAreaPythonInterface()
 		.def("getPower", &CyArea::getPower, "int (int (PlayerTypes) iIndex) - Returns power of this area for this player")
 		.def("getBestFoundValue", &CyArea::getBestFoundValue, "int (int (PlayerTypes) iIndex) - Returns the best found value for a plot in this area")
 
-
 		.def("isCleanPower", &CyArea::isCleanPower, "bool (int (TeamTypes) iIndex)")
 		.def("isBorderObstacle", &CyArea::isBorderObstacle, "bool (int (TeamTypes) iIndex)")
 
@@ -39,15 +36,7 @@ void CyAreaPythonInterface()
 
 		.def("getNumBonuses", &CyArea::getNumBonuses, "int(BonusID) - total # of BonusID")
 		.def("getNumTotalBonuses", &CyArea::getNumTotalBonuses, "int () - total number of bonuses, of all types")
-/************************************************************************************************/
-/* Afforess	                  Start		 07/15/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-		.def("changeCleanPowerCount", &CyArea::changeCleanPowerCount, "int(TeamTypes eIndex, int iChange)")
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
+		.def("changeCleanPowerCount", &CyArea::changeCleanPowerCount, "int(TeamTypes eIndex, int iChange)")
 	;
 }

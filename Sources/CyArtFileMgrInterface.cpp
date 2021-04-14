@@ -7,8 +7,6 @@
 
 void CyArtFileMgrPythonInterface()
 {
-	OutputDebugString("Python Extension Module - CyArtFileMgrPythonInterface\n");
-
 	python::class_<CyArtFileMgr>("CyArtFileMgr")
 		.def("getInterfaceArtInfo", &CyArtFileMgr::getInterfaceArtInfo,  python::return_value_policy<python::reference_existing_object>(), "CvArtInfoInterface ()")
 		.def("getMovieArtInfo", &CyArtFileMgr::getMovieArtInfo,  python::return_value_policy<python::reference_existing_object>(), "CvArtInfoMovie ()")

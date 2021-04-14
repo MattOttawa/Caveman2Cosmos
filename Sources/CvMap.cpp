@@ -54,12 +54,12 @@ CvMap::CvMap(MapTypes eType) /* Parallel Maps */
 	, m_bUnitsDisplayed(true)
 	, m_pMapPlots(NULL)
 {
-	OutputDebugString("Calling constructor for Map: Start\n");
+	DEBUG_LOG("Init.log", "Calling constructor for Map: Start");
 
 	CvMapInitData defaultMapData;
 	reset(&defaultMapData);
 
-	OutputDebugString("Calling constructor for Map: End\n");
+	DEBUG_LOG("Init.log", "Calling constructor for Map: End");
 }
 
 
@@ -76,7 +76,7 @@ CvMap::~CvMap()
 //	nothing.
 void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 {
-	OutputDebugString("Initializing Map: Start\n");
+	DEBUG_LOG("Init.log", "Initializing Map: Start");
 	PROFILE("CvMap::init");
 	gDLL->logMemState( CvString::format("CvMap::init begin - world size=%s, climate=%s, sealevel=%s, num custom options=%6", 
 		GC.getWorldInfo(GC.getInitCore().getWorldSize()).getDescription(), 
@@ -113,7 +113,7 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	calculateAreas();
 	gDLL->logMemState("CvMap after init plots");
 
-	OutputDebugString("Initializing Map: End\n");
+	DEBUG_LOG("Init.log", "Initializing Map: End");
 }
 
 
@@ -1205,8 +1205,8 @@ void CvMap::invalidateIsTeamBorderCache(TeamTypes eTeam)
 //
 void CvMap::read(FDataStreamBase* pStream)
 {
-	OutputDebugString("Reading Map: Start");
-	CvTaggedSaveFormatWrapper&	wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
+	DEBUG_LOG("Init.log", "Reading Map: Start");
+	CvTaggedSaveFormatWrapper& wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
 
 	wrapper.AttachToStream(pStream);
 
@@ -1252,7 +1252,7 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	WRAPPER_READ_OBJECT_END(wrapper);
 
-	OutputDebugString("Reading Map: End");
+	DEBUG_LOG("Init.log", "Reading Map: End");
 }
 
 // save object to a stream
@@ -1260,7 +1260,7 @@ void CvMap::read(FDataStreamBase* pStream)
 //
 void CvMap::write(FDataStreamBase* pStream)
 {
-	CvTaggedSaveFormatWrapper&	wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
+	CvTaggedSaveFormatWrapper& wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
 
 	wrapper.AttachToStream(pStream);
 

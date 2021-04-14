@@ -7,10 +7,7 @@
 
 void CyInfoPythonInterface2()
 {
-	OutputDebugString("Python Extension Module - CyInfoPythonInterface2\n");
-
 	python::class_<CvRouteModelInfo, python::bases<CvInfoBase> >("CvRouteModelInfo")
-
 	;
 
 	python::class_<CvCivilizationInfo, python::bases<CvInfoBase> >("CvCivilizationInfo")
@@ -18,7 +15,6 @@ void CyInfoPythonInterface2()
 		.def("getArtStyleType", &CvCivilizationInfo::getArtStyleType, "int ()")
 		.def("getNumCityNames", &CvCivilizationInfo::getNumCityNames, "int ()")
 		.def("getNumLeaders", &CvCivilizationInfo::getNumLeaders, "int ()")
-
 
 		.def("isAIPlayable", &CvCivilizationInfo::isAIPlayable, "bool ()")
 		.def("isPlayable", &CvCivilizationInfo::isPlayable, "bool ()")

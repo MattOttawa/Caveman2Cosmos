@@ -1997,10 +1997,10 @@ public:
 		{
 			FAssertMsg(gDLL == NULL, "Dll interface already set?");
 
-			OutputDebugString("setDLLIFace()\n");
+			DEBUG_LOG("Init.log", "setDLLIFace()");
 			if (gGlobals == NULL)
 			{
-				OutputDebugString("Constructing internal globals\n");
+				DEBUG_LOG("Init.log", "Constructing internal globals");
 				gGlobals = new cvInternalGlobals();
 			}
 

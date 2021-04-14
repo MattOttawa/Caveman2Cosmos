@@ -8,8 +8,6 @@
 
 void CyGlobalContextPythonInterface3(python::class_<CyGlobalContext>& x)
 {
-	OutputDebugString("Python Extension Module - CyGlobalContextPythonInterface3\n");
-
 	x
 		.def("getMapInfo", &CyGlobalContext::getMapInfo, python::return_value_policy<python::reference_existing_object>())
 		.def("switchMap", &CyGlobalContext::switchMap, "void (int)")

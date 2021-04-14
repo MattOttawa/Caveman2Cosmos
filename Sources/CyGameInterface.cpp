@@ -12,8 +12,6 @@
 
 void CyGamePythonInterface()
 {
-	OutputDebugString("Python Extension Module - CyGamePythonInterface\n");
-
 	python::class_<CyGame>("CyGame")
 
 		.def("getCurrentMap", &CyGame::getCurrentMap, "int ()")

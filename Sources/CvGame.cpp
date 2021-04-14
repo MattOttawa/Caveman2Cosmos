@@ -4591,7 +4591,7 @@ bool CvGame::isFinalInitialized() const
 
 void CvGame::setFinalInitialized(bool bNewValue)
 {
-	OutputDebugString("Setting FinalInitialized: Start");
+	DEBUG_LOG("Init.log", "Setting FinalInitialized: Start");
 	PROFILE_FUNC();
 
 	if (isFinalInitialized() != bNewValue)
@@ -4613,7 +4613,7 @@ void CvGame::setFinalInitialized(bool bNewValue)
 			}
 		}
 	}
-	OutputDebugString("Setting FinalInitialized: End");
+	DEBUG_LOG("Init.log", "Setting FinalInitialized: End");
 }
 
 
