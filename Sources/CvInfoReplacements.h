@@ -11,8 +11,9 @@
 #ifndef CVINFOREPLACEMENTS_H
 #define CVINFOREPLACEMENTS_H
 
+#include "CvGlobals.h"
+
 class BoolExpr;
-class cvInternalGlobals;
 class CvInfoBase;
 
 template <class T>

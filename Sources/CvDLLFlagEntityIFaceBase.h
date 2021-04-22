@@ -15,12 +15,12 @@
 #ifndef CvDLLFlagEntityIFaceBase_H
 #define CvDLLFlagEntityIFaceBase_H
 
+#include "CvGlobals.h"
 #include "CvDLLEntityIFaceBase.h"
 
 class CvPlot;
 class CvFlagEntity;
 class CvEntity;
-class cvInternalGlobals;
 class CvDLLUtilityIFaceBase;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

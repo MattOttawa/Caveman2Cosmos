@@ -17,6 +17,7 @@
 #include "CvTeamAI.h"
 #include "CvUnit.h"
 #include "CvDLLFAStarIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 //	KOSHLING MOD - calculate all possible building focuses at once
 //	to avoid multiple looping - need to know how many options there

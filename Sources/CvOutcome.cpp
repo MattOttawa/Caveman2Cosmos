@@ -20,6 +20,7 @@
 #include "CvTeamAI.h"
 #include "CvUnit.h"
 #include "CvXMLLoadUtility.h"
+#include "CvDLLPythonIFaceBase.h"
 #include "CyUnit.h"
 #include "CyPlot.h"
 #include "CheckSum.h"

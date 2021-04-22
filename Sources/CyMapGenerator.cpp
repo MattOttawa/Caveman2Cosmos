@@ -13,6 +13,7 @@
 #include "CvMapGenerator.h"
 #include "CyMapGenerator.h"
 #include "CyPlot.h"
+#include "CvDLLPythonIFaceBase.h"
 
 CyMapGenerator::CyMapGenerator() : m_pMapGenerator(NULL)
 {

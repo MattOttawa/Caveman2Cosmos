@@ -7,6 +7,7 @@
 #include "CvPlayerAI.h"
 #include "CvReplayInfo.h"
 #include "CvReplayMessage.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 int CvReplayInfo::REPLAY_VERSION = 4;
 

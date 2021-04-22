@@ -2,6 +2,7 @@
 #include "CvGlobals.h"
 #include "CvMessageControl.h"
 #include "CyMessageControl.h"
+#include "CvDLLPythonIFaceBase.h"
 
 void CyMessageControl::sendPushOrder(int iCityID, int eOrder, int iData, bool bAlt, bool bShift, bool bCtrl)
 {

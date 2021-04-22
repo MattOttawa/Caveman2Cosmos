@@ -23,7 +23,10 @@
 #include "CvSelectionGroup.h"
 #include "CvTeamAI.h"
 #include "CvUnit.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "CvDLLEntityIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
+#include "CvDLLPythonIFaceBase.h"
 
 //	Koshling - save game compatibility between (most) builds
 //	UI flag values in game serialization.  These are bitwise combinable

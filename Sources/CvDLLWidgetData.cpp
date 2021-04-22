@@ -16,6 +16,8 @@
 #include "CvPython.h"
 #include "CvSelectionGroup.h"
 #include "CvTeamAI.h"
+#include "CvDLLEngineIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 CvDLLWidgetData* CvDLLWidgetData::m_pInst = NULL;
 
@@ -1809,7 +1811,7 @@ void CvDLLWidgetData::doPediaBuildJump(CvWidgetDataStruct &widgetDataStruct)
 
 void CvDLLWidgetData::doGotoTurnEvent(CvWidgetDataStruct &widgetDataStruct)
 {
-	CvPlot* pPlot = GC.getMap().plot(widgetDataStruct.m_iData1, widgetDataStruct.m_iData2);
+	const CvPlot* pPlot = GC.getMap().plot(widgetDataStruct.m_iData1, widgetDataStruct.m_iData2);
 
 	if (NULL != pPlot && !gDLL->getEngineIFace()->isCameraLocked()
 
@@ -5598,8 +5600,8 @@ void CvDLLWidgetData::parseSelectedHelp(CvWidgetDataStruct &widgetDataStruct, Cv
 
 void CvDLLWidgetData::parseBuildListQueueHelp(CvWidgetDataStruct &widgetDataStruct, CvWStringBuffer &szBuffer)
 {
-	CvPlayerAI& kPlayer = GET_PLAYER(GC.getGame().getActivePlayer());
-	int index = kPlayer.m_pBuildLists->getIndexByID(widgetDataStruct.m_iData1);
+	const CvPlayerAI& kPlayer = GET_PLAYER(GC.getGame().getActivePlayer());
+	const int index = kPlayer.m_pBuildLists->getIndexByID(widgetDataStruct.m_iData1);
 	if (index > -1)
 	{
 		const OrderData* pOrder = kPlayer.m_pBuildLists->getOrder(index, widgetDataStruct.m_iData2);

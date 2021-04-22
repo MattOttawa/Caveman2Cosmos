@@ -1,4 +1,5 @@
 #include "CvGameCoreDLL.h"
+#include "CyArgsList.h"
 
 //////////////////////////////////////////////////////
 // CyArgsList

@@ -17,6 +17,7 @@
 #include "CvTeamAI.h"
 #include "CvViewport.h"
 #include "CvXMLLoadUtility.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "FVariableSystem.h"
 #include <time.h> 
 #include <sstream>

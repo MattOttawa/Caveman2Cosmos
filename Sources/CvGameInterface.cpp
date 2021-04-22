@@ -14,7 +14,9 @@
 #include "CvSelectionGroup.h"
 #include "CvTeamAI.h"
 #include "CvUnit.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 void CvGame::updateColoredPlots()
 {

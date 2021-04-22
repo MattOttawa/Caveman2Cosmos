@@ -20,6 +20,8 @@
 #include "CvSelectionGroup.h"
 #include "CvTeamAI.h"
 #include "CvUnit.h"
+#include "CvDLLEngineIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 // Public Functions...
 #pragma warning( disable : 4355 )

@@ -13,6 +13,8 @@
 #include "CyPlot.h"
 #include "CySelectionGroup.h"
 #include "CyUnit.h"
+#include "CvDLLInterfaceIFaceBase.h"
+#include "CvDLLPythonIFaceBase.h"
 
 //
 // Python wrapper class for CvPlayer 

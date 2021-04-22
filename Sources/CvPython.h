@@ -10,8 +10,7 @@
 //#include "CvString.h"
 #include "CyArgsList.h"
 #include "CvGlobals.h"
-
-class cvInternalGlobals;
+#include "CvDLLPythonIFaceBase.h"
 
 #define FPythonAssert(expr, moduleName, functionName) FAssertMsg(expr, CvString::format("%s.%s", moduleName, functionName).c_str()) 
 

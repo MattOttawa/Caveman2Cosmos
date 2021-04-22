@@ -3,6 +3,7 @@
 #define CyArgsList_h__
 
 #include "CvGameCoreDLL.h"
+#include "CvDLLPythonIFaceBase.h"
 
 //
 // type for input args to python functions

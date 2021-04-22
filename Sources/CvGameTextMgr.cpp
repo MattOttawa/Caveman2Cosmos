@@ -29,6 +29,7 @@
 #include "CvTeamAI.h"
 #include "CvUnit.h"
 #include "CvXMLLoadUtility.h"
+#include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLSymbolIFaceBase.h"
 
 int shortenID(int iId)

@@ -9,8 +9,10 @@ Created:	2009-01-21
 **********************************************************************/
 
 #include "CvGameCoreDLL.h"
+#include "CvBuildingFilters.h"
 #include "CvGlobals.h"
 #include "CvPython.h"
+#include "CvUnitFilters.h"
 #include "FVariableSystem.h"
 
 bool g_bIsBug = false;

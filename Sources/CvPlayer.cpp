@@ -27,7 +27,9 @@
 #include "CvUnit.h"
 #include "CvViewport.h"
 #include "CyCity.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 //	Koshling - save flag indicating this player has no data in the save as they have never been alive
 #define	PLAYER_UI_FLAG_OMITTED 2

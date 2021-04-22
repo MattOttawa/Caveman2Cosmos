@@ -6,6 +6,9 @@
 #include "CvSelectionGroup.h"
 #include "CvUnit.h"
 #include "CvViewport.h"
+#include "CvDLLEngineIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
+#include "CvDLLPythonIFaceBase.h"
 
 CvViewport::CvViewport(CvMap* pMap, bool bIsFullMapContext) 
 	: m_pMap(pMap)

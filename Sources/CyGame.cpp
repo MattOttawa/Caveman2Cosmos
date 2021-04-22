@@ -13,6 +13,7 @@
 #include "CyPlot.h"
 #include "CyReplayInfo.h"
 #include "CvReplayInfo.h"
+#include "CvDLLEngineIFaceBase.h"
 
 CyGame::CyGame() : m_pGame(GC.getGame()) {}
 

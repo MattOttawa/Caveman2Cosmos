@@ -17,6 +17,7 @@
 #include "CvPlot.h"
 #include "CvTeamAI.h"
 #include "CvUnit.h"
+#include "CvDLLPythonIFaceBase.h"
 #include "CyCity.h"
 #include "CyGame.h"
 #include "CyPlayer.h"

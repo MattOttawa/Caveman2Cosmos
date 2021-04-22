@@ -20,6 +20,7 @@
 #include "CvTeamAI.h"
 #include "CvUnit.h"
 #include "CvDLLFAStarIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 /************************************************************************************************/
 /* BETTER_BTS_AI_MOD					  08/21/09								jdog5000	  */

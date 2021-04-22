@@ -5,6 +5,7 @@
 #include "CvGlobals.h"
 #include "CvInfos.h"
 #include "CvPopupInfo.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 #ifdef _DEBUG
 //#define	DETAILED_TRACE	1

@@ -20,6 +20,8 @@
 #include "CvSelectionGroup.h"
 #include "CvTeamAI.h"
 #include "CvUnit.h"
+#include "CvDLLEngineIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 // Public Functions...
 
@@ -2714,8 +2716,8 @@ bool CvDLLButtonPopup::launchVassalGrantTributePopup(CvPopup* pPopup, CvPopupInf
 
 bool CvDLLButtonPopup::launchEventPopup(CvPopup* pPopup, CvPopupInfo &info)
 {
-	CvPlayer& kActivePlayer = GET_PLAYER(GC.getGame().getActivePlayer());
-	EventTriggeredData* pTriggeredData = kActivePlayer.getEventTriggered(info.getData1());
+	const CvPlayer& kActivePlayer = GET_PLAYER(GC.getGame().getActivePlayer());
+	const EventTriggeredData* pTriggeredData = kActivePlayer.getEventTriggered(info.getData1());
 	if (NULL == pTriggeredData)
 	{
 		return false;
@@ -2779,7 +2781,7 @@ bool CvDLLButtonPopup::launchEventPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 	if (kTrigger.isShowPlot())
 	{
-		CvPlot* pPlot = GC.getMap().plot(pTriggeredData->m_iPlotX, pTriggeredData->m_iPlotY);
+		const CvPlot* pPlot = GC.getMap().plot(pTriggeredData->m_iPlotX, pTriggeredData->m_iPlotY);
 		if (NULL != pPlot && pPlot->isInViewport())
 		{
 			gDLL->getEngineIFace()->addColoredPlot(pPlot->getViewportX(), pPlot->getViewportY(), GC.getColorInfo(GC.getCOLOR_WARNING_TEXT()).getColor(), PLOT_STYLE_CIRCLE, PLOT_LANDSCAPE_LAYER_RECOMMENDED_PLOTS);

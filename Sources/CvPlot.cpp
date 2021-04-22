@@ -23,6 +23,7 @@
 #include "CvDLLEntityIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
 #include "CvDLLFlagEntityIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLSymbolIFaceBase.h"
 #include "CvDLLPlotBuilderIFaceBase.h"
 

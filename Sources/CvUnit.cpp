@@ -20,9 +20,12 @@
 #include "CvViewport.h"
 #include "CyPlot.h"
 #include "CyUnit.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "CvDLLEntity.h"
 #include "CvDLLEntityIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
+#include "CvDLLPythonIFaceBase.h"
 
 static CvEntity* g_dummyEntity = NULL;
 static CvUnit*	 g_dummyUnit = NULL;

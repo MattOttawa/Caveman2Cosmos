@@ -8,6 +8,7 @@
 #include "CvPython.h"
 #include "CvSelectionGroup.h"
 #include "CvXMLLoadUtility.h"
+#include "CvDLLInterfaceIFaceBase.h"
 
 // BUG - EXE/DLL Paths - start
 //#include <shlobj.h>

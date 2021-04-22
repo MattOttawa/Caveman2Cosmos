@@ -23,8 +23,11 @@
 #include "CvSelectionGroup.h"
 #include "CvUnit.h"
 #include "CvViewport.h"
+#include "CvDLLEngineIFaceBase.h"
 #include "CvDLLEntityIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
+#include "CvDLLPythonIFaceBase.h"
 /*********************************/
 /***** Parallel Maps - Begin *****/
 /*********************************/

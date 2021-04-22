@@ -20,6 +20,10 @@
 #include "CvTeamAI.h"
 #include "CvUnit.h"
 #include "CvViewport.h"
+#ifdef THE_GREAT_WALL
+#include "CvDLLEngineIFaceBase.h"
+#endif
+#include "CvDLLInterfaceIFaceBase.h"
 
 //Disable this passed in initialization list warning, as it is only stored in the constructor of CvBuildingList and not used
 #pragma warning( disable : 4355 )
