@@ -1,4 +1,15 @@
 #include "CvGameCoreDLL.h"
+#include "CvCity.h"
+#include "CvEventReporter.h"
+#include "CvGlobals.h"
+#include "CvInitCore.h"
+#include "CvMap.h"
+#include "CvMessageControl.h"
+#include "CvPathGenerator.h"
+#include "CvPlayerAI.h"
+#include "CvPlot.h"
+#include "CvSelectionGroup.h"
+#include "CvUnit.h"
 #include "FInputDevice.h"
 
 //
@@ -53,17 +64,17 @@ bool CvEventReporter::kbdEvent(int evt, int key, int iCursorX, int iCursorY)
 		if ( gDLL->ctrlKey() && gDLL->shiftKey() && evt == 7 && (key == 30 || key == 32) )
 		{
 			// TESTING ONLY ... GET_PLAYER((PlayerTypes)0/*GC.getGame().getActivePlayer()*/).AI_doCivics();
-			//GC.getGameINLINE().recalculateModifiers();
+			//GC.getGame().recalculateModifiers();
 			//AIAndy: Changed to use a message to make it multiplayer safe
 			CvMessageControl::getInstance().sendRecalculateModifiers();
 		}
 		if ( gDLL->altKey() && gDLL->shiftKey() && evt == 7 && (key == 30) )
 		{
-			GC.getMapINLINE().toggleCitiesDisplay();
+			GC.getMap().toggleCitiesDisplay();
 		}
 		if ( gDLL->altKey() && gDLL->shiftKey() && evt == 7 && (key == 32) )
 		{
-			GC.getMapINLINE().toggleUnitsDisplay();
+			GC.getMap().toggleUnitsDisplay();
 		}
 #ifndef FINAL_RELEASE
 		if ( gDLL->altKey() && gDLL->ctrlKey() && evt ==7 && key == FInputDevice::KB_P )
@@ -169,9 +180,14 @@ void CvEventReporter::gameStart()
 	m_kPythonEventMgr.reportGameStart();
 }
 
-void CvEventReporter::gameEnd()
+void CvEventReporter::gameEnd(int iGameTurn)
 {
-	m_kPythonEventMgr.reportGameEnd();
+	m_kPythonEventMgr.reportGameEnd(iGameTurn);
+}
+
+void CvEventReporter::mapRegen()
+{
+	m_kPythonEventMgr.reportMapRegen();
 }
 
 void CvEventReporter::beginGameTurn(int iGameTurn)
@@ -653,16 +669,9 @@ void CvEventReporter::writeStatistics(FDataStreamBase* pStream)
 {
 	m_kStatistics.write(pStream);
 }
-/************************************************************************************************/
-/* Afforess	                  Start		 07/19/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 
-void CvEventReporter::addTeam(TeamTypes eIndex0, TeamTypes eIndex1, bool bAdded)
+
+void CvEventReporter::changeTeam(TeamTypes eOld, TeamTypes eNew)
 {
-	m_kPythonEventMgr.reportAddTeam(eIndex0, eIndex1, bAdded);
+	m_kPythonEventMgr.reportChangeTeam(eOld, eNew);
 }
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/

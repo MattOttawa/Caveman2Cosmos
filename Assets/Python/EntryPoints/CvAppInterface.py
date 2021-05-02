@@ -43,6 +43,8 @@ def onSave():
 	return cPickle.dumps(CvEventInterface.onEvent(('OnSave', 0, 0, 0, 0, 0)))
 
 def onLoad(argsList):
+	import CvScreensInterface
+	CvScreensInterface.mainInterface.bSetStartZoom = True
 	import CvEventInterface
 	loadDataStr = argsList[0]
 	if loadDataStr:
@@ -50,9 +52,10 @@ def onLoad(argsList):
 		CvEventInterface.onEvent(('OnLoad', cPickle.loads(loadDataStr), 0, 0, 0, 0, 0))
 
 def preGameStart():
-	import CvEventInterface
-	CvEventInterface.getEventManager().fireEvent("PreGameStart")
+	#import CvEventInterface
+	#CvEventInterface.getEventManager().fireEvent("PreGameStart")
 	import CvScreensInterface
+	CvScreensInterface.mainInterface.bSetStartZoom = True
 	CvScreensInterface.showMainInterface()
 
 def recalculateModifiers():
@@ -60,6 +63,11 @@ def recalculateModifiers():
 	BugGameUtils.getDispatcher().getBaseUtils().reset()
 	#import CvEventInterface
 	#CvEventInterface.getEventManager().reset()
+	import DynamicCivNames
+	GC = CyGlobalContext()
+	for loopPlayer in range(GC.getMAX_PC_PLAYERS()):
+		if GC.getPlayer(loopPlayer).isAlive():
+			DynamicCivNames.g_DynamicCivNames.setNewNameByCivics(loopPlayer)
 
 def onPbemSend(argsList):
 	import smtplib, MimeWriter, base64, StringIO
@@ -173,18 +181,9 @@ def getOptionINT(argsList):
 	except:
 		return default
 
-def gameStartSave():
-	autoSave("[Start]")
-
-def gameEndSave():
-	autoSave("[End]")
-
 def gameExitSave():
-	autoSave("[Exit]")
-
-def autoSave(prefix):
 	import AutoSave
-	AutoSave.autoSave(prefix)
+	AutoSave.autoSave("[Exit]")
 
 # Referenced by the BtS exe.
 def getConsoleMacro(argsList): return ""

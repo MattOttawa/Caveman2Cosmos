@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Soren Johnson (Firaxis Games) -->
-	<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Alex Mantzaris (Firaxis Games) -->
-	<!-- Sid Meier's Civilization 4 -->
-	<!-- Copyright Firaxis Games 2005 -->
-	<!-- ReModified by StrategyOnly -->
-	<!-- -->
-	<!-- Improvement -->
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by Soren Johnson (Firaxis Games) -->
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Alex Mantzaris (Firaxis Games) -->
+<!-- Sid Meier's Civilization 4 -->
+<!-- Copyright Firaxis Games 2005 -->
+<!-- ReModified by StrategyOnly -->
+<!-- Improvement -->
 <Civ4ImprovementInfos xmlns="x-schema:../../../XML/Schema/C2C_CIV4TerrainSchema.xml">
 	<ImprovementInfos>
 		<!-- Meosoamerican Temple -->
@@ -38,7 +37,7 @@
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
-					<TerrainType>TERRAIN_GRASS</TerrainType>
+					<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 			</TerrainMakesValids>
@@ -92,14 +91,14 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<iUnique>2</iUnique>
+			<iUniqueRange>2</iUniqueRange>
 			<iCulture>2</iCulture>
 			<iCultureRange>1</iCultureRange>
 		</ImprovementInfo>
 		<!-- Stone Circle -->
 		<ImprovementInfo>
-			<Type>IMPROVEMENT_STONECIRCLE</Type>
-			<Description>TXT_KEY_IMPROVEMENT_STONECIRCLE</Description>
+			<Type>IMPROVEMENT_STONE_CIRCLE</Type>
+			<Description>TXT_KEY_IMPROVEMENT_STONE_CIRCLE</Description>
 			<Civilopedia>TXT_KEY_IMPROVEMENT_SACRED_SITE_PEDIA</Civilopedia>
 			<ArtDefineTag>ART_DEF_IMPROVEMENT_STONEHENGE</ArtDefineTag>
 			<YieldChanges>
@@ -123,7 +122,7 @@
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
-					<TerrainType>TERRAIN_GRASS</TerrainType>
+					<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
@@ -181,7 +180,7 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<iUnique>2</iUnique>
+			<iUniqueRange>2</iUniqueRange>
 			<iCulture>2</iCulture>
 			<iCultureRange>1</iCultureRange>
 		</ImprovementInfo>
@@ -266,7 +265,7 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<iUnique>2</iUnique>
+			<iUniqueRange>2</iUniqueRange>
 			<iCulture>2</iCulture>
 			<iCultureRange>1</iCultureRange>
 		</ImprovementInfo>
@@ -293,7 +292,7 @@
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
-					<FeatureType>FEATURE_FOREST_OLD</FeatureType>
+					<FeatureType>FEATURE_FOREST_ANCIENT</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
@@ -347,7 +346,7 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<iUnique>2</iUnique>
+			<iUniqueRange>2</iUniqueRange>
 			<iCulture>2</iCulture>
 			<iCultureRange>1</iCultureRange>
 		</ImprovementInfo>
@@ -378,15 +377,15 @@
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
-					<TerrainType>TERRAIN_ROCKY_ARID</TerrainType>
+					<TerrainType>TERRAIN_BADLAND</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
-					<TerrainType>TERRAIN_ROCKY_COLD</TerrainType>
+					<TerrainType>TERRAIN_JAGGED</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
-					<TerrainType>TERRAIN_GRASS</TerrainType>
+					<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 				<TerrainMakesValid>
@@ -444,7 +443,7 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<iUnique>2</iUnique>
+			<iUniqueRange>2</iUniqueRange>
 			<iCulture>2</iCulture>
 			<iCultureRange>1</iCultureRange>
 		</ImprovementInfo>

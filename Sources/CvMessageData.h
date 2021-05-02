@@ -1,9 +1,7 @@
 #ifndef CV_MESSAGE_DATA
 #define CV_MESSAGE_DATA
 
-#include "CvBuildLists.h"
-
-class FDataStreamBase;
+//class FDataStreamBase;
 
 class CvMessageData
 {

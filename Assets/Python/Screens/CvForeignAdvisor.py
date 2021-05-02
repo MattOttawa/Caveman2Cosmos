@@ -4,7 +4,6 @@
 from CvPythonExtensions import *
 import CvScreensInterface as UP
 import HandleInputUtil
-import PythonToolTip as pyTT
 import math
 
 # globals
@@ -70,17 +69,15 @@ class CvForeignAdvisor:
 		self.selectedLeaders = []
 		self.aRelationList = []
 		self.aDealMap = {}
-		self.ownedTechs = []
-		self.iTechRange = 0
+		self.techsToGive = []
 
 		self.HILITE_SQUARE = AFM.getInterfaceArtInfo("BUTTON_HILITE_SQUARE").getPath()
 
 		import InputData
 		self.InputData = InputData.instance
-		# Tool Tip
-		self.szTextTT = ""
-		self.iOffsetTT = []
-		self.bLockedTT = False
+
+		import PythonToolTip
+		self.tooltip = PythonToolTip.PythonToolTip()
 
 		import ScreenResolution as SR
 		self.xRes = xRes = SR.x
@@ -184,7 +181,7 @@ class CvForeignAdvisor:
 
 		if bDebug:
 			DDB = "FA_DebugDD"
-			screen.addDropDownBoxGFC(DDB, 22, 12, 300, eWidGen, 1, 1, FontTypes.GAME_FONT)
+			screen.addDropDownBoxGFC(DDB, 22, 0, 300, eWidGen, 1, 1, FontTypes.GAME_FONT)
 			for iPlayerX in range(GC.getMAX_PC_PLAYERS()):
 				CyPlayerX = GC.getPlayer(iPlayerX)
 				if CyPlayerX.isAlive():
@@ -211,22 +208,27 @@ class CvForeignAdvisor:
 
 		# City trade list
 		self.tuCity = tuCity = []
-		CyCity, i = CyPlayer.firstCity(False)
-		while CyCity:
+		for CyCity in CyPlayer.cities():
 			liCity = []
-			for iCity in range(CyCity.getTradeRoutes()):
-				liCity.append(CyCity.getTradeCity(iCity))
+			for iCity in xrange(CyCity.getTradeRoutes()):
+				cityTrade = CyCity.getTradeCity(iCity)
+				if cityTrade:
+					liCity.append(cityTrade)
+				else: print "[WARNING] Mismatch! 'CyCity.getTradeCity(iCity) = None' in 'for iCity in range(CyCity.getTradeRoutes()):'"
 			if liCity:
 				tuCity.append([CyCity, liCity])
-			CyCity, i = CyPlayer.nextCity(i, False)
 
+		self.techsToGive = techsToGive = []
+		self.techsToTake = techsToTake = []
 		if not self.bNoTechTrade:
-			# Owned tech list
-			self.iTechRange = iTechRange = GC.getNumTechInfos()
-			self.ownedTechs = ownedTechs = []
-			for iTech in range(iTechRange):
-				if CyTeam.isHasTech(iTech) and not CyTeam.isNoTradeTech(iTech):
-					ownedTechs.append(iTech)
+			for iTech in range(GC.getNumTechInfos()):
+				if GC.getTechInfo(iTech).isGlobal():
+					continue
+				if CyTeam.isHasTech(iTech):
+					if not CyTeam.isNoTradeTech(iTech):
+						techsToGive.append(iTech)
+				elif CyPlayer.canResearch(iTech):
+					techsToTake.append(iTech)
 
 
 	# Drawing Leaderheads
@@ -933,7 +935,7 @@ class CvForeignAdvisor:
 			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_ECONOMY", ())		],
 			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_WELFARE", ())		],
 			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_CURRENCY", ())	],
-			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_LABOR", ())		],
+			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_WORKFORCE", ())		],
 			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_EDUCATION", ())	],
 			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_LANGUAGE", ())	],
 			[dx,	TRNSLTR.getText("TXT_KEY_CIVICOPTION_ABBR_IMMIGRATION", ())	],
@@ -1055,8 +1057,8 @@ class CvForeignAdvisor:
 		uFont3b = self.aFontList[3]
 		charGold = "<font=3>" + self.charGold
 
-		iTechRange = self.iTechRange
-		ownedTechs = self.ownedTechs
+		techsToGive = self.techsToGive
+		techsToTake = self.techsToTake
 
 		eWidJuToTech = WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH
 
@@ -1092,8 +1094,9 @@ class CvForeignAdvisor:
 		tradeData = TradeData()
 		tradeData.ItemType = TradeableItems.TRADE_TECHNOLOGIES
 
-		szNoTrade = TRNSLTR.getText("TXT_KEY_FOREIGN_ADVISOR_NO_TECH_TRADING", ())
-		bTechTrading = CyTeam.isTechTrading()
+		szNoTechTrading = TRNSLTR.getText("TXT_KEY_FOREIGN_ADVISOR_NO_TECH_TRADING", ())
+		bHuman = CyPlayer.isHuman()
+		bTechTrading = not self.bNoTechTrade and CyTeam.isTechTrading()
 		bGoldTrading = CyTeam.isGoldTrading()
 		iter0 = 0
 		iPerRow = (w1 - 8) / 56
@@ -1106,46 +1109,48 @@ class CvForeignAdvisor:
 			iTeamX = CyPlayerX.getTeam()
 			if iTeamX == iTeam: continue
 			CyTeamX = GC.getTeam(iTeamX)
-			bHuman = CyPlayerX.isHuman()
+			bHumanX = CyPlayerX.isHuman()
 			# Define row content
 			aList0 = []
 			aList1 = []
 			if bTechTrading and CyTeamX.isTechTrading():
-				msg = ""
+				szNoTechTrade = ""
 			else:
-				msg = szNoTrade
+				szNoTechTrade = szNoTechTrading
 
 			iGold = 0
 			if bGoldTrading and CyTeamX.isGoldTrading():
-				if bHuman:
-					if CyPlayerX.getEffectiveGold() > 0:
-						iGold = -1
-				else:
+				if not bHumanX:
 					iGold = CyPlayerX.AI_maxGoldTrade(iPlayer)
+				elif CyPlayerX.getGold() > 0:
+					iGold = -1
 
-			if not msg:
-				for iTech in range(iTechRange):
+			if not szNoTechTrade:
 
+				for iTech in techsToGive:
+					if not CyPlayerX.canResearch(iTech):
+						continue
 					if bHuman:
-						if iTech in ownedTechs:
-							if not CyTeamX.isHasTech(iTech):
-								aList0.append(iTech)
+						aList0.append(iTech)
+						continue
 
-						elif CyTeamX.isHasTech(iTech) and not CyTeamX.isNoTradeTech(iTech):
-							aList1.append(iTech)
+					tradeData.iData = iTech
+					if CyPlayer.getTradeDenial(iPlayerX, tradeData) == DenialTypes.NO_DENIAL:
+						aList0.append(iTech)
 
-					elif iTech in ownedTechs:
-						if CyTeamX.isHasTech(iTech): continue
-						tradeData.iData = iTech
-						if CyPlayer.getTradeDenial(iPlayerX, tradeData) == DenialTypes.NO_DENIAL:
-							aList0.append(iTech)
+				for iTech in techsToTake:
+					if not CyTeamX.isHasTech(iTech) or CyTeamX.isNoTradeTech(iTech):
+						continue
+					if bHumanX:
+						aList1.append(iTech)
+						continue
 
-					elif CyTeamX.isHasTech(iTech) and not CyTeamX.isNoTradeTech(iTech):
-						tradeData.iData = iTech
-						if CyPlayerX.getTradeDenial(iPlayer, tradeData) == DenialTypes.NO_DENIAL:
-							aList1.append(iTech)
+					tradeData.iData = iTech
+					if CyPlayerX.getTradeDenial(iPlayer, tradeData) == DenialTypes.NO_DENIAL:
+						aList1.append(iTech)
+
 			# Define row
-			if msg:
+			if szNoTechTrade:
 				h = 72
 				yImg = y + 4
 			else:
@@ -1176,8 +1181,8 @@ class CvForeignAdvisor:
 
 				screen.setTextAt(name, ScPnl, charGold, 1<<0, 78, yImg+18, 0, eFontGame, eWidGen, 1, 1)
 
-			if msg:
-				screen.setLabelAt(self.getNextWidget(), ScPnl, msg, 1<<0, 100, y+28, 0, eFontGame, eWidGen, 1, 1)
+			if szNoTechTrade:
+				screen.setLabelAt(self.getNextWidget(), ScPnl, szNoTechTrade, 1<<0, 100, y+28, 0, eFontGame, eWidGen, 1, 1)
 			else:
 				if aList0:
 					Pnl = self.getNextWidget()
@@ -1238,40 +1243,15 @@ class CvForeignAdvisor:
 			screen.deleteWidget(self.getNextWidget())
 		self.nWidgetCount = 0
 
-	# Tooltip
-	def updateTooltip(self, screen, szText, xPos = -1, yPos = -1, uFont = ""):
-		if not szText:
-			return
-		if szText != self.szTextTT:
-			self.szTextTT = szText
-			if not uFont:
-				uFont = self.aFontList[6]
-			iX, iY = pyTT.makeTooltip(screen, xPos, yPos, szText, uFont, "Tooltip")
-			POINT = Win32.getCursorPos()
-			self.iOffsetTT = [iX - POINT.x, iY - POINT.y]
-		else:
-			if xPos == yPos == -1:
-				POINT = Win32.getCursorPos()
-				screen.moveItem("Tooltip", POINT.x + self.iOffsetTT[0], POINT.y + self.iOffsetTT[1], 0)
-			screen.moveToFront("Tooltip")
-			screen.show("Tooltip")
-		if xPos == yPos == -1:
-			self.bLockedTT = True
-
 	#--------------------------#
 	# Base operation functions #
 	#||||||||||||||||||||||||||#
 	def update(self, fDelta):
-		if self.bLockedTT:
-			POINT = Win32.getCursorPos()
-			iX = POINT.x + self.iOffsetTT[0]
-			iY = POINT.y + self.iOffsetTT[1]
-			if iX < 0: iX = 0
-			if iY < 0: iY = 0
-			self.getScreen().moveItem("Tooltip", iX, iY, 0)
+		if self.tooltip.bLockedTT:
+			self.tooltip.handle(self.getScreen())
 
 	# Handles the input for this screen...
-	def handleInput (self, inputClass):
+	def handleInput(self, inputClass):
 		screen = self.getScreen()
 		if not screen.isActive():
 			return
@@ -1296,9 +1276,8 @@ class CvForeignAdvisor:
 			CASE = szSplit[2:]
 		else:
 			CASE = [0]
-		# Remove potential Help Text
-		self.bTooltip = False
-		screen.hide("Tooltip")
+
+		self.tooltip.reset(screen)
 
 		if iCode == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
 
@@ -1314,7 +1293,7 @@ class CvForeignAdvisor:
 					iPlayerY, iPlayerX = self.aRelationList[ID]
 					iSum, szTxt = self.sumAttitude(iPlayerY, iPlayerX)
 					szTxt += "\n---> " + aMap[GC.getPlayer(iPlayerY).AI_getAttitude(iPlayerX)] + str(iSum)
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 
 				elif TYPE == "LEADER":
 					CyPlayer = GC.getPlayer(ID)
@@ -1329,7 +1308,7 @@ class CvForeignAdvisor:
 
 					szTxt += "\n%s %s\n" %(CyPlayer.getCivilizationAdjective(0), szLeader)
 					szTxt += "%s - %s" %(CyPlayer.getCivilizationShortDescription(0), CyPlayer.getCivilizationDescription(0))
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 
 				elif TYPE == "BONUS":
 					if CASE[0] == "DEAL":
@@ -1342,13 +1321,13 @@ class CvForeignAdvisor:
 						szTxt = ""
 						iBonus = ID
 					szTxt += GTM.getBonusHelp(iBonus, False)
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 				elif TYPE == "CIVIC":
-					self.updateTooltip(screen, GTM.parseCivicInfo(ID, False, True, False))
+					self.tooltip.handle(screen, GTM.parseCivicInfo(ID, False, True, False))
 				elif TYPE == "RELIGION":
-					self.updateTooltip(screen, GTM.parseReligionInfo(ID, False))
+					self.tooltip.handle(screen, GTM.parseReligionInfo(ID, False))
 				elif TYPE == "TECH":
-					self.updateTooltip(screen, GTM.getTechHelp(ID, False, True, False, True, -1))
+					self.tooltip.handle(screen, GTM.getTechHelp(ID, False, True, False, True, -1))
 
 			elif BASE == "GPT":
 				szTxt = ""
@@ -1359,26 +1338,19 @@ class CvForeignAdvisor:
 				elif TYPE == "NEG":
 					szTxt = "<color=255,27,27>" + TRNSLTR.getText("TXT_KEY_FINANCIAL_ADVISOR_NET_INCOME", (-ID,)) + " " + self.charGold
 				if szTxt:
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 			elif BASE == "GOLD":
 				if TYPE == "ALL":
 					CyPlayerX = GC.getPlayer(ID)
 					iGold = CyPlayerX.getGold()
-					iGrGold = CyPlayerX.getGreaterGold()
 					szTxt = ""
-					if iGrGold:
-						szTxt += str(iGrGold)
 					szTxt += str(iGold) + self.charGold
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 				elif TYPE == "WILL":
 					iGold = GC.getPlayer(ID).AI_maxGoldTrade(self.iPlayer)
-					iGrGold = iGold / 1000000
 					szTxt = ""
-					if iGrGold:
-						iGold - iGrGold*1000000
-						szTxt += str(iGrGold)
 					szTxt += str(iGold) + self.charGold
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 
 		elif iCode == NotifyCode.NOTIFY_CLICKED:
 
@@ -1483,10 +1455,9 @@ class CvForeignAdvisor:
 
 
 	def onClose(self):
-		del self.CyPlayer, self.iPlayer, self.CyTeam, self.iTeam, self.iResID, self.bDebug
-		del self.xRes, self.yRes, self.xMid, self.yMid, self.H_EDGE_PANEL, self.HILITE_SQUARE
-		del self.aFontList, self.aBonusTuple, self.selectedLeaders, self.hasMet, self.tuCity
-		del self.InputData, self.szTextTT, self.iOffsetTT, self.bLockedTT
-		del self.aColMap, self.aSmileyList, self.aDealMap, self.aRelationList
-		del self.charWar, self.charPeace, self.charCommerce, self.charGold, self.charTrade, self.charFaith, self.charCross
-		del self.iTechRange, self.ownedTechs
+		del self.CyPlayer, self.iPlayer, self.CyTeam, self.iTeam, self.iResID, self.bDebug, self.InputData, \
+			self.xRes, self.yRes, self.xMid, self.yMid, self.H_EDGE_PANEL, self.HILITE_SQUARE, \
+			self.aFontList, self.aBonusTuple, self.selectedLeaders, self.hasMet, self.tuCity, \
+			self.aColMap, self.aSmileyList, self.aDealMap, self.aRelationList, self.bRandomPers, \
+			self.charWar, self.charPeace, self.charCommerce, self.charGold, self.charTrade, self.charFaith, self.charCross, \
+			self.bNoTechTrade, self.techsToGive, self.techsToTake

@@ -104,7 +104,7 @@ class PediaImprovement:
 		# Stats
 		szText = ""
 		if CvTheImproveInfo.isOutsideBorders():
-			szText += " Can be built outside cultural borders.\n"
+			szText += " " + TRNSLTR.getText("TXT_KEY_PEDIA_IMPROVEMENT_BUILD_OUTSIDE_BORDERS", ()) + ".\n"
 		szYieldReq = " Min. "
 		bYieldReq = False
 		szYield = ""
@@ -124,13 +124,6 @@ class PediaImprovement:
 				else:
 					szYield += " (<color=0,230,0,255>+"
 				szYield += str(iRiverYieldChange) + szChar + "</color>River)"
-			iHillsYieldChange = CvTheImproveInfo.getHillsYieldChange(k)
-			if iHillsYieldChange:
-				if iHillsYieldChange < 0:
-					szYield += " (<color=255,0,0,255>"
-				else:
-					szYield += " (<color=0,230,0,255>+"
-				szYield += str(iHillsYieldChange) + szChar + "</color>Hill)"
 			iFreshwaterYieldChange = CvTheImproveInfo.getIrrigatedYieldChange(k)
 			if iFreshwaterYieldChange:
 				if iFreshwaterYieldChange < 0:
@@ -159,7 +152,7 @@ class PediaImprovement:
 				szText += " <color=255,0,0,255>"
 			else:
 				szText += " <color=0,230,0,255>+"
-			szText += str(iAirDefense) + "</color> Air Defense"
+			szText += str(iAirDefense) + "</color> "+ TRNSLTR.getText("TXT_KEY_PEDIA_IMPROVEMENT_AIR_DEFENSE", ())
 		if szText:
 			listBox = aName()
 			screen.addListBoxGFC(listBox, "", X_MAIN, Y_MAIN, W_STATS, H_MAIN, eTblEmpty)
@@ -185,7 +178,6 @@ class PediaImprovement:
 			Pnl = aName()
 			screen.addScrollPanel(Pnl, "", X_MAIN + W_STATS - 2, y + 24, W_REQUIRES + 4, H_BOT_ROW - 50, ePnlBlue50)
 			screen.setStyle(Pnl, "ScrollPanel_Alt_Style")
-			PF + "CIVIC"
 			x = 4
 			for iType, BTN in aList0:
 				screen.setImageButtonAt(szChild + str(iType), Pnl, BTN, x, -2, S_BOT_ROW, S_BOT_ROW, eWidGen, 1, 1)
@@ -308,10 +300,10 @@ class PediaImprovement:
 
 		# bNotOnAnyBonus is not exposed to python.
 
-		if CvTheImproveInfo.isWater():
+		if CvTheImproveInfo.isWaterImprovement():
 			aList0.append([PF + "CONCEPT_NEW" + str(GC.getInfoTypeForString("CONCEPT_WATER_TERRAINS")), "Art/Interface/Buttons/BaseTerrain/Ocean.dds"])
 
-		if CvTheImproveInfo.isRequiresPeak():
+		if CvTheImproveInfo.isPeakImprovement():
 			aList0.append([PF + "TERRAIN" + str(nTerrains - 2) + "|" + str(n), GC.getTerrainInfo(nTerrains - 2).getButton()])
 			n += 1
 		elif not CvTheImproveInfo.isPeakMakesValid():

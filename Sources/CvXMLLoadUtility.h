@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef XML_LOAD_UTILITY_H
+#define XML_LOAD_UTILITY_H
+
 //  $Header:
 //------------------------------------------------------------------------------------------------
 //
@@ -12,19 +15,15 @@
 //------------------------------------------------------------------------------------------------
 //  Copyright (c) 2003 Firaxis Games, Inc. All rights reserved.
 //------------------------------------------------------------------------------------------------
-#ifndef XML_LOAD_UTILITY_H
-#define XML_LOAD_UTILITY_H
 
-//#include "CvStructs.h"
-#include "CvInfos.h"
-#include "CvGlobals.h"
 #include "FVariableSystem.h"
 
-class FXmlSchemaCache;
-class FXml;
+class CvInternalGlobals;
 class CvGameText;
 class CvCacheObject;
 class CvImprovementBonusInfo;
+class FXmlSchemaCache;
+class FXml;
 
 class ParserErrorHandler : public xercesc::ErrorHandler
 {
@@ -125,7 +124,7 @@ public:
 	bool GetOptionalChildXmlValByName(std::string&  pszVal, const wchar_t* szName, char*  pszDefault = NULL);
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
-	bool GetOptionalChildXmlValByName(std::wstring& pszVal, const wchar_t* szName, wchar* pszDefault = NULL);
+	bool GetOptionalChildXmlValByName(std::wstring& pszVal, const wchar_t* szName, wchar_t* pszDefault = NULL);
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
 	// TO DO - unsafe
@@ -133,14 +132,14 @@ public:
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
 	// TO DO - unsafe
-	bool GetOptionalChildXmlValByName(wchar* pszVal, const wchar_t* szName, wchar* pszDefault = NULL);
+	bool GetOptionalChildXmlValByName(wchar_t* pszVal, const wchar_t* szName, wchar_t* pszDefault = NULL);
 	
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
 	bool GetChildXmlValByName(std::string& pszVal, const wchar_t* szName, char* pszDefault = NULL);
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
-	bool GetChildXmlValByName(std::wstring& pszVal, const wchar_t* szName, wchar* pszDefault = NULL);
+	bool GetChildXmlValByName(std::wstring& pszVal, const wchar_t* szName, wchar_t* pszDefault = NULL);
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
 	// TO DO - unsafe
@@ -148,7 +147,7 @@ public:
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
 	// TO DO - unsafe
-	bool GetChildXmlValByName(wchar* pszVal, const wchar_t* szName, wchar* pszDefault = NULL);
+	bool GetChildXmlValByName(wchar_t* pszVal, const wchar_t* szName, wchar_t* pszDefault = NULL);
 	// overloaded function that gets the child value of the tag with szName if there is only one child
 	// value of that name
 	bool GetChildXmlValByName(int* piVal, const wchar_t* szName, int iDefault = 0)			{ return GetChildXmlValByName<int>  (piVal, szName, iDefault); }
@@ -162,11 +161,11 @@ public:
 	
 	bool GetChildXmlValByName(std::string& pszVal, const char* szName, char* pszDefault = NULL)
 	{ OutputDebugString("Call: bool GetChildXmlValByName(std::string& pszVal, const char* szName, char* pszDefault = NULL)");	FAssert(false); return false; }
-	bool GetChildXmlValByName(std::wstring& pszVal, const char* szName, wchar* pszDefault = NULL)
+	bool GetChildXmlValByName(std::wstring& pszVal, const char* szName, wchar_t* pszDefault = NULL)
 	{ OutputDebugString("Call: bool GetChildXmlValByName(std::wstring& pszVal, const char* szName, wchar* pszDefault = NULL)");	FAssert(false); return false; }
 	bool GetChildXmlValByName(char* pszVal, const char* szName, char* pszDefault = NULL) // TO DO - unsafe
 	{ OutputDebugString("Call: GetChildXmlValByName(char* pszVal, const char* szName, char* pszDefault = NULL)");				FAssert(false); return false; }
-	bool GetChildXmlValByName(wchar* pszVal, const char* szName, wchar* pszDefault = NULL) // TO DO - unsafe
+	bool GetChildXmlValByName(wchar_t* pszVal, const char* szName, wchar_t* pszDefault = NULL) // TO DO - unsafe
 	{ OutputDebugString("Call: bool GetChildXmlValByName(wchar* pszVal, const char* szName, wchar* pszDefault = NULL)");		FAssert(false); return false; }
 	bool GetChildXmlValByName(int* piVal, const char* szName, int iDefault = 0)
 	{ OutputDebugString("Call: bool GetChildXmlValByName(int* piVal, const char* szName, int iDefault = 0)");					FAssert(false); return false; }
@@ -192,7 +191,7 @@ public:
 			else
 			{
 				char* tmp = xercesc::XMLString::transcode(nodesText);
-				FAssertMsg(false, tmp);
+				FErrorMsg(tmp);
 				xercesc::XMLString::release(&tmp);
 				// not the right type, assume it is a global define
 				char* nodeTextC = xercesc::XMLString::transcode(nodesText);
@@ -210,7 +209,7 @@ public:
 						"a name of %s global definition, found '%s'\n", 
 						filePath, typeid(T).name(), typeid(T).name(), nodeTextC);
 					xercesc::XMLString::release(&filePath);
-					logMsg(szLog);
+					logging::logMsg("xml.log", szLog);
 					gDLL->MessageBox(szLog, "Error");
 					xercesc::XMLString::release(&nodeTextC);
 					return false;
@@ -233,7 +232,7 @@ public:
 		else
 		{
 			char* tmp = xercesc::XMLString::transcode(szName);
-			FAssertMsg(false, tmp);
+			FErrorMsg(tmp);
 			xercesc::XMLString::release(&tmp);
 			*pVal = pDefault;
 
@@ -331,7 +330,7 @@ public:
 		char szLog[2000];
 		sprintf(szLog, "XML model (DOM) error: %s : No text in the element '%s'", filePath, nodeTextC);
 		xercesc::XMLString::release(&filePath);
-		logMsg(szLog);
+		logging::logMsg("xml.log", szLog);
 		gDLL->MessageBox(szLog, "Error");
 		return NULL;
 	}
@@ -448,11 +447,11 @@ public:
 
 	// overloaded function that gets either the current xml node's or the next non-comment xml node's string value
 	// depending on if the current node is a non-comment node or not
-	bool GetXmlVal(std::wstring& pszVal, wchar* pszDefault = NULL);
+	bool GetXmlVal(std::wstring& pszVal, wchar_t* pszDefault = NULL);
 	bool GetXmlVal(std::string& pszVal, char* pszDefault = NULL);
 	// overloaded function that gets either the current xml node's or the next non-comment xml node's string value
 	// depending on if the current node is a non-comment node or not
-	bool GetXmlVal(wchar* pszVal, wchar* pszDefault = NULL); // TO DO - unsafe
+	bool GetXmlVal(wchar_t* pszVal, wchar_t* pszDefault = NULL); // TO DO - unsafe
 	bool GetXmlVal(char* pszVal, char* pszDefault = NULL); // TO DO - unsafe
 	// overloaded function that gets either the current xml node's or the next non-comment xml node's int value
 	// depending on if the current node is a non-comment node or not
@@ -467,11 +466,11 @@ public:
 	// overloaded function that sets the current xml node to it's next sibling and then
 	//	gets the next non-comment xml node's string value
 	bool GetNextXmlVal(std::string& pszVal, char* pszDefault = NULL);
-	bool GetNextXmlVal(std::wstring& pszVal, wchar* pszDefault = NULL);
+	bool GetNextXmlVal(std::wstring& pszVal, wchar_t* pszDefault = NULL);
 	// overloaded function that sets the current xml node to it's next sibling and then
 	//	gets the next non-comment xml node's string value
 	bool GetNextXmlVal(char* pszVal, char* pszDefault = NULL); // TO DO - unsafe
-	bool GetNextXmlVal(wchar* pszVal, wchar* pszDefault = NULL); // TO DO - unsafe
+	bool GetNextXmlVal(wchar_t* pszVal, wchar_t* pszDefault = NULL); // TO DO - unsafe
 	// overloaded function that sets the current xml node to it's next sibling and then
 	//	gets the next non-comment xml node's int value
 	bool GetNextXmlVal(int* piVal, int iDefault = 0);
@@ -485,11 +484,11 @@ public:
 	// overloaded function that sets the current xml node to it's first non-comment child node
 	//	and then gets that node's string value
 	bool GetChildXmlVal(std::string& pszVal, char* pszDefault = NULL);
-	bool GetChildXmlVal(std::wstring& pszVal, wchar* pszDefault = NULL);
+	bool GetChildXmlVal(std::wstring& pszVal, wchar_t* pszDefault = NULL);
 	// overloaded function that sets the current xml node to it's first non-comment child node
 	//	and then gets that node's string value
 	bool GetChildXmlVal(char* pszVal, char* pszDefault = NULL); // TO DO - unsafe
-	bool GetChildXmlVal(wchar* pszVal, wchar* pszDefault = NULL); // TO DO - unsafe
+	bool GetChildXmlVal(wchar_t* pszVal, wchar_t* pszDefault = NULL); // TO DO - unsafe
 	// overloaded function that sets the current xml node to it's first non-comment child node
 	//	and then gets that node's integer value
 	bool GetChildXmlVal(int* piVal, int iDefault = 0);
@@ -500,29 +499,18 @@ public:
 	//	and then gets that node's boolean value
 	bool GetChildXmlVal(bool* pbVal, bool bDefault = false);
 
-#ifdef _USRDLL
 	FXml* GetXML() { return NULL; }
 	xercesc::DOMElement* GetCurrentXMLElement() { return m_pCurrentXmlElement; }
 	void SetCurrentXMLElement(xercesc::DOMElement* element) { m_pCurrentXmlElement = element; }
-#endif
 
 	// loads the local yield from the xml file
 	int SetYields(int** ppiYield);
 
-#ifdef _USRDLL
 	template <class T>
 	int SetCommerce(T** ppiCommerce);
-#endif
-/************************************************************************************************/
-/* Afforess	                  Start		 05/25/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	// allocate and set the feature struct variables for the CvBuildInfo class
 	void SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTime, int** ppiFeatureProduction, bool** ppbFeatureRemove, bool** ppbNoTechCanRemoveWithNoProductionGain);
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
 	// loads the improvement bonuses from the xml file
 	void SetImprovementBonuses(CvImprovementBonusInfo** ppImprovementBonus);
@@ -548,27 +536,16 @@ public:
 	//				is found.
 	static int GetInfoClass(const TCHAR* pszVal);
 
-#ifdef _USRDLL
 	template <class T>
 	static void InitList(T **ppList, int iListLen, T val = 0);
-#endif
+
 	void InitStringList(CvString **ppszList, int iListLen, CvString szString);
 
 	void InitImprovementBonusList(CvImprovementBonusInfo** ppImprovementBonus, int iListLen);
-	// allocate and initialize the civilization's default buildings
-	void InitBuildingDefaults(int **ppiDefaults);
-	// allocate and initialize the civilization's default units
-	void InitUnitDefaults(int **ppiDefaults);
-/************************************************************************************************/
-/* Afforess	                  Start		 08/26/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	// allocate and initialize a 2 dimensional array of bool pointers
 	static void Init2DBoolList(bool*** pppbList, int iSizeX, int iSizeY);
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+
 	// allocate and initialize a 2 dimensional array of int pointers
 	static void Init2DIntList(int*** pppiList, int iSizeX, int iSizeY);
 	// allocate and initialize a 2 dimensional array of float pointers
@@ -633,10 +610,40 @@ public:
 	void SetVariableListTagPair(std::vector<int>, const wchar_t* szRootTagName,
 		int iInfoBaseLength, int iDefaultListVal = 0);
 
-	void SetOptionalIntVector(std::vector<int>* aInfos, const wchar_t* szRootTagName){return SetOptionalVector<int>(aInfos, szRootTagName);}
+	void SetOptionalIntVector(std::vector<int>* aInfos, const wchar_t* szRootTagName) { return SetOptionalVector<int>(aInfos, szRootTagName); }
 
-	void SetOptionalIntVectorWithDelayedResolution(std::vector<int>& aInfos, const wchar_t* szRootTagName);
-	static void CopyNonDefaultsFromIntVector(std::vector<int>& target, std::vector<int>& source){return CopyNonDefaultsFromVector<int>(target, source);}
+	static void CopyNonDefaultsFromIntVector(std::vector<int>& target, const std::vector<int>& source) { return CopyNonDefaultsFromVector<int>(target, source); }
+
+	template <class T>
+	void SetOptionalVectorWithDelayedResolution(std::vector<T>& aInfos, const wchar_t* szRootTagName)
+	{
+		if (TryMoveToXmlFirstChild(szRootTagName))
+		{
+			aInfos.clear();
+			const int iNumSibs = GetXmlChildrenNumber();
+			aInfos.resize(iNumSibs);
+			CvString szTextVal;
+
+			if (0 < iNumSibs)
+			{
+				if (GetChildXmlVal(szTextVal))
+				{
+					for (int j = 0; j < iNumSibs; j++)
+					{
+						GC.addDelayedResolution((int*)&(aInfos[j]), szTextVal);
+						if (!GetNextXmlVal(szTextVal))
+						{
+							break;
+						}
+					}
+
+					MoveToXmlParent();
+				}
+			}
+
+			MoveToXmlParent();
+		}
+	}
 
 	template<class T1, class T2, class T3>
 	void SetOptionalPairVector(T1* aInfos, const wchar_t* szRootTagName)
@@ -645,7 +652,7 @@ public:
 		aInfos->clear();
 		if (TryMoveToXmlFirstChild(szRootTagName))
 		{
-			int iNumSibs = GetXmlChildrenNumber();
+			const int iNumSibs = GetXmlChildrenNumber();
 
 			if (0 < iNumSibs)
 			{
@@ -679,13 +686,13 @@ public:
 		}
 	}
 	template<class T>
-	static void CopyNonDefaultsFromVector(std::vector<T>& target, std::vector<T>& source)
+	static void CopyNonDefaultsFromVector(std::vector<T>& target, const std::vector<T>& source)
 	{
-		for (typename std::vector<T>::const_iterator it = source.begin(), end = source.end(); it != end; ++it)
+		foreach_(const T& it, source)
 		{
-			if ((*it) > -1 && find(target.begin(), target.end(), *it) == target.end())
+			if (it > -1 && !algo::contains(target, it))
 			{
-				target.push_back(*it);
+				target.push_back(it);
 			}
 		}
 
@@ -743,38 +750,8 @@ public:
 	// Returns true if the dependency list is satisfied, false if not.
 	inline bool CheckDependency();
 
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/30/07                                MRGENIE      */
-/*                                                                                              */
-/* Savegame compatibility                                                                       */
-/************************************************************************************************/
-	bool doResetGlobalInfoClasses();
-	bool doResetInfoClasses();
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
-
 	static void RemoveTGAFiller();
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 10/19/07                                MRGENIE      */
-/*                                                                                              */
-/* Needs to be public for CvXMLLoadUtilityModTools                                              */
-/************************************************************************************************/
-#ifdef _DEBUG	
-	void XmlArtTagVerification(char* format, ... );
-#endif
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 10/30/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	void logMLF(char* format, ... );
-/************************************************************************************************/
-/* XML_MODULAR_ART_LOADING                 END                                                  */
-/************************************************************************************************/
+
 	static void showXMLError(const char* const format, ...);
 
 	//---------------------------------------PRIVATE MEMBER VARIABLES---------------------------------
@@ -815,27 +792,21 @@ private:
 /************************************************************************************************/
 /* SORT_ALPHABET                           END                                                  */
 /************************************************************************************************/
-	// take a character string of hex values and return their unsigned int value
-	void MakeMaskFromString(unsigned int *puiMask, char* szMask);
-
 	// find the tag name in the xml file and set the string parameter and num val parameter based on it's value
 	void SetGlobalStringArray(CvString** ppszString, wchar_t* szTagName, int* iNumVals, bool bUseEnum=false);
 	void SetDiplomacyCommentTypes(CvString** ppszString, int* iNumVals);	// sets diplomacy comments
 
 	void SetGlobalUnitScales(float* pfLargeScale, float* pfSmallScale, const wchar_t* szTagName);
 
-#ifdef _USRDLL
 	template <class T>
-		void SetGlobalDefine(const char* szDefineName, T*& piDefVal)
+	void SetGlobalDefine(const char* szDefineName, T*& piDefVal)
 	{ 
 		GC.getDefinesVarSystem()->GetValue(szDefineName, piDefVal); 
 	}
-#endif
 	//
 	// template which can handle all info classes
 	//
 	// a dynamic value for the list size
-#ifdef _USRDLL
 	template <class T>
 	void SetGlobalClassInfo(std::vector<T*>& aInfos, const wchar_t* szTagName, bool bTwoPass, CvInfoReplacements<T>* pReplacements = NULL);
 /************************************************************************************************/
@@ -862,7 +833,6 @@ private:
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/
-#endif
 	void SetDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const wchar_t* szTagName);
 	void LoadDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bUseCaching);
 
@@ -877,43 +847,8 @@ private:
 	CvWString CreateKeyStringFromKBCode(const TCHAR* pszHotKey);
 
 	void orderHotkeyInfo(int** ppiSortedIndex, int* pHotkeyIndex, int iLength);
-
-	void logMsg(char* format, ... );
-	void logMsgW(wchar_t* format, ... );
-/************************************************************************************************/
-/* XML_CHECK_DOUBLE_TYPE                   10/10/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-#ifdef _DEBUG
-	void logXmlCheckDoubleTypes(char* format, ... );
-#endif
-/************************************************************************************************/
-/* XML_CHECK_DOUBLE_TYPE                   END                                                  */
-/************************************************************************************************/
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 02/20/08                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-//#ifdef _DEBUG	
-	void logXmlDependencyTypes(char* format, ... );
-//#endif
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
-/************************************************************************************************/
-/* Afforess	                  Start		 06/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	void logXML(char* format, ... );
-	/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 };
 
-#ifdef _USRDLL
 //
 /////////////////////////// inlines / templates
 //
@@ -1022,7 +957,5 @@ bool CvXMLLoadUtility::CheckDependency()
 	}
 	return true;
 }
-
-#endif
 
 #endif	// XML_LOAD_UTILITY_H

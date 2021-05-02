@@ -72,8 +72,8 @@
 ##      default for Option X to be Option Y's actual value (or default if no value)
 ##    e.g.
 ##      Parameterized:
-##        ERA_SEDENTARY__WARRIOR -> WARRIOR
-##        ERA_SEDENTARY__MELEE -> MELEE
+##        ERA_ANCIENT__WARRIOR -> WARRIOR
+##        ERA_ANCIENT__MELEE -> MELEE
 ##        (This can be accomplished in Python of course)
 ##      Normal:
 ##        BetterEspionage.GoodColor -> BetterEspionage.DefaultColor
@@ -108,7 +108,6 @@ Each file can have multiple sections.
 from CvPythonExtensions import *
 import BugConfig
 import BugInit
-import BugPath
 import SystemPaths as SP
 import BugUtil
 import ColorUtil
@@ -170,7 +169,7 @@ class IniFile(object):
 		self.config.addInitialComment("")
 		self.config.addInitialComment(BugUtil.getPlainText("TXT_KEY_BUG_CREATED_BY_HEADER"))
 		self.config.addInitialComment()
-		defaultHeader = BugUtil.getPlainText("TXT_KEY_BUG_DEFAULT") + ": "
+		defaultHeader = BugUtil.getPlainText("TXT_WORD_DEFAULT") + ": "
 		for option in self.options:
 			if not option.isParameterized():
 				section = self.getSection(option.getSection())

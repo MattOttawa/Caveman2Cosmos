@@ -1,6 +1,11 @@
 // plotGroup.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
+#include "CvMap.h"
+#include "CvPlayerAI.h"
+#include "CvDLLFAStarIFaceBase.h"
 
 //#define VALIDATION_FOR_PLOT_GROUPS
 
@@ -78,7 +83,7 @@ void CvPlotGroup::addPlot(CvPlot* pPlot, bool bRecalculateBonuses)
 {
 	PROFILE_FUNC();
 
-	pPlot->setPlotGroup(getOwnerINLINE(), this, bRecalculateBonuses);
+	pPlot->setPlotGroup(getOwner(), this, bRecalculateBonuses);
 
 	//	Add the zobrist contribution of this plot to the hash
 	m_zobristHashes.allNodesHash ^= pPlot->getZobristContribution();
@@ -88,7 +93,7 @@ void CvPlotGroup::addPlot(CvPlot* pPlot, bool bRecalculateBonuses)
 		m_zobristHashes.resourceNodesHash ^= pPlot->getZobristContribution();
 	}
 
-	if ( m_numCities != -1 && pPlot->isCity() && pPlot->getPlotCity()->getOwnerINLINE() == getOwnerINLINE())
+	if ( m_numCities != -1 && pPlot->isCity() && pPlot->getPlotCity()->getOwner() == getOwner())
 	{
 		m_numCities++;
 	}
@@ -97,8 +102,8 @@ void CvPlotGroup::addPlot(CvPlot* pPlot, bool bRecalculateBonuses)
 
 	if ( m_seedPlotX == -1 )
 	{
-		m_seedPlotX = pPlot->getX_INLINE();
-		m_seedPlotY = pPlot->getY_INLINE();
+		m_seedPlotX = pPlot->getX();
+		m_seedPlotY = pPlot->getY();
 	}
 }
 
@@ -110,15 +115,15 @@ void CvPlotGroup::removePlot(CvPlot* pPlot, bool bRecalculateBonuses)
 	FAssert(pPlot->getPlotGroup(m_eOwner) == this);
 	if ( pPlot->getPlotGroup(m_eOwner) == this )
 	{
-		pPlot->setPlotGroup(getOwnerINLINE(), NULL, bRecalculateBonuses);
+		pPlot->setPlotGroup(getOwner(), NULL, bRecalculateBonuses);
 
 		if ( --m_numPlots == 0 )
 		{
-			GET_PLAYER(getOwnerINLINE()).deletePlotGroup(getID());
+			GET_PLAYER(getOwner()).deletePlotGroup(getID());
 		}
 		else
 		{
-			if ( m_numCities != -1 && pPlot->isCity() && pPlot->getPlotCity()->getOwnerINLINE() == getOwnerINLINE() )
+			if ( m_numCities != -1 && pPlot->isCity() && pPlot->getPlotCity()->getOwner() == getOwner() )
 			{
 				m_numCities--;
 			}
@@ -142,7 +147,7 @@ void CvPlotGroup::Validate()
 
 	while (pPlotNode != NULL)
 	{
-		CvPlot* pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+		CvPlot* pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 		FAssert(pPlot->getPlotGroup(m_eOwner) == this);
 		pPlotNode = nextPlotsNode(pPlotNode);
@@ -157,7 +162,7 @@ CvPlot* CvPlotGroup::getRepresentativePlot() const
 
 	if ( m_seedPlotX != -1 && m_seedPlotY != -1 )
 	{
-		result = GC.getMapINLINE().plotINLINE(m_seedPlotX, m_seedPlotY);
+		result = GC.getMap().plot(m_seedPlotX, m_seedPlotY);
 
 		if ( result != NULL && result->getPlotGroup(m_eOwner) != this )
 		{
@@ -167,11 +172,11 @@ CvPlot* CvPlotGroup::getRepresentativePlot() const
 
 	if ( result == NULL )
 	{
-		for(int iI = 0; iI < GC.getMapINLINE().getGridWidthINLINE(); iI++)
+		for(int iI = 0; iI < GC.getMap().getGridWidth(); iI++)
 		{
-			for(int iJ = 0; iJ < GC.getMapINLINE().getGridHeightINLINE(); iJ++)
+			for(int iJ = 0; iJ < GC.getMap().getGridHeight(); iJ++)
 			{
-				result = GC.getMapINLINE().plotSorenINLINE(iI, iJ);
+				result = GC.getMap().plotSorenINLINE(iI, iJ);
 
 				if ( result->getPlotGroup(m_eOwner) == this )
 				{
@@ -205,8 +210,8 @@ static bool buildRemovedPlotList(CvPlotGroup* onBehalfOf, CvPlot* pLoopPlot, voi
 	{
 		XYCoords xy;
 
-		xy.iX = pLoopPlot->getX_INLINE();
-		xy.iY = pLoopPlot->getY_INLINE();
+		xy.iX = pLoopPlot->getX();
+		xy.iY = pLoopPlot->getY();
 
 		parm->removedPlots.insertAtEnd(xy);
 	}
@@ -225,8 +230,8 @@ static bool buildAllPlotList(CvPlotGroup* onBehalfOf, CvPlot* pLoopPlot, void* p
 
 	XYCoords xy;
 
-	xy.iX = pLoopPlot->getX_INLINE();
-	xy.iY = pLoopPlot->getY_INLINE();
+	xy.iX = pLoopPlot->getX();
+	xy.iY = pLoopPlot->getY();
 
 	parm->allPlots.insertAtEnd(xy);
 
@@ -251,7 +256,7 @@ void CvPlotGroup::recalculatePlots()
 	Validate();
 #endif
 
-	PlayerTypes eOwner = getOwnerINLINE();
+	PlayerTypes eOwner = getOwner();
 	CvPlot* pPlot = getRepresentativePlot();
 	if (pPlot == NULL)
 	{
@@ -269,7 +274,7 @@ void CvPlotGroup::recalculatePlots()
 	//	Check whether the same set of cities and bonuses are still in the connected region
 	//	If they are then there is no material change and we don't need to recalculate
 	gDLL->getFAStarIFace()->SetData(&GC.getPlotGroupFinder(), &checkInfo);
-	gDLL->getFAStarIFace()->GeneratePath(&GC.getPlotGroupFinder(), pPlot->getX_INLINE(), pPlot->getY_INLINE(), -1, -1, false, eOwner);
+	gDLL->getFAStarIFace()->GeneratePath(&GC.getPlotGroupFinder(), pPlot->getX(), pPlot->getY(), -1, -1, false, eOwner);
 
 	if (checkInfo.hashInfo.allNodesHash == m_zobristHashes.allNodesHash)
 	{
@@ -297,7 +302,7 @@ void CvPlotGroup::recalculatePlots()
 			pPlotNode != NULL;
 			pPlotNode = removedPlotParams.removedPlots.next(pPlotNode))
 		{
-			pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+			pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 			FAssertMsg(pPlot != NULL, "Plot is not assigned a valid value");
 
@@ -309,7 +314,7 @@ void CvPlotGroup::recalculatePlots()
 			pPlotNode != NULL;
 			pPlotNode = removedPlotParams.removedPlots.next(pPlotNode))
 		{
-			pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+			pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 			FAssertMsg(pPlot != NULL, "Plot is not assigned a valid value");
 
@@ -339,15 +344,15 @@ void CvPlotGroup::recalculatePlots()
 		{
 			PROFILE("CvPlotGroup::recalculatePlots update 1");
 
-			pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+			pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 			FAssertMsg(pPlot != NULL, "Plot is not assigned a valid value");
 
 			pPlot->setPlotGroup(eOwner, NULL, false);
-			//OutputDebugString(CvString::format("Nulled plot group for: (%d,%d)\n", pPlot->getX_INLINE(), pPlot->getY_INLINE()).c_str());
+			//OutputDebugString(CvString::format("Nulled plot group for: (%d,%d)\n", pPlot->getX(), pPlot->getY()).c_str());
 		}
 
-		int	iStartingAllocSeq = m_allocationSeqForSession;
+		const int iStartingAllocSeq = m_allocationSeqForSession;
 
 		//	Construct new plot groups (still without bonus adjustment)
 		for (CLLNode<XYCoords>* pPlotNode = allPlotParams.allPlots.head();
@@ -356,7 +361,7 @@ void CvPlotGroup::recalculatePlots()
 		{
 			PROFILE("CvPlotGroup::recalculatePlots update 2");
 
-			pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+			pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 			FAssertMsg(pPlot != NULL, "Plot is not assigned a valid value");
 
@@ -377,7 +382,7 @@ void CvPlotGroup::recalculatePlots()
 		{
 			PROFILE("CvPlotGroup::recalculatePlots update 2");
 
-			pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+			pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 			FAssertMsg(pPlot != NULL, "Plot is not assigned a valid value");
 
@@ -405,7 +410,7 @@ void CvPlotGroup::recalculatePlots()
 		{
 			PROFILE("CvPlotGroup::recalculatePlots update 3");
 
-			pPlot = GC.getMapINLINE().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
+			pPlot = GC.getMap().plotSorenINLINE(pPlotNode->m_data.iX, pPlotNode->m_data.iY);
 
 			FAssertMsg(pPlot != NULL, "Plot is not assigned a valid value");
 
@@ -424,7 +429,7 @@ void CvPlotGroup::recalculatePlots()
 				iPlotsTransferred++;
 				newTransitionGroup->m_numPlots--;
 
-				if ( pPlot->getPlotCity() != NULL && pPlot->getPlotCity()->getOwnerINLINE() == m_eOwner )
+				if ( pPlot->getPlotCity() != NULL && pPlot->getPlotCity()->getOwner() == m_eOwner )
 				{
 					m_numCities++;
 				}
@@ -452,9 +457,9 @@ void CvPlotGroup::recalculatePlots()
 	}
 
 #ifdef VALIDATION_FOR_PLOT_GROUPS
-	for (int iI = 0; iI < GC.getMapINLINE().numPlotsINLINE(); iI++)
+	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
 	{
-		CvPlot* pLoopPlot = GC.getMapINLINE().plotByIndexINLINE(iI);
+		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
 
 		if ( pLoopPlot->getPlotGroupId(m_eOwner) != -1 && pLoopPlot->getPlotGroup(m_eOwner) == NULL )
 		{
@@ -476,32 +481,24 @@ void CvPlotGroup::setID(int iID)
 }
 
 
-PlayerTypes CvPlotGroup::getOwner() const
+int CvPlotGroup::getNumBonuses(const BonusTypes eBonus) const
 {
-	return getOwnerINLINE();
-}
-
-
-int CvPlotGroup::getNumBonuses(BonusTypes eBonus) const
-{
-	FAssertMsg(eBonus >= 0, "eBonus is expected to be non-negative (invalid Index)");
-	FAssertMsg(eBonus < GC.getNumBonusInfos(), "eBonus is expected to be within maximum bounds (invalid Index)");
+	FASSERT_BOUNDS(0, GC.getNumBonusInfos(), eBonus)
 	return (m_paiNumBonuses == NULL ? 0 : m_paiNumBonuses[eBonus]);
 }
 
 
-bool CvPlotGroup::hasBonus(BonusTypes eBonus)
+bool CvPlotGroup::hasBonus(const BonusTypes eBonus) const
 {
-	return(getNumBonuses(eBonus) > 0);
+	return getNumBonuses(eBonus) > 0;
 }
 
 
-void CvPlotGroup::changeNumBonuses(BonusTypes eBonus, int iChange)
+void CvPlotGroup::changeNumBonuses(const BonusTypes eBonus, const int iChange)
 {
 	PROFILE_FUNC();
 
-	FAssertMsg(eBonus >= 0, "eBonus is expected to be non-negative (invalid Index)");
-	FAssertMsg(eBonus < GC.getNumBonusInfos(), "eBonus is expected to be within maximum bounds (invalid Index)");
+	FASSERT_BOUNDS(0, GC.getNumBonusInfos(), eBonus)
 
 	if (iChange != 0)
 	{
@@ -511,12 +508,11 @@ void CvPlotGroup::changeNumBonuses(BonusTypes eBonus, int iChange)
 			memset(m_paiNumBonuses, 0, sizeof(int)*GC.getNumBonusInfos());
 		}
 
-		m_paiNumBonuses[eBonus] = (m_paiNumBonuses[eBonus] + iChange);
+		m_paiNumBonuses[eBonus] += iChange;
 
-		for (CvPlayer::city_iterator cityItr = GET_PLAYER(getOwnerINLINE()).beginCities(); cityItr != GET_PLAYER(getOwnerINLINE()).endCities(); ++cityItr)
+		foreach_(CvCity* pLoopCity, GET_PLAYER(getOwner()).cities())
 		{
-			CvCity* pLoopCity = *cityItr;
-			if (pLoopCity->plotGroup(getOwnerINLINE()) == this)
+			if (pLoopCity->plotGroup(getOwner()) == this)
 			{
 				pLoopCity->changeNumBonuses(eBonus, iChange);
 			}
@@ -532,7 +528,7 @@ void CvPlotGroup::plotEnumerator(bool (*pfFunc)(CvPlotGroup* onBehalfOf, CvPlot*
 
 	if ( m_seedPlotX != -1 && m_seedPlotY != -1 )
 	{
-		pStartPlot = GC.getMapINLINE().plotINLINE(m_seedPlotX, m_seedPlotY);
+		pStartPlot = GC.getMap().plot(m_seedPlotX, m_seedPlotY);
 
 		if ( pStartPlot != NULL && pStartPlot->getPlotGroup(m_eOwner) == this )
 		{
@@ -547,26 +543,26 @@ void CvPlotGroup::plotEnumerator(bool (*pfFunc)(CvPlotGroup* onBehalfOf, CvPlot*
 
 	if ( !bSeedValid )
 	{
-		pStartPlot = GC.getMapINLINE().plotSorenINLINE(GC.getMapINLINE().getGridWidthINLINE()/2,GC.getMapINLINE().getGridHeightINLINE()/2);
+		pStartPlot = GC.getMap().plotSorenINLINE(GC.getMap().getGridWidth()/2,GC.getMap().getGridHeight()/2);
 	}
 
-	int iMaxXDistance = GC.getMapINLINE().getGridWidthINLINE();
-	int iMaxYDistance = GC.getMapINLINE().getGridHeightINLINE();
+	int iMaxXDistance = GC.getMap().getGridWidth();
+	int iMaxYDistance = GC.getMap().getGridHeight();
 
-	if ( GC.getMapINLINE().isWrapXINLINE() )
+	if (GC.getMap().isWrapX())
 	{
 		iMaxXDistance /= 2;
 	}
 
-	if ( GC.getMapINLINE().isWrapYINLINE() )
+	if (GC.getMap().isWrapY())
 	{
 		iMaxYDistance /= 2;
 	}
 
-	int iMinX = pStartPlot->getX_INLINE() - iMaxXDistance + (GC.getMapINLINE().getGridWidthINLINE()%2 == 0 ? 1 : 0);
-	int iMaxX = pStartPlot->getX_INLINE() + iMaxXDistance;
-	int iMinY = pStartPlot->getY_INLINE() - iMaxYDistance + (GC.getMapINLINE().getGridHeightINLINE()%2 == 0 ? 1 : 0);
-	int iMaxY = pStartPlot->getY_INLINE() + iMaxYDistance;
+	int iMinX = pStartPlot->getX() - iMaxXDistance + (GC.getMap().getGridWidth()%2 == 0 ? 1 : 0);
+	int iMaxX = pStartPlot->getX() + iMaxXDistance;
+	int iMinY = pStartPlot->getY() - iMaxYDistance + (GC.getMap().getGridHeight()%2 == 0 ? 1 : 0);
+	int iMaxY = pStartPlot->getY() + iMaxYDistance;
 
 	for(int iRadius = 0;
 			iRadius <= std::max(iMaxXDistance, iMaxYDistance) && expectedPlotsRemaining > 0;
@@ -579,8 +575,8 @@ void CvPlotGroup::plotEnumerator(bool (*pfFunc)(CvPlotGroup* onBehalfOf, CvPlot*
 		{
 			for( int iSide = 0; iSide < 4; iSide++ )
 			{
-				int iX = pStartPlot->getX_INLINE();
-				int iY = pStartPlot->getY_INLINE();
+				int iX = pStartPlot->getX();
+				int iY = pStartPlot->getY();
 
 				switch(iSide)
 				{
@@ -611,15 +607,15 @@ void CvPlotGroup::plotEnumerator(bool (*pfFunc)(CvPlotGroup* onBehalfOf, CvPlot*
 					continue;
 				}
 
-				CvPlot* pLoopPlot = GC.getMapINLINE().plotINLINE(iX,iY);
+				CvPlot* pLoopPlot = GC.getMap().plot(iX,iY);
 
 				if ( pLoopPlot != NULL && pLoopPlot->getPlotGroup(m_eOwner) == this )
 				{
 					expectedPlotsRemaining--;
 					if ( m_seedPlotX == -1 )
 					{
-						m_seedPlotX = pLoopPlot->getX_INLINE();
-						m_seedPlotY = pLoopPlot->getY_INLINE();
+						m_seedPlotX = pLoopPlot->getX();
+						m_seedPlotY = pLoopPlot->getY();
 					}
 
 					if ( !(*pfFunc)(this, pLoopPlot, param) )
@@ -641,7 +637,7 @@ static bool countCitiesCallback(CvPlotGroup* onBehalfOf, CvPlot* pLoopPlot, void
 {
 	const CvCity* pCity = pLoopPlot->getPlotCity();
 
-	if (pCity != NULL && pCity->getOwnerINLINE() == onBehalfOf->getOwnerINLINE())
+	if (pCity != NULL && pCity->getOwner() == onBehalfOf->getOwner())
 	{
 		onBehalfOf->m_numCities++;
 	}
@@ -664,7 +660,6 @@ int CvPlotGroup::getNumCities()
 
 void CvPlotGroup::read(FDataStreamBase* pStream)
 {
-	MEMORY_TRACE_FUNCTION();
 
 	CvTaggedSaveFormatWrapper&	wrapper = CvTaggedSaveFormatWrapper::getSaveFormatWrapper();
 
@@ -674,9 +669,6 @@ void CvPlotGroup::read(FDataStreamBase* pStream)
 
 	// Init saved data
 	reset();
-
-	uint uiFlag=0;
-	WRAPPER_READ(wrapper, "CvPlotGroup", &uiFlag);	// flags for expansion
 
 	WRAPPER_READ(wrapper, "CvPlotGroup", &m_iID);
 
@@ -696,34 +688,7 @@ void CvPlotGroup::read(FDataStreamBase* pStream)
 	{
 		SAFE_DELETE_ARRAY(m_paiNumBonuses);
 	}
-
-	// @SAVEBREAK DELETE 8/7/2018
-	// Delete this section at the next save break.
-	// Legacy for FreeTradeRegionBuilding. It was never used.
-	arrayPresent = true;
-	WRAPPER_READ_DECORATED(wrapper, "CvPlotGroup", &arrayPresent, "freeBuildingsPresent");
-	if ( arrayPresent )
-	{
-		int* dummy = new int[GC.getNumBuildingInfos()];
-		WRAPPER_READ_CLASS_ARRAY(wrapper, "CvPlotGroup", REMAPPED_CLASS_TYPE_BUILDINGS, GC.getNumBuildingInfos(), dummy);
-		SAFE_DELETE_ARRAY(dummy);
-	}
-	// SAVEBREAK@
-
-	m_numPlots = -1;
 	WRAPPER_READ(wrapper, "CvPlotGroup", &m_numPlots);
-
-	//	To maintain backwrd compatibility read the plot list from the old format
-	//	that didn't record m_numPlots
-	if ( m_numPlots == -1 )
-	{
-		CLinkList<XYCoords> dummyPlots;
-		dummyPlots.Read(pStream);
-
-		m_numPlots = dummyPlots.getLength();
-
-		FAssert(m_numPlots > 0);
-	}
 
 	if ( m_paiNumBonuses != NULL )
 	{
@@ -756,27 +721,17 @@ void CvPlotGroup::write(FDataStreamBase* pStream)
 
 	WRAPPER_WRITE_OBJECT_START(wrapper);
 
-	uint uiFlag=0;
-	WRAPPER_WRITE(wrapper, "CvPlotGroup", uiFlag);		// flag for expansion
-
 	WRAPPER_WRITE(wrapper, "CvPlotGroup", m_iID);
-
 	WRAPPER_WRITE(wrapper, "CvPlotGroup", m_eOwner);
 
 	WRAPPER_WRITE_DECORATED(wrapper, "CvPlotGroup", (bool)(m_paiNumBonuses != NULL), "bonusesPresent");
-	if ( m_paiNumBonuses != NULL )
+
+	if (m_paiNumBonuses != NULL)
 	{
 		WRAPPER_WRITE_CLASS_ARRAY(wrapper, "CvPlotGroup", REMAPPED_CLASS_TYPE_BONUSES, GC.getNumBonusInfos(), m_paiNumBonuses);
 	}
 
-	// @SAVEBREAK DELETE 8/7/2018
-	// Delete this section at the next save break.
-	// Dummy value. FreeTradeRegionBuilding was removed, so just always write out false.
-	WRAPPER_WRITE_DECORATED(wrapper, "CvPlotGroup", false, "freeBuildingsPresent");
-	// SAVEBREAK@
-
 	WRAPPER_WRITE(wrapper, "CvPlotGroup", m_numPlots);
-
 	WRAPPER_WRITE(wrapper, "CvPlotGroup", m_seedPlotX);
 	WRAPPER_WRITE(wrapper, "CvPlotGroup", m_seedPlotY);
 
@@ -831,7 +786,7 @@ void CvPlotGroup::mergeIn(CvPlotGroup* from, bool bRecalculateBonuses)
 
 	from->plotEnumerator(plotGroupMerger, &params);
 	
-	GET_PLAYER(getOwnerINLINE()).deletePlotGroup(from->getID());
+	GET_PLAYER(getOwner()).deletePlotGroup(from->getID());
 }
 
 void CvPlotGroup::colorRegion(CvPlot* pStartPlot, PlayerTypes eOwner, bool bRecalculateBonuses)
@@ -869,11 +824,9 @@ CvPlotGroup* CvPlotGroup::colorRegionInternal(CvPlot* pPlot, PlayerTypes eOwner,
 					pPlotGroup->addPlot(pLoopPlot, bRecalculateBonuses);
 				}
 
-				for (int iI = 0; iI < NUM_DIRECTION_TYPES; ++iI)
+				foreach_(CvPlot* pAdjacentPlot, pLoopPlot->adjacent())
 				{
-					CvPlot* pAdjacentPlot = plotDirection(pLoopPlot->getX_INLINE(), pLoopPlot->getY_INLINE(), (DirectionTypes)iI);
-
-					if (pAdjacentPlot != NULL && pLoopPlot->isTradeNetworkConnected(pAdjacentPlot, GET_PLAYER(eOwner).getTeam()))
+					if (pLoopPlot->isTradeNetworkConnected(pAdjacentPlot, GET_PLAYER(eOwner).getTeam()))
 					{
 						CvPlotGroup* pAdjacentPlotGroup = pAdjacentPlot->getPlotGroup(eOwner);
 

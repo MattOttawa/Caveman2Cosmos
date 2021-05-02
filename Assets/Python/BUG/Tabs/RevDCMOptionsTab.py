@@ -40,12 +40,8 @@ class RevDCMOptionsTab(BugOptionsTab.BugOptionsTab):
 			self.addCheckbox(screen, col1, "RevDCM__DCM_RANGE_BOMBARD")
 			self.addCheckbox(screen, col2, "RevDCM__DCM_OPP_FIRE")
 			self.addLabel(screen, left, "RevDCM__RevDCM_general", TRNSLTR.getText("TXT_KEY_REVDCMTAB_BATTLE_OPTIONS", ()))
-			col1, col2, col3, col4 = self.addMultiColumnLayout(screen, right, 4, "DCM_Events")
-			self.addCheckbox(screen, col1, "RevDCM__DCM_BATTLE_EFFECTS")
-			self.addCheckbox(screen, col2, "RevDCM__DCM_ARCHER_BOMBARD")
-			self.addCheckbox(screen, col3, "RevDCM__DCM_STACK_ATTACK")
-			if bDebug:
-				self.addCheckbox(screen, col4, "RevDCM__DCM_ATTACK_SUPPORT")
+			col1, col2 = self.addMultiColumnLayout(screen, right, 2, "DCM_Events")
+			self.addCheckbox(screen, col2, "RevDCM__DCM_ATTACK_SUPPORT")
 			self.addLabel(screen, left, "RevDCM__RevDCM_air", TRNSLTR.getText("TXT_KEY_REVDCMTAB_AIRFORCE_OPTIONS", ()))
 			col1, col2, col3 = self.addMultiColumnLayout(screen, right, 3, "DCM_Air_Events")
 			self.addCheckbox(screen, col1, "RevDCM__DCM_ACTIVE_DEFENSE")
@@ -70,18 +66,17 @@ class RevDCMOptionsTab(BugOptionsTab.BugOptionsTab):
 			screen.attachHSeparator(right, right + "SepIDW2")
 
 			#Super Spies options
-			if not GAME.isOption(GameOptionTypes.GAMEOPTION_NO_ESPIONAGE):
-				self.addLabel(screen, left, "RevDCM__RevDCMSS", TRNSLTR.getText("TXT_KEY_REVDCMTAB_SPY_OPTIONS", ()))
-				col1, col2, col3 = self.addMultiColumnLayout(screen, right, 3, "SS_Events1")
-				self.addCheckbox(screen, col1, "RevDCM__SS_ENABLED")
-				self.addCheckbox(screen, col2, "RevDCM__SS_BRIBE")
-				self.addCheckbox(screen, col3, "RevDCM__SS_ASSASSINATE")
+			self.addLabel(screen, left, "RevDCM__RevDCMSS", TRNSLTR.getText("TXT_KEY_REVDCMTAB_SPY_OPTIONS", ()))
+			col1, col2, col3 = self.addMultiColumnLayout(screen, right, 3, "SS_Events1")
+			self.addCheckbox(screen, col1, "RevDCM__SS_ENABLED")
+			self.addCheckbox(screen, col2, "RevDCM__SS_BRIBE")
+			self.addCheckbox(screen, col3, "RevDCM__SS_ASSASSINATE")
 
-				screen.attachHSeparator(left, left + "SepInq1")
-				screen.attachHSeparator(right, right + "SepInq2")
+			screen.attachHSeparator(left, left + "SepInq1")
+			screen.attachHSeparator(right, right + "SepInq2")
 
 			#Religion options
-			bInquisition = not GAME.isOption(GameOptionTypes.GAMEOPTION_NO_INQUISITIONS)
+			bInquisition = GAME.isOption(GameOptionTypes.GAMEOPTION_INQUISITIONS)
 			bLimitedReli = GAME.isOption(GameOptionTypes.GAMEOPTION_LIMITED_RELIGIONS)
 			if bInquisition or bLimitedReli:
 				self.addLabel(screen, left, "RevDCM__Religion", TRNSLTR.getText("TXT_KEY_REVDCMTAB_RELIGION_OPTIONS", ()))
@@ -107,7 +102,7 @@ class RevDCMOptionsTab(BugOptionsTab.BugOptionsTab):
 
 			#Barbarian Civ
 			#Standard Options
-			if not GAME.isOption(GameOptionTypes.GAMEOPTION_NO_BARBARIAN_CIV):
+			if GAME.isOption(GameOptionTypes.GAMEOPTION_BARBARIAN_CIV):
 				self.addLabel(screen, left, "Revolution__BarbarianCiv", TRNSLTR.getText("TXT_KEY_REVDCMTAB_BARBCIV_OPTIONS", ()))
 				col1, col2 = self.addMultiColumnLayout(screen, right, 2, "Misc Settings")
 				self.addIntDropdown(screen, col1, col2, "Revolution__MinPopulation")
@@ -117,7 +112,7 @@ class RevDCMOptionsTab(BugOptionsTab.BugOptionsTab):
 				self.addIntDropdown(screen, col3, col4, "Revolution__NewWorldErasBehind")
 				self.addLabel(screen, left, "Revolution__BarbarianCiv", TRNSLTR.getText("TXT_KEY_REVDCMTAB_BARBCIV_STRENGTH_OPTIONS", ()))
 				col1, col2, col3, col4 = self.addMultiColumnLayout(screen, right, 4, "Strength Settings")
-				self.addFloatDropdown(screen, col1, col2, "Revolution__BarbTechFrac")
+				self.addIntDropdown(screen, col1, col2, "Revolution__BarbTechPercent")
 				self.addFloatDropdown(screen, col3, col4, "Revolution__MilitaryStrength")
 
 				screen.attachHSeparator(left, left + "SepStandardBarbCiv1")
@@ -139,7 +134,7 @@ class RevDCMOptionsTab(BugOptionsTab.BugOptionsTab):
 			if bDebug or bCheat:
 
 				#Revolutions
-				if not GAME.isOption(GameOptionTypes.GAMEOPTION_NO_REVOLUTION):
+				if GAME.isOption(GameOptionTypes.GAMEOPTION_REVOLUTION):
 					self.addLabel(screen, left, "Revolution__Revolution", "Debug Options:")
 					col1, col2, col3, col4 = self.addMultiColumnLayout(screen, right, 4, "Debug Settings")
 					self.addCheckbox(screen, col1, "Revolution__RevDebugMode")

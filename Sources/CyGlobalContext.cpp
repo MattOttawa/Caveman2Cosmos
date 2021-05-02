@@ -4,6 +4,19 @@
 //
 
 #include "CvGameCoreDLL.h"
+#include "CvArtFileMgr.h"
+#include "CvBuildingInfo.h"
+#include "CvGameAI.h"
+#include "CvGlobals.h"
+#include "CvInfos.h"
+#include "CvMap.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
+#include "CyGame.h"
+#include "CyGlobalContext.h"
+#include "CyMap.h"
+#include "CyPlayer.h"
+#include "CyTeam.h"
 
 CyGlobalContext::CyGlobalContext()
 {
@@ -30,44 +43,25 @@ bool CyGlobalContext::isDebugBuild() const
 
 CyGame* CyGlobalContext::getCyGame() const
 {
-	static CyGame cyGame(&GC.getGameINLINE());
+	static CyGame cyGame(GC.getGame());
 	return &cyGame;
 }
 
 
 CyMap* CyGlobalContext::getCyMap() const
 {
-	static CyMap cyMap(&GC.getMapINLINE());
+	static CyMap cyMap(&GC.getMap());
 	return &cyMap;
 }
-
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 
 void CyGlobalContext::switchMap(int iMap)
 {
 	GC.switchMap((MapTypes)iMap);
 }
 
-int CyGlobalContext::getNumMapInfos() const
-{
-	return GC.getNumMapInfos();
-}
-
 CvMapInfo* CyGlobalContext::getMapInfo(int iMap) const
 {
 	return &(GC.getMapInfo((MapTypes)iMap));
-}
-
-int CyGlobalContext::getNumMapSwitchInfos() const
-{
-	return GC.getNumMapSwitchInfos();
-}
-
-CvMapSwitchInfo* CyGlobalContext::getMapSwitchInfo(int iMapSwitch) const
-{
-	return &(GC.getMapSwitchInfo((MapSwitchTypes)iMapSwitch));
 }
 
 CyMap* CyGlobalContext::getMapByIndex(int iIndex)
@@ -77,31 +71,21 @@ CyMap* CyGlobalContext::getMapByIndex(int iIndex)
 	return &cyMap;
 }
 
-void CyGlobalContext::initializeMap(int iMap)
-{
-	return GC.initializeMap((MapTypes)iMap);
-}
-
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/	
-
 void CyGlobalContext::setIsInPedia(bool isInPedia)
 {
 	GC.setIsInPedia(isInPedia);
 }
 
-CyPlayer* CyGlobalContext::getCyPlayer(int idx)
+CyPlayer* CyGlobalContext::getCyPlayer(int idx) const
 {
 	static CyPlayer cyPlayers[MAX_PLAYERS];
-	static bool bInit=false;
+	static bool bInit = false;
 
 	if (!bInit)
 	{
-		int i;
-		for(i=0;i<MAX_PLAYERS;i++)
-			cyPlayers[i]=CyPlayer(&GET_PLAYER((PlayerTypes)i));
-		bInit=true;
+		for (int i = 0; i < MAX_PLAYERS; i++)
+			cyPlayers[i] = CyPlayer(&GET_PLAYER((PlayerTypes)i));
+		bInit = true;
 	}
 
 	if (idx >= 0 && idx < MAX_PLAYERS)
@@ -114,9 +98,9 @@ CyPlayer* CyGlobalContext::getCyPlayer(int idx)
 }
 
 
-CyPlayer* CyGlobalContext::getCyActivePlayer()
+CyPlayer* CyGlobalContext::getCyActivePlayer() const
 {
-	PlayerTypes pt = GC.getGameINLINE().getActivePlayer();
+	const PlayerTypes pt = GC.getGame().getActivePlayer();
 	return pt != NO_PLAYER ? getCyPlayer(pt) : NULL;
 }
 
@@ -126,7 +110,7 @@ CvRandom& CyGlobalContext::getCyASyncRand() const
 	return GC.getASyncRand();
 }
 
-CyTeam* CyGlobalContext::getCyTeam(int i)
+CyTeam* CyGlobalContext::getCyTeam(int i) const
 {
 	static CyTeam cyTeams[MAX_TEAMS];
 	static bool bInit=false;
@@ -207,7 +191,6 @@ CvYieldInfo* CyGlobalContext::getYieldInfo(int i) const
 
 CvCommerceInfo* CyGlobalContext::getCommerceInfo(int i) const
 {
-	if (GC.getCommerceInfos().size() == 0) return NULL;
 	return (i>=0 && i<NUM_COMMERCE_TYPES) ? &GC.getCommerceInfo((CommerceTypes) i) : NULL;
 }
 
@@ -242,20 +225,9 @@ CvHandicapInfo* CyGlobalContext::getHandicapInfo(int i) const
 }
 
 
-CvBuildingClassInfo* CyGlobalContext::getBuildingClassInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumBuildingClassInfos()) ? &GC.getBuildingClassInfo((BuildingClassTypes) i) : NULL;
-}
-
-
 CvBuildingInfo* CyGlobalContext::getBuildingInfo(int i) const
 {
 	return (i>=0 && i<GC.getNumBuildingInfos()) ? &GC.getBuildingInfo((BuildingTypes) i) : NULL;
-}
-
-CvUnitClassInfo* CyGlobalContext::getUnitClassInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumUnitClassInfos()) ? &GC.getUnitClassInfo((UnitClassTypes) i) : NULL;
 }
 
 
@@ -264,22 +236,15 @@ CvInfoBase* CyGlobalContext::getUnitCombatInfo(int i) const
 	return (i>=0 && i<GC.getNumUnitCombatInfos()) ? &GC.getUnitCombatInfo((UnitCombatTypes)i) : NULL;
 }
 
-//TB Promotion Line Mod begin
 CvPromotionLineInfo* CyGlobalContext::getPromotionLineInfo(int i) const
 {
 	return (i>=0 && i<GC.getNumPromotionLineInfos()) ? &GC.getPromotionLineInfo((PromotionLineTypes)i) : NULL;
 }
-//TB Promotion Line Mod end
 
 //CvTraitOptionEditsInfo* CyGlobalContext::getTraitOptionEditsInfo(int i) const
 //{
 //	return (i>=0 && i<GC.getNumTraitOptionEditsInfos()) ? &GC.getTraitOptionEditsInfo((TraitOptionEditsTypes)i) : NULL;
 //}
-
-CvMapCategoryInfo* CyGlobalContext::getMapCategoryInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumMapCategoryInfos()) ? &GC.getMapCategoryInfo((MapCategoryTypes)i) : NULL;
-}
 
 CvIdeaClassInfo* CyGlobalContext::getIdeaClassInfo(int i) const
 {
@@ -319,7 +284,7 @@ CvControlInfo* CyGlobalContext::getControlInfo(int i) const
 
 CvMissionInfo* CyGlobalContext::getMissionInfo(int i) const
 {
-	return (i>=0 && i<NUM_MISSION_TYPES) ? &GC.getMissionInfo((MissionTypes) i) : NULL;
+	return (i>=0 && i<GC.getNumMissionInfos()) ? &GC.getMissionInfo((MissionTypes) i) : NULL;
 }
 
 CvPromotionInfo* CyGlobalContext::getPromotionInfo(int i) const
@@ -397,11 +362,6 @@ CvProcessInfo* CyGlobalContext::getProcessInfo(int i) const
 	return (i>=0 && i<GC.getNumProcessInfos()) ? &GC.getProcessInfo((ProcessTypes) i) : NULL;
 }
 
-CvAnimationPathInfo* CyGlobalContext::getAnimationPathInfo(int i) const
-{
-	return (i>=0 && i<GC.getNumAnimationPathInfos()) ? &GC.getAnimationPathInfo((AnimationPathTypes)i) : NULL;
-}
-
 
 CvEmphasizeInfo* CyGlobalContext::getEmphasizeInfo(int i) const
 {
@@ -469,7 +429,7 @@ CvPropertyInfo* CyGlobalContext::getPropertyInfo(int i) const
 
 int CyGlobalContext::getInfoTypeForString(const char* szInfoType) const
 {
-	return GC.getInfoTypeForString(szInfoType, true);
+	return GC.getInfoTypeForString(szInfoType);
 }
 /************************************************************************************************/
 /* Afforess	                  Start		 03/18/10                                               */
@@ -532,15 +492,15 @@ CvInfoBase* CyGlobalContext::getMemoryInfo(int i) const
 }
 
 
-CvPlayerOptionInfo* CyGlobalContext::getPlayerOptionsInfoByIndex(int i) const
+CvPlayerOptionInfo* CyGlobalContext::getPlayerOptionInfo(int i) const
 {
-	return &GC.getPlayerOptionInfo((PlayerOptionTypes) i);
+	return &GC.getPlayerOptionInfo((PlayerOptionTypes)i);
 }
 
 
-CvGraphicOptionInfo* CyGlobalContext::getGraphicOptionsInfoByIndex(int i) const
+CvGraphicOptionInfo* CyGlobalContext::getGraphicOptionInfo(int i) const
 {
-	return &GC.getGraphicOptionInfo((GraphicOptionTypes) i);
+	return &GC.getGraphicOptionInfo((GraphicOptionTypes)i);
 }
 
 
@@ -676,12 +636,6 @@ CvArtInfoCivilization* CyGlobalContext::getCivilizationArtInfo(int i) const
 }
 
 
-CvArtInfoLeaderhead* CyGlobalContext::getLeaderheadArtInfo(int i) const
-{
-	return (i>=0 && i<ARTFILEMGR.getNumLeaderheadArtInfos()) ? &ARTFILEMGR.getLeaderheadArtInfo(i) : NULL;
-}
-
-
 CvArtInfoBonus* CyGlobalContext::getBonusArtInfo(int i) const
 {
 	return (i>=0 && i<ARTFILEMGR.getNumBonusArtInfos()) ? &ARTFILEMGR.getBonusArtInfo(i) : NULL;
@@ -691,18 +645,6 @@ CvArtInfoBonus* CyGlobalContext::getBonusArtInfo(int i) const
 CvArtInfoImprovement* CyGlobalContext::getImprovementArtInfo(int i) const
 {
 	return (i>=0 && i<ARTFILEMGR.getNumImprovementArtInfos()) ? &ARTFILEMGR.getImprovementArtInfo(i) : NULL;
-}
-
-
-CvArtInfoTerrain* CyGlobalContext::getTerrainArtInfo(int i) const
-{
-	return (i>=0 && i<ARTFILEMGR.getNumTerrainArtInfos()) ? &ARTFILEMGR.getTerrainArtInfo(i) : NULL;
-}
-
-
-CvArtInfoFeature* CyGlobalContext::getFeatureArtInfo(int i) const
-{
-	return (i>=0 && i<ARTFILEMGR.getNumFeatureArtInfos()) ? &ARTFILEMGR.getFeatureArtInfo(i) : NULL;
 }
 
 

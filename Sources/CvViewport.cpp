@@ -1,4 +1,11 @@
 #include "CvGameCoreDLL.h"
+#include "CvArea.h"
+#include "CvCity.h"
+#include "CvPlot.h"
+#include "CvPython.h"
+#include "CvSelectionGroup.h"
+#include "CvUnit.h"
+#include "CvViewport.h"
 
 CvViewport::CvViewport(CvMap* pMap, bool bIsFullMapContext) 
 	: m_pMap(pMap)
@@ -48,12 +55,12 @@ void	CvViewport::setOffsetToShow(int iX, int iY)	//	Make this the centre or near
 
 	if ( !m_pMap->isWrapX() )
 	{
-		iNewX = range(iNewX, 0, m_pMap->getGridWidthINLINE() - m_iXSize);
+		iNewX = range(iNewX, 0, m_pMap->getGridWidth() - m_iXSize);
 	}
 
 	if ( !m_pMap->isWrapY() )
 	{
-		iNewY = range(iNewY, 0, m_pMap->getGridHeightINLINE() - m_iYSize);
+		iNewY = range(iNewY, 0, m_pMap->getGridHeight() - m_iYSize);
 	}
 
 	setMapOffset(iNewX, iNewY);
@@ -61,30 +68,30 @@ void	CvViewport::setOffsetToShow(int iX, int iY)	//	Make this the centre or near
 
 void	CvViewport::resizeForMap()
 {
-	if (m_pMap->getGridWidthINLINE() > 0 && !GC.bugInitCalled())
+	if (m_pMap->getGridWidth() > 0 && !GC.bugInitCalled())
 	{
 		//	Force-load the main interface BUG module so we can get at the viewport BUG settings
 		Cy::call(PYCivModule, "forceBUGModuleInit", Cy::Args() << "BUG Main Interface");
 	}
 
-	m_iXSize = GC.viewportsEnabled() ? GC.getViewportSizeX() : m_pMap->getGridWidthINLINE();
-	m_iYSize = GC.viewportsEnabled() ? GC.getViewportSizeY() : m_pMap->getGridHeightINLINE();
+	m_iXSize = GC.viewportsEnabled() ? GC.getViewportSizeX() : m_pMap->getGridWidth();
+	m_iYSize = GC.viewportsEnabled() ? GC.getViewportSizeY() : m_pMap->getGridHeight();
 
 	//	For now we don't allow maps smaller than the viewport size
-	if ( m_iXSize > m_pMap->getGridWidthINLINE() )
+	if ( m_iXSize > m_pMap->getGridWidth() )
 	{
-		m_iXSize = m_pMap->getGridWidthINLINE();
+		m_iXSize = m_pMap->getGridWidth();
 	}
 
-	if ( m_iYSize > m_pMap->getGridHeightINLINE() )
+	if ( m_iYSize > m_pMap->getGridHeight() )
 	{
-		m_iYSize = m_pMap->getGridHeightINLINE();
+		m_iYSize = m_pMap->getGridHeight();
 	}
 }
 
 void	CvViewport::bringIntoView(int iX, int iY, const CvUnit* pSelectionUnit, bool bLookAt, bool bForceCenter, bool bDisplayCityScreen, bool bSelectCity, bool bAddSelectedCity)
 {
-	m_pLookatPlot = m_pMap->plotINLINE(iX, iY);
+	m_pLookatPlot = m_pMap->plot(iX, iY);
 	if ( pSelectionUnit != NULL && !pSelectionUnit->isDead() && !pSelectionUnit->isDelayedDeath() )
 	{
 		m_preservedHeadSelectedUnitId = pSelectionUnit->getIDInfo();
@@ -113,7 +120,7 @@ void	CvViewport::centerOnSelection()
 
 	if ( pUnit != NULL )
 	{
-		bringIntoView( pUnit->getX_INLINE(), pUnit->getY_INLINE(), pUnit, true, true);
+		bringIntoView( pUnit->getX(), pUnit->getY(), pUnit, true, true);
 	}
 }
 
@@ -129,7 +136,7 @@ void	CvViewport::panLeft()
 		}
 		else
 		{
-			iNewCenterX += m_pMap->getGridWidthINLINE();
+			iNewCenterX += m_pMap->getGridWidth();
 		}
 	}
 
@@ -140,15 +147,15 @@ void	CvViewport::panRight()
 {
 	int iNewCenterX = m_iXOffset + (3*m_iXSize)/2;
 
-	if ( iNewCenterX > m_pMap->getGridWidthINLINE() )
+	if ( iNewCenterX > m_pMap->getGridWidth() )
 	{
 		if ( !m_pMap->isWrapX() )
 		{
-			iNewCenterX = m_pMap->getGridWidthINLINE() - 1;
+			iNewCenterX = m_pMap->getGridWidth() - 1;
 		}
 		else
 		{
-			iNewCenterX -= m_pMap->getGridWidthINLINE();
+			iNewCenterX -= m_pMap->getGridWidth();
 		}
 	}
 
@@ -167,7 +174,7 @@ void	CvViewport::panDown()
 		}
 		else
 		{
-			iNewCenterY += m_pMap->getGridHeightINLINE();
+			iNewCenterY += m_pMap->getGridHeight();
 		}
 	}
 
@@ -178,15 +185,15 @@ void	CvViewport::panUp()
 {
 	int iNewCenterY = m_iYOffset + (3*m_iYSize)/2;
 
-	if ( iNewCenterY > m_pMap->getGridHeightINLINE() )
+	if ( iNewCenterY > m_pMap->getGridHeight() )
 	{
 		if ( !m_pMap->isWrapY() )
 		{
-			iNewCenterY = m_pMap->getGridHeightINLINE() - 1;
+			iNewCenterY = m_pMap->getGridHeight() - 1;
 		}
 		else
 		{
-			iNewCenterY -= m_pMap->getGridHeightINLINE();
+			iNewCenterY -= m_pMap->getGridHeight();
 		}
 	}
 
@@ -208,9 +215,9 @@ void CvViewport::setupGraphical()
 
 void CvViewport::reset(CvMapInitData* pInitData)
 {
-	OutputDebugString("Reseting Viewport: Start");
+	OutputDebugString("Reseting Viewport: Start/n");
 	m_pMap->reset(pInitData);
-	OutputDebugString("Reseting Viewport: End");
+	OutputDebugString("Reseting Viewport: End/n");
 }
 
 /*********************************/
@@ -219,11 +226,6 @@ void CvViewport::reset(CvMapInitData* pInitData)
 MapTypes CvViewport::getType() const
 {
 	return m_pMap->getType();
-}
-
-void CvViewport::setType(MapTypes eNewType)
-{
-	m_pMap->setType(eNewType);
 }
 
 void CvViewport::beforeSwitch()
@@ -275,14 +277,14 @@ void CvViewport::closeAdvisor(int advisorWidth, int iMinimapLeft, int iMinimapRi
 			iMinimapRight += iAdvisorScreenLeft;
 
 			//	Calculate what plot was clicked on
-			int iMapX = range(((cursorInfo.ptScreenPos.x - iMinimapLeft)*m_pMap->getGridWidthINLINE())/(iMinimapRight - iMinimapLeft), 0, m_pMap->getGridWidthINLINE()-1);
-			int iMapY = range(((iMinimapBottom - cursorInfo.ptScreenPos.y)*m_pMap->getGridHeightINLINE())/(iMinimapBottom - iMinimapTop), 0, m_pMap->getGridHeightINLINE()-1);
+			int iMapX = range(((cursorInfo.ptScreenPos.x - iMinimapLeft)*m_pMap->getGridWidth())/(iMinimapRight - iMinimapLeft), 0, m_pMap->getGridWidth()-1);
+			int iMapY = range(((iMinimapBottom - cursorInfo.ptScreenPos.y)*m_pMap->getGridHeight())/(iMinimapBottom - iMinimapTop), 0, m_pMap->getGridHeight()-1);
 
 			//	Save the lookatPlot for after the viewport switch so it can be set in the new view
-			m_pLookatPlot = m_pMap->plotINLINE(iMapX, iMapY);
+			m_pLookatPlot = m_pMap->plot(iMapX, iMapY);
 		}
 
-		bringIntoView(m_pLookatPlot->getX_INLINE(), m_pLookatPlot->getY_INLINE(), ::getUnit(m_preservedHeadSelectedUnitId));
+		bringIntoView(m_pLookatPlot->getX(), m_pLookatPlot->getY(), ::getUnit(m_preservedHeadSelectedUnitId));
 	}
 }
 
@@ -361,8 +363,8 @@ void CvViewport::processActionState()
 
 		m_transformType = VIEWPORT_TRANSFORM_TYPE_WINDOW;
 
-		setMapOffset(range((m_pLookatPlot->getX_INLINE() - m_iXSize/2 + (m_pMap->isWrapXINLINE() ? m_pMap->getGridWidthINLINE() : 0))%m_pMap->getGridWidthINLINE(), 0, m_pMap->getGridWidthINLINE() - (m_pMap->isWrapXINLINE() ? 1 : m_iXSize)),
-					 range((m_pLookatPlot->getY_INLINE() - m_iYSize/2 + (m_pMap->isWrapYINLINE() ? m_pMap->getGridHeightINLINE() : 0))%m_pMap->getGridHeightINLINE(), 0, m_pMap->getGridHeightINLINE() - (m_pMap->isWrapYINLINE() ? 1 : m_iYSize)));
+		setMapOffset(range((m_pLookatPlot->getX() - m_iXSize/2 + (m_pMap->isWrapX() ? m_pMap->getGridWidth() : 0))%m_pMap->getGridWidth(), 0, m_pMap->getGridWidth() - (m_pMap->isWrapX() ? 1 : m_iXSize)),
+					 range((m_pLookatPlot->getY() - m_iYSize/2 + (m_pMap->isWrapY() ? m_pMap->getGridHeight() : 0))%m_pMap->getGridHeight(), 0, m_pMap->getGridHeight() - (m_pMap->isWrapY() ? 1 : m_iYSize)));
 
 		if ( m_mode == VIEWPORT_MODE_INITIALIZED )
 		{
@@ -442,7 +444,7 @@ void CvViewport::processActionState()
 
 			if ( pSelectedUnit != NULL )
 			{
-				bringIntoView(pSelectedUnit->getX_INLINE(), pSelectedUnit->getY_INLINE(), pSelectedUnit, true, true);
+				bringIntoView(pSelectedUnit->getX(), pSelectedUnit->getY(), pSelectedUnit, true, true);
 			}
 
 #if 0
@@ -451,13 +453,13 @@ void CvViewport::processActionState()
 			//	viewport
 			if ( m_state == VIEWPORT_ACTION_STATE_NONE && m_state == VIEWPORT_MODE_UNINITIALIZED)
 			{
-				bringIntoView(m_pMap->getGridWidthINLINE()/2, m_pMap->getGridHeightINLINE()/2, NULL, true, true);
+				bringIntoView(m_pMap->getGridWidth()/2, m_pMap->getGridHeight()/2, NULL, true, true);
 			}
 #endif
 		}
 		break;
 	case VIEWPORT_ACTION_STATE_SAVING:
-		GC.getGameINLINE().processGreatWall(true);
+		GC.getGame().processGreatWall(true);
 
 		setActionState(VIEWPORT_ACTION_STATE_NONE);
 		break;
@@ -549,7 +551,7 @@ void CvViewport::updateWorkingCity()
 	m_pMap->updateWorkingCity();
 }
 
-void CvViewport::updateMinOriginalStartDist(CvArea* pArea)
+void CvViewport::updateMinOriginalStartDist(const CvArea* pArea)
 {
 	m_pMap->updateMinOriginalStartDist(pArea);
 }
@@ -587,11 +589,6 @@ CvArea* CvViewport::findBiggestArea(bool bWater) const
 int CvViewport::getMapFractalFlags() const
 {
 	return m_pMap->getMapFractalFlags();
-}
-
-bool CvViewport::findWater(const CvPlot* pPlot, int iRange, bool bFreshWater) const
-{
-	return m_pMap->findWater(pPlot, iRange, bFreshWater);
 }
 
 bool CvViewport::isPlot(int iX, int iY) const

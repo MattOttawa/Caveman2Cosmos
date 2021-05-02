@@ -1,6 +1,9 @@
 // gameAI.cpp
 
-#include "CvGameCoreDLL.h"
+#include "CvGameAI.h"
+#include "CvGlobals.h"
+#include "CvPlayerAI.h"
+#include "CvTeamAI.h"
 
 // Public Functions...
 
@@ -71,7 +74,7 @@ void CvGameAI::AI_updateAssignWork()
 }
 
 
-int CvGameAI::AI_combatValue(UnitTypes eUnit)
+int CvGameAI::AI_combatValue(const UnitTypes eUnit) const
 {
 	int iValue;
 
@@ -92,19 +95,13 @@ int CvGameAI::AI_combatValue(UnitTypes eUnit)
 		iValue += (((100 + GC.getUnitInfo(eUnit).getDamageModifier())/100)/5);
 		//TB Combat Mods End
 
-		// UncutDragon
-		// original
-		//iValue *= ((((GC.getUnitInfo(eUnit).getFirstStrikes() * 2) + GC.getUnitInfo(eUnit).getChanceFirstStrikes()) * (GC.getDefineINT("COMBAT_DAMAGE") / 5)) + 100);
-		// modified
-			iValue *= ((((GC.getUnitInfo(eUnit).getFirstStrikes() * 2) + GC.getUnitInfo(eUnit).getChanceFirstStrikes()) * (GC.getCOMBAT_DAMAGE() / 5)) + 100);
-		// /UncutDragon
+		iValue *= ((((GC.getUnitInfo(eUnit).getFirstStrikes() * 2) + GC.getUnitInfo(eUnit).getChanceFirstStrikes()) * (GC.getCOMBAT_DAMAGE() / 5)) + 100);
 		iValue /= 100;
 	}
-	if (GC.getGameINLINE().isOption(GAMEOPTION_SIZE_MATTERS))
+	if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 	{
-		iValue = CvUnit::applySMRank(iValue, GC.getUnitInfo(eUnit).getSMRankTotal() - 15, GC.getDefineINT("SIZE_MATTERS_MOST_MULTIPLIER"));
+		iValue = CvUnit::applySMRank(iValue, GC.getUnitInfo(eUnit).getSMRankTotal() - 15, GC.getSIZE_MATTERS_MOST_MULTIPLIER());
 	}
-
 
 	iValue /= getBestLandUnitCombat();
 
@@ -112,7 +109,7 @@ int CvGameAI::AI_combatValue(UnitTypes eUnit)
 }
 
 
-int CvGameAI::AI_turnsPercent(int iTurns, int iPercent)
+int CvGameAI::AI_turnsPercent(int iTurns, const int iPercent) const
 {
 	FAssert(iPercent > 0);
 	if (iTurns != MAX_INT)
@@ -129,9 +126,6 @@ void CvGameAI::read(FDataStreamBase* pStream)
 {
 	CvGame::read(pStream);
 
-	uint uiFlag=0;
-	pStream->Read(&uiFlag);	// flags for expansion
-
 	pStream->Read(&m_iPad);
 }
 
@@ -139,9 +133,6 @@ void CvGameAI::read(FDataStreamBase* pStream)
 void CvGameAI::write(FDataStreamBase* pStream)
 {
 	CvGame::write(pStream);
-
-	uint uiFlag=0;
-	pStream->Write(uiFlag);		// flag for expansion
 
 	pStream->Write(m_iPad);
 }

@@ -1,8 +1,4 @@
-<?xml version="1.0"?>
-<!-- Sid Meier's Civilization 4 -->
-<!-- Copyright Firaxis Games 2005 -->
-<!-- -->
-<!-- Diplomacy Infos -->
+<?xml version='1.0' encoding='UTF-8'?>
 <Civ4DiplomacyInfos xmlns="x-schema:../Schema/C2C_CIV4GameInfoSchema.xml">
 	<DiplomacyInfos>
 		<DiplomacyInfo>
@@ -59,6 +55,62 @@
 		<DiplomacyInfo>
 			<Type>AI_DIPLOCOMMENT_FIRST_CONTACT</Type>
 			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders>
+						<Leader>
+							<LeaderType>LEADER_MARGRETE</LeaderType>
+							<bLeaderType>1</bLeaderType>
+						</Leader>
+					</Leaders>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_FIRST_CONTACT_LEADER_MARGRETE_1</Text>
+					</DiplomacyText>
+				</Response>
+				<Response>
+					<Civilizations/>
+					<Leaders>
+						<Leader>
+							<LeaderType>LEADER_CURTIN</LeaderType>
+							<bLeaderType>1</bLeaderType>
+						</Leader>
+					</Leaders>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_FIRST_CONTACT_LEADER_CURTIN_1</Text>
+					</DiplomacyText>
+				</Response>
+				<Response>
+					<Civilizations/>
+					<Leaders>
+						<Leader>
+							<LeaderType>LEADER_CHRISTIAN_IV</LeaderType>
+							<bLeaderType>1</bLeaderType>
+						</Leader>
+					</Leaders>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_FIRST_CONTACT_LEADER_CHRISTIAN_IV_1</Text>
+					</DiplomacyText>
+				</Response>
+				<Response>
+					<Civilizations/>
+					<Leaders>
+						<Leader>
+							<LeaderType>LEADER_CANUTE</LeaderType>
+							<bLeaderType>1</bLeaderType>
+						</Leader>
+					</Leaders>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_FIRST_CONTACT_LEADER_CANUTE_1</Text>
+					</DiplomacyText>
+				</Response>
 				<Response>
 					<Civilizations/>
 					<Leaders>
@@ -875,6 +927,20 @@
 						<Text>AI_DIPLO_FIRST_CONTACT_LEADER_DEGANAWIDA_1</Text>
 					</DiplomacyText>
 				</Response>
+				<Response>
+					<Civilizations/>
+					<Leaders>
+						<Leader>
+							<LeaderType>LEADER_KAMEHAMEHA</LeaderType>
+							<bLeaderType>1</bLeaderType>
+						</Leader>
+					</Leaders>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_FIRST_CONTACT_LEADER_KAMEHAMEHA_1</Text>
+					</DiplomacyText>
+				</Response>
 			</Responses>
 		</DiplomacyInfo>
 		<DiplomacyInfo>
@@ -1259,7 +1325,7 @@
 					<Attitudes/>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_REFUSE_TO_TALK_LEADER_ AUGUSTUS_CAESAR _1</Text>
+						<Text>AI_DIPLO_REFUSE_TO_TALK_LEADER_AUGUSTUS_CAESAR_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -1273,7 +1339,7 @@
 					<Attitudes/>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_REFUSE_TO_TALK_LEADER_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_REFUSE_TO_TALK_LEADER_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -2057,7 +2123,7 @@
 					<Attitudes/>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_NO_PEACE_LEADER_ AUGUSTUS_CAESAR _1</Text>
+						<Text>AI_DIPLO_NO_PEACE_LEADER_AUGUSTUS_CAESAR_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -2071,7 +2137,7 @@
 					<Attitudes/>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_NO_PEACE_LEADER_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_NO_PEACE_LEADER_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -3169,7 +3235,7 @@
 					</Attitudes>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_GREETINGS_ATT_FR_LEADER_ AUGUSTUS_CAESAR _1</Text>
+						<Text>AI_DIPLO_GREETINGS_ATT_FR_LEADER_AUGUSTUS_CAESAR_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -3196,7 +3262,7 @@
 					</Attitudes>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_GREETINGS_ATT_FR_LEADER_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_GREETINGS_ATT_FR_LEADER_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -4506,7 +4572,7 @@
 					</Attitudes>
 					<DiplomacyPowers/>
 					<DiplomacyText>
-						<Text>AI_DIPLO_GREETINGS_ATT_FUR_LEADER_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_GREETINGS_ATT_FUR_LEADER_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -6336,7 +6402,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_WEAKER_ AUGUSTUS_CAESAR _1</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_WEAKER_AUGUSTUS_CAESAR_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -6355,7 +6421,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_WEAKER_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_WEAKER_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -7291,7 +7357,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_EQUAL_ AUGUSTUS_CAESAR _1</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_EQUAL_AUGUSTUS_CAESAR_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -7310,7 +7376,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_EQUAL_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_EQUAL_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -7882,7 +7948,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_STRONGER_MONTEZUMA_1_CORRECTED</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_STRONGER_MONTEZUMA_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -8228,7 +8294,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_STRONGER_ AUGUSTUS_CAESAR _1</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_STRONGER_AUGUSTUS_CAESAR_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -8247,7 +8313,7 @@
 						</DiplomacyPower>
 					</DiplomacyPowers>
 					<DiplomacyText>
-						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_STRONGER_ BRENNUS _1</Text>
+						<Text>AI_DIPLO_DEMAND_TRIBUTE_POWER_STRONGER_BRENNUS_1</Text>
 					</DiplomacyText>
 				</Response>
 				<Response>
@@ -9898,120 +9964,118 @@
 				</Response>
 			</Responses>
 		</DiplomacyInfo>
-    <!-- RevolutionDCM - start new diplomacy options -->
-	  <DiplomacyInfo>
-		  <Type>USER_DO_NOT_BOTHER_US</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-					  <Text>USER_DIPLO_STOP_BOTHERING</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>USER_RESUME_TALKS</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>USER_DIPLO_LETS_TALK</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>AI_ASSUME_SNUFFED</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>AI_DIPLO_ASSUME_SNUFFED</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>AI_ASSUME_REALLY_SNUFFED</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>AI_DIPLO_ASSUME_REALLY_SNUFFED</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>AI_ASSUME_NOT_SNUFFED</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>AI_DIPLO_ASSUME_NOT_SNUFFED</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>AI_RESUME_TALKS</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>AI_DIPLO_RESUME_TALKS</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>AI_RESUME_TALKS_RELUCTANT</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>AI_DIPLO_RESUME_TALKS_RELUCTANT</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-	  <DiplomacyInfo>
-		  <Type>AI_RESUME_TALKS_GLADLY</Type>
-		  <Responses>
-			  <Response>
-				  <Civilizations/>
-				  <Leaders/>
-				  <Attitudes/>
-				  <DiplomacyPowers/>
-				  <DiplomacyText>
-				  	<Text>AI_DIPLO_RESUME_TALKS_GLADLY</Text>
-				  </DiplomacyText>
-			  </Response>
-		  </Responses>
-	  </DiplomacyInfo>
-    <!-- RevolutionDCM - end -->
+		<DiplomacyInfo>
+			<Type>USER_DO_NOT_BOTHER_US</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>USER_DIPLO_STOP_BOTHERING</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>USER_RESUME_TALKS</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>USER_DIPLO_LETS_TALK</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>AI_ASSUME_SNUFFED</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_ASSUME_SNUFFED</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>AI_ASSUME_REALLY_SNUFFED</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_ASSUME_REALLY_SNUFFED</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>AI_ASSUME_NOT_SNUFFED</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_ASSUME_NOT_SNUFFED</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>AI_RESUME_TALKS</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_RESUME_TALKS</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>AI_RESUME_TALKS_RELUCTANT</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_RESUME_TALKS_RELUCTANT</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
+		<DiplomacyInfo>
+			<Type>AI_RESUME_TALKS_GLADLY</Type>
+			<Responses>
+				<Response>
+					<Civilizations/>
+					<Leaders/>
+					<Attitudes/>
+					<DiplomacyPowers/>
+					<DiplomacyText>
+						<Text>AI_DIPLO_RESUME_TALKS_GLADLY</Text>
+					</DiplomacyText>
+				</Response>
+			</Responses>
+		</DiplomacyInfo>
 		<DiplomacyInfo>
 			<Type>AI_DIPLOCOMMENT_MAKE_PEACE_WITH</Type>
 			<Responses>
@@ -10075,5 +10139,5 @@
 				</Response>
 			</Responses>
 		</DiplomacyInfo>
-  </DiplomacyInfos>
+	</DiplomacyInfos>
 </Civ4DiplomacyInfos>

@@ -46,7 +46,7 @@ def writeLog():
 			pFile.write("Player %d Score: %d\n" % (iPlayer, GAME.getPlayerScore(iPlayer)))
 			pFile.write("Player %d Population: %d\n" % (iPlayer, pPlayer.getTotalPopulation()))
 			pFile.write("Player %d Total Land: %d\n" % (iPlayer, pPlayer.getTotalLand()))
-			pFile.write("Player %d Greater Gold: %d Gold: %d\n" % (iPlayer, pPlayer.getGreaterGold(), pPlayer.getGold()))
+			pFile.write("Player %d Gold: %d\n" % (iPlayer, pPlayer.getGold()))
 			pFile.write("Player %d Assets: %d\n" % (iPlayer, pPlayer.getAssets()))
 			pFile.write("Player %d Power: %d\n" % (iPlayer, pPlayer.getPower()))
 			pFile.write("Player %d Num Cities: %d\n" % (iPlayer, pPlayer.getNumCities()))
@@ -88,7 +88,7 @@ def writeLog():
 					pFile.write("City: %s\n" % CvUtil.convertToStr(pCity.getName()))
 					pFile.write("X: %d, Y: %d\n" % (pCity.getX(), pCity.getY()))
 					pFile.write("Population: %d\n" % (pCity.getPopulation()))
-					pFile.write("Buildings: %d\n" % (pCity.getNumBuildings()))
+					pFile.write("Buildings: %d\n" % (pCity.getNumRealBuildings()))
 					pFile.write("Improved Plots: %d\n" % (pCity.countNumImprovedPlots()))
 					pFile.write("Tiles Worked: %d, Specialists: %d\n" % (pCity.getWorkingPopulation(), pCity.getSpecialistPopulation()))
 					pFile.write("Great People: %d\n" % pCity.getNumGreatPeople())
@@ -114,13 +114,13 @@ def writeLog():
 
 			pFile.write("\n\nBuilding Info:\n--------------------\n")
 
-			for iBuildingClass in xrange(GC.getNumBuildingClassInfos()):
-				pFile.write("Player %d, %s, Building class count plus making: %d\n" % (iPlayer, CvUtil.convertToStr(GC.getBuildingClassInfo(iBuildingClass).getDescription()), pPlayer.getBuildingClassCountPlusMaking(iBuildingClass)))
+			for iBuilding in xrange(GC.getNumBuildingInfos()):
+				pFile.write("Player %d, %s, Building class count plus making: %d\n" % (iPlayer, CvUtil.convertToStr(GC.getBuildingInfo(iBuilding).getDescription()), pPlayer.getBuildingCountPlusMaking(iBuilding)))
 
 			pFile.write("\n\nUnit Class Info:\n--------------------\n")
 
-			for iUnitClass in xrange(GC.getNumUnitClassInfos()):
-				pFile.write("Player %d, %s, Unit class count plus training: %d\n" % (iPlayer, CvUtil.convertToStr(GC.getUnitClassInfo(iUnitClass).getDescription()), pPlayer.getUnitClassCountPlusMaking(iUnitClass)))
+			for iUnit in xrange(GC.getNumUnitInfos()):
+				pFile.write("Player %d, %s, Unit class count plus training: %d\n" % (iPlayer, CvUtil.convertToStr(GC.getUnitInfo(iUnit).getDescription()), pPlayer.getUnitCountPlusMaking(iUnit)))
 
 			pFile.write("\n\nUnitAI Types Info:\n------------------\n")
 
@@ -158,8 +158,7 @@ def writeLog():
 			pFile.write("\n\nUnit Info:\n----------\n")
 
 			if pPlayer.getNumUnits():
-				pUnit, i = pPlayer.firstUnit(False)
-				while pUnit:
+				for pUnit in pPlayer.units():
 					pFile.write("Player %d, Unit ID: %d, %s\n" % (iPlayer, pUnit.getID(), CvUtil.convertToStr(pUnit.getName())))
 					pFile.write("X: %d, Y: %d\nDamage: %d\n" % (pUnit.getX(), pUnit.getY(), pUnit.getDamage()))
 					pFile.write("Experience: %d\nLevel: %d\n" % (pUnit.getExperience(), pUnit.getLevel()))
@@ -177,8 +176,6 @@ def writeLog():
 								pFile.write("UnitCombats:\n")
 								bFirst = False
 							pFile.write("\t" + CvUtil.convertToStr(GC.getUnitCombatInfo(j).getDescription()) + "\n")
-
-					pUnit, i = pPlayer.nextUnit(i, False)
 			else:
 				pFile.write("No Units")
 			# Space at end of player's info

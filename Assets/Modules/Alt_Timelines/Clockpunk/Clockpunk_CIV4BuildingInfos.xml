@@ -3,17 +3,16 @@
 <!-- Sid Meier's Civilization 4 -->
 <!-- Copyright Firaxis Games 2005 -->
 <!-- ReModified by StrategyOnly -->
-<!-- -->
 <!-- Building Infos -->
 <Civ4BuildingInfos xmlns="x-schema:../../../XML/Schema/C2C_CIV4BuildingsSchema.xml">
 	<BuildingInfos>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_CLOCKPUNK_EMBASSY</BuildingClass>
 			<Type>BUILDING_CLOCKPUNK_EMBASSY</Type>
+			<iMaxGlobalInstances>1</iMaxGlobalInstances>
+			<bNoLimit>1</bNoLimit>
 			<SpecialBuildingType>SPECIALBUILDING_C2C_CULTURE</SpecialBuildingType>
 			<Description>TXT_KEY_BUILDING_CLOCKPUNK_EMBASSY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_CLOCKPUNK_EMBASSY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_CLOCKPUNK_EMBASSY_STRATEGY</Strategy>
 			<Advisor>ADVISOR_CULTURE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_CLOCKPUNK_EMBASSY</ArtDefineTag>
 			<PrereqTech>TECH_CLOCKPUNK</PrereqTech>
@@ -26,7 +25,6 @@
 			<iNumFreeBonuses>1</iNumFreeBonuses>
 			<iCost>2280</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<iAdvancedStartCost>-1</iAdvancedStartCost>
 			<iAsset>5</iAsset>
 			<iConquestProb>100</iConquestProb>
 			<CommerceChanges>
@@ -36,11 +34,9 @@
 			</CommerceChanges>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_AUTOMATION_CLOCK</BuildingClass>
 			<Type>BUILDING_AUTOMATION_CLOCK</Type>
 			<Description>TXT_KEY_BUILDING_AUTOMATION_CLOCK</Description>
 			<Civilopedia>TXT_KEY_BUILDING_AUTOMATION_CLOCK_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_AUTOMATION_CLOCK_STRATEGY</Strategy>
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_AUTOMATION_CLOCK</ArtDefineTag>
 			<PrereqTech>TECH_CLOCKPUNK</PrereqTech>
@@ -52,12 +48,6 @@
 			<ObsoleteTech>TECH_ASSEMBLY_LINE</ObsoleteTech>
 			<iCost>380</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_INDUSTRIOUS</ProductionTraitType>
-					<iProductionTrait>100</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
 			<iMaintenanceModifier>-5</iMaintenanceModifier>
 			<iHappiness>1</iHappiness>
 			<CommerceChanges>
@@ -75,22 +65,17 @@
 					<iSpecialistCount>1</iSpecialistCount>
 				</SpecialistCount>
 			</SpecialistCounts>
-			<BuildingClassNeededs>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_TOWNCLOCK</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-			</BuildingClassNeededs>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_TOWNCLOCK</BuildingType>
+			</PrereqInCityBuildings>
 			<iAsset>2</iAsset>
 			<fVisibilityPriority>1.0</fVisibilityPriority>
 			<iAIWeight>1</iAIWeight>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_ORCHESTRION_THEATER</BuildingClass>
 			<Type>BUILDING_ORCHESTRION_THEATER</Type>
 			<Description>TXT_KEY_BUILDING_ORCHESTRION_THEATER</Description>
 			<Civilopedia>TXT_KEY_BUILDING_ORCHESTRION_THEATER_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_ORCHESTRION_THEATER_STRATEGY</Strategy>
 			<Advisor>ADVISOR_CULTURE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_ORCHESTRION_THEATER</ArtDefineTag>
 			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
@@ -105,12 +90,6 @@
 			<iPrereqPopulation>13</iPrereqPopulation>
 			<iCost>770</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_CREATIVE</ProductionTraitType>
-					<iProductionTrait>100</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
 			<iMaintenanceModifier>5</iMaintenanceModifier>
 			<iHappiness>1</iHappiness>
 			<CommerceChanges>
@@ -128,29 +107,24 @@
 					<iSpecialistCount>1</iSpecialistCount>
 				</SpecialistCount>
 			</SpecialistCounts>
-			<BuildingClassNeededs>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_OPERA_HOUSE</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-			</BuildingClassNeededs>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_OPERA_HOUSE</BuildingType>
+			</PrereqInCityBuildings>
 			<iAsset>2</iAsset>
 			<fVisibilityPriority>1.0</fVisibilityPriority>
 			<iAIWeight>1</iAIWeight>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_STEPRECKONER_MANUFACTORY</BuildingClass>
 			<Type>BUILDING_STEPRECKONER_MANUFACTORY</Type>
 			<Description>TXT_KEY_BUILDING_STEPRECKONER_MANUFACTORY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_STEPRECKONER_MANUFACTORY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_STEPRECKONER_MANUFACTORY_STRATEGY</Strategy>
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_STEPRECKONER_MANUFACTORY</ArtDefineTag>
-			<ObsoleteTech>TECH_COMPUTERS</ObsoleteTech>
+			<ObsoleteTech>TECH_PERSONAL_COMPUTERS</ObsoleteTech>
 			<PrereqTech>TECH_CLOCKPUNK</PrereqTech>
 			<Bonus>BONUS_CLOCKPUNK</Bonus>
 			<PrereqBonuses>
-				<Bonus>BONUS_WARE_COPPER</Bonus>
+				<Bonus>BONUS_COPPER_WARES</Bonus>
 			</PrereqBonuses>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
@@ -158,12 +132,6 @@
 			<iPrereqPopulation>6</iPrereqPopulation>
 			<iCost>380</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_INDUSTRIOUS</ProductionTraitType>
-					<iProductionTrait>100</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
 			<YieldChanges>
 				<iYield>0</iYield>
 				<iYield>2</iYield>
@@ -175,11 +143,9 @@
 			<iAsset>2</iAsset>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_CLOCKWORK_WORKSHOP</BuildingClass>
 			<Type>BUILDING_CLOCKWORK_WORKSHOP</Type>
 			<Description>TXT_KEY_BUILDING_CLOCKWORK_WORKSHOP</Description>
 			<Civilopedia>TXT_KEY_BUILDING_CLOCKWORK_WORKSHOP_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_CLOCKWORK_WORKSHOP_STRATEGY</Strategy>
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_CLOCKWORK_WORKSHOP</ArtDefineTag>
 			<ObsoleteTech>TECH_ELECTRONICS</ObsoleteTech>
@@ -189,22 +155,16 @@
 			</MapCategoryTypes>
 			<Bonus>BONUS_CLOCKPUNK</Bonus>
 			<PrereqBonuses>
-				<Bonus>BONUS_WARE_COPPER</Bonus>
-				<Bonus>BONUS_WARE_IRON</Bonus>
-				<Bonus>BONUS_WARE_TIN</Bonus>
-				<Bonus>BONUS_WARE_BRONZE</Bonus>
-				<Bonus>BONUS_WARE_BRASS</Bonus>
-				<Bonus>BONUS_WARE_STEEL</Bonus>
+				<Bonus>BONUS_COPPER_WARES</Bonus>
+				<Bonus>BONUS_IRON_WARES</Bonus>
+				<Bonus>BONUS_TIN_WARES</Bonus>
+				<Bonus>BONUS_BRONZE_WARES</Bonus>
+				<Bonus>BONUS_BRASS_WARES</Bonus>
+				<Bonus>BONUS_STEEL_WARES</Bonus>
 			</PrereqBonuses>
 			<iPrereqPopulation>13</iPrereqPopulation>
 			<iCost>380</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_INDUSTRIOUS</ProductionTraitType>
-					<iProductionTrait>100</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
 			<HealUnitCombatTypes>
 				<HealUnitCombatType>
 					<UnitCombatType>UNITCOMBAT_HEALS_AS_MECHANICAL</UnitCombatType>
@@ -225,21 +185,16 @@
 					<iSpecialistCount>1</iSpecialistCount>
 				</SpecialistCount>
 			</SpecialistCounts>
-			<BuildingClassNeededs>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_ENGINEERING_SCHOOL</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-			</BuildingClassNeededs>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_ENGINEERING_SCHOOL</BuildingType>
+			</PrereqInCityBuildings>
 			<iAsset>2</iAsset>
 			<iAIWeight>1</iAIWeight>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_CLOCKPUNK_AIRPORT</BuildingClass>
 			<Type>BUILDING_CLOCKPUNK_AIRPORT</Type>
 			<Description>TXT_KEY_BUILDING_CLOCKPUNK_AIRPORT</Description>
 			<Civilopedia>TXT_KEY_BUILDING_CLOCKPUNK_AIRPORT_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_CLOCKPUNK_AIRPORT_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_CLOCKPUNK_AIRPORT</ArtDefineTag>
 			<ConstructSound>AS2D_BUILD_EARLY_AIRPORT</ConstructSound>
@@ -249,7 +204,7 @@
 			</MapCategoryTypes>
 			<Bonus>BONUS_CLOCKPUNK</Bonus>
 			<iPrereqPopulation>6</iPrereqPopulation>
-			<ObsoleteTech>TECH_ADVANCED_FLIGHT</ObsoleteTech>
+			<ObsoleteTech>TECH_ADVANCED_AVIATION</ObsoleteTech>
 			<iCost>380</iCost>
 			<iAirUnitCapacity>2</iAirUnitCapacity>
 			<HealUnitCombatTypes>
@@ -259,23 +214,14 @@
 				</HealUnitCombatType>
 			</HealUnitCombatTypes>
 			<iTradeRoutes>1</iTradeRoutes>
-			<BuildingClassNeededs>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_CLOCKWORK_WORKSHOP</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-			</BuildingClassNeededs>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_CLOCKWORK_WORKSHOP</BuildingType>
+			</PrereqInCityBuildings>
 			<iDCMAirbombMission>2</iDCMAirbombMission>
-			<ReplaceBuildings>
-				<ReplaceBuilding>
-					<BuildingClassType>BUILDINGCLASS_AIRPORT</BuildingClassType>
-					<bReplace>1</bReplace>
-				</ReplaceBuilding>
-				<ReplaceBuilding>
-					<BuildingClassType>BUILDINGCLASS_COMMERCIAL_AIRPORT</BuildingClassType>
-					<bReplace>1</bReplace>
-				</ReplaceBuilding>
-			</ReplaceBuildings>
+			<ReplacementBuildings>
+				<BuildingType>BUILDING_AIRPORT</BuildingType>
+				<BuildingType>BUILDING_COMMERCIAL_AIRPORT</BuildingType>
+			</ReplacementBuildings>
 			<iAsset>5</iAsset>
 			<fVisibilityPriority>1.0</fVisibilityPriority>
 		</BuildingInfo>

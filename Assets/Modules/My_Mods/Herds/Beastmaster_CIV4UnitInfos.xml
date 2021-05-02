@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
-<!-- Sid Meier's Civilization 4 Beyond the Sword -->
-<!-- Modified by the Civ Gold Team -->
-<!-- Assets\Modules\Alt_Timelines\Beastmaster\Beastmaster_CIV4UnitInfos.xml-->
 <Civ4UnitInfos xmlns="x-schema:../../../XML/Schema/C2C_CIV4UnitSchema.xml">
 	<UnitInfos>
 		<UnitInfo>
-			<Class>UNITCLASS_TAMED_DONKEY_PAIR</Class>
 			<Type>UNIT_TAMED_DONKEY_PAIR</Type>
+			<iMaxPlayerInstances>15</iMaxPlayerInstances>
 			<Special>SPECIALUNIT_PEOPLE</Special>
 			<Combat>UNITCOMBAT_ANIMAL</Combat>
 			<SubCombatTypes>
@@ -32,7 +29,6 @@
 			<DefaultUnitAI>UNITAI_SUBDUED_ANIMAL</DefaultUnitAI>
 			<Description>TXT_KEY_UNIT_TAMED_DONKEY_PAIR</Description>
 			<Civilopedia>TXT_KEY_UNIT_TAMED_ANIMAL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_UNIT_TAMED_ANIMAL_STRATEGY</Strategy>
 			<Help>TXT_KEY_UNIT_TAMED_DONKEY_PAIR_HELP</Help>
 			<bOnlyDefensive>1</bOnlyDefensive>
 			<bMilitaryTrade>1</bMilitaryTrade>
@@ -77,8 +73,8 @@
 			<FormationType>FORMATION_TYPE_ANIMAL</FormationType>
 		</UnitInfo>
 		<UnitInfo>
-			<Class>UNITCLASS_TAMED_HORSE_PAIR</Class>
 			<Type>UNIT_TAMED_HORSE_PAIR</Type>
+			<iMaxPlayerInstances>15</iMaxPlayerInstances>
 			<Special>SPECIALUNIT_PEOPLE</Special>
 			<Combat>UNITCOMBAT_ANIMAL</Combat>
 			<SubCombatTypes>
@@ -106,13 +102,12 @@
 			<DefaultUnitAI>UNITAI_SUBDUED_ANIMAL</DefaultUnitAI>
 			<Description>TXT_KEY_UNIT_TAMED_HORSE_PAIR</Description>
 			<Civilopedia>TXT_KEY_UNIT_TAMED_ANIMAL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_UNIT_TAMED_ANIMAL_STRATEGY</Strategy>
 			<Help>TXT_KEY_UNIT_TAMED_HORSE_PAIR_HELP</Help>
 			<bMilitaryTrade>1</bMilitaryTrade>
 			<UnitAIs>
-       			<UnitAI>
+				<UnitAI>
 					<UnitAIType>UNITAI_SUBDUED_ANIMAL</UnitAIType>
-				   <bUnitAI>1</bUnitAI>
+					<bUnitAI>1</bUnitAI>
 				</UnitAI>
 			</UnitAIs>
 			<Buildings>
@@ -125,7 +120,9 @@
 				<BuildingType>BUILDING_TAXIDERMIST</BuildingType>
 				<BuildingType>BUILDING_HORSE_BREEDER</BuildingType>
 			</Buildings>
-			<PrereqBuilding>BUILDING_HORSE_MYTH_EFFECT</PrereqBuilding>
+			<PrereqAndBuildings>
+				<BuildingType>BUILDING_HORSE_MYTH_EFFECT</BuildingType>
+			</PrereqAndBuildings>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_HORSE_BREEDER</BuildingType>
 				<BuildingType>BUILDING_ANIMAL_TAMER_COMPLEX</BuildingType>
@@ -152,8 +149,8 @@
 			<FormationType>FORMATION_TYPE_ANIMAL</FormationType>
 		</UnitInfo>
 		<UnitInfo>
-			<Class>UNITCLASS_TAMED_WOLF_PAIR</Class>
 			<Type>UNIT_TAMED_WOLF_PAIR</Type>
+			<iMaxPlayerInstances>15</iMaxPlayerInstances>
 			<Combat>UNITCOMBAT_ANIMAL</Combat>
 			<SubCombatTypes>
 				<SubCombatType>UNITCOMBAT_TAMED</SubCombatType>
@@ -185,7 +182,6 @@
 			<SeeInvisible>INVISIBLE_CAMOUFLAGE</SeeInvisible>
 			<Description>TXT_KEY_UNIT_TAMED_WOLF_PAIR</Description>
 			<Civilopedia>TXT_KEY_UNIT_TAMED_ANIMAL_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_UNIT_TAMED_ANIMAL_STRATEGY</Strategy>
 			<Help>TXT_KEY_UNIT_TAMED_WOLF_HELP</Help>
 			<bOnlyDefensive>1</bOnlyDefensive>
 			<bNoDefensiveBonus>1</bNoDefensiveBonus>
@@ -206,11 +202,11 @@
 					<UnitAIType>UNITAI_COUNTER</UnitAIType>
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
-       			<UnitAI>
+				<UnitAI>
 					<UnitAIType>UNITAI_PILLAGE_COUNTER</UnitAIType>
 					<bUnitAI>1</bUnitAI>
-				 </UnitAI>
-       			 <UnitAI>
+				</UnitAI>
+				<UnitAI>
 					<UnitAIType>UNITAI_SUBDUED_ANIMAL</UnitAIType>
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
@@ -224,7 +220,9 @@
 				<BuildingType>BUILDING_POLICE_DOG</BuildingType>
 				<BuildingType>BUILDING_WOLF_CAGE</BuildingType>
 			</Buildings>
-			<PrereqBuilding>BUILDING_DOG_KENNEL</PrereqBuilding>
+			<PrereqAndBuildings>
+				<BuildingType>BUILDING_DOG_KENNEL</BuildingType>
+			</PrereqAndBuildings>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_WOLF_MYTH_EFFECT</BuildingType>
 				<BuildingType>BUILDING_ARCTICFOX_MYTH_EFFECT</BuildingType>

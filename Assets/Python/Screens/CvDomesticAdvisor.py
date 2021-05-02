@@ -1,7 +1,6 @@
 from CvPythonExtensions import *
 import HandleInputUtil
 import cPickle
-import PythonToolTip as pyTT
 
 # globals
 GC = CyGlobalContext()
@@ -115,28 +114,27 @@ class CvDomesticAdvisor:
 			self.bonusCorpCommerces = {}
 			for eCorp in xrange(GC.getNumCorporationInfos()):
 				info = GC.getCorporationInfo(eCorp)
-				for i in xrange(GC.getNUM_CORPORATION_PREREQ_BONUSES()):
-					eBonus = info.getPrereqBonus(i)
-					if eBonus > -0:
-						for eYield in xrange(YieldTypes.NUM_YIELD_TYPES):
-							iYieldValue = info.getYieldProduced(eYield)
-							if iYieldValue != 0:
-								if not self.bonusCorpYields.has_key(eBonus):
-									self.bonusCorpYields[eBonus] = {}
-								if not self.bonusCorpYields[eBonus].has_key(eYield):
-									self.bonusCorpYields[eBonus][eYield] = {}
-								if not self.bonusCorpYields[eBonus][eYield].has_key(eCorp):
-									self.bonusCorpYields[eBonus][eYield][eCorp] = iYieldValue
+				for eBonus in info.getPrereqBonuses():
 
-						for eCommerce in xrange(CommerceTypes.NUM_COMMERCE_TYPES):
-							iCommerceValue = info.getCommerceProduced(eCommerce)
-							if iCommerceValue != 0:
-								if not self.bonusCorpCommerces.has_key(eBonus):
-									self.bonusCorpCommerces[eBonus] = {}
-								if not self.bonusCorpCommerces[eBonus].has_key(eCommerce):
-									self.bonusCorpCommerces[eBonus][eCommerce] = {}
-								if not self.bonusCorpCommerces[eBonus][eCommerce].has_key(eCorp):
-									self.bonusCorpCommerces[eBonus][eCommerce][eCorp] = iCommerceValue
+					for eYield in xrange(YieldTypes.NUM_YIELD_TYPES):
+						iYieldValue = info.getYieldProduced(eYield)
+						if iYieldValue != 0:
+							if not self.bonusCorpYields.has_key(eBonus):
+								self.bonusCorpYields[eBonus] = {}
+							if not self.bonusCorpYields[eBonus].has_key(eYield):
+								self.bonusCorpYields[eBonus][eYield] = {}
+							if not self.bonusCorpYields[eBonus][eYield].has_key(eCorp):
+								self.bonusCorpYields[eBonus][eYield][eCorp] = iYieldValue
+
+					for eCommerce in xrange(CommerceTypes.NUM_COMMERCE_TYPES):
+						iCommerceValue = info.getCommerceProduced(eCommerce)
+						if iCommerceValue != 0:
+							if not self.bonusCorpCommerces.has_key(eBonus):
+								self.bonusCorpCommerces[eBonus] = {}
+							if not self.bonusCorpCommerces[eBonus].has_key(eCommerce):
+								self.bonusCorpCommerces[eBonus][eCommerce] = {}
+							if not self.bonusCorpCommerces[eBonus][eCommerce].has_key(eCorp):
+								self.bonusCorpCommerces[eBonus][eCommerce][eCorp] = iCommerceValue
 
 			# Special Class variables
 			aMap = {
@@ -145,7 +143,7 @@ class CvDomesticAdvisor:
 			}
 			self.COLUMNS_LIST = COLUMNS_LIST = [
 # Name						Width	Type	CyCityFunction				selfFunction		Arg				Title
-("ADVISE_CULTURE",			150,	"text",	None,						self.advise,		"Culture",		TRNSLTR.getText("TXT_KEY_CONCEPT_CULTURE", ())),
+("ADVISE_CULTURE",			150,	"text",	None,						self.advise,		"Culture",		TRNSLTR.getText("TXT_WORD_CULTURE", ())),
 ("ADVISE_MILITARY",			150,	"text",	None,						self.advise,		"Military",		TRNSLTR.getText("TXT_KEY_ADVISOR_MILITARY", ())),
 ("ADVISE_RELIGION",			150,	"text",	None,						self.advise,		"Religion",		TRNSLTR.getText("TXT_KEY_CONCEPT_RELIGION", ())),
 ("ADVISE_RESEARCH",			150,	"text",	None,						self.advise,		"Research",		TRNSLTR.getText("TXT_KEY_COMMERCE_RESEARCH", ())),
@@ -209,7 +207,7 @@ class CvDomesticAdvisor:
 				"COMMERCE_"
 			]
 			for i in xrange(YieldTypes.NUM_YIELD_TYPES):
-				COLUMNS_LIST.append((aList[i] + "BASE", 40, "int", "getBaseYieldRate", None, i, "B" + self.yieldIcons[i]))
+				COLUMNS_LIST.append((aList[i] + "BASE", 40, "int", "getPlotYield", None, i, "B" + self.yieldIcons[i]))
 				COLUMNS_LIST.append((aList[i] + "GRANK_BASE", 42, "int", None, self.findGlobalBaseYieldRateRank, i, "B" + self.yieldIcons[i] + "g"))
 				COLUMNS_LIST.append((aList[i] + "GRANK", 40, "int", None, self.findGlobalYieldRateRank, i, self.yieldIcons[i] + "g"))
 				COLUMNS_LIST.append((aList[i] + "NRANK_BASE", 42, "int", "findBaseYieldRateRank", None, i, "B" + self.yieldIcons[i] + "n"))
@@ -330,12 +328,11 @@ class CvDomesticAdvisor:
 		self.CyPlayer = CyPlayer = GC.getActivePlayer()
 		import InputData
 		self.InputData = InputData.instance
-		self.TXT_NAME = TRNSLTR.getText("TXT_KEY_NAME", ())
-		# Tool Tip
-		self.szTextTT = ""
-		self.iOffsetTT = []
-		self.bLockedTT = False
 
+		import PythonToolTip
+		self.tooltip = PythonToolTip.PythonToolTip()
+
+		self.TXT_NAME = TRNSLTR.getText("TXT_WORD_NAME", ())
 
 		# Determine our size/positions.
 		import ScreenResolution as SR
@@ -436,12 +433,10 @@ class CvDomesticAdvisor:
 			bCanLiberate = True
 		else:
 			bCanLiberate = False
-			CyCity, i = CyPlayer.firstCity(False)
-			while CyCity:
+			for CyCity in CyPlayer.cities():
 				if CyCity.getLiberationPlayer(False) != -1:
 					bCanLiberate = True
 					break
-				CyCity, i = CyPlayer.nextCity(i, False)
 
 		if bCanLiberate:
 			screen.setImageButton("DomesticSplit", "", 8, 2, iSize, iSize, WidgetTypes.WIDGET_ACTION, GC.getControlInfo(ControlTypes.CONTROL_FREE_COLONY).getActionInfoIndex(), -1)
@@ -509,8 +504,7 @@ class CvDomesticAdvisor:
 		# add National Wonders
 		for i in xrange(GC.getNumBuildingInfos()):
 			info = GC.getBuildingInfo(i)
-			classInfo = GC.getBuildingClassInfo(info.getBuildingClassType())
-			if classInfo.getMaxGlobalInstances() == -1 and classInfo.getMaxPlayerInstances() == 1 and CyCity.getNumBuilding(i) > 0 and not info.isCapital():
+			if info.getMaxGlobalInstances() == -1 and info.getMaxPlayerInstances() == 1 and CyCity.getNumRealBuilding(i) > 0 and not info.isCapital():
 				# Use bullets as markers for National Wonders
 				szReturn += unichr(8854)
 
@@ -569,7 +563,7 @@ class CvDomesticAdvisor:
 		nTotalTradeProfit = 0
 
 		# For each trade route possible
-		for nTradeRoute in xrange(GC.getDefineINT("MAX_TRADE_ROUTES")):
+		for nTradeRoute in xrange(CyCity.getMaxTradeRoutes()):
 			# Get the next trade city
 			pTradeCity = CyCity.getTradeCity(nTradeRoute)
 			# Not quite sure what this does but it's in the MainInterface
@@ -591,7 +585,7 @@ class CvDomesticAdvisor:
 		nRoutes = 0
 
 		# For each trade route possible
-		for nTradeRoute in range (GC.getDefineINT("MAX_TRADE_ROUTES")):
+		for nTradeRoute in xrange(city.getMaxTradeRoutes()):
 			# Get the next trade city
 			pTradeCity = city.getTradeCity(nTradeRoute)
 			# Not quite sure what this does but it's in the MainInterface
@@ -636,7 +630,7 @@ class CvDomesticAdvisor:
 				szIcon = self.yieldIcons[YieldTypes.YIELD_PRODUCTION]
 				if city.isProductionBuilding():
 					szColorKey = "WONDER"
-					pInfo = GC.getBuildingClassInfo(GC.getBuildingInfo(city.getProductionBuilding()).getBuildingClassType())
+					pInfo = GC.getBuildingInfo(city.getProductionBuilding())
 					if pInfo.getMaxGlobalInstances() != -1:
 						szIcon = unichr(8858)
 					elif pInfo.getMaxTeamInstances() != -1:
@@ -731,7 +725,7 @@ class CvDomesticAdvisor:
 
 	def calculateHurryGoldCost(self, city, szKey, arg):
 		if city.canHurry(self.HURRY_TYPE_GOLD, False):
-			return unicode(city.hurryGold(self.HURRY_TYPE_GOLD))
+			return unicode(city.getHurryGold(self.HURRY_TYPE_GOLD))
 		else:
 			return self.objectNotPossible
 
@@ -862,10 +856,8 @@ class CvDomesticAdvisor:
 
 	def getBuildingState(self, CyCity, szKey, arg):
 
-		if CyCity.getNumBuilding(arg) > 0:
-			if CyCity.getNumActiveBuilding(arg) > 0:
-				return self.objectHave
-			return "x"
+		if CyCity.getNumRealBuilding(arg) > 0:
+			return self.objectHave
 		elif CyCity.getFirstBuildingOrder(arg) != -1:
 			return self.objectUnderConstruction
 		elif CyCity.canConstruct(arg, False, False, False):
@@ -979,14 +971,11 @@ class CvDomesticAdvisor:
 
 	def findGlobalBaseYieldRateRank(self, CyCity, szKey, arg):
 
-		y = CyCity.getBaseYieldRate(arg)
+		y = CyCity.getPlotYield(arg)
 		aList = []
 		for iPlayerX in xrange(GC.getMAX_PC_PLAYERS()):
-			CyPlayerX = GC.getPlayer(iPlayerX)
-			CyCity, i = CyPlayerX.firstCity(False)
-			while CyCity:
-				aList.append(CyCity.getBaseYieldRate(arg))
-				CyCity, i = CyPlayerX.nextCity(i, False)
+			for CyCity in GC.getPlayer(iPlayerX).cities():
+				aList.append(CyCity.getPlotYield(arg))
 
 		return len([i for i in aList if i > y]) + 1
 
@@ -995,11 +984,8 @@ class CvDomesticAdvisor:
 		y = CyCity.getYieldRate(arg)
 		aList = []
 		for iPlayerX in xrange(GC.getMAX_PC_PLAYERS()):
-			CyPlayerX = GC.getPlayer(iPlayerX)
-			CyCity, i = CyPlayerX.firstCity(False)
-			while CyCity:
+			for CyCity in GC.getPlayer(iPlayerX).cities():
 				aList.append(CyCity.getYieldRate(arg))
-				CyCity, i = CyPlayerX.nextCity(i, False)
 
 		return len([i for i in aList if i > y]) + 1
 
@@ -1008,32 +994,19 @@ class CvDomesticAdvisor:
 		y = CyCity.getCommerceRate(arg)
 		aList = []
 		for iPlayerX in xrange(GC.getMAX_PC_PLAYERS()):
-			CyPlayerX = GC.getPlayer(iPlayerX)
-			CyCity, i = CyPlayerX.firstCity(False)
-			while CyCity:
+			for CyCity in GC.getPlayer(iPlayerX).cities():
 				aList.append(CyCity.getCommerceRate(arg))
-				CyCity, i = CyPlayerX.nextCity(i, False)
 
 		return len([i for i in aList if i > y]) + 1
 
 
 	def canAdviseToConstruct(self, CyCity, i):
+		if not CyCity.canConstruct(i, True, False, False):
+			return False
 		info = GC.getBuildingInfo(i)
 		if info.isGovernmentCenter() or info.isCapital():
 			return False
-		if not CyCity.canConstruct(i, True, False, False):
-			return False
-		CyTeam = GC.getTeam(CyGame().getActiveTeam())
-		iTech = info.getObsoleteTech()
-		if iTech > -1 and CyTeam.isHasTech(iTech):
-			return False
 
-		# Special building obsolete check
-		info = GC.getSpecialBuildingInfo(info.getSpecialBuildingType())
-		if info:
-			iTech = info.getObsoleteTech()
-			if iTech > -1 and CyTeam.isHasTech(iTech):
-				return False
 		return True
 
 	def advise(self, CyCity, szKey, type):
@@ -1109,19 +1082,19 @@ class CvDomesticAdvisor:
 					elif type == "Spaceship":
 						if not CyCity.isPower():
 							if info.isPower():
-								value = CyCity.getBaseYieldRate(YieldTypes.YIELD_PRODUCTION) / float(info.getProductionCost())
+								value = CyCity.getPlotYield(YieldTypes.YIELD_PRODUCTION) / float(info.getProductionCost())
 								if value > bestData:
 									bestOrder = iType
 									bestData = value
 
 						if CyCity.findBaseYieldRateRank(YieldTypes.YIELD_PRODUCTION) < 12:
-							value = CyCity.getBaseYieldRate(YieldTypes.YIELD_PRODUCTION) * 2 * info.getYieldModifier(YieldTypes.YIELD_PRODUCTION) / float(info.getProductionCost())
+							value = CyCity.getPlotYield(YieldTypes.YIELD_PRODUCTION) * 2 * info.getYieldModifier(YieldTypes.YIELD_PRODUCTION) / float(info.getProductionCost())
 							if value > bestData:
 								bestOrder = iType
 								bestData = value
 
 						if CyCity.findBaseYieldRateRank(YieldTypes.YIELD_COMMERCE) < CyPlayer.getNumCities() / 2:
-							value = CyCity.getBaseYieldRate(YieldTypes.YIELD_COMMERCE) * info.getCommerceModifier(CommerceTypes.COMMERCE_RESEARCH) / float(info.getProductionCost())
+							value = CyCity.getPlotYield(YieldTypes.YIELD_COMMERCE) * info.getCommerceModifier(CommerceTypes.COMMERCE_RESEARCH) / float(info.getProductionCost())
 							if value > bestData:
 								bestOrder = iType
 								bestData = value
@@ -1211,10 +1184,8 @@ class CvDomesticAdvisor:
 
 		self.cityList = cityList = []
 		CyPlayer = self.CyPlayer
-		CyCity, i = CyPlayer.firstCity(False)
-		while CyCity:
+		for CyCity in CyPlayer.cities():
 			cityList.append(CyCity)
-			CyCity, i = CyPlayer.nextCity(i, False)
 
 		# Hide building icons
 		for i in xrange(GC.getNumBuildingInfos()):
@@ -1591,37 +1562,12 @@ class CvDomesticAdvisor:
 			self.CyPlayer.getCity(userData[2]).setName(newName, False)
 			screen.setTableText(self.currentPage, 1, userData[3], newName, "", WidgetTypes.WIDGET_GENERAL, 1, 1, 1<<0)
 
-	# Tooltip
-	def updateTooltip(self, screen, szText, xPos = -1, yPos = -1, uFont = ""):
-		if not szText:
-			return
-		if szText != self.szTextTT:
-			self.szTextTT = szText
-			if not uFont:
-				uFont = self.aFontList[6]
-			iX, iY = pyTT.makeTooltip(screen, xPos, yPos, szText, uFont, "Tooltip")
-			POINT = Win32.getCursorPos()
-			self.iOffsetTT = [iX - POINT.x, iY - POINT.y]
-		else:
-			if xPos == yPos == -1:
-				POINT = Win32.getCursorPos()
-				screen.moveItem("Tooltip", POINT.x + self.iOffsetTT[0], POINT.y + self.iOffsetTT[1], 0)
-			screen.moveToFront("Tooltip")
-			screen.show("Tooltip")
-		if xPos == yPos == -1:
-			self.bLockedTT = True
-
 	#--------------------------#
 	# Base operation functions #
 	#||||||||||||||||||||||||||#
 	def update(self, fDelta):
-		if self.bLockedTT:
-			POINT = Win32.getCursorPos()
-			iX = POINT.x + self.iOffsetTT[0]
-			iY = POINT.y + self.iOffsetTT[1]
-			if iX < 0: iX = 0
-			if iY < 0: iY = 0
-			self.getScreen().moveItem("Tooltip", iX, iY, 0)
+		if self.tooltip.bLockedTT:
+			self.tooltip.handle(self.getScreen())
 
 	def handleInput(self, inputClass):
 		screen = self.getScreen()
@@ -1648,16 +1594,15 @@ class CvDomesticAdvisor:
 					szText = TRNSLTR.getText("TXT_KEY_CDA_STOP_EDITING", ())
 				else:
 					szText = TRNSLTR.getText("TXT_KEY_CDA_START_EDITING", ())
-				self.updateTooltip(screen, szText)
+				self.tooltip.handle(screen, szText)
 
 			elif NAME == "CityNameWidth":
 				szText = "Left click to increase by 1.\nRight click to decrease by 1.\n\nHold shift to modify by 10, ctrl to modify by 5 or both to modify by 20."
-				self.updateTooltip(screen, szText)
+				self.tooltip.handle(screen, szText)
 
 			return
 
-		screen.hide("Tooltip")
-		self.bLockedTT = False
+		self.tooltip.reset(screen)
 
 		if iCode == NotifyCode.NOTIFY_LISTBOX_ITEM_SELECTED:
 
@@ -1930,8 +1875,5 @@ class CvDomesticAdvisor:
 				screen.hideScreen()
 
 	def onClose(self):
-		del self.eventManager.OverrideEventApply[5000], self.eventManager
-		del self.CyPlayer, self.iPlayer, self.cityList
-		del self.InputData, self.szTextTT, self.iOffsetTT, self.bLockedTT
-		del self.xRes, self.yRes, self.aFontList, self.hTable1, self.hTable2, self.xTable2, self.wTable2
-		del self.TXT_NAME
+		del self.eventManager.OverrideEventApply[5000], self.eventManager, self.InputData, self.CyPlayer, self.iPlayer, self.cityList, \
+			self.TXT_NAME, self.xRes, self.yRes, self.aFontList, self.hTable1, self.hTable2, self.xTable2, self.wTable2

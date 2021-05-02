@@ -15,17 +15,8 @@ GameUtils = BugGameUtils.getDispatcher()
 def isVictoryTest():
 	return GameUtils.isVictoryTest()
 
-def isVictory(argsList):
-	return GameUtils.isVictory(argsList)
-
 def isPlayerResearch(argsList):
 	return GameUtils.isPlayerResearch(argsList)
-
-def getExtraCost(argsList):
-	return GameUtils.getExtraCost(argsList)
-
-def createBarbarianCities():
-	return GameUtils.createBarbarianCities()
 
 def createBarbarianUnits():
 	return GameUtils.createBarbarianUnits()
@@ -63,9 +54,6 @@ def getRecommendedBuilding(argsList):
 def updateColoredPlots():
 	return GameUtils.updateColoredPlots()
 
-def isActionRecommended(argsList):
-	return GameUtils.isActionRecommended(argsList)
-
 def unitCannotMoveInto(argsList):
 	return GameUtils.unitCannotMoveInto(argsList)
 
@@ -87,12 +75,6 @@ def cannotSelectionListGameNetMessage(argsList):
 def cannotDoControl(argsList):
 	return GameUtils.cannotDoControl(argsList)
 
-def canResearch(argsList):
-	return GameUtils.canResearch(argsList)
-
-def cannotResearch(argsList):
-	return GameUtils.cannotResearch(argsList)
-
 def canDoCivic(argsList):
 	return GameUtils.canDoCivic(argsList)
 
@@ -111,15 +93,6 @@ def canConstruct(argsList):
 def cannotConstruct(argsList):
 	return GameUtils.cannotConstruct(argsList)
 
-def canCreate(argsList):
-	return GameUtils.canCreate(argsList)
-
-def cannotCreate(argsList):
-	return GameUtils.cannotCreate(argsList)
-
-def canMaintain(argsList):
-	return GameUtils.canMaintain(argsList)
-
 def cannotMaintain(argsList):
 	return GameUtils.cannotMaintain(argsList)
 
@@ -133,10 +106,6 @@ def AI_unitUpdate(argsList):
 	'AI moves units - return 0 to let AI handle it, return 1 to say that it was handled in python'
 	return GameUtils.AI_unitUpdate(argsList)
 
-def AI_doWar(argsList):
-	'AI decides whether to make war or peace - return 0 to let AI handle it, return 1 to say that it was handled in python'
-	return GameUtils.AI_doWar(argsList)
-
 def AI_doDiplo(argsList):
 	'AI decides does diplomacy for the turn - return 0 to let AI handle it, return 1 to say that it was handled in python'
 	return GameUtils.AI_doDiplo(argsList)
@@ -146,12 +115,6 @@ def calculateScore(argsList):
 
 def doHolyCity():
 	return GameUtils.doHolyCity()
-
-def doHolyCityTech(argsList):
-	return GameUtils.doHolyCityTech(argsList)
-
-def doGold(argsList):
-	return GameUtils.doGold(argsList)
 
 def doResearch(argsList):
 	return GameUtils.doResearch(argsList)
@@ -201,9 +164,6 @@ def doCombat(argsList):
 def getConscriptUnitType(argsList):
 	return GameUtils.getConscriptUnitType(argsList)
 
-def getCityFoundValue(argsList):
-	return GameUtils.getCityFoundValue(argsList)
-
 def canPickPlot(argsList):
 	return GameUtils.canPickPlot(argsList)
 
@@ -221,6 +181,3 @@ def getWidgetHelp(argsList):
 
 def getUpgradePriceOverride(argsList):
 	return GameUtils.getUpgradePriceOverride(argsList)
-
-def getExperienceNeeded(argsList):
-	return GameUtils.getExperienceNeeded(argsList)

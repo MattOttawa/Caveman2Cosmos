@@ -3,10 +3,6 @@
 #ifndef CvDLLSymbolIFaceBase_h
 #define CvDLLSymbolIFaceBase_h
 
-//#include "CvEnums.h"
-#include "CvDLLUtilityIFaceBase.h"
-#include "CvGlobals.h"	// for gDLL
-
 //
 // abstract interface for CvSymbol functions used by DLL
 //
@@ -16,6 +12,9 @@ class CvPlot;
 class CvRoute;
 class CvFeature;
 class CvRiver;
+class cvInternalGlobals;
+class CvDLLUtilityIFaceBase;
+
 class CvDLLSymbolIFaceBase
 {
 public:

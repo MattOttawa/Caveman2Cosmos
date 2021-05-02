@@ -19,10 +19,7 @@
 				<iYieldChange>1</iYieldChange>
 				<iYieldChange>2</iYieldChange>
 			</YieldChanges>
-			<iPlacementOrder>0</iPlacementOrder>
-			<iConstAppearance>0</iConstAppearance>
-			<iMinAreaSize>0</iMinAreaSize>
-			<iMinLatitude>0</iMinLatitude>
+			<iPlacementOrder>-1</iPlacementOrder>
 			<Rands>
 				<iRandApp1>0</iRandApp1>
 				<iRandApp2>0</iRandApp2>
@@ -31,8 +28,7 @@
 			</Rands>
 			<iPlayer>100</iPlayer>
 			<iTilesPer>256</iTilesPer>
-			<iUnique>6</iUnique>
-			<bArea>0</bArea>
+			<iUniqueRange>6</iUniqueRange>
 			<bHills>1</bHills>
 			<bFlatlands>1</bFlatlands>
 		</BonusInfo>

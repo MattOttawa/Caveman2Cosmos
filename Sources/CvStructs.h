@@ -5,17 +5,9 @@
 
 // structs.h
 
-//#include "CvEnums.h"
 #include "CvString.h"
-/************************************************************************************************/
-/* Afforess	                  Start		 02/02/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-#include "CvGlobals.h"
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+
+class BoolExpr;
 
 // XXX these should not be in the DLL per se (if the user changes them, we are screwed...)
 
@@ -32,6 +24,22 @@ typedef std::vector< std::pair<PromotionLineTypes, int> > PromotionLineModifierA
 typedef std::vector< std::pair<InvisibleTypes, int> > InvisibilityArray;
 typedef std::vector< std::pair<EraTypes, int> > EraArray;
 typedef std::vector< std::pair<PropertyTypes, int> > AidArray;
+
+struct plotInfo
+{
+	plotInfo();
+	std::string ToJSON();
+
+	int index;
+	bool worked;
+	bool owned;
+	int yieldValue;
+	short yields[NUM_YIELD_TYPES];
+	ImprovementTypes currentImprovement;
+	FeatureTypes currentFeature;
+	BuildTypes currentBuild;
+};
+
 struct AidStruct
 {	
 	PropertyTypes eProperty;
@@ -80,12 +88,7 @@ struct FreePromoTypes
 	operator int() const {return (int)ePromotion;}
 	bool operator< (const FreePromoTypes& rhs) const {return (int)ePromotion < (int)rhs.ePromotion;}
 };
-struct FreeTraitTypes
-{	
-	TraitTypes eTrait;
-	operator int() const {return (int)eTrait;}
-	bool operator< (const FreeTraitTypes& rhs) const {return (int)eTrait < (int)rhs.eTrait;}
-};
+
 struct AfflictOnAttack
 {	
 	PromotionLineTypes eAfflictionLine;
@@ -202,13 +205,6 @@ struct CivicOptionTypeBool
 	operator int() const {return (int)eCivicOption;}
 	bool operator< (const CivicOptionTypeBool& rhs) const {return (int)eCivicOption < (int)rhs.eCivicOption;}
 };
-struct GameOptionTypeBool
-{	
-	GameOptionTypes eGameOption;
-	bool bBool;
-	operator int() const {return (int)eGameOption;}
-	bool operator< (const GameOptionTypeBool& rhs) const {return (int)eGameOption < (int)rhs.eGameOption;}
-};
 struct HealUnitCombat
 {	
 	UnitCombatTypes eUnitCombat;
@@ -277,12 +273,12 @@ struct AidRateChanges
 	operator int() const {return (int)ePropertyType;}
 	bool operator< (const AidRateChanges& rhs) const {return (int)ePropertyType < (int)rhs.ePropertyType;}
 };
-struct PrereqBuildingClass
+struct PrereqBuilding
 {	
-	BuildingClassTypes eBuildingClass;
+	BuildingTypes eBuilding;
 	int iMinimumRequired;
-	operator int() const {return (int)eBuildingClass;}
-	bool operator< (const PrereqBuildingClass& rhs) const {return (int)eBuildingClass < (int)rhs.eBuildingClass;}
+	operator int() const {return (int)eBuilding;}
+	bool operator< (const PrereqBuilding& rhs) const {return (int)eBuilding < (int)rhs.eBuilding;}
 };
 struct TerrainStructs
 {	
@@ -300,7 +296,7 @@ struct PlaceBonusTypes
 	TechTypes ePrereqTech;
 	TerrainTypes ePrereqTerrain;
 	FeatureTypes ePrereqFeature;
-	MapCategoryTypes ePrereqMapCategory;
+	MapTypes ePrereqMap;
 	operator int() const {return (int)eBonus;}
 	bool operator< (const PlaceBonusTypes& rhs) const {return (int)eBonus < (int)rhs.eBonus;}
 };
@@ -349,7 +345,7 @@ struct IDInfo
 	}
 };
 
-struct GameTurnInfo				// Exposed to Python
+struct GameTurnInfo
 {
 	int iMonthIncrement;
 	int iNumGameTurnsPerIncrement;
@@ -367,7 +363,7 @@ struct GameTurnInfo				// Exposed to Python
 #define	INTERNAL_AUXILIARY_ORDER_IDATA(iData)	(short)(((iData) & 0xffff0000) >> 16)
 #define	PACK_INTERNAL_ORDER_IDATA(iBase, iAux)	(((unsigned int)(iBase) & 0xFFFF) | (((unsigned int)(iAux)) << 16))
 
-struct OrderData // Exposed to Python
+struct OrderData
 {
 	OrderTypes eOrderType;
 	union {
@@ -376,18 +372,18 @@ struct OrderData // Exposed to Python
 			int iData2;
 		};
 		struct { // Untyped
-			word iData1_external;
-			word iData1_aux;
-			word iData2_external;
-			word iData2_aux;
+			uint16_t iData1_external;
+			uint16_t iData1_aux;
+			uint16_t iData2_external;
+			uint16_t iData2_aux;
 		} raw;
 		struct { // For units
-			/*UnitTypes*/word type;
-			word plotIndex; // aux, 0xFFFF for none
+			/*UnitTypes*/uint16_t type;
+			uint16_t plotIndex; // aux, 0xFFFF for none
 
-			/*UnitAITypes*/word AIType;
-			/*UnitAITypes*/byte contractedAIType; // aux, 0xFF for none
-			byte contractFlags; // aux
+			/*UnitAITypes*/uint16_t AIType;
+			/*UnitAITypes*/uint8_t contractedAIType; // aux, 0xFF for none
+			uint8_t contractFlags; // aux
 		} unit;
 		struct {
 			/*BuildingTypes*/int type;
@@ -418,35 +414,35 @@ struct OrderData // Exposed to Python
 		return eOrderType == other.eOrderType && iData1 == other.iData1 && iData2 == other.iData2 && bSave == other.bSave;
 	}
 
-	static OrderData createUnitOrder(UnitTypes type, UnitAITypes AIType, word plotIndex, byte contractFlags, UnitAITypes contractedAIType, bool bSave)
+	static OrderData createUnitOrder(UnitTypes type, UnitAITypes AIType, uint16_t plotIndex, uint8_t contractFlags, UnitAITypes contractedAIType, bool bSave)
 	{
 		OrderData order(ORDER_TRAIN);
-		order.unit.type = static_cast<word>(type);
-		order.unit.AIType = static_cast<word>(AIType);
+		order.unit.type = static_cast<uint16_t>(type);
+		order.unit.AIType = static_cast<uint16_t>(AIType);
 		order.unit.plotIndex = plotIndex;
 		order.unit.contractFlags = contractFlags;
-		order.unit.contractedAIType = static_cast<byte>(contractedAIType);
+		order.unit.contractedAIType = static_cast<uint8_t>(contractedAIType);
 		order.bSave = bSave;
 		return order;
 	}
 	static OrderData createBuildingOrder(BuildingTypes type, bool bSave)
 	{
 		OrderData order(ORDER_CONSTRUCT);
-		order.building.type = static_cast<word>(type);
+		order.building.type = static_cast<uint16_t>(type);
 		order.bSave = bSave;
 		return order;
 	}
 	static OrderData createProjectOrder(ProjectTypes type, bool bSave)
 	{
 		OrderData order(ORDER_CREATE);
-		order.project.type = static_cast<word>(type);
+		order.project.type = static_cast<uint16_t>(type);
 		order.bSave = bSave;
 		return order;
 	}
 	static OrderData createProcessOrder(ProcessTypes type, bool bSave)
 	{
 		OrderData order(ORDER_MAINTAIN);
-		order.process.type = static_cast<word>(type);
+		order.process.type = static_cast<uint16_t>(type);
 		order.bSave = bSave;
 		return order;
 	}
@@ -464,7 +460,7 @@ struct OrderData // Exposed to Python
 	}
 	void setUnitType(UnitTypes newUnitType) { 
 		FAssert(eOrderType == ORDER_TRAIN);
-		unit.type = static_cast<word>(newUnitType); 
+		unit.type = static_cast<uint16_t>(newUnitType);
 	}
 
 	UnitAITypes getUnitAIType() const { 
@@ -473,14 +469,14 @@ struct OrderData // Exposed to Python
 	}
 	void setUnitAIType(UnitAITypes newUnitAIType) { 
 		FAssert(eOrderType == ORDER_TRAIN);
-		unit.AIType = static_cast<word>(newUnitAIType);
+		unit.AIType = static_cast<uint16_t>(newUnitAIType);
 	}
 
-	word getUnitPlotIndex() const {
+	uint16_t getUnitPlotIndex() const {
 		FAssert(eOrderType == ORDER_TRAIN);
 		return unit.plotIndex;
 	}
-	byte getUnitContractFlags() const {
+	uint8_t getUnitContractFlags() const {
 		FAssert(eOrderType == ORDER_TRAIN);
 		return unit.contractedAIType;
 	}
@@ -530,7 +526,7 @@ STATIC_ASSERT(sizeof(OrderData) == sizeof(_oldOrderData), OrderData_struct_size_
 //	Contract auxiliary flags
 #define	AUX_CONTRACT_FLAG_IS_UNIT_CONTRACT	0x01
 
-struct MissionData				// Exposed to Python
+struct MissionData
 {
 	MissionTypes eMissionType;
 	int iData1;
@@ -547,7 +543,7 @@ struct MissionData				// Exposed to Python
 	{}
 };
 
-struct TradeData // Exposed to Python
+struct TradeData
 {
 	TradeableItems m_eItemType; //What type of item is this
 	int m_iData; //Any additional data?
@@ -702,16 +698,16 @@ struct PlotExtraCost
 	void write(FDataStreamBase* pStream);
 };
 
-typedef std::vector< std::pair<BuildingClassTypes, int> > BuildingChangeArray;
+typedef std::vector< std::pair<BuildingTypes, int> > BuildingChangeArray;
 
 struct BuildingYieldChange
 {
-	BuildingClassTypes eBuildingClass;
+	BuildingTypes eBuilding;
 	YieldTypes eYield;
 	int iChange;
 
 	BuildingYieldChange()
-		: eBuildingClass(NO_BUILDINGCLASS)
+		: eBuilding(NO_BUILDING)
 		, eYield(NO_YIELD)
 		, iChange(0)
 	{}
@@ -722,12 +718,12 @@ struct BuildingYieldChange
 
 struct BuildingCommerceChange
 {
-	BuildingClassTypes eBuildingClass;
+	BuildingTypes eBuilding;
 	CommerceTypes eCommerce;
 	int iChange;
 
 	BuildingCommerceChange()
-		: eBuildingClass(NO_BUILDINGCLASS)
+		: eBuilding(NO_BUILDING)
 		, eCommerce(NO_COMMERCE)
 		, iChange(0)
 	{}
@@ -744,11 +740,11 @@ struct BuildingCommerceChange
 struct PropertySpawns
 {
 	PropertyTypes eProperty;
-	UnitClassTypes eUnitClass;
+	UnitTypes eUnit;
 
 	PropertySpawns()
 		: eProperty(NO_PROPERTY)
-		, eUnitClass(NO_UNITCLASS)
+		, eUnit(NO_UNIT)
 	{}
 
 	void read(FDataStreamBase* pStream);
@@ -756,12 +752,12 @@ struct PropertySpawns
 };
 struct BuildingYieldModifier
 {
-	BuildingClassTypes eBuildingClass;
+	BuildingTypes eBuilding;
 	YieldTypes eYield;
 	int iChange;
 
 	BuildingYieldModifier()
-		: eBuildingClass(NO_BUILDINGCLASS)
+		: eBuilding(NO_BUILDING)
 		, eYield(NO_YIELD)
 		, iChange(0)
 	{}
@@ -772,12 +768,12 @@ struct BuildingYieldModifier
 
 struct BuildingCommerceModifier
 {
-	BuildingClassTypes eBuildingClass;
+	BuildingTypes eBuilding;
 	CommerceTypes eCommerce;
 	int iChange;
 
 	BuildingCommerceModifier()
-		: eBuildingClass(NO_BUILDINGCLASS)
+		: eBuilding(NO_BUILDING)
 		, eCommerce(NO_COMMERCE)
 		, iChange(0)
 	{}
@@ -888,8 +884,6 @@ enum BattleUnitTypes
 	BATTLE_UNIT_DEFENDER,	//!< Index referencing the defending unit
 	BATTLE_UNIT_COUNT		//!< The number of unit index references
 };
-
-void checkBattleUnitType(BattleUnitTypes unitType);
 
 //!< An enumeration for indexing times within the CvBattleDefinition
 enum BattleTimeTypes
@@ -1002,9 +996,6 @@ public:
 	void setBattleRound(int index, const CvBattleRound &round);
 
 private:
-	void checkBattleTimeType(BattleTimeTypes timeType) const;
-	void checkBattleRound(int index) const;
-
 	int					m_aDamage[BATTLE_UNIT_COUNT][BATTLE_TIME_COUNT];	//!< The beginning damage of the units
 	int					m_aFirstStrikes[BATTLE_UNIT_COUNT];		//!< The number of ranged first strikes the units made
 	int					m_iNumRangedRounds;				//!< The number of ranged rounds
@@ -1087,7 +1078,7 @@ struct DllExport CvGlobeLayerData
 
 struct DllExport CvFlyoutMenuData
 {
-	CvFlyoutMenuData(FlyoutTypes eType, int iId, int iX, int iY, const wchar* strTitle) : m_eFlyout(eType), m_iID(iId), m_iX(iX), m_iY(iY), m_strTitle(strTitle) { }
+	CvFlyoutMenuData(FlyoutTypes eType, int iId, int iX, int iY, const wchar_t* strTitle) : m_eFlyout(eType), m_iID(iId), m_iX(iX), m_iY(iY), m_strTitle(strTitle) { }
 	FlyoutTypes m_eFlyout;
 	int m_iID;
 	int m_iX;
@@ -1122,7 +1113,7 @@ struct CvStatFloat : public CvStatBase
 
 struct DllExport CvWBData
 {
-	CvWBData(int iId, const wchar* strHelp, const char* strButton) : m_iId(iId), m_strHelp(strHelp), m_strButton(strButton) { }
+	CvWBData(int iId, const wchar_t* strHelp, const char* strButton) : m_iId(iId), m_strHelp(strHelp), m_strButton(strButton) { }
 	int m_iId;
 	CvWString m_strHelp;
 	CvString m_strButton;

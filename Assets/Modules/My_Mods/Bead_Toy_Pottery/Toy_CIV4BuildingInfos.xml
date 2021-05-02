@@ -8,11 +8,9 @@
 	<BuildingInfos>
 		<BuildingInfo>
 			<!-- Toy Carver -->
-			<BuildingClass>BUILDINGCLASS_TOYCARVER</BuildingClass>
 			<Type>BUILDING_TOYCARVER</Type>
 			<Description>TXT_KEY_BUILDING_TOYCARVER</Description>
 			<Civilopedia>TXT_KEY_BUILDING_TOYCARVER_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_TOYCARVER_STRATEGY</Strategy>
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<!-- Graphical and interface -->
 			<ArtDefineTag>ART_DEF_BUILDING_TOYCARVER</ArtDefineTag>
@@ -21,15 +19,12 @@
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
-			<PrereqTech>TECH_BOARDGAMES</PrereqTech>
+			<PrereqTech>TECH_BOARD_GAMES</PrereqTech>
 			<!-- Obsolescence -->
 			<!--ObsoleteTech>TECH_INDUSTRIALISM</ObsoleteTech>
-			<ReplaceBuildings>
-				<ReplaceBuilding>
-					<BuildingClassType>BUILDINGCLASS_TOY_MAKER</BuildingClassType>
-					<bReplace>1</bReplace>
-				</ReplaceBuilding>
-			</ReplaceBuildings-->
+			<ReplacementBuildings>
+				<BuildingType>BUILDING_TOY_MAKER</BuildingType>
+			</ReplacementBuildings-->
 			<!-- Construction cost -->
 			<iCost>146</iCost>
 			<!-- Main effects -->
@@ -56,11 +51,9 @@
 		</BuildingInfo>
 		<BuildingInfo>
 			<!-- Toy Factory -->
-			<BuildingClass>BUILDINGCLASS_TOY_FACTORY</BuildingClass>
 			<Type>BUILDING_TOY_FACTORY</Type>
 			<Description>TXT_KEY_BUILDING_TOY_FACTORY</Description>
 			<Civilopedia>TXT_KEY_BUILDING_TOY_FACTORY_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_TOY_FACTORY_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<!-- Graphical and interface -->
 			<ArtDefineTag>ART_DEF_BUILDING_TOY_FACTORY</ArtDefineTag>
@@ -74,22 +67,16 @@
 			<PrereqBonuses>
 				<Bonus>BONUS_DYE</Bonus>
 			</PrereqBonuses>
-			<BuildingClassNeededs>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_FACTORY</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_TOY_MAKER</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-			</BuildingClassNeededs>
-			<PrereqBuildingClasses>
-				<PrereqBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_TOY_MAKER</BuildingClassType>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_FACTORY</BuildingType>
+				<BuildingType>BUILDING_TOY_MAKER</BuildingType>
+			</PrereqInCityBuildings>
+			<PrereqAmountBuildings>
+				<PrereqBuilding>
+					<BuildingType>BUILDING_TOY_MAKER</BuildingType>
 					<iNumBuildingNeeded>2</iNumBuildingNeeded>
-				</PrereqBuildingClass>
-			</PrereqBuildingClasses>
+				</PrereqBuilding>
+			</PrereqAmountBuildings>
 			<!-- Construction cost -->
 			<iCost>1030</iCost>
 			<!-- Main effects -->
@@ -104,7 +91,6 @@
 			<iNumFreeBonuses>1</iNumFreeBonuses-->
 			<!-- Special properties -->
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<iAdvancedStartCost>-1</iAdvancedStartCost>
 			<!-- Properties diffusion -->
 			<Properties>
 				<Property>
@@ -124,11 +110,9 @@
 		</BuildingInfo>
 		<BuildingInfo>
 			<!-- Toy Maker -->
-			<BuildingClass>BUILDINGCLASS_TOY_MAKER</BuildingClass>
 			<Type>BUILDING_TOY_MAKER</Type>
 			<Description>TXT_KEY_BUILDING_TOY_MAKER</Description>
 			<Civilopedia>TXT_KEY_BUILDING_TOY_MAKER_PEDIA</Civilopedia>
-			<Strategy>TXT_KEY_BUILDING_TOY_MAKER_STRATEGY</Strategy>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<!-- Graphical and interface -->
 			<ArtDefineTag>ART_DEF_BUILDING_TOY_MAKER</ArtDefineTag>
@@ -142,28 +126,22 @@
 				<Bonus>BONUS_FINE_CLAY</Bonus>
 				<Bonus>BONUS_CLAY</Bonus>
 				<Bonus>BONUS_WOOD</Bonus>
-				<Bonus>BONUS_TIMBER</Bonus>
-				<Bonus>BONUS_WARE_TIN</Bonus>
+				<Bonus>BONUS_PRIME_TIMBER</Bonus>
+				<Bonus>BONUS_TIN_WARES</Bonus>
 			</PrereqBonuses>
-			<BuildingClassNeededs>
-				<BuildingClassNeeded>
-					<BuildingClassType>BUILDINGCLASS_TOYCARVER</BuildingClassType>
-					<bNeededInCity>1</bNeededInCity>
-				</BuildingClassNeeded>
-			</BuildingClassNeededs>
-			<PrereqBuildingClasses>
-				<PrereqBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_TOYCARVER</BuildingClassType>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_TOYCARVER</BuildingType>
+			</PrereqInCityBuildings>
+			<PrereqAmountBuildings>
+				<PrereqBuilding>
+					<BuildingType>BUILDING_TOYCARVER</BuildingType>
 					<iNumBuildingNeeded>2</iNumBuildingNeeded>
-				</PrereqBuildingClass>
-			</PrereqBuildingClasses>
+				</PrereqBuilding>
+			</PrereqAmountBuildings>
 			<!-- Obsolescence -->
-			<!--ReplaceBuildings>
-				<ReplaceBuilding>
-					<BuildingClassType>BUILDINGCLASS_TOY_FACTORY</BuildingClassType>
-					<bReplace>1</bReplace>
-				</ReplaceBuilding>
-			</ReplaceBuildings-->
+			<!--ReplacementBuildings>
+				<BuildingType>BUILDING_TOY_FACTORY</BuildingType>
+			</ReplacementBuildings-->
 			<!-- Construction cost -->
 			<iCost>332</iCost>
 			<!-- Main effects -->
@@ -177,7 +155,6 @@
 			<iNumFreeBonuses>1</iNumFreeBonuses-->
 			<!-- Special properties -->
 			<iHurryCostModifier>100</iHurryCostModifier>
-			<iAdvancedStartCost>-1</iAdvancedStartCost>
 			<!-- Properties diffusion -->
 			<PropertyManipulators>
 				<PropertySource>

@@ -71,7 +71,6 @@ from CvPythonExtensions import *
 import CvUtil
 import BugUtil
 import BugCore
-import PlayerUtil
 import Roman
 import RandomNameUtils
 import random
@@ -80,7 +79,7 @@ import BugData
 
 
 SD_MOD_ID = "UnitCnt"
-RENAME_EVENT_ID = CvUtil.getNewEventID("UnitNaming.Rename")
+RENAME_EVENT_ID = CvUtil.getNewEventID()
 
 gc = CyGlobalContext()
 localText = CyTranslator()
@@ -118,9 +117,8 @@ class UnitNameEventManager:
 		#~ self.Prompt = "Enter a rename convention"
 
 	def __eventUnitRenameBegin(self, argsList):
-		header = localText.getText("TXT_KEY_UNIT_NAME_EM_HEADER_1",())  #BugUtil.getPlainText("TXT_KEY_REMINDER_HEADER")
-		#~ header = "Unit Name Testing (cancel to quit)"  #BugUtil.getPlainText("TXT_KEY_REMINDER_HEADER")
-		prompt = self.Prompt   #"Enter a rename convention"   #BugUtil.getPlainText("TXT_KEY_REMINDER_PROMPT")
+		header = localText.getText("TXT_KEY_UNIT_NAME_EM_HEADER_1",())
+		prompt = self.Prompt   #"Enter a rename convention"
 		ok = BugUtil.getPlainText("TXT_KEY_MAIN_MENU_OK")
 		cancel = BugUtil.getPlainText("TXT_KEY_POPUP_CANCEL")
 		popup = PyPopup.PyPopup(RENAME_EVENT_ID, EventContextTypes.EVENTCONTEXT_SELF)
@@ -158,13 +156,13 @@ class UnitNameEventManager:
 
 		zsEra = gc.getEraInfo(pPlayer.getCurrentEra()).getType()
 		zsUnitCombat = lUnitReName.getUnitCombat(pUnit)
-		zsUnitClass = gc.getUnitClassInfo(pUnit.getUnitClassType()).getType()
+		zsUnit = gc.getUnitInfo(pUnit.getUnitType()).getType()
 
 		#BUGPrint("ERA(%s)" % (zsEra))
 		#BUGPrint("Combat(%s)" % (zsUnitCombat))
-		#BUGPrint("Class(%s)" % (zsUnitClass))
+		#BUGPrint("Class(%s)" % (zsUnit))
 
-		zsUnitNameConv = lUnitReName.getUnitNameConvFromIniFile(zsEra, zsUnitClass, zsUnitCombat)
+		zsUnitNameConv = lUnitReName.getUnitNameConvFromIniFile(zsEra, zsUnit, zsUnitCombat)
 		zsUnitNameConv = popupReturn.getEditBoxString(0)
 		self.UnitNameConv = zsUnitNameConv
 
@@ -221,9 +219,9 @@ class BuildUnitName(AbstractBuildUnitName):
 
 		zsEra = gc.getEraInfo(pPlayer.getCurrentEra()).getType()
 		zsUnitCombat = lUnitReName.getUnitCombat(pUnit)
-		zsUnitClass = gc.getUnitClassInfo(pUnit.getUnitClassType()).getType()
+		zsUnit = gc.getUnitInfo(pUnit.getUnitType()).getType()
 
-		zsUnitNameConv = lUnitReName.getUnitNameConvFromIniFile(zsEra, zsUnitClass, zsUnitCombat)
+		zsUnitNameConv = lUnitReName.getUnitNameConvFromIniFile(zsEra, zsUnit, zsUnitCombat)
 		zsUnitName = lUnitReName.getUnitName(zsUnitNameConv, pUnit, pCity, True)
 
 		if zsUnitName:
@@ -345,7 +343,7 @@ class UnitReName(object):
 
 		return zsName
 
-	def getUnitNameConvFromIniFile(self, Era, UnitClass, UnitCombat):
+	def getUnitNameConvFromIniFile(self, Era, Unit, UnitCombat):
 ##    a. try to get the advanced naming convention
 ##    b. if it returns 'DEFAULT', then get the combat based naming convention
 ##    c. if naming convention is 'DEFAULT', get default naming convention
@@ -354,16 +352,16 @@ class UnitReName(object):
 		if UnitNamingOpt.isAdvanced():
 			#BUGPrint("UnitNameEM-ini0 [isAdvanced-YES]")
 			era = Era[4:]
-			unitClass = UnitClass[10:]
+			unit = Unit[5:]
 
-			zsUnitNameConv = UnitNamingOpt.getByEraAndClass(era, unitClass)
+			zsUnitNameConv = UnitNamingOpt.getByEraAndClass(era, unit)
 
-			#BUGPrint("UnitNameEM-iniAdv [" + zsUnitNameConv + "]" + Era + "|" + unitClass + "|" + era + "|" + unitClass +"]")
+			#BUGPrint("UnitNameEM-iniAdv [" + zsUnitNameConv + "]" + Era + "|" + unit + "|" + era + "|" + unit +"]")
 		else:
 			#BUGPrint("UnitNameEM-ini0 [isAdvanced-NO]")
 			zsUnitNameConv = "DEFAULT"
 
-		if not (zsUnitNameConv == "DEFAULT"):
+		if zsUnitNameConv != "DEFAULT":
 			return zsUnitNameConv
 
 		#BUGPrint("UnitNameEM-iniA [" + zsUnitNameConv + "]" + UnitCombat[11:])
@@ -372,7 +370,7 @@ class UnitReName(object):
 
 		#BUGPrint("UnitNameEM-iniB [" + zsUnitNameConv + "]")
 
-		if not (zsUnitNameConv == "DEFAULT"):
+		if zsUnitNameConv != "DEFAULT":
 			return zsUnitNameConv
 
 		#BUGPrint("UnitNameEM-iniC [" + zsUnitNameConv + "]")

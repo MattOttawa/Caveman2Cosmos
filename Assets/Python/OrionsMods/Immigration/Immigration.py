@@ -19,7 +19,7 @@ def doImmigrantPlacementAI(CyUnit, CyCity, CyPlayer=None, iPlayer=None, bJoin=Fa
 	elif bJoin:
 		CyCity.setPopulation(CyCity.getPopulation() + 1)
 		if CyPlayer.isHuman():
-			szTxt = CyTranslator().getText("TXT_KEY_MESSAGE_IMMIGRATION",(CyCity.getName(),))
+			szTxt = CyTranslator().getText("TXT_KEY_MSG_IMMIGRATION",(CyCity.getName(),))
 			CvUtil.sendMessage(szTxt, iPlayer, 25, CyUnit.getButton(), ColorTypes(8), iX, iY, True, True, szSound="AS2D_WELOVEKING")
 
 		CyUnit.kill(0, -1)
@@ -29,13 +29,11 @@ def getLeastPopulatedCity(CyPlayer):
 	city = None
 	iMax = 0
 
-	CyCity, i = CyPlayer.firstCity(False)
-	while CyCity:
+	for CyCity in CyPlayer.cities():
 		iPop = CyCity.getPopulation()
 		if not iMax or iMax > iPop:
 			iMax = iPop
 			city = CyCity
-		CyCity, i = CyPlayer.nextCity(i, False)
 
 	return city
 

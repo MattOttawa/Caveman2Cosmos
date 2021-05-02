@@ -3,7 +3,6 @@
 <Civ4CivicInfos xmlns="x-schema:../../../XML/Schema/C2C_CIV4GameInfoSchema.xml">
 	<!-- Sid Meier's Civilization 4 -->
 	<!-- Copyright Firaxis Games 2005 -->
-	<!-- -->
 	<!-- Civic Infos -->
 	<CivicInfos>
 		<CivicInfo>
@@ -25,7 +24,7 @@
 			<Type>CIVIC_CHURCH</Type>
 			<BuildingHealthChanges>
 				<BuildingHealthChange>
-					<BuildingType>BUILDINGCLASS_AN</BuildingType>
+					<BuildingType>BUILDING_AN</BuildingType>
 					<iHealthChange>1</iHealthChange>
 				</BuildingHealthChange>
 			</BuildingHealthChanges>

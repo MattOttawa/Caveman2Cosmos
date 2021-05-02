@@ -3,7 +3,6 @@
 from CvPythonExtensions import *
 import CvScreensInterface as UP
 import HandleInputUtil
-import PythonToolTip as pyTT
 import UnitGrouper
 
 # globals
@@ -31,6 +30,10 @@ class CvMilitaryAdvisor:
 		# Caching
 		import InputData
 		self.InputData = InputData.instance
+
+		import PythonToolTip
+		self.tooltip = PythonToolTip.PythonToolTip()
+
 		self.iPlayer = iPlayer = GAME.getActivePlayer()
 		self.CyPlayer = CyPlayer = GC.getActivePlayer()
 		self.iTeam = iTeam = GAME.getActiveTeam()
@@ -44,10 +47,7 @@ class CvMilitaryAdvisor:
 		self.selectedCivs = [iPlayer]
 		self.selectedGroups = set()
 		self.selectedUnits = set()
-		# Tool Tip
-		self.szTextTT = ""
-		self.iOffsetTT = []
-		self.bLockedTT = False
+
 		# Resolution
 		import ScreenResolution as SR
 		self.xRes = xRes = SR.x
@@ -105,11 +105,13 @@ class CvMilitaryAdvisor:
 		H_MAP_MAX = yRes - Y_MAP - 10
 
 		MAP = CyMap()
+
 		iMap_W = MAP.getViewportWidth()
-		iMap_H = float(MAP.getViewportHeight())
-		self.H_MAP = H_MAP = int(W_MAP * iMap_H / iMap_W)
+		iMap_H = MAP.getViewportHeight()
+
+		self.H_MAP = H_MAP = int(W_MAP * iMap_H * 1.0 / iMap_W)
 		if H_MAP > H_MAP_MAX:
-			self.W_MAP = W_MAP = int(H_MAP_MAX * iMap_W / iMap_H)
+			self.W_MAP = W_MAP = int(H_MAP_MAX * iMap_W * 1.0 / iMap_H)
 			self.H_MAP = H_MAP = H_MAP_MAX
 
 		self.xUnitList	= xUnitList	= 30 + W_MAP
@@ -123,7 +125,7 @@ class CvMilitaryAdvisor:
 		screen.addPanel("MA_PnlMM", "", "", False, False, 8, yMainPnl, W_MAP + 12, H_MAP + 18, ePnlBlue50)
 		screen.initMinimap(14, 14 + W_MAP, Y_MAP, Y_MAP + H_MAP, 0)
 
-		if MAP.viewportsEnabled():
+		if GAME.isDebugMode():
 			screen.updateMinimapSection(True, True)
 		else:
 			screen.updateMinimapSection(False, False)
@@ -132,7 +134,6 @@ class CvMilitaryAdvisor:
 		screen.setMinimapMode(MinimapModeTypes.MINIMAPMODE_MILITARY)
 		# Set minimap visibility
 		screen.updateMinimapVisibility()
-		screen.bringMinimapToFront()
 
 		# Unit grouping dropboxes
 		x1 = xUnitList - 2
@@ -228,12 +229,10 @@ class CvMilitaryAdvisor:
 				CyPlayerX = GC.getPlayer(iPlayerX)
 				if not CyPlayerX.isAlive(): continue
 
-				CyUnit, i = CyPlayerX.firstUnit(False)
-				while CyUnit:
+				for CyUnit in CyPlayerX.units():
 					if not CyUnit.isDead() and CyUnit.getVisualOwner() in self.selectedCivs:
 						if not CyUnit.isInvisible(iTeam, False) and CyUnit.plot().isVisible(iTeam, False):
 							self.stats.processUnit(CyPlayer, CyTeam, CyUnit)
-					CyUnit, i = CyPlayerX.nextUnit(i, False)
 
 		iColCyan	= GC.getInfoTypeForString("COLOR_CYAN")
 		iColRed		= GC.getInfoTypeForString("COLOR_RED")
@@ -394,37 +393,12 @@ class CvMilitaryAdvisor:
 		screen.minimapClearAllFlashingTiles()
 		screen.hideScreen()
 
-	# Tooltip
-	def updateTooltip(self, screen, szText, xPos = -1, yPos = -1, uFont = ""):
-		if not szText:
-			return
-		if szText != self.szTextTT:
-			self.szTextTT = szText
-			if not uFont:
-				uFont = self.aFontList[6]
-			iX, iY = pyTT.makeTooltip(screen, xPos, yPos, szText, uFont, "Tooltip")
-			POINT = Win32.getCursorPos()
-			self.iOffsetTT = [iX - POINT.x, iY - POINT.y]
-		else:
-			if xPos == yPos == -1:
-				POINT = Win32.getCursorPos()
-				screen.moveItem("Tooltip", POINT.x + self.iOffsetTT[0], POINT.y + self.iOffsetTT[1], 0)
-			screen.moveToFront("Tooltip")
-			screen.show("Tooltip")
-		if xPos == yPos == -1:
-			self.bLockedTT = True
-
 	#--------------------------#
 	# Base operation functions #
 	#||||||||||||||||||||||||||#
 	def update(self, fDelta):
-		if self.bLockedTT:
-			POINT = Win32.getCursorPos()
-			iX = POINT.x + self.iOffsetTT[0]
-			iY = POINT.y + self.iOffsetTT[1]
-			if iX < 0: iX = 0
-			if iY < 0: iY = 0
-			self.getScreen().moveItem("Tooltip", iX, iY, 0)
+		if self.tooltip.bLockedTT:
+			self.tooltip.handle(self.getScreen())
 
 	def handleInput (self, inputClass):
 		screen = self.getScreen()
@@ -453,8 +427,7 @@ class CvMilitaryAdvisor:
 			CASE = [0]
 
 		# Remove potential Help Text
-		self.bTooltip = False
-		screen.hide("Tooltip")
+		self.tooltip.reset(screen)
 
 		if iCode == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
 
@@ -474,7 +447,7 @@ class CvMilitaryAdvisor:
 
 					szTxt += "\n%s %s\n" %(CyPlayer.getCivilizationAdjective(0), szLeader)
 					szTxt += "%s - %s" %(CyPlayer.getCivilizationShortDescription(0), CyPlayer.getCivilizationDescription(0))
-					self.updateTooltip(screen, szTxt)
+					self.tooltip.handle(screen, szTxt)
 
 		elif iCode == NotifyCode.NOTIFY_CLICKED:
 
@@ -529,7 +502,5 @@ class CvMilitaryAdvisor:
 
 
 	def onClose(self):
-		del self.iPlayer, self.CyPlayer, self.iTeam, self.CyTeam
-		del self.xRes, self.yRes, self.aFontList
-		del self.InputData, self.szTextTT, self.iOffsetTT, self.bLockedTT
-		del self.GO_SIZE_MATTERS, self.iconMoves, self.iconStrength, self.fMoveDenominator
+		del self.iPlayer, self.CyPlayer, self.iTeam, self.CyTeam, self.xRes, self.yRes, self.aFontList, \
+			self.InputData, self.GO_SIZE_MATTERS, self.iconMoves, self.iconStrength, self.fMoveDenominator

@@ -36,7 +36,6 @@ class BugAdvisorOptionsTab(BugOptionsTab.BugOptionsTab):
 
 		self.addLabel(screen, center, "Technology_Advisor", "Technology [F6]:")
 		self.addCheckbox(screen, center, "Advisors__GPTechPrefs")
-		self.addCheckbox(screen, center, "MiscHover__SpedUpTechs")
 		self.addCheckbox(screen, center, "Advisors__WideTechScreen")
 		self.addCheckbox(screen, center, "Advisors__ShowTechEra")
 
@@ -53,8 +52,6 @@ class BugAdvisorOptionsTab(BugOptionsTab.BugOptionsTab):
 		self.addSpacer(screen, right, "Advisors_Tab")
 
 		self.addLabel(screen, right, "Info_Screens", "Info [F9]:")
-		self.addCheckbox(screen, right, "Advisors__BugGraphsTab")
 		self.addCheckbox(screen, right, "Advisors__BugGraphsLogScale")
 		self.addCheckbox(screen, right, "Advisors__BugStatsTab")
-		self.addCheckbox(screen, right, "Advisors__BugInfoWonders")
-		self.addCheckbox(screen, right, "Advisors__BugInfoWondersPlayerColor", True)
+		self.addCheckbox(screen, right, "Advisors__BugInfoWondersPlayerColor")

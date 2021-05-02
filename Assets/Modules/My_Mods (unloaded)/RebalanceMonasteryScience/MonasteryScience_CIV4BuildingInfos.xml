@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-	<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
-	<!-- Sid Meier's Civilization 4 -->
-	<!-- Copyright Firaxis Games 2005 -->
-	<!-- -->
-	<!-- Building Infos -->
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by lcollins (Firaxis Games) -->
+<!-- Sid Meier's Civilization 4 -->
+<!-- Copyright Firaxis Games 2005 -->
+<!-- Building Infos -->
 <Civ4BuildingInfos xmlns="x-schema:../../../XML/Schema/C2C_CIV4BuildingsSchema.xml">
 	<BuildingInfos>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_ANDEAN_MONASTERY</BuildingClass>
 			<Type>BUILDING_ANDEAN_MONASTERY</Type>
 			<AndDependencyTypes>
-             	              <DependencyType>RELIGION_ANDEAN</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
+				<DependencyType>RELIGION_ANDEANISM</DependencyType>
+			</AndDependencyTypes>
 			<TechCommerceChanges>
 				<TechCommerceChange>
 					<PrereqTech>TECH_SCIENTIFIC_METHOD</PrereqTech>
@@ -59,25 +43,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_ASATRU_MONASTERY</BuildingClass>
 			<Type>BUILDING_ASATRU_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_ASATRU</DependencyType>
 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>1</iCommerce>
@@ -106,25 +75,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_BAHAI_MONASTERY</BuildingClass>
 			<Type>BUILDING_BAHAI_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_BAHAI</DependencyType>
 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
 					<PrereqTech>TECH_CONSUMERISM</PrereqTech>
@@ -147,25 +101,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_BUDDHIST_MONASTERY</BuildingClass>
 			<Type>BUILDING_BUDDHIST_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_BUDDHIST</DependencyType>
 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
 					<PrereqTech>TECH_BIOLOGY</PrereqTech>
@@ -188,7 +127,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_CHRISTIAN_MONASTERY</BuildingClass>
 			<Type>BUILDING_CHRISTIAN_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_CHRISTIANITY</DependencyType>
@@ -215,7 +153,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_CONFUCIAN_MONASTERY</BuildingClass>
 			<Type>BUILDING_CONFUCIAN_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_CONFUCIANISM</DependencyType>
@@ -242,31 +179,9 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_DRUID_MONASTERY</BuildingClass>
-			<Type>BUILDING_DRUID_MONASTERY</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_DRUID</DependencyType>
-			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
-		</BuildingInfo>
-		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_EGYPT_MYTH_MONASTERY</BuildingClass>
 			<Type>BUILDING_EGYPT_MYTH_MONASTERY</Type>
 			<AndDependencyTypes>
-				<DependencyType>RELIGION_EGYPT_MYTHOLOGY</DependencyType>
+				<DependencyType>RELIGION_KEMETISM</DependencyType>
 			</AndDependencyTypes>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
@@ -290,7 +205,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_HELLENIC_MONASTERY</BuildingClass>
 			<Type>BUILDING_HELLENIC_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_HELLENISM</DependencyType>
@@ -317,7 +231,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_HINDU_MONASTERY</BuildingClass>
 			<Type>BUILDING_HINDU_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_HINDUISM</DependencyType>
@@ -344,7 +257,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_ISLAMIC_MONASTERY</BuildingClass>
 			<Type>BUILDING_ISLAMIC_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_ISLAM</DependencyType>
@@ -371,25 +283,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_JAIN_MONASTERY</BuildingClass>
 			<Type>BUILDING_JAIN_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_JAINISM</DependencyType>
 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
 					<PrereqTech>TECH_BIOLOGY</PrereqTech>
@@ -412,7 +309,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_JEWISH_MONASTERY</BuildingClass>
 			<Type>BUILDING_JEWISH_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_JUDAISM</DependencyType>
@@ -439,46 +335,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_AN</BuildingClass>
-			<Type>BUILDING_AN</Type>
-			<AndDependencyTypes>
-             	          <DependencyType>RELIGION_MESO</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
-		</BuildingInfo>
-		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_MORMON_MONASTERY</BuildingClass>
 			<Type>BUILDING_MORMON_MONASTERY</Type>
 			<AndDependencyTypes>
-             	          <DependencyType>RELIGION_MORMON</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
+				<DependencyType>RELIGION_MORMON</DependencyType>
+			</AndDependencyTypes>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
 					<PrereqTech>TECH_CONSUMERISM</PrereqTech>
@@ -501,25 +361,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_MESOAMERICAN_MONASTERY</BuildingClass>
 			<Type>BUILDING_MESOAMERICAN_MONASTERY</Type>
 			<AndDependencyTypes>
-             	          <DependencyType>RELIGION_MESOAMERICANISM</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
+				<DependencyType>RELIGION_NAGHUALISM</DependencyType>
+			</AndDependencyTypes>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
 					<PrereqTech>TECH_BIOLOGY</PrereqTech>
@@ -542,28 +387,13 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_SCIENTOLOGY_MONASTERY</BuildingClass>
 			<Type>BUILDING_SCIENTOLOGY_MONASTERY</Type>
 			<AndDependencyTypes>
-             	          <DependencyType>RELIGION_SCIENTOLOGY</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
+				<DependencyType>RELIGION_SCIENTOLOGY</DependencyType>
+			</AndDependencyTypes>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
-					<PrereqTech>TECH_GENEENHANCEMENT</PrereqTech>
+					<PrereqTech>TECH_GENE_ENHANCEMENT</PrereqTech>
 					<TechCommerce>
 						<iCommerce>-3</iCommerce>
 						<iCommerce>0</iCommerce>
@@ -583,46 +413,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_SHAMAN_MONASTERY</BuildingClass>
-			<Type>BUILDING_SHAMAN_MONASTERY</Type>
-			<AndDependencyTypes>
-             	          <DependencyType>RELIGION_SHAMAN</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
-		</BuildingInfo>
-		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_SHINTO_MONASTERY</BuildingClass>
 			<Type>BUILDING_SHINTO_MONASTERY</Type>
 			<AndDependencyTypes>
-             	          <DependencyType>RELIGION_SHINTO</DependencyType>
- 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
+				<DependencyType>RELIGION_SHINTO</DependencyType>
+			</AndDependencyTypes>
 			<CommerceModifiers>
 				<iCommerce>0</iCommerce>
 				<iCommerce>10</iCommerce>
@@ -650,7 +444,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_TAOIST_MONASTERY</BuildingClass>
 			<Type>BUILDING_TAOIST_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_TAOISM</DependencyType>
@@ -677,7 +470,6 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_ZOROASTRIAN_MONASTERY</BuildingClass>
 			<Type>BUILDING_ZOROASTRIAN_MONASTERY</Type>
 			<AndDependencyTypes>
 				<DependencyType>RELIGION_ZOROASTRIANISM</DependencyType>
@@ -704,25 +496,10 @@
 			</TechCommerceModifiers>
 		</BuildingInfo>
 		<BuildingInfo>
-			<BuildingClass>BUILDINGCLASS_CANAANISM_MONASTERY</BuildingClass>
 			<Type>BUILDING_CANAANISM_MONASTERY</Type>
 			<AndDependencyTypes>
-				<DependencyType>RELIGION_CANAANITE</DependencyType>
+				<DependencyType>RELIGION_CANAANISM</DependencyType>
 			</AndDependencyTypes>
-			<ProductionTraits>
-				<ProductionTrait>
-					<ProductionTraitType>TRAIT_SPIRITUAL</ProductionTraitType>
-					<iProductionTrait>25</iProductionTrait>
-				</ProductionTrait>
-			</ProductionTraits>
-			<HappinessTraits>
-				<HappinessTrait>
-					<HappinessTraitType>TRAIT_SPIRITUAL</HappinessTraitType>
-					<iHappinessTrait>1</iHappinessTrait>
-					<HappinessTraitType>TRAIT_ANTI_CLERICAL</HappinessTraitType>
-					<iHappinessTrait>-1</iHappinessTrait>
-				</HappinessTrait>
-			</HappinessTraits>
 			<TechCommerceModifiers>
 				<TechCommerceModifier>
 					<PrereqTech>TECH_BIOLOGY</PrereqTech>

@@ -11,18 +11,17 @@
 #ifndef CV_PROPERTIES_H
 #define CV_PROPERTIES_H
 
-#include "CvXMLLoadUtilityModTools.h"
-//#include "CvGameObject.h"
+#include "CheckSum.h"
+#include "CvEnums.h"
 
-//#include "CvProperty.h"
-
-class CvGame;
-class CvTeam;
-class CvPlayer;
 class CvCity;
-class CvUnit;
-class CvPlot;
+class CvGame;
 class CvGameObject;
+class CvPlayer;
+class CvPlot;
+class CvTeam;
+class CvUnit;
+class CvXMLLoadUtility;
 
 struct PropertyBuilding
 {
@@ -100,7 +99,7 @@ public:
 	void write(FDataStreamBase* pStream);
 	void writeWrapper(FDataStreamBase* pStream);
 	bool read(CvXMLLoadUtility* pXML, const wchar_t* szTagName = L"Properties");
-	void copyNonDefaults(CvProperties* pProp, CvXMLLoadUtility* pXML );
+	void copyNonDefaults(const CvProperties* pProp);
 
 	void getCheckSum(unsigned int& iSum) const;
 

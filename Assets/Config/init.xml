@@ -19,7 +19,7 @@
 			You can safely modify this list to change the color dropdown menus
 			for color options. You can change the text displayed in the menus by
 			adding translations for your new colors to Colors_CIV4GameText.xml
-			in the XML/Text directory. 
+			in the XML/Text directory.
 		-->
 		<arg name="colors" type="tuple">
 			"COLOR_RED",
@@ -44,11 +44,10 @@
 	<events module="CvEnhancedTechConquestEventManager"/>
 	<!-- Rise of Mankind end -->
 	<init module="GPUtil"/>
-	<init module="ReligionUtil"/>
 	<init module="TradeUtil"/>
 	<init module="TraitUtil"/>
 	<gameutils module="WidgetUtil" handler="getWidgetHelp"/>
-<!--  Removed while I try and get Platy Tech Screen working
+<!-- Removed while I try and get Platy Tech Screen working
 	<event type="OnLoad" module="CvTechChooser" function="resetTechPrefs"/>
 	<event type="GameStart" module="CvTechChooser" function="resetTechPrefs"/-->
 	<!-- Mods -->
@@ -111,4 +110,7 @@
 	<load mod="InitMilitaryPromos"/>
 	<load mod="NaturalWonders"/>
 	<load mod="GreatPersonBornDisplay"/>
+	<events module="DynamicCivNames"/>
+	<events module="ParallelMaps"/>
+	<events module="WoodlandCycle"/>
 </bug>

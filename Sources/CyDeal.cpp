@@ -1,23 +1,15 @@
+#include "CvGameCoreDLL.h"
+#include "CvDeal.h"
+#include "CyDeal.h"
+
 //
 // Python wrapper class for CvGame 
 // 
 
-#include "CvGameCoreDLL.h"
+CyDeal::CyDeal(CvDeal* pDeal) : m_pDeal(pDeal) {}
 
-CyDeal::CyDeal(CvDeal* pDeal) :
-	m_pDeal(pDeal)
-{
+CyDeal::~CyDeal() {}
 
-}
-
-CyDeal::~CyDeal()
-{
-}
-
-bool CyDeal::isNone()
-{ 
-	return (NULL == m_pDeal); 
-}
 
 int CyDeal::getID() const
 {
@@ -64,7 +56,7 @@ TradeData* CyDeal::getFirstTrade(int i) const
 			iCount++;
 		}
 	}
-	return (NULL);
+	return NULL;
 }
 
 TradeData* CyDeal::getSecondTrade(int i) const
@@ -82,21 +74,18 @@ TradeData* CyDeal::getSecondTrade(int i) const
 			iCount++;
 		}
 	}
-	return (NULL);
+	return NULL;
 }
 
 void CyDeal::kill()
 {
-	if (NULL != m_pDeal)
-	{
-		m_pDeal->kill();
-	}
+	if (m_pDeal) m_pDeal->kill();
 }
 
 // BUG - Expose Deal Cancelability - start
 bool CyDeal::isCancelable(int /*PlayerTypes*/ eByPlayer, bool bIgnoreWaitingPeriod) const
 {
-	if (NULL != m_pDeal)
+	if (m_pDeal)
 	{
 		if (bIgnoreWaitingPeriod)
 		{
@@ -112,7 +101,7 @@ bool CyDeal::isCancelable(int /*PlayerTypes*/ eByPlayer, bool bIgnoreWaitingPeri
 std::wstring CyDeal::getCannotCancelReason(int /*PlayerTypes*/ eByPlayer) const
 {
 	CvWString szReason;
-	if (NULL != m_pDeal)
+	if (m_pDeal)
 	{
 		m_pDeal->isCancelable((PlayerTypes)eByPlayer, &szReason);
 	}

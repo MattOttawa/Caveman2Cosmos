@@ -11,12 +11,13 @@
 #ifndef CV_OUTCOME_H
 #define CV_OUTCOME_H
 
-#include "CvXMLLoadUtilityModTools.h"
-#include "CvProperties.h"
-
-class CvUnitAI;
-class IntExpr;
+class CvPlayerAI;
+class CvPlot;
+class CvProperties;
+class CvUnit;
+class CvXMLLoadUtility;
 class BoolExpr;
+class IntExpr;
 
 class CvOutcome
 {
@@ -33,11 +34,11 @@ public:
 	int getGPP() const;
 	UnitTypes getGPUnitType() const;
 	BonusTypes getBonusType() const;
-	CvProperties* getProperties();
-	int getHappinessTimer();
-	int getPopulationBoost();
+	const CvProperties* getProperties() const;
+	int getHappinessTimer() const;
+	int getPopulationBoost() const;
 	int getReduceAnarchyLength(const CvUnit& kUnit) const;
-	EventTriggerTypes getEventTrigger();
+	EventTriggerTypes getEventTrigger() const;
 	int getChancePerPop() const;
 	bool isKill() const;
 	void compilePython();
@@ -53,9 +54,9 @@ public:
 	void buildDisplayString(CvWStringBuffer& szBuffer, const CvUnit& kUnit) const;
 
 	bool read(CvXMLLoadUtility* pXML);
-	void copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML );
+	void copyNonDefaults(CvOutcome* pOutcome);
 
-	void getCheckSum(unsigned int& iSum);
+	void getCheckSum(unsigned int& iSum) const;
 protected:
 	OutcomeTypes m_eType;
 	IntExpr* m_iChance;
