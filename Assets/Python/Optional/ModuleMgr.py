@@ -55,7 +55,7 @@ def updateIniFile():
 
 def readIniFile():
 	Parser = ConfigParser.SafeConfigParser()
-	Parser.read()
+	Parser.read(getIniFilePath())
 	return Parser
 
 def writeIniFile(Parser):

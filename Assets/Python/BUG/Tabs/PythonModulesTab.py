@@ -1,5 +1,5 @@
 import BugOptionsTab
-#import ModuleMgr
+import ModuleMgr
 
 class PythonModulesTab(BugOptionsTab.BugOptionsTab):
 
@@ -12,13 +12,12 @@ class PythonModulesTab(BugOptionsTab.BugOptionsTab):
 		column = self.addOneColumnLayout(screen, panel)
 		left, right = self.addTwoColumnLayout(screen, column, "Modules", True)
 		column = left
-		"""
-		for module in ModuleMgr.getModules():
+		Parser = ModuleMgr.readIniFile()
+		for module, value in Parser.items("MODULES"):
 			control = module + "Check"
-			screen.attachCheckBox(column, control, module, "BUG_OptionsCB_IF", "handlePythonModuleChange", module, True)
-			screen.setToolTip(control, module)
+			screen.attachCheckBox(column, control, module, "BUG_OptionsCB_IF", "handlePythonModuleChange", module, value)
+			#screen.setToolTip(control, module)
 			if column is left:
 				column = right
 			else:
 				column = left
-		"""
