@@ -1,6 +1,7 @@
 # BUG_OptionsCB_IF
 
 from CvPythonExtensions import CyGlobalContext
+import ModuleMgr
 
 # Initialize callback interface
 def init():
@@ -66,3 +67,7 @@ def handleGameOptionChange(argsList):
 	bValue, szName = argsList
 	GC = CyGlobalContext()
 	GC.getGame().setOption(GC.getInfoTypeForString(szName), bValue)
+
+def handlePythonModuleChange(argsList):
+	bValue, szName = argsList
+	ModuleMgr.handleOptionChange(szName, bValue)

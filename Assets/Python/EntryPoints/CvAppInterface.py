@@ -27,6 +27,8 @@ def RemoveSign(argsList):
 def forceBUGModuleInit(argsList):
 	import BugInit
 	BugInit.init()
+	import ModuleMgr
+	ModuleMgr.init()
 
 # don't make this an event - Moose
 def init():

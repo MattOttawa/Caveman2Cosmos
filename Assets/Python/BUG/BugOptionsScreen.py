@@ -9,6 +9,7 @@ import BugConfig
 import BugCore
 import BugUtil
 import GameOptionsTab
+import PythonModulesTab
 
 def init(): return
 
@@ -27,6 +28,7 @@ class BugOptionsScreen:
 		self.options = BugOptions.getOptions()
 		self.tabs = []
 		self.tabs.append(GameOptionsTab.GameOptionsTab())
+		self.tabs.append(PythonModulesTab.PythonModulesTab())
 		self.reopen = False
 
 	def addTab(self, tab):
