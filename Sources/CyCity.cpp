@@ -508,9 +508,14 @@ int CyCity::flatHurryAngerLength() const
 	return m_pCity->flatHurryAngerLength();
 }
 
-int CyCity::getNumBuilding(int /*BuildingTypes*/ iIndex) const
+void CyCity::setNumRealBuilding(int /*BuildingTypes*/ iIndex, int iNewValue)
 {
-	return iIndex != -1 ? m_pCity->getNumBuilding((BuildingTypes) iIndex) : 0;
+	m_pCity->setNumRealBuilding((BuildingTypes) iIndex, iNewValue);
+}
+
+int CyCity::getNumRealBuilding(int /*BuildingTypes*/ iIndex) const
+{
+	return m_pCity->getNumRealBuilding((BuildingTypes) iIndex);
 }
 
 int CyCity::getNumActiveBuilding(int /*BuildingTypes*/ iIndex) const
@@ -560,7 +565,8 @@ CyArea* CyCity::area() const
 
 CyArea* CyCity::waterArea() const
 {
-	return new CyArea(m_pCity->waterArea());
+	CvArea* waterArea = m_pCity->waterArea();
+	return waterArea ? new CyArea(waterArea) : NULL;
 }
 
 CyPlot* CyCity::getRallyPlot() const
@@ -903,6 +909,11 @@ int CyCity::getExtraTradeRoutes() const
 	return m_pCity->getExtraTradeRoutes();
 }
 
+int CyCity::getMaxTradeRoutes() const
+{
+	return m_pCity->getMaxTradeRoutes();
+}
+
 void CyCity::changeExtraTradeRoutes(int iChange)
 {
 	m_pCity->changeExtraTradeRoutes(iChange);
@@ -1128,14 +1139,9 @@ int CyCity::getSeaPlotYield(int /*YieldTypes*/ eIndex) const
 	return m_pCity->getSeaPlotYield((YieldTypes) eIndex);
 }
 
-int CyCity::getBaseYieldRate(int /*YieldTypes*/ eIndex) const
+int CyCity::getPlotYield(int /*YieldTypes*/ eIndex) const
 {
-	return m_pCity->getBaseYieldRate((YieldTypes)eIndex);
-}
-
-void CyCity::changeBaseYieldRate(int /*YieldTypes*/ eIndex, int iNewValue)
-{
-	m_pCity->changeBaseYieldRate((YieldTypes)eIndex, iNewValue);
+	return m_pCity->getPlotYield((YieldTypes)eIndex);
 }
 
 int CyCity::getBaseYieldRateModifier(int /*YieldTypes*/ eIndex, int iExtra) const
@@ -1540,16 +1546,6 @@ int CyCity::getEspionageDefenseModifier() const
 bool CyCity::isWorkingPlot(const CyPlot& kPlot) const
 {
 	return m_pCity->isWorkingPlot(kPlot.getPlot());
-}
-
-int CyCity::getNumRealBuilding(int /*BuildingTypes*/ iIndex) const
-{
-	return m_pCity->getNumRealBuilding((BuildingTypes) iIndex);
-}
-
-void CyCity::setNumRealBuilding(int /*BuildingTypes*/ iIndex, int iNewValue)
-{
-	m_pCity->setNumRealBuilding((BuildingTypes) iIndex, iNewValue);
 }
 
 bool CyCity::isHasReligion(int /*ReligionTypes*/ iIndex) const

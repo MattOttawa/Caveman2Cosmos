@@ -4,8 +4,6 @@
 # Thanks to "Ulf 'ulfn' Norell" from Apolyton for his additions relating to the graph section of this screen
 #
 from CvPythonExtensions import *
-
-import string
 import math
 
 # globals
@@ -123,8 +121,8 @@ class CvInfoScreen:
 			self.iNumGraphs = 8
 		else: self.iNumGraphs = 7
 
-		self.iBlack = GC.getInfoTypeForString("COLOR_BLACK")
-		iYellow = GC.getInfoTypeForString("COLOR_YELLOW")
+		self.iBlack = GC.getCOLOR_BLACK()
+		iYellow = GC.getCOLOR_YELLOW()
 		sTemp2 = []
 		for txt in sTemp1:
 			sTemp2.append(TRNSLTR.changeTextColor(txt, iYellow))
@@ -985,7 +983,7 @@ class CvInfoScreen:
 				# Loop through world wonders
 				for iWW in aWonderList:
 
-					if pCity.getNumBuilding(iWW) > 0:
+					if pCity.getNumRealBuilding(iWW) > 0:
 
 						aiTempWondersList.append(iWW)
 						aiTopCitiesNumWonders[i] += 1
@@ -1092,7 +1090,7 @@ class CvInfoScreen:
 								and cityX.isRevealed(self.iTeam, False)):
 									aaWondersBeingBuilt.append([iBuildingLoop, playerX.getCivilizationShortDescription(0), cityX, iPlayerX])
 
-							if (cityX.getNumBuilding(iBuildingLoop) > 0):
+							if (cityX.getNumRealBuilding(iBuildingLoop) > 0):
 								if (iTeamX == self.iTeam or self.team.isHasMet(iTeamX)):
 									aaWondersBuilt.append([cityX.getBuildingOriginalTime(iBuildingLoop),iBuildingLoop,True, playerX.getCivilizationShortDescription(0), cityX, iPlayerX])
 								else:
@@ -1115,7 +1113,7 @@ class CvInfoScreen:
 									aaWondersBeingBuilt.append([iBuildingLoop, playerX.getCivilizationShortDescription(0), cityX, iPlayerX])
 
 							# Has this city built a wonder?
-							if (cityX.getNumBuilding(iBuildingLoop) > 0):
+							if (cityX.getNumRealBuilding(iBuildingLoop) > 0):
 								if (iTeamX == self.iTeam):
 									aaWondersBuilt.append([cityX.getBuildingOriginalTime(iBuildingLoop),iBuildingLoop,True, playerX.getCivilizationShortDescription(0), cityX, iPlayerX])
 									iNumWonders += 1
@@ -1336,15 +1334,11 @@ class CvInfoScreen:
 		for iImprovementLoop in xrange(iNumImprovements):
 			aiImprovementsCurrent.append(0)
 
-		iGridW = CyMap().getGridWidth()
-		iGridH = CyMap().getGridHeight()
-		for iX in xrange(iGridW):
-			for iY in xrange(iGridH):
-				plot = CyMap().plot(iX, iY)
-				if (plot.getOwner() == self.iPlayer):
-					iType = plot.getImprovementType()
-					if (iType != ImprovementTypes.NO_IMPROVEMENT):
-						aiImprovementsCurrent[iType] += 1
+		for plot in CyMap().plots():
+			if plot.getOwner() == self.iPlayer:
+				iType = plot.getImprovementType()
+				if iType != ImprovementTypes.NO_IMPROVEMENT:
+					aiImprovementsCurrent[iType] += 1
 
 ################################################### TOP PANEL ###################################################
 

@@ -88,7 +88,7 @@ class CvDanQuayle:
 		screen = self.getScreen()
 		if screen.isActive():
 			return
-		screen.setRenderInterfaceOnly(True);
+		screen.setRenderInterfaceOnly(True)
 		screen.showScreen( PopupStates.POPUPSTATE_IMMEDIATE, False)
 
 		# Set the background and exit button, and show the screen
@@ -166,7 +166,7 @@ class CvDanQuayle:
 		for i in range(len(self.leaders)):
 			szText = self.leaders[i]
 			if (szLeaderText == szText):
-				szText = localText.getColorText(szText, (), gc.getInfoTypeForString("COLOR_YELLOW"))
+				szText = localText.getColorText(szText, (), gc.getCOLOR_YELLOW())
 			else:
 				szText = localText.getText(szText, ())
 

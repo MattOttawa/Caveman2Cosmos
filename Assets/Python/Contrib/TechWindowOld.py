@@ -6,12 +6,10 @@
 ## Copyright (c) 2008 The BUG Mod.
 
 from CvPythonExtensions import *
-import CvUtil
 
-# BUG - Options - end
+# BUG Options
 import BugCore
 TechWindowOpt = BugCore.game.TechWindow
-# BUG - Options - end
 
 GC = CyGlobalContext()
 TRNSLTR = CyTranslator()
@@ -248,12 +246,6 @@ class CvTechSplashScreen:
         				screen.attachImageButton( panelNameSIR, "", GC.getTechInfo(j).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_DERIVED_TECH, j, self.iTech, False )
 #---Eingef�gt ENDE ------------------------------------------------
 
-                # Allows
-		# szAllowsTitleDesc = u"<font=3b>" + TRNSLTR.getText("TXT_KEY_PEDIA_ALLOWS", ()) + ":" + u"</font>"
-		# szAllowsTitleWidget = "AllowsTitle"
-		# screen.setText(szAllowsTitleWidget, "", szAllowsTitleDesc, 1<<0,
-		# 	       self.X_ALLOWS_PANEL+self.iMarginSpace, self.Y_ALLOWS_PANEL - 20, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
 		# Units Enabled
 		szUnitsTitleDesc = u"<font=3b>" + TRNSLTR.getText("TXT_KEY_PEDIA_UNITS_ENABLED", ()) + ":" + u"</font>"
 		szUnitsTitleWidget = "UnitsTitle"
@@ -273,7 +265,7 @@ class CvTechSplashScreen:
 		for eLoopBuilding in range(GC.getNumBuildingInfos()):
 			bTechFound = 0
 			if (isTechRequiredForBuilding(self.iTech, eLoopBuilding)):
-	        	screen.attachImageButton( panelName2, "", GC.getBuildingInfo(eLoopBuilding).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM,
+				screen.attachImageButton( panelName2, "", GC.getBuildingInfo(eLoopBuilding).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM,
 						WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, eLoopBuilding, 1, False )
 
 		# Improvements
@@ -296,7 +288,7 @@ class CvTechSplashScreen:
 #---Eingef�gt START - kann komplett gel�scht werden --------------
                 # Improvements
 		for j in range(GC.getNumBuildInfos()):
-				bTechFound = 0;
+				bTechFound = 0
 				if (GC.getBuildInfo(j).getTechPrereq() == -1):
 					bTechFound = 0
 					for k in range(GC.getNumFeatureInfos()):
