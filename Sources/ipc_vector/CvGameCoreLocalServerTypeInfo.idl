@@ -1,0 +1,14 @@
+import "oaidl.idl";
+import "IIPCVector.idl";
+
+[uuid(957BF83F-EE5A-42eb-8CE5-6267011F0EF9), version(1.0)]
+library CvGameCoreLocalServerLib
+{
+	importlib("stdole32.tlb");
+	[uuid(1D66CBA8-CCE2-4439-8596-82B47AA44E43)]
+	coclass CvGameCoreLocalServer
+	{
+		interface IIPCVector;
+	};
+};
+
