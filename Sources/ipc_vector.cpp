@@ -3,6 +3,7 @@
 #include "ipc_vector.h"
 #include "FAssert.h"
 #include "..\\ipc_vector\\Registry.h"
+#include "..\\ipc_vector\\IIPCVector_i.c"
 
 #pragma comment( lib, "Ole32.lib" )
 

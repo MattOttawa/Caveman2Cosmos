@@ -1,12 +1,175 @@
+
+
+/* this ALWAYS GENERATED file contains the definitions for the interfaces */
+
+
+ /* File created by MIDL compiler version 8.01.0622 */
+/* at Mon Jan 18 22:14:07 2038
+ */
+/* Compiler settings for IIPCVector.idl:
+    Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.01.0622 
+    protocol : dce , ms_ext, c_ext, robust
+    error checks: allocation ref bounds_check enum stub_data 
+    VC __declspec() decoration level: 
+         __declspec(uuid()), __declspec(selectany), __declspec(novtable)
+         DECLSPEC_UUID(), MIDL_INTERFACE()
+*/
+/* @@MIDL_FILE_HEADING(  ) */
+
+#pragma warning( disable: 4049 )  /* more than 64k source lines */
+
+
+/* verify that the <rpcndr.h> version is high enough to compile this file*/
+#ifndef __REQUIRED_RPCNDR_H_VERSION__
+#define __REQUIRED_RPCNDR_H_VERSION__ 475
+#endif
+
+#include "rpc.h"
+#include "rpcndr.h"
+
+#ifndef __RPCNDR_H_VERSION__
+#error this stub requires an updated version of <rpcndr.h>
+#endif /* __RPCNDR_H_VERSION__ */
+
+#ifndef COM_NO_WINDOWS_H
+#include "windows.h"
+#include "ole2.h"
+#endif /*COM_NO_WINDOWS_H*/
+
+#ifndef __IIPCVector_h__
+#define __IIPCVector_h__
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1020)
 #pragma once
-#include <ObjBase.h>
+#endif
 
-// {5219B44A-0874-449E-8611-B7080DBFA6AB}
-static const GUID IID_IIPCVector = { 0x5219b44a, 0x874, 0x449e, { 0x86, 0x11, 0xb7, 0x8, 0xd, 0xbf, 0xa6, 0xab } };
+/* Forward Declarations */ 
 
-interface IIPCVector : IUnknown
-{
-	virtual void __stdcall getAt(const int index, int& value) const = 0;
-	virtual int __stdcall size() const = 0;
-	virtual void __stdcall push_back(int value) = 0;
-};
+#ifndef __IIPCVector_FWD_DEFINED__
+#define __IIPCVector_FWD_DEFINED__
+typedef interface IIPCVector IIPCVector;
+
+#endif 	/* __IIPCVector_FWD_DEFINED__ */
+
+
+/* header files for imported files */
+#include "oaidl.h"
+
+#ifdef __cplusplus
+extern "C"{
+#endif 
+
+
+#ifndef __IIPCVector_INTERFACE_DEFINED__
+#define __IIPCVector_INTERFACE_DEFINED__
+
+/* interface IIPCVector */
+/* [oleautomation][uuid][object] */ 
+
+
+EXTERN_C const IID IID_IIPCVector;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("5DD52389-B1A4-4fe7-B131-0F8EF73DD175")
+    IIPCVector : public IUnknown
+    {
+    public:
+        virtual HRESULT STDMETHODCALLTYPE getAt( 
+            /* [in] */ int index,
+            /* [retval][out] */ int *r) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE size( 
+            /* [retval][out] */ int *r) = 0;
+        
+        virtual HRESULT STDMETHODCALLTYPE push_back( 
+            /* [in] */ int value) = 0;
+        
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct IIPCVectorVtbl
+    {
+        BEGIN_INTERFACE
+        
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            IIPCVector * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            IIPCVector * This);
+        
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            IIPCVector * This);
+        
+        HRESULT ( STDMETHODCALLTYPE *getAt )( 
+            IIPCVector * This,
+            /* [in] */ int index,
+            /* [retval][out] */ int *r);
+        
+        HRESULT ( STDMETHODCALLTYPE *size )( 
+            IIPCVector * This,
+            /* [retval][out] */ int *r);
+        
+        HRESULT ( STDMETHODCALLTYPE *push_back )( 
+            IIPCVector * This,
+            /* [in] */ int value);
+        
+        END_INTERFACE
+    } IIPCVectorVtbl;
+
+    interface IIPCVector
+    {
+        CONST_VTBL struct IIPCVectorVtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define IIPCVector_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define IIPCVector_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define IIPCVector_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define IIPCVector_getAt(This,index,r)	\
+    ( (This)->lpVtbl -> getAt(This,index,r) ) 
+
+#define IIPCVector_size(This,r)	\
+    ( (This)->lpVtbl -> size(This,r) ) 
+
+#define IIPCVector_push_back(This,value)	\
+    ( (This)->lpVtbl -> push_back(This,value) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* __IIPCVector_INTERFACE_DEFINED__ */
+
+
+/* Additional Prototypes for ALL interfaces */
+
+/* end of Additional Prototypes */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
+
+

@@ -13,17 +13,19 @@ public:
 	void init();
 	void uninit();
 
-	int operator[](const int& index) const {
-		int value;
-		m_interface->getAt(index, value);
-		return value;
+	int operator[](int index) const {
+		int r = 0;
+		m_interface->getAt(index, &r);
+		return r;
 	}
 
 	int size() const {
-		return m_interface->size();
+		int r = 0;
+		m_interface->size(&r);
+		return r;
 	}
 
-	void push_back(const int& value) {
+	void push_back(int value) {
 		m_interface->push_back(value);
 	}
 

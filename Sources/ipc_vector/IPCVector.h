@@ -16,9 +16,9 @@ public:
 	virtual ULONG STDMETHODCALLTYPE Release();
 
 	// IPCVector
-	virtual void STDMETHODCALLTYPE getAt(const int index, int& value) const;
-	virtual int STDMETHODCALLTYPE size() const;
-	virtual void STDMETHODCALLTYPE push_back(int value); 
+	virtual HRESULT STDMETHODCALLTYPE getAt(int index, int* r);
+	virtual HRESULT STDMETHODCALLTYPE size(int* r);
+	virtual HRESULT STDMETHODCALLTYPE push_back(int value); 
 
 protected:
 	long m_lRef; // Reference count

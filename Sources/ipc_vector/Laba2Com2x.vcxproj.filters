@@ -15,7 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
     <None Include="Laba2Com2x.def">
       <Filter>Source Files</Filter>
     </None>

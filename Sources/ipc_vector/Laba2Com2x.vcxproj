@@ -77,7 +77,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="Laba2Com2x.def" />
-    <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IPCVector.h" />

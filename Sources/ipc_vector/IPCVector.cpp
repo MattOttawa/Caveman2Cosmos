@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "IPCVector.h"
+#include "IIPCVector_i.c"
 
 extern ULONG g_Components;
 
@@ -44,14 +45,17 @@ ULONG STDMETHODCALLTYPE IPCVector::Release() {
 }
 
 // IPCVector
-void STDMETHODCALLTYPE IPCVector::getAt(const int index, int& value) const {
-	value = m_vector[index];
+HRESULT STDMETHODCALLTYPE IPCVector::getAt(int index, int* r) {
+	*r = m_vector[index];
+    return S_OK;
 }
 
-int STDMETHODCALLTYPE IPCVector::size() const {
-	return m_vector.size();
+HRESULT STDMETHODCALLTYPE IPCVector::size(int* r) {
+	*r = (int)m_vector.size();
+    return S_OK;
 }
 
-void STDMETHODCALLTYPE IPCVector::push_back(int value) {
+HRESULT STDMETHODCALLTYPE IPCVector::push_back(int value) {
 	m_vector.push_back(value);
+    return S_OK;
 }
