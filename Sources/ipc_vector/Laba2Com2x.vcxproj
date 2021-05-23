@@ -83,6 +83,8 @@
     <ClInclude Include="ClassFactory.h" />
     <ClInclude Include="IIPCVector.h" />
     <ClInclude Include="Registry.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IPCVector.cpp" />
@@ -96,6 +98,10 @@
     </ClCompile>
     <ClCompile Include="Laba2Com2x.cpp" />
     <ClCompile Include="Registry.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
