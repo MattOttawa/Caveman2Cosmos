@@ -1,7 +1,6 @@
-LIBRARY "Laba2Com2x"
+LIBRARY "CvGameCoreServer"
 EXPORTS 
         DllCanUnloadNow     PRIVATE
         DllGetClassObject   PRIVATE
-		DllInstall          PRIVATE
         DllRegisterServer   PRIVATE
         DllUnregisterServer PRIVATE

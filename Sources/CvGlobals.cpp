@@ -442,7 +442,7 @@ void cvInternalGlobals::init()
 	m_bSignsCleared = false;
 	m_bResourceLayerOn = false;
 
-	RegisterDll(git_dir + "\\Assets\\Laba2Com2x.dll", false);
+	RegisterDll(git_dir + "\\Assets\\CvGameCoreServer.dll", false);
 
 	OutputDebugString("Initializing Internal Globals: End");
 }
@@ -3091,7 +3091,7 @@ uint32_t cvInternalGlobals::getAssetCheckSum() const
 
 int cvInternalGlobals::RegisterDll(std::string pszDll, bool bUnregister)
 {
-	const LPCSTR path = "C://Users//Matt//Documents//GitHub//Caveman2Cosmos//Assets//Laba2Com2x.dll";
+	const LPCSTR path = "C://Users//Matt//Documents//GitHub//Caveman2Cosmos//Assets//CvGameCoreServer.dll";
 	const HANDLE hDll = LoadLibrary(path);
 	FAssert(INVALID_HANDLE_VALUE != hDll);
 	if (INVALID_HANDLE_VALUE == hDll) {

@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "stdafx.h"
 #include "IPCVector.h"
 #include "IIPCVector_i.c"
 
@@ -14,21 +14,22 @@ IPCVector::~IPCVector() {
 }
 
 // IUnknown
-HRESULT STDMETHODCALLTYPE IPCVector::QueryInterface(REFIID riid, void** ppv) {
-	HRESULT rc = S_OK;                                    // COM
-	*ppv = NULL;                                          // COM
+HRESULT STDMETHODCALLTYPE IPCVector::QueryInterface(REFIID riid, void** ppv)
+{
 	if       (riid == IID_IUnknown)   *ppv = (IIPCVector*)this;
 	else if  (riid == IID_IIPCVector) *ppv = (IIPCVector*)this;
-	else rc = E_NOINTERFACE;                             // COM
-
-	if (rc == S_OK) this->AddRef();
-	//LOG("CA::QueryInterface rc = ",rc);
-    return rc;
+	else
+	{
+		*ppv = NULL;
+		return E_NOINTERFACE;
+	}
+	AddRef();
+    return S_OK;
 }
 
 ULONG STDMETHODCALLTYPE IPCVector::AddRef() {
 	InterlockedIncrement((LONG*)&(this->m_lRef));
-	return this->m_lRef;
+	return m_lRef;
 }
 
 ULONG STDMETHODCALLTYPE IPCVector::Release() {
@@ -39,9 +40,6 @@ ULONG STDMETHODCALLTYPE IPCVector::Release() {
 	}
 	else
 		return m_lRef;
-	//LOG("CA::AddRef rc = ",this->m_Ref);
-	// LogCOM<<"CA::AddRef rc = "<<this->m_Ref<<std::endl;
-	//return this->m_lRef;
 }
 
 // IPCVector

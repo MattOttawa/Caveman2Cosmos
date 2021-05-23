@@ -1,20 +1,11 @@
 #include "stdafx.h"
-#include <assert.h>
-//#include <iostream>
-//#include <objbase.h>
-#include "Windows.h"
 #include "Registry.h"
 #include "IPCVector.h"
-
-//#include "SEQLOG.h"
+#include <assert.h>
+#include <objbase.h>
 
 STDAPI DllRegisterServer() {
-	assert(false);
-	HRESULT rc = RegisterServer(hIPCVector,                    // DLL module handle
-                                CLSID_IPCVector,                  // Class ID
-                                FName,                     // Friendly Name
-                                VerInd,                    // Programmatic
-                                ProgId);                   //   IDs
+	HRESULT rc = RegisterServer(hIPCVector, CLSID_IPCVector, FName, VerInd, ProgId);
 	return rc;
 };
 
@@ -73,10 +64,7 @@ HRESULT RegisterServer(HMODULE hModule,            // DLL module handle
 	return S_OK;
 }
 
-HRESULT UnregisterServer(const CLSID& clsid,
-                         const WCHAR* szVerIndProgID,
-                         const WCHAR*  szProgID) 
-
+HRESULT UnregisterServer(const CLSID& clsid, const WCHAR* szVerIndProgID, const WCHAR*  szProgID) 
 {
     WCHAR szCLSID[CLSID_STRING_SIZE] ;  
 	CLSIDtochar(clsid, szCLSID, sizeof(szCLSID)) ;
@@ -114,10 +102,9 @@ void CLSIDtochar(const CLSID& clsid,      // Convert a CLSID to a char string.
 LONG recursiveDeleteKey(HKEY hKeyParent,           // Parent of key to delete
                         const WCHAR* lpszKeyChild)  // Key to delete
 {
-
-	HKEY hKeyChild ;
+	HKEY hKeyChild;
 	LONG lRes = RegOpenKeyEx(hKeyParent, lpszKeyChild, 0,
-                         KEY_ALL_ACCESS, &hKeyChild) ;
+                         KEY_ALL_ACCESS, &hKeyChild);
 	if (lRes != ERROR_SUCCESS)
 	{
 		return lRes ;
@@ -176,13 +163,3 @@ BOOL setKeyAndValue(const WCHAR* szKey,         // smw:const char* szKey
 	RegCloseKey(hKey) ;
 	return TRUE ;
 }
-
-
-//---------------Laba2Com2x.def--------------------
-//LIBRARY "Laba2Com2x"
-//EXPORTS 
-//        DllCanUnloadNow     PRIVATE
-//        DllGetClassObject   PRIVATE
-//        DllInstall          PRIVATE
-//        DllRegisterServer   PRIVATE
-//        DllUnregisterServer PRIVATE
