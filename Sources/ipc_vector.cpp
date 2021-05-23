@@ -1,9 +1,9 @@
 #include "CvGameCoreDLL.h"
-#include "ObjBase.h"
 #include "ipc_vector.h"
 #include "FAssert.h"
 #include "..\\ipc_vector\\Registry.h"
 #include "..\\ipc_vector\\IIPCVector_i.c"
+#include <objbase.h>
 
 #pragma comment( lib, "Ole32.lib" )
 
@@ -26,3 +26,21 @@ void ipc_vector::uninit()
 	CoFreeUnusedLibraries();
 }
 
+int ipc_vector::operator[](int index) const
+{
+	int r = 0;
+	m_interface->getAt(index, &r);
+	return r;
+}
+
+int ipc_vector::size() const
+{
+	int r = 0;
+	m_interface->size(&r);
+	return r;
+}
+
+void ipc_vector::push_back(int value)
+{
+	m_interface->push_back(value);
+}
