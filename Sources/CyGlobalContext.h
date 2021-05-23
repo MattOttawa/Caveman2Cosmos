@@ -16,6 +16,7 @@ class CyMap;
 class CyPlayer;
 class CvRandom;
 class CyTeam;
+#include "ipc_vector.h"
 
 class CyGlobalContext
 {
@@ -233,11 +234,16 @@ public:
 
 	void setNoUpdateDefineFLOAT( const char * szName, float fValue ) { return GC.setDefineFLOAT( szName, fValue, false ); }
 
+	void addToVector(int value);
+
 #define DECLARE_CY_GET_METHOD(dataType, VAR) \
 	int get##VAR() const { return (int)GC.get##VAR(); }
 
 	DO_FOR_EACH_EXPOSED_INT_GLOBAL_DEFINE(DECLARE_CY_GET_METHOD)
 	DO_FOR_EACH_EXPOSED_INFO_TYPE(DECLARE_CY_GET_METHOD)
+
+protected:
+	ipc_vector m_vector;
 };
 
 #endif	// CyGlobalContext_h

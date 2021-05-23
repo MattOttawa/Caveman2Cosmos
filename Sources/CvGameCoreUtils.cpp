@@ -2,6 +2,7 @@
 #include "CvBuildingInfo.h"
 #include "CvCity.h"
 #include "CvGlobals.h"
+#include "CvImprovementInfo.h"
 #include "CvInfos.h"
 #include "CvMap.h"
 #include "CvMapExternal.h"
