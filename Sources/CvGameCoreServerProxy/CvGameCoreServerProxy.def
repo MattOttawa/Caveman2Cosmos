@@ -1,6 +1,7 @@
-LIBRARY "CvGameCoreServer"
+LIBRARY "CvGameCoreServerProxy"
 EXPORTS 
         DllCanUnloadNow     PRIVATE
         DllGetClassObject   PRIVATE
+		GetProxyDllInfo     PRIVATE
         DllRegisterServer   PRIVATE
         DllUnregisterServer PRIVATE

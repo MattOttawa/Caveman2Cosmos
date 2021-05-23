@@ -1,4 +1,5 @@
 #pragma once
+
 #include <ObjBase.h>
 
 HMODULE hIPCVector;

@@ -4,16 +4,16 @@
 
 extern ULONG g_Components;
 
-IPCVector::IPCVector() : m_lRef(1) {
+IPCVector::IPCVector() : m_lRef(1)
+{
 	InterlockedIncrement((LONG*)&g_Components);
 }
 
-
-IPCVector::~IPCVector() {
+IPCVector::~IPCVector()
+{
 	InterlockedDecrement((LONG*)&g_Components);
 }
 
-// IUnknown
 HRESULT STDMETHODCALLTYPE IPCVector::QueryInterface(REFIID riid, void** ppv)
 {
 	if       (riid == IID_IUnknown)   *ppv = (IIPCVector*)this;
@@ -27,33 +27,38 @@ HRESULT STDMETHODCALLTYPE IPCVector::QueryInterface(REFIID riid, void** ppv)
     return S_OK;
 }
 
-ULONG STDMETHODCALLTYPE IPCVector::AddRef() {
-	InterlockedIncrement((LONG*)&(this->m_lRef));
+ULONG STDMETHODCALLTYPE IPCVector::AddRef()
+{
+	InterlockedIncrement((LONG*)&m_lRef);
+
 	return m_lRef;
 }
 
-ULONG STDMETHODCALLTYPE IPCVector::Release() {
-	InterlockedDecrement((LONG*)&(this->m_lRef));
-	if (m_lRef == 0) {
-		delete this;
-		return 0;
-	}
-	else
+ULONG STDMETHODCALLTYPE IPCVector::Release()
+{
+	InterlockedDecrement((LONG*)&m_lRef);
+
+	if (m_lRef > 0)
 		return m_lRef;
+
+	delete this;
+	return 0;
 }
 
-// IPCVector
-HRESULT STDMETHODCALLTYPE IPCVector::getAt(int index, int* r) {
+HRESULT STDMETHODCALLTYPE IPCVector::getAt(int index, int* r)
+{
 	*r = m_vector[index];
     return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE IPCVector::size(int* r) {
+HRESULT STDMETHODCALLTYPE IPCVector::size(int* r)
+{
 	*r = (int)m_vector.size();
     return S_OK;
 }
 
-HRESULT STDMETHODCALLTYPE IPCVector::push_back(int value) {
+HRESULT STDMETHODCALLTYPE IPCVector::push_back(int value)
+{
 	m_vector.push_back(value);
     return S_OK;
 }

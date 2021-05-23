@@ -1,0 +1,10 @@
+//import "oaidl.idl";
+import "unknwn.idl";
+
+[object, uuid(5DD52389-B1A4-4fe7-B131-0F8EF73DD175), oleautomation]
+interface IIPCVector : IUnknown
+{
+	HRESULT getAt( [in] int index, [out, retval] int* r);
+	HRESULT size( [out, retval] int* r);
+	HRESULT push_back( [in] int value);
+};

@@ -2,6 +2,8 @@
 #include "ClassFactory.h"
 #include "IPCVector.h"
 //#include "Registry.h"
+#include <assert.h>
+#include <objbase.h>
 
 ULONG g_ServerLocks = 0;
 ULONG g_Components  = 0;
@@ -9,18 +11,17 @@ ULONG g_Components  = 0;
 extern HMODULE hIPCVector;
 extern GUID CLSID_IPCVector;
 
-BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
+DWORD dwRegCO;
+
+int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
-	switch (ul_reason_for_call) {
-	case DLL_PROCESS_ATTACH:
-		hIPCVector = hModule;
-		break;
-	case DLL_THREAD_ATTACH:
-	case DLL_THREAD_DETACH:
-	case DLL_PROCESS_DETACH:
-		break;
-	}
-	return TRUE;
+	hIPCVector = (HMODULE)hInstance;
+
+	CoInitialize(NULL);
+	IPCVector* pIFace = new IPCVector();
+	HRESULT hr = CoRegisterClassObject(CLSID_IPCVector, (IUnknown*)pIFace, CLSCTX_LOCAL_SERVER, REGCLS_SINGLEUSE, &dwRegCO);
+	assert(SUCCEEDED(hr));
+	return 0;
 }
 
 STDAPI DllCanUnloadNow()
