@@ -53,7 +53,7 @@ typedef interface IIPCVector IIPCVector;
 
 
 /* header files for imported files */
-#include "oaidl.h"
+#include "unknwn.h"
 
 #ifdef __cplusplus
 extern "C"{

@@ -35,6 +35,7 @@ void CyGlobalContext::addToVector(int value)
 		bInit = true;
 	}
 	m_vector.push_back(value);
+	FAssert(m_vector[0] != 0);
 }
 
 CyGlobalContext& CyGlobalContext::getInstance()

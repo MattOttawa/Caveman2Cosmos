@@ -1,7 +1,6 @@
 #pragma once
 
-#include <objbase.h>
-#include "..\\ipc_vector\\IIPCVector.h"
+struct IIPCVector;
 
 class ipc_vector
 {
