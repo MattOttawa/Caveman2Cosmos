@@ -100,12 +100,8 @@ void CvMap::init(CvMapInitData* pInitInfo/*=NULL*/)
 	//--------------------------------
 	// Init other game data
 	gDLL->logMemState("CvMap before init plots");
-	m_pMapPlots = std::vector<CvPlot>(numPlots());
-	//m_pMapPlots.resize(numPlots());
-	//for (int i = 0; i < numPlots(); i++)
-	//{
-	//	m_pMapPlots.push_back(CvPlot());
-	//}
+	//m_pMapPlots = array<CvPlot>(numPlots());
+	m_pMapPlots.resize(numPlots());
 	for (int iX = 0; iX < getGridWidth(); iX++)
 	{
 		gDLL->callUpdater();
@@ -127,14 +123,10 @@ void CvMap::uninit()
 	SAFE_DELETE_ARRAY(m_paiNumBonusOnLand);
 
 	m_pMapPlots.clear();
-	//for (int i = 0; i < numPlots(); i++)
-	//{
-	//	m_pMapPlots.pop_back();
-	//}
 
 	m_areas.uninit();
 
-	foreach_(CvViewport* viewport, m_viewports)
+	foreach_(const CvViewport* viewport, m_viewports)
 	{
 		delete viewport;
 	}
@@ -307,7 +299,7 @@ void CvMap::setupGraphical()
 {
 	PROFILE_FUNC();
 
-	if (GC.IsGraphicsInitialized() && m_pMapPlots.size() > 0)
+	if (GC.IsGraphicsInitialized() && plotsInitialized())
 	{
 		gDLL->callUpdater();	// allow windows msgs to update
 
@@ -1124,15 +1116,8 @@ void CvMap::read(FDataStreamBase* pStream)
 
 	if (numPlots() > 0)
 	{
-		m_pMapPlots = std::vector<CvPlot>(numPlots());
+		m_pMapPlots.resize(numPlots());
 		algo::for_each(m_pMapPlots, bind(CvPlot::read, _1, pStream));
-
-		//m_pMapPlots.resize(numPlots());
-		//for (int i = 0; i < numPlots(); i++)
-		//{
-		//	m_pMapPlots.push_back(CvPlot());
-		//	m_pMapPlots[i].read(pStream);
-		//}
 	}
 
 	// call the read of the free list CvArea class allocations
@@ -1238,7 +1223,7 @@ void CvMap::afterSwitch()
 {
 	PROFILE_FUNC();
 
-	if (m_pMapPlots.size() == 0)		// if it hasn't been initialized yet...
+	if (!plotsInitialized())		// if it hasn't been initialized yet...
 	{
 		if (GC.getMapInfo(getType()).getInitialWBMap().GetLength() > 0)
 		{
@@ -1418,7 +1403,7 @@ const char* CvMap::getMapScript() const
 
 bool CvMap::plotsInitialized() const
 {
-	return m_pMapPlots.size() > 0;
+	return !m_pMapPlots.empty();
 }
 
 //
