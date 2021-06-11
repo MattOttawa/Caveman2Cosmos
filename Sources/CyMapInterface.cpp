@@ -77,10 +77,12 @@ void CyMapPythonInterface()
 		.def("sPlotByIndex", &CyMap::sPlotByIndex, python::return_value_policy<python::reference_existing_object>(), "CyPlot (iIndex) - static - get plot by iIndex")
 		.def("plot", &CyMap::plot, python::return_value_policy<python::manage_new_object>(), "CyPlot (iX,iY) - get CyPlot at (iX,iY)")
 		.def("sPlot", &CyMap::sPlot, python::return_value_policy<python::reference_existing_object>(), "CyPlot (iX,iY) - static - get CyPlot at (iX,iY)")
-		.def("getIndexAfterLastArea", &CyMap::getIndexAfterLastArea, "int () - index for handling NULL areas")
+		.def("pointToPlot", &CyMap::pointToPlot, python::return_value_policy<python::manage_new_object>())
+
 		.def("getNumAreas", &CyMap::getNumAreas, "int () - total areas")
 		.def("getNumLandAreas", &CyMap::getNumLandAreas, "int () - total land areas")
 		.def("getArea", &CyMap::getArea, python::return_value_policy<python::manage_new_object>(), "CyArea (iID) - get CyArea at iID")
+		.def("areas", &CyMap::areas)
 		.def("recalculateAreas", &CyMap::recalculateAreas, "void () - Recalculates the areaID for each plot. Should be preceded by CyMap.setPlotTypes(...)")
 		.def("resetPathDistance", &CyMap::resetPathDistance, "void ()")
 
@@ -98,5 +100,5 @@ void CyMapPythonInterface()
 
 		// Super Forts *canal* *choke*
 		.def("calculateCanalAndChokePoints", &CyMap::calculateCanalAndChokePoints, "void ()")
-		;
+	;
 }

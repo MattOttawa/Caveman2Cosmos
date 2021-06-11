@@ -360,8 +360,7 @@ void CvMap::setAllPlotTypes(PlotTypes ePlotType)
 // XXX generalize these funcs? (macro?)
 void CvMap::doTurn()
 {
-	MEMORY_TRACE_FUNCTION();
-	PROFILE("CvMap::doTurn()")
+	PROFILE("CvMap::doTurn()");
 
 	algo::for_each(plots(), bind(CvPlot::doTurn, _1));
 }
@@ -541,7 +540,7 @@ CvPlot* CvMap::syncRandPlot(int iFlags, int iArea, int iMinUnitDistance, int iTi
 			bool bValid = true;
 
 			if (iMinUnitDistance != -1
-			&& algo::any_of(CvPlot::rect(pTestPlot->getX(), pTestPlot->getY(), iMinUnitDistance, iMinUnitDistance), bind(CvPlot::isUnit, _1)))
+			&& algo::any_of(pTestPlot->rect(iMinUnitDistance, iMinUnitDistance), bind(CvPlot::isUnit, _1)))
 			{
 				bValid = false;
 			}
@@ -1465,7 +1464,6 @@ void CvMap::toggleCitiesDisplay()
 			}
 		}
 	}
-	MEMORY_TRACK_EXEMPT();
 	AddDLLMessage(
 		GC.getGame().getActivePlayer(), true, GC.getEVENT_MESSAGE_TIME(),
 		m_bCitiesDisplayed ? "City entities visible" : "City entities hidden",
@@ -1601,7 +1599,6 @@ void CvMap::toggleUnitsDisplay()
 	if (m_bUnitsDisplayed)
 		szBuffer = "Unit entities created";
 			
-	MEMORY_TRACK_EXEMPT();
 
 	AddDLLMessage(GC.getGame().getActivePlayer(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSED", MESSAGE_TYPE_INFO);
 }

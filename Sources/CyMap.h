@@ -82,10 +82,10 @@ public:
 	CyPlot* plot(int iX, int iY);
 	CyPlot* sPlot(int iX, int iY) ;
 
-	int getIndexAfterLastArea();
 	int getNumAreas();
 	int getNumLandAreas();
 	CyArea* getArea(int iID);
+	python::list areas() const;
 	void recalculateAreas();
 	void resetPathDistance();
 

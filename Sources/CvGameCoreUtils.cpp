@@ -3,6 +3,7 @@
 #include "CvCity.h"
 #include "CvGlobals.h"
 #include "CvInfos.h"
+#include "CvImprovementInfo.h"
 #include "CvMap.h"
 #include "CvMapExternal.h"
 #include "CvPlayerAI.h"
@@ -466,32 +467,17 @@ bool isTechRequiredForUnit(TechTypes eTech, UnitTypes eUnit)
 		return true;
 	}
 
-	for (int iI = 0; iI < GC.getNUM_UNIT_AND_TECH_PREREQS(); iI++)
-	{
-		if (info.getPrereqAndTechs(iI) == eTech)
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return algo::contains(info.getPrereqAndTechs(), eTech);
 }
 
 bool isTechRequiredForBuilding(TechTypes eTech, BuildingTypes eBuilding)
 {
 	const CvBuildingInfo& info = GC.getBuildingInfo(eBuilding);
 
-	if (info.getPrereqAndTech() == eTech)
+	if (info.getPrereqAndTech() == eTech
+	|| algo::contains(info.getPrereqAndTechs(), eTech))
 	{
 		return true;
-	}
-
-	for (int iI = 0; iI < GC.getNUM_BUILDING_AND_TECH_PREREQS(); iI++)
-	{
-		if (info.getPrereqAndTechs(iI) == eTech)
-		{
-			return true;
-		}
 	}
 
 	const SpecialBuildingTypes eSpecial = (SpecialBuildingTypes)info.getSpecialBuildingType();
@@ -549,12 +535,12 @@ bool isNationalWonderGroup(BuildingTypes building)
 
 bool isNationalWonderGroupSpecialBuilding(SpecialBuildingTypes eSpecialBuilding)
 {
-	return (GC.getSpecialBuildingInfo(eSpecialBuilding).getMaxPlayerInstances() != -1);
+	return GC.getSpecialBuildingInfo(eSpecialBuilding).getMaxPlayerInstances() != -1;
 }
 
 bool isLimitedWonder(BuildingTypes eBuilding)
 {
-	return (isWorldWonder(eBuilding) || isTeamWonder(eBuilding) || isNationalWonder(eBuilding));
+	return isWorldWonder(eBuilding) || isTeamWonder(eBuilding) || isNationalWonder(eBuilding);
 }
 
 int limitedWonderLimit(BuildingTypes eBuilding)
@@ -1182,7 +1168,6 @@ float getCombatOddsSpecific(const CvUnit* pAttacker, const CvUnit* pDefender, in
 	int iRepelZero = (iRepelwithUnyielding < 0 ? 0 : iRepelwithUnyielding);
 	int iRepelTotal = (iRepelZero > 100 ? 100 : iRepelZero);
 	int iFortifylessOverrun = iDefenderFortifyTotal - iAttackerOverrun;
-	int iFortifyTotal = (iFortifylessOverrun < 0 ? 0 : iFortifylessOverrun);
 
 	y = iRepelTotal;
 	z = iRepelTotal;
@@ -1463,8 +1448,8 @@ TechTypes getDiscoveryTech(UnitTypes eUnit, PlayerTypes ePlayer)
 	if ( itr == g_discoveryTechCache[ePlayer].end() )
 #endif // DISCOVERY_TECH_CACHE
 	{
-		CvPlayerAI& kPlayer = GET_PLAYER(ePlayer);
-		CvTeam& kTeam = GET_TEAM(kPlayer.getTeam());
+		const CvPlayerAI& kPlayer = GET_PLAYER(ePlayer);
+		const CvTeam& kTeam = GET_TEAM(kPlayer.getTeam());
 
 		int iBestValue = 0;
 
@@ -1524,7 +1509,7 @@ TechTypes getDiscoveryTech(UnitTypes eUnit, PlayerTypes ePlayer)
 						}
 					}
 
-					if (kPlayer.AI_techValue((TechTypes)iI, 1, true, kPlayer.isHuman(), &paiBonusClassRevealed[0], &paiBonusClassUnrevealed[0], &paiBonusClassHave[0]) > 1)
+					if (kPlayer.AI_techValue((TechTypes)iI, 1, true, kPlayer.isHuman(), paiBonusClassRevealed, paiBonusClassUnrevealed, paiBonusClassHave) > 1)
 					{
 						iBestValue = iValue;
 						eBestTech = ((TechTypes)iI);
@@ -1987,10 +1972,12 @@ bool PUF_isMissionary(const CvUnit* pUnit, int /*ReligionTypes*/ iData1, int /*P
 /************************************************************************************************/
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 bool PUF_isAfflicted(const CvUnit* pUnit, int /*PromotionLineTypes*/ iData1, int iData2, const CvUnit* pThis)
 {
 	return pUnit->hasAfflictionLine((PromotionLineTypes)iData1);
 }
+#endif
 
 bool PUF_isTunneledEnemy(const CvUnit* pUnit, int iData1, int iData2, const CvUnit* pThis)
 {
@@ -2336,7 +2323,6 @@ int pathCost(FAStarNode* parent, FAStarNode* node, int data, const void* pointer
 	const CvPlot* pToPlot = GC.getMapExternal().plot(node->m_iX, node->m_iY);
 	FAssert(pToPlot != NULL);
 
-	const CvSelectionGroup* pSelectionGroup = ((const CvSelectionGroup*)pointer);
 #ifdef USE_OLD_PATH_GENERATOR
 	PROFILE_FUNC();
 
@@ -2988,8 +2974,6 @@ int	NewPathCostFunc(const CvPathGeneratorBase* generator, const CvSelectionGroup
 	FAssert(pToPlot != NULL);
 
 	int iWorstCost = MAX_INT;
-	int iWorstMovesLeft = MAX_INT;
-	int iWorstMax = MAX_INT;
 
 	int iWorstMovement = MAX_INT;
 	int iLargestBaseCost = -1;
