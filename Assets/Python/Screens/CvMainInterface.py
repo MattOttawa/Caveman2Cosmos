@@ -1821,7 +1821,7 @@ class CvMainInterface:
 			else:
 				bShowHealth = CyUnit.canFight()
 			if bShowHealth:
-				fHP = CyUnit.currHitPoints() / float(CyUnit.maxHitPoints())
+				fHP = CyUnit.getHP() / float(CyUnit.getMaxHP())
 			else:
 				fHP = 0
 
@@ -2034,7 +2034,9 @@ class CvMainInterface:
 		if InCity:
 			iTab = self.iCityTab
 			if self.bUpdateCityTab:
-				self.updateCityTab(screen, iTab)
+				if self.iCityTab < 0:
+					print "[WARN] self.bUpdateCityTab unnecessarily set to 'True'"
+				else: self.updateCityTab(screen, iTab)
 				self.bUpdateCityTab = False
 			if self.bBuildWorkQueue:
 				self.buildCityWorkQueue(screen, InCity)
@@ -3935,7 +3937,7 @@ class CvMainInterface:
 
 						szTxt2 = ""
 						if CyUnit.isHurt():
-							fPercentHP = float(CyUnit.currHitPoints()) / CyUnit.maxHitPoints()
+							fPercentHP = float(CyUnit.getHP()) / CyUnit.getMaxHP()
 							fStrength = strengthBase * fPercentHP
 							szTxt2 += self.floatToString(fStrength) + "/"
 
@@ -5260,7 +5262,7 @@ class CvMainInterface:
 						y = self.yPlotListTT
 						self.dataTT = [bCtrl, bShift, bAlt, "spcfc", CyUnit]
 					elif TYPE == "Health":
-						szTxt = "HP: %d/%d" %(CyUnit.currHitPoints(), CyUnit.maxHitPoints())
+						szTxt = "HP: %d/%d" %(CyUnit.getHP(), CyUnit.getMaxHP())
 						x = -1
 						y = -1
 					else: return
@@ -5470,7 +5472,7 @@ class CvMainInterface:
 							szTxt = CvBuildingInfo.getDescription()
 							iSpeci = CvBuildingInfo.getSpecialBuildingType()
 							if iSpeci > -1:
-								self.bUpdateCityTab = True
+								self.bUpdateCityTab = self.iCityTab > -1
 							else:
 								screen.hide(NAME + str(iType))
 
@@ -5512,7 +5514,8 @@ class CvMainInterface:
 							if InCity.WorkQueue:
 								if self.bFreshQueue:
 									screen.show(InCity.WorkQueue[0][0] + "CityWork" + str(InCity.WorkQueue[0][1]))
-								else: self.bUpdateCityTab = True
+								elif self.iCityTab > -1:
+									self.bUpdateCityTab = True
 								screen.deleteWidget(ROW + InCity.WorkQueue[0][2])
 								self.InCity.WorkQueue[0] = [szName, iType, szRow]
 							else:
@@ -5540,12 +5543,12 @@ class CvMainInterface:
 								CyPlayer = InCity.CyPlayer
 								CyTeam = InCity.CyTeam
 								iTeamMaking = CyTeam.getUnitMaking(iType)
-								if GAME.isUnitMaxedOut(iType, iTeamMaking):
-									self.bUpdateCityTab = True
-								elif CyTeam.isUnitMaxedOut(iType, iTeamMaking):
-									self.bUpdateCityTab = True
-								elif CyPlayer.isUnitMaxedOut(iType, CyPlayer.getUnitMaking(iType)):
-									self.bUpdateCityTab = True
+								if (
+									GAME.isUnitMaxedOut(iType, iTeamMaking)
+								or	CyTeam.isUnitMaxedOut(iType, iTeamMaking)
+								or	CyPlayer.isUnitMaxedOut(iType, CyPlayer.getUnitMaking(iType))
+								): self.bUpdateCityTab = True
+
 						elif TYPE == "BUILDING":
 							if iTab in (1, 2):
 								self.bUpdateCityTab = True
