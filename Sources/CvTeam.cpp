@@ -5470,7 +5470,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 							if (pCity != NULL)
 							{
 								AddDLLMessage(
-									pLoopPlot->getOwner(), false, GC.getEVENT_MESSAGE_TIME(),
+									pLoopPlot.getOwner(), false, GC.getEVENT_MESSAGE_TIME(),
 									gDLL->getText("TXT_KEY_MISC_YOU_DISCOVERED_BONUS", GC.getBonusInfo(eBonus).getTextKeyWide(), pCity->getNameKey()),
 									"AS2D_DISCOVERBONUS", MESSAGE_TYPE_INFO, GC.getBonusInfo(eBonus).getButton(),
 									GC.getCOLOR_WHITE(), pLoopPlot.getX(), pLoopPlot.getY(), true, true

@@ -2202,7 +2202,7 @@ void CvUnitAI::AI_workerMove()
 
 	if (pCity == NULL || pCity->AI_getWorkersNeeded() == 0 || pCity->AI_getWorkersHave() > pCity->AI_getWorkersNeeded() + 1)
 	{
-		if (pBestBonusPlot != NULL && iBestBonusValue >= 15 && AI_improvePlot(pBestBonusPlot, eBestBonusBuild))
+		if (pBestBonusPlot != NULL && iBestBonusValue >= 15 && AI_improvePlot(*pBestBonusPlot, eBestBonusBuild))
 		{
 			return;
 		}
@@ -19092,7 +19092,7 @@ bool CvUnitAI::AI_pirateBlockade()
 				}
 				if (iBestHostileMoves > 0)
 				{
-					foreach_(const CvPlot* pRangePlot, pLoopPlot->rect(iBestHostileMoves, iBestHostileMoves))
+					foreach_(const CvPlot* pRangePlot, pLoopPlot.rect(iBestHostileMoves, iBestHostileMoves))
 					{
 						aiDeathZone[GC.getMap().plotNum(pRangePlot->getX(), pRangePlot->getY())]++;
 					}
@@ -19150,7 +19150,7 @@ bool CvUnitAI::AI_pirateBlockade()
 						int iBlockadedCount = 0;
 						int iPopulationValue = 0;
 						const int iRange = GC.getSHIP_BLOCKADE_RANGE() - 1;
-						foreach_(const CvPlot* pRangePlot, pLoopPlot->rect(iRange, iRange))
+						foreach_(const CvPlot* pRangePlot, pLoopPlot.rect(iRange, iRange))
 						{
 							bool bPlotBlockaded = false;
 							if (pRangePlot->isWater() && pRangePlot->isOwned() && isEnemy(pRangePlot->getTeam(), &pLoopPlot))

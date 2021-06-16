@@ -748,7 +748,7 @@ int CvMap::getMapFractalFlags() const
 //"Check plots for wetlands or seaWater.  Returns true if found"
 bool CvMap::findWater(const CvPlot& pPlot, int iRange) const
 {
-	return algo::any_of(CvPlot::rect(pPlot.getX(), pPlot.getY(), iRange, iRange),
+	return algo::any_of(pPlot.rect(iRange, iRange),
 		bind(CvPlot::isFreshWater, _1) || bind(CvPlot::isWater, _1));
 }
 
