@@ -137,13 +137,10 @@ class CvPlot
 friend CvPathPlotInfoStore;
 public:
 	CvPlot();
-	//CvPlot(const CvPlot& plot);
 	virtual ~CvPlot();
 
 	CvGameObjectPlot* getGameObject() { return &m_GameObject; };
 	const CvGameObjectPlot* getGameObject() const { return &m_GameObject; };
-
-	//CvPlot& operator=(const CvPlot& other);
 
 	// Comparison operators
 	// Use address identity for now (more than one map means x/y compare wouldn't work)
