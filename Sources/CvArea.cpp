@@ -407,10 +407,9 @@ int CvArea::countCoastalLand() const
 	{
 		return 0;
 	}
-	return algo::count_if(GC.getMap().plots()
-		| filtered(bind(CvPlot::getArea, _1) == getID())
-		, bind(CvPlot::isCoastalLand, _1, -1)
-	);
+	return algo::count_if(GC.getMap().plots(),
+		bind(CvPlot::getArea, _1) == getID() &&
+		bind(CvPlot::isCoastalLand, _1, -1));
 }
 
 
@@ -866,10 +865,10 @@ int CvArea::getNumRevealedFeatureTiles(TeamTypes eTeam, FeatureTypes eFeature) c
 	std::map<FeatureTypes, int>::const_iterator	itr = m_plotFeatureCountCache.find(eFeature);
 	if (itr == m_plotFeatureCountCache.end())
 	{
-		const int iResult = algo::count_if(GC.getMap().plots()
-			| filtered(bind(CvPlot::area, _1) == this)
-			| filtered(bind(CvPlot::isRevealed, _1, eTeam, false))
-			, bind(CvPlot::getFeatureType, _1) == eFeature
+		const int iResult = algo::count_if(GC.getMap().plots(),
+			bind(CvPlot::area, _1) == this &&
+			bind(CvPlot::isRevealed, _1, eTeam, false) &&
+			bind(CvPlot::getFeatureType, _1) == eFeature
 		);
 
 		m_plotFeatureCountCache.insert(std::make_pair(eFeature, iResult));
@@ -894,10 +893,10 @@ int CvArea::getNumRevealedTerrainTiles(TeamTypes eTeam, TerrainTypes eTerrain) c
 	std::map<TerrainTypes, int>::const_iterator	itr = m_plotTerrainCountCache.find(eTerrain);
 	if (itr == m_plotTerrainCountCache.end())
 	{
-		const int iResult = algo::count_if(GC.getMap().plots()
-			| filtered(bind(CvPlot::area, _1) == this)
-			| filtered(bind(CvPlot::isRevealed, _1, eTeam, false))
-			, bind(CvPlot::getTerrainType, _1) == eTerrain
+		const int iResult = algo::count_if(GC.getMap().plots(),
+			bind(CvPlot::area, _1) == this &&
+			bind(CvPlot::isRevealed, _1, eTeam, false) &&
+			bind(CvPlot::getTerrainType, _1) == eTerrain
 		);
 
 		m_plotTerrainCountCache.insert(std::make_pair(eTerrain, iResult));
@@ -1124,7 +1123,6 @@ void CvArea::changeNumImprovements(ImprovementTypes eImprovement, int iChange)
 // Koshling - record rolling history of the last N turns of our combat losses and what we lost to
 void CvArea::recordCombatDeath(PlayerTypes ePlayer, UnitTypes lostUnitType, UnitTypes lostToUnitType)
 {
-
 	CombatResultRecord record;
 
 	record.eLoser = ePlayer;

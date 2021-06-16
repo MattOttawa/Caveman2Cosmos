@@ -2185,7 +2185,7 @@ bool CvCity::isPlotTrainable(UnitTypes eUnit, bool bContinue, bool bTestVisible)
 			if (!bFound) return false;
 		}
 
-		if (kUnit.getTrainCondition() && !kUnit.getTrainCondition()->evaluate(const_cast<CvGameObjectCity*>(getGameObject())))
+		if (kUnit.getTrainCondition() && !kUnit.getTrainCondition()->evaluate(getGameObject()))
 		{
 			return false;
 		}
