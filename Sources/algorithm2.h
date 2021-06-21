@@ -337,14 +337,9 @@ namespace algo {
 	// test if an element exists in a range
 	template< class _Range, class Item_ >
 	bool contains(const _Range& rng, const Item_& item) {
-		typedef typename bst::range_iterator<_Range>::type itr;
-		itr _First = bst::begin(rng),
-			_Last = bst::end(rng);
-		for (; _First != _Last; ++_First) {
-			if (*_First == item) {
+		foreach_(const Item_& element, rng)
+			if (element == item)
 				return true;
-			}
-		}
 		return false;
 	}
 
@@ -452,7 +447,7 @@ namespace algo {
 	}
 }
 
-//namespace std {
+namespace std {
 //	// FUNCTION TEMPLATE all_of
 //	template <class _InIt, class _Pr>
 //	bool all_of(_InIt _First, _InIt _Last, _Pr _Pred) { // test if all elements satisfy _Pred
@@ -500,6 +495,6 @@ namespace algo {
 //		}
 //		return _Dest;
 //	}
-//};
+}
 
 #endif // algorithm2_h__

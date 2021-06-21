@@ -11,14 +11,17 @@
 #ifndef CV_PROPERTIES_H
 #define CV_PROPERTIES_H
 
-class CvXMLLoadUtility;
-class CvGame;
-class CvTeam;
-class CvPlayer;
+#include "CheckSum.h"
+#include "CvEnums.h"
+
 class CvCity;
-class CvUnit;
-class CvPlot;
+class CvGame;
 class CvGameObject;
+class CvPlayer;
+class CvPlot;
+class CvTeam;
+class CvUnit;
+class CvXMLLoadUtility;
 
 struct PropertyBuilding
 {
@@ -96,9 +99,9 @@ public:
 	void write(FDataStreamBase* pStream);
 	void writeWrapper(FDataStreamBase* pStream);
 	bool read(CvXMLLoadUtility* pXML, const wchar_t* szTagName = L"Properties");
-	void copyNonDefaults(const CvProperties* pProp, CvXMLLoadUtility* pXML);
+	void copyNonDefaults(const CvProperties* pProp);
 
-	void getCheckSum(unsigned int& iSum) const;
+	void getCheckSum(uint32_t& iSum) const;
 
 private:
 	friend void CyPropertiesPythonInterface();
@@ -116,7 +119,7 @@ private:
 		PropertyValue(PropertyTypes prop = NO_PROPERTY, int value = 0) : prop(prop), value(value) {}
 		PropertyTypes prop;
 		int value;
-		friend inline void CheckSum(unsigned int& iSum, const PropertyValue& propValue)
+		friend inline void CheckSum(uint32_t& iSum, const PropertyValue& propValue)
 		{
 			CheckSum(iSum, propValue.prop);
 			CheckSum(iSum, propValue.value);

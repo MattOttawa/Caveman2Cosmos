@@ -1,7 +1,14 @@
 // unitAI.cpp
 
 #include "CvGameCoreDLL.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
+#include "CvMap.h"
+#include "CvPathGenerator.h"
 #include "CvPlayerAI.h"
+#include "CvPlot.h"
+#include "CvSelectionGroup.h"
+#include "CvUnit.h"
 
 CvContractBroker::CvContractBroker() : m_eOwner(NO_PLAYER)
 {
@@ -76,7 +83,6 @@ void	CvContractBroker::lookingForWork(const CvUnit* pUnit, int iMinPriority)
 	unitDetails.iMatchedToRequestSeqAnyPlot = -1;
 
 	{
-		MEMORY_TRACK_EXEMPT();
 	
 		m_advertisingUnits.push_back(unitDetails);
 	}
@@ -105,14 +111,13 @@ void	CvContractBroker::advertiseWork(int iPriority, unitCapabilities eUnitFlags,
 	PROFILE_FUNC();
 
 	workRequest	newRequest;
-	int			iLoop;
 	int			iUnitStrengthTimes100 = (iUnitStrength == -1 ? -1 : iUnitStrength*100);
 
 	//	First check that there are not already units on the way to meet this need
 	//	else concurrent builds will get queued while they are in transit
-	for(CvSelectionGroup* pLoopSelectionGroup = GET_PLAYER(m_eOwner).firstSelectionGroup(&iLoop); pLoopSelectionGroup; pLoopSelectionGroup = GET_PLAYER(m_eOwner).nextSelectionGroup(&iLoop))
+	foreach_(const CvSelectionGroup* pLoopSelectionGroup, GET_PLAYER(m_eOwner).groups())
 	{
-		CvPlot* pMissionPlot = pLoopSelectionGroup->AI_getMissionAIPlot();
+		const CvPlot* pMissionPlot = pLoopSelectionGroup->AI_getMissionAIPlot();
 
 		if ( pMissionPlot == GC.getMap().plot(iAtX, iAtY) && !pLoopSelectionGroup->atPlot(pMissionPlot)
 			&& pLoopSelectionGroup->AI_getMissionAIType() == (pJoinUnit == NULL ? MISSIONAI_CONTRACT : MISSIONAI_CONTRACT_UNIT) &&
@@ -194,7 +199,6 @@ void	CvContractBroker::advertiseWork(int iPriority, unitCapabilities eUnitFlags,
 	}
 
 	{
-		MEMORY_TRACK_EXEMPT();
 
 		m_workRequests.insert(insertAt, newRequest);
 	}
@@ -214,7 +218,6 @@ void CvContractBroker::advertiseTender(const CvCity* pCity, int iMinPriority)
 	newTender.iCityId			= pCity->getID();
 
 	{
-		MEMORY_TRACK_EXEMPT();
 
 		m_advertisingTenders.push_back(newTender);
 	}
@@ -337,7 +340,7 @@ void CvContractBroker::finalizeTenderContracts()
 								tenderAllocations[iTenderAllocationKey] = 0;
 							}
 
-							FAssert(iTendersAlreadyInProcess >= 0);
+							FASSERT_NOT_NEGATIVE(iTendersAlreadyInProcess)
 
 							if ( iTendersAlreadyInProcess <= 0 )
 							{

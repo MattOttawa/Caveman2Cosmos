@@ -59,10 +59,8 @@ def preGameStart():
 	CvScreensInterface.showMainInterface()
 
 def recalculateModifiers():
-	import BugGameUtils
-	BugGameUtils.getDispatcher().getBaseUtils().reset()
-	#import CvEventInterface
-	#CvEventInterface.getEventManager().reset()
+	import CvRandomEventInterface
+	CvRandomEventInterface.recalculateModifiers()
 
 def onPbemSend(argsList):
 	import smtplib, MimeWriter, base64, StringIO
@@ -176,18 +174,9 @@ def getOptionINT(argsList):
 	except:
 		return default
 
-def gameStartSave():
-	autoSave("[Start]")
-
-def gameEndSave():
-	autoSave("[End]")
-
 def gameExitSave():
-	autoSave("[Exit]")
-
-def autoSave(prefix):
 	import AutoSave
-	AutoSave.autoSave(prefix)
+	AutoSave.autoSave("[Exit]")
 
 # Referenced by the BtS exe.
 def getConsoleMacro(argsList): return ""

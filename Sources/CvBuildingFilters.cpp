@@ -7,7 +7,13 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvBuildingFilters.h"
 #include "CvBuildingInfo.h"
+#include "CvBugOptions.h"
+#include "CvCity.h"
+#include "CvGameAI.h"
+#include "CvGlobals.h"
+#include "CvInfos.h"
 #include "CvPlayerAI.h"
 
 void BuildingFilterBase::Activate()
@@ -102,19 +108,15 @@ bool BuildingFilterIsYield::isFilteredBuilding(const CvPlayer *pPlayer, CvCity *
 
 bool BuildingFilterIsHappiness::isFilteredBuilding(const CvPlayer *pPlayer, CvCity *pCity, BuildingTypes eBuilding) const
 {
-	//TB Note: isn't the following checking only buildings already built?
 	if (pCity)
 	{
 		return pCity->getAdditionalHappinessByBuilding(eBuilding) > 0;
 	}
 	const CvBuildingInfo& buildingInfo = GC.getBuildingInfo(eBuilding);
-	if (buildingInfo.getNumTechHappinessTypes() > 0)
+	foreach_(const TechModifier& modifier, buildingInfo.getTechHappinessChanges())
 	{
-		for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
-		{
-			if (buildingInfo.getTechHappinessType(iI) > 0)
-				return true;
-		}
+		if (modifier.second > 0)
+			return true;
 	}
 	return buildingInfo.getHappiness() > 0
 		|| buildingInfo.getAreaHappiness() > 0
@@ -128,13 +130,10 @@ bool BuildingFilterIsHealth::isFilteredBuilding(const CvPlayer *pPlayer, CvCity 
 		return pCity->getAdditionalHealthByBuilding(eBuilding) > 0;
 	}
 	const CvBuildingInfo& buildingInfo = GC.getBuildingInfo(eBuilding);
-	if (buildingInfo.getNumTechHealthTypes() > 0)
+	foreach_(const TechModifier& modifier, buildingInfo.getTechHealthChanges())
 	{
-		for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
-		{
-			if (buildingInfo.getTechHealthType(iI) > 0)
-				return true;
-		}
+		if (modifier.second > 0)
+			return true;
 	}
 	return buildingInfo.getHealth() > 0
 		|| buildingInfo.getAreaHealth() > 0
@@ -148,13 +147,10 @@ bool BuildingFilterIsUnhappiness::isFilteredBuilding(const CvPlayer *pPlayer, Cv
 		return pCity->getAdditionalHappinessByBuilding(eBuilding) < 0;
 	}
 	const CvBuildingInfo& buildingInfo = GC.getBuildingInfo(eBuilding);
-	if (buildingInfo.getNumTechHappinessTypes() > 0)
+	foreach_(const TechModifier& modifier, buildingInfo.getTechHappinessChanges())
 	{
-		for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
-		{
-			if (buildingInfo.getTechHappinessType(iI) < 0)
-				return true;
-		}
+		if (modifier.second < 0)
+			return true;
 	}
 	return buildingInfo.getHappiness() < 0
 		|| buildingInfo.getAreaHappiness() < 0
@@ -168,13 +164,10 @@ bool BuildingFilterIsUnhealthiness::isFilteredBuilding(const CvPlayer *pPlayer, 
 		return pCity->getAdditionalHealthByBuilding(eBuilding) < 0;
 	}
 	const CvBuildingInfo& buildingInfo = GC.getBuildingInfo(eBuilding);
-	if (buildingInfo.getNumTechHealthTypes() > 0)
+	foreach_(const TechModifier& modifier, buildingInfo.getTechHealthChanges())
 	{
-		for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
-		{
-			if (buildingInfo.getTechHealthType(iI) < 0)
-				return true;
-		}
+		if (modifier.second < 0)
+			return true;
 	}
 	return buildingInfo.getHealth() < 0
 		|| buildingInfo.getAreaHealth() < 0
@@ -191,7 +184,7 @@ bool BuildingFilterIsMilitary::isFilteredBuilding(const CvPlayer *pPlayer, CvCit
 		|| buildingInfo.getFreePromotion_3() != NO_PROMOTION
 		|| buildingInfo.getNumUnitCombatRetrainTypes() > 0
 		|| buildingInfo.getNumUnitCombatProdModifiers() > 0
-		|| buildingInfo.getNumFreePromoTypes() > 0
+		|| !buildingInfo.getFreePromoTypes().empty()
 		|| buildingInfo.getNumUnitCombatOngoingTrainingDurations() > 0
 		|| buildingInfo.isAnyUnitCombatFreeExperience()
 		|| buildingInfo.isAnyDomainFreeExperience();
@@ -205,7 +198,7 @@ bool BuildingFilterIsCityDefense::isFilteredBuilding(const CvPlayer *pPlayer, Cv
 		if (buildingInfo.getLocalDynamicDefense() > 0)
 			return true;
 	}
-
+#ifdef STRENGTH_IN_NUMBERS
 	if (GC.getGame().isOption(GAMEOPTION_STRENGTH_IN_NUMBERS))
 	{
 		if(buildingInfo.getFrontSupportPercentModifier() > 0
@@ -217,6 +210,7 @@ bool BuildingFilterIsCityDefense::isFilteredBuilding(const CvPlayer *pPlayer, Cv
 			return true;
 		}
 	}
+#endif
 	return buildingInfo.getDefenseModifier() > 0 
 		|| buildingInfo.getAllCityDefenseModifier() > 0
 		|| buildingInfo.getAdjacentDamagePercent() > 0 
@@ -241,26 +235,23 @@ bool BuildingFilterIsProperty::isFilteredBuilding(const CvPlayer *pPlayer, CvCit
 		return true;
 
 	const CvPropertyManipulators* pMani = kInfo.getPropertyManipulators();
-	int iNum = pMani->getNumSources();
-	for (int i=0; i<iNum; i++)
+	foreach_(const CvPropertySource* pSource, pMani->getSources())
 	{
-		if (pMani->getSource(i)->getProperty() == m_eProperty)
+		if (pSource->getProperty() == m_eProperty)
 			return true;
 	}
 
-	iNum = pMani->getNumInteractions();
-	for (int i=0; i<iNum; i++)
+	foreach_(const CvPropertyInteraction* pInteraction, pMani->getInteractions())
 	{
-		if (pMani->getInteraction(i)->getSourceProperty() == m_eProperty)
+		if (pInteraction->getSourceProperty() == m_eProperty)
 			return true;
-		if (pMani->getInteraction(i)->getTargetProperty() == m_eProperty)
+		if (pInteraction->getTargetProperty() == m_eProperty)
 			return true;
 	}
 
-	iNum = pMani->getNumPropagators();
-	for (int i=0; i<iNum; i++)
+	foreach_(const CvPropertyPropagator* pPropagator, pMani->getPropagators())
 	{
-		if (pMani->getPropagator(i)->getProperty() == m_eProperty)
+		if (pPropagator->getProperty() == m_eProperty)
 			return true;
 	}
 
@@ -305,14 +296,14 @@ void BuildingFilterList::init()
 	m_apBuildingFilters[BUILDING_FILTER_SHOW_CITY_DEFENSE] = new BuildingFilterIsCityDefense();
 	m_apBuildingFilters[BUILDING_FILTER_HIDE_UNHAPPINESS] = new BuildingFilterIsUnhappiness(true);
 	m_apBuildingFilters[BUILDING_FILTER_HIDE_UNHEALTHINESS] = new BuildingFilterIsUnhealthiness(true);
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_CRIME] = new BuildingFilterIsProperty(GC.getPROPERTY_CRIME());
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_FLAMMABILITY] = new BuildingFilterIsProperty(GC.getPROPERTY_FLAMMABILITY());
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_EDUCATION] = new BuildingFilterIsProperty(GC.getPROPERTY_EDUCATION());
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_DISEASE] = new BuildingFilterIsProperty(GC.getPROPERTY_DISEASE());
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_AIR_POLLUTION] = new BuildingFilterIsProperty(GC.getPROPERTY_AIR_POLLUTION());
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_WATER_POLLUTION] = new BuildingFilterIsProperty(GC.getPROPERTY_WATER_POLLUTION());
-	m_apBuildingFilters[BUILDING_FILTER_SHOW_TOURISM] = new BuildingFilterIsProperty(GC.getPROPERTY_TOURISM());
-	m_apBuildingFilters[BUILDING_FILTER_HIDE_UNBUILDABLE]->setActive(getBugOptionBOOL("RoMSettings__HideUnconstructableBuildings", false));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_CRIME] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_CRIME"));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_FLAMMABILITY] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_FLAMMABILITY"));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_EDUCATION] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_EDUCATION"));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_DISEASE] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_DISEASE"));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_AIR_POLLUTION] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_AIR_POLLUTION"));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_WATER_POLLUTION] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_WATER_POLLUTION"));
+	m_apBuildingFilters[BUILDING_FILTER_SHOW_TOURISM] = new BuildingFilterIsProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_TOURISM"));
+	m_apBuildingFilters[BUILDING_FILTER_HIDE_UNBUILDABLE]->setActive(getBugOptionBOOL("CityScreen__HideUnconstructableBuildings", false));
 }
 
 BuildingFilterList::~BuildingFilterList()

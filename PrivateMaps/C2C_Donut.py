@@ -8,12 +8,11 @@
 #
 
 from CvPythonExtensions import *
-import CvUtil
 import CvMapGeneratorUtil
 from math import sqrt
-from CvMapGeneratorUtil import FractalWorld
-from CvMapGeneratorUtil import TerrainGenerator
-from CvMapGeneratorUtil import FeatureGenerator
+#from CvMapGeneratorUtil import FractalWorld
+#from CvMapGeneratorUtil import TerrainGenerator
+#from CvMapGeneratorUtil import FeatureGenerator
 #from CvMapGeneratorUtil import BonusBalancer
 
 #balancer = BonusBalancer()
@@ -260,14 +259,14 @@ def generateTerrainTypes():
 class DonutFeatureGenerator(CvMapGeneratorUtil.FeatureGenerator):
 	def addIceAtPlot(self, pPlot, iX, iY, lat):
 		# We don' need no steeking ice. M'kay? Alrighty then.
-		ice = 0
+		return
 		
 	def addJunglesAtPlot(self, pPlot, iX, iY, lat):
 		if (CyMap().getCustomMapOption(1) == 1): pass #No Jungles option
 		else: #Normal Jungles
 			if pPlot.canHaveFeature(self.featureJungle):
 				iJungleHeight = self.jungles.getHeight(iX, iY)
-				if self.iJungleTop >= iJungleHeight >= self.iJungleBottom + (self.iJungleTop - self.iJungleBottom)*self.gc.getClimateInfo(self.map.getClimate()).getJungleLatitude()*lat:
+				if self.iJungleTop >= iJungleHeight >= self.iJungleBottom + (self.iJungleTop - self.iJungleBottom)*self.GC.getClimateInfo(self.map.getClimate()).getJungleLatitude()*lat:
 					pPlot.setFeatureType(self.featureJungle, -1)
 
 def addFeatures():
@@ -280,15 +279,9 @@ def findStartingPlot(argsList):
 	[playerID] = argsList
 
 	def isValid(playerID, x, y):
-		global isTeamGame
-		map = CyMap()
-		pPlot = map.plot(x, y)
+		pWaterArea = CyMap().plot(x, y).waterArea()
+		return pWaterArea is not None and not pWaterArea.isLake()
 
-		pWaterArea = pPlot.waterArea()
-		if (pWaterArea.isNone()):
-			return false
-		return not pWaterArea.isLake()
-	
 	return CvMapGeneratorUtil.findStartingPlot(playerID, isValid)
 
 def afterGeneration():

@@ -10,17 +10,17 @@ def toggleDebugMode():
 	bDebugMode = not bDebugMode
 	CyInterface().addImmediateMessage("Python Debug Mode: %s" % bDebugMode, "AS2D_ERROR")
 
+def isAnyDebugMode():
+	return bDebugMode or GC.getGame().isDebugMode()
+
 class DebugUtils:
 	def __init__(self):
 		self.iLastUnitPicker = -1
 
 	def resetUnitMovement(self):
 		for iPlayer in xrange(GC.getMAX_PLAYERS()):
-			CyPlayer = GC.getPlayer(iPlayer)
-			CyUnit, i = CyPlayer.firstUnit(false)
-			while CyUnit:
+			for CyUnit in GC.getPlayer(iPlayer).units():
 				CyUnit.setMoves(0)
-				CyUnit, i = CyPlayer.nextUnit(i, false)
 
 	def allBonuses(self):
 		iNBonuses = GC.getNumBonusInfos()
@@ -28,7 +28,7 @@ class DebugUtils:
 		if iNBonuses < map.getGridWidth() * map.getGridHeight():
 			for x in xrange(map.getGridWidth()):
 				for y in xrange((iNBonuses/map.getGridWidth())+1):
-					map.plot(x,y).setBonusType((x + y * map.getGridWidth())%iNBonuses);
+					map.plot(x,y).setBonusType((x + y * map.getGridWidth())%iNBonuses)
 
 	def allImprovements(self):
 		iNImprovements = GC.getNumImprovementInfos()
@@ -36,7 +36,7 @@ class DebugUtils:
 		if (iNImprovements < map.getGridWidth() * map.getGridHeight()):
 			for x in xrange(map.getGridWidth()):
 				for y in xrange((iNImprovements/map.getGridWidth())+1):
-					map.plot(x,y).setImprovementType((x + y * map.getGridWidth())%iNImprovements);
+					map.plot(x,y).setImprovementType((x + y * map.getGridWidth())%iNImprovements)
 
 
 ################ TRIGGERED EVENTS ################
@@ -110,7 +110,7 @@ class DebugUtils:
 		iObject = popupReturn.getSelectedListBoxValue(0)
 
 		CyPlayer = GC.getPlayer(iPlayer)
-		if CyPlayer.isNone():
+		if CyPlayer is None:
 			return -1 # Error
 
 		iNumUnits = GC.getNumUnitInfos()
@@ -135,14 +135,11 @@ debugUtils = DebugUtils()
 
 # Event 1000
 def initEffectViewer(px, py):
-	pPlot = GC.getMap().plot(px,py)
 	popup = PyPopup.PyPopup(1000, EventContextTypes.EVENTCONTEXT_SELF)
 	popup.setSize(550,300)
 	popup.setUserData((px,py))
 	popup.setHeaderString("Python Debug Tools: Object Placer")
 	# Pulldown0 - Player Selection
-	numEffects = GC.getNumEffectInfos()	# get total # of units from Game
-
 	popup.createPythonPullDown("Choose an Effect")
 	for i in xrange(GC.getNumEffectInfos()):
 		popup.addPullDownString(GC.getEffectInfo(i).getType(), i)
@@ -200,7 +197,7 @@ def applyWonderMovie(iPlayer, userData, popupReturn):
 
 
 # Event 1002
-def initTechsCheat(argsList):
+def initTechsCheat():
 	popup = PyPopup.PyPopup(1002, EventContextTypes.EVENTCONTEXT_ALL)
 	popup.setHeaderString("Tech & Gold Cheat!")
 	popup.createPullDown()
@@ -301,7 +298,7 @@ def initEditCity(px, py):
 def applyEditCity(iPlayer, userData, popupReturn):
 	iOwner, iID = userData
 	city = GC.getPlayer(iOwner).getCity(iID)
-	if city.isNone():
+	if city is None:
 		return 0
 
 	# Name

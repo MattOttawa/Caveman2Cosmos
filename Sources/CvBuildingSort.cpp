@@ -6,8 +6,11 @@
 //  PURPOSE: Sorting classes for buildings
 //
 //------------------------------------------------------------------------------------------------
-#include "CvBuildingInfo.h"
 #include "CvGameCoreDLL.h"
+#include "CvBuildingInfo.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
+#include "CvPlayer.h"
 
 bool BuildingSortBase::isLesserBuilding(const CvPlayer* pPlayer, CvCity* pCity, BuildingTypes eBuilding1, BuildingTypes eBuilding2)
 {
@@ -163,11 +166,8 @@ int BuildingSortProperty::getBuildingValue(const CvPlayer* pPlayer, CvCity* pCit
 	const CvBuildingInfo& kInfo = GC.getBuildingInfo(eBuilding);
 	int iSum = kInfo.getProperties()->getValueByProperty(m_eProperty) + kInfo.getPropertiesAllCities()->getValueByProperty(m_eProperty);
 
-	const CvPropertyManipulators* pMani = kInfo.getPropertyManipulators();
-	const int iNum = pMani->getNumSources();
-	for (int i=0; i<iNum; i++)
+	foreach_(const CvPropertySource* pSource, kInfo.getPropertyManipulators()->getSources())
 	{
-		const CvPropertySource* pSource = pMani->getSource(i);
 		if (pSource->getProperty() == m_eProperty)
 		{
 			iSum += pSource->getSourcePredict(pCity->getGameObject(), pCity->getProperties()->getValueByProperty(m_eProperty));
@@ -214,8 +214,8 @@ void BuildingSortList::init()
 	m_apBuildingSort[BUILDING_SORT_PRODUCTION] = new BuildingSortYield(YIELD_PRODUCTION);
 	m_apBuildingSort[BUILDING_SORT_HAPPINESS] = new BuildingSortHappiness();
 	m_apBuildingSort[BUILDING_SORT_HEALTH] = new BuildingSortHealth();
-	m_apBuildingSort[BUILDING_SORT_CRIME] = new BuildingSortProperty(GC.getPROPERTY_CRIME(), true);
-	m_apBuildingSort[BUILDING_SORT_FLAMMABILITY] = new BuildingSortProperty(GC.getPROPERTY_FLAMMABILITY(), true);
+	m_apBuildingSort[BUILDING_SORT_CRIME] = new BuildingSortProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_CRIME"), true);
+	m_apBuildingSort[BUILDING_SORT_FLAMMABILITY] = new BuildingSortProperty((PropertyTypes)GC.getInfoTypeForString("PROPERTY_FLAMMABILITY"), true);
 }
 
 BuildingSortTypes BuildingSortList::getActiveSort() const

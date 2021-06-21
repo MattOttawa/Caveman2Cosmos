@@ -2,7 +2,6 @@
 ## Copyright Firaxis Games 2005
 ## Improvements to this screen by Almightix - thanks
 from CvPythonExtensions import *
-import ScreenInput
 import CvScreenEnums
 
 # globals
@@ -137,7 +136,7 @@ class TheScreen:
 		screen.setLabel("EA_Header", "", uFontEdge + TRNSLTR.getText("TXT_KEY_ESPIONAGE_SCREEN",()), 1<<2, iResX / 2, 0, 0, iFontTitle, iWidGen, 0, 0)
 		screen.setText("EA_Btn_Exit", "", uFontEdge + TRNSLTR.getText("TXT_KEY_PEDIA_SCREEN_EXIT",()), 1<<1, iResX - 16, 0, 0, iFontTitle, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
-		iCol = GC.getInfoTypeForString("COLOR_YELLOW")
+		iCol = GC.getCOLOR_YELLOW()
 		szTxt = uFontEdge + TRNSLTR.getText("TXT_KEY_ESPIONAGE_MISSIONS_TAB", ())
 		szTxtCol = TRNSLTR.changeTextColor(szTxt, iCol)
 		dX = iResX / 2
@@ -164,11 +163,13 @@ class TheScreen:
 			screen.show("EA_Col_Tab1")
 			self.drawSpyvSpyTab(screen)
 
-		if GAME.isDebugMode():
-			screen.addDropDownBoxGFC("DebugDropdown", 22, 12, 300, iWidGen, 554, -1, iFontTitle)
+		import DebugUtils
+		if DebugUtils.isAnyDebugMode():
+			screen.addDropDownBoxGFC("DebugDropdown", 22, 0, 300, iWidGen, 554, -1, iFontTitle)
 			for j in range(GC.getMAX_PC_PLAYERS()):
 				if GC.getPlayer(j).isAlive():
 					screen.addPullDownString("DebugDropdown", GC.getPlayer(j).getName(), j, j, False )
+
 
 	def drawMissionTab(self, screen):
 		iTargetPlayer = self.iTargetPlayer
@@ -485,8 +486,7 @@ class TheScreen:
 
 		iCityActID = self.iCityActID
 		iCount = 0
-		CyCity, i = CyPlayer.firstCity(False)
-		while CyCity:
+		for CyCity in CyPlayer.cities():
 			if CyCity.isRevealed(iTeamAct, False):
 				szText = uFont2 + CyCity.getName()
 				screen.appendListBoxStringNoUpdate(LIST, szText, iWidGen, CyCity.getID(), 0, 1<<0)
@@ -509,7 +509,6 @@ class TheScreen:
 					iRow = screen.appendTableRow(TABLE)
 					screen.setTableText(TABLE, 0, iRow, szText, "", iWidGen, 0, 0, 1<<0)
 					screen.setTableText(TABLE, 1, iRow, szCost, "", iWidGen, 0, 0, 1<<1)
-			CyCity, i = CyPlayer.nextCity(i, False)
 		screen.updateListBox(LIST)
 		if bMissionList:
 			screen.hide(LIST)
@@ -529,7 +528,10 @@ class TheScreen:
 		screen.setTableColumnHeader(TABLE, 1, "", w2)
 		screen.setTableColumnHeader(TABLE, 2, "", 10)
 
-		CyPlot = CyPlayer.getCity(iCityActID).plot()
+		if iCityActID > -1:
+			CyPlot = CyPlayer.getCity(iCityActID).plot()
+		else: CyPlot = None
+
 		for iMissionX in range(GC.getNumEspionageMissionInfos()):
 			pMission = GC.getEspionageMissionInfo(iMissionX)
 			if pMission.getCost() == -1: continue
@@ -537,11 +539,7 @@ class TheScreen:
 			bTargetCity = pMission.isTargetsCity()
 			if pMission.isPassive():
 				if bMissionList != bTargetCity:
-					if bTargetCity:
-						PLOT = CyPlot
-					else:
-						PLOT = None
-					iCost = CyPlayerAct.getEspionageMissionCost(iMissionX, iPlayer, PLOT, -1)
+					iCost = CyPlayerAct.getEspionageMissionCost(iMissionX, iPlayer, CyPlot, -1)
 					if iCost == -1: continue
 					szCost = uFont2
 					if iCost <= iEP:
@@ -555,7 +553,8 @@ class TheScreen:
 					iRow = screen.appendTableRow(EffectsTable)
 					screen.setTableText(EffectsTable, 0, iRow, szText, "", iWidGen, 0, 0, 1<<0)
 					screen.setTableText(EffectsTable, 1, iRow, szCost, "", iWidGen, 0, 0, 1<<1)
-			elif bTargetCity:
+
+			elif bTargetCity and CyPlot:
 				iCost = CyPlayerAct.getEspionageMissionCost(iMissionX, iPlayer, CyPlot, -1)
 				if iCost == -1: continue
 				szCost = uFont2
@@ -570,6 +569,7 @@ class TheScreen:
 				iRow = screen.appendTableRow(TABLE)
 				screen.setTableText(TABLE, 0, iRow, szText, "", iWidGen, 0, 0, 1<<0)
 				screen.setTableText(TABLE, 1, iRow, szCost, "", iWidGen, 0, 0, 1<<1)
+
 		if bMissionList:
 			screen.hide(TABLE)
 

@@ -4,16 +4,9 @@
 from CvPythonExtensions import *
 from CvScreenEnums import *
 import types
-
 import CvMainInterface
-
 import CvOptionsScreen
 import CvReplayScreen
-
-#import CvDiplomacy
-
-import CvEventInterface
-import CvPopupInterface
 import ScreenInput as PyScreenInput
 
 import BugCore
@@ -140,9 +133,7 @@ def showTopCivs():
 
 def showInfoScreen(argsList):
 	if CyGame().getActivePlayer() != -1:
-		iTabID = argsList[0]
-		iEndGame = argsList[1]
-		screenMap[INFO_SCREEN].showScreen(-1, iTabID, iEndGame)
+		screenMap[INFO_SCREEN].interfaceScreen(argsList[0], argsList[1])
 
 def showDebugInfoScreen():
 	screenMap[DEBUG_INFO_SCREEN].interfaceScreen()
@@ -403,7 +394,7 @@ def WorldBuilderNormalPlayerTabModeCB():
 # Called by the exe for WB and AS #
 #---------------------------------#
 def WorldBuilderOnAdvancedStartBrushSelected(argsList):
-	iList, iIndex, iTab = argsList;
+	iList, iIndex, iTab = argsList
 	print "WorldBuilderOnAdvancedStartBrushSelected, iList=%d, iIndex=%d, type=%d" %(iList, iIndex, iTab)
 	if iTab == advancedStartScreen.getTechTab():
 		showTechChooser()
@@ -569,7 +560,7 @@ def cityWarningOnClickedCallback(argsList):
 	bOption1 = argsList[6]
 	bOption2 = argsList[7]
 	city = CyGlobalContext().getPlayer(CyGlobalContext().getGame().getActivePlayer()).getCity(iData1)
-	if not city.isNone():
+	if city:
 		if (iButtonId == 0):
 			if (city.isProductionProcess()):
 				CyMessageControl().sendPushOrder(iData1, iData2, iData3, False, False, False)
@@ -593,7 +584,7 @@ def liberateOnClickedCallback(argsList):
 	bOption1 = argsList[6]
 	bOption2 = argsList[7]
 	city = CyGlobalContext().getPlayer(CyGlobalContext().getGame().getActivePlayer()).getCity(iData1)
-	if not city.isNone():
+	if city:
 		if iButtonId == 0:
 			CyMessageControl().sendDoTask(iData1, TaskTypes.TASK_LIBERATE, 0, -1, False, False, False, False)
 		elif iButtonId == 2:
@@ -609,7 +600,7 @@ def colonyOnClickedCallback(argsList):
 	bOption1 = argsList[6]
 	bOption2 = argsList[7]
 	city = CyGlobalContext().getPlayer(CyGlobalContext().getGame().getActivePlayer()).getCity(iData1)
-	if not city.isNone():
+	if city:
 		if iButtonId == 0:
 			CyMessageControl().sendEmpireSplit(CyGlobalContext().getGame().getActivePlayer(), city.area().getID())
 		elif iButtonId == 2:

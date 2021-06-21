@@ -26,7 +26,6 @@ public:
 	DllExport explicit CyCity(CvCity* pCity);		// Call from C++
 
 	CvCity* getCity() const { return m_pCity; }	// Call from C++
-	bool isNone() const { return m_pCity == NULL; }
 
 	void kill();
 
@@ -94,7 +93,6 @@ public:
 	int getProjectProductionTurnsLeft(int /*ProjectTypes*/ eProject, int iNum) const;
 	void setProduction(int iNewValue);
 	void changeProduction(int iChange);
-	int getProductionModifier() const;
 	int getCurrentProductionDifference(bool bIgnoreFood, bool bOverflow) const;
 
 	bool canHurry(int /*HurryTypes*/ iHurry, bool bTestVisible) const;
@@ -139,14 +137,15 @@ public:
 	int foodDifference(bool bBottom) const;
 	int growthThreshold() const;
 	int productionLeft() const;
-	int hurryGold(int /*HurryTypes*/ iHurry) const;
+	int64_t getHurryGold(int /*HurryTypes*/ iHurry) const;
 	int hurryPopulation(int /*HurryTypes*/ iHurry) const;
 	int hurryProduction(int /*HurryTypes*/ iHurry) const;
 	int flatHurryAngerLength() const;
 
-	int getNumBuilding(int /*BuildingTypes*/ iIndex) const;
-	bool isHasBuilding(int /*BuildingTypes*/ iIndex) const;		// This is a function to help modders out, since it was replaced with getNumBuildings() in the C++
+	void setNumRealBuilding(int /*BuildingTypes*/ iIndex, int iNewValue);
+	int getNumRealBuilding(int /*BuildingTypes*/ iIndex) const;
 	int getNumActiveBuilding(int /*BuildingTypes*/ iIndex) const;
+	bool isFreeBuilding(int /*BuildingTypes*/ iIndex) const;
 	int getID() const;
 	int getX() const;
 	int getY() const;
@@ -224,6 +223,7 @@ public:
 	void setFood(int iNewValue);
 	void changeFood(int iChange);
 	int getFoodKept() const;
+	int getMaxProductionOverflow() const;
 	int getOverflowProduction() const;
 	void setOverflowProduction(int iNewValue);
 	int getFeatureProduction() const;
@@ -231,6 +231,7 @@ public:
 	int getMilitaryProductionModifier() const;
 	int getSpaceProductionModifier() const;
 	int getExtraTradeRoutes() const;
+	int getMaxTradeRoutes() const;
 	void changeExtraTradeRoutes(int iChange);
 	int getTradeRouteModifier() const;
 	int getForeignTradeRouteModifier() const;
@@ -275,12 +276,12 @@ public:
 	int /*TeamTypes*/getTeam() const;
 	int /*PlayerTypes*/getPreviousOwner() const;
 	int /*PlayerTypes*/getOriginalOwner() const;
+	void setOriginalOwner(int /*PlayerTypes*/ iPlayer);
 	int /*CultureLevelTypes*/ getCultureLevel() const;
 	int getCultureThreshold() const;
 	int getSeaPlotYield(int /*YieldTypes*/ eIndex) const;
 
-	int getBaseYieldRate(int /*YieldTypes*/ eIndex) const;
-	void changeBaseYieldRate(int /*YieldTypes*/ eIndex, int iNewValue);
+	int getPlotYield(int /*YieldTypes*/ eIndex) const;
 
 	int getBaseYieldRateModifier(int /*YieldTypes*/ eIndex, int iExtra) const;
 	int getYieldRate(int /*YieldTypes*/ eIndex) const;
@@ -400,8 +401,6 @@ public:
 	int getEspionageDefenseModifier() const;
 
 	bool isWorkingPlot(const CyPlot& kPlot) const;
-	int getNumRealBuilding(int /*BuildingTypes*/ iIndex) const;
-	void setNumRealBuilding(int /*BuildingTypes*/ iIndex, int iNewValue);
 	bool isHasReligion(int /*ReligionTypes*/ iIndex) const;
 	void setHasReligion(int /*ReligionTypes*/ iIndex, bool bNewValue, bool bAnnounce, bool bArrows);
 	bool isHasCorporation(int /*CorporationTypes*/ iIndex) const;

@@ -95,7 +95,7 @@ class PediaFeature:
 		if iTemp1 > 0:
 			fValue = iTemp1 * (GC.getFEATURE_GROWTH_MODIFIER() + 100) / 100.0
 			if CyPlayer:
-				fValue /= GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getVictoryDelayPercent()
+				fValue /= GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getSpeedPercent()
 			else:
 				fValue /= 100
 
@@ -123,7 +123,7 @@ class PediaFeature:
 			else:
 				szTxt += "\n"
 			if CyPlayer:
-				fValue = iTemp / (1.0 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getVictoryDelayPercent())
+				fValue = iTemp / (1.0 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getSpeedPercent())
 			else:
 				fValue = iTemp / 100.0
 
@@ -150,18 +150,11 @@ class PediaFeature:
 				else:
 					szTemp += " (<color=0,230,0,255>+"
 				szTemp += str(iTemp) + (u'%c' % (GC.getYieldInfo(k).getChar())) + "</color>River)"
-			iTemp = CvTheFeature.getHillsYieldChange(k)
-			if iTemp:
-				if iTemp < 0:
-					szTemp += " (<color=255,0,0,255>"
-				else:
-					szTemp += " (<color=0,230,0,255>+"
-				szTemp += str(iTemp) + (u'%c' % (GC.getYieldInfo(k).getChar())) + "</color>Hill)"
 		if szTemp:
 			szTxt += "\n" + szTemp
 		iTemp = CvTheFeature.getTurnDamage()
 		if iTemp:
-			szTxt += "\nHazzard: %d%% damage per turn" % iTemp
+			szTxt += "\nHazard: %d%% damage per turn" % iTemp
 		iTemp = CvTheFeature.getWarmingDefense()
 		if iTemp:
 			szTxt += "\nGlobal Warming Defense Factor: %d" % iTemp

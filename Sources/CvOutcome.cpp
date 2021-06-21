@@ -7,12 +7,23 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
-//#include "CvProperties.h"
+#include "CvCity.h"
+#include "CvCityAI.h"
+#include "CvGlobals.h"
+#include "CvInfos.h"
+#include "CvMap.h"
+#include "CvOutcome.h"
+#include "CvProperties.h"
 #include "CvPlayerAI.h"
+#include "CvPlot.h"
+#include "CvPython.h"
 #include "CvTeamAI.h"
+#include "CvUnit.h"
 #include "CvXMLLoadUtility.h"
 #include "CyUnit.h"
 #include "CyPlot.h"
+#include "CheckSum.h"
+#include "IntExpr.h"
 
 CvOutcome::CvOutcome(): m_eUnitType(NO_UNIT),
 						m_iChance(NULL),
@@ -81,7 +92,7 @@ int CvOutcome::getYield(YieldTypes eYield, const CvUnit& kUnit) const
 
 	if (m_aiYield[eYield])
 	{
-		return m_aiYield[eYield]->evaluate(const_cast<CvUnit&>(kUnit).getGameObject());
+		return m_aiYield[eYield]->evaluate(kUnit.getGameObject());
 	}
 	else
 	{
@@ -95,7 +106,7 @@ int CvOutcome::getCommerce(CommerceTypes eCommerce, const CvUnit& kUnit) const
 
 	if (m_aiCommerce[eCommerce])
 	{
-		return m_aiCommerce[eCommerce]->evaluate(const_cast<CvUnit&>(kUnit).getGameObject());
+		return m_aiCommerce[eCommerce]->evaluate(kUnit.getGameObject());
 	}
 	else
 	{
@@ -118,7 +129,7 @@ bool CvOutcome::getUnitToCity(const CvUnit& kUnit) const
 	if (m_bUnitToCity)
 	{
 		// evaluate does not actually change the object so const_cast is fine
-		return m_bUnitToCity->evaluate(const_cast<CvUnit&>(kUnit).getGameObject());
+		return m_bUnitToCity->evaluate(kUnit.getGameObject());
 	}
 	return false;
 }
@@ -162,7 +173,7 @@ int CvOutcome::getReduceAnarchyLength(const CvUnit &kUnit) const
 {
 	if (m_iReduceAnarchyLength)
 	{
-		return m_iReduceAnarchyLength->evaluate(const_cast<CvUnit&>(kUnit).getGameObject());
+		return m_iReduceAnarchyLength->evaluate(kUnit.getGameObject());
 	}
 	return 0;
 }
@@ -316,7 +327,7 @@ void CvOutcome::compilePython()
 
 int CvOutcome::getChance(const CvUnit &kUnit) const
 {
-	int iChance = m_iChance->evaluate(const_cast<CvUnit&>(kUnit).getGameObject());
+	int iChance = m_iChance->evaluate(kUnit.getGameObject());
 	const CvOutcomeInfo& kInfo = GC.getOutcomeInfo(m_eType);
 
 	const CvCity* pCity = kUnit.plot()->getPlotCity();
@@ -442,9 +453,9 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 			return false;
 		}
 
-		for (int i=0; i<iPrereqBuildings; i++)
+		for (int i=0; i < iPrereqBuildings; i++)
 		{
-			if (pCity->getNumBuilding(kInfo.getPrereqBuilding(i)) <= 0)
+			if (pCity->getNumActiveBuilding(kInfo.getPrereqBuilding(i)) <= 0)
 			{
 				return false;
 			}
@@ -545,7 +556,7 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 	if (m_pPlotCondition)
 	{
-		if (!m_pPlotCondition->evaluate(const_cast<CvPlot*>(kUnit.plot())->getGameObject()))
+		if (!m_pPlotCondition->evaluate(kUnit.plot()->getGameObject()))
 		{
 			return false;
 		}
@@ -553,7 +564,7 @@ bool CvOutcome::isPossible(const CvUnit& kUnit) const
 
 	if (m_pUnitCondition)
 	{
-		if (!m_pUnitCondition->evaluate(const_cast<CvUnit&>(kUnit).getGameObject()))
+		if (!m_pUnitCondition->evaluate(kUnit.getGameObject()))
 		{
 			return false;
 		}
@@ -667,7 +678,7 @@ bool CvOutcome::isPossibleSomewhere(const CvUnit& kUnit) const
 
 	if (m_pUnitCondition)
 	{
-		if (!m_pUnitCondition->evaluate(const_cast<CvUnit&>(kUnit).getGameObject()))
+		if (!m_pUnitCondition->evaluate(kUnit.getGameObject()))
 		{
 			return false;
 		}
@@ -774,9 +785,9 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 			return false;
 		}
 
-		for (int i=0; i<iPrereqBuildings; i++)
+		for (int i = 0; i < iPrereqBuildings; i++)
 		{
-			if (pCity->getNumBuilding(kInfo.getPrereqBuilding(i)) <= 0)
+			if (pCity->getNumActiveBuilding(kInfo.getPrereqBuilding(i)) <= 0)
 			{
 				return false;
 			}
@@ -877,7 +888,7 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 	if (m_pPlotCondition)
 	{
-		if (!m_pPlotCondition->evaluate(const_cast<CvPlot&>(kPlot).getGameObject()))
+		if (!m_pPlotCondition->evaluate(kPlot.getGameObject()))
 		{
 			return false;
 		}
@@ -885,7 +896,7 @@ bool CvOutcome::isPossibleInPlot(const CvUnit& kUnit, const CvPlot& kPlot, bool 
 
 	if (m_pUnitCondition)
 	{
-		if (!m_pUnitCondition->evaluate(const_cast<CvUnit&>(kUnit).getGameObject()))
+		if (!m_pUnitCondition->evaluate(kUnit.getGameObject()))
 		{
 			return false;
 		}
@@ -1009,7 +1020,7 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 	bool bNothing = true;
 	if (!szMessage.empty())
 	{
-		szBuffer.append(gDLL->getText(szMessage, kUnit.getNameKey(), pUnitInfo->getDescription()));
+		szBuffer.append(gDLL->getText(szMessage, kUnit.getNameKey(), pUnitInfo->getTextKeyWide()));
 		szBuffer.append(L" ( ");
 		bNothing = false;
 	}
@@ -1276,7 +1287,6 @@ bool CvOutcome::execute(CvUnit &kUnit, PlayerTypes eDefeatedUnitPlayer, UnitType
 
 	if (!bNothing)
 	{
-		MEMORY_TRACK_EXEMPT();
 
 		AddDLLMessage(kUnit.getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer.getCString(), NULL, MESSAGE_TYPE_INFO, pUnitInfo->getButton(), NO_COLOR, kUnit.getX(), kUnit.getY(), true, true);
 	}
@@ -1564,7 +1574,7 @@ bool CvOutcome::read(CvXMLLoadUtility* pXML)
 	return true;
 }
 
-void CvOutcome::copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML)
+void CvOutcome::copyNonDefaults(CvOutcome* pOutcome)
 {
 	GC.copyNonDefaultDelayedResolution((int*)&m_eType, (int*)&(pOutcome->m_eType));
 	//if (m_eType == NO_OUTCOME)
@@ -1647,7 +1657,7 @@ void CvOutcome::copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML)
 		}
 	}
 
-	m_Properties.copyNonDefaults(pOutcome->getProperties(), pXML);
+	m_Properties.copyNonDefaults(pOutcome->getProperties());
 
 	if (!m_pPlotCondition)
 	{
@@ -1685,7 +1695,6 @@ void CvOutcome::copyNonDefaults(CvOutcome* pOutcome, CvXMLLoadUtility* pXML)
 		m_pPythonPossibleFunc = pOutcome->m_pPythonPossibleFunc;
 		pOutcome->m_pPythonPossibleFunc = NULL;
 	}
-
 }
 
 void CvOutcome::buildDisplayString(CvWStringBuffer &szBuffer, const CvUnit& kUnit) const
