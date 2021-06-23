@@ -90,8 +90,8 @@ void CyInfoPythonInterface1()
 
 		.def("getDomainExtraMoves", &CvTechInfo::getDomainExtraMoves, "int (int i)")
 		.def("getFlavorValue", &CvTechInfo::getFlavorValue, "int (int i)")
-		.def("getPrereqOrTechs", &CvTechInfo::cyGetPrereqOrTechs)
-		.def("getPrereqAndTechs", &CvTechInfo::cyGetPrereqAndTechs)
+		.def("getPrereqOrTechs", &CvTechInfo::getPrereqOrTechs)
+		.def("getPrereqAndTechs", &CvTechInfo::getPrereqAndTechs)
 
 		.def("isCommerceFlexible", &CvTechInfo::isCommerceFlexible, "bool (int i)")
 		.def("isTerrainTrade", &CvTechInfo::isTerrainTrade, "bool (int i)")
@@ -443,10 +443,10 @@ void CyInfoPythonInterface1()
 		.def("getBonusProductionModifier", &CvBuildingInfo::getBonusProductionModifier, "int (int i)")
 		.def("getDomainFreeExperience", &CvBuildingInfo::getDomainFreeExperience, "int (int i)")
 		.def("getDomainProductionModifier", &CvBuildingInfo::getDomainProductionModifier, "int (int i)")
-		.def("getPrereqAndTechs", &CvBuildingInfo::cyGetPrereqAndTechs)
-		.def("getPrereqOrBonuses", &CvBuildingInfo::cyGetPrereqOrBonuses)
-		.def("getPrereqOrVicinityBonuses", &CvBuildingInfo::cyGetPrereqOrVicinityBonuses)
-		.def("getPrereqOrRawVicinityBonuses", &CvBuildingInfo::cyGetPrereqOrRawVicinityBonuses)
+		.def("getPrereqAndTechs", &CvBuildingInfo::getPrereqAndTechs)
+		.def("getPrereqOrBonuses", &CvBuildingInfo::getPrereqOrBonuses)
+		.def("getPrereqOrVicinityBonuses", &CvBuildingInfo::getPrereqOrVicinityBonuses)
+		.def("getPrereqOrRawVicinityBonuses", &CvBuildingInfo::getPrereqOrRawVicinityBonuses)
 		.def("getTechHappinessChanges", &CvBuildingInfo::cyGetTechHappinessChanges)
 		.def("getTechHealthChanges", &CvBuildingInfo::cyGetTechHealthChanges)
 		.def("getTechYieldChange", &CvBuildingInfo::getTechYieldChange, "int (int i, int j)")
@@ -486,15 +486,7 @@ void CyInfoPythonInterface1()
 
 		.def("getProperties", &CvBuildingInfo::getProperties, python::return_value_policy<python::reference_existing_object>(), "CvProperties ()")
 		
-		//Extract map category of building
 		.def("isMapType", &CvBuildingInfo::isMapType, "bool (int i)")
-
-		//TB Combat Mods (Buildings) begin
-		//integers
-		//boolean vectors without delayed resolution
-		//.def("getFreePromoType", &CvBuildingInfo::getFreePromoType, "int (int i)")
-		//integer vectors with pairing method without delayed resolution
-		//TB Combat Mods (Buildings) end
 		;
 
 	python::class_<CvSpecialBuildingInfo, python::bases<CvInfoBase> >("CvSpecialBuildingInfo")

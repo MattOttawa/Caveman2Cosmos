@@ -7910,110 +7910,11 @@ bool CvSpawnInfo::read(CvXMLLoadUtility* pXML)
 		m_iRateOverride = std::max(GC.getDefineINT(szTextVal, 100),0);
 	}
 
-	if(pXML->TryMoveToXmlFirstChild(L"BonusTypes"))
-	{
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"BonusType"))
-			{
-				do
-				{
-					int iBonusType;
-
-					pXML->GetXmlVal(szTextVal);
-					iBonusType = pXML->GetInfoClass(szTextVal);
-
-					m_bonusTypes.push_back((BonusTypes)iBonusType);
-				} while(pXML->TryMoveToXmlNextSibling());
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"TerrainTypes"))
-	{
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"TerrainType"))
-			{
-				do
-				{
-					int iTerrainType;
-
-					pXML->GetXmlVal(szTextVal);
-					iTerrainType = pXML->GetInfoClass(szTextVal);
-
-					m_terrainTypes.push_back((TerrainTypes)iTerrainType);
-				} while(pXML->TryMoveToXmlNextSibling());
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"FeatureTypes"))
-	{
-		if (pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"FeatureType"))
-			{
-				do
-				{
-					int iFeatureType;
-
-					pXML->GetXmlVal(szTextVal);
-					iFeatureType = pXML->GetInfoClass(szTextVal);
-
-					m_featureTypes.push_back((FeatureTypes)iFeatureType);
-				} while(pXML->TryMoveToXmlNextSibling());
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"FeatureTerrainTypes"))
-	{
-		if (pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"TerrainType"))
-			{
-				do
-				{
-					int iTerrainType;
-
-					pXML->GetXmlVal(szTextVal);
-					iTerrainType = pXML->GetInfoClass(szTextVal);
-
-					m_featureTerrainTypes.push_back((TerrainTypes)iTerrainType);
-				} while(pXML->TryMoveToXmlNextSibling());
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"SpawnGroup"))
-	{
-		if (pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"UnitType"))
-			{
-				do
-				{
-					int iUnitType;
-
-					pXML->GetXmlVal(szTextVal);
-					iUnitType = pXML->GetInfoClass(szTextVal);
-
-					m_spawnGroup.push_back((UnitTypes)iUnitType);
-				} while(pXML->TryMoveToXmlNextSibling());
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
+	pXML->SetOptionalVector(&m_bonusTypes, L"BonusTypes");
+	pXML->SetOptionalVector(&m_terrainTypes, L"TerrainTypes");
+	pXML->SetOptionalVector(&m_featureTypes, L"FeatureTypes");
+	pXML->SetOptionalVector(&m_featureTerrainTypes, L"FeatureTerrainTypes");
+	pXML->SetOptionalVector(&m_spawnGroup, L"SpawnGroup");
 
 	if (pXML->TryMoveToXmlFirstChild(L"SpawnCondition"))
 	{
@@ -8026,9 +7927,6 @@ bool CvSpawnInfo::read(CvXMLLoadUtility* pXML)
 
 void CvSpawnInfo::copyNonDefaults(CvSpawnInfo* pClassInfo)
 {
-	CvString cDefault = CvString::format("").GetCString();
-	CvWString wDefault = CvWString::format(L"").GetCString();
-
 	CvInfoBase::copyNonDefaults(pClassInfo);
 
 	if (!m_pExprSpawnCondition)
@@ -8043,61 +7941,6 @@ void CvSpawnInfo::copyNonDefaults(CvSpawnInfo* pClassInfo)
 const BoolExpr* CvSpawnInfo::getSpawnCondition() const
 {
 	return m_pExprSpawnCondition;
-}
-
-int	CvSpawnInfo::getNumBonuses() const
-{
-	return m_bonusTypes.size();
-}
-
-int	CvSpawnInfo::getNumTerrains() const
-{
-	return m_terrainTypes.size();
-}
-
-int	CvSpawnInfo::getNumFeatures() const
-{
-	return m_featureTypes.size();
-}
-
-int	CvSpawnInfo::getNumFeatureTerrains() const
-{
-	return m_featureTerrainTypes.size();
-}
-
-int	CvSpawnInfo::getNumSpawnGroup() const
-{
-	return m_spawnGroup.size();
-}
-
-BonusTypes CvSpawnInfo::getBonus(int index) const
-{
-	FASSERT_BOUNDS(0, getNumBonuses(), index)
-	return m_bonusTypes[index];
-}
-
-TerrainTypes CvSpawnInfo::getTerrain(int index) const
-{
-	FASSERT_BOUNDS(0, getNumTerrains(), index)
-	return m_terrainTypes[index];
-}
-
-FeatureTypes CvSpawnInfo::getFeature(int index) const
-{
-	FASSERT_BOUNDS(0, getNumFeatures(), index)
-	return m_featureTypes[index];
-}
-
-TerrainTypes CvSpawnInfo::getFeatureTerrain(int index) const
-{
-	FASSERT_BOUNDS(0, getNumFeatureTerrains(), index)
-	return m_featureTerrainTypes[index];
-}
-
-UnitTypes CvSpawnInfo::getSpawnGroup(int index) const
-{
-	FASSERT_BOUNDS(0, getNumSpawnGroup(), index)
-	return m_spawnGroup[index];
 }
 
 int CvSpawnInfo::getTurnRate() const

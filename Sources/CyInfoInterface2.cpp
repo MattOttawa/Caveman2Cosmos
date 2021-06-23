@@ -148,7 +148,7 @@ void CyInfoPythonInterface2()
 		// Arrays
 		.def("getYieldChange", &CvRouteInfo::getYieldChange, "int (int i)")
 		.def("getTechMovementChange", &CvRouteInfo::getTechMovementChange, "int (int i)")
-		.def("getPrereqOrBonuses", &CvRouteInfo::cyGetPrereqOrBonuses)
+		.def("getPrereqOrBonuses", &CvRouteInfo::getPrereqOrBonuses)
 	;
 
 	python::class_<CvImprovementBonusInfo, python::bases<CvInfoBase> >("CvImprovementBonusInfo")

@@ -735,17 +735,6 @@ const std::vector<TechTypes>& CvBuildingInfo::getPrereqAndTechs() const
 	return m_piPrereqAndTechs;
 }
 
-const python::list CvBuildingInfo::cyGetPrereqAndTechs() const
-{
-	return Cy::makeList(m_piPrereqAndTechs);
-}
-
-//int CvBuildingInfo::getBuildingHappinessChanges(BuildingTypes e) const
-//{
-//	FASSERT_BOUNDS(0, GC.getNumBuildingInfos(), e)
-//	return m_aBuildingHappinessChanges.getValue(e);
-//}
-
 int CvBuildingInfo::getPrereqNumOfBuilding(int i) const
 {
 	FASSERT_BOUNDS(NO_BUILDING, GC.getNumBuildingInfos(), i)
@@ -5117,11 +5106,6 @@ BonusTypes CvBuildingInfo::getPrereqOrBonuses(int i) const
 {
 	FASSERT_BOUNDS(0, getNumPrereqOrBonuses(), i)
 	return static_cast<BonusTypes>(m_aePrereqOrBonuses[i]);
-}
-
-const python::list CvBuildingInfo::cyGetPrereqOrBonuses() const
-{
-	return Cy::makeList(m_aePrereqOrBonuses);
 }
 
 bool CvBuildingInfo::isPrereqOrBuilding(const int i) const

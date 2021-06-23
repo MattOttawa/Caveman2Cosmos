@@ -5970,7 +5970,7 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 	}
 	const CvUnitInfo& unitInfo = GC.getUnitInfo(spawnInfo.getUnitType());
 
-	const bool bNoTerrainFeatureBonus = spawnInfo.getNumTerrains() == 0 && spawnInfo.getNumFeatures() == 0 && spawnInfo.getNumBonuses() == 0 && !spawnInfo.getPeaks();
+	const bool bNoTerrainFeatureBonus = spawnInfo.getTerrains().empty() && spawnInfo.getFeatures().empty() && spawnInfo.getBonuses().empty() && !spawnInfo.getPeaks();
 	const bool bHills = spawnInfo.getHills();
 	const bool bFlatLand = spawnInfo.getFlatlands();
 	const bool bFreshWaterOnly = spawnInfo.getFreshWaterOnly();
@@ -6053,16 +6053,7 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 			{
 				if (!pPlot->isAsPeak())
 				{
-					bValid = false;
-					BonusTypes bonusType = pPlot->getBonusType();
-					for (int k = 0; k < spawnInfo.getNumBonuses(); k++)
-					{
-						if (spawnInfo.getBonus(k) == bonusType)
-						{
-							bValid = true;
-							break;
-						}
-					}
+					bValid = algo::contains(spawnInfo.getBonuses(), pPlot->getBonusType());
 
 					if (!bValid)
 					{
@@ -6070,38 +6061,22 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 						const TerrainTypes terrainType = pPlot->getTerrainType();
 						if (featureType == NO_FEATURE)
 						{
-							for(int k = 0; k < spawnInfo.getNumTerrains(); k++)
+							if (algo::contains(spawnInfo.getTerrains(), terrainType))
 							{
-								if (spawnInfo.getTerrain(k) == terrainType)
-								{
-									bValid = true;
-									break;
-								}
+								bValid = true;
 							}
 						}
 						else
 						{
-							for (int k = 0; k < spawnInfo.getNumFeatures(); k++)
+							if (algo::contains(spawnInfo.getFeatures(), featureType))
 							{
-								if (spawnInfo.getFeature(k) == featureType)
-								{
-									bValid = true;
-									break;
-								}
+								bValid = true;
 							}
 
 							if (bValid)
 							{
-								bValid = spawnInfo.getNumFeatureTerrains() == 0;
-
-								for (int k = 0; k < spawnInfo.getNumFeatureTerrains(); k++)
-								{
-									if (spawnInfo.getFeatureTerrain(k) == terrainType)
-									{
-										bValid = true;
-										break;
-									}
-								}
+								bValid = spawnInfo.getFeatureTerrains().empty()
+								|| algo::contains(spawnInfo.getFeatureTerrains(), terrainType);
 							}
 						}
 					}
@@ -6170,7 +6145,7 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 		//I think for the sake of speed and data efficiency we can get away with a singular player reference rather than
 		//making it possible to specify more than one on a spawn info.
 
-		if (spawnInfo.getPlayer() != ePlayer || spawnInfo.getRateOverride() == 0 || bSizeMatters && spawnInfo.getNumSpawnGroup() > 1)
+		if (spawnInfo.getPlayer() != ePlayer || spawnInfo.getRateOverride() == 0 || bSizeMatters && spawnInfo.getSpawnGroups().size() > 1)
 		{
 			continue;
 		}
@@ -6382,15 +6357,13 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 					// Spawn unit group
 					if (!bSizeMatters)
 					{
-						for (int k = 0; k < spawnInfo.getNumSpawnGroup(); k++)
+						foreach_(const UnitTypes spawnGroup, spawnInfo.getSpawnGroups())
 						{
-							kUnit = GC.getUnitInfo(spawnInfo.getSpawnGroup(k));
-
-							pUnit = GET_PLAYER(ePlayer).initUnit(spawnInfo.getSpawnGroup(k), pPlot->getX(), pPlot->getY(), (UnitAITypes)kUnit.getDefaultUnitAIType(), NO_DIRECTION, getSorenRandNum(10000, "AI Unit Birthmark"));
+							pUnit = GET_PLAYER(ePlayer).initUnit(spawnGroup, pPlot->getX(), pPlot->getY(), (UnitAITypes)GC.getUnitInfo(spawnGroup).getDefaultUnitAIType(), NO_DIRECTION, getSorenRandNum(10000, "AI Unit Birthmark"));
 							FAssertMsg(pUnit != NULL, "pUnit is expected to be assigned a valid unit object");
 							pUnit->finishMoves();
 							spawnCount++;
-							areaPopulationMap[iArea][spawnInfo.getSpawnGroup(k)]++;
+							areaPopulationMap[iArea][spawnGroup]++;
 						}
 					}
 				}
