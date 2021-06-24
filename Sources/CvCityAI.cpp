@@ -4249,9 +4249,9 @@ UnitTypes CvCityAI::AI_bestUnitAI(UnitAITypes eUnitAI, int& iBestValue, bool bAs
 						continue;
 					}
 					bool bFound = false;
-					for (int iK = 0; iK < unit.getNumSubCombatTypes(); iK++)
+					foreach_(const UnitCombatTypes eSubCombat, unit.getSubCombatTypes())
 					{
-						if (GC.getPromotionInfo((PromotionTypes)iJ).getUnitCombat(unit.getSubCombatType(iK)))
+						if (GC.getPromotionInfo((PromotionTypes)iJ).getUnitCombat(eSubCombat))
 						{
 							iPromotionValue += 15;
 							bFound = true;
@@ -14020,9 +14020,9 @@ int CvCityAI::AI_getPromotionValue(PromotionTypes ePromotion) const
 			else
 			{
 				//TB SubCombat Mod Begin
-				for (int iJ = 0; iJ < kUnit.getNumSubCombatTypes(); iJ++)
+				foreach_(const UnitCombatTypes eSubCombat, kUnit.getSubCombatTypes())
 				{
-					if (GC.getPromotionInfo(ePromotion).getUnitCombat((UnitCombatTypes)kUnit.getSubCombatType(iJ)))
+					if (GC.getPromotionInfo(ePromotion).getUnitCombat(eSubCombat))
 					{
 						bUnitCanGetPromotion = true;
 						break;
@@ -15202,19 +15202,12 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 							{
 								if (pLoopUnit->getTeam() == eTeam)
 								{
-									if (pLoopUnit->getUnitCombatType() != iI)
+									if (pLoopUnit->getUnitCombatType() == iI
+									//TB - May cause some unexpected imbalance though it could also imbalance to bypass... a place to watch
+									|| algo::contains(pLoopUnit->getUnitInfo().getSubCombatTypes(), (UnitCombatTypes)iI))
 									{
-										//TB - May cause some unexpected imbalance though it could also imbalance to bypass... a place to watch
-										for (int iJ = 0; iJ < pLoopUnit->getUnitInfo().getNumSubCombatTypes(); iJ++)
-										{
-											if (pLoopUnit->getUnitInfo().getSubCombatType(iJ) == iI)
-											{
-												iValidUnitCount++;
-												break;
-											}
-										}
+										iValidUnitCount++;
 									}
-									else iValidUnitCount++;
 								}
 							}
 							iValue += iValidUnitCount * kBuilding.getUnitCombatExtraStrength(iI) / 6;

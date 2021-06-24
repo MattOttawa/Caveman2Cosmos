@@ -1887,43 +1887,42 @@ CvWString CvUnitInfo::getCivilizationNamesValuesVectorElement(int i) const		{ret
 //Functions
 void CvUnitInfo::setReligionSubCombat()
 {
-	int iI;
-	for (iI=0; iI < getNumSubCombatTypes(); iI++)
+	foreach_(const UnitCombatTypes eSubCombat, getSubCombatTypes())
 	{
-		if (GC.getUnitCombatInfo((UnitCombatTypes)getSubCombatType(iI)).getReligion() != NO_RELIGION)
+		if (GC.getUnitCombatInfo(eSubCombat).getReligion() != NO_RELIGION)
 		{
 			return;
 		}
 	}
 	if (getReligionType() != NO_RELIGION)
 	{
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+		for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getReligion() == (ReligionTypes)getReligionType())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
 	}
 	if (getStateReligion() != NO_RELIGION)
 	{
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+		for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getReligion() == (ReligionTypes)getStateReligion())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
 	}
 	if (getPrereqReligion() != NO_RELIGION)
 	{
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+		for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getReligion() == (ReligionTypes)getPrereqReligion())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
@@ -1931,10 +1930,9 @@ void CvUnitInfo::setReligionSubCombat()
 }
 void CvUnitInfo::setCultureSubCombat()
 {
-	int iI;
-	for (iI=0; iI < getNumSubCombatTypes(); iI++)
+	foreach_(const UnitCombatTypes eSubCombat, getSubCombatTypes())
 	{
-		if (GC.getUnitCombatInfo((UnitCombatTypes)getSubCombatType(iI)).getCulture() != NO_BONUS)
+		if (GC.getUnitCombatInfo(eSubCombat).getCulture() != NO_BONUS)
 		{
 			return;
 		}
@@ -1945,7 +1943,7 @@ void CvUnitInfo::setCultureSubCombat()
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getCulture() == (BonusTypes)getPrereqAndBonus())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
@@ -1978,9 +1976,9 @@ void CvUnitInfo::setEraSubCombat()
 	{
 		return;
 	}
-	for (int iI=0; iI < getNumSubCombatTypes(); iI++)
+	foreach_(const UnitCombatTypes eSubCombat, getSubCombatTypes())
 	{
-		if (GC.getUnitCombatInfo((UnitCombatTypes)getSubCombatType(iI)).getEra() != NO_ERA)
+		if (GC.getUnitCombatInfo(eSubCombat).getEra() != NO_ERA)
 		{
 			return;
 		}
@@ -1989,7 +1987,7 @@ void CvUnitInfo::setEraSubCombat()
 	{
 		if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getEra() == getEraInfo())
 		{
-			m_aiSubCombatTypes.push_back(iI);
+			m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 			break;
 		}
 	}
@@ -2609,9 +2607,7 @@ bool CvUnitInfo::isGatherHerd() const
 	return m_bGatherHerd;
 }
 
-
-//boolean vectors without delayed resolution
-int CvUnitInfo::getSubCombatType(int i) const
+UnitCombatTypes CvUnitInfo::getSubCombatType(int i) const
 {
 	return m_aiSubCombatTypes[i];
 }
@@ -2621,13 +2617,13 @@ int CvUnitInfo::getNumSubCombatTypes() const
 	return (int)m_aiSubCombatTypes.size();
 }
 
-bool CvUnitInfo::isSubCombatType(int i) const
+bool CvUnitInfo::isSubCombatType(UnitCombatTypes e) const
 {
-	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
-	return find(m_aiSubCombatTypes.begin(), m_aiSubCombatTypes.end(), i) != m_aiSubCombatTypes.end();
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), e)
+	return algo::contains(m_aiSubCombatTypes, e);
 }
 
-const std::vector<int>& CvUnitInfo::getSubCombatTypes() const
+const std::vector<UnitCombatTypes>& CvUnitInfo::getSubCombatTypes() const
 {
 	return m_aiSubCombatTypes;
 }
@@ -2677,7 +2673,7 @@ void CvUnitInfo::setHealAsTypes()
 	m_aiHealAsTypes.clear();
 	for ( int i = 0; i < GC.getNumUnitCombatInfos(); i++)
 	{
-		if ((getUnitCombatType() == i || isSubCombatType(i)) && GC.getUnitCombatInfo((UnitCombatTypes)i).isHealsAs())
+		if ((getUnitCombatType() == i || isSubCombatType((UnitCombatTypes)i)) && GC.getUnitCombatInfo((UnitCombatTypes)i).isHealsAs())
 		{
 			m_aiHealAsTypes.push_back((UnitCombatTypes)i);
 		}
@@ -6119,23 +6115,10 @@ bool CvUnitInfo::hasUnitCombat(UnitCombatTypes eUnitCombat) const
 		m_abHasCombatType = new bool[GC.getNumUnitCombatInfos()];
 		memset(m_abHasCombatType, 0, GC.getNumUnitCombatInfos());
 
-		for(int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-		{
-			if (getUnitCombatType() == iI)
-			{
-				m_abHasCombatType[iI] = true;
-				continue;
-			}
-			//TB SubCombat Mod Begin
-			for (int iJ = 0; iJ < getNumSubCombatTypes(); iJ++)
-			{
-				if (getSubCombatType(iJ) == iI)
-				{
-					m_abHasCombatType[iI] = true;
-					break;
-				}
-			}
-		}
+		m_abHasCombatType[getUnitCombatType()] = true;
+
+		foreach_(const UnitCombatTypes eSubCombat, getSubCombatTypes())
+			m_abHasCombatType[eSubCombat] = true;
 	}
 	return m_abHasCombatType[eUnitCombat];
 }
@@ -6151,7 +6134,7 @@ void CvUnitInfo::setTotalModifiedCombatStrengthDetails()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
@@ -6270,7 +6253,7 @@ void CvUnitInfo::setBaseCargoVolume()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
@@ -6329,7 +6312,7 @@ void CvUnitInfo::setBaseSizeMattersZeroPoints()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
@@ -6446,7 +6429,7 @@ void CvUnitInfo::setCanAnimalIgnores()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{

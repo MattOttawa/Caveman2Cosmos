@@ -5909,7 +5909,6 @@ void CvGame::doTurn()
 
 void CvGame::doDeals()
 {
-
 	verifyDeals();
 
 	int iLoop;
@@ -5920,9 +5919,8 @@ void CvGame::doDeals()
 }
 
 //Enumerates all currently possible spawn plots for a spawning rule, for use in a thread, local density is not checked
-void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
+void enumSpawnPlots(const CvSpawnInfo& spawnInfo, std::vector<CvPlot*>* plots)
 {
-	const CvSpawnInfo& spawnInfo = GC.getSpawnInfo((SpawnTypes)iSpawnInfo);
 	//logging::logMsg("C2C.log", "Spawn thread start for %s\n", spawnInfo.getType());
 
 	if (spawnInfo.getRateOverride() == 0)
@@ -6177,7 +6175,7 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 
 		std::vector<CvPlot*> validPlots;
 
-		enumSpawnPlots(j, &validPlots);
+		enumSpawnPlots(spawnInfo, &validPlots);
 
 		const int iPlotNum = validPlots.size();
 		logging::logMsg("C2C.log", "Spawn thread finished and joined for %s, found %d valid plots.", spawnInfo.getType(), iPlotNum);

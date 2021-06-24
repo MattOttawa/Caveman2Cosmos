@@ -15568,28 +15568,14 @@ bool CvUnit::hasCombatType(UnitCombatTypes eCombatType) const
 	{
 		return true;
 	}
-	// AIAndy: That loop could be removed if the unit type sub combat types get added to the extra sub combat type counts
-	for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
-	{
-		if (m_pUnitInfo->getSubCombatType(iI) == ((int)eCombatType))
-		{
-			return true;
-		}
-	}
-	return false;
+	// AIAndy: This could be removed if the unit type sub combat types get added to the extra sub combat type counts
+	return algo::contains(m_pUnitInfo->getSubCombatTypes(), eCombatType);
 }
 
 bool CvUnit::hasSubCombatType(UnitCombatTypes eCombatType) const
 {
-	bool bSubCombat = false;
-	for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
-	{
-		if (m_pUnitInfo->getSubCombatType(iI) == ((int)eCombatType))
-		{
-			bSubCombat = true;
-		}
-	}
-	if ((bSubCombat || hasExtraSubCombatType(eCombatType)) && m_pUnitInfo->getUnitCombatType() != eCombatType && !hasRemovesUnitCombatType(eCombatType))
+	if ((algo::contains(m_pUnitInfo->getSubCombatTypes(), eCombatType) || hasExtraSubCombatType(eCombatType))
+	&& m_pUnitInfo->getUnitCombatType() != eCombatType && !hasRemovesUnitCombatType(eCombatType))
 	{
 		return true;
 	}
@@ -30219,10 +30205,8 @@ void CvUnit::setCommander(bool bNewVal)
 
 		GET_PLAYER(getOwner()).Commanders.push_back(this);
 
-		for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
+		foreach_(const UnitCombatTypes eUnitCombat, m_pUnitInfo->getSubCombatTypes())
 		{
-			const UnitCombatTypes eUnitCombat = (UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI);
-
 			if (GC.getUnitCombatInfo(eUnitCombat).getQualityBase() > -10)
 			{
 				setHasUnitCombat(eUnitCombat, false);
@@ -36388,9 +36372,9 @@ void CvUnit::doSetUnitCombats()
 	if (getUnitCombatType() != NO_UNITCOMBAT)
 	{
 		setHasUnitCombat(getUnitCombatType(),true);
-		for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
+		foreach_(const UnitCombatTypes eSubCombat, m_pUnitInfo->getSubCombatTypes())
 		{
-			setHasUnitCombat((UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI),true);
+			setHasUnitCombat(eSubCombat, true);
 			bUpdated = true;
 		}
 	}
