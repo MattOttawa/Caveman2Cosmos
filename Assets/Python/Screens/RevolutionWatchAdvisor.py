@@ -49,16 +49,12 @@
 ###############################################################################################################
 
 from CvPythonExtensions import *
-
 import CvScreenEnums
 import CvEventInterface
 import Popup as PyPopup
-
 import BugConfigTracker
-
 import math
 import SystemPaths as SP
-
 # BUG - Options
 import BugCore
 CityScreenOpt = BugCore.game.CityScreen
@@ -290,8 +286,6 @@ class RevolutionWatchAdvisor:
 				("REVOLUTION_INDEX",		85,		"int",	CyCity.getRevolutionIndex,None,					0,									None,									None,						"localText.getText(\"TXT_KEY_REVOLUTION_INDEX_ADVISOR_SIMPLE\", ()).upper()"),
 				("REVOLUTION_STATUS",		85,		"text",	self.getRevolutionStatusText,None,				0,									None,									None,						"localText.getText(\"TXT_KEY_REV_STATUS\", ()).upper()"),
 				("LOCAL_REV_INDEX",			85,		"int",	CyCity.getLocalRevIndex,None,					0,									None,									None,						"localText.getText(\"TXT_KEY_LOCAL_REV_INDEX_ADVISOR_SIMPLE\", ()).upper()"),
-				("DELTA_TREND",				85,		"int",	self.getDeltaTrendVal,	None,					0,									None,									None,						"localText.getText(\"TXT_KEY_DELTA_TREND_ADVISOR_SIMPLE\", ()).upper()"),
-				("DELTA_TREND_TEXT",		85,		"text",	self.getDeltaTrendText,	None,					0,									None,									None,						"localText.getText(\"TXT_KEY_DELTA_TREND_ADVISOR_SIMPLE\", ()).upper()"),
 				("REV_HAPPINESS",			85,		"int",	self.getRevHappinessVal,None,					0,									None,									None,						"localText.getText(\"TXT_KEY_REV_WATCH_HAPPINESS\", ()).upper()"),
 				("REV_HAPPINESS_TEXT",		85,		"text",	self.getRevHappinessText,None,					0,									None,									None,						"localText.getText(\"TXT_KEY_REV_WATCH_HAPPINESS\", ()).upper()"),
 				("REV_DISTANCE",			85,		"int",	self.getRevDistanceVal,	None,					0,									None,									None,						"localText.getText(\"TXT_KEY_REV_WATCH_DISTANT\", ()).upper()"),
@@ -532,12 +526,12 @@ class RevolutionWatchAdvisor:
 		self.objectUnderConstruction = self.hammerIcon
 
 		# add the colors dependant on the statuses
-		self.objectHave = localText.changeTextColor (self.objectIsPresent, gc.getInfoTypeForString("COLOR_GREEN")) #"x"
-		self.objectNotPossible = localText.changeTextColor (self.objectIsNotPresent, gc.getInfoTypeForString("COLOR_RED")) #"-"
-		self.objectPossible = localText.changeTextColor (self.objectCanBeBuild, gc.getInfoTypeForString("COLOR_BLUE")) #"o"
-		self.objectHaveObsolete = localText.changeTextColor (self.objectIsPresent, gc.getInfoTypeForString("COLOR_WHITE")) #"x"
-		self.objectNotPossibleConcurrent = localText.changeTextColor (self.objectIsNotPresent, gc.getInfoTypeForString("COLOR_YELLOW")) #"-"
-		self.objectPossibleConcurrent = localText.changeTextColor (self.objectCanBeBuild, gc.getInfoTypeForString("COLOR_YELLOW")) #"o"
+		self.objectHave = localText.changeTextColor (self.objectIsPresent, gc.getCOLOR_GREEN()) #"x"
+		self.objectNotPossible = localText.changeTextColor (self.objectIsNotPresent, gc.getCOLOR_RED()) #"-"
+		self.objectPossible = localText.changeTextColor (self.objectCanBeBuild, gc.getCOLOR_BLUE()) #"o"
+		self.objectHaveObsolete = localText.changeTextColor (self.objectIsPresent, gc.getCOLOR_WHITE()) #"x"
+		self.objectNotPossibleConcurrent = localText.changeTextColor (self.objectIsNotPresent, gc.getCOLOR_YELLOW()) #"-"
+		self.objectPossibleConcurrent = localText.changeTextColor (self.objectCanBeBuild, gc.getCOLOR_YELLOW()) #"o"
 
 		# Corporation Yield and Commerce values by Bonus
 		# Maps are { bonus -> { yield/commerce -> { corporation -> value } } }
@@ -731,9 +725,9 @@ class RevolutionWatchAdvisor:
 			# Colors to highlight with for each type of number (Must be here,
 			#  because C++ functions aren't available upon startup of CIV)
 			self.COLOR_DICT = {
-				"PROBLEM": gc.getInfoTypeForString("COLOR_RED"),
-				"NEUTRAL": gc.getInfoTypeForString("COLOR_YELLOW"),
-				"GREAT": gc.getInfoTypeForString("COLOR_GREEN"),
+				"PROBLEM": gc.getCOLOR_RED(),
+				"NEUTRAL": gc.getCOLOR_YELLOW(),
+				"GREAT": gc.getCOLOR_GREEN(),
 				}
 
 		self.switchPage(self.PAGES[0]["name"])
@@ -1121,17 +1115,17 @@ class RevolutionWatchAdvisor:
 
 		start = time.clock()
 		# Draw the city list...
-		self.drawContents (page)
+		self.drawContents(page)
 		end = time.clock()
 		print "drawContents: " + str(end - start) + "s"
 
-	def calculateFounded (self, city, szKey, arg):
+	def calculateFounded(self, city, szKey, arg):
 
 		# City founded date...
 		iTurnTime = city.getGameTurnFounded()
 		return unicode(CyGameTextMgr().getTimeStr(iTurnTime, False))
 
-	def calculateFeatures (self, city, szKey, arg):
+	def calculateFeatures(self, city, szKey, arg):
 
 		szReturn = ""
 
@@ -1294,32 +1288,29 @@ class RevolutionWatchAdvisor:
 		return szReturn
 
 	def calculateWhipPopulation (self, city, szKey, arg):
-
-		if (city.canHurry(self.HURRY_TYPE_POP, False)):
+		if city.canHurry(self.HURRY_TYPE_POP, False):
 			return unicode(city.hurryPopulation(self.HURRY_TYPE_POP))
-		else:
-			return self.objectNotPossible
+
+		return self.objectNotPossible
 
 	def calculateWhipOverflowProduction (self, city, szKey, arg):
-
 		return self.calculateWhipOverflow(city, szKey, arg)[0]
 
 	def calculateWhipOverflowGold (self, city, szKey, arg):
-
 		return self.calculateWhipOverflow(city, szKey, arg)[1]
 
 	def calculateWhipOverflow (self, city, szKey, arg):
 
-		if (city.canHurry(self.HURRY_TYPE_POP, False)):
-			iOverflow = city.hurryProduction(self.HURRY_TYPE_POP) - city.productionLeft()
-			if CityScreenOpt.isWhipAssistOverflowCountCurrentProduction():
-				iOverflow = iOverflow + city.getCurrentProductionDifference(True, False)
-			iMaxOverflow = min(city.getProductionNeeded(), iOverflow)
-			iOverflowGold = max(0, iOverflow - iMaxOverflow) * gc.getDefineINT("MAXED_UNIT_GOLD_PERCENT") / 100
-			iOverflow =  100 * iMaxOverflow / city.getBaseYieldRateModifier(gc.getInfoTypeForString("YIELD_PRODUCTION"), city.getProductionModifier())
-			return unicode(iOverflow), unicode(iOverflowGold)
-		else:
+		if not city.canHurry(self.HURRY_TYPE_POP, False):
 			return self.objectNotPossible, self.objectNotPossible
+
+		iOverflow = city.hurryProduction(self.HURRY_TYPE_POP) - city.productionLeft()
+		if CityScreenOpt.isWhipAssistOverflowCountCurrentProduction():
+			iOverflow = iOverflow + city.getCurrentProductionDifference(True, False)
+		iMaxOverflow = city.getMaxProductionOverflow()
+		iOverflowGold = max(0, iOverflow - iMaxOverflow) * gc.getDefineINT("MAXED_UNIT_GOLD_PERCENT") / 100
+		iOverflow =  100 * iMaxOverflow / city.getBaseYieldRateModifier(gc.getInfoTypeForString("YIELD_PRODUCTION"), 0)
+		return unicode(iOverflow), unicode(iOverflowGold)
 
 	def calculateHurryGoldCost (self, city, szKey, arg):
 
@@ -1863,16 +1854,16 @@ class RevolutionWatchAdvisor:
 		trendText = "-"
 		if trend > 10*showTrend:
 			trendText = localText.getText("TXT_ADVISOR_RAPIDLY_WORSENING", ())
-			trendText = localText.changeTextColor (trendText, gc.getInfoTypeForString("COLOR_RED"))
+			trendText = localText.changeTextColor (trendText, gc.getCOLOR_RED())
 		elif trend > showTrend:
 			trendText = localText.getText("TXT_ADVISOR_WORSENING", ())
 			trendText = localText.changeTextColor (trendText, gc.getInfoTypeForString("COLOR_PLAYER_ORANGE"))
 		elif trend < -showTrend:
 			trendText = localText.getText("TXT_ADVISOR_IMPROVING", ())
-			trendText = localText.changeTextColor (trendText, gc.getInfoTypeForString("COLOR_GREEN"))
+			trendText = localText.changeTextColor (trendText, gc.getCOLOR_GREEN())
 		else:
 			trendText = localText.getText("TXT_ADVISOR_FLAT", ())
-			trendText = localText.changeTextColor (trendText, gc.getInfoTypeForString("COLOR_WHITE"))
+			trendText = localText.changeTextColor (trendText, gc.getCOLOR_WHITE())
 		return trendText
 
 	def getRevolutionStatusText(self, city):
@@ -1913,7 +1904,7 @@ class RevolutionWatchAdvisor:
 		danger = 10
 		warning = 3
 		text = self.parseText(value, warning, danger, critical)
-		irrelevant = localText.changeTextColor(localText.getText("TXT_ADVISOR_POSITIVE",()), gc.getInfoTypeForString("COLOR_GREEN"))
+		irrelevant = localText.changeTextColor(localText.getText("TXT_ADVISOR_POSITIVE",()), gc.getCOLOR_GREEN())
 		if text == irrelevant : text = "-"
 		return text
 
@@ -1971,7 +1962,7 @@ class RevolutionWatchAdvisor:
 		danger = 10
 		warning = 3
 		text = self.parseText(value, warning, danger, critical)
-		irrelevant = localText.changeTextColor(localText.getText("TXT_ADVISOR_POSITIVE",()), gc.getInfoTypeForString("COLOR_GREEN"))
+		irrelevant = localText.changeTextColor(localText.getText("TXT_ADVISOR_POSITIVE",()), gc.getCOLOR_GREEN())
 		if text == irrelevant : text = localText.getText("TXT_KEY_REV_NONE", ())
 		return text
 
@@ -1979,7 +1970,7 @@ class RevolutionWatchAdvisor:
 		outText = "-"
 		if value >= thresholdCritical:
 			outText = localText.getText("TXT_ADVISOR_CRITICAL", ())
-			outText = localText.changeTextColor (outText, gc.getInfoTypeForString("COLOR_RED"))
+			outText = localText.changeTextColor (outText, gc.getCOLOR_RED())
 
 		elif value >= thresholdDanger:
 			outText = localText.getText("TXT_KEY_REV_WATCH_DANGER", ())
@@ -1987,14 +1978,14 @@ class RevolutionWatchAdvisor:
 
 		elif value >= thresholdWarning:
 			outText = localText.getText("TXT_KEY_REV_WATCH_WARNING", ())
-			outText = localText.changeTextColor (outText, gc.getInfoTypeForString("COLOR_YELLOW"))
+			outText = localText.changeTextColor (outText, gc.getCOLOR_YELLOW())
 		else:
 			outText = localText.getText("TXT_ADVISOR_POSITIVE", ())
-			outText = localText.changeTextColor (outText, gc.getInfoTypeForString("COLOR_GREEN"))
+			outText = localText.changeTextColor (outText, gc.getCOLOR_GREEN())
 		return outText
 # RevolutionDCM - end
 
-	def drawContents (self, page):
+	def drawContents(self, page):
 		""" Function to draw the contents of the cityList passed in. """
 
 		screen = self.getScreen()
@@ -2215,22 +2206,22 @@ class RevolutionWatchAdvisor:
 			# Now hand off to the C++ API
 			self.updateAppropriateCitySelection(page, player.getNumCities())
 
-	def HandleSpecialistPlus (self, inputClass):
+	def HandleSpecialistPlus(self, inputClass):
 		""" Handles when any Specialist Plus is pushed."""
 
 		#CyInterface().setDirty(InterfaceDirtyBits.Domestic_Advisor_DIRTY_BIT, True)
 		return 0
 
-	def HandleSpecialistMinus (self, inputClass):
+	def HandleSpecialistMinus(self, inputClass):
 		""" Handles when any Specialist Minus is pushed."""
 
 		CyInterface().setDirty(InterfaceDirtyBits.REVOLUTION_WATCH_ADVISOR_DIRTY_BIT, True)
 		return 0
 
-	def RevolutionWatchExit (self, inputClass):
+	def RevolutionWatchExit(self, inputClass):
 		return 0
 
-	def handleInput (self, inputClass):
+	def handleInput(self, inputClass):
 		""" Handles the input for this screen..."""
 
 		code = inputClass.getNotifyCode()
@@ -2331,7 +2322,7 @@ class RevolutionWatchAdvisor:
 	def updateScreen(self):
 		""" Updates the screen."""
 
-		self.drawContents()
+		self.drawContents(self.currentPage)
 
 		return
 
