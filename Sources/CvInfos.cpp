@@ -3675,12 +3675,8 @@ int CvPromotionInfo::getNumSubCombatChangeTypes() const
 
 bool CvPromotionInfo::isSubCombatChangeType(int i) const
 {
-	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
-	if (find(m_aiSubCombatChangeTypes.begin(), m_aiSubCombatChangeTypes.end(), i) == m_aiSubCombatChangeTypes.end())
-	{
-		return false;
-	}
-	return true;
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), i)
+	return algo::contains(m_aiSubCombatChangeTypes, i);
 }
 
 int CvPromotionInfo::getRemovesUnitCombatType(int i) const
@@ -6066,79 +6062,14 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 	if (isPlotPrereqsKeepAfter() == bDefault) m_bPlotPrereqsKeepAfter = pClassInfo->isPlotPrereqsKeepAfter();
 	if (isRemoveAfterSet() == bDefault) m_bRemoveAfterSet = pClassInfo->isRemoveAfterSet();
 	if (isQuick() == bDefault) m_bQuick = pClassInfo->isQuick();
-	// bool vectors without delayed resolution
-	if (getNumSubCombatChangeTypes() == 0)
-	{
-		m_aiSubCombatChangeTypes.clear();
-		for ( int i = 0; i < pClassInfo->getNumSubCombatChangeTypes(); i++)
-		{
-			m_aiSubCombatChangeTypes.push_back(pClassInfo->getSubCombatChangeType(i));
-		}
-	}
-
-	if (getNumRemovesUnitCombatTypes() == 0)
-	{
-		m_aiRemovesUnitCombatTypes.clear();
-		for ( int i = 0; i < pClassInfo->getNumRemovesUnitCombatTypes(); i++)
-		{
-			m_aiRemovesUnitCombatTypes.push_back(pClassInfo->getRemovesUnitCombatType(i));
-		}
-	}
-
-	if (getNumOnGameOptions() == 0)
-	{
-		m_aiOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumOnGameOptions(); i++)
-		{
-			m_aiOnGameOptions.push_back(pClassInfo->getOnGameOption(i));
-		}
-	}
-
-	if (getNumNotOnGameOptions() == 0)
-	{
-		m_aiNotOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnGameOptions(); i++)
-		{
-			m_aiNotOnGameOptions.push_back(pClassInfo->getNotOnGameOption(i));
-		}
-	}
-
-	if (getNumFreetoUnitCombats() == 0)
-	{
-		m_aiFreetoUnitCombats.clear();
-		for ( int i = 0; i < pClassInfo->getNumFreetoUnitCombats(); i++)
-		{
-			m_aiFreetoUnitCombats.push_back(pClassInfo->getFreetoUnitCombat(i));
-		}
-	}
-
-	if (getNumNotOnUnitCombatTypes() == 0)
-	{
-		m_aiNotOnUnitCombatTypes.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnUnitCombatTypes(); i++)
-		{
-			m_aiNotOnUnitCombatTypes.push_back(pClassInfo->getNotOnUnitCombatType(i));
-		}
-	}
-
-	if (getNumNotOnDomainTypes() == 0)
-	{
-		m_aiNotOnDomainTypes.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnDomainTypes(); i++)
-		{
-			m_aiNotOnDomainTypes.push_back(pClassInfo->getNotOnDomainType(i));
-		}
-	}
-
-	if (getNumNoAutoEquiptoCombatClassTypes() == 0)
-	{
-		m_aiNoAutoEquiptoCombatClassTypes.clear();
-		for ( int i = 0; i < pClassInfo->getNumNoAutoEquiptoCombatClassTypes(); i++)
-		{
-			m_aiNoAutoEquiptoCombatClassTypes.push_back(pClassInfo->getNoAutoEquiptoCombatClassType(i));
-		}
-	}
-
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiSubCombatChangeTypes, pClassInfo->m_aiSubCombatChangeTypes);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiRemovesUnitCombatTypes, pClassInfo->m_aiRemovesUnitCombatTypes);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->m_aiOnGameOptions);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->m_aiNotOnGameOptions);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiFreetoUnitCombats, pClassInfo->m_aiFreetoUnitCombats);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnUnitCombatTypes, pClassInfo->m_aiNotOnUnitCombatTypes);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnDomainTypes, pClassInfo->m_aiNotOnDomainTypes);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNoAutoEquiptoCombatClassTypes, pClassInfo->m_aiNoAutoEquiptoCombatClassTypes);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiMapTypes, pClassInfo->m_aiMapTypes);
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiCureAfflictionChangeTypes, pClassInfo->m_aiCureAfflictionChangeTypes);

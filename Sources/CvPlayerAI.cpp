@@ -28076,20 +28076,20 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 			}
 		}
 
-		for (iI = 0; iI < kPromotion.getNumRemovesUnitCombatTypes(); iI++)
+		foreach_(const UnitCombatTypes removeUnitCombat, kPromotion.getRemovesUnitCombat())
 		{
 			if (pUnit == NULL)
 			{
-				if (kUnit.hasUnitCombat((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI)))
+				if (kUnit.hasUnitCombat(removeUnitCombat))
 				{
-					iValue -= AI_unitCombatValue((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI), eUnit, pUnit, eUnitAI);
+					iValue -= AI_unitCombatValue(removeUnitCombat, eUnit, pUnit, eUnitAI);
 				}
 			}
 			else
 			{
-				if (!pUnit->isHasUnitCombat((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI)))
+				if (!pUnit->isHasUnitCombat(removeUnitCombat))
 				{
-					iValue -= AI_unitCombatValue((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI), eUnit, pUnit, eUnitAI);
+					iValue -= AI_unitCombatValue(removeUnitCombat, eUnit, pUnit, eUnitAI);
 				}
 			}
 		}
@@ -33225,20 +33225,20 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 		}
 	}
 
-	for (iI = 0; iI < kPromotion.getNumRemovesUnitCombatTypes(); iI++)
+	foreach_(const UnitCombatTypes removeUnitCombat, kPromotion.getRemovesUnitCombat())
 	{
 		if (pUnit == NULL)
 		{
-			if (kUnit.hasUnitCombat((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI)))
+			if (kUnit.hasUnitCombat(removeUnitCombat))
 			{
-				iValue -= AI_unitCombatValue((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI), eUnit, pUnit, eUnitAI);
+				iValue -= AI_unitCombatValue(removeUnitCombat, eUnit, pUnit, eUnitAI);
 			}
 		}
 		else
 		{
-			if (!pUnit->isHasUnitCombat((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI)))
+			if (!pUnit->isHasUnitCombat(removeUnitCombat))
 			{
-				iValue -= AI_unitCombatValue((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI), eUnit, pUnit, eUnitAI);
+				iValue -= AI_unitCombatValue(removeUnitCombat, eUnit, pUnit, eUnitAI);
 			}
 		}
 	}

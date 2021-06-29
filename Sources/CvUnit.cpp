@@ -15536,7 +15536,7 @@ bool CvUnit::canOnslaught() const
 
 bool CvUnit::hasCombatType(UnitCombatTypes eCombatType) const
 {
-	if ((getUnitCombatType() == eCombatType || hasExtraSubCombatType(eCombatType)) && !hasRemovesUnitCombatType(eCombatType))
+	if (getUnitCombatType() == eCombatType || hasExtraSubCombatType(eCombatType))
 	{
 		return true;
 	}
@@ -15561,7 +15561,7 @@ bool CvUnit::hasSubCombatType(UnitCombatTypes eCombatType) const
 			bSubCombat = true;
 		}
 	}
-	if ((bSubCombat || hasExtraSubCombatType(eCombatType)) && m_pUnitInfo->getUnitCombatType() != eCombatType && !hasRemovesUnitCombatType(eCombatType))
+	if ((bSubCombat || hasExtraSubCombatType(eCombatType)) && m_pUnitInfo->getUnitCombatType() != eCombatType)
 	{
 		return true;
 	}
@@ -19015,34 +19015,6 @@ void CvUnit::changeSubCombatTypeCount(UnitCombatTypes eCombatType, int iChange)
 
 		info->m_iSubCombatTypeCount += iChange;
 		FASSERT_NOT_NEGATIVE(info->m_iSubCombatTypeCount)
-	}
-}
-
-int CvUnit::getRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType) const
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
-
-	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eCombatType);
-
-	return info == NULL ? 0 : info->m_iRemovesUnitCombatTypeCount;
-}
-
-bool CvUnit::hasRemovesUnitCombatType(UnitCombatTypes eCombatType) const
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
-	return (getRemovesUnitCombatTypeCount(eCombatType) > 0);
-}
-
-void CvUnit::changeRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
-
-	if (iChange != 0)
-	{
-		UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eCombatType);
-
-		info->m_iRemovesUnitCombatTypeCount += iChange;
-		FASSERT_NOT_NEGATIVE(info->m_iRemovesUnitCombatTypeCount)
 	}
 }
 //TB SubCombat Mod End
@@ -22900,9 +22872,9 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 		setHasUnitCombat(((UnitCombatTypes)kPromotion.getSubCombatChangeType(iI)), bAdding, true);
 	}
 
-	for (iI = 0; iI < kPromotion.getNumRemovesUnitCombatTypes(); iI++)
+	foreach_(const UnitCombatTypes removeUnitCombat, kPromotion.getRemovesUnitCombat())
 	{
-		setHasUnitCombat(((UnitCombatTypes)kPromotion.getRemovesUnitCombatType(iI)), bAdding ? false : true, true);
+		setHasUnitCombat(removeUnitCombat, !bAdding, true);
 	}
 
 #ifdef OUTBREAKS_AND_AFFLICTIONS
@@ -23888,16 +23860,6 @@ void CvUnit::read(FDataStreamBase* pStream)
 			}
 		}
 	} while(iI != -1);
-
-	for(iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-	{
-		if ( g_paiTempRemovesUnitCombatTypeCount[iI] != 0 )
-		{
-			UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo((UnitCombatTypes)iI);
-
-			info->m_iRemovesUnitCombatTypeCount = g_paiTempRemovesUnitCombatTypeCount[iI];
-		}
-	}
 
 	// Read compressed data format
 	for(iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
@@ -25195,17 +25157,6 @@ void CvUnit::write(FDataStreamBase* pStream)
 
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iCombatKnockbacks);
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iCombatRepels);
-
-
-	//	Use condensed format now - only save non-default array elements
-	for(iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-	{
-		if ( getRemovesUnitCombatTypeCount((UnitCombatTypes)iI) != 0 )
-		{
-			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", iI, "hasUnitCombatInfo4");
-			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", getRemovesUnitCombatTypeCount((UnitCombatTypes)iI), "removesUnitCombatCount");
-		}
-	}
 
 	//	Use condensed format now - only save non-default array elements
 	for(iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)

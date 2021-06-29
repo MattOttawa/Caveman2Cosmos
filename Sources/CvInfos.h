@@ -740,7 +740,7 @@ public:
 	int getMediumRangeSupportPercentChange() const;
 	int getLongRangeSupportPercentChange() const;
 	int getFlankSupportPercentChange() const;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	int getDodgeModifierChange() const;
 	int getPrecisionModifierChange() const;
 	int getPowerShotsChange() const;
@@ -849,6 +849,7 @@ public:
 	int getNumSubCombatChangeTypes() const;
 	bool isSubCombatChangeType(int i) const;
 
+	const std::vector<UnitCombatTypes>& getRemovesUnitCombat() const { return m_aiRemovesUnitCombatTypes; }
 	int getRemovesUnitCombatType(int i) const;
 	int getNumRemovesUnitCombatTypes() const;
 	bool isRemovesUnitCombatType(int i) const;
@@ -882,12 +883,12 @@ public:
 	bool isMapType(int i) const;
 	const std::vector<int>& getMapTypes() const { return m_aiMapTypes; }
 
-	// bool vector with delayed resolution
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getCureAfflictionChangeType(int i) const;
 	int getNumCureAfflictionChangeTypes() const;
 	bool isCureAfflictionChangeType(int i) const;
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	int getPrereqBonusType(int i) const;
 	int getNumPrereqBonusTypes() const;
 	bool isPrereqBonusType(int i) const;
@@ -1000,9 +1001,8 @@ public:
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
 	bool isAidChange(int iProperty) const;
-#endif
-	//Team Project (4)
-	//WorkRateMod
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	int getNumTerrainWorkRateModifierChangeTypes() const;
 	int getTerrainWorkRateModifierChangeType(int iTerrain) const;
 	bool isTerrainWorkRateModifierChangeType(int iTerrain) const;
@@ -1034,6 +1034,9 @@ public:
 	const PromotionLineModifier& getAfflictionFortitudeChangeModifier(int iAfflictionLine) const;
 
 #ifdef OUTBREAKS_AND_AFFLICTIONS
+	int getNumDistanceAttackCommunicabilityTypeChanges() const;
+	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
+
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
 #endif
@@ -1067,9 +1070,6 @@ public:
 	int getNumVisibleImprovementRangeChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
 
-	int getNumDistanceAttackCommunicabilityTypeChanges() const;
-	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
-
 	// TB Combat Mods End  TB SubCombat Mod end
 
 	//Pediahelp
@@ -1080,6 +1080,15 @@ public:
 
 	bool hasNegativeEffects() const;
 
+	bool read(CvXMLLoadUtility* pXML);
+	bool readPass2(CvXMLLoadUtility* pXML);
+	void copyNonDefaults(const CvPromotionInfo* pClassInfo);
+	void copyNonDefaultsReadPass2(CvPromotionInfo* pClassInfo, CvXMLLoadUtility* pXML, bool bOver = false);
+
+private:
+	CvPropertyManipulators m_PropertyManipulators;
+
+//----------------------PROTECTED MEMBER VARIABLES----------------------------
 protected:
 	bool m_bCanMovePeaks;
 	//	Koshling - enhanced mountaineering mode to differentiate between ability to move through
@@ -1093,18 +1102,7 @@ protected:
 	bool m_bZoneOfControl;
 	int m_iIgnoreTerrainDamage;
 	int m_zobristValue;
-public:
-	bool read(CvXMLLoadUtility* pXML);
-	bool readPass2(CvXMLLoadUtility* pXML);
-	void copyNonDefaults(const CvPromotionInfo* pClassInfo);
-	void copyNonDefaultsReadPass2(CvPromotionInfo* pClassInfo, CvXMLLoadUtility* pXML, bool bOver = false);
 
-private:
-	CvPropertyManipulators m_PropertyManipulators;
-
-//----------------------PROTECTED MEMBER VARIABLES----------------------------
-
-protected:
 	int m_iLayerAnimationPath;
 	int m_iPrereqPromotion;
 	int m_iPrereqOrPromotion1;
@@ -1249,7 +1247,7 @@ protected:
 	int m_iMediumRangeSupportPercentChange;
 	int m_iLongRangeSupportPercentChange;
 	int m_iFlankSupportPercentChange;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	int m_iDodgeModifierChange;
 	int m_iPrecisionModifierChange;
 	int m_iPowerShotsChange;
@@ -1323,7 +1321,7 @@ protected:
 	bool m_bEquipment;
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	bool m_bAffliction;
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	bool m_bParalyze;
 	bool m_bMakesDamageCold;
 	bool m_bMakesDamageNotCold;
@@ -1355,7 +1353,7 @@ protected:
 	//int* m_piAIWeightbyUnitCombatTypes;
 	// bool vectors without delayed resolution
 	std::vector<int> m_aiSubCombatChangeTypes;
-	std::vector<int> m_aiRemovesUnitCombatTypes;
+	std::vector<UnitCombatTypes> m_aiRemovesUnitCombatTypes;
 	std::vector<int> m_aiOnGameOptions;
 	std::vector<int> m_aiNotOnGameOptions;
 	std::vector<int> m_aiFreetoUnitCombats;
@@ -1363,7 +1361,6 @@ protected:
 	std::vector<int> m_aiNotOnDomainTypes;
 	std::vector<int> m_aiNoAutoEquiptoCombatClassTypes;
 	std::vector<int> m_aiMapTypes;
-	// bool vector with delayed resolution
 	std::vector<int> m_aiPrereqBonusTypes;
 	std::vector<int> m_aiAddsBuildTypes;
 	std::vector<int> m_aiNegatesInvisibilityTypes;
@@ -1392,11 +1389,6 @@ protected:
 	UnitCombatModifierArray m_aTrapDisableUnitCombatTypes;
 	UnitCombatModifierArray m_aTrapAvoidanceUnitCombatTypes;
 	UnitCombatModifierArray m_aTrapTriggerUnitCombatTypes;
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-	AidArray m_aAidChanges;
-#endif
-	//Team Project (4)
-		//WorkRateMod
 	TerrainModifierArray m_aTerrainWorkRateModifierChangeTypes;
 	FeatureModifierArray m_aFeatureWorkRateModifierChangeTypes;
 	BuildModifierArray m_aBuildWorkRateModifierChangeTypes;
@@ -1406,10 +1398,11 @@ protected:
 	// int vector utilizing struct with delayed resolution
 	std::vector<UnitCombatModifier> m_aAIWeightbyUnitCombatTypes;
 #ifdef OUTBREAKS_AND_AFFLICTIONS
+	AidArray m_aAidChanges;
 	std::vector<int> m_aiCureAfflictionChangeTypes;
 	std::vector<PromotionLineModifier> m_aAfflictionFortitudeChangeModifiers;
 	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	std::vector<HealUnitCombat> m_aHealUnitCombatChangeTypes;
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
 	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;

@@ -381,7 +381,6 @@ public:
 								m_iExtraUnitCombatModifier(0),
 								m_iSubCombatTypeCount(0),
 								m_iOngoingTrainingCount(0),
-								m_iRemovesUnitCombatTypeCount(0),
 								m_iExtraFlankingStrengthbyUnitCombatType(0),
 								m_iExtraWithdrawVSUnitCombatType(0),
 								m_iExtraPursuitVSUnitCombatType(0),
@@ -410,7 +409,6 @@ public:
 			m_iExtraUnitCombatModifier == 0 &&
 			m_iSubCombatTypeCount == 0 &&
 			m_iOngoingTrainingCount == 0 &&
-			m_iRemovesUnitCombatTypeCount == 0 &&
 			m_iExtraFlankingStrengthbyUnitCombatType == 0 &&
 			m_iExtraWithdrawVSUnitCombatType == 0 &&
 			m_iExtraPursuitVSUnitCombatType == 0 &&
@@ -436,7 +434,6 @@ public:
 	int	m_iExtraUnitCombatModifier;
 	int m_iSubCombatTypeCount;
 	int m_iOngoingTrainingCount;
-	int m_iRemovesUnitCombatTypeCount;
 	int m_iExtraFlankingStrengthbyUnitCombatType;
 	int m_iExtraWithdrawVSUnitCombatType;
 	int m_iExtraPursuitVSUnitCombatType;
@@ -1444,10 +1441,6 @@ public:
 	int getSubCombatTypeCount(UnitCombatTypes eCombatType) const;
 	bool hasExtraSubCombatType(UnitCombatTypes eCombatType) const;
 	void changeSubCombatTypeCount(UnitCombatTypes eCombatType, int iChange);
-
-	int getRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType) const;
-	bool hasRemovesUnitCombatType(UnitCombatTypes eCombatType) const;
-	void changeRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType, int iChange);
 
 	int getCureAfflictionCount(PromotionLineTypes ePromotionLineType) const;
 	bool hasExtraCureAffliction(PromotionLineTypes ePromotionLineType) const;

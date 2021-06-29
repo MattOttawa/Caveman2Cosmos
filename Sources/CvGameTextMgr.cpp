@@ -14696,9 +14696,9 @@ void CvGameTextMgr::parsePromotionHelpInternal(CvWStringBuffer &szBuffer, Promot
 
 	for( iJ = 0; iJ < (int)linePromotionsOwned.size(); iJ++ )
 	{
-		for (iI = 0; iI < GC.getPromotionInfo(ePromotion).getNumRemovesUnitCombatTypes(); ++iI)
+		foreach_(const UnitCombatTypes removeUnitCombat, GC.getPromotionInfo(ePromotion).getRemovesUnitCombat())
 		{
-			aUnitCombats.push_back((UnitCombatTypes)GC.getPromotionInfo(ePromotion).getRemovesUnitCombatType(iI));
+			aUnitCombats.push_back(removeUnitCombat);
 		}
 	}
 
