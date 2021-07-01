@@ -5268,7 +5268,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 			bool bReligionFounded = false;
 			bool bClearResearchQueueAI = false;
 
-			if (bFirst && GC.getGame().countKnownTechNumTeams(eIndex) == 1)
+			if (bFirst && GC.getGame().countKnownTechNumTeams(eIndex) == 1 && !GET_PLAYER(ePlayer).isNPC())
 			{
 				if (!GC.getGame().isOption(GAMEOPTION_DIVINE_PROPHETS)
 				&& GC.getGame().isTechCanFoundReligion(eIndex))
@@ -5398,7 +5398,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 				}
 			}
 
-			if (bFirst && GC.getGame().countKnownTechNumTeams(eIndex) == 1)
+			if (bFirst && GC.getGame().countKnownTechNumTeams(eIndex) == 1 && !GET_PLAYER(ePlayer).isNPC())
 			{
 				const UnitTypes eFreeUnit = (UnitTypes)GC.getTechInfo(eIndex).getFirstFreeUnit();
 				if (eFreeUnit != NO_UNIT)
@@ -5459,11 +5459,8 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 							AddDLLMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_FIRSTTOTECH", MESSAGE_TYPE_MAJOR_EVENT, NULL, GC.getCOLOR_HIGHLIGHT_TEXT());
 						}
 					}
-					if (!GET_PLAYER(ePlayer).isNPC())
-					{
-						szBuffer = gDLL->getText("TXT_KEY_MISC_SOMEONE_FIRST_TO_TECH", GET_PLAYER(ePlayer).getName(), GC.getTechInfo(eIndex).getTextKeyWide());
-						GC.getGame().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, ePlayer, szBuffer, -1, -1, GC.getCOLOR_HIGHLIGHT_TEXT());
-					}
+					szBuffer = gDLL->getText("TXT_KEY_MISC_SOMEONE_FIRST_TO_TECH", GET_PLAYER(ePlayer).getName(), GC.getTechInfo(eIndex).getTextKeyWide());
+					GC.getGame().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, ePlayer, szBuffer, -1, -1, GC.getCOLOR_HIGHLIGHT_TEXT());
 				}
 
 				if (bClearResearchQueueAI)
