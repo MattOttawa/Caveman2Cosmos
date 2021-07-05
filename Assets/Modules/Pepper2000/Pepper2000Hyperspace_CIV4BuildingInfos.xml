@@ -10,7 +10,7 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_DUALFLUX_QUANTUM_TEMPORAL_RIFT</PrereqTech>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>10</iYield>
@@ -31,7 +31,7 @@
 			<iCost>1261</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>40</iCommerce>
@@ -53,7 +53,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>40</iCommerce>
@@ -78,7 +78,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>120</iCommerce>
@@ -107,7 +107,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -132,7 +132,7 @@
 			<iCost>2182</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>5</iYield>
@@ -154,7 +154,7 @@
 			<iCost>2914</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>10</iYield>
@@ -176,7 +176,7 @@
 			<iCost>2914</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>40</iCommerce>
@@ -200,7 +200,7 @@
 			<iCost>2914</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -221,7 +221,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -248,7 +248,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>10</iYield>
@@ -267,7 +267,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -294,7 +294,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>500</iCommerce>
@@ -322,7 +322,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -342,7 +342,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>70</iCommerce>
@@ -366,7 +366,7 @@
 			<iCost>1945</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldModifiers>
 				<iYield>0</iYield>
@@ -388,7 +388,7 @@
 			<iCost>1261</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>20</iCommerce>
@@ -410,7 +410,7 @@
 			<iCost>1261</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>40</iCommerce>
@@ -431,7 +431,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>75</iCommerce>
@@ -462,7 +462,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -488,7 +488,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -512,7 +512,7 @@
 			<iCost>2182</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -536,7 +536,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -561,7 +561,7 @@
 			<iCost>1713</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>35</iCommerce>
@@ -601,7 +601,7 @@
 			<iCost>3166</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -627,7 +627,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>-20</iCommerce>
@@ -656,7 +656,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>300</iCommerce>
@@ -691,7 +691,7 @@
 			<iCost>1945</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>120</iCommerce>
@@ -760,7 +760,7 @@
 			<iCost>2666</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>500</iCommerce>
@@ -780,7 +780,7 @@
 			<iCost>2666</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -801,7 +801,7 @@
 			<iCost>2666</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -824,7 +824,7 @@
 			<iCost>3166</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>50</iYield>
@@ -845,7 +845,7 @@
 			<iCost>3683</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -868,7 +868,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>35</iYield>
@@ -897,7 +897,7 @@
 			<iCost>1945</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>75</iCommerce>
@@ -921,7 +921,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>5</iYield>
@@ -943,7 +943,7 @@
 			<iCost>1261</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -961,7 +961,7 @@
 			<iCost>1261</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -981,7 +981,7 @@
 			<iCost>1485</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>75</iCommerce>
@@ -1006,7 +1006,7 @@
 			<iCost>1945</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -1028,7 +1028,7 @@
 			<iCost>1945</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -1053,7 +1053,7 @@
 			<iCost>2914</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>30</iCommerce>
@@ -1077,7 +1077,7 @@
 			<iCost>2914</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>-10</iCommerce>
@@ -1102,7 +1102,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>200</iCommerce>
@@ -1124,7 +1124,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -1153,7 +1153,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -1181,7 +1181,7 @@
 			<iCost>2914</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>30</iCommerce>
@@ -1203,7 +1203,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -1225,18 +1225,7 @@
 			<iCost>2000</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_GALACTIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_VENUSIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_JOVIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_CISLUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_PLASMA</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_TITANIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_UNIVERSAL</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_DISTANT</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -1261,18 +1250,7 @@
 			<iCost>2000</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_GALACTIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_VENUSIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_JOVIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_CISLUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_PLASMA</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_TITANIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_UNIVERSAL</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_DISTANT</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -1290,18 +1268,7 @@
 			<iCost>2000</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_GALACTIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_VENUSIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_JOVIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_CISLUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_PLASMA</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_TITANIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_UNIVERSAL</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_DISTANT</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -1324,7 +1291,7 @@
 			<iCost>2422</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<iAdjacentDamagePercent>10</iAdjacentDamagePercent>
 			<iDefense>30</iDefense>
@@ -1346,7 +1313,7 @@
 			<iCost>2422</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<iDefense>30</iDefense>
 			<bDamageAllAttackers>1</bDamageAllAttackers>
@@ -1369,7 +1336,7 @@
 			<iCost>3423</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<iDefense>100</iDefense>
 		</BuildingInfo>
@@ -1387,7 +1354,7 @@
 			<iCost>13692</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>50</iCommerce>
@@ -1419,7 +1386,7 @@
 			<iCost>11658</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>1000</iCommerce>
@@ -1451,7 +1418,7 @@
 			<iCost>11658</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -1508,7 +1475,7 @@
 			<iCost>14732</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>0</iYield>
@@ -1519,7 +1486,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SIMULATED_UNIVERSE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>

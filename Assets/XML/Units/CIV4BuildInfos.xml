@@ -2464,7 +2464,6 @@
 			<Type>BUILD_SEASONAL_CAMP</Type>
 			<Description>TXT_KEY_BUILD_SEASONAL_CAMP</Description>
 			<PrereqTech>TECH_SEDENTARY_LIFESTYLE</PrereqTech>
-			<ObsoleteTech>TECH_MEDIEVAL_LIFESTYLE</ObsoleteTech>
 			<iTime>100</iTime>
 			<iCost>5</iCost>
 			<bKill>0</bKill>

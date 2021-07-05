@@ -56,6 +56,16 @@
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
 			</UnitAIs>
+			<GreatPeoples>
+				<GreatPeople>
+					<GreatPeopleType>SPECIALIST_GREAT_MILITARY_INSTRUCTOR</GreatPeopleType>
+					<bGreatPeople>1</bGreatPeople>
+				</GreatPeople>
+				<GreatPeople>
+					<GreatPeopleType>SPECIALIST_CELEBRITY</GreatPeopleType>
+					<bGreatPeople>1</bGreatPeople>
+				</GreatPeople>
+			</GreatPeoples>
 			<PrereqAndBuildings>
 				<BuildingType>BUILDING_MUSEUM</BuildingType>
 			</PrereqAndBuildings>

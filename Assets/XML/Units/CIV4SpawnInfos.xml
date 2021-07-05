@@ -46,10 +46,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -66,9 +62,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 			</BonusTypes>
@@ -82,8 +75,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>80</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -98,9 +89,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -122,10 +110,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>23</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -141,10 +125,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_CAMEL</BonusType>
 			</BonusTypes>
@@ -159,10 +139,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<ObsoleteTech>TECH_CHIEFDOM</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>25</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_KANGAROO</BonusType>
 				<BonusType>BONUS_BISON</BonusType>
@@ -179,10 +155,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>25</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -202,10 +174,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_RABBIT</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -238,8 +206,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_DEER</BonusType>
 				<BonusType>BONUS_KANGAROO</BonusType>
@@ -286,9 +252,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_ELEPHANTS</BonusType>
 			</BonusTypes>
@@ -304,10 +267,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMaxLongitude>100</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MARSH</TerrainType>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
@@ -322,11 +281,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -350,10 +304,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>23</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -383,10 +333,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_CAMEL</BonusType>
 				<BonusType>BONUS_RABBIT</BonusType>
@@ -406,10 +352,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_COW</BonusType>
@@ -428,10 +370,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-25</iMinLatitude>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -454,10 +392,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_BAMBOO</FeatureType>
@@ -482,8 +416,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>70</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMinLongitude>60</iMinLongitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<BonusTypes>
 				<BonusType>BONUS_COW</BonusType>
@@ -499,8 +431,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>70</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMinLongitude>60</iMinLongitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<BonusTypes>
 				<BonusType>BONUS_ELEPHANTS</BonusType>
@@ -518,8 +448,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>-40</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_SEA_LION_AND_SEAL</BonusType>
 				<BonusType>BONUS_POULTRY</BonusType>
@@ -535,8 +463,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_WALRUS</BonusType>
 				<BonusType>BONUS_SEA_LION_AND_SEAL</BonusType>
@@ -552,11 +478,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_ROCKY</TerrainType>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -576,10 +497,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>23</iMinLatitude>
-			<iMaxLatitude>75</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -596,10 +513,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>50</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_BAMBOO</FeatureType>
 			</FeatureTypes>
@@ -613,10 +526,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>80</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<BonusTypes>
 				<BonusType>BONUS_DEER</BonusType>
@@ -635,10 +544,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_PIG</BonusType>
 			</BonusTypes>
@@ -653,11 +558,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>-10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -679,9 +579,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>20</iMinLatitude>
-			<iMaxLatitude>60</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -696,9 +593,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -715,9 +609,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BEAVERS</BonusType>
 			</BonusTypes>
@@ -732,11 +623,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-30</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -756,10 +642,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 			</BonusTypes>
@@ -774,9 +656,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 			</BonusTypes>
@@ -792,8 +671,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -813,8 +690,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_DEER</BonusType>
 				<BonusType>BONUS_KANGAROO</BonusType>
@@ -830,10 +705,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -853,8 +724,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -903,7 +772,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>60</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -919,10 +787,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>25</iMinLatitude>
-			<iMaxLatitude>60</iMaxLatitude>
-			<iMinLongitude>-65</iMinLongitude>
-			<iMaxLongitude>-125</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -938,10 +802,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -957,11 +817,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -979,10 +834,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<ObsoleteTech>TECH_RENAISSANCE_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>-40</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -998,7 +849,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>60</iMaxLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -1015,11 +865,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
@@ -1036,10 +881,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>30</iMinLatitude>
-			<iMaxLatitude>50</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1056,8 +897,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_BARREN</TerrainType>
@@ -1076,8 +915,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -1094,10 +931,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -1129,10 +962,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -1151,8 +980,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>70</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_KANGAROO</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -1168,10 +995,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-45</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1188,8 +1011,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>35</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
 			</TerrainTypes>
@@ -1205,9 +1026,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -1224,10 +1042,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<ObsoleteTech>TECH_RENAISSANCE_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>-30</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -1244,9 +1058,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>40</iMinLatitude>
-			<iMaxLatitude>60</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -1267,11 +1078,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-35</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
@@ -1290,10 +1096,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>20</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_BARREN</TerrainType>
 				<TerrainType>TERRAIN_ROCKY</TerrainType>
@@ -1310,8 +1112,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>40</iMinLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
@@ -1328,9 +1128,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1348,8 +1145,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -1368,9 +1163,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>30</iMinLatitude>
-			<iMaxLatitude>50</iMaxLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1386,10 +1178,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-50</iMinLatitude>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -1410,8 +1198,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>12</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>-40</iMaxLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_ICE</TerrainType>
 				<TerrainType>TERRAIN_PERMAFROST</TerrainType>
@@ -1430,10 +1216,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>30</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -1450,10 +1232,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>30</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -1468,10 +1246,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>30</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -1486,10 +1260,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -1506,7 +1276,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>40</iMaxLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -1523,8 +1292,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -1542,10 +1309,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>12</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>30</iMinLatitude>
-			<iMaxLatitude>50</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1560,8 +1323,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>66</iMaxLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -1580,10 +1341,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMinLatitude>-30</iMinLatitude>
-			<iMaxLatitude>30</iMaxLatitude>
-			<iMinLongitude>65</iMinLongitude>
-			<iMaxLongitude>105</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
@@ -1627,10 +1384,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -1648,9 +1401,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>-45</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_KANGAROO</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -1666,10 +1416,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -1690,9 +1436,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>-45</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_KANGAROO</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -1708,10 +1451,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-55</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -1732,9 +1471,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_LLAMA</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -1751,11 +1487,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -1774,10 +1505,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
@@ -1796,10 +1523,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -1815,10 +1538,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-30</iMinLatitude>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -1833,10 +1552,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>9</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-35</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SWAMP</FeatureType>
@@ -1854,11 +1569,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -1877,11 +1587,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -1898,10 +1603,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>50</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -1917,8 +1618,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<BonusTypes>
 				<BonusType>BONUS_WALRUS</BonusType>
@@ -1935,9 +1634,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_ICE</TerrainType>
 				<TerrainType>TERRAIN_PERMAFROST</TerrainType>
@@ -1955,11 +1651,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-50</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -1976,7 +1667,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<iMinLatitude>70</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 			</TerrainTypes>
@@ -1993,7 +1683,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<iMaxLatitude>70</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_CORN</BonusType>
 				<BonusType>BONUS_RICE</BonusType>
@@ -2013,7 +1702,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<iMaxLatitude>80</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_SEA_LION_AND_SEAL</BonusType>
 				<BonusType>BONUS_FISH</BonusType>
@@ -2031,8 +1719,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<ObsoleteTech>TECH_MEDIEVAL_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMaxLongitude>-25</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 			</BonusTypes>
@@ -2082,8 +1768,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>50</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_AGRICULTURE</PrereqTech>
-			<iMinLongitude>-40</iMinLongitude>
-			<iMaxLongitude>40</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -2103,8 +1787,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>50</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_AGRICULTURE</PrereqTech>
-			<iMinLongitude>-40</iMinLongitude>
-			<iMaxLongitude>40</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -2123,8 +1805,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>50</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_CLASSICAL_LIFESTYLE</PrereqTech>
-			<iMinLongitude>-40</iMinLongitude>
-			<iMaxLongitude>40</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -2143,8 +1823,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>50</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_MEDIEVAL_LIFESTYLE</PrereqTech>
-			<iMinLongitude>-40</iMinLongitude>
-			<iMaxLongitude>40</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -2165,10 +1843,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>30</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2189,11 +1863,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>12</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-26</iMinLatitude>
-			<iMaxLatitude>-12</iMaxLatitude>
-			<iMinLongitude>43</iMinLongitude>
-			<iMaxLongitude>51</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -2210,9 +1879,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_SWAMP</FeatureType>
@@ -2230,11 +1896,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>6</iMinLatitude>
-			<iMaxLatitude>35</iMaxLatitude>
-			<iMinLongitude>68</iMinLongitude>
-			<iMaxLongitude>97</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_BAMBOO</FeatureType>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2270,11 +1931,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -2290,10 +1946,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -2309,10 +1961,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_DEER</BonusType>
 				<BonusType>BONUS_KANGAROO</BonusType>
@@ -2330,10 +1978,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -2349,9 +1993,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>40</iMinLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -2365,11 +2006,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2393,10 +2029,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -2411,8 +2043,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>35</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2428,10 +2058,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>12</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-40</iMinLatitude>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -2463,9 +2089,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>10</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -2481,11 +2104,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>85</iMaxLatitude>
-			<iMinLongitude>100</iMinLongitude>
-			<iMaxLongitude>160</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_ICE</TerrainType>
 				<TerrainType>TERRAIN_PERMAFROST</TerrainType>
@@ -2505,11 +2123,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-10</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -2529,11 +2142,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-30</iMinLatitude>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -2552,9 +2160,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<ObsoleteTech>TECH_CHIEFDOM</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -2571,10 +2176,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>5</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -2598,11 +2199,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -2625,10 +2221,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>20</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-50</iMinLatitude>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -2644,7 +2236,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>80</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_ICE</TerrainType>
 				<TerrainType>TERRAIN_PERMAFROST</TerrainType>
@@ -2663,10 +2254,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
 				<TerrainType>TERRAIN_LUSH</TerrainType>
@@ -2687,10 +2274,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-10000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-80</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -2708,8 +2291,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_COW</BonusType>
@@ -2730,10 +2311,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_GRASSLAND</TerrainType>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
@@ -2752,10 +2329,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DUNES</TerrainType>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
@@ -2775,9 +2348,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 				<FeatureType>FEATURE_VERY_TALL_GRASS</FeatureType>
@@ -2794,9 +2364,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>80</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -2818,9 +2385,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>7</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
 				<TerrainType>TERRAIN_LUSH</TerrainType>
@@ -2840,8 +2404,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_COW</BonusType>
@@ -2861,8 +2423,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_COW</BonusType>
@@ -2888,10 +2448,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MARSH</TerrainType>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
@@ -2912,10 +2468,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_MANGROVE</FeatureType>
@@ -2934,10 +2486,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MARSH</TerrainType>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
@@ -2958,10 +2506,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_MANGROVE</FeatureType>
@@ -2980,8 +2524,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
 				<TerrainType>TERRAIN_GRASSLAND</TerrainType>
@@ -2998,8 +2540,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MARSH</TerrainType>
 			</TerrainTypes>
@@ -3014,8 +2554,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_SWAMP</FeatureType>
@@ -3033,8 +2571,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<bFreshWaterOnly>1</bFreshWaterOnly>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MARSH</TerrainType>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
@@ -3056,8 +2592,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>25</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_SWAMP</FeatureType>
@@ -3073,8 +2607,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>35</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_SWAMP</FeatureType>
@@ -3090,8 +2622,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>3</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>35</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_SWAMP</FeatureType>
@@ -3107,9 +2637,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>30</iMaxLatitude>
-			<iMinLongitude>-15</iMinLongitude>
-			<iMaxLongitude>45</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FLOOD_PLAINS</FeatureType>
 				<FeatureType>FEATURE_MANGROVE</FeatureType>
@@ -3127,8 +2654,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>20</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
@@ -3145,9 +2670,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3163,10 +2685,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3182,9 +2700,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 				<FeatureType>FEATURE_FOREST_ANCIENT</FeatureType>
@@ -3201,9 +2716,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>12</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_PARROTS</BonusType>
 			</BonusTypes>
@@ -3219,10 +2731,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>2</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_ELEPHANTS</BonusType>
 			</BonusTypes>
@@ -3238,10 +2746,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -3258,8 +2762,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3275,10 +2777,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3294,10 +2792,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -3314,8 +2808,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<ObsoleteTech>TECH_CLASSICAL_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>80</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -3334,7 +2826,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>50</iMaxLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_MARSH</TerrainType>
 				<TerrainType>TERRAIN_MUDDY</TerrainType>
@@ -3360,9 +2851,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_PLAINS</TerrainType>
 				<TerrainType>TERRAIN_ROCKY</TerrainType>
@@ -3380,10 +2868,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -3406,11 +2890,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_PARROTS</BonusType>
 			</BonusTypes>
@@ -3426,8 +2905,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_PARROTS</BonusType>
 			</BonusTypes>
@@ -3443,10 +2920,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>-20</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_PARROTS</BonusType>
 			</BonusTypes>
@@ -3462,10 +2935,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -3481,10 +2950,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3523,10 +2988,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>8</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -3547,10 +3008,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-70</iMinLatitude>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3566,9 +3023,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMaxLatitude>0</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 				<FeatureType>FEATURE_FOREST</FeatureType>
@@ -3585,10 +3039,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>12</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -3612,10 +3062,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -3631,10 +3077,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -3658,7 +3100,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>20</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>40</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3674,7 +3115,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>20</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>40</iMaxLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_DESERT</TerrainType>
 				<TerrainType>TERRAIN_SCRUB</TerrainType>
@@ -3691,10 +3131,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -3710,10 +3146,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -3729,10 +3161,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>-20</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_FOREST</FeatureType>
 			</FeatureTypes>
@@ -3748,10 +3176,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>5</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_JUNGLE</FeatureType>
 			</FeatureTypes>
@@ -3767,11 +3191,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-80</iMinLatitude>
-			<iMaxLatitude>-40</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -3795,8 +3214,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -3820,11 +3237,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>10</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>30</iMinLatitude>
-			<iMaxLatitude>70</iMaxLatitude>
-			<iMinLongitude>-70</iMinLongitude>
-			<iMaxLongitude>30</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -3839,7 +3251,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLongitude>-60</iMaxLongitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_ELEPHANTS</BonusType>
@@ -3859,11 +3270,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>80</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-50</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
@@ -3886,11 +3292,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
-			<iMaxLongitude>120</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -3912,11 +3313,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>20</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
-			<iMaxLongitude>120</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -3939,11 +3335,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-50</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -3965,9 +3356,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>4</iMaxLocalDensity>
 			<ObsoleteTech>TECH_TRIBALISM</ObsoleteTech>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
-			<iMinLongitude>-60</iMinLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_SAVANNA</FeatureType>
 			</FeatureTypes>
@@ -3989,11 +3377,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMinAreaPlotsPerUnitType>40</iMinAreaPlotsPerUnitType>
 			<iMaxLocalDensity>6</iMaxLocalDensity>
 			<iStartDate>-200000</iStartDate>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-60</iMinLatitude>
-			<iMaxLatitude>10</iMaxLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<rateOverrideDefineName>ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
 			<BonusTypes>
 				<BonusType>BONUS_HORSE</BonusType>
@@ -4077,8 +3460,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>60</iMinLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_ICE</FeatureType>
 			</FeatureTypes>
@@ -4094,8 +3475,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>40</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -4111,8 +3490,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>40</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_COAST</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP</TerrainType>
@@ -4224,8 +3601,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>23</iMinLatitude>
-			<iMaxLatitude>67</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 				<BonusType>BONUS_WHALE</BonusType>
@@ -4294,9 +3669,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>0</iMinLatitude>
-			<iMaxLatitude>40</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -4312,7 +3684,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>40</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -4354,8 +3725,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_ICE</FeatureType>
 			</FeatureTypes>
@@ -4387,7 +3756,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>30</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_CORAL_REEF</FeatureType>
 			</FeatureTypes>
@@ -4409,7 +3777,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>40</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -4457,10 +3824,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_COAST_TROPICAL</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP_TROPICAL</TerrainType>
@@ -4476,10 +3839,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>-23</iMinLatitude>
-			<iMaxLatitude>23</iMaxLatitude>
-			<iMinLongitude>60</iMinLongitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_COAST_TROPICAL</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP_TROPICAL</TerrainType>
@@ -4511,10 +3870,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<bLatitudeAbs>0</bLatitudeAbs>
-			<iMinLatitude>50</iMinLatitude>
-			<iMinLongitude>-60</iMinLongitude>
-			<iMaxLongitude>60</iMaxLongitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_KELP</FeatureType>
 			</FeatureTypes>
@@ -4538,7 +3893,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>30</iMaxLatitude>
 			<FeatureTypes>
 				<FeatureType>FEATURE_CORAL_REEF</FeatureType>
 			</FeatureTypes>
@@ -4562,7 +3916,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>30</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_FISH</BonusType>
 			</BonusTypes>
@@ -4594,7 +3947,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<iMaxLocalDensity>1</iMaxLocalDensity>
 			<PrereqTech>TECH_FISHING</PrereqTech>
 			<rateOverrideDefineName>SEA_ANIMAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMaxLatitude>30</iMaxLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_SHRIMP</BonusType>
 			</BonusTypes>
@@ -4707,7 +4059,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_HARD_HAMMER_PERCUSSION</PrereqTech>
 			<ObsoleteTech>TECH_SHARPENING</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>40</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_BISON</BonusType>
 				<BonusType>BONUS_DEER</BonusType>
@@ -4740,7 +4091,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_SHARPENING</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
 			</TerrainTypes>
@@ -4762,7 +4112,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_RAFT_BUILDING</PrereqTech>
 			<ObsoleteTech>TECH_BOAT_BUILDING</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_COAST</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP</TerrainType>
@@ -4783,7 +4132,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_HARPOON_MAKING</PrereqTech>
 			<ObsoleteTech>TECH_NAVAL_WARFARE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_COAST</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP</TerrainType>
@@ -4804,7 +4152,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_BOAT_BUILDING</PrereqTech>
 			<ObsoleteTech>TECH_SAILING</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_COAST</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP</TerrainType>
@@ -4825,7 +4172,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_ELEPHANT_DOMESTICATION</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<BonusTypes>
 				<BonusType>BONUS_ELEPHANTS</BonusType>
 			</BonusTypes>
@@ -4843,7 +4189,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_OBSIDIAN_WEAPONS</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
 			</TerrainTypes>
@@ -4868,7 +4213,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_OBSIDIAN_WEAPONS</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
 			</TerrainTypes>
@@ -4893,7 +4237,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_SPEAR_MAKING</PrereqTech>
 			<ObsoleteTech>TECH_OBSIDIAN_WEAPONS</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
@@ -4919,7 +4262,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_AXE_MAKING</PrereqTech>
 			<ObsoleteTech>TECH_OBSIDIAN_WEAPONS</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
@@ -4945,7 +4287,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_SIMPLE_WOOD_WORKING</PrereqTech>
 			<ObsoleteTech>TECH_SPEAR_MAKING</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
@@ -4968,7 +4309,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_OBSIDIAN_WEAPONS</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
 			</TerrainTypes>
@@ -4993,7 +4333,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_OBSIDIAN_WEAPONS</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
 			</TerrainTypes>
@@ -5018,7 +4357,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_COMPOSITE_TOOLS</PrereqTech>
 			<ObsoleteTech>TECH_OBSIDIAN_WEAPONS</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
@@ -5044,7 +4382,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
 			</TerrainTypes>
@@ -5066,7 +4403,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_TRACKING</PrereqTech>
 			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>
@@ -5089,7 +4425,6 @@ Using both <iGlobalTurns> and <iTurns> will not yield predictable results:
 			<PrereqTech>TECH_PERSISTENCE_HUNTING</PrereqTech>
 			<ObsoleteTech>TECH_TRACKING</ObsoleteTech>
 			<rateOverrideDefineName>NEANDERTHAL_SPAWN_MODIFIER</rateOverrideDefineName>
-			<iMinLatitude>50</iMinLatitude>
 			<TerrainTypes>
 				<TerrainType>TERRAIN_TAIGA</TerrainType>
 				<TerrainType>TERRAIN_TUNDRA</TerrainType>

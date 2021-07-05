@@ -418,12 +418,6 @@
 			<PrereqBonuses>
 				<Bonus>BONUS_STEEL_WARES</Bonus>
 			</PrereqBonuses>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_GAS_STATION</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_SKYSCRAPER</BuildingType>
 				<BuildingType>BUILDING_GAS_STATION</BuildingType>
@@ -477,7 +471,6 @@
 			<PrereqReligion>RELIGION_ZOROASTRIANISM</PrereqReligion>
 			<ReligionType>RELIGION_ZOROASTRIANISM</ReligionType>
 			<StateReligion>RELIGION_ZOROASTRIANISM</StateReligion>
-			<iCitiesPrereq>8</iCitiesPrereq>
 			<iCost>1008</iCost>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -715,12 +708,6 @@
 					</Has>
 				</And>
 			</ConstructCondition>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_PARADISE_GARDEN</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_PARADISE_GARDEN</BuildingType>
 			</PrereqInCityBuildings>
@@ -939,12 +926,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_CLOCKWORKS</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_TOWNCLOCK</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_TOWNCLOCK</BuildingType>
 			</PrereqInCityBuildings>
@@ -2085,12 +2066,6 @@
 			<fVisibilityPriority>100</fVisibilityPriority>
 			<PrereqTech>TECH_CHARIOTRY</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_HIPPODROME</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HIPPODROME</BuildingType>
 			</PrereqInCityBuildings>
@@ -2424,12 +2399,6 @@
 			<PrereqReligion>RELIGION_CONFUCIANISM</PrereqReligion>
 			<ReligionType>RELIGION_CONFUCIANISM</ReligionType>
 			<StateReligion>RELIGION_CONFUCIANISM</StateReligion>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<ObsoleteTech>TECH_COMPULSORY_EDUCATION</ObsoleteTech>
 			<iCost>2208</iCost>
 			<CommerceModifiers>
@@ -2533,7 +2502,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_CASTLE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -3030,12 +2999,6 @@
 			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<Bonus>BONUS_GOLD_INGOTS</Bonus>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_BANK</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_BANK</BuildingType>
 			</PrereqInCityBuildings>
@@ -3248,12 +3211,6 @@
 			<Civilopedia>TXT_KEY_BUILDING_GLOBE_THEATRE_PEDIA</Civilopedia>
 			<PrereqTech>TECH_FREE_ARTISTRY</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_THEATRE</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_THEATRE</BuildingType>
 			</PrereqInCityBuildings>
@@ -6011,12 +5968,6 @@
 			<MovieDefineTag>ART_DEF_MOVIE_NINEVEH</MovieDefineTag>
 			<fVisibilityPriority>10</fVisibilityPriority>
 			<PrereqTech>TECH_IDEOGRAMS</PrereqTech>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_TABLET_MAKER</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_TABLET_MAKER</BuildingType>
 			</PrereqInCityBuildings>
@@ -7225,7 +7176,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_COLOSSEUM</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iCost>1404</iCost>
@@ -7623,12 +7574,6 @@
 			<fVisibilityPriority>100</fVisibilityPriority>
 			<PrereqTech>TECH_MATHEMATICS</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_SCHOOL_OF_SCRIBES</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_SCHOOL_OF_SCRIBES</BuildingType>
 			</PrereqInCityBuildings>
@@ -7960,9 +7905,12 @@
 			<VicinityBonus>BONUS_FINE_CLAY</VicinityBonus>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_CULTURE_LOCAL_EUROPEAN</BuildingType>
-				<BuildingType>BUILDING_POTTER</BuildingType>
 				<BuildingType>BUILDING_GLAZE_MAKER</BuildingType>
 			</PrereqInCityBuildings>
+			<PrereqOrBuildings>
+				<BuildingType>BUILDING_POTTER</BuildingType>
+				<BuildingType>BUILDING_POTTERS_WORKSHOP</BuildingType>
+			</PrereqOrBuildings>
 			<iCost>1200</iCost>
 			<CommerceChanges>
 				<iCommerce>1</iCommerce>
@@ -8318,12 +8266,6 @@
 			<PrereqBonuses>
 				<Bonus>BONUS_SILK</Bonus>
 			</PrereqBonuses>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_BAZAAR</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_BAZAAR</BuildingType>
 			</PrereqInCityBuildings>
@@ -8520,12 +8462,6 @@
 			<ConstructSound>AS2D_BUILD_MUSEUM</ConstructSound>
 			<PrereqTech>TECH_SCIENTIFIC_METHOD</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_MUSEUM</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_MUSEUM</BuildingType>
 			</PrereqInCityBuildings>
@@ -8588,7 +8524,6 @@
 			<fVisibilityPriority>2</fVisibilityPriority>
 			<PrereqTech>TECH_TOURISM</PrereqTech>
 			<Bonus>BONUS_FURNITURE</Bonus>
-			<iMinLatitude>55</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_TAIGA</TerrainType>
@@ -9224,12 +9159,6 @@
 			<iPrereqPopulation>13</iPrereqPopulation>
 			<bWater>1</bWater>
 			<iMinAreaSize>10</iMinAreaSize>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_OPERA_HOUSE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_OPERA_HOUSE</BuildingType>
 			</PrereqInCityBuildings>
@@ -9460,7 +9389,7 @@
 			<PrereqTech>TECH_PAPACY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<bNeedStateReligionInCity>1</bNeedStateReligionInCity>
-			<iTeamsPrereq>3</iTeamsPrereq>
+			<iTeamsPrereq>2</iTeamsPrereq>
 			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<iCost>1860</iCost>
 			<CommerceChanges>
@@ -9714,9 +9643,12 @@
 				<PrereqTech>TECH_CIVIL_ENGINEERING</PrereqTech>
 			</TechTypes>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqOrBuildings>
-				<BuildingType>BUILDING_SMELTER_STEEL</BuildingType>
-			</PrereqOrBuildings>
+			<PrereqAmountBuildings>
+				<PrereqBuilding>
+					<BuildingType>BUILDING_SMELTER_STEEL</BuildingType>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
+				</PrereqBuilding>
+			</PrereqAmountBuildings>
 			<iCost>5220</iCost>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -10443,7 +10375,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_GLASSSMITH</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqOrBuildings>
@@ -10728,7 +10660,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MILITARY_BASE</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iCost>6780</iCost>
@@ -11402,7 +11334,7 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_GLOBALIZATION</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<iTeamsPrereq>3</iTeamsPrereq>
+			<iTeamsPrereq>2</iTeamsPrereq>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_SKYSCRAPER</BuildingType>
 			</PrereqInCityBuildings>
@@ -11488,12 +11420,6 @@
 			<Civilopedia>TXT_KEY_BUILDING_THEATRE_OF_DIONYSUS_PEDIA</Civilopedia>
 			<PrereqTech>TECH_DRAMA</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_THEATRE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_THEATRE</BuildingType>
 			</PrereqInCityBuildings>
@@ -11734,12 +11660,6 @@
 			<PrereqBonuses>
 				<Bonus>BONUS_STEEL_WARES</Bonus>
 			</PrereqBonuses>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_CONSTRUCTION_FIRM</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_SKYSCRAPER</BuildingType>
 				<BuildingType>BUILDING_CONSTRUCTION_FIRM</BuildingType>
@@ -12075,12 +11995,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_STOCK_BROKERING</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_STOCKMARKET</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_STOCKMARKET</BuildingType>
 			</PrereqInCityBuildings>
@@ -12241,12 +12155,6 @@
 			<PrereqTech>TECH_ONLINE_COMMUNITY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<Bonus>BONUS_COMPUTERS</Bonus>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_WIKIA</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_WIKIA</BuildingType>
 			</PrereqInCityBuildings>
@@ -12594,7 +12502,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MAJOR_LEAGUE_STADIUM</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iCost>9630</iCost>
@@ -12674,16 +12582,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_CODE_OF_LAWS</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_COURTHOUSE</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_COURTHOUSE</BuildingType>
@@ -12779,16 +12677,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_CODE_OF_LAWS</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_COURTHOUSE</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_COURTHOUSE</BuildingType>
@@ -12884,16 +12772,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_CODE_OF_LAWS</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_COURTHOUSE</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_COURTHOUSE</BuildingType>
@@ -12989,16 +12867,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_ANATOMY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ANTHROPOLOGY_LAB</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_ANTHROPOLOGY_LAB</BuildingType>
@@ -13096,16 +12964,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_ANATOMY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ANTHROPOLOGY_LAB</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_ANTHROPOLOGY_LAB</BuildingType>
@@ -13203,16 +13061,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_ANATOMY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ANTHROPOLOGY_LAB</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_ANTHROPOLOGY_LAB</BuildingType>
@@ -13311,16 +13159,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_FREE_ARTISTRY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ARTIST_COLONY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_ARTIST_COLONY</BuildingType>
@@ -13414,16 +13252,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_FREE_ARTISTRY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ARTIST_COLONY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_ARTIST_COLONY</BuildingType>
@@ -13517,16 +13345,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_FREE_ARTISTRY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ARTIST_COLONY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_ARTIST_COLONY</BuildingType>
@@ -13620,16 +13438,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_BANKING</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_BANK</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_BANK</BuildingType>
@@ -13723,16 +13531,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_BANKING</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_BANK</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_BANK</BuildingType>
@@ -13831,16 +13629,6 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_BANKING</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_BANK</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 				<BuildingType>BUILDING_BANK</BuildingType>
@@ -13933,12 +13721,6 @@
 			<MovieDefineTag>ART_DEF_MOVIE_UNIVERSITY_OF_PADUA</MovieDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 			</PrereqInCityBuildings>
@@ -14008,12 +13790,6 @@
 			<MovieDefineTag>ART_DEF_MOVIE_UNIVERSITY_OF_CAMBRIDGE</MovieDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 			</PrereqInCityBuildings>
@@ -14083,12 +13859,6 @@
 			<MovieDefineTag>ART_DEF_MOVIE_HEIDELBERG_UNIVERSITY</MovieDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>4</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 			</PrereqInCityBuildings>
@@ -14253,7 +14023,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ASTROLOGY_SCHOOL</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iTradeRoutes>1</iTradeRoutes>
@@ -14291,12 +14061,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_OBSERVATORY</BuildingType>
 			</PrereqInCityBuildings>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_OBSERVATORY</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<iTradeRoutes>2</iTradeRoutes>
 			<SpecialistCounts>
 				<SpecialistCount>
@@ -14591,9 +14355,10 @@
 					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
-			<PrereqInCityBuildings>
+			<PrereqOrBuildings>
 				<BuildingType>BUILDING_POTTER</BuildingType>
-			</PrereqInCityBuildings>
+				<BuildingType>BUILDING_POTTERS_WORKSHOP</BuildingType>
+			</PrereqOrBuildings>
 			<iCost>1296</iCost>
 			<FreeBonus>BONUS_TERRA_SIGILLATA</FreeBonus>
 			<iNumFreeBonuses>6</iNumFreeBonuses>
@@ -15054,7 +14819,7 @@
 			<iCost>7680</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<iConquestProb>100</iConquestProb>
-			<iTeamsPrereq>4</iTeamsPrereq>
+			<iTeamsPrereq>2</iTeamsPrereq>
 			<iHealth>1</iHealth>
 			<iAreaHealth>1</iAreaHealth>
 			<iAsset>15</iAsset>
@@ -15652,7 +15417,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_POLICE_STATION</BuildingType>
-					<iNumBuildingNeeded>6</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -15703,7 +15468,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_PAVED_ROADS</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iPrereqPopulation>3</iPrereqPopulation>
@@ -15932,7 +15697,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_OPERA_HOUSE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iPrereqPopulation>3</iPrereqPopulation>
@@ -16462,7 +16227,7 @@
 			<iCost>3480</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<iConquestProb>100</iConquestProb>
-			<iTeamsPrereq>3</iTeamsPrereq>
+			<iTeamsPrereq>2</iTeamsPrereq>
 			<iAsset>10</iAsset>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<MapCategoryTypes>
@@ -16496,7 +16261,6 @@
 			<iCost>84930</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<iConquestProb>100</iConquestProb>
-			<iMaxLatitude>30</iMaxLatitude>
 			<iHappiness>4</iHappiness>
 			<iAreaHappiness>4</iAreaHappiness>
 			<iGlobalHappiness>4</iGlobalHappiness>
@@ -17181,7 +16945,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ANIMAL_RACETRACK</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -17439,7 +17203,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_AD_AGENCY</BuildingType>
-					<iNumBuildingNeeded>6</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -17850,7 +17614,6 @@
 			<iCost>21150</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<iConquestProb>100</iConquestProb>
-			<iMinLatitude>45</iMinLatitude>
 			<iHappiness>2</iHappiness>
 			<iAreaHappiness>2</iAreaHappiness>
 			<iAsset>10</iAsset>
@@ -18341,7 +18104,6 @@
 			<iCost>9630</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<iConquestProb>100</iConquestProb>
-			<iMinLatitude>50</iMinLatitude>
 			<iAsset>10</iAsset>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<MapCategoryTypes>

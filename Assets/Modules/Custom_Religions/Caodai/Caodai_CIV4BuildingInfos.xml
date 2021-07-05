@@ -59,7 +59,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_CAODAI_TEMPLE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<Flavors>

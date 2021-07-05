@@ -37,6 +37,7 @@
 			<bIgnoreTerrainCost>1</bIgnoreTerrainCost>
 			<bMilitaryTrade>1</bMilitaryTrade>
 			<UnitUpgrades>
+				<UnitType>UNIT_DRACHE_HELICOPTER</UnitType>				
 				<UnitType>UNIT_GUNSHIP</UnitType>
 			</UnitUpgrades>
 			<FlankingStrikes>

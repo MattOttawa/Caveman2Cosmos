@@ -235,7 +235,7 @@ class CvEventManager:
 					"GOLDEN_SPIKE"			: GC.getInfoTypeForString('BUILDING_GOLDEN_SPIKE'),
 					"FIELD_GOLD"			: GC.getInfoTypeForString('BUILDING_FIELD_GOLD'),
 					"MACHU_PICCHU"			: GC.getInfoTypeForString("BUILDING_MACHU_PICCHU"),
-					"MAGINOTLINE"			: GC.getInfoTypeForString('BUILDING_MAGINOTLINE'),
+					"MAGINOTLINE"			: -1,
 					"ROUTE_66"				: GC.getInfoTypeForString('BUILDING_ROUTE_66'),
 					"SILK_ROAD"				: GC.getInfoTypeForString('BUILDING_SILK_ROAD'),
 					"CLEOPATRA_NEEDLE"		: GC.getInfoTypeForString("BUILDING_CLEOPATRA_NEEDLE"),
@@ -405,7 +405,6 @@ class CvEventManager:
 				# key down event for the 'D' in 'ctrl+shift+alt+D' seems to be consumed by the exe in some cases
 				if key == 16: # D
 					DebugUtils.toggleDebugMode()
-					CvScreensInterface.mainInterface.pythonDebugToggle(DebugUtils.bDebugMode)
 					return 1
 
 		elif eventType == 6: # Key down

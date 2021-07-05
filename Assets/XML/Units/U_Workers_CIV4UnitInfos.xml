@@ -155,7 +155,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -180,6 +179,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 			</Builds>
 			<ForceObsoleteTech>TECH_NITROGLYCERIN</ForceObsoleteTech>
@@ -281,7 +281,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -306,6 +305,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_RENAISSANCE -->
@@ -441,7 +441,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -466,6 +465,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_RENAISSANCE -->
@@ -613,7 +613,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -638,6 +637,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_RENAISSANCE -->
@@ -786,7 +786,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -811,6 +810,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_RENAISSANCE -->
@@ -948,7 +948,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -973,6 +972,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_RENAISSANCE -->
@@ -1120,7 +1120,6 @@
 				<BuildType>BUILD_COTTAGE</BuildType>
 				<BuildType>BUILD_EARLY_MOUNTAIN_MINE</BuildType>
 				<BuildType>BUILD_LUMBERJACK</BuildType>
-				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
 				<BuildType>BUILD_MINE</BuildType>
 				<BuildType>BUILD_PATH</BuildType>
@@ -1145,6 +1144,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_RENAISSANCE -->
@@ -1297,6 +1297,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_INDUSTRIAL -->
@@ -1544,6 +1545,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_ATOMIC -->
@@ -1694,6 +1696,7 @@
 				<!-- Obsolete in: C2C_ERA_GALACTIC -->
 				<BuildType>BUILD_QUARRY</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_GEOGLYPH</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_CLASSICAL -->
 				<!-- Obsolete in: C2C_ERA_NANOTECH -->
@@ -1823,6 +1826,7 @@
 				<!-- Obsolete in: C2C_ERA_NANOTECH -->
 				<BuildType>BUILD_PLANTATION</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_SEASONAL_CAMP</BuildType>
 				<BuildType>BUILD_ROAD</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_MEDIEVAL -->
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
@@ -2225,9 +2229,8 @@
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
 				<BuildType>BUILD_HARVEST_KELP</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_MEDIEVAL -->
-				<!-- Obsolete in: C2C_ERA_NANOTECH -->
-				<BuildType>BUILD_FISHING_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_FISHING_CAMP</BuildType>
 				<BuildType>BUILD_LIGHTHOUSE_CORAL</BuildType>
 				<BuildType>BUILD_LIGHTHOUSE_REEF</BuildType>
 				<BuildType>BUILD_WHALING_SHIPS</BuildType>
@@ -2362,9 +2365,8 @@
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
 				<BuildType>BUILD_HARVEST_KELP</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_MEDIEVAL -->
-				<!-- Obsolete in: C2C_ERA_NANOTECH -->
-				<BuildType>BUILD_FISHING_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_FISHING_CAMP</BuildType>
 				<BuildType>BUILD_LIGHTHOUSE_CORAL</BuildType>
 				<BuildType>BUILD_LIGHTHOUSE_REEF</BuildType>
 				<BuildType>BUILD_WHALING_SHIPS</BuildType>
@@ -2462,9 +2464,8 @@
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
 				<BuildType>BUILD_HARVEST_KELP</BuildType>
 				<!-- BUILDS REQUIRING: C2C_ERA_MEDIEVAL -->
-				<!-- Obsolete in: C2C_ERA_NANOTECH -->
-				<BuildType>BUILD_FISHING_CAMP</BuildType>
 				<!-- Obsolete in: C2C_ERA_FUTURE -->
+				<BuildType>BUILD_FISHING_CAMP</BuildType>
 				<BuildType>BUILD_LIGHTHOUSE_CORAL</BuildType>
 				<BuildType>BUILD_LIGHTHOUSE_REEF</BuildType>
 				<BuildType>BUILD_WHALING_SHIPS</BuildType>

@@ -425,12 +425,6 @@
 					<iExperience>3</iExperience>
 				</DomainFreeExperience>
 			</DomainFreeExperiences>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_NAVAL_ACADEMY</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_NAVAL_ACADEMY</BuildingType>
 			</PrereqInCityBuildings>

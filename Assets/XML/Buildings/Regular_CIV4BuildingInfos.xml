@@ -8251,7 +8251,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_BELUGA</BuildingType>
 			</ReplacementBuildings>
@@ -11042,7 +11041,6 @@
 			<PrereqVicinityBonuses>
 				<VicinityBonus>BONUS_SEA_LION_AND_SEAL</VicinityBonus>
 			</PrereqVicinityBonuses>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_ICE</TerrainType>
@@ -11157,7 +11155,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_ECOLOGY</PrereqTech>
 			<VicinityBonus>BONUS_DEER</VicinityBonus>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_TAIGA</TerrainType>
@@ -11704,7 +11701,6 @@
 			<PrereqVicinityBonuses>
 				<VicinityBonus>BONUS_SHEEP</VicinityBonus>
 			</PrereqVicinityBonuses>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_TAIGA</TerrainType>
@@ -11759,7 +11755,6 @@
 			<PrereqVicinityBonuses>
 				<VicinityBonus>BONUS_WALRUS</VicinityBonus>
 			</PrereqVicinityBonuses>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_ICE</TerrainType>
@@ -12034,7 +12029,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_ECOLOGY</PrereqTech>
 			<VicinityBonus>BONUS_SEA_LION_AND_SEAL</VicinityBonus>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_AQUARIUM</BuildingType>
 			</PrereqInCityBuildings>
@@ -12071,7 +12065,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_ECOLOGY</PrereqTech>
 			<VicinityBonus>BONUS_WALRUS</VicinityBonus>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_AQUARIUM</BuildingType>
 			</PrereqInCityBuildings>
@@ -14810,7 +14803,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_CARIBOU</BuildingType>
 			</ReplacementBuildings>
@@ -20226,6 +20218,7 @@
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_NASA</BuildingType>
+				<BuildingType>BUILDING_LAUNCH_SITE_EFFECT</BuildingType>
 				<BuildingType>BUILDING_COMMERCIAL_SPACEPORT</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>1925</iCost>
@@ -26028,7 +26021,6 @@
 			<PrereqVicinityBonuses>
 				<VicinityBonus>BONUS_APPLE</VicinityBonus>
 			</PrereqVicinityBonuses>
-			<iMaxLatitude>50</iMaxLatitude>
 			<iCost>92</iCost>
 			<YieldChanges>
 				<iYield>1</iYield>
@@ -28694,7 +28686,7 @@
 			<PrereqVicinityBonuses>
 				<VicinityBonus>BONUS_GRAPES</VicinityBonus>
 			</PrereqVicinityBonuses>
-			<ObsoleteTech>TECH_TELEGRAPH</ObsoleteTech>
+			<ObsoleteTech>TECH_UNMANNED_AIR_VEHICLES</ObsoleteTech>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_FALCONRY_SCHOOL</BuildingType>
 			</ReplacementBuildings>
@@ -29355,12 +29347,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_CHEMISTRY</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<PrereqOrImprovement>
-				<PrereqImprovement>
-					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
-					<bPrereqImprovement>1</bPrereqImprovement>
-				</PrereqImprovement>
-			</PrereqOrImprovement>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
 				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
@@ -40329,7 +40315,6 @@
 				<PrereqTech>TECH_LAWN_SPORTS</PrereqTech>
 			</TechTypes>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<iMinLatitude>40</iMinLatitude>
 			<ObsoleteTech>TECH_WEATHER_CONTROL</ObsoleteTech>
 			<iCost>800</iCost>
 			<iHappiness>1</iHappiness>
@@ -40640,12 +40625,6 @@
 			<PrereqTech>TECH_KNOWLEDGE_MANAGEMENT</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<bPrereqPower>1</bPrereqPower>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_COMPUTER_NETWORK</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_COMPUTER_NETWORK</BuildingType>
 			</PrereqInCityBuildings>
@@ -46776,12 +46755,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_MODERN_SPORTS</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_MINOR_LEAGUE_STADIUM</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_MINOR_LEAGUE_STADIUM</BuildingType>
 			</PrereqInCityBuildings>
@@ -50631,6 +50604,8 @@
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_NASA</BuildingType>
+				<BuildingType>BUILDING_LAUNCH_SITE_EFFECT</BuildingType>
+				<BuildingType>BUILDING_COMMERCIAL_SPACEPORT</BuildingType>
 				<BuildingType>BUILDING_MILITARY_SPACEPORT</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>1410</iCost>
@@ -52074,16 +52049,16 @@
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_ENGINEERING</PrereqTech>
+			<bFreshWater>1</bFreshWater>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_CASTLE</BuildingType>
 				<BuildingType>BUILDING_STAR_FORT</BuildingType>
 			</PrereqOrBuildings>
-			<PrereqGameOption>GAMEOPTION_ZONE_OF_CONTROL</PrereqGameOption>
+			<iDefense>5</iDefense>
 			<ObsoleteTech>TECH_ARTILLERY</ObsoleteTech>
 			<iCost>300</iCost>
 			<iHealth>-1</iHealth>
-			<bZoneOfControl>1</bZoneOfControl>
 			<iAsset>4</iAsset>
 			<iPower>8</iPower>
 			<Flavors>
@@ -53065,7 +53040,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_MOOSE</BuildingType>
 			</ReplacementBuildings>
@@ -53839,7 +53813,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_MUSKOX</BuildingType>
 			</ReplacementBuildings>
@@ -54175,9 +54148,6 @@
 				<Bonus>BONUS_TITANIUM_WARES</Bonus>
 				<Bonus>BONUS_STEEL_WARES</Bonus>
 			</PrereqBonuses>
-			<PrereqInCityBuildings>
-				<BuildingType>BUILDING_NANOFACTORY</BuildingType>
-			</PrereqInCityBuildings>
 			<iCost>3975</iCost>
 			<YieldModifiers>
 				<iYield>0</iYield>
@@ -54417,7 +54387,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_NARWHAL</BuildingType>
 			</ReplacementBuildings>
@@ -63765,12 +63734,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_QUANTUM_TELEPORTATION</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_UNIVERSITY</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 			</PrereqInCityBuildings>
@@ -65230,7 +65193,6 @@
 			<PrereqVicinityBonuses>
 				<VicinityBonus>BONUS_DEER</VicinityBonus>
 			</PrereqVicinityBonuses>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_TAIGA</TerrainType>
@@ -67877,7 +67839,6 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_SALT_PROCESSING</PrereqTech>
 			<bWater>1</bWater>
-			<iMaxLatitude>35</iMaxLatitude>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_MINING_CAMP</BuildingType>
 			</PrereqInCityBuildings>
@@ -67913,7 +67874,6 @@
 				<Bonus>BONUS_IRON_WARES</Bonus>
 				<Bonus>BONUS_LEAD_WARES</Bonus>
 			</PrereqBonuses>
-			<iMinLatitude>35</iMinLatitude>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_MINING_CAMP</BuildingType>
 			</PrereqInCityBuildings>
@@ -69080,7 +69040,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_SEAL</BuildingType>
 			</ReplacementBuildings>
@@ -71013,7 +70972,6 @@
 				<Bonus>BONUS_WOOD</Bonus>
 				<Bonus>BONUS_PRIME_TIMBER</Bonus>
 			</PrereqBonuses>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_PEAK</TerrainType>
@@ -82145,7 +82103,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_BREEDING_WALRUS</BuildingType>
 			</ReplacementBuildings>
@@ -84070,7 +84027,6 @@
 				<Bonus>BONUS_WOOD</Bonus>
 				<Bonus>BONUS_PRIME_TIMBER</Bonus>
 			</PrereqBonuses>
-			<iMinLatitude>40</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_PEAK</TerrainType>
@@ -84482,7 +84438,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_HUNTERS_CAMP</BuildingType>
 			</PrereqInCityBuildings>
-			<iMinLatitude>40</iMinLatitude>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<iCost>45</iCost>
 			<YieldChanges>
@@ -86373,12 +86328,6 @@
 				<BuildingType>BUILDING_FURNITURE_WORKSHOP</BuildingType>
 				<BuildingType>BUILDING_TERRACOTTA_WORKSHOP</BuildingType>
 			</PrereqInCityBuildings>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_FURNITURE_WORKSHOP</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_PALACE</BuildingType>
 				<BuildingType>BUILDING_HOUSE_ERA1_LDHW</BuildingType>

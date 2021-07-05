@@ -3358,7 +3358,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>25</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>
@@ -4888,7 +4888,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>50</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>
@@ -5871,7 +5871,7 @@
 			</TriggerTexts>
 			<EventArt>Art/Event_Images/BrokenDam.dds</EventArt>
 			<iPercentGamesActive>100</iPercentGamesActive>
-			<iWeight>100</iWeight>
+			<iWeight>-1</iWeight>
 			<bProbabilityBuildingMultiply>1</bProbabilityBuildingMultiply>
 			<BuildingsRequired>
 				<Building>BUILDING_HYDRO_PLANT</Building>
@@ -5882,7 +5882,7 @@
 				<Event>EVENT_BROKEN_DAM_2</Event>
 				<Event>EVENT_BROKEN_DAM_3</Event>
 			</Events>
-			<bRecurring>1</bRecurring>
+			<bRecurring>0</bRecurring>
 			<bPickCity>1</bPickCity>
 		</EventTriggerInfo>
 		<EventTriggerInfo>
@@ -10433,7 +10433,7 @@
 			</TriggerTexts>
 			<EventArt>Art/Event_Images/cityfire1.dds</EventArt>
 			<iPercentGamesActive>100</iPercentGamesActive>
-			<iWeight>200</iWeight>
+			<iWeight>-1</iWeight>
 			<iNumPlotsRequired>1</iNumPlotsRequired>
 			<Events>
 				<Event>EVENT_CITYFIRE_1</Event>
@@ -10443,7 +10443,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>5</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>
@@ -10459,7 +10459,7 @@
 			</TriggerTexts>
 			<EventArt>Art/Event_Images/cityfire2.dds</EventArt>
 			<iPercentGamesActive>100</iPercentGamesActive>
-			<iWeight>200</iWeight>
+			<iWeight>-1</iWeight>
 			<iNumPlotsRequired>1</iNumPlotsRequired>
 			<Events>
 				<Event>EVENT_CITYFIRE_2</Event>
@@ -10470,7 +10470,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>25</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>
@@ -10486,7 +10486,7 @@
 			</TriggerTexts>
 			<EventArt>Art/Event_Images/cityfire3.dds</EventArt>
 			<iPercentGamesActive>100</iPercentGamesActive>
-			<iWeight>200</iWeight>
+			<iWeight>-1</iWeight>
 			<iNumPlotsRequired>1</iNumPlotsRequired>
 			<Events>
 				<Event>EVENT_CITYFIRE_4</Event>
@@ -10498,7 +10498,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>50</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>
@@ -10514,7 +10514,7 @@
 			</TriggerTexts>
 			<EventArt>Art/Event_Images/cityfire4.dds</EventArt>
 			<iPercentGamesActive>100</iPercentGamesActive>
-			<iWeight>150</iWeight>
+			<iWeight>-1</iWeight>
 			<iNumPlotsRequired>1</iNumPlotsRequired>
 			<Events>
 				<Event>EVENT_CITYFIRE_7</Event>
@@ -10526,7 +10526,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>100</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>
@@ -10542,7 +10542,7 @@
 			</TriggerTexts>
 			<EventArt>Art/Event_Images/cityfire5.dds</EventArt>
 			<iPercentGamesActive>100</iPercentGamesActive>
-			<iWeight>100</iWeight>
+			<iWeight>-1</iWeight>
 			<iNumPlotsRequired>1</iNumPlotsRequired>
 			<Events>
 				<Event>EVENT_CITYFIRE_10</Event>
@@ -10554,7 +10554,7 @@
 			<PrereqMinProperties>
 				<Property>
 					<PropertyType>PROPERTY_FLAMMABILITY</PropertyType>
-					<iPropertyValue>150</iPropertyValue>
+					<iPropertyValue>50000</iPropertyValue>
 				</Property>
 			</PrereqMinProperties>
 		</EventTriggerInfo>

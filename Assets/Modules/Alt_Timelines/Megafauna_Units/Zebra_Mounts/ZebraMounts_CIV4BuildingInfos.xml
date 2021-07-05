@@ -46,7 +46,6 @@
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<iCost>624</iCost>
-			<iMaxLatitude>45</iMaxLatitude>
 			<iTradeRoutes>1</iTradeRoutes>
 			<iAsset>4</iAsset>
 			<iPower>2</iPower>

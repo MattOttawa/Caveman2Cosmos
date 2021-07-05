@@ -400,6 +400,7 @@
 			<bMechanized>1</bMechanized>
 			<bMilitaryTrade>1</bMilitaryTrade>
 			<UnitUpgrades>
+				<UnitType>UNIT_EARLY_TANK</UnitType>
 				<UnitType>UNIT_LIGHT_TANK</UnitType>
 				<UnitType>UNIT_TANK</UnitType>
 			</UnitUpgrades>

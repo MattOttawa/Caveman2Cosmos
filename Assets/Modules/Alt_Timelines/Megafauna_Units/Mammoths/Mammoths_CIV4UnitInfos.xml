@@ -677,6 +677,7 @@
 					<iUnitCombatMod>50</iUnitCombatMod>
 				</UnitCombatMod>
 			</UnitCombatMods>
+			<iBombardRate>10</iBombardRate>
 			<iAsset>2</iAsset>
 			<iPower>15</iPower>
 			<UnitMeshGroups>

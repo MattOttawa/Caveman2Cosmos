@@ -20,11 +20,11 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_COMMERCIAL_SPACEPORT</BuildingType>
-					<iNumBuildingNeeded>5</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MAGLEV_LAUNCH</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ORBITAL_FACTORY</BuildingType>
@@ -32,7 +32,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SOLAR_SATELLITE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ASTEROID_MINE</BuildingType>
@@ -40,11 +40,11 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_CISLUNAR_STATION</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LUNAR_BASE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LUNAR_SPACE_PORT</BuildingType>
@@ -52,7 +52,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SPACE_WAREHOUSE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LUNAR_ASSEMBLY_PLANT</BuildingType>
@@ -96,15 +96,15 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_STARPORT</BuildingType>
-					<iNumBuildingNeeded>5</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ORBITAL_COLONY</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MARS_MEGACITY</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LUNAR_ARCOLOGY</BuildingType>
@@ -116,7 +116,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_STRATOSPHERIC_TOWER</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_FOCUS_SUN</BuildingType>
@@ -124,7 +124,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_CISLUNAR_ONEILL_CYLINDER</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iAIWeight>1</iAIWeight>
@@ -148,7 +148,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ECUMENOPOLIS</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ARTIFICIAL_PLANET</BuildingType>
@@ -160,7 +160,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_DYSON_SPHERE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_BLACKHOLE_FACTORY</BuildingType>
@@ -168,11 +168,11 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SPACESCRAPER2</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LAUNCH_ARCO</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MATRIOSHKA_BRAIN</BuildingType>
@@ -180,7 +180,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_WORMHOLE_TRADE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SOLAR_IMPORTER_EXPORTER</BuildingType>
@@ -216,7 +216,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_OMEGA_ASSEMBLER</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_COMPUTRONIUM_CONVERSION_SHIP</BuildingType>
@@ -224,7 +224,7 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_DARK_ENERGY_POWER_PLANT</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_GALACTIC_SUPERCLUSTER_COLONY</BuildingType>
@@ -240,11 +240,11 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_QUANTUM_VACUUM</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_INTERGALACTIC_COLONY</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<iAIWeight>1</iAIWeight>
@@ -268,11 +268,11 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_COSMIC_EXPLORER_BASE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_TACHYON_COMMUNICATION_CENTER</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ANCESTOR_RESURRECTION</BuildingType>
@@ -280,15 +280,15 @@
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_HYPERPLANET</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SIMULATED_UNIVERSE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_COSMIC_NODE</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_NEUTRONIUM</BuildingType>

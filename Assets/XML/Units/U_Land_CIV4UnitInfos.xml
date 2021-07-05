@@ -1950,6 +1950,9 @@
 			<bInvestigate>1</bInvestigate>
 			<bCounterSpy>1</bCounterSpy>
 			<bInvisible>1</bInvisible>
+			<UnitUpgrades>
+				<UnitType>UNIT_007</UnitType>
+			</UnitUpgrades>
 			<bIgnoreTerrainCost>1</bIgnoreTerrainCost>
 			<UnitAIs>
 				<UnitAI>
@@ -14042,6 +14045,7 @@
 			<UnitUpgrades>
 				<UnitType>UNIT_LIGHT_TANK</UnitType>
 				<UnitType>UNIT_TANK</UnitType>
+				<UnitType>UNIT_HEAVY_TANK</UnitType>
 			</UnitUpgrades>
 			<UnitAIs>
 				<UnitAI>
@@ -25867,7 +25871,7 @@
 				</And>
 			</TrainCondition>
 			<UnitUpgrades>
-				<UnitType>UNIT_POLICE_APC</UnitType>
+				<UnitType>UNIT_POLICE_CAR</UnitType>
 			</UnitUpgrades>
 			<iCost>720</iCost>
 			<iBaseUpkeep>9</iBaseUpkeep>
@@ -26030,7 +26034,7 @@
 				</And>
 			</TrainCondition>
 			<UnitUpgrades>
-				<UnitType>UNIT_POLICE_MECH</UnitType>
+				<UnitType>UNIT_POLICE_APC</UnitType>
 			</UnitUpgrades>
 			<iCost>780</iCost>
 			<iBaseUpkeep>10</iBaseUpkeep>
@@ -26340,7 +26344,7 @@
 				<BuildingType>BUILDING_POLICE_PRECINCT</BuildingType>
 			</PrereqOrBuildings>
 			<UnitUpgrades>
-				<UnitType>UNIT_POLICE_MECH</UnitType>
+				<UnitType>UNIT_SWAT_TEAM</UnitType>
 			</UnitUpgrades>
 			<VisibilityIntensityTypes>
 				<VisibilityIntensityType>
@@ -26671,6 +26675,9 @@
 			<PrereqAndBuildings>
 				<BuildingType>BUILDING_POLICE_PRECINCT</BuildingType>
 			</PrereqAndBuildings>
+			<UnitUpgrades>
+				<UnitType>UNIT_SENTINEL</UnitType>
+			</UnitUpgrades>
 			<iCost>3580</iCost>
 			<iBaseUpkeep>15</iBaseUpkeep>
 			<iMoves>4</iMoves>
@@ -27176,6 +27183,7 @@
 			<SupersedingUnits>
 				<UnitType>UNIT_NEANDERTHAL_GATHERER</UnitType>
 			</SupersedingUnits>
+			<ForceObsoleteTech>TECH_MATCHLOCK</ForceObsoleteTech>
 			<iCost>43</iCost>
 			<iBaseUpkeep>2</iBaseUpkeep>
 			<iMoves>1</iMoves>
@@ -27921,7 +27929,7 @@
 			<TechTypes>
 				<PrereqTech>TECH_MATCHLOCK</PrereqTech>
 			</TechTypes>
-			<ForceObsoleteTech>TECH_LABOR_UNIONS</ForceObsoleteTech>
+			<ForceObsoleteTech>TECH_DEPUTIZATION</ForceObsoleteTech>
 			<TrainCondition>
 				<And>
 					<Has>
@@ -28362,7 +28370,7 @@
 			<TechTypes>
 				<PrereqTech>TECH_SEMI_AUTOMATIC_WEAPONS</PrereqTech>
 			</TechTypes>
-			<ForceObsoleteTech>TECH_COMPREHENSIVE_CYBERNETICS</ForceObsoleteTech>
+			<ForceObsoleteTech>TECH_URBAN_CULTURE</ForceObsoleteTech>
 			<TrainCondition>
 				<And>
 					<Has>
@@ -28821,7 +28829,7 @@
 				<BuildingType>BUILDING_PAWN_SHOP</BuildingType>
 			</PrereqAndBuildings>
 			<UnitUpgrades>
-				<UnitType>UNIT_TECHNARCHIST</UnitType>
+				<UnitType>UNIT_BIKER_GANG</UnitType>
 			</UnitUpgrades>
 			<VisibilityIntensityTypes>
 				<VisibilityIntensityType>
@@ -29022,7 +29030,7 @@
 				<BuildingType>BUILDING_MOTORCYCLE_CLUB</BuildingType>
 			</PrereqAndBuildings>
 			<UnitUpgrades>
-				<UnitType>UNIT_TECHNARCHIST</UnitType>
+				<UnitType>UNIT_STREET_GANG</UnitType>
 			</UnitUpgrades>
 			<VisibilityIntensityTypes>
 				<VisibilityIntensityType>
@@ -39596,7 +39604,7 @@
 				<BuildingType>BUILDING_HOSPITAL</BuildingType>
 			</PrereqAndBuildings>
 			<UnitUpgrades>
-				<UnitType>UNIT_MEDEVAC_DROPSHIP</UnitType>
+				<UnitType>UNIT_EARLY_MEDIVAC</UnitType>
 			</UnitUpgrades>
 			<bOnlyDefensive>1</bOnlyDefensive>
 			<bNoCapture>1</bNoCapture>
@@ -44387,6 +44395,7 @@
 				<UnitType>UNIT_SHARPSHOOTER</UnitType>
 				<UnitType>UNIT_SCOUNDREL</UnitType>
 			</UnitUpgrades>
+			<ForceObsoleteTech>TECH_MATCHLOCK</ForceObsoleteTech>
 			<Invisible>INVISIBLE_CAMOUFLAGE</Invisible>
 			<SeeInvisible>INVISIBLE_CAMOUFLAGE</SeeInvisible>
 			<VisibilityIntensityTypes>

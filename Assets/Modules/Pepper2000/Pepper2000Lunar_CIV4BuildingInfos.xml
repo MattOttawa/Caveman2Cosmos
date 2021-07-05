@@ -36,7 +36,7 @@
 			<iCost>9912</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>0</iYield>
@@ -44,12 +44,6 @@
 				<iYield>100</iYield>
 			</YieldChanges>
 			<FreeBuilding>BUILDING_LUNAR_ARCOLOGY</FreeBuilding>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_LUNAR_ARCOLOGY</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_LUNAR_ARCOLOGY</BuildingType>
 			</PrereqInCityBuildings>
@@ -68,7 +62,7 @@
 			<iCost>14476</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>10</iYield>
@@ -77,7 +71,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LUNAR_SOIL_GENERATOR</BuildingType>
-					<iNumBuildingNeeded>2</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_LUNAR_COMETARY_BOMBARDMENT</BuildingType>
@@ -110,7 +104,7 @@
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_LUNAR_TERRAFORMING</PrereqTech>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>20</iCommerce>
@@ -147,7 +141,7 @@
 			<iCost>9912</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>500</iCommerce>
@@ -188,7 +182,7 @@
 			<iCost>1526</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<YieldChanges>
 				<iYield>3</iYield>
@@ -211,7 +205,7 @@
 			<iCost>2478</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>200</iCommerce>
@@ -238,7 +232,7 @@
 			<iCost>2212</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>-10</iCommerce>
@@ -263,7 +257,7 @@
 			<iCost>2982</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>-10</iCommerce>
@@ -287,7 +281,7 @@
 			<iCost>2982</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>-10</iCommerce>
@@ -325,7 +319,7 @@
 			<iCost>28868</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<CommerceChanges>
 				<iCommerce>150</iCommerce>
@@ -354,7 +348,7 @@
 			<iCost>4144</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<iAdjacentDamagePercent>20</iAdjacentDamagePercent>
 			<iDefense>50</iDefense>
@@ -376,7 +370,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_BASE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<FreeBonus>BONUS_MOON_ROCKS</FreeBonus>
@@ -402,7 +396,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_WATER_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<iCost>100</iCost>
@@ -433,7 +427,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ROCK_QUARRY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<iCost>15</iCost>
@@ -470,7 +464,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_CONCRETE_MILL</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<FreeBonus>BONUS_CEMENT</FreeBonus>
@@ -515,7 +509,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_GLASS_FACTORY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<FreeBonus>BONUS_GLASSWARE</FreeBonus>
@@ -542,7 +536,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_HYDROPONICS_FARM</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_GLASSWARE</Bonus>
@@ -573,7 +567,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ALGAE_FARM</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_GLASSWARE</Bonus>
@@ -620,7 +614,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ALGAE_LAB</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_GLASSWARE</Bonus>
@@ -675,7 +669,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_LAUNCH_SITE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -712,7 +706,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ALUMINIUM_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -762,7 +756,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_IRON_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -815,7 +809,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_TITANIUM_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -865,7 +859,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_MANGANESE_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -914,7 +908,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_MAGNESIUM_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -963,7 +957,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ORGANIC_POLYMERE_FACTORY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_CHEMICALS</Bonus>
@@ -1034,7 +1028,7 @@
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_RESEARCH_BASE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_CHEMICALS</Bonus>
@@ -1145,7 +1139,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_GREENHOUSE_COMPLEX</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_GLASSWARE</Bonus>
@@ -1190,7 +1184,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_MANUFACTURING_PLANT</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_SYNTHETIC_RUBBER</Bonus>
@@ -1279,7 +1273,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_SPACE_PORT</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_TOURISM</PrereqTech>
 			<Bonus>BONUS_SYNTHETIC_RUBBER</Bonus>
@@ -1333,7 +1327,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_HOTEL</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_TOURISM</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -1362,7 +1356,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ASSEMBLY_PLANT</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_PARTS</Bonus>
@@ -1417,7 +1411,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_SILICON_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -1469,7 +1463,7 @@
 			<Advisor>ADVISOR_MILITARY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_SHIPYARD</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_PLASTIC_ELECTRONICS</PrereqTech>
 			<TechTypes>
@@ -1557,7 +1551,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_DROID_FACTORY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_ANDROIDS</PrereqTech>
 			<Bonus>BONUS_MICROCHIPS</Bonus>
@@ -1616,7 +1610,7 @@
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_SOLAR_ARRAY</ArtDefineTag>
 			<MovieDefineTag>ART_DEF_MOVIE_LUNAR_SOLAR_ARRAY</MovieDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_PLASTIC</Bonus>
@@ -1647,7 +1641,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_PARCOLOGY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_TRADE</PrereqTech>
 			<Bonus>BONUS_GLASSWARE</Bonus>
@@ -1691,7 +1685,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_KREEP_MINE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_NANOMINING</PrereqTech>
 			<TechTypes>
@@ -1730,7 +1724,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_HE3_EXTRACTION_FACILITY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_NANOMINING</PrereqTech>
 			<TechTypes>
@@ -1771,27 +1765,13 @@
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_OBSERVATORY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_GLASSWARE</Bonus>
 			<PrereqBonuses>
 				<Bonus>BONUS_CEMENT</Bonus>
 			</PrereqBonuses>
-			<PrereqOrFeature>
-				<PrereqFeature>
-					<FeatureType>FEATURE_CRATER_MEDIUM</FeatureType>
-					<bPrereqFeature>1</bPrereqFeature>
-				</PrereqFeature>
-				<PrereqFeature>
-					<FeatureType>FEATURE_CRATER_LARGE</FeatureType>
-					<bPrereqFeature>1</bPrereqFeature>
-				</PrereqFeature>
-				<PrereqFeature>
-					<FeatureType>FEATURE_CRATER_SMALL</FeatureType>
-					<bPrereqFeature>1</bPrereqFeature>
-				</PrereqFeature>
-			</PrereqOrFeature>
 			<iCost>1300</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<iConquestProb>70</iConquestProb>
@@ -1824,7 +1804,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_CHEMICAL_STORAGE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<iCost>200</iCost>
@@ -1853,7 +1833,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ORGANIC_MATERIAL_STORAGE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<iCost>200</iCost>
@@ -1880,7 +1860,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_FERTILIZER_STORAGE</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<iCost>200</iCost>
@@ -1910,7 +1890,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_SOLAR_PANELS</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<iCost>200</iCost>
@@ -1942,7 +1922,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_BUG_FARM</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -1977,7 +1957,7 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_FISH_FARM</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -2025,7 +2005,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_ROCKET_FUEL_REFIENERY</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_MANUFACTURING</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>
@@ -2077,7 +2057,7 @@
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_LUNAR_BIOMASS_POWERPLANT</ArtDefineTag>
 			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LUNAR_COLONIZATION</PrereqTech>
 			<Bonus>BONUS_CEMENT</Bonus>

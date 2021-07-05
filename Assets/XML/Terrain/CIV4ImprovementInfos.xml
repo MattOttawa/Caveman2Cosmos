@@ -1885,6 +1885,16 @@
 			<iUpgradeTime>10</iUpgradeTime>
 			<iPillageGold>20</iPillageGold>
 			<BonusTypeStructs>
+			<BonusTypeStruct>
+					<BonusType>BONUS_RUBBER</BonusType>
+					<bBonusMakesValid>1</bBonusMakesValid>
+					<bBonusTrade>1</bBonusTrade>
+					<YieldChanges>
+						<iYieldChange>0</iYieldChange>
+						<iYieldChange>0</iYieldChange>
+						<iYieldChange>2</iYieldChange>
+					</YieldChanges>
+				</BonusTypeStruct>
 				<BonusTypeStruct>
 					<BonusType>BONUS_HEMP</BonusType>
 					<bBonusMakesValid>1</bBonusMakesValid>
@@ -2214,6 +2224,16 @@
 						<iYieldChange>1</iYieldChange>
 					</YieldChanges>
 				</BonusTypeStruct>
+				<BonusTypeStruct>
+					<BonusType>BONUS_RUBBER</BonusType>
+					<bBonusMakesValid>1</bBonusMakesValid>
+					<bBonusTrade>1</bBonusTrade>
+					<YieldChanges>
+						<iYieldChange>0</iYieldChange>
+						<iYieldChange>0</iYieldChange>
+						<iYieldChange>1</iYieldChange>
+					</YieldChanges>
+				</BonusTypeStruct>				
 				<BonusTypeStruct>
 					<BonusType>BONUS_PEYOTE</BonusType>
 					<bBonusMakesValid>1</bBonusMakesValid>
@@ -4305,6 +4325,8 @@
 				<ImprovementType>IMPROVEMENT_SALT_GATHERER</ImprovementType>
 				<ImprovementType>IMPROVEMENT_TAR_GATHERER</ImprovementType>
 				<ImprovementType>IMPROVEMENT_PLANT_GATHERING_CAMP</ImprovementType>
+				<ImprovementType>IMPROVEMENT_ARCHEOLOGICAL_SITE</ImprovementType>
+				<ImprovementType>IMPROVEMENT_FOSSIL_DIG_SITE</ImprovementType>
 			</AlternativeImprovementUpgradeTypes>
 			<TerrainMakesValids>
 				<TerrainMakesValid>
@@ -5362,6 +5384,18 @@
 			<iPillageGold>100</iPillageGold>
 			<iHealthPercent>-100</iHealthPercent>
 			<BonusTypeStructs>
+				<BonusTypeStruct>
+					<BonusType>BONUS_NATRON</BonusType>
+					<bBonusMakesValid>1</bBonusMakesValid>
+					<bBonusTrade>1</bBonusTrade>
+					<iDiscoverRand>1000</iDiscoverRand>
+					<iDepletionRand>1000</iDepletionRand>
+					<YieldChanges>
+						<iYieldChange>0</iYieldChange>
+						<iYieldChange>4</iYieldChange>
+						<iYieldChange>3</iYieldChange>
+					</YieldChanges>
+				</BonusTypeStruct>
 				<BonusTypeStruct>
 					<BonusType>BONUS_BAUXITE_ORE</BonusType>
 					<bBonusMakesValid>1</bBonusMakesValid>
@@ -7286,11 +7320,15 @@
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
-					<FeatureType>FEATURE_BAMBOO</FeatureType>
+					<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
 					<FeatureType>FEATURE_SAVANNA</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_BAMBOO</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
@@ -7461,6 +7499,14 @@
 				</FeatureMakesValid>
 				<FeatureMakesValid>
 					<FeatureType>FEATURE_FOREST_ANCIENT</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_SAVANNA</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
@@ -7651,15 +7697,23 @@
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
+					<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_SAVANNA</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
 					<FeatureType>FEATURE_BAMBOO</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
-					<FeatureType>FEATURE_MANGROVE</FeatureType>
+					<FeatureType>FEATURE_JUNGLE</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
-					<FeatureType>FEATURE_JUNGLE</FeatureType>
+					<FeatureType>FEATURE_MANGROVE</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 			</FeatureMakesValids>
@@ -7851,6 +7905,14 @@
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
+					<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_SAVANNA</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
 					<FeatureType>FEATURE_BAMBOO</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
@@ -7982,6 +8044,14 @@
 				</FeatureMakesValid>
 				<FeatureMakesValid>
 					<FeatureType>FEATURE_FOREST_ANCIENT</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_SAVANNA</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 				<FeatureMakesValid>
@@ -12059,8 +12129,7 @@
 					<TerrainType>TERRAIN_LAKE</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
-				<!-- Trench & ocean too far away from shore... also disabled because it also makes this build able to obsolete -->
-				<!-- <TerrainMakesValid>
+				<TerrainMakesValid>
 					<TerrainType>TERRAIN_OCEAN</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
@@ -12083,7 +12152,7 @@
 				<TerrainMakesValid>
 					<TerrainType>TERRAIN_TRENCH_TROPICAL</TerrainType>
 					<bMakesValid>1</bMakesValid>
-				</TerrainMakesValid> -->
+				</TerrainMakesValid>
 			</TerrainMakesValids>
 			<BonusTypeStructs>
 				<BonusTypeStruct>

@@ -15986,9 +15986,6 @@
 					<iAdjacentHeal>0</iAdjacentHeal>
 				</HealUnitCombatType>
 			</HealUnitCombatTypes>
-			<UnitUpgrades>
-				<UnitType>UNIT_AMBULANCE</UnitType>
-			</UnitUpgrades>
 			<UnitAIs>
 				<UnitAI>
 					<UnitAIType>UNITAI_HEALER</UnitAIType>
@@ -15999,6 +15996,12 @@
 					<bUnitAI>1</bUnitAI>
 				</UnitAI>
 			</UnitAIs>
+			<GreatPeoples>
+				<GreatPeople>
+					<GreatPeopleType>SPECIALIST_GREAT_DOCTOR</GreatPeopleType>
+					<bGreatPeople>1</bGreatPeople>
+				</GreatPeople>
+			</GreatPeoples>
 			<PrereqTech>TECH_MEDICINE</PrereqTech>
 			<BonusType>BONUS_ENGLISH</BonusType>
 			<iCost>3100</iCost>

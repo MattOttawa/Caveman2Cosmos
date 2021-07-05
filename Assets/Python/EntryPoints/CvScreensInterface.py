@@ -56,7 +56,7 @@ def numPlotListButtons(): return 0 # Called from exe
 
 def showTechChooser():
 	if CyGame().getActivePlayer() != -1:
-		screenMap[TECH_CHOOSER].interfaceScreen(TECH_CHOOSER)
+		screenMap[TECH_CHOOSER].interfaceScreen()
 
 def showHallOfFame(argsList):
 	screenMap[HALL_OF_FAME].interfaceScreen(argsList[0])
@@ -505,8 +505,7 @@ def forceScreenRedraw(argsList):
 		mainInterface.redraw()
 
 	elif argsList[0] == TECH_CHOOSER:
-		screenMap[TECH_CHOOSER].updateTechRecords(True)
-
+		screenMap[TECH_CHOOSER].redraw()
 	elif argsList[0] == ESPIONAGE_ADVISOR:
 		screenMap[ESPIONAGE_ADVISOR].redraw(CyGInterfaceScreen("EspionageAdvisor", ESPIONAGE_ADVISOR))
 
@@ -691,7 +690,7 @@ def lateInit():
 	screenMap[TOP_CIVS]				= CvTopCivs.CvTopCivs(TOP_CIVS)
 	screenMap[FORGETFUL_SCREEN]		= Forgetful.Forgetful()
 	screenMap[DEBUG_INFO_SCREEN]	= CvDebugInfoScreen.CvDebugInfoScreen()
-	screenMap[TECH_CHOOSER]			= CvTechChooser.CvTechChooser()
+	screenMap[TECH_CHOOSER]			= CvTechChooser.CvTechChooser(TECH_CHOOSER)
 	screenMap[BUILD_LIST_SCREEN]	= BuildListScreen.BuildListScreen()
 
 	import WorldBuilder, CvAdvancedStartScreen

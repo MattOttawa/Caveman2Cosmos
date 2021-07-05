@@ -2193,7 +2193,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_CAVE_BEAR_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -4635,7 +4635,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_HAAST_EAGLE_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -5257,7 +5257,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MOA_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -6709,7 +6709,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_PALEOLITHIC_DOG_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -7751,7 +7751,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_THYLACINE_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -9926,7 +9926,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_GLYPTO_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -10136,7 +10136,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_PALEOLITHIC_GROUNDSLOTH_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -10819,7 +10819,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_ELASMOTHERIUM_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -11581,7 +11581,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_SABRETOOTH_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -14237,12 +14237,11 @@
 			<Civilopedia>TXT_KEY_BUILDING_CEPHALOPOD_INSTITUTE_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMaxLatitude>70</iMaxLatitude>
 			<PrereqTech>TECH_MARINE_BIOLOGY</PrereqTech>
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MARINE_INSTITUTE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -14281,12 +14280,11 @@
 			<Civilopedia>TXT_KEY_BUILDING_CETAEA_INSTITUTE_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMaxLatitude>70</iMaxLatitude>
 			<PrereqTech>TECH_MARINE_BIOLOGY</PrereqTech>
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MARINE_INSTITUTE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -14325,7 +14323,6 @@
 			<Civilopedia>TXT_KEY_BUILDING_COASTAL_FISH_FARM_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMaxLatitude>60</iMaxLatitude>
 			<PrereqTech>TECH_AQUACULTURE</PrereqTech>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_TOWN_HALL</BuildingType>
@@ -14747,11 +14744,7 @@
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
 			<FreeStartEra>C2C_ERA_CLASSICAL</FreeStartEra>
 			<PrereqTech>TECH_FALCONRY</PrereqTech>
-			<PrereqOrBuildings>
-				<BuildingType>BUILDING_MASTER_HUNTER</BuildingType>
-				<BuildingType>BUILDING_MASTER_HUNTER_TRADITION</BuildingType>
-			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_TELEGRAPH</ObsoleteTech>
+			<ObsoleteTech>TECH_UNMANNED_AIR_VEHICLES</ObsoleteTech>
 			<YieldChanges>
 				<iYield>1</iYield>
 			</YieldChanges>
@@ -15064,7 +15057,6 @@
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<iConquestProb>75</iConquestProb>
-			<iMinLatitude>30</iMinLatitude>
 			<iHappiness>1</iHappiness>
 			<iAsset>3</iAsset>
 			<YieldChanges>
@@ -15370,7 +15362,6 @@
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
-			<iMaxLatitude>70</iMaxLatitude>
 			<iAsset>4</iAsset>
 			<iPower>6</iPower>
 			<CommerceChanges>
@@ -15381,7 +15372,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_MARINE_INSTITUTE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqInCityBuildings>
@@ -15773,7 +15764,6 @@
 			<Civilopedia>TXT_KEY_BUILDING_FISH_PENS_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMaxLatitude>60</iMaxLatitude>
 			<PrereqTech>TECH_MASONRY</PrereqTech>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_TOWN_HALL</BuildingType>
@@ -15809,7 +15799,6 @@
 			<Civilopedia>TXT_KEY_BUILDING_CRAB_NETS_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMaxLatitude>80</iMaxLatitude>
 			<PrereqTech>TECH_AQUACULTURE</PrereqTech>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_TOWN_HALL</BuildingType>
@@ -15845,10 +15834,8 @@
 			<Civilopedia>TXT_KEY_BUILDING_FUR_FARM_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMinLatitude>-30</iMinLatitude>
-			<iMaxLatitude>60</iMaxLatitude>
 			<PrereqTech>TECH_FREE_ARTISTRY</PrereqTech>
-			<ObsoleteTech>TECH_VERTICAL_FLIGHT</ObsoleteTech>
+			<ObsoleteTech>TECH_PLANETARY_ECONOMICS</ObsoleteTech>
 			<CommerceChanges>
 				<iCommerce>1</iCommerce>
 				<iCommerce>2</iCommerce>
@@ -15917,7 +15904,6 @@
 			<Civilopedia>TXT_KEY_BUILDING_MARINE_INSTITUTE_PEDIA</Civilopedia>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ConstructSound>AS2D_BUILD_GRANARY</ConstructSound>
-			<iMaxLatitude>70</iMaxLatitude>
 			<PrereqTech>TECH_MARINE_BIOLOGY</PrereqTech>
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_AQUARIUM</BuildingType>
@@ -16174,7 +16160,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_CAVE_LION_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -22803,7 +22789,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_PALEOLITHIC_MAMMOTH_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>
@@ -28035,7 +28021,7 @@
 			<PrereqAmountBuildings>
 				<PrereqBuilding>
 					<BuildingType>BUILDING_PROCOPTODON_MYTH_EFFECT</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<CommerceChanges>

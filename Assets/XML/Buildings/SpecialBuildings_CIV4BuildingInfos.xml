@@ -6538,7 +6538,7 @@
 				</PrereqCivic>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
-			<ObsoleteTech>TECH_CODE_OF_LAWS</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<TechHappinessChanges>
 				<TechHappinessChange>
 					<PrereqTech>TECH_SACRIFICE_CULT</PrereqTech>
@@ -6580,7 +6580,7 @@
 				<BuildingType>BUILDING_DANCE_HUT</BuildingType>
 				<BuildingType>BUILDING_DANCE_HALL</BuildingType>
 			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_WOMENS_SUFFRAGE</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<ReplacementBuildings>
 				<BuildingType>BUILDING_FERTILITYFESTIVAL_EFFECT</BuildingType>
 			</ReplacementBuildings>
@@ -6624,7 +6624,7 @@
 				<BuildingType>BUILDING_FIRE_PIT</BuildingType>
 				<BuildingType>BUILDING_BONFIRE</BuildingType>
 			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_FOLK_DANCE</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<iHappiness>1</iHappiness>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
@@ -6668,7 +6668,7 @@
 				<BuildingType>BUILDING_DANCE_HUT</BuildingType>
 				<BuildingType>BUILDING_DANCE_HALL</BuildingType>
 			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_MUSICAL_NOTATION</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
@@ -6708,7 +6708,7 @@
 				<BuildingType>BUILDING_DANCE_HUT</BuildingType>
 				<BuildingType>BUILDING_DANCE_HALL</BuildingType>
 			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_MUSICAL_NOTATION</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<CommerceChanges>
 				<iCommerce>1</iCommerce>
 				<iCommerce>0</iCommerce>
@@ -6754,7 +6754,7 @@
 				<BuildingType>BUILDING_DANCE_HUT</BuildingType>
 				<BuildingType>BUILDING_DANCE_HALL</BuildingType>
 			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_WEATHER_FORECASTING</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<iHappiness>1</iHappiness>
 			<YieldModifiers>
 				<iYield>1</iYield>
@@ -6787,7 +6787,7 @@
 				<BuildingType>BUILDING_DANCE_HUT</BuildingType>
 				<BuildingType>BUILDING_DANCE_HALL</BuildingType>
 			</PrereqOrBuildings>
-			<ObsoleteTech>TECH_MILITARY_SCIENCE</ObsoleteTech>
+			<ObsoleteTech>TECH_MASS_MEDIA</ObsoleteTech>
 			<CommerceChanges>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
@@ -9218,7 +9218,6 @@
 			<Description>TXT_KEY_BUILDING_IGLOO</Description>
 			<Civilopedia>TXT_KEY_BUILDING_IGLOO_PEDIA</Civilopedia>
 			<PrereqTech>TECH_SHELTER_BUILDING</PrereqTech>
-			<iMinLatitude>50</iMinLatitude>
 			<PrereqOrTerrain>
 				<PrereqTerrain>
 					<TerrainType>TERRAIN_TAIGA</TerrainType>
@@ -10882,7 +10881,6 @@
 			</MapCategoryTypes>
 			<Description>TXT_KEY_BUILDING_PEST_CROWS</Description>
 			<Civilopedia>TXT_KEY_BUILDING_PESTS_PEDIA</Civilopedia>
-			<iMaxLatitude>70</iMaxLatitude>
 			<iPrereqPopulation>6</iPrereqPopulation>
 			<PrereqTech>TECH_SEDENTARY_LIFESTYLE</PrereqTech>
 			<PrereqVicinityBonuses>
@@ -11118,7 +11116,6 @@
 			</MapCategoryTypes>
 			<Description>TXT_KEY_BUILDING_PEST_PIGEONS</Description>
 			<Civilopedia>TXT_KEY_BUILDING_PESTS_PEDIA</Civilopedia>
-			<iMaxLatitude>70</iMaxLatitude>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqTech>TECH_CIVIL_ENGINEERING</PrereqTech>
 			<ReplacementBuildings>
@@ -11173,7 +11170,6 @@
 			</MapCategoryTypes>
 			<Description>TXT_KEY_BUILDING_PEST_RATS</Description>
 			<Civilopedia>TXT_KEY_BUILDING_PESTS_PEDIA</Civilopedia>
-			<iMaxLatitude>80</iMaxLatitude>
 			<iPrereqPopulation>4</iPrereqPopulation>
 			<PrereqTech>TECH_SEDENTARY_LIFESTYLE</PrereqTech>
 			<PrereqVicinityBonuses>
@@ -11220,7 +11216,6 @@
 			</MapCategoryTypes>
 			<Description>TXT_KEY_BUILDING_PEST_SEAGULLS</Description>
 			<Civilopedia>TXT_KEY_BUILDING_PESTS_PEDIA</Civilopedia>
-			<iMaxLatitude>80</iMaxLatitude>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqTech>TECH_SANITATION</PrereqTech>
 			<bWater>1</bWater>

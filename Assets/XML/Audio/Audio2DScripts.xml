@@ -96,8 +96,8 @@
 		<ScriptID>AS2D_VICTORY</ScriptID>
 		<SoundID>SONG_VICTORY</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7824,8 +7824,8 @@
 		<ScriptID>AS2D_BUILD_WALLS</ScriptID>
 		<SoundID>SND_BUILD_WALLS</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7847,8 +7847,8 @@
 		<ScriptID>AS2D_BUILD_CASTLE</ScriptID>
 		<SoundID>SND_BUILD_CASTLE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7870,8 +7870,8 @@
 		<ScriptID>AS2D_BUILD_BARRACKS</ScriptID>
 		<SoundID>SND_BUILD_BARRACKS</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7893,8 +7893,8 @@
 		<ScriptID>AS2D_BUILD_GRANARY</ScriptID>
 		<SoundID>SND_BUILD_GRANARY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7916,8 +7916,8 @@
 		<ScriptID>AS2D_BUILD_AQUEDUCT</ScriptID>
 		<SoundID>SND_BUILD_AQUEDUCT</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7939,8 +7939,8 @@
 		<ScriptID>AS2D_BUILD_HOSPITAL</ScriptID>
 		<SoundID>SND_BUILD_HOSPITAL</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7962,8 +7962,8 @@
 		<ScriptID>AS2D_BUILD_RECYCLING_CENTER</ScriptID>
 		<SoundID>SND_BUILD_RECYCLING_CENTER</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -7985,8 +7985,8 @@
 		<ScriptID>AS2D_BUILD_LIGHTHOUSE</ScriptID>
 		<SoundID>SND_BUILD_LIGHTHOUSE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8008,8 +8008,8 @@
 		<ScriptID>AS2D_BUILD_FORGE</ScriptID>
 		<SoundID>SND_BUILD_FORGE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8031,8 +8031,8 @@
 		<ScriptID>AS2D_BUILD_OBELISK</ScriptID>
 		<SoundID>SND_BUILD_OBELISK</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8054,8 +8054,8 @@
 		<ScriptID>AS2D_BUILD_LIBRARY</ScriptID>
 		<SoundID>SND_BUILD_LIBRARY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8077,8 +8077,8 @@
 		<ScriptID>AS2D_BUILD_UNIVERSITY</ScriptID>
 		<SoundID>SND_BUILD_UNIVERSITY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8100,8 +8100,8 @@
 		<ScriptID>AS2D_BUILD_OBSERVATORY</ScriptID>
 		<SoundID>SND_BUILD_OBSERVATORY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8123,8 +8123,8 @@
 		<ScriptID>AS2D_BUILD_THEATRE</ScriptID>
 		<SoundID>SND_BUILD_THEATRE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8146,8 +8146,8 @@
 		<ScriptID>AS2D_BUILD_COLOSSEUM</ScriptID>
 		<SoundID>SND_BUILD_COLOSSEUM</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8169,8 +8169,8 @@
 		<ScriptID>AS2D_BUILD_GROCER</ScriptID>
 		<SoundID>SND_BUILD_GROCER</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8192,8 +8192,8 @@
 		<ScriptID>AS2D_BUILD_MARKETPLACE</ScriptID>
 		<SoundID>SND_BUILD_MARKETPLACE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8215,8 +8215,8 @@
 		<ScriptID>AS2D_BUILD_BANK</ScriptID>
 		<SoundID>SND_BUILD_BANK</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8238,8 +8238,8 @@
 		<ScriptID>AS2D_BUILD_SUPERMARKET</ScriptID>
 		<SoundID>SND_BUILD_SUPERMARKET</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8261,8 +8261,8 @@
 		<ScriptID>AS2D_BUILD_COURTHOUSE</ScriptID>
 		<SoundID>SND_BUILD_COURTHOUSE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8284,8 +8284,8 @@
 		<ScriptID>AS2D_BUILD_PLANTCOAL</ScriptID>
 		<SoundID>SND_BUILD_PLANTCOAL</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8307,8 +8307,8 @@
 		<ScriptID>AS2D_BUILD_PLANTHYDRO</ScriptID>
 		<SoundID>SND_BUILD_PLANTHYDRO</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8330,8 +8330,8 @@
 		<ScriptID>AS2D_BUILD_PLANTNUCLEAR</ScriptID>
 		<SoundID>SND_BUILD_PLANTNUCLEAR</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8353,8 +8353,8 @@
 		<ScriptID>AS2D_BUILD_FACTORY</ScriptID>
 		<SoundID>SND_BUILD_FACTORY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8376,8 +8376,8 @@
 		<ScriptID>AS2D_BUILD_LABORATORY</ScriptID>
 		<SoundID>SND_BUILD_LABORATORY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8399,8 +8399,8 @@
 		<ScriptID>AS2D_BUILD_AIRPORT</ScriptID>
 		<SoundID>SND_BUILD_AIRPORT</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8422,8 +8422,8 @@
 		<ScriptID>AS2D_BUILD_DRYDOCK</ScriptID>
 		<SoundID>SND_BUILD_DRYDOCK</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8445,8 +8445,8 @@
 		<ScriptID>AS2D_BUILD_BROADCASTTOWER</ScriptID>
 		<SoundID>SND_BUILD_BROADCASTTOWER</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8468,8 +8468,8 @@
 		<ScriptID>AS2D_BUILD_JEWISH</ScriptID>
 		<SoundID>SND_BUILD_JEWISH</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8491,8 +8491,8 @@
 		<ScriptID>AS2D_BUILD_JEWISH_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_JEWISH_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8514,8 +8514,8 @@
 		<ScriptID>AS2D_BUILD_CHRISTIAN</ScriptID>
 		<SoundID>SND_BUILD_CHRISTIAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8537,8 +8537,8 @@
 		<ScriptID>AS2D_BUILD_CHRISTIAN_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_CHRISTIAN_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8560,8 +8560,8 @@
 		<ScriptID>AS2D_BUILD_ISLAMIC</ScriptID>
 		<SoundID>SND_BUILD_ISLAMIC</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8583,8 +8583,8 @@
 		<ScriptID>AS2D_BUILD_ISLAMIC_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_ISLAMIC_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8606,8 +8606,8 @@
 		<ScriptID>AS2D_BUILD_HINDU</ScriptID>
 		<SoundID>SND_BUILD_HINDU</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8629,8 +8629,8 @@
 		<ScriptID>AS2D_BUILD_HINDU_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_HINDU_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8652,8 +8652,8 @@
 		<ScriptID>AS2D_BUILD_BUDDHIST</ScriptID>
 		<SoundID>SND_BUILD_BUDDHIST</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8675,8 +8675,8 @@
 		<ScriptID>AS2D_BUILD_BUDDHIST_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_BUDDHIST_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8698,8 +8698,8 @@
 		<ScriptID>AS2D_BUILD_CONFUCIAN</ScriptID>
 		<SoundID>SND_BUILD_CONFUCIAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8721,8 +8721,8 @@
 		<ScriptID>AS2D_BUILD_CONFUCIAN_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_CONFUCIAN_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8744,8 +8744,8 @@
 		<ScriptID>AS2D_BUILD_TAOIST</ScriptID>
 		<SoundID>SND_BUILD_TAOIST</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8767,8 +8767,8 @@
 		<ScriptID>AS2D_BUILD_TAOIST_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_TAOIST_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8790,8 +8790,8 @@
 		<ScriptID>AS2D_BUILD_PYRAMID</ScriptID>
 		<SoundID>SND_BUILD_PYRAMID</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8813,8 +8813,8 @@
 		<ScriptID>AS2D_BUILD_STONEHENGE</ScriptID>
 		<SoundID>SND_BUILD_STONEHENGE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8836,8 +8836,8 @@
 		<ScriptID>AS2D_BUILD_GREATLIBRARY</ScriptID>
 		<SoundID>SND_BUILD_GREATLIBRARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8859,8 +8859,8 @@
 		<ScriptID>AS2D_BUILD_HANGGARDENS</ScriptID>
 		<SoundID>SND_BUILD_HANGGARDENS</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8882,8 +8882,8 @@
 		<ScriptID>AS2D_BUILD_ORACLE</ScriptID>
 		<SoundID>SND_BUILD_ORACLE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8905,8 +8905,8 @@
 		<ScriptID>AS2D_BUILD_PARTHENON</ScriptID>
 		<SoundID>SND_BUILD_PARTHENON</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8928,8 +8928,8 @@
 		<ScriptID>AS2D_BUILD_COLOSSUS</ScriptID>
 		<SoundID>SND_BUILD_COLOSSUS</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -8951,8 +8951,8 @@
 		<ScriptID>AS2D_BUILD_IRONWORKS</ScriptID>
 		<SoundID>SND_BUILD_IRONWORKS</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -9710,8 +9710,8 @@
 		<ScriptID>AS2D_WELOVEKING</ScriptID>
 		<SoundID>SND_CROWD_CHEER</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -10101,8 +10101,8 @@
 		<ScriptID>AS2D_BOMBARD</ScriptID>
 		<SoundID>SND_BOMBARD</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -10124,8 +10124,8 @@
 		<ScriptID>AS2D_BOMBARDED</ScriptID>
 		<SoundID>SND_BOMBARDED</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -10538,8 +10538,8 @@
 		<ScriptID>AS2D_VICTORY_EARLY</ScriptID>
 		<SoundID>SND_VICTORY_EARLY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -10561,8 +10561,8 @@
 		<ScriptID>AS2D_VICTORY_MIDDLE</ScriptID>
 		<SoundID>SND_VICTORY_MIDDLE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -10584,8 +10584,8 @@
 		<ScriptID>AS2D_VICTORY_LATE</ScriptID>
 		<SoundID>SND_VICTORY_LATE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -10607,8 +10607,8 @@
 		<ScriptID>AS2D_VICTORY_FF</ScriptID>
 		<SoundID>SND_VICTORY_FF</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -11067,8 +11067,8 @@
 		<ScriptID>AS2D_WONDER_BUILDING_BUILD</ScriptID>
 		<SoundID>SND_WONDER_BUILDING_BUILD</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -11090,8 +11090,8 @@
 		<ScriptID>AS2D_WONDER_UNIT_BUILD</ScriptID>
 		<SoundID>SND_WONDER_UNIT_BUILD</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -15920,8 +15920,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_UNIT</ScriptID>
 		<SoundID>SND_BUILD_UNIT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>60</iMinVolume>
-		<iMaxVolume>60</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -15943,8 +15943,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_UNIQUE_UNIT</ScriptID>
 		<SoundID>SND_BUILD_UNIQUE_UNIT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>60</iMinVolume>
-		<iMaxVolume>60</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -15966,8 +15966,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_ARABIAN_CAMEL_ARCHER</ScriptID>
 		<SoundID>SND_BUILD_ARABIAN_CAMEL_ARCHER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -15989,8 +15989,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_ARCHER</ScriptID>
 		<SoundID>SND_BUILD_ARCHER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16012,8 +16012,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_AXEMAN</ScriptID>
 		<SoundID>SND_BUILD_AXEMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16035,8 +16035,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_AZTEC_JAGUAR</ScriptID>
 		<SoundID>SND_BUILD_AZTEC_JAGUAR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16058,8 +16058,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CARAVEL</ScriptID>
 		<SoundID>SND_BUILD_CARAVEL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16081,8 +16081,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CAVALRY</ScriptID>
 		<SoundID>SND_BUILD_CAVALRY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16104,8 +16104,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CHARIOT</ScriptID>
 		<SoundID>SND_BUILD_CHARIOT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16127,8 +16127,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CHINESE_CHOKONU</ScriptID>
 		<SoundID>SND_BUILD_CHINESE_CHOKONU</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16150,8 +16150,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CHRISTIAN_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_CHRISTIAN_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16173,8 +16173,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CROSSBOWMAN</ScriptID>
 		<SoundID>SND_BUILD_CROSSBOWMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16196,8 +16196,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_DESTROYER</ScriptID>
 		<SoundID>SND_BUILD_DESTROYER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16219,8 +16219,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_EGYPTIAN_WAR_CHARIOT</ScriptID>
 		<SoundID>SND_BUILD_EGYPTIAN_WAR_CHARIOT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16242,8 +16242,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_ENGLISH_REDCOAT</ScriptID>
 		<SoundID>SND_BUILD_ENGLISH_REDCOAT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16265,8 +16265,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_EXPLORER</ScriptID>
 		<SoundID>SND_BUILD_EXPLORER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16288,8 +16288,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_FIGHTER</ScriptID>
 		<SoundID>SND_BUILD_FIGHTER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16311,8 +16311,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_FRIGATE</ScriptID>
 		<SoundID>SND_BUILD_FRIGATE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16334,8 +16334,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_GALLEON</ScriptID>
 		<SoundID>SND_BUILD_GALLEON</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16357,8 +16357,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_GALLEY</ScriptID>
 		<SoundID>SND_BUILD_GALLEY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16380,8 +16380,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_GREEK_PHALANX</ScriptID>
 		<SoundID>SND_BUILD_GREEK_PHALANX</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16403,8 +16403,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_GREAT_PROPHET</ScriptID>
 		<SoundID>SND_BUILD_GREAT_PROPHET</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16426,8 +16426,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_HORSE_ARCHER</ScriptID>
 		<SoundID>SND_BUILD_HORSE_ARCHER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16449,8 +16449,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_INDIAN_FAST_WORKER</ScriptID>
 		<SoundID>SND_BUILD_INDIAN_FAST_WORKER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16472,8 +16472,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_INFANTRY</ScriptID>
 		<SoundID>SND_BUILD_INFANTRY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16495,8 +16495,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_IRONCLAD</ScriptID>
 		<SoundID>SND_BUILD_IRONCLAD</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16518,8 +16518,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_JAP_SAMURAI</ScriptID>
 		<SoundID>SND_BUILD_JAP_SAMURAI</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16541,8 +16541,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_JET_FIGHTER</ScriptID>
 		<SoundID>SND_BUILD_JET_FIGHTER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16564,8 +16564,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_KNIGHT</ScriptID>
 		<SoundID>SND_BUILD_KNIGHT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16587,8 +16587,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_LONGBOWMAN</ScriptID>
 		<SoundID>SND_BUILD_LONGBOWMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16610,8 +16610,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MACEMAN</ScriptID>
 		<SoundID>SND_BUILD_MACEMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16633,8 +16633,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MALI_SKIRMISHER</ScriptID>
 		<SoundID>SND_BUILD_MALI_SKIRMISHER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16656,8 +16656,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MODERN_ARMOUR</ScriptID>
 		<SoundID>SND_BUILD_MODERN_ARMOUR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16679,8 +16679,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MONGOL_KESHIK</ScriptID>
 		<SoundID>SND_BUILD_MONGOL_KESHIK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16702,8 +16702,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MUSKETMAN</ScriptID>
 		<SoundID>SND_BUILD_MUSKETMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16725,8 +16725,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_PERSIAN_IMMORTAL</ScriptID>
 		<SoundID>SND_BUILD_PERSIAN_IMMORTAL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16748,8 +16748,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_PIKEMAN</ScriptID>
 		<SoundID>SND_BUILD_PIKEMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16771,8 +16771,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_ROMAN_PRAETORIAN</ScriptID>
 		<SoundID>SND_BUILD_ROMAN_PRAETORIAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16794,8 +16794,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_RIFLEMAN</ScriptID>
 		<SoundID>SND_BUILD_RIFLEMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16817,8 +16817,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_RUSSIAN_COSSACK</ScriptID>
 		<SoundID>SND_BUILD_RUSSIAN_COSSACK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16840,8 +16840,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SCOUT</ScriptID>
 		<SoundID>SND_BUILD_SCOUT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16863,8 +16863,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SETTLER</ScriptID>
 		<SoundID>SND_BUILD_SETTLER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16886,8 +16886,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SPANISH_CONQUISTADOR</ScriptID>
 		<SoundID>SND_BUILD_SPANISH_CONQUISTADOR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16909,8 +16909,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SPEARMAN</ScriptID>
 		<SoundID>SND_BUILD_SPEARMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16932,8 +16932,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_STEALTH_BOMBER</ScriptID>
 		<SoundID>SND_BUILD_STEALTH_BOMBER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16955,8 +16955,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SWORDSMAN</ScriptID>
 		<SoundID>SND_BUILD_SWORDSMAN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -16978,8 +16978,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_TANK</ScriptID>
 		<SoundID>SND_BUILD_TANK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17001,8 +17001,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_TAOIST_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_TAOIST_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17024,8 +17024,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_WAR_ELEPHANT</ScriptID>
 		<SoundID>SND_BUILD_WAR_ELEPHANT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17047,8 +17047,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_WARRIOR</ScriptID>
 		<SoundID>SND_BUILD_WARRIOR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17070,8 +17070,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_WORKER</ScriptID>
 		<SoundID>SND_BUILD_WORKER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17461,8 +17461,8 @@
 		<ScriptID>AS2D_TUTORIAL_FIRST_BUILD_WARRIOR_0</ScriptID>
 		<SoundID>SND_TUTORIAL_FIRST_BUILD_WARRIOR_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17484,8 +17484,8 @@
 		<ScriptID>AS2D_TUTORIAL_FIRST_BUILD_WARRIOR_1</ScriptID>
 		<SoundID>SND_TUTORIAL_FIRST_BUILD_WARRIOR_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17507,8 +17507,8 @@
 		<ScriptID>AS2D_TUTORIAL_FIRST_BUILD_WARRIOR_2</ScriptID>
 		<SoundID>SND_TUTORIAL_FIRST_BUILD_WARRIOR_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17530,8 +17530,8 @@
 		<ScriptID>AS2D_TUTORIAL_FIRST_BUILD_WARRIOR_3</ScriptID>
 		<SoundID>SND_TUTORIAL_FIRST_BUILD_WARRIOR_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17714,8 +17714,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SCOUT_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SCOUT_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17737,8 +17737,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SCOUT_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SCOUT_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -17760,8 +17760,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SCOUT_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SCOUT_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -18151,8 +18151,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_OBELISK_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_OBELISK_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -18174,8 +18174,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_OBELISK_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_OBELISK_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -18197,8 +18197,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_OBELISK_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_OBELISK_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -18588,8 +18588,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_WORKER_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_WORKER_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -18611,8 +18611,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_WORKER_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_WORKER_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19025,8 +19025,8 @@
 		<ScriptID>AS2D_TUTORIAL_WAIT_FOR_WORKER_TO_BUILD_0</ScriptID>
 		<SoundID>SND_TUTORIAL_WAIT_FOR_WORKER_TO_BUILD_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19048,8 +19048,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_BARRACKS_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_BARRACKS_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19071,8 +19071,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_BARRACKS_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_BARRACKS_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19140,8 +19140,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_FARM_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_FARM_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19163,8 +19163,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_FARM_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_FARM_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19186,8 +19186,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_FARM_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_FARM_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19209,8 +19209,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_FARM_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_FARM_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19232,8 +19232,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_FARM_4</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_FARM_4</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19255,8 +19255,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_FARM_5</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_FARM_5</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19301,8 +19301,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_COTTAGE_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_COTTAGE_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19324,8 +19324,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_COTTAGE_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_COTTAGE_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19347,8 +19347,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_COTTAGE_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_COTTAGE_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19370,8 +19370,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_COTTAGE_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_COTTAGE_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19393,8 +19393,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_COTTAGE_4</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_COTTAGE_4</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19439,8 +19439,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_MINE_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_MINE_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19462,8 +19462,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_MINE_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_MINE_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19485,8 +19485,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_MINE_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_MINE_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19508,8 +19508,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_MINE_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_MINE_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19554,8 +19554,8 @@
 		<ScriptID>AS2D_TUTORIAL_SELECT_THIRD_BUILD_WARRIOR_0</ScriptID>
 		<SoundID>SND_TUTORIAL_SELECT_THIRD_BUILD_WARRIOR_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19577,8 +19577,8 @@
 		<ScriptID>AS2D_TUTORIAL_THIRD_BUILD_WARRIOR_0</ScriptID>
 		<SoundID>SND_TUTORIAL_THIRD_BUILD_WARRIOR_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19669,8 +19669,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SETTLER_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SETTLER_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19692,8 +19692,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SETTLER_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SETTLER_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19715,8 +19715,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SETTLER_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SETTLER_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19738,8 +19738,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SETTLER_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SETTLER_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19761,8 +19761,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SETTLER_4</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SETTLER_4</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19784,8 +19784,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_SECOND_SETTLER_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_SECOND_SETTLER_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -19922,8 +19922,8 @@
 		<ScriptID>AS2D_TUTORIAL_CITY_BUILD_INTSRUCTIONS_STOP_0</ScriptID>
 		<SoundID>SND_TUTORIAL_CITY_BUILD_INTSRUCTIONS_STOP_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20290,8 +20290,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_QUARRY_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_QUARRY_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20313,8 +20313,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_QUARRY_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_QUARRY_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20336,8 +20336,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_QUARRY_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_QUARRY_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20359,8 +20359,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_QUARRY_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_QUARRY_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20382,8 +20382,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_ROAD_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_ROAD_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20405,8 +20405,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_ROAD_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_ROAD_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20428,8 +20428,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_ROAD_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_ROAD_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20451,8 +20451,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_ROAD_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_ROAD_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20474,8 +20474,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_ROAD_II_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_ROAD_II_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20497,8 +20497,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_STONEHENGE_0</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_STONEHENGE_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20520,8 +20520,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_STONEHENGE_1</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_STONEHENGE_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20543,8 +20543,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_STONEHENGE_2</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_STONEHENGE_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20566,8 +20566,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_STONEHENGE_3</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_STONEHENGE_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20589,8 +20589,8 @@
 		<ScriptID>AS2D_TUTORIAL_BUILD_STONEHENGE_4</ScriptID>
 		<SoundID>SND_TUTORIAL_BUILD_STONEHENGE_4</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20612,8 +20612,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_0</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_0</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20635,8 +20635,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_1</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_1</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20658,8 +20658,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_2</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_2</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20681,8 +20681,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_3</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_3</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20704,8 +20704,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_4</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_4</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20727,8 +20727,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_5</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_5</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -20750,8 +20750,8 @@
 		<ScriptID>AS2D_TUTORIAL_VICTORY_CONDITIONS_6</ScriptID>
 		<SoundID>SND_TUTORIAL_VICTORY_CONDITIONS_6</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21509,8 +21509,8 @@
 		<ScriptID>AS2D_BUILD_OLYMP</ScriptID>
 		<SoundID>SND_BUILD_OLYMP</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21532,8 +21532,8 @@
 		<ScriptID>AS2D_BUILD_OLYMP_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_OLYMP_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21555,8 +21555,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_OLYMP_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_OLYMP_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21578,8 +21578,8 @@
 		<ScriptID>AS2D_BUILD_ZORO</ScriptID>
 		<SoundID>SND_BUILD_ZORO</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>64</iMinVolume>
-		<iMaxVolume>64</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21601,8 +21601,8 @@
 		<ScriptID>AS2D_BUILD_ZORO_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_ZORO_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21624,8 +21624,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_ZORO_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_ZORO_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21647,8 +21647,8 @@
 		<ScriptID>AS2D_BUILD_RA</ScriptID>
 		<SoundID>SND_BUILD_RA</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21670,8 +21670,8 @@
 		<ScriptID>AS2D_BUILD_RA_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_RA_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21693,8 +21693,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_RA_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_RA_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21716,8 +21716,8 @@
 		<ScriptID>AS2D_BUILD_TOLTEC</ScriptID>
 		<SoundID>SND_BUILD_TOLTEC</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21739,8 +21739,8 @@
 		<ScriptID>AS2D_BUILD_TOLTEC_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_TOLTEC_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21762,8 +21762,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_TOLTEC_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_TOLTEC_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21785,8 +21785,8 @@
 		<ScriptID>AS2D_BUILD_ACCELERATOR</ScriptID>
 		<SoundID>SND_BUILD_ACCELERATOR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21808,8 +21808,8 @@
 		<ScriptID>AS2D_BUILD_ADVANCED_SHIELDING</ScriptID>
 		<SoundID>SND_BUILD_ADVANCED_SHIELDING</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21831,8 +21831,8 @@
 		<ScriptID>AS2D_BUILD_AGORA</ScriptID>
 		<SoundID>SND_BUILD_AGORA</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21854,8 +21854,8 @@
 		<ScriptID>AS2D_BUILD_ALCHEMIST_LAB</ScriptID>
 		<SoundID>SND_BUILD_ALCHEMIST_LAB</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21877,8 +21877,8 @@
 		<ScriptID>AS2D_BUILD_ALUMINUM_FACTORY</ScriptID>
 		<SoundID>SND_BUILD_ALUMINUM_FACTORY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21900,8 +21900,8 @@
 		<ScriptID>AS2D_BUILD_AMUSEMENT_PARK</ScriptID>
 		<SoundID>SND_BUILD_AMUSEMENT_PARK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21923,8 +21923,8 @@
 		<ScriptID>AS2D_BUILD_ARCHERY_RANGE</ScriptID>
 		<SoundID>SND_BUILD_ARCHERY_RANGE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21946,8 +21946,8 @@
 		<ScriptID>AS2D_BUILD_ARCOLOGY</ScriptID>
 		<SoundID>SND_BUILD_ARCOLOGY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21969,8 +21969,8 @@
 		<ScriptID>AS2D_BUILD_ARCOLOGY_SHIELDING</ScriptID>
 		<SoundID>SND_BUILD_ARCOLOGY_SHIELDING</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -21992,8 +21992,8 @@
 		<ScriptID>AS2D_BUILD_ARTESIAN_WELL</ScriptID>
 		<SoundID>SND_BUILD_ARTESIAN_WELL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22015,8 +22015,8 @@
 		<ScriptID>AS2D_BUILD_BATH_HOUSE</ScriptID>
 		<SoundID>SND_BUILD_BATH_HOUSE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22038,8 +22038,8 @@
 		<ScriptID>AS2D_BUILD_BIOENHANCEMENT</ScriptID>
 		<SoundID>SND_BUILD_BIOENHANCEMENT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22061,8 +22061,8 @@
 		<ScriptID>AS2D_BUILD_BREWERY</ScriptID>
 		<SoundID>SND_BUILD_BREWERY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22084,8 +22084,8 @@
 		<ScriptID>AS2D_BUILD_BROTHEL</ScriptID>
 		<SoundID>SND_BUILD_BROTHEL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22107,8 +22107,8 @@
 		<ScriptID>AS2D_BUILD_COMMAND_BUNKER</ScriptID>
 		<SoundID>SND_BUILD_COMMAND_BUNKER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22130,8 +22130,8 @@
 		<ScriptID>AS2D_BUILD_BUTCHERY</ScriptID>
 		<SoundID>SND_BUILD_BUTCHERY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22153,8 +22153,8 @@
 		<ScriptID>AS2D_BUILD_CASINO</ScriptID>
 		<SoundID>SND_BUILD_CASINO</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22176,8 +22176,8 @@
 		<ScriptID>AS2D_BUILD_CEMENT_MILL</ScriptID>
 		<SoundID>SND_BUILD_CEMENT_MILL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22199,8 +22199,8 @@
 		<ScriptID>AS2D_BUILD_CIRCUS_MAXIMUS</ScriptID>
 		<SoundID>SND_BUILD_CIRCUS_MAXIMUS</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22222,8 +22222,8 @@
 		<ScriptID>AS2D_BUILD_CLONING_FACTORY</ScriptID>
 		<SoundID>SND_BUILD_CLONING_FACTORY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22245,8 +22245,8 @@
 		<ScriptID>AS2D_BUILD_COMMERCIAL_PORT</ScriptID>
 		<SoundID>SND_BUILD_COMMERCIAL_PORT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22268,8 +22268,8 @@
 		<ScriptID>AS2D_BUILD_COMPUTER_NETWORK</ScriptID>
 		<SoundID>SND_BUILD_COMPUTER_NETWORK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22291,8 +22291,8 @@
 		<ScriptID>AS2D_BUILD_CONVENTION_CENTER</ScriptID>
 		<SoundID>SND_BUILD_CONVENTION_CENTER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22314,8 +22314,8 @@
 		<ScriptID>AS2D_BUILD_DEEP_SPACE_RESEARCH</ScriptID>
 		<SoundID>SND_BUILD_DEEP_SPACE_RESEARCH</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22337,8 +22337,8 @@
 		<ScriptID>AS2D_BUILD_DOCTORS_OFFICE</ScriptID>
 		<SoundID>SND_BUILD_DOCTORS_OFFICE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22360,8 +22360,8 @@
 		<ScriptID>AS2D_BUILD_EARLY_AIRPORT</ScriptID>
 		<SoundID>SND_BUILD_EARLY_AIRPORT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22383,8 +22383,8 @@
 		<ScriptID>AS2D_BUILD_EBANK</ScriptID>
 		<SoundID>SND_BUILD_EBANK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22406,8 +22406,8 @@
 		<ScriptID>AS2D_BUILD_VERTICAL_FARM</ScriptID>
 		<SoundID>SND_BUILD_VERTICAL_FARM</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22429,8 +22429,8 @@
 		<ScriptID>AS2D_BUILD_FISHING_HUT</ScriptID>
 		<SoundID>SND_BUILD_FISHING_HUT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22452,8 +22452,8 @@
 		<ScriptID>AS2D_BUILD_FLAK_TOWER</ScriptID>
 		<SoundID>SND_BUILD_FLAK_TOWER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22475,8 +22475,8 @@
 		<ScriptID>AS2D_BUILD_FOOD_PROCESSING_PLANT</ScriptID>
 		<SoundID>SND_BUILD_FOOD_PROCESSING_PLANT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22498,8 +22498,8 @@
 		<ScriptID>AS2D_BUILD_GLASSMITH</ScriptID>
 		<SoundID>SND_BUILD_GLASSMITH</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22521,8 +22521,8 @@
 		<ScriptID>AS2D_BUILD_GUILDHALL</ScriptID>
 		<SoundID>SND_BUILD_GUILDHALL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22544,8 +22544,8 @@
 		<ScriptID>AS2D_BUILD_HARBOR</ScriptID>
 		<SoundID>SND_BUILD_HARBOR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22567,8 +22567,8 @@
 		<ScriptID>AS2D_BUILD_HEALERSHUT</ScriptID>
 		<SoundID>SND_BUILD_HEALERSHUT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22590,8 +22590,8 @@
 		<ScriptID>AS2D_BUILD_HOTEL</ScriptID>
 		<SoundID>SND_BUILD_HOTEL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22613,8 +22613,8 @@
 		<ScriptID>AS2D_BUILD_HYPERMARKET</ScriptID>
 		<SoundID>SND_BUILD_HYPERMARKET</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22636,8 +22636,8 @@
 		<ScriptID>AS2D_BUILD_INCUBATION_CENTER</ScriptID>
 		<SoundID>SND_BUILD_INCUBATION_CENTER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22659,8 +22659,8 @@
 		<ScriptID>AS2D_BUILD_INFO_NET</ScriptID>
 		<SoundID>SND_BUILD_INFO_NET</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22682,8 +22682,8 @@
 		<ScriptID>AS2D_BUILD_INTELLIGENCE_AGENCY</ScriptID>
 		<SoundID>SND_BUILD_INTELLIGENCE_AGENCY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22705,8 +22705,8 @@
 		<ScriptID>AS2D_BUILD_INTERNATIONAL_PORT</ScriptID>
 		<SoundID>SND_BUILD_INTERNATIONAL_PORT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22728,8 +22728,8 @@
 		<ScriptID>AS2D_BUILD_JAIL</ScriptID>
 		<SoundID>SND_BUILD_JAIL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22751,8 +22751,8 @@
 		<ScriptID>AS2D_BUILD_JEWELLERS_STORE</ScriptID>
 		<SoundID>SND_BUILD_JEWELLERS_STORE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22774,8 +22774,8 @@
 		<ScriptID>AS2D_BUILD_JEWELLERY</ScriptID>
 		<SoundID>SND_BUILD_JEWELLERY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22797,8 +22797,8 @@
 		<ScriptID>AS2D_BUILD_KNIGHT_STABLE</ScriptID>
 		<SoundID>SND_BUILD_KNIGHT_STABLE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22820,8 +22820,8 @@
 		<ScriptID>AS2D_BUILD_MALL</ScriptID>
 		<SoundID>SND_BUILD_MALL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22843,8 +22843,8 @@
 		<ScriptID>AS2D_BUILD_MANOR</ScriptID>
 		<SoundID>SND_BUILD_MANOR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22866,8 +22866,8 @@
 		<ScriptID>AS2D_BUILD_MANUFACTURING_PLANT</ScriptID>
 		<SoundID>SND_BUILD_MANUFACTURING_PLANT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22889,8 +22889,8 @@
 		<ScriptID>AS2D_BUILD_MILITARY_AIRBASE</ScriptID>
 		<SoundID>SND_BUILD_MILITARY_AIRBASE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22912,8 +22912,8 @@
 		<ScriptID>AS2D_BUILD_MIND_CONTROL</ScriptID>
 		<SoundID>SND_BUILD_MIND_CONTROL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22935,8 +22935,8 @@
 		<ScriptID>AS2D_BUILD_MIND_STORAGE</ScriptID>
 		<SoundID>SND_BUILD_MIND_STORAGE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22958,8 +22958,8 @@
 		<ScriptID>AS2D_BUILD_MOVIE_THEATER</ScriptID>
 		<SoundID>SND_BUILD_MOVIE_THEATER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -22981,8 +22981,8 @@
 		<ScriptID>AS2D_BUILD_MUSEUM</ScriptID>
 		<SoundID>SND_BUILD_MUSEUM</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23004,8 +23004,8 @@
 		<ScriptID>AS2D_BUILD_NANOFACTORY</ScriptID>
 		<SoundID>SND_BUILD_NANOFACTORY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23027,8 +23027,8 @@
 		<ScriptID>AS2D_BUILD_NAVAL_ACADEMY</ScriptID>
 		<SoundID>SND_BUILD_NAVAL_ACADEMY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23050,8 +23050,8 @@
 		<ScriptID>AS2D_BUILD_DRYDOCK_NEW</ScriptID>
 		<SoundID>SND_BUILD_DRYDOCK_NEW</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23073,8 +23073,8 @@
 		<ScriptID>AS2D_BUILD_OIL_REFINERY</ScriptID>
 		<SoundID>SND_BUILD_OIL_REFINERY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23096,8 +23096,8 @@
 		<ScriptID>AS2D_BUILD_OLYMPICS</ScriptID>
 		<SoundID>SND_BUILD_OLYMPICS</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23119,8 +23119,8 @@
 		<ScriptID>AS2D_BUILD_OPERA</ScriptID>
 		<SoundID>SND_BUILD_OPERA</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23142,8 +23142,8 @@
 		<ScriptID>AS2D_BUILD_ORBITAL_FACTORY</ScriptID>
 		<SoundID>SND_BUILD_ORBITAL_FACTORY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23165,8 +23165,8 @@
 		<ScriptID>AS2D_BUILD_ORBITAL_HOTEL</ScriptID>
 		<SoundID>SND_BUILD_ORBITAL_HOTEL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23188,8 +23188,8 @@
 		<ScriptID>AS2D_BUILD_PARK</ScriptID>
 		<SoundID>SND_BUILD_PARK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23211,8 +23211,8 @@
 		<ScriptID>AS2D_BUILD_PERSONAL_RAPID_TRAIN</ScriptID>
 		<SoundID>SND_BUILD_PERSONAL_RAPID_TRAIN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23234,8 +23234,8 @@
 		<ScriptID>AS2D_BUILD_POLICE_STATION</ScriptID>
 		<SoundID>SND_BUILD_POLICE_STATION</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23257,8 +23257,8 @@
 		<ScriptID>AS2D_BUILD_PORT</ScriptID>
 		<SoundID>SND_BUILD_PORT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23280,8 +23280,8 @@
 		<ScriptID>AS2D_BUILD_PRESS_AGENCY</ScriptID>
 		<SoundID>SND_BUILD_PRESS_AGENCY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23303,8 +23303,8 @@
 		<ScriptID>AS2D_BUILD_PUBLIC_TRANSPORTATION</ScriptID>
 		<SoundID>SND_BUILD_PUBLIC_TRANSPORTATION</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23326,8 +23326,8 @@
 		<ScriptID>AS2D_BUILD_RADAR_TOWER_STATION</ScriptID>
 		<SoundID>SND_BUILD_RADAR_TOWER_STATION</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23349,8 +23349,8 @@
 		<ScriptID>AS2D_BUILD_RIVER_PORT</ScriptID>
 		<SoundID>SND_BUILD_RIVER_PORT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23372,8 +23372,8 @@
 		<ScriptID>AS2D_BUILD_RUBBER_FACTORY</ScriptID>
 		<SoundID>SND_BUILD_RUBBER_FACTORY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23395,8 +23395,8 @@
 		<ScriptID>AS2D_BUILD_CEREMONIAL_ALTAR</ScriptID>
 		<SoundID>SND_BUILD_CEREMONIAL_ALTAR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23418,8 +23418,8 @@
 		<ScriptID>AS2D_BUILD_SCHOOL</ScriptID>
 		<SoundID>SND_BUILD_SCHOOL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23441,8 +23441,8 @@
 		<ScriptID>AS2D_BUILD_SEWER</ScriptID>
 		<SoundID>SND_BUILD_SEWER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23464,8 +23464,8 @@
 		<ScriptID>AS2D_BUILD_SIEGE_WORKSHOP</ScriptID>
 		<SoundID>SND_BUILD_SIEGE_WORKSHOP</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23487,8 +23487,8 @@
 		<ScriptID>AS2D_BUILD_SKYSCRAPER</ScriptID>
 		<SoundID>SND_BUILD_SKYSCRAPER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23510,8 +23510,8 @@
 		<ScriptID>AS2D_BUILD_SLAVE_MARKET</ScriptID>
 		<SoundID>SND_BUILD_SLAVE_MARKET</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23533,8 +23533,8 @@
 		<ScriptID>AS2D_BUILD_ARENA</ScriptID>
 		<SoundID>SND_BUILD_ARENA</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23556,8 +23556,8 @@
 		<ScriptID>AS2D_BUILD_STABLE</ScriptID>
 		<SoundID>SND_BUILD_STABLE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23579,8 +23579,8 @@
 		<ScriptID>AS2D_BUILD_SUSHI_RESTAURANT</ScriptID>
 		<SoundID>SND_BUILD_SUSHI_RESTAURANT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23602,8 +23602,8 @@
 		<ScriptID>AS2D_BUILD_TANNERY</ScriptID>
 		<SoundID>SND_BUILD_TANNERY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23625,8 +23625,8 @@
 		<ScriptID>AS2D_BUILD_TECH_CAPITOL</ScriptID>
 		<SoundID>SND_BUILD_TECH_CAPITOL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23648,8 +23648,8 @@
 		<ScriptID>AS2D_BUILD_TELEPHONE_NETWORK</ScriptID>
 		<SoundID>SND_BUILD_TELEPHONE_NETWORK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23671,8 +23671,8 @@
 		<ScriptID>AS2D_BUILD_TOLLHOUSE</ScriptID>
 		<SoundID>SND_BUILD_TOLLHOUSE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23694,8 +23694,8 @@
 		<ScriptID>AS2D_BUILD_TOTEM</ScriptID>
 		<SoundID>SND_BUILD_TOTEM</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23717,8 +23717,8 @@
 		<ScriptID>AS2D_BUILD_TOWNCLOCK</ScriptID>
 		<SoundID>SND_BUILD_TOWNCLOCK</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23740,8 +23740,8 @@
 		<ScriptID>AS2D_BUILD_UNIVERSAL_TRANSLATOR</ScriptID>
 		<SoundID>SND_BUILD_UNIVERSAL_TRANSLATOR</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23763,8 +23763,8 @@
 		<ScriptID>AS2D_BUILD_VACATION_RESORT</ScriptID>
 		<SoundID>SND_BUILD_VACATION_RESORT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23786,8 +23786,8 @@
 		<ScriptID>AS2D_BUILD_WATER_TREATMENT</ScriptID>
 		<SoundID>SND_BUILD_WATER_TREATMENT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23809,8 +23809,8 @@
 		<ScriptID>AS2D_BUILD_WESTPOINT</ScriptID>
 		<SoundID>SND_BUILD_WESTPOINT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23855,8 +23855,8 @@
 		<ScriptID>AS2D_BUILD_AIRFIELD</ScriptID>
 		<SoundID>SND_BUILD_AIRFIELD</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23878,8 +23878,8 @@
 		<ScriptID>AS2D_BUILD_AQUARIUM</ScriptID>
 		<SoundID>SND_BUILD_AQUARIUM</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23901,8 +23901,8 @@
 		<ScriptID>AS2D_BUILD_ARROW</ScriptID>
 		<SoundID>SND_BUILD_ARROW</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23924,8 +23924,8 @@
 		<ScriptID>AS2D_BUILD_ART_GALLERY</ScriptID>
 		<SoundID>SND_BUILD_ART_GALLERY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23947,8 +23947,8 @@
 		<ScriptID>AS2D_BUILD_BARBER</ScriptID>
 		<SoundID>SND_BUILD_BARBER</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23970,8 +23970,8 @@
 		<ScriptID>AS2D_BUILD_CONTROL_TOWER</ScriptID>
 		<SoundID>SND_BUILD_CONTROL_TOWER</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -23993,8 +23993,8 @@
 		<ScriptID>AS2D_BUILD_DRAMA_SCHOOL</ScriptID>
 		<SoundID>SND_BUILD_DRAMA_SCHOOL</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24016,8 +24016,8 @@
 		<ScriptID>AS2D_BUILD_FENCING_SCHOOL</ScriptID>
 		<SoundID>SND_BUILD_FENCING_SCHOOL</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24039,8 +24039,8 @@
 		<ScriptID>AS2D_BUILD_FIGHTING_PIT</ScriptID>
 		<SoundID>SND_BUILD_FIGHTING_PIT</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24062,8 +24062,8 @@
 		<ScriptID>AS2D_BUILD_FIRE_BRIGADES</ScriptID>
 		<SoundID>SND_BUILD_FIRE_BRIGADES</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24085,8 +24085,8 @@
 		<ScriptID>AS2D_BUILD_FIRE_STATION</ScriptID>
 		<SoundID>SND_BUILD_FIRE_STATION</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24108,8 +24108,8 @@
 		<ScriptID>AS2D_BUILD_GARBAGE_DUMP</ScriptID>
 		<SoundID>SND_BUILD_GARBAGE_DUMP</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24131,8 +24131,8 @@
 		<ScriptID>AS2D_BUILD_GARDEN</ScriptID>
 		<SoundID>SND_BUILD_GARDEN</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24154,8 +24154,8 @@
 		<ScriptID>AS2D_BUILD_ICE</ScriptID>
 		<SoundID>SND_BUILD_ICE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24177,8 +24177,8 @@
 		<ScriptID>AS2D_BUILD_MAX_PRISON</ScriptID>
 		<SoundID>SND_BUILD_MAX_PRISON</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24200,8 +24200,8 @@
 		<ScriptID>AS2D_BUILD_JOUSTING</ScriptID>
 		<SoundID>SND_BUILD_JOUSTING</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24223,8 +24223,8 @@
 		<ScriptID>AS2D_BUILD_MISSILE_LAB</ScriptID>
 		<SoundID>SND_BUILD_MISSILE_LAB</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24246,8 +24246,8 @@
 		<ScriptID>AS2D_BUILD_SPACEWAY</ScriptID>
 		<SoundID>SND_BUILD_SPACEWAY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24269,8 +24269,8 @@
 		<ScriptID>AS2D_BUILD_WAVERACING</ScriptID>
 		<SoundID>SND_BUILD_WAVERACING</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24292,8 +24292,8 @@
 		<ScriptID>AS2D_BUILD_SKI_RESORT</ScriptID>
 		<SoundID>SND_BUILD_SKI_RESORT</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24315,8 +24315,8 @@
 		<ScriptID>AS2D_BUILD_SPEEDWAY</ScriptID>
 		<SoundID>SND_BUILD_SPEEDWAY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24338,8 +24338,8 @@
 		<ScriptID>AS2D_BUILD_ZOO</ScriptID>
 		<SoundID>SND_BUILD_ZOO</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24361,8 +24361,8 @@
 		<ScriptID>AS2D_BUILD_APIARY</ScriptID>
 		<SoundID>SND_BUILD_APIARY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24384,8 +24384,8 @@
 		<ScriptID>AS2D_BUILD_ARBORETUM</ScriptID>
 		<SoundID>SND_BUILD_ARBORETUM</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24407,8 +24407,8 @@
 		<ScriptID>AS2D_BUILD_BANDIT_HIDEOUT</ScriptID>
 		<SoundID>SND_BUILD_BANDIT_HIDEOUT</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24430,8 +24430,8 @@
 		<ScriptID>AS2D_BUILD_COMMUNITY_GARDEN</ScriptID>
 		<SoundID>SND_BUILD_COMMUNITY_GARDEN</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24453,8 +24453,8 @@
 		<ScriptID>AS2D_BUILD_FAIRGROUNDS</ScriptID>
 		<SoundID>SND_BUILD_FAIRGROUNDS</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24476,8 +24476,8 @@
 		<ScriptID>AS2D_BUILD_FARM_SUPPLY</ScriptID>
 		<SoundID>SND_BUILD_FARM_SUPPLY</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24499,8 +24499,8 @@
 		<ScriptID>AS2D_BUILD_GREENHOUSE</ScriptID>
 		<SoundID>SND_BUILD_GREENHOUSE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24522,8 +24522,8 @@
 		<ScriptID>AS2D_BUILD_HYDROPONICS</ScriptID>
 		<SoundID>SND_BUILD_HYDROPONICS</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24545,8 +24545,8 @@
 		<ScriptID>AS2D_BUILD_WAREHOUSE</ScriptID>
 		<SoundID>SND_BUILD_WAREHOUSE</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24568,8 +24568,8 @@
 		<ScriptID>AS2D_BUILD_CYRO_PRISON</ScriptID>
 		<SoundID>SND_BUILD_CYRO_PRISON</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24591,8 +24591,8 @@
 		<ScriptID>AS2D_BUILD_PUBLIC_POOL</ScriptID>
 		<SoundID>SND_BUILD_PUBLIC_POOL</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24614,8 +24614,8 @@
 		<ScriptID>AS2D_BUILD_SALOON</ScriptID>
 		<SoundID>SND_BUILD_SALOON</SoundID>
 		<SoundType>GAME_INTERFACE</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24660,8 +24660,8 @@
 		<ScriptID>AS2D_BUILD_BOLSHOI</ScriptID>
 		<SoundID>SND_BUILD_BOLSHOI</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24683,8 +24683,8 @@
 		<ScriptID>AS2D_BUILD_CHEOMSEONGDAE</ScriptID>
 		<SoundID>SND_BUILD_CHEOMSEONGDAE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24706,8 +24706,8 @@
 		<ScriptID>AS2D_BUILD_NEUSCHWANSTEIN</ScriptID>
 		<SoundID>SND_BUILD_NEUSCHWANSTEIN</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24729,8 +24729,8 @@
 		<ScriptID>AS2D_BUILD_PORCELAIN_TOWER</ScriptID>
 		<SoundID>SND_BUILD_PORCELAIN_TOWER</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24752,8 +24752,8 @@
 		<ScriptID>AS2D_BUILD_TERRA_COTTA</ScriptID>
 		<SoundID>SND_BUILD_TERRA_COTTA</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24775,8 +24775,8 @@
 		<ScriptID>AS2D_BUILD_WTC</ScriptID>
 		<SoundID>SND_BUILD_WTC</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24798,8 +24798,8 @@
 		<ScriptID>AS2D_BUILD_FESTIVAL</ScriptID>
 		<SoundID>SND_BUILD_FESTIVAL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>44</iMinVolume>
-		<iMaxVolume>44</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24821,8 +24821,8 @@
 		<ScriptID>AS2D_BUILD_DIVINE_MONUMENT</ScriptID>
 		<SoundID>SND_BUILD_DIVINE_MONUMENT</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24844,8 +24844,8 @@
 		<ScriptID>AS2D_BUILD_CARNIVAL</ScriptID>
 		<SoundID>SND_BUILD_CARNIVAL</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24867,8 +24867,8 @@
 		<ScriptID>AS2D_BUILD_SHAMAN</ScriptID>
 		<SoundID>SND_BUILD_SHAMAN</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24890,8 +24890,8 @@
 		<ScriptID>AS2D_BUILD_SHAMAN_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_SHAMAN_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24913,8 +24913,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SHAMAN_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_SHAMAN_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24936,8 +24936,8 @@
 		<ScriptID>AS2D_BUILD_NORDIC</ScriptID>
 		<SoundID>SND_BUILD_NORDIC</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24959,8 +24959,8 @@
 		<ScriptID>AS2D_BUILD_NORDIC_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_NORDIC_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -24982,8 +24982,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_NORDIC_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_NORDIC_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25005,8 +25005,8 @@
 		<ScriptID>AS2D_BUILD_DRUID</ScriptID>
 		<SoundID>SND_BUILD_DRUID</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25028,8 +25028,8 @@
 		<ScriptID>AS2D_BUILD_DRUID_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_DRUID_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25051,8 +25051,8 @@
 		<ScriptID>AS2D_BUILD_MESOPOTAMIAN</ScriptID>
 		<SoundID>SND_BUILD_MESOPOTAMIAN</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25074,8 +25074,8 @@
 		<ScriptID>AS2D_BUILD_MESOPOTAMIAN_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_MESOPOTAMIAN_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25097,8 +25097,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MESOPOTAMIAN_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_MESOPOTAMIAN_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25120,8 +25120,8 @@
 		<ScriptID>AS2D_BUILD_NGAI</ScriptID>
 		<SoundID>SND_BUILD_NGAI</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25143,8 +25143,8 @@
 		<ScriptID>AS2D_BUILD_NGAI_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_NGAI_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25166,8 +25166,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_NGAI_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_NGAI_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25189,8 +25189,8 @@
 		<ScriptID>AS2D_BUILD_RODNOVERY</ScriptID>
 		<SoundID>SND_BUILD_RODNOVERY</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25212,8 +25212,8 @@
 		<ScriptID>AS2D_BUILD_RODNOVERY_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_RODNOVERY_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25235,8 +25235,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_RODNOVERY_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_RODNOVERY_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25258,8 +25258,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_RODNOVERY_ACTIVATE</ScriptID>
 		<SoundID>SND_BUILD_RODNOVERY_ACTIVATE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25281,8 +25281,8 @@
 		<ScriptID>AS2D_BUILD_SHINTO</ScriptID>
 		<SoundID>SND_BUILD_SHINTO</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25304,8 +25304,8 @@
 		<ScriptID>AS2D_BUILD_SHINTO_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_SHINTO_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25327,8 +25327,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SHINTO_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_SHINTO_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25350,8 +25350,8 @@
 		<ScriptID>AS2D_BUILD_VOODOO</ScriptID>
 		<SoundID>SND_BUILD_VOODOO</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25373,8 +25373,8 @@
 		<ScriptID>AS2D_BUILD_VOODOO_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_VOODOO_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25396,8 +25396,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_VOODOO_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_VOODOO_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25419,8 +25419,8 @@
 		<ScriptID>AS2D_BUILD_ANDEAN</ScriptID>
 		<SoundID>SND_BUILD_ANDEAN</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25442,8 +25442,8 @@
 		<ScriptID>AS2D_BUILD_ANDEAN_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_ANDEAN_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25465,8 +25465,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_ANDEAN_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_ANDEAN_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25488,8 +25488,8 @@
 		<ScriptID>AS2D_BUILD_MORMON</ScriptID>
 		<SoundID>SND_BUILD_MORMON</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25511,8 +25511,8 @@
 		<ScriptID>AS2D_BUILD_SIBERIAN</ScriptID>
 		<SoundID>SND_BUILD_SIBERIAN</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25534,8 +25534,8 @@
 		<ScriptID>AS2D_BUILD_SIBERIAN_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_SIBERIAN_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25557,8 +25557,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_SIBERIAN_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_SIBERIAN_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25580,8 +25580,8 @@
 		<ScriptID>AS2D_BUILD_YORUBA</ScriptID>
 		<SoundID>SND_BUILD_YORUBA</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25603,8 +25603,8 @@
 		<ScriptID>AS2D_BUILD_YORUBA_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_YORUBA_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25626,8 +25626,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_YORUBA_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_YORUBA_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25649,8 +25649,8 @@
 		<ScriptID>AS2D_BUILD_MORMON_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_MORMON_MOVIE</SoundID>
 		<SoundType>GAME_MUSIC</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25672,8 +25672,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_MORMON_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_MORMON_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -25856,8 +25856,8 @@
 		<ScriptID>AS2D_TECH_SHIP_BUILDING</ScriptID>
 		<SoundID>SND_TECH_SHIP_BUILDING</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -27397,8 +27397,8 @@
 		<ScriptID>AS2D_TECH_SHELTER_BUILDING</ScriptID>
 		<SoundID>SND_TECH_SHELTER_BUILDING</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -28593,8 +28593,8 @@
 		<ScriptID>AS2D_BUILD_CANAANITE</ScriptID>
 		<SoundID>SND_BUILD_CANAANITE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -28616,8 +28616,8 @@
 		<ScriptID>AS2D_BUILD_CANAANITE_MOVIE</ScriptID>
 		<SoundID>SND_BUILD_CANAANITE_MOVIE</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>80</iMinVolume>
-		<iMaxVolume>80</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -28639,8 +28639,8 @@
 		<ScriptID>AS2D_UNIT_BUILD_CANAANITE_MISSIONARY</ScriptID>
 		<SoundID>SND_BUILD_CANAANITE_MISSIONARY</SoundID>
 		<SoundType>GAME_SFX</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -30985,8 +30985,8 @@
 		<ScriptID>AS2D_TECH_RAFT_BUILDING</ScriptID>
 		<SoundID>SND_TECH_RAFT_BUILDING</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -31652,8 +31652,8 @@
 		<ScriptID>AS2D_TECH_STONE_BUILDING</ScriptID>
 		<SoundID>SND_TECH_STONE_BUILDING</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -31721,8 +31721,8 @@
 		<ScriptID>AS2D_TECH_BOAT_BUILDING</ScriptID>
 		<SoundID>SND_TECH_BOAT_BUILDING</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>
@@ -40392,8 +40392,8 @@
 		<ScriptID>AS2D_TECH_ROAD_BUILDING</ScriptID>
 		<SoundID>SND_TECH_ROAD_BUILDING</SoundID>
 		<SoundType>GAME_SPEECH</SoundType>
-		<iMinVolume>100</iMinVolume>
-		<iMaxVolume>100</iMaxVolume>
+		<iMinVolume>0</iMinVolume>
+		<iMaxVolume>0</iMaxVolume>
 		<iPitchChangeDown>0</iPitchChangeDown>
 		<iPitchChangeUp>0</iPitchChangeUp>
 		<iMinLeftPan>-1</iMinLeftPan>

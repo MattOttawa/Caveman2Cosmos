@@ -11719,6 +11719,9 @@
 			<bRivalTerritory>1</bRivalTerritory>
 			<bMilitaryProduction>1</bMilitaryProduction>
 			<bPillage>1</bPillage>
+			<UnitUpgrades>
+				<UnitType>UNIT_UNMANNED_PIRATE_SKIFF</UnitType>
+			</UnitUpgrades>
 			<bMechanized>1</bMechanized>
 			<bRenderBelowWater>1</bRenderBelowWater>
 			<bHiddenNationality>1</bHiddenNationality>
