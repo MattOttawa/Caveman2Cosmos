@@ -164,8 +164,8 @@ class CvSpaceShipScreen:
 					if(not GC.getTeam(activeTeam).isHasTech(component.getTechPrereq())):
 						canBuild = False
 					else:
-						for j in range(GC.getNumProjectInfos()):
-							if(GC.getTeam(activeTeam).getProjectCount(j) < component.getProjectsNeeded(j)):
+						for pair in component.getProjectsNeeded():
+							if GC.getTeam(activeTeam).getProjectCount(pair.first) < pair.second:
 								canBuild = False
 
 					if(not canBuild): #grey

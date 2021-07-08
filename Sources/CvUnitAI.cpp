@@ -24170,8 +24170,8 @@ bool CvUnitAI::AI_pickupStranded(UnitAITypes eUnitAI, int iMaxPath)
 
 					const int iMaxValuePath = (iBestValue == 0 ? MAX_INT : iValue/iBestValue);
 
-					SpecialUnitTypes eSpecialCargo = (SpecialUnitTypes)pHeadUnit->getSpecialUnitType();
-					DomainTypes eDomainCargo = (DomainTypes)pHeadUnit->getDomainType();
+					const SpecialUnitTypes eSpecialCargo = pHeadUnit->getSpecialUnitType();
+					const DomainTypes eDomainCargo = pHeadUnit->getDomainType();
 					if (!bSM || getGroup()->getCargoSpaceAvailable(eSpecialCargo, eDomainCargo) >= groupX->getNumUnitCargoVolumeTotal())
 					{
 						int iPathTurns = 0;
@@ -30770,12 +30770,10 @@ bool CvUnitAI::AI_activateStatus(bool bChange, bool bStack, PromotionTypes eStat
 
 bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 {
-	int iValue = 0;
 	int iBestValue = 0;
 	int iWorstValue = 0;
 	int iTemp = 0;
 	int iStatus = 0;
-	PromotionTypes eStatus = NO_PROMOTION;
 	PromotionTypes eBestStatus = NO_PROMOTION;
 	PromotionTypes eWorstStatus = NO_PROMOTION;
 	PromotionTypes eRemoveStatus = NO_PROMOTION;
@@ -30804,17 +30802,16 @@ bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 
 	for (int iI = 0; iI < GC.getGame().getNumStatusPromotions(); iI++)
 	{
-		iValue = 0;
-		iStatus = GC.getGame().getStatusPromotion(iI);
-		eStatus = (PromotionTypes)iStatus;
+		int iValue = 0;
+		const PromotionTypes eStatus = GC.getGame().getStatusPromotion(iI);
 		const CvPromotionInfo& kPromotion = GC.getPromotionInfo(eStatus);
 		for (int iJ = 0; iJ < GC.getGame().getNumStatusPromotions(); iJ++)
 		{
-			if (kPromotion.getPromotionLine() == GC.getPromotionInfo((PromotionTypes)GC.getGame().getStatusPromotion(iJ)).getPromotionLine())
+			if (kPromotion.getPromotionLine() == GC.getPromotionInfo(GC.getGame().getStatusPromotion(iJ)).getPromotionLine())
 			{
-				if (GC.getPromotionInfo((PromotionTypes)GC.getGame().getStatusPromotion(iJ)).getLinePriority() == 1)
+				if (GC.getPromotionInfo(GC.getGame().getStatusPromotion(iJ)).getLinePriority() == 1)
 				{
-					eRemoveStatus = (PromotionTypes)GC.getGame().getStatusPromotion(iJ);
+					eRemoveStatus = GC.getGame().getStatusPromotion(iJ);
 				}
 			}
 		}
@@ -31003,7 +31000,6 @@ bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 					iTemp *= getGroup()->getWorstDamagePercent();
 					iTemp /= 10;
 					iValue += iTemp;
-
 				}
 				if (iValue < 0)
 				{
@@ -31193,7 +31189,7 @@ bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 			eWorstStatus = eRemoveStatus;
 		}
 	}
-	int iCompare = iBestValue - iWorstValue;
+	const int iCompare = iBestValue - iWorstValue;
 	if (iCompare < 0 && eWorstStatus != NO_PROMOTION)
 	{
 		return (AI_activateStatus(true, bStack, eWorstStatus, pUnit) && !GC.getPromotionInfo(eWorstStatus).isQuick());
@@ -31204,7 +31200,6 @@ bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 		return (AI_activateStatus(true, bStack, eBestStatus, pUnit) && !GC.getPromotionInfo(eBestStatus).isQuick());
 		//setBestStatus
 	}
-//else
 	return false;
 }
 

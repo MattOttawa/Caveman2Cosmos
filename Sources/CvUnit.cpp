@@ -12453,40 +12453,36 @@ const wchar_t* CvUnit::getVisualCivAdjective(TeamTypes eForTeam) const
 
 SpecialUnitTypes CvUnit::getSpecialUnitType() const
 {
-	if (m_eSpecialUnit != NO_SPECIALUNIT)
-	{
-		return m_eSpecialUnit;
-	}
-	return ((SpecialUnitTypes)(m_pUnitInfo->getSpecialUnitType()));
+	return m_eSpecialUnit != NO_SPECIALUNIT ? m_eSpecialUnit : m_pUnitInfo->getSpecialUnitType();
 }
 
 
 UnitTypes CvUnit::getCaptureUnitType() const
 {
-	return (UnitTypes) m_pUnitInfo->getUnitCaptureType();
+	return m_pUnitInfo->getUnitCaptureType();
 }
 
 
 UnitCombatTypes CvUnit::getUnitCombatType() const
 {
-	return ((UnitCombatTypes)(m_pUnitInfo->getUnitCombatType()));
+	return m_pUnitInfo->getUnitCombatType();
 }
 
 
 DomainTypes CvUnit::getDomainType() const
 {
-	return ((DomainTypes)(m_pUnitInfo->getDomainType()));
+	return m_pUnitInfo->getDomainType();
 }
 
 
 InvisibleTypes CvUnit::getInvisibleType() const
 {
-	const InvisibleTypes eInvisible = (InvisibleTypes)m_pUnitInfo->getInvisibleType();
+	const InvisibleTypes eInvisible = m_pUnitInfo->getInvisibleType();
 	if (eInvisible != NO_INVISIBLE && isNegatesInvisible(eInvisible))
 	{
 		return NO_INVISIBLE;
 	}
-	return (eInvisible);
+	return eInvisible;
 }
 
 int CvUnit::getNumSeeInvisibleTypes() const
@@ -22586,7 +22582,7 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (!bAdding && kPromotion.isAffliction())
 	{
-		changeUnitAfflictionTolerance(((PromotionLineTypes)kPromotion.getPromotionLine()),GC.getPromotionLineInfo((PromotionLineTypes)kPromotion.getPromotionLine()).getToleranceBuildup() * iChange);
+		changeUnitAfflictionTolerance(kPromotion.getPromotionLine(), GC.getPromotionLineInfo(kPromotion.getPromotionLine()).getToleranceBuildup() * iChange);
 	}
 #endif
 
@@ -22817,7 +22813,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue, bool bFree, 
 	//and another check is necessary here for equips and afflicts to ensure unusual means of reaching this point cannot bypass some necessary disqualifiers)
 	if (kPromotion.isAffliction())
 	{
-		PromotionLineTypes eAfflict = (PromotionLineTypes)kPromotion.getPromotionLine();
+		PromotionLineTypes eAfflict = kPromotion.getPromotionLine();
 		setAfflictionTurnCount(eAfflict, 0);
 	}
 	//TB Combat Mods end
@@ -33217,7 +33213,7 @@ void CvUnit::assignCritical(CvUnit* pOpponent)
 		int iCritRolled = GC.getGame().getSorenRandNum(aAvailableCriticals.size(), "CriticalSelectionRoll");
 		PromotionTypes eCritical = aAvailableCriticals[iCritRolled];
 		setHasPromotion(eCritical, true);
-		eAfflictionLine = ((PromotionLineTypes)GC.getPromotionInfo(eCritical).getPromotionLine());
+		eAfflictionLine = GC.getPromotionInfo(eCritical).getPromotionLine();
 		if (!hasAfflictionLine(eAfflictionLine))
 		{
 			GET_PLAYER(getOwner()).changePlayerWideAfflictionCount(eAfflictionLine, 1);
@@ -38503,7 +38499,7 @@ void CvUnit::setBuildUp(bool bNewValue)
 
 void CvUnit::setSpecialUnit(bool bChange, SpecialUnitTypes eSpecialUnit)
 {
-	m_eSpecialUnit = bChange ? eSpecialUnit : (SpecialUnitTypes)m_pUnitInfo->getSpecialUnitType();
+	m_eSpecialUnit = bChange ? eSpecialUnit : m_pUnitInfo->getSpecialUnitType();
 }
 
 bool CvUnit::isHiddenNationality() const
@@ -39551,7 +39547,7 @@ bool CvUnit::hasInvisibleAbility() const
 
 	if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 	{
-		if ((InvisibleTypes)m_pUnitInfo->getInvisibleType() != NO_INVISIBLE)
+		if (m_pUnitInfo->getInvisibleType() != NO_INVISIBLE)
 		{
 			bAnswer = true;
 		}
@@ -40751,11 +40747,11 @@ void CvUnit::defineReligion()
 			{
 				if (iI > -1)
 				{
-					eUnitCombat = (UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI);
+					eUnitCombat = m_pUnitInfo->getSubCombatType(iI);
 				}
 				else
 				{
-					eUnitCombat = (UnitCombatTypes)m_pUnitInfo->getUnitCombatType();
+					eUnitCombat = m_pUnitInfo->getUnitCombatType();
 
 					if (eUnitCombat == NO_UNITCOMBAT) continue;
 				}

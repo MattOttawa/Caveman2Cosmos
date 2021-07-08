@@ -102,37 +102,37 @@ int CyUnit::getEspionagePoints(const CyPlot& kPlot) const
 	return m_pUnit->getEspionagePoints(kPlot.getPlot());
 }
 
-bool CyUnit::canBuild(const CyPlot& kPlot, int /*BuildTypes*/ eBuild, bool bTestVisible) const
+bool CyUnit::canBuild(const CyPlot& kPlot, BuildTypes eBuild, bool bTestVisible) const
 {
-	return m_pUnit->canBuild(kPlot.getPlot(), (BuildTypes) eBuild, bTestVisible);
+	return m_pUnit->canBuild(kPlot.getPlot(), eBuild, bTestVisible);
 }
 
-bool CyUnit::canUpgrade(int /*UnitTypes*/ eUnit, bool bTestVisible) const
+bool CyUnit::canUpgrade(UnitTypes eUnit, bool bTestVisible) const
 {
-	return m_pUnit->canUpgrade((UnitTypes)eUnit, bTestVisible);
+	return m_pUnit->canUpgrade(eUnit, bTestVisible);
 }
 
-int /*HandicapTypes*/ CyUnit::getHandicapType() const
+HandicapTypes CyUnit::getHandicapType() const
 {
 	return m_pUnit->getHandicapType();
 }
 
-int /*CivilizationTypes*/ CyUnit::getCivilizationType() const
+CivilizationTypes CyUnit::getCivilizationType() const
 {
 	return m_pUnit->getCivilizationType();
 }
 
-int /*SpecialUnitTypes*/ CyUnit::getSpecialUnitType() const
+SpecialUnitTypes CyUnit::getSpecialUnitType() const
 {
 	return m_pUnit->getSpecialUnitType();
 }
 
-int /*UnitTypes*/ CyUnit::getCaptureUnitType() const
+UnitTypes CyUnit::getCaptureUnitType() const
 {
 	return m_pUnit->getCaptureUnitType();
 }
 
-int /*UnitCombatTypes*/ CyUnit::getUnitCombatType() const
+UnitCombatTypes CyUnit::getUnitCombatType() const
 {
 	return m_pUnit->getUnitCombatType();
 }

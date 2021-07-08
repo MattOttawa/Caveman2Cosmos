@@ -4220,7 +4220,7 @@ UnitTypes CvCityAI::AI_bestUnitAI(UnitAITypes eUnitAI, int& iBestValue, bool bAs
 
 			// KOSHLING - this need rework to take actual promotion values. *** TODO ***
 			// May need some caching to do so at appropriate performance levels.
-			const int iCombatType = unit.getUnitCombatType();
+			const UnitCombatTypes iCombatType = unit.getUnitCombatType();
 			int iPromotionValue = 0;
 			for (int iJ = 0; iJ < GC.getNumPromotionInfos(); iJ++)
 			{
@@ -5455,23 +5455,23 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 					for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 					{
 						const CvUnitInfo& kUnitInfo = GC.getUnitInfo((UnitTypes)iI);
-						int iCombatType = kUnitInfo.getUnitCombatType();
+						const UnitCombatTypes eCombatType = kUnitInfo.getUnitCombatType();
 
-						if (iCombatType != NO_UNITCOMBAT
+						if (eCombatType != NO_UNITCOMBAT
 							&& kUnitInfo.getDomainType() == DOMAIN_SEA
 							&& canTrain((UnitTypes)iI))
 						{
-							iValue += (kBuilding.getUnitCombatFreeExperience(iCombatType) * (bMetAnyCiv ? 6 : 3));
+							iValue += (kBuilding.getUnitCombatFreeExperience(eCombatType) * (bMetAnyCiv ? 6 : 3));
 
-							if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iCombatType))
+							if (kBuilding.isUnitCombatRetrainType(eCombatType))
 							{
 								iValue += 20;
 							}
 
 							if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0)
 							{
-								int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType);
-								if (iDuration > 0 && iDuration < getUnitCombatOngoingTrainingTimeIncrement((UnitCombatTypes)iCombatType))
+								int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType);
+								if (iDuration > 0 && iDuration < getUnitCombatOngoingTrainingTimeIncrement(eCombatType))
 								{
 									iValue = 10 * (20 - iDuration);
 								}

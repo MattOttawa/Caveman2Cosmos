@@ -6777,7 +6777,7 @@ bool CvPlayer::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool
 			return false;
 		}
 
-		if (kUnit.getSpecialUnitType() != NO_SPECIALUNIT && !GC.getGame().isSpecialUnitValid((SpecialUnitTypes)(kUnit.getSpecialUnitType())))
+		if (kUnit.getSpecialUnitType() != NO_SPECIALUNIT && !GC.getGame().isSpecialUnitValid(kUnit.getSpecialUnitType()))
 		{
 			return false;
 		}
@@ -7132,15 +7132,15 @@ bool CvPlayer::canCreate(ProjectTypes eProject, bool bContinue, bool bTestVisibl
 
 		if (kProject.getAnyoneProjectPrereq() != NO_PROJECT)
 		{
-			if (GC.getGame().getProjectCreatedCount((ProjectTypes)kProject.getAnyoneProjectPrereq()) == 0)
+			if (GC.getGame().getProjectCreatedCount(kProject.getAnyoneProjectPrereq()) == 0)
 			{
 				return false;
 			}
 		}
 
-		for (int iI = 0; iI < GC.getNumProjectInfos(); iI++)
+		foreach_(const ProjectModifier& requiredProject, kProject.getProjectsNeeded())
 		{
-			if (GET_TEAM(getTeam()).getProjectCount((ProjectTypes)iI) < kProject.getProjectsNeeded(iI))
+			if (GET_TEAM(getTeam()).getProjectCount(requiredProject.first) < requiredProject.second)
 			{
 				return false;
 			}
@@ -29983,8 +29983,8 @@ bool CvPlayer::canLearnTrait(TraitTypes eIndex, bool isSelectingNegative) const
 
 	if (kTrait.getPromotionLine() != NO_PROMOTIONLINE)
 	{
-		if (GC.getPromotionLineInfo((PromotionLineTypes) kTrait.getPromotionLine()).getPrereqTech() != NO_TECH
-		&& !GET_TEAM(getTeam()).isHasTech(GC.getPromotionLineInfo((PromotionLineTypes) kTrait.getPromotionLine()).getPrereqTech()))
+		if (GC.getPromotionLineInfo(kTrait.getPromotionLine()).getPrereqTech() != NO_TECH
+		&& !GET_TEAM(getTeam()).isHasTech(GC.getPromotionLineInfo(kTrait.getPromotionLine()).getPrereqTech()))
 		{
 			return false;
 		}

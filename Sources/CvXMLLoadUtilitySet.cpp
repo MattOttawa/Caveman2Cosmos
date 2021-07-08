@@ -982,12 +982,6 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 		GC.m_EventInfoReplacements.readPass3();
 	}
 
-	for (int i=0; i < GC.getNumProjectInfos(); ++i)
-	{
-		GC.getProjectInfo((ProjectTypes)i).readPass3();
-		GC.m_ProjectInfoReplacements.readPass3();
-	}
-
 	for (int i=0; i < GC.getNumUnitInfos(); ++i)
 	{
 		GC.getUnitInfo((UnitTypes)i).readPass3();

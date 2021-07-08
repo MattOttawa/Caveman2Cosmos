@@ -3656,24 +3656,24 @@ int CvGame::getNumCivCities() const
 }
 
 
-int CvGame::getStatusPromotion(int i) const
+PromotionTypes CvGame::getStatusPromotion(int i) const
 {
-	return m_aiStatusPromotions[i];
+	return m_aeStatusPromotions[i];
 }
 
 int CvGame::getNumStatusPromotions() const
 {
-	return (int)m_aiStatusPromotions.size();
+	return (int)m_aeStatusPromotions.size();
 }
 
 void CvGame::setStatusPromotions()
 {
-	m_aiStatusPromotions.clear();
+	m_aeStatusPromotions.clear();
 	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 	{
 		if (GC.getPromotionInfo((PromotionTypes)iI).isStatus())
 		{
-			m_aiStatusPromotions.push_back(iI);
+			m_aeStatusPromotions.push_back((PromotionTypes)iI);
 		}
 	}
 }
@@ -5308,7 +5308,7 @@ int CvGame::countNumReligionTechsDiscovered() const
 	int iCount = 0;
 	foreach_(const CvReligionInfo* info, GC.getReligionInfos())
 	{
-		if (countKnownTechNumTeams(info.getTechPrereq()) > 0)
+		if (countKnownTechNumTeams(info->getTechPrereq()) > 0)
 		{
 			iCount++;
 		}

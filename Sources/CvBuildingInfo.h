@@ -204,9 +204,11 @@ public:
 	int getHappinessPercentPerPopulation() const	{ return m_iHappinessPercentPerPopulation; }
 	int getHealthPercentPerPopulation() const		{ return m_iHealthPercentPerPopulation; }
 	int getLinePriority() const;
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getOutbreakBase() const;
 	int getOvercomeBase() const;
 	int getTradeCommunicability() const;
+#endif // OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	int getFrontSupportPercentModifier() const			{ return m_iFrontSupportPercentModifier; }
 	int getShortRangeSupportPercentModifier() const		{ return m_iShortRangeSupportPercentModifier; }
@@ -434,11 +436,13 @@ public:
 	int getNumUnitCombatOngoingTrainingDurations() const;
 	int getUnitCombatOngoingTrainingDuration(int iUnitCombat, bool bForLoad = false) const;
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictionOutbreakLevelChanges() const;
 	int getAfflictionOutbreakLevelChange(int iAfflictionLine) const;
 
 	int getNumTechOutbreakLevelChanges() const;
 	int getTechOutbreakLevelChange(int iTech) const;
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getLocalSpecialistYieldChange(int i, int j) const;
 	int* getLocalSpecialistYieldChangeArray(int i) const;
@@ -702,16 +706,18 @@ private:
 	int m_iMaxPlayerInstances;
 	int m_iExtraPlayerInstances;
 	int m_iLinePriority;
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int m_iOutbreakBase;
 	int m_iOvercomeBase;
 	int m_iTradeCommunicability;
+#endif // OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	int m_iFrontSupportPercentModifier;
 	int m_iShortRangeSupportPercentModifier;
 	int m_iMediumRangeSupportPercentModifier;
 	int m_iLongRangeSupportPercentModifier;
 	int m_iFlankSupportPercentModifier;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	int m_iNationalCaptureProbabilityModifier;
 	int m_iNationalCaptureResistanceModifier;
 	int m_iLocalCaptureProbabilityModifier;
@@ -820,17 +826,19 @@ private:
 	std::vector<TraitTypes> m_aiFreeTraitTypes;
 	std::vector<EnabledCivilizations> m_aEnabledCivilizationTypes;
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
+	PromotionLineModifierArray m_aAfflictionOutbreakLevelChanges;
+	TechModifierArray m_aTechOutbreakLevelChanges;
+#endif // OUTBREAKS_AND_AFFLICTIONS
+	std::vector<AidRateChanges> m_aAidRateChanges;
 	std::vector<HealUnitCombat> m_aHealUnitCombatTypes;
 	std::vector<BonusAidModifiers> m_aBonusAidModifiers;
-	std::vector<AidRateChanges> m_aAidRateChanges;
 	std::vector<BuildingCommerceChange> m_aGlobalBuildingCommerceChanges;
 	UnitCombatModifierArray m_aUnitCombatRepelModifiers;
 	UnitCombatModifierArray m_aUnitCombatRepelAgainstModifiers;
 	UnitCombatModifierArray m_aUnitCombatDefenseAgainstModifiers;
 	UnitCombatModifierArray m_aUnitCombatProdModifiers;
 	UnitCombatModifierArray m_aUnitCombatOngoingTrainingDurations;
-	PromotionLineModifierArray m_aAfflictionOutbreakLevelChanges;
-	TechModifierArray m_aTechOutbreakLevelChanges;
 	IDValueMap<UnitCombatTypes, int> m_aUnitCombatExtraStrength;
 	IDValueMap<UnitTypes, int> m_aUnitProductionModifier;
 	IDValueMap<BuildingTypes, int> m_aBuildingProductionModifier;

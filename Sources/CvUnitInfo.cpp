@@ -245,7 +245,7 @@ m_iShortRangeSupportPercent(0),
 m_iMediumRangeSupportPercent(0),
 m_iLongRangeSupportPercent(0),
 m_iFlankSupportPercent(0),
-#endif
+#endif // STRENGTH_IN_NUMBERS
 m_iDodgeModifier(0),
 m_iPrecisionModifier(0),
 m_iPowerShots(0),
@@ -403,13 +403,14 @@ CvUnitInfo::~CvUnitInfo()
 	{
 		GC.removeDelayedResolution((int*)&(m_aiTargetUnit[i]));
 	}
+
+	GC.removeDelayedResolution((int*)&m_iUnitCaptureType);
 }
 
 const wchar_t* CvUnitInfo::getExtraHoverText() const
 {
 	return m_szExtraHoverTextKey.empty() ? L"" : gDLL->getText(m_szExtraHoverTextKey);
 }
-
 
 int CvUnitInfo::getMaxGlobalInstances() const
 {
@@ -791,40 +792,9 @@ int CvUnitInfo::getPowerValue() const
 	return m_iPowerValue * 100;
 }
 
-int CvUnitInfo::getSpecialUnitType() const
-{
-	return m_iSpecialUnitType;
-}
-
-int CvUnitInfo::getUnitCaptureType() const
-{
-	return m_iUnitCaptureType;
-}
-
-int CvUnitInfo::getUnitCombatType() const
-{
-	return m_iUnitCombatType;
-}
-
-DomainTypes CvUnitInfo::getDomainType() const
-{
-	return m_iDomainType;
-}
-
-UnitAITypes CvUnitInfo::getDefaultUnitAIType() const
-{
-	return m_iDefaultUnitAIType;
-}
-
-int CvUnitInfo::getInvisibleType() const
-{
-	return m_iInvisibleType;
-}
-
 int CvUnitInfo::getSeeInvisibleType(int i) const
 {
 	FASSERT_BOUNDS(0, getNumSeeInvisibleTypes(), i)
-
 	return m_aiSeeInvisibleTypes[i];
 }
 
@@ -3761,23 +3731,18 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iDomainType);
 	CheckSum(iSum, m_iDefaultUnitAIType);
 	CheckSum(iSum, m_iInvisibleType);
-
 	CheckSumC(iSum, m_aiSeeInvisibleTypes);
-
 	CheckSum(iSum, m_iAdvisorType);
-
 	CheckSum(iSum, m_iMaxStartEra);
 	CheckSum(iSum, m_iForceObsoleteTech);
 	CheckSum(iSum, m_bStateReligion);
 	CheckSum(iSum, m_iPrereqGameOption);
 	CheckSum(iSum, m_iNotGameOption);
-
 	CheckSum(iSum, m_iHolyCity);
 	CheckSum(iSum, m_iReligionType);
 	CheckSum(iSum, m_iStateReligion);
 	CheckSum(iSum, m_iPrereqReligion);
 	CheckSum(iSum, m_iPrereqCorporation);
-
 	CheckSum(iSum, m_iPrereqAndTech);
 	CheckSum(iSum, m_iPrereqAndBonus);
 	CheckSum(iSum, m_iGroupSize);
@@ -3786,7 +3751,6 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iUnitRangedWaveSize);
 	CheckSum(iSum, m_iNumUnitNames);
 	CheckSum(iSum, m_iCommandType);
-
 	CheckSum(iSum, m_bFoodProduction);
 	CheckSum(iSum, m_bNoBadGoodies);
 	CheckSum(iSum, m_bOnlyDefensive);
@@ -3824,7 +3788,6 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_bFreeDrop);
 	CheckSum(iSum, m_bNoRevealMap);
 	CheckSum(iSum, m_bInquisitor);
-
 	CheckSum(iSum, m_bNoNonOwnedEntry);
 
 	//CheckSum(iSum, m_fUnitMaxSpeed);
@@ -3936,7 +3899,7 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iMediumRangeSupportPercent);
 	CheckSum(iSum, m_iLongRangeSupportPercent);
 	CheckSum(iSum, m_iFlankSupportPercent);
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	CheckSum(iSum, m_iDodgeModifier);
 	CheckSum(iSum, m_iPrecisionModifier);
 	CheckSum(iSum, m_iPowerShots);
@@ -3948,13 +3911,10 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iEndurance);
 	CheckSum(iSum, m_iRoundStunProb);
 	CheckSum(iSum, m_iPoisonProbabilityModifier);
-
 	CheckSum(iSum, m_iCaptureProbabilityModifier);
 	CheckSum(iSum, m_iCaptureResistanceModifier);
-
 	CheckSum(iSum, m_iHillsWorkModifier);
 	CheckSum(iSum, m_iPeaksWorkModifier);
-
 	CheckSum(iSum, m_iBreakdownChance);
 	CheckSum(iSum, m_iBreakdownDamage);
 	CheckSum(iSum, m_iTaunt);
@@ -4186,24 +4146,15 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_iMaxPlayerInstances, L"iMaxPlayerInstances", -1);
 	pXML->GetOptionalChildXmlValByName(&m_bUnlimitedException, L"bUnlimitedException", false);
 	pXML->GetOptionalChildXmlValByName(&m_iInstanceCostModifier, L"iInstanceCostModifier", 0);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Special");
-	m_iSpecialUnitType = pXML->GetInfoClass(szTextVal);
-
-	// EXTRA HOVER TEXT
+	pXML->GetOptionalTypeEnum(m_iSpecialUnitType, L"Special");
 	pXML->GetOptionalChildXmlValByName(m_szExtraHoverTextKey, L"ExtraHoverText");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Combat");
-	m_iUnitCombatType = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Domain");
-	m_iDomainType = static_cast<DomainTypes>(pXML->GetInfoClass(szTextVal));
+	pXML->GetOptionalTypeEnum(m_iUnitCombatType, L"Combat");
+	pXML->GetOptionalTypeEnum(m_iDomainType, L"Domain");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"DefaultUnitAI", "UNITAI_UNKNOWN");
 	m_iDefaultUnitAIType = static_cast<UnitAITypes>(pXML->GetInfoClass(szTextVal));
 
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Invisible");
-	m_iInvisibleType = pXML->GetInfoClass(szTextVal);
+	pXML->GetOptionalTypeEnum(m_iInvisibleType, L"Invisible");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"SeeInvisible");
 	std::vector<CvString> tokens;
@@ -4217,9 +4168,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		}
 	}
 
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Advisor");
-	m_iAdvisorType = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iAdvisorType, L"Advisor");
 	pXML->GetOptionalChildXmlValByName(&m_bFoodProduction, L"bFood");
 	pXML->GetOptionalChildXmlValByName(&m_bNoBadGoodies, L"bNoBadGoodies");
 	pXML->GetOptionalChildXmlValByName(&m_bOnlyDefensive, L"bOnlyDefensive");
@@ -4301,61 +4250,30 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->SetVariableListTagPair(&m_pbGreatPeoples, L"GreatPeoples", GC.getNumSpecialistInfos());
-
 	pXML->SetOptionalVector(&m_pbBuildings, L"Buildings");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"MaxStartEra");
-	m_iMaxStartEra = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"ForceObsoleteTech");
-	m_iForceObsoleteTech = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iMaxStartEra, L"MaxStartEra");
+	pXML->GetOptionalTypeEnum(m_iForceObsoleteTech, L"ForceObsoleteTech");
 	pXML->GetOptionalChildXmlValByName(&m_bStateReligion, L"bStateReligion");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqGameOption");
-	m_iPrereqGameOption = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"NotGameOption");
-	m_iNotGameOption = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iPrereqGameOption, L"PrereqGameOption");
+	pXML->GetOptionalTypeEnum(m_iNotGameOption, L"NotGameOption");
 	pXML->SetVariableListTagPair(&m_pbPrereqOrCivics, L"PrereqOrCivics", GC.getNumCivicInfos());
-
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiTargetUnit, L"UnitTargets");
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiDefendAgainstUnit, L"DefendAgainstUnit");
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiSupersedingUnits, L"SupersedingUnits");
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiUnitUpgrades, L"UnitUpgrades");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"HolyCity");
-	m_iHolyCity = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"ReligionType");
-	m_iReligionType = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"StateReligion");
-	m_iStateReligion = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqReligion");
-	m_iPrereqReligion = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqCorporation");
-	m_iPrereqCorporation = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iHolyCity, L"HolyCity");
+	pXML->GetOptionalTypeEnum(m_iReligionType, L"ReligionType");
+	pXML->GetOptionalTypeEnum(m_iStateReligion, L"StateReligion");
+	pXML->GetOptionalTypeEnum(m_iPrereqReligion, L"PrereqReligion");
+	pXML->GetOptionalTypeEnum(m_iPrereqCorporation, L"PrereqCorporation");
 	pXML->SetOptionalVector(&m_workerBuilds, L"Builds");
 	pXML->SetOptionalVector(&m_aiPrereqAndBuildings, L"PrereqAndBuildings");
 	pXML->SetOptionalVector(&m_aiPrereqOrBuildings, L"PrereqOrBuildings");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqTech");
-	m_iPrereqAndTech = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iPrereqAndTech, L"PrereqTech");
 	pXML->SetOptionalVector(&m_piPrereqAndTechs, L"TechTypes");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"BonusType");
-	m_iPrereqAndBonus = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iPrereqAndBonus, L"BonusType");
 	pXML->SetOptionalVector(&m_piPrereqOrBonuses, L"PrereqBonuses");
-
 	pXML->SetVariableListTagPair(&m_piFlavorValue, L"Flavors", GC.getFlavorTypes(), GC.getNumFlavorTypes());
-
 	pXML->GetOptionalChildXmlValByName(&m_iAIWeight, L"iAIWeight");
 	pXML->GetOptionalChildXmlValByName(&m_iProductionCost, L"iCost");
 	pXML->GetOptionalChildXmlValByName(&m_iHurryCostModifier, L"iHurryCostModifier");
@@ -4405,33 +4323,21 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_pbTerrainNative, L"TerrainNatives", GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_pbFeatureNative, L"FeatureNatives", GC.getNumFeatureInfos());
-
 	pXML->SetVariableListTagPair(&m_piTerrainAttackModifier, L"TerrainAttacks", GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piTerrainDefenseModifier, L"TerrainDefenses", GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_piFeatureAttackModifier, L"FeatureAttacks", GC.getNumFeatureInfos());
 	pXML->SetVariableListTagPair(&m_piFeatureDefenseModifier, L"FeatureDefenses", GC.getNumFeatureInfos());
-
 	pXML->SetVariableListTagPair(&m_piUnitCombatModifier, L"UnitCombatMods", GC.getNumUnitCombatInfos());
 	pXML->SetVariableListTagPair(&m_piUnitCombatCollateralImmune, L"UnitCombatCollateralImmunes", GC.getNumUnitCombatInfos());
 	pXML->SetVariableListTagPair(&m_piDomainModifier, L"DomainMods", NUM_DOMAIN_TYPES);
-
 	pXML->SetVariableListTagPair(&m_piBonusProductionModifier, L"BonusProductionModifiers", GC.getNumBonusInfos());
 
 	pXML->GetOptionalChildXmlValByName(&m_iBombRate, L"iBombRate");
 	pXML->GetOptionalChildXmlValByName(&m_iBombardRate, L"iBombardRate");
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"SpecialCargo");
-	m_iSpecialCargo = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"SMSpecialCargo");
-	m_iSMSpecialCargo = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"SMNotSpecialCargo");
-	m_iSMNotSpecialCargo = pXML->GetInfoClass(szTextVal);
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"DomainCargo");
-	m_iDomainCargo = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iSpecialCargo, L"SpecialCargo");
+	pXML->GetOptionalTypeEnum(m_iSMSpecialCargo, L"SMSpecialCargo");
+	pXML->GetOptionalTypeEnum(m_iSMNotSpecialCargo, L"SMNotSpecialCargo");
+	pXML->GetOptionalTypeEnum(m_iDomainCargo, L"DomainCargo");
 	pXML->GetOptionalChildXmlValByName(&m_iCargoSpace, L"iCargo");
 	pXML->GetOptionalChildXmlValByName(&m_iSMCargoSpace, L"iSMCargo");
 	pXML->GetOptionalChildXmlValByName(&m_iSMCargoVolume, L"iSMCargoVolume");
@@ -4503,35 +4409,23 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->SetVariableListTagPair(&m_pbFreePromotions, L"FreePromotions", GC.getNumPromotionInfos());
-
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"LeaderPromotion");
-	m_iLeaderPromotion = pXML->GetInfoClass(szTextVal);
-
+	pXML->GetOptionalTypeEnum(m_iLeaderPromotion, L"LeaderPromotion");
 	pXML->GetOptionalChildXmlValByName(&m_iLeaderExperience, L"iLeaderExperience");
-
-	// Dale - RB: Field Bombard START
 	pXML->GetOptionalChildXmlValByName(&m_iDCMBombRange, L"iDCMBombRange");
 	pXML->GetOptionalChildXmlValByName(&m_iDCMBombAccuracy, L"iDCMBombAccuracy");
-	// Dale - RB: Field Bombard END
-	// Dale - AB: Bombing START
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBomb1, L"bDCMAirBomb1");
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBomb2, L"bDCMAirBomb2");
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBomb3, L"bDCMAirBomb3");
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBomb4, L"bDCMAirBomb4");
 	pXML->GetOptionalChildXmlValByName(&m_bDCMAirBomb5, L"bDCMAirBomb5");
-	// Dale - AB: Bombing END
-	// Dale - FE: Fighters START
 	pXML->GetOptionalChildXmlValByName(&m_bDCMFighterEngage, L"bDCMFighterEngage");
-	// Dale - FE: Fighters END
-
 	pXML->GetOptionalChildXmlValByName(&m_bWorkerTrade, L"bWorkerTrade");
 	pXML->GetOptionalChildXmlValByName(&m_bMilitaryTrade, L"bMilitaryTrade");
 	pXML->GetOptionalChildXmlValByName(&m_bForceUpgrade, L"bForceUpgrade");
 	pXML->GetOptionalChildXmlValByName(&m_bGreatGeneral, L"bGreatGeneral");
 	pXML->GetOptionalChildXmlValByName(&m_bSlave, L"bSlave");
 	pXML->GetOptionalChildXmlValByName(&m_bRequiresStateReligionInCity, L"bRequiresStateReligionInCity");
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"VicinityBonusType");
-	m_iPrereqVicinityBonus = pXML->GetInfoClass(szTextVal);
+	pXML->GetOptionalTypeEnum(m_iPrereqVicinityBonus, L"VicinityBonusType");
 	pXML->SetVariableListTagPair(&m_pbPassableRouteNeeded, L"PassableRouteNeededs", GC.getNumRouteInfos(), false);
 	pXML->GetOptionalChildXmlValByName(&m_iBaseFoodChange, L"iBaseFoodChange");
 	pXML->GetOptionalChildXmlValByName(&m_iControlPoints, L"iControlPoints");
@@ -4680,22 +4574,15 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bTriggerBeforeAttack, L"bTriggerBeforeAttack");
 	pXML->GetOptionalChildXmlValByName(&m_bNoNonTypeProdMods, L"bNoNonTypeProdMods");
 	pXML->GetOptionalChildXmlValByName(&m_bGatherHerd, L"bGatherHerd");
-
-	//boolean vectors without delayed resolution
 	pXML->SetOptionalVector(&m_aiSubCombatTypes, L"SubCombatTypes");
-
 	pXML->SetOptionalVector(&m_aiCureAfflictionTypes, L"CureAfflictionTypes");
-
 	pXML->SetOptionalVector(&m_aiTerrainImpassableTypes, L"TerrainImpassableTypes");
 	pXML->SetOptionalVector(&m_aiFeatureImpassableTypes, L"FeatureImpassableTypes");
-
 	pXML->SetOptionalVector(&m_aiMapTypes, L"MapCategoryTypes");
-
 	pXML->SetOptionalVector(&m_aiTrapSetWithPromotionTypes, L"TrapSetWithPromotionTypes");
-
 	pXML->SetOptionalVector(&m_aiTrapImmunityUnitCombatTypes, L"TrapImmunityUnitCombatTypes");
+	pXML->GetOptionalTypeEnumWithDelayedResolution(m_iUnitCaptureType, L"Capture");
 
-	// int vectors utilizing struct with delayed resolution
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionFortitudeModifiers"))
 	{
 		int i = 0;
@@ -5149,7 +5036,7 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo)
 	if ( m_bUnlimitedException == false) m_bUnlimitedException = pClassInfo->isUnlimitedException();
 	if ( m_iInstanceCostModifier == 0) m_iInstanceCostModifier = pClassInfo->getInstanceCostModifier();
 	if ( m_iSpecialUnitType == iTextDefault )	m_iSpecialUnitType = pClassInfo->getSpecialUnitType();
-	if ( m_iUnitCaptureType == iTextDefault )	m_iUnitCaptureType = pClassInfo->getUnitCaptureType();
+	GC.copyNonDefaultDelayedResolution((int*)&m_iUnitCaptureType, (int*)&pClassInfo->m_iUnitCaptureType);
 	if ( m_iUnitCombatType == iTextDefault )	m_iUnitCombatType = pClassInfo->getUnitCombatType();
 	if ( m_iDomainType == iTextDefault )	m_iDomainType = pClassInfo->getDomainType();
 	if ( m_iDefaultUnitAIType == UNITAI_UNKNOWN )	m_iDefaultUnitAIType = pClassInfo->getDefaultUnitAIType();
@@ -5158,7 +5045,6 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo)
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiSeeInvisibleTypes, pClassInfo->m_aiSeeInvisibleTypes);
 
 	if ( m_iAdvisorType == iTextDefault )	m_iAdvisorType = pClassInfo->getAdvisorType();
-
 	if ( m_bFoodProduction == bDefault )	m_bFoodProduction = pClassInfo->isFoodProduction();
 	if ( m_bNoBadGoodies == bDefault )	m_bNoBadGoodies = pClassInfo->isNoBadGoodies();
 	if ( m_bOnlyDefensive == bDefault )	m_bOnlyDefensive = pClassInfo->isOnlyDefensive();
@@ -6017,10 +5903,6 @@ bool CvUnitInfo::readPass2(CvXMLLoadUtility* pXML)
 	{
 		return false;
 	}
-	CvString szTextVal;
-	pXML->GetOptionalChildXmlValByName(szTextVal, L"Capture");
-	m_iUnitCaptureType = pXML->GetInfoClass(szTextVal);
-
 	pXML->SetVariableListTagPair(&m_piFlankingStrikeUnit, L"FlankingStrikes", GC.getNumUnitInfos(), -1);
 	pXML->SetVariableListTagPair(&m_piUnitAttackModifier, L"UnitAttackMods", GC.getNumUnitInfos());
 	pXML->SetVariableListTagPair(&m_piUnitDefenseModifier, L"UnitDefenseMods", GC.getNumUnitInfos());
@@ -6079,12 +5961,6 @@ void CvUnitInfo::copyNonDefaultsReadPass2(CvUnitInfo* pClassInfo, CvXMLLoadUtili
 		}
 	}
 	else if (bOver) SAFE_DELETE_ARRAY(m_piUnitDefenseModifier);
-
-
-	if (bOver || m_iUnitCaptureType == -1 && pClassInfo->getUnitCaptureType() != -1)
-	{
-		m_iUnitCaptureType = pClassInfo->getUnitCaptureType();
-	}
 }
 
 bool CvUnitInfo::readPass3()
@@ -6151,11 +6027,11 @@ void CvUnitInfo::setTotalModifiedCombatStrengthDetails()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
-			eUnitCombat = (UnitCombatTypes)getUnitCombatType();
+			eUnitCombat = getUnitCombatType();
 
 			if (eUnitCombat == NO_UNITCOMBAT) continue;
 		}
@@ -6270,11 +6146,11 @@ void CvUnitInfo::setBaseCargoVolume()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
-			eUnitCombat = (UnitCombatTypes)getUnitCombatType();
+			eUnitCombat = getUnitCombatType();
 
 			if (eUnitCombat == NO_UNITCOMBAT) continue;
 		}
@@ -6329,11 +6205,11 @@ void CvUnitInfo::setBaseSizeMattersZeroPoints()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
-			eUnitCombat = (UnitCombatTypes)getUnitCombatType();
+			eUnitCombat = getUnitCombatType();
 
 			if (eUnitCombat == NO_UNITCOMBAT) continue;
 		}
@@ -6446,11 +6322,11 @@ void CvUnitInfo::setCanAnimalIgnores()
 	{
 		if (iI > -1)
 		{
-			eUnitCombat = (UnitCombatTypes)getSubCombatType(iI);
+			eUnitCombat = getSubCombatType(iI);
 		}
 		else
 		{
-			eUnitCombat = (UnitCombatTypes)getUnitCombatType();
+			eUnitCombat = getUnitCombatType();
 
 			if (eUnitCombat == NO_UNITCOMBAT) continue;
 		}

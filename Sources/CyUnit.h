@@ -43,14 +43,14 @@ public:
 	int getGreatWorkCulture(const CyPlot& kPlot) const;
 	int getEspionagePoints(const CyPlot& kPlot) const;
 
-	bool canBuild(const CyPlot& kPlot, int /*BuildTypes*/ eBuild, bool bTestVisible) const;
-	bool canUpgrade(int /*UnitTypes*/ eUnit, bool bTestVisible) const;
+	bool canBuild(const CyPlot& kPlot, BuildTypes eBuild, bool bTestVisible) const;
+	bool canUpgrade(UnitTypes eUnit, bool bTestVisible) const;
 
-	int /*HandicapTypes*/ getHandicapType() const;
-	int /*CivilizationTypes*/ getCivilizationType() const;
-	int /*SpecialUnitTypes*/ getSpecialUnitType() const;
-	int /*UnitTypes*/ getCaptureUnitType() const;
-	int /*UnitCombatTypes*/ getUnitCombatType() const;
+	HandicapTypes getHandicapType() const;
+	CivilizationTypes getCivilizationType() const;
+	SpecialUnitTypes getSpecialUnitType() const;
+	UnitTypes getCaptureUnitType() const;
+	UnitCombatTypes getUnitCombatType() const;
 	DomainTypes getDomainType() const;
 
 	bool isBarbarian() const;

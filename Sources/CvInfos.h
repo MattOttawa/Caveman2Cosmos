@@ -1716,12 +1716,12 @@ public:
 	int getBaseUpkeep() const;
 	int getAssetValue() const;
 	int getPowerValue() const;
-	int getSpecialUnitType() const;
-	int getUnitCaptureType() const;
-	int getUnitCombatType() const;
-	DomainTypes getDomainType() const;
-	UnitAITypes getDefaultUnitAIType() const;
-	int getInvisibleType() const;
+	SpecialUnitTypes getSpecialUnitType() const		{ return m_iSpecialUnitType; }
+	UnitTypes getUnitCaptureType() const			{ return m_iUnitCaptureType; }
+	UnitCombatTypes getUnitCombatType() const		{ return m_iUnitCombatType; }
+	DomainTypes getDomainType() const				{ return m_iDomainType; }
+	UnitAITypes getDefaultUnitAIType() const		{ return m_iDefaultUnitAIType; }
+	InvisibleTypes getInvisibleType() const			{ return m_iInvisibleType; }
 	int getSeeInvisibleType(int i) const;
 	int getNumSeeInvisibleTypes() const;
 	int getAdvisorType() const;
@@ -2359,12 +2359,12 @@ protected:
 	int m_iBaseUpkeep;
 	int m_iAssetValue;
 	int m_iPowerValue;
-	int m_iSpecialUnitType;
-	int m_iUnitCaptureType;
-	int m_iUnitCombatType;
+	SpecialUnitTypes m_iSpecialUnitType;
+	UnitTypes m_iUnitCaptureType;
+	UnitCombatTypes m_iUnitCombatType;
 	DomainTypes m_iDomainType;
 	UnitAITypes m_iDefaultUnitAIType;
-	int m_iInvisibleType;
+	InvisibleTypes m_iInvisibleType;
 	int m_iAdvisorType;
 	int m_iMaxStartEra;
 	int m_iForceObsoleteTech;
@@ -5293,9 +5293,8 @@ public:
 	virtual ~CvProjectInfo();
 
 	int getVictoryPrereq() const;
-	TechTypes getTechPrereq() const { return m_iTechPrereq; }
-	int getAnyoneProjectPrereq() const;
-	void setAnyoneProjectPrereq(int i);
+	TechTypes getTechPrereq() const					{ return m_iTechPrereq; }
+	ProjectTypes getAnyoneProjectPrereq() const		{ return m_iAnyoneProjectPrereq; }
 	int getMaxGlobalInstances() const;
 	int getMaxTeamInstances() const;
 	int getProductionCost() const;
@@ -5312,17 +5311,17 @@ public:
 
 	bool isSpaceship() const;
 	bool isAllowsNukes() const;
+
 	const char* getMovieArtDef() const;
-
 	const TCHAR* getCreateSound() const;
-	void setCreateSound(const TCHAR* szVal);
-
-	// Arrays
 
 	int getBonusProductionModifier(int i) const;
 	int getVictoryThreshold(int i) const;
 	int getVictoryMinThreshold(int i) const;
-	int getProjectsNeeded(int i) const;
+
+	int getProjectsNeeded(ProjectTypes e) const;
+	const IDValueMap<ProjectTypes, int>& getProjectsNeeded() const { return m_piProjectsNeeded; }
+	const python::list cyGetProjectsNeeded() const { return m_piProjectsNeeded.makeList(); }
 
 	int getMapType(int i) const;
 	int getNumMapTypes() const;
@@ -5342,11 +5341,7 @@ public:
 	bool isTechShareWithHalfCivs() const;
 	int getCommerceModifier(int i) const;
 	int* getCommerceModifierArray() const;
-	int getProjectsNeededVectorSize() const;
-	CvString getProjectsNeededNamesVectorElement(int i) const;
-	int getProjectsNeededValuesVectorElement(int i) const;
 
-	bool readPass3();
 protected:
 	int m_iWorldHappiness;
 	int m_iGlobalHappiness;
@@ -5356,12 +5351,10 @@ protected:
 	int m_iInflationModifier;
 	bool m_bTechShareWithHalfCivs;
 	int* m_piCommerceModifier;
-	std::vector<CvString> m_aszProjectsNeededforPass3;
-	std::vector<int> m_aiProjectsNeededforPass3;
 
 	int m_iVictoryPrereq;
 	TechTypes m_iTechPrereq;
-	int m_iAnyoneProjectPrereq;
+	ProjectTypes m_iAnyoneProjectPrereq;
 	int m_iMaxGlobalInstances;
 	int m_iMaxTeamInstances;
 	int m_iProductionCost;
@@ -5382,15 +5375,13 @@ protected:
 	CvString m_szCreateSound;
 	CvString m_szMovieArtDef;
 
-	// Arrays
-
 	int* m_piBonusProductionModifier;
 	int* m_piVictoryThreshold;
 	int* m_piVictoryMinThreshold;
-	int* m_piProjectsNeeded;
 
-	// Vectors
 	std::vector<int> m_aiMapTypes;
+
+	IDValueMap<ProjectTypes, int> m_piProjectsNeeded;
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

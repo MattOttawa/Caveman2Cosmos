@@ -2517,10 +2517,10 @@ void CvGame::cheatSpaceship() const
 		if (kProject.isSpaceship())
 		{
 			//cheat required projects
-			for (int j = 0; j < GC.getNumProjectInfos(); j++)
+			foreach_(const ProjectModifier& kRequiredProject, kProject.getProjectsNeeded())
 			{
-				ProjectTypes eRequiredProject = (ProjectTypes) j;
-				int iNumReqProjects = kProject.getProjectsNeeded(eRequiredProject);
+				const ProjectTypes eRequiredProject = kRequiredProject.first;
+				const int iNumReqProjects = kRequiredProject.second;
 				while (kTeam.getProjectCount(eRequiredProject) < iNumReqProjects)
 				{
 					kTeam.changeProjectCount(eRequiredProject, 1);

@@ -1625,20 +1625,17 @@ class CvVictoryScreen:
 
 	def isApolloBuiltbyTeam(self, CyTeam):
 		iTeam = CyTeam.getID()
-
-		iNumProjectInfos = GC.getNumProjectInfos()
-		for i in xrange(iNumProjectInfos):
+		for i in xrange(GC.getNumProjectInfos()):
 			CvProjectInfo = GC.getProjectInfo(i)
 			if CvProjectInfo.isSpaceship():
-				for j in xrange(iNumProjectInfos):
-					if CyTeam.getProjectCount(j) < CvProjectInfo.getProjectsNeeded(j):
+				for pair in CvProjectInfo.getProjectsNeeded(j):
+					if CyTeam.getProjectCount(pair.first) < pair.second:
 						break
 				else:
 					self.ApolloTeamCheckResult[iTeam] = True
 					self.ApolloTeamsChecked.add(iTeam)
 					return True
 				break
-
 		self.ApolloTeamCheckResult[iTeam] = False
 		self.ApolloTeamsChecked.add(iTeam)
 		return False

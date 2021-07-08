@@ -3383,7 +3383,7 @@ int CvCity::getProductionExperience(UnitTypes eUnit) const
 
 			if (kUnit.getUnitCombatType() != NO_UNITCOMBAT)
 			{
-				const UnitCombatTypes combatType = (UnitCombatTypes)kUnit.getUnitCombatType();
+				const UnitCombatTypes combatType = kUnit.getUnitCombatType();
 				iExperience += getUnitCombatFreeExperience(combatType);
 				iExperience += kPlayer.getUnitCombatFreeExperience(combatType);
 			}
@@ -4066,8 +4066,8 @@ int CvCity::getProductionModifier(UnitTypes eUnit) const
 		iMultiplier += getDomainProductionModifier(unit.getDomainType());
 		if (unit.getUnitCombatType() != NO_UNITCOMBAT)
 		{
-			iMultiplier += GET_PLAYER(getOwner()).getUnitCombatProductionModifier((UnitCombatTypes)(unit.getUnitCombatType()));
-			iMultiplier += getUnitCombatProductionModifier((UnitCombatTypes)(unit.getUnitCombatType()));
+			iMultiplier += GET_PLAYER(getOwner()).getUnitCombatProductionModifier(unit.getUnitCombatType());
+			iMultiplier += getUnitCombatProductionModifier(unit.getUnitCombatType());
 
 			foreach_(const UnitCombatTypes eSubCombat, unit.getSubCombatTypes())
 			{

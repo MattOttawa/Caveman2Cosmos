@@ -10489,7 +10489,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			if (kTrait.getPromotionLine() != NO_PROMOTIONLINE)
 			{
 				szHelpString.append(NEWLINE);
-				szHelpString.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_LINE", GC.getPromotionLineInfo((PromotionLineTypes)kTrait.getPromotionLine()).getDescription()));
+				szHelpString.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_LINE", GC.getPromotionLineInfo(kTrait.getPromotionLine()).getDescription()));
 
 				if (kTrait.getLinePriority() > 0)
 				{
@@ -10620,12 +10620,12 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		if (kTrait.getPromotionLine() != NO_PROMOTIONLINE && GC.getGame().getActiveTeam() != NO_TEAM)
 		{
-			if (GC.getPromotionLineInfo((PromotionLineTypes)kTrait.getPromotionLine()).getPrereqTech() != NO_TECH)
+			if (GC.getPromotionLineInfo(kTrait.getPromotionLine()).getPrereqTech() != NO_TECH)
 			{
-				if (!GET_TEAM(GC.getGame().getActiveTeam()).isHasTech(GC.getPromotionLineInfo((PromotionLineTypes)kTrait.getPromotionLine()).getPrereqTech()))
+				if (!GET_TEAM(GC.getGame().getActiveTeam()).isHasTech(GC.getPromotionLineInfo(kTrait.getPromotionLine()).getPrereqTech()))
 				{
 					szHelpString.append(NEWLINE);
-					szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_TECH_PREREQ", GC.getTechInfo(GC.getPromotionLineInfo((PromotionLineTypes)kTrait.getPromotionLine()).getPrereqTech()).getTextKeyWide()));
+					szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_TECH_PREREQ", GC.getTechInfo(GC.getPromotionLineInfo(kTrait.getPromotionLine()).getPrereqTech()).getTextKeyWide()));
 				}
 			}
 		}
@@ -12749,7 +12749,7 @@ void CvGameTextMgr::parsePromotionHelpInternal(CvWStringBuffer &szBuffer, Promot
 	if (GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE)
 	{
 		szBuffer.append(pcNewline);
-		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_LINE", GC.getPromotionLineInfo((PromotionLineTypes)kPromotion.getPromotionLine()).getDescription()));
+		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_LINE", GC.getPromotionLineInfo(kPromotion.getPromotionLine()).getDescription()));
 	}
 
 	if (GC.getPromotionInfo(ePromotion).getLinePriority() > 0)
@@ -15200,7 +15200,7 @@ void CvGameTextMgr::parsePromotionHelpInternal(CvWStringBuffer &szBuffer, Promot
 				iTechContractChanceChange = 0;
 			}
 
-			if (GC.getPromotionLineInfo((PromotionLineTypes)GC.getPromotionInfo(ePromotion).getPromotionLine()).isTechOvercomeChange(iI))
+			if (GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isTechOvercomeChange(iI))
 			{
 				for( iJ = 0; iJ < (int)linePromotionsOwned.size(); iJ++ )
 				{
@@ -19369,11 +19369,11 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 			{
 				if (iI > -1)
 				{
-					eUnitCombat = (UnitCombatTypes)kUnit.getSubCombatType(iI);
+					eUnitCombat = kUnit.getSubCombatType(iI);
 				}
 				else
 				{
-					eUnitCombat = (UnitCombatTypes)kUnit.getUnitCombatType();
+					eUnitCombat = kUnit.getUnitCombatType();
 
 					if (eUnitCombat == NO_UNITCOMBAT) continue;
 				}
@@ -19917,11 +19917,11 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 				{
 					if (iI > -1)
 					{
-						eCombat = (UnitCombatTypes)kUnit.getSubCombatType(iI);
+						eCombat = kUnit.getSubCombatType(iI);
 					}
 					else
 					{
-						eCombat = (UnitCombatTypes)kUnit.getUnitCombatType();
+						eCombat = kUnit.getUnitCombatType();
 
 						if (eCombat == NO_UNITCOMBAT) continue;
 					}
@@ -19940,7 +19940,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 					}
 				}
 
-				DomainTypes eDomain = (DomainTypes)kUnit.getDomainType();
+				const DomainTypes eDomain = kUnit.getDomainType();
 				iExperience = pCity->getDomainFreeExperience(eDomain);
 				if (iExperience != 0)
 				{
@@ -19985,8 +19985,8 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 						}
 					}
 				}
-				const UnitCombatTypes eCombatType = (UnitCombatTypes)kUnit.getUnitCombatType();
-				const DomainTypes eDomainType = (DomainTypes)kUnit.getDomainType();
+				const UnitCombatTypes eCombatType = kUnit.getUnitCombatType();
+				const DomainTypes eDomainType = kUnit.getDomainType();
 				//Display sources you could have if you constructed them first
 				for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 				{
@@ -20212,7 +20212,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 		uint16_t iPotentialDisplays = 0;
 		if (kUnit.getUnitCombatType() != NO_UNITCOMBAT)
 		{
-			if (game.isValidByGameOption(GC.getUnitCombatInfo((UnitCombatTypes)kUnit.getUnitCombatType())))
+			if (game.isValidByGameOption(GC.getUnitCombatInfo(kUnit.getUnitCombatType())))
 			{
 				iPotentialDisplays++;
 			}
@@ -20231,11 +20231,11 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 		{
 			if (iI > -1)
 			{
-				eUnitCombat = (UnitCombatTypes)kUnit.getSubCombatType(iI);
+				eUnitCombat = kUnit.getSubCombatType(iI);
 			}
 			else
 			{
-				eUnitCombat = (UnitCombatTypes)kUnit.getUnitCombatType();
+				eUnitCombat = kUnit.getUnitCombatType();
 
 				if (eUnitCombat == NO_UNITCOMBAT) continue;
 			}
@@ -20273,7 +20273,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 		{
 			szBuffer.append(NEWLINE);
 			szBuffer.append(DOUBLE_SEPARATOR);
-			setUnitCombatHelp(szBuffer, (UnitCombatTypes)kUnit.getUnitCombatType(), bCivilopediaText, true);
+			setUnitCombatHelp(szBuffer, kUnit.getUnitCombatType(), bCivilopediaText, true);
 			szBuffer.append(DOUBLE_SEPARATOR);
 
 			foreach_(const UnitCombatTypes eSubCombat, kUnit.getSubCombatTypes())
@@ -20472,7 +20472,7 @@ iMaxTeamInstances was unused in CvUnit(Class)Info and removed as part of us shed
 
 			if (GC.getUnitInfo(eUnit).getSpecialUnitType() != NO_SPECIALUNIT)
 			{
-				if ((pCity == NULL) || !(GC.getGame().isSpecialUnitValid((SpecialUnitTypes)(GC.getUnitInfo(eUnit).getSpecialUnitType()))))
+				if (pCity == NULL || !GC.getGame().isSpecialUnitValid(GC.getUnitInfo(eUnit).getSpecialUnitType()))
 				{
 					for (iI = 0; iI < GC.getNumProjectInfos(); ++iI)
 					{
@@ -24513,45 +24513,37 @@ void CvGameTextMgr::setProjectHelp(CvWStringBuffer &szBuffer, ProjectTypes eProj
 		}
 	}
 
-	if ((pCity == NULL) || !(pCity->canCreate(eProject)))
+	if (pCity == NULL || !pCity->canCreate(eProject))
 	{
-		if (pCity != NULL)
+		if (pCity != NULL && GC.getGame().isNoNukes() && kProject.isAllowsNukes())
 		{
-			if (GC.getGame().isNoNukes())
-			{
-				if (kProject.isAllowsNukes())
-				{
-					szBuffer.append(NEWLINE);
-					szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_NO_NUKES"));
-				}
-			}
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_NO_NUKES"));
 		}
 
 		if (kProject.getAnyoneProjectPrereq() != NO_PROJECT)
 		{
-			if ((pCity == NULL) || (GC.getGame().getProjectCreatedCount((ProjectTypes)(kProject.getAnyoneProjectPrereq())) == 0))
+			if (pCity == NULL || GC.getGame().getProjectCreatedCount(kProject.getAnyoneProjectPrereq()) == 0)
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_REQUIRES_ANYONE", CvWString(GC.getProjectInfo((ProjectTypes)kProject.getAnyoneProjectPrereq()).getType()).GetCString(), GC.getProjectInfo((ProjectTypes)kProject.getAnyoneProjectPrereq()).getTextKeyWide()));
+				szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_REQUIRES_ANYONE", CvWString(GC.getProjectInfo(kProject.getAnyoneProjectPrereq()).getType()).c_str(), GC.getProjectInfo(kProject.getAnyoneProjectPrereq()).getTextKeyWide()));
 			}
 		}
 
-		for (iI = 0; iI < GC.getNumProjectInfos(); ++iI)
+		foreach_(const ProjectModifier& kRequiredProject, kProject.getProjectsNeeded())
 		{
-			if (kProject.getProjectsNeeded(iI) > 0)
+			const ProjectTypes eRequired = kRequiredProject.first;
+			if (pCity == NULL || GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getProjectCount(eRequired) < kProject.getProjectsNeeded(eRequired))
 			{
-				if ((pCity == NULL) || (GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getProjectCount((ProjectTypes)iI) < kProject.getProjectsNeeded(iI)))
+				if (pCity != NULL)
 				{
-					if (pCity != NULL)
-					{
-						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_REQUIRES", CvWString(GC.getProjectInfo((ProjectTypes)iI).getType()).GetCString(), GC.getProjectInfo((ProjectTypes)iI).getTextKeyWide(), GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getProjectCount((ProjectTypes)iI), kProject.getProjectsNeeded(iI)));
-					}
-					else
-					{
-						szBuffer.append(NEWLINE);
-						szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_REQUIRES_NO_CITY", CvWString(GC.getProjectInfo((ProjectTypes)iI).getType()).GetCString(), GC.getProjectInfo((ProjectTypes)iI).getTextKeyWide(), kProject.getProjectsNeeded(iI)));
-					}
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_REQUIRES", CvWString(GC.getProjectInfo(eRequired).getType()).c_str(), GC.getProjectInfo(eRequired).getTextKeyWide(), GET_TEAM(GET_PLAYER(ePlayer).getTeam()).getProjectCount(eRequired), kProject.getProjectsNeeded(eRequired)));
+				}
+				else
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_PROJECTHELP_REQUIRES_NO_CITY", CvWString(GC.getProjectInfo(eRequired).getType()).c_str(), GC.getProjectInfo(eRequired).getTextKeyWide(), kProject.getProjectsNeeded(eRequired)));
 				}
 			}
 		}

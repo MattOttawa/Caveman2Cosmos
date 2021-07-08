@@ -11382,7 +11382,7 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 							iTotalSiegeMaxUnits += iCollateralDamageMaxUnits * iUnitCount;
 							iSiegeUnits += iUnitCount;
 						}
-						else if (GC.getUnitInfo(eLoopUnit).getUnitCombatCollateralImmune((UnitCombatTypes)kUnitInfo.getUnitCombatType()))
+						else if (GC.getUnitInfo(eLoopUnit).getUnitCombatCollateralImmune(kUnitInfo.getUnitCombatType()))
 						{
 							iSiegeImmune+= iUnitCount;
 						}
@@ -24692,7 +24692,7 @@ UnitTypes CvPlayerAI::AI_bestAdvancedStartUnitAI(const CvPlot* pPlot, UnitAIType
 				//only 1 promotion per source is counted (ie protective isn't counted twice)
 				int iPromotionValue = 0;
 
-				const UnitCombatTypes eUnitCombat = (UnitCombatTypes) kUnit.getUnitCombatType();
+				const UnitCombatTypes eUnitCombat = kUnit.getUnitCombatType();
 
 				for (int iJ = 0; iJ < GC.getNumPromotionInfos(); iJ++)
 				{
@@ -29679,7 +29679,7 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 		{
 			if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 			{
-				if ((InvisibleTypes)pUnit->getInvisibleType() != NO_INVISIBLE)
+				if (pUnit->getInvisibleType() != NO_INVISIBLE)
 				{
 					iInvisFactor = 3;
 				}
@@ -30660,7 +30660,7 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 		{
 			if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 			{
-				if ((InvisibleTypes)pUnit->getInvisibleType() != NO_INVISIBLE)
+				if (pUnit->getInvisibleType() != NO_INVISIBLE)
 				{
 					iInvisFactor = 3;
 				}
@@ -34498,7 +34498,7 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		{
 			if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 			{
-				if ((InvisibleTypes)pUnit->getInvisibleType() != NO_INVISIBLE)
+				if (pUnit->getInvisibleType() != NO_INVISIBLE)
 				{
 					iInvisFactor = 3;
 				}
@@ -35548,7 +35548,7 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 		{
 			if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 			{
-				if ((InvisibleTypes)pUnit->getInvisibleType() != NO_INVISIBLE)
+				if (pUnit->getInvisibleType() != NO_INVISIBLE)
 				{
 					iInvisFactor = 3;
 				}

@@ -107,12 +107,11 @@ void CyInfoPythonInterface3()
 
 		.def("getMovieArtDef", &CvProjectInfo::getMovieArtDef, "string ()")
 
-		// Arrays
 		.def("getBonusProductionModifier", &CvProjectInfo::getBonusProductionModifier, "int (int i)")
 		.def("getVictoryThreshold", &CvProjectInfo::getVictoryThreshold, "int (int i)")
 		.def("getVictoryMinThreshold", &CvProjectInfo::getVictoryMinThreshold, "int (int i)")
 		.def("getVictoryDelayPercent", &CvProjectInfo::getVictoryDelayPercent, "int ()")
-		.def("getProjectsNeeded", &CvProjectInfo::getProjectsNeeded, "int (int i)")
+		.def("getProjectsNeeded", &CvProjectInfo::cyGetProjectsNeeded)
 	;
 
 
