@@ -1497,7 +1497,7 @@ const CvOutcomeList* CvUnitInfo::getKillOutcomeList() const
 	return &m_KillOutcomeList;
 }
 
-int CvUnitInfo::getNumActionOutcomes() const 
+int CvUnitInfo::getNumActionOutcomes() const
 {
 	return m_aOutcomeMissions.size();
 }

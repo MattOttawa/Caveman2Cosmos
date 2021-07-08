@@ -7050,7 +7050,7 @@ CvMissionInfo::~CvMissionInfo()
 {
 }
 
-int CvMissionInfo::getTime() const		
+int CvMissionInfo::getTime() const
 {
 	return m_iTime;
 }
@@ -7065,7 +7065,7 @@ bool CvMissionInfo::isTarget() const
 	return m_bTarget;
 }
 
-bool CvMissionInfo::isBuild() const	
+bool CvMissionInfo::isBuild() const
 {
 	return m_bBuild;
 }
@@ -7123,7 +7123,7 @@ void CvMissionInfo::copyNonDefaults(const CvMissionInfo* pClassInfo)
 	if (isBuild() == bDefault) m_bBuild = pClassInfo->isBuild();
 	if (getVisible() == bDefault) m_bVisible = pClassInfo->getVisible();
 
-	if ( getEntityEvent() == ENTITY_EVENT_NONE ) m_eEntityEvent = pClassInfo->getEntityEvent();	
+	if ( getEntityEvent() == ENTITY_EVENT_NONE ) m_eEntityEvent = pClassInfo->getEntityEvent();
 }
 
 
@@ -20230,7 +20230,7 @@ bool CvCorporationInfo::readPass3()
 //  PURPOSE :   Default constructor
 //
 //------------------------------------------------------------------------------------------------------
-CvTraitInfo::CvTraitInfo() 
+CvTraitInfo::CvTraitInfo()
 	: m_iHealth(0)
 	, m_iHappiness(0)
 	, m_iMaxAnarchy(-1)
@@ -26897,7 +26897,7 @@ void CvArtInfoImprovement::copyNonDefaults(const CvArtInfoImprovement* pClassInf
 // CvArtInfoTerrain
 //////////////////////////////////////////////////////////////////////////
 
-CvArtInfoTerrain::CvArtInfoTerrain() 
+CvArtInfoTerrain::CvArtInfoTerrain()
 	: m_iLayerOrder(0)
 	, m_bAlphaShader(false)
 {
@@ -34120,7 +34120,7 @@ void CvPromotionLineInfo::setBuildings()
 //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-CvUnitCombatInfo::CvUnitCombatInfo() 
+CvUnitCombatInfo::CvUnitCombatInfo()
 	//Textual References
 	: m_eReligion(NO_RELIGION)
 	, m_eCulture(NO_BONUS)
