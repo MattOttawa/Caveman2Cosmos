@@ -4701,15 +4701,15 @@ void CvCity::processBonus(BonusTypes eBonus, int iChange)
 		}
 		for (int iI = 0; iI < GC.getNumTraitInfos(); iI++)
 		{
-			if (GET_PLAYER(getOwner()).hasTrait((TraitTypes)iI))
+			const TraitTypes eTrait = (TraitTypes)iI;
+			if (GET_PLAYER(getOwner()).hasTrait(eTrait))
 			{
-				TraitTypes eTrait = (TraitTypes)iI;
 				int iValue = 0;
 				for (int iJ = 0; iJ < GC.getTraitInfo(eTrait).getNumBonusHappinessChanges(); iJ++)
 				{
 					if (GC.getTraitInfo(eTrait).getBonusHappinessChange(iJ).eBonus == eBonus)
 					{
-						iValue = GC.getTraitInfo((TraitTypes)iI).getBonusHappinessChange(iJ).iModifier;
+						iValue = GC.getTraitInfo(eTrait).getBonusHappinessChange(iJ).iModifier;
 					}
 				}
 				if (iValue >= 0)
@@ -5010,10 +5010,9 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 
 	if (!bReligiously)
 	{
-		for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
+		foreach_(const ReligionModifier& modifier, kBuilding.getReligionChanges())
 		{
-			PROFILE("CvCity::processBuilding.Religions");
-			changeReligionInfluence((ReligionTypes) iI, kBuilding.getReligionChange(iI) * iChange);
+			changeReligionInfluence(modifier.first, modifier.second * iChange);
 		}
 	}
 
@@ -5081,15 +5080,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		changeHealthPercentPerPopulation(kBuilding.getHealthPercentPerPopulation() * iChange);
 		changeHappinessPercentPerPopulation(kBuilding.getHappinessPercentPerPopulation() * iChange);
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS
 		//TB Combat Mods (Buildings) begin
-		for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
-		{
-			PropertyTypes eProperty = kBuilding.getAidRateChange(iI).ePropertyType;
-			changeAidRate(eProperty, kBuilding.getAidRateChange(iI).iChange * iChange);
-		}
-#endif // OUTBREAKS_AND_AFFLICTIONS
-
 #ifdef STRENGTH_IN_NUMBERS
 		changeTotalFrontSupportPercentModifier(kBuilding.getFrontSupportPercentModifier() * iChange);
 		changeTotalShortRangeSupportPercentModifier(kBuilding.getShortRangeSupportPercentModifier() * iChange);
@@ -5103,7 +5094,12 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 	{
 		changeAfflictionTypeCount(kBuilding.getPromotionLineType(), iChange);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS
+
+	for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
+	{
+		PropertyTypes eProperty = kBuilding.getAidRateChange(iI).ePropertyType;
+		changeAidRate(eProperty, kBuilding.getAidRateChange(iI).iChange * iChange);
+	}
 
 	for (int iI = 0; iI < kBuilding.getNumBonusAidModifiers(); iI++)
 	{
@@ -5112,7 +5108,6 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		changeExtraBonusAidModifier(eBonus, ePropertyType, kBuilding.getBonusAidModifier(iI).iModifier);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS
 	for (int iI = 0; iI < GC.getNumPromotionLineInfos(); iI++)
 	{
 		PROFILE("CvCity::processBuilding.PromotionLines");
@@ -5141,21 +5136,37 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 	//	}
 	//}
 
+	foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatProdModifiers())
+	{
+		m_paiUnitCombatProductionModifier[modifier.first] += (modifier.second * iChange);
+	}
+	if (!bReligiously)
+	{
+		if (GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
+		{
+			foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatRepelModifiers())
+			{
+				m_paiUnitCombatRepelModifier[modifier.first] += (modifier.second * iChange);
+			}
+			foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatRepelAgainstModifiers())
+			{
+				m_paiUnitCombatRepelAgainstModifier[modifier.first] += (modifier.second * iChange);
+			}
+		}
+
+		foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatDefenseAgainstModifiers())
+		{
+			m_paiUnitCombatDefenseAgainstModifier[modifier.first] += (modifier.second * iChange);
+		}
+	}
+
 	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 	{
 		PROFILE("CvCity::processBuilding.CombatInfos");
 
 		const UnitCombatTypes eCombatX = static_cast<UnitCombatTypes>(iI);
 
-		changeUnitCombatProductionModifier(eCombatX, kBuilding.getUnitCombatProdModifier(iI) * iChange);
-
-		if (!bReligiously)
-		{
-			changeUnitCombatRepelModifierTotal(eCombatX, kBuilding.getUnitCombatRepelModifier(iI) * iChange);
-			//TB Defense Mod
-			changeUnitCombatRepelAgainstModifierTotal(eCombatX, kBuilding.getUnitCombatRepelAgainstModifier(iI) * iChange);
-			changeUnitCombatDefenseAgainstModifierTotal(eCombatX, kBuilding.getUnitCombatDefenseAgainstModifier(iI) * iChange);
-		}
+#ifdef ONGOING_TRAINING
 		const int iUnitCombatOngoingTrainingDuration = kBuilding.getUnitCombatOngoingTrainingDuration(iI);
 		if (iUnitCombatOngoingTrainingDuration > 0)
 		{
@@ -5179,6 +5190,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 				setUnitCombatOngoingTrainingTimeIncrement(eCombatX, iBestValue);
 			}
 		}
+#endif // ONGOING_TRAINING
 	}
 	//TB Combat Mods (Buildings) end
 
@@ -5346,9 +5358,9 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		}
 	}
 
-	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+	foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatFreeExperience())
 	{
-		changeUnitCombatFreeExperience(((UnitCombatTypes)iI), kBuilding.getUnitCombatFreeExperience(iI) * iChange);
+		changeUnitCombatFreeExperience(modifier.first, modifier.second * iChange);
 	}
 
 	for (int iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
@@ -14568,12 +14580,9 @@ void CvCity::setupBuilding(const CvBuildingInfo& kBuilding, const BuildingTypes 
 					}
 				}
 
-				for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
+				foreach_(const ReligionModifier& modifier, kBuilding.getReligionChanges())
 				{
-					if (kBuilding.getReligionChange(iI) > 0)
-					{
-						setHasReligion(((ReligionTypes)iI), true, true, true);
-					}
+					setHasReligion(modifier.first, true, true, true);
 				}
 
 				if (kBuilding.getFreeTechs() > 0)
@@ -23304,22 +23313,10 @@ int CvCity::getUnitCombatProductionModifier(UnitCombatTypes eIndex) const
 	return m_paiUnitCombatProductionModifier[eIndex];
 }
 
-void CvCity::changeUnitCombatProductionModifier(UnitCombatTypes eIndex, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
-	m_paiUnitCombatProductionModifier[eIndex] += iChange;
-}
-
 int CvCity::getUnitCombatRepelModifierTotal(UnitCombatTypes eIndex) const
 {
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
 	return m_paiUnitCombatRepelModifier[eIndex];
-}
-
-void CvCity::changeUnitCombatRepelModifierTotal(UnitCombatTypes eIndex, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
-	m_paiUnitCombatRepelModifier[eIndex] += iChange;
 }
 
 int CvCity::getUnitCombatRepelAgainstModifierTotal(UnitCombatTypes eIndex) const
@@ -23328,22 +23325,10 @@ int CvCity::getUnitCombatRepelAgainstModifierTotal(UnitCombatTypes eIndex) const
 	return m_paiUnitCombatRepelAgainstModifier[eIndex];
 }
 
-void CvCity::changeUnitCombatRepelAgainstModifierTotal(UnitCombatTypes eIndex, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
-	m_paiUnitCombatRepelAgainstModifier[eIndex] += iChange;
-}
-
 int CvCity::getUnitCombatDefenseAgainstModifierTotal(UnitCombatTypes eIndex) const
 {
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
 	return m_paiUnitCombatDefenseAgainstModifier[eIndex];
-}
-
-void CvCity::changeUnitCombatDefenseAgainstModifierTotal(UnitCombatTypes eIndex, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
-	m_paiUnitCombatDefenseAgainstModifier[eIndex] += iChange;
 }
 
 #ifdef STRENGTH_IN_NUMBERS

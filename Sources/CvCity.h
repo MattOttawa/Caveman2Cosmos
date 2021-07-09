@@ -516,13 +516,9 @@ public:
 	int getPropertyValue(PropertyTypes eProperty);
 
 	int getUnitCombatProductionModifier(UnitCombatTypes eIndex) const;
-	void changeUnitCombatProductionModifier(UnitCombatTypes eIndex, int iChange);
 	int getUnitCombatRepelModifierTotal(UnitCombatTypes eIndex) const;
-	void changeUnitCombatRepelModifierTotal(UnitCombatTypes eIndex, int iChange);
 	int getUnitCombatRepelAgainstModifierTotal(UnitCombatTypes eIndex) const;
-	void changeUnitCombatRepelAgainstModifierTotal(UnitCombatTypes eIndex, int iChange);
 	int getUnitCombatDefenseAgainstModifierTotal(UnitCombatTypes eIndex) const;
-	void changeUnitCombatDefenseAgainstModifierTotal(UnitCombatTypes eIndex, int iChange);
 
 #ifdef STRENGTH_IN_NUMBERS
 	int getTotalFrontSupportPercentModifier() const;
@@ -1199,7 +1195,9 @@ public:
 	void changeStateReligionHappiness(ReligionTypes eIndex, int iChange);
 
 	int getUnitCombatFreeExperience(UnitCombatTypes eIndex) const;
+private:
 	void changeUnitCombatFreeExperience(UnitCombatTypes eIndex, int iChange);
+public:
 
 	int getFreePromotionCount(PromotionTypes eIndex) const;
 	bool isFreePromotion(PromotionTypes eIndex) const;

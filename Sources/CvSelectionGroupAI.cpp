@@ -559,7 +559,6 @@ int CvSelectionGroupAI::AI_attackOdds(const CvPlot* pPlot, bool bPotentialEnemy,
 
 		if ( bPotentialEnemy && !bForce )
 		{
-
 			(*g_attackOddsCache)[pPlot] = (iResult & ODDS_CACHE_VALUE_MASK) + (bIsWin ? ODDS_CACHE_WIN_BIT : 0);
 		}
 	}
@@ -590,11 +589,14 @@ static bool isClearlySuperior(CvUnit* pUnit, CvUnit* pOtherUnit, const CvPlot* p
 	//	Unit combat modifiers
 	const CvUnitInfo& kUnit = pUnit->getUnitInfo();
 	const CvUnitInfo& kOtherUnit = pOtherUnit->getUnitInfo();
-	const int numUnitCombatInfos = GC.getNumUnitCombatInfos();
-	for(int iJ = 0; iJ < numUnitCombatInfos; iJ++)
+
+	foreach_(const UnitCombatModifier2& modifier, kUnit.getUnitCombatModifiers())
 	{
-		iTotalCombatMods += kUnit.getUnitCombatModifier(iJ);
-		iOtherTotalCombatMods += kOtherUnit.getUnitCombatModifier(iJ);
+		iTotalCombatMods += modifier.second;
+	}
+	foreach_(const UnitCombatModifier2& modifier, kOtherUnit.getUnitCombatModifiers())
+	{
+		iOtherTotalCombatMods += modifier.second;
 	}
 
 	for (std::map<UnitCombatTypes, UnitCombatKeyedInfo>::const_iterator it = pUnit->getUnitCombatKeyedInfo().begin(), end = pUnit->getUnitCombatKeyedInfo().end(); it != end; ++it)

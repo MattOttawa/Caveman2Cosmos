@@ -285,17 +285,20 @@ public:
 	int getStateReligionCommerce(int i) const;
 	int* getStateReligionCommerceArray() const;
 	int getCommerceHappiness(int i) const;
-	int getReligionChange(int i) const;
 	int getSpecialistCount(int i) const;
 	int getFreeSpecialistCount(int i) const;
 	int getBonusHealthChanges(int i) const;
 	int getBonusHappinessChanges(int i) const;
 	int getBonusProductionModifier(int i) const;
-	int getUnitCombatFreeExperience(int i) const;
+
+	int getUnitCombatFreeExperience(UnitCombatTypes e) const;
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatFreeExperience() const { return m_aUnitCombatFreeExperience; }
+
 	int getDomainFreeExperience(int i) const;
-	bool isAnyUnitCombatFreeExperience() const { return m_piUnitCombatFreeExperience != NULL; }
 	bool isAnyDomainFreeExperience() const { return m_piDomainFreeExperience != NULL; }
 	int getDomainProductionModifier(int i) const;
+
+	const IDValueMap<ReligionTypes, int>& getReligionChanges() const { return m_aReligionChange; }
 
 	const std::vector<TechTypes>& getPrereqAndTechs() const;
 	const python::list cyGetPrereqAndTechs() const;
@@ -421,20 +424,19 @@ public:
 	bool isMapType(int i) const;
 	const std::vector<int>& getMapTypes() const { return m_aiMapTypes; }
 
-	int getNumUnitCombatRepelModifiers() const;
-	int getUnitCombatRepelModifier(int iUnitCombat, bool bForLoad = false) const;
+#ifdef HEART_OF_WAR
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatRepelModifiers() const { return m_aUnitCombatRepelModifiers; }
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatRepelAgainstModifiers() const { return m_aUnitCombatRepelAgainstModifiers; }
+#endif // HEART_OF_WAR
 
-	int getNumUnitCombatRepelAgainstModifiers() const;
-	int getUnitCombatRepelAgainstModifier(int iUnitCombat, bool bForLoad = false) const;
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatDefenseAgainstModifiers() const { return m_aUnitCombatDefenseAgainstModifiers; }
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatProdModifiers() const { return m_aUnitCombatProdModifiers; }
 
-	int getNumUnitCombatDefenseAgainstModifiers() const;
-	int getUnitCombatDefenseAgainstModifier(int iUnitCombat) const;
-
-	int getNumUnitCombatProdModifiers() const;
-	int getUnitCombatProdModifier(int iUnitCombat) const;
-
+#ifdef ONGOING_TRAINING
 	int getNumUnitCombatOngoingTrainingDurations() const;
-	int getUnitCombatOngoingTrainingDuration(int iUnitCombat, bool bForLoad = false) const;
+	int getUnitCombatOngoingTrainingDuration(UnitCombatTypes eUnitCombat) const;
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatOngoingTrainingDurations() const { return m_aUnitCombatOngoingTrainingDurations; }
+#endif // ONGOING_TRAINING
 
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictionOutbreakLevelChanges() const;
@@ -780,13 +782,11 @@ private:
 	int* m_piSpecialistExtraCommerce;
 	int* m_piStateReligionCommerce;
 	int* m_piCommerceHappiness;
-	int* m_piReligionChange;
 	int* m_piSpecialistCount;
 	int* m_piFreeSpecialistCount;
 	int* m_piBonusHealthChanges;
 	int* m_piBonusHappinessChanges;
 	int* m_piBonusProductionModifier;
-	int* m_piUnitCombatFreeExperience;
 	int* m_piDomainFreeExperience;
 	int* m_piDomainProductionModifier;
 	int* m_piFlavorValue;
@@ -831,23 +831,29 @@ private:
 	TechModifierArray m_aTechOutbreakLevelChanges;
 #endif // OUTBREAKS_AND_AFFLICTIONS
 	std::vector<AidRateChanges> m_aAidRateChanges;
-	std::vector<HealUnitCombat> m_aHealUnitCombatTypes;
 	std::vector<BonusAidModifiers> m_aBonusAidModifiers;
-	std::vector<BuildingCommerceChange> m_aGlobalBuildingCommerceChanges;
-	UnitCombatModifierArray m_aUnitCombatRepelModifiers;
-	UnitCombatModifierArray m_aUnitCombatRepelAgainstModifiers;
-	UnitCombatModifierArray m_aUnitCombatDefenseAgainstModifiers;
-	UnitCombatModifierArray m_aUnitCombatProdModifiers;
-	UnitCombatModifierArray m_aUnitCombatOngoingTrainingDurations;
-	IDValueMap<UnitCombatTypes, int> m_aUnitCombatExtraStrength;
-	IDValueMap<UnitTypes, int> m_aUnitProductionModifier;
+	std::vector<HealUnitCombat> m_aHealUnitCombatTypes;
+	std::vector<std::pair<BonusTypes, int> > m_aExtraFreeBonuses;
 	IDValueMap<BuildingTypes, int> m_aBuildingProductionModifier;
 	IDValueMap<BuildingTypes, int> m_aGlobalBuildingProductionModifier;
 	IDValueMap<BuildingTypes, int> m_aPrereqNumOfBuilding;
+	IDValueMap<BuildingTypes, int> m_aBuildingHappinessChanges;
+	IDValueMap<ReligionTypes, int> m_aReligionChange;
 	IDValueMap<TechTypes, int> m_aTechHappinessChanges;
 	IDValueMap<TechTypes, int> m_aTechHealthChanges;
-	IDValueMap<BuildingTypes, int> m_aBuildingHappinessChanges;
-	std::vector<std::pair<BonusTypes, int> > m_aExtraFreeBonuses;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatFreeExperience;
+#ifdef HEART_OF_WAR
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatRepelModifiers;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatRepelAgainstModifiers;
+#endif // HEART_OF_WAR
+#ifdef ONGOING_TRAINING
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatOngoingTrainingDurations;
+#endif // ONGOING_TRAINING
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatDefenseAgainstModifiers;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatProdModifiers;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatExtraStrength;
+	IDValueMap<UnitTypes, int> m_aUnitProductionModifier;
+	std::vector<BuildingCommerceChange> m_aGlobalBuildingCommerceChanges;
 
 	CvPropertyManipulators m_PropertyManipulators;
 

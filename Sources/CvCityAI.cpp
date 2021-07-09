@@ -4862,14 +4862,11 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 			}
 		}
 
-		for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
+		foreach_(const ReligionModifier& modifier, kBuilding.getReligionChanges())
 		{
-			if (kBuilding.getReligionChange(iI) > 0)
+			if (!kTeam.hasHolyCity(modifier.first))
 			{
-				if (!(kTeam.hasHolyCity((ReligionTypes)iI)))
-				{
-					return 0;
-				}
+				return 0;
 			}
 		}
 
@@ -4987,11 +4984,24 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 					//TB Note: Once we have improved methods of evaluating the value of a given combat class and an ability to evaluate the strength
 					//of a given combat class as it exists in volume among perceived or real enemies, we need to update the following to something
 					//more intricate and accurate.  These are just semi-sufficient patches 'for now'.
+					if (GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
+					{
+						foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatRepelModifiers())
+						{
+							iValue += modifier.second / 2;
+						}
+						foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatRepelAgainstModifiers())
+						{
+							iValue += modifier.second / 2;
+						}
+					}
+					foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatDefenseAgainstModifiers())
+					{
+						iValue += modifier.second / 2;
+					}
+
 					for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 					{
-						iValue += kBuilding.getUnitCombatRepelModifier(iI) / 2;
-						iValue += kBuilding.getUnitCombatRepelAgainstModifier(iI) / 2;
-						iValue += kBuilding.getUnitCombatDefenseAgainstModifier(iI) / 2;
 						if (kBuilding.isMayDamageAttackingUnitCombatType(iI))
 						{
 							iValue += (kBuilding.getDamageAttackerChance() * kBuilding.getDamageToAttacker()) / 4;
@@ -5171,18 +5181,22 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 
 					iValue += (kBuilding.getFreeExperience() * (bMetAnyCiv ? 12 : 6));
 
+					foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatFreeExperience())
+					{
+						if (canTrain(modifier.first))
+						{
+							iValue += (modifier.second * (bMetAnyCiv ? 6 : 3));
+						}
+					}
+
 					for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 					{
-						if (kBuilding.getUnitCombatFreeExperience((UnitCombatTypes)iI) != 0 && canTrain((UnitCombatTypes)iI))
-						{
-							iValue += (kBuilding.getUnitCombatFreeExperience((UnitCombatTypes)iI) * (bMetAnyCiv ? 6 : 3));
-						}
-
 						if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iI))
 						{
 							iValue += 20;
 						}
 
+#ifdef ONGOING_TRAINING
 						if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0)
 						{
 							int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(iI);
@@ -5192,6 +5206,7 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 								iValue = 10 * (20 - iDuration);
 							}
 						}
+#endif // ONGOING_TRAINING
 					}
 
 					for (int iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
@@ -5467,15 +5482,16 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 							{
 								iValue += 20;
 							}
-
+#ifdef ONGOING_TRAINING
 							if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0)
 							{
-								int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType);
+								const int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType);
 								if (iDuration > 0 && iDuration < getUnitCombatOngoingTrainingTimeIncrement(eCombatType))
 								{
 									iValue = 10 * (20 - iDuration);
 								}
 							}
+#endif // ONGOING_TRAINING
 						}
 					}
 
@@ -5742,9 +5758,9 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 
 					int iMilitaryProductionModifier = kBuilding.getMilitaryProductionModifier();
 
-					for (int iJ = 0; iJ < kBuilding.getNumUnitCombatProdModifiers(); iJ++)
+					foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatProdModifiers())
 					{
-						iMilitaryProductionModifier += kBuilding.getUnitCombatProdModifier(iJ) / 4;
+						iMilitaryProductionModifier += modifier.second / 4;
 					}
 					if (bMetAnyCiv && iMilitaryProductionModifier > 0)
 					{
@@ -6354,11 +6370,11 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 						}
 					}
 
-					for (int iI = 0; iI < GC.getNumReligionInfos(); iI++)
+					foreach_(const ReligionModifier& modifier, kBuilding.getReligionChanges())
 					{
-						if (kBuilding.getReligionChange(iI) > 0 && kTeam.hasHolyCity((ReligionTypes)iI))
+						if (kTeam.hasHolyCity(modifier.first))
 						{
-							iValue += (kBuilding.getReligionChange(iI) * ((eStateReligion == iI) ? 10 : 1));
+							iValue += (modifier.second * (eStateReligion == modifier.first ? 10 : 1));
 						}
 					}
 
@@ -13964,8 +13980,8 @@ int CvCityAI::AI_getPromotionValue(PromotionTypes ePromotion) const
 						break;
 					}
 				}
+				//TB SubCombat Mod End
 			}
-			//TB SubCombat Mod End
 
 			if (canTrain((UnitTypes)iI))
 			{
@@ -14490,9 +14506,11 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 			kBuilding.getHurryCostModifier() < 0 ||
 			kBuilding.getMilitaryProductionModifier() > 0 ||
 			kBuilding.getSpaceProductionModifier() > 0 ||
+#ifdef ONGOING_TRAINING
+			kBuilding.getNumUnitCombatProdModifiers() > 0 ||
+#endif // ONGOING_TRAINING
 			kBuilding.getGlobalSpaceProductionModifier() > 0 ||
-			kBuilding.getDomainProductionModifier(NO_DOMAIN) > 0 ||
-			kBuilding.getNumUnitCombatProdModifiers() > 0)
+			kBuilding.getDomainProductionModifier(NO_DOMAIN) > 0)
 		{
 			return true;
 		}
@@ -14582,14 +14600,14 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 			kBuilding.getLocalCaptureProbabilityModifier() > 0 ||
 			kBuilding.getLocalCaptureResistanceModifier() > 0 ||
 			kBuilding.getNationalCaptureResistanceModifier() > 0 ||
-			kBuilding.getNumUnitCombatRepelModifiers() > 0 ||
+			(GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR) && (!kBuilding.getUnitCombatRepelAgainstModifiers().empty() ||!kBuilding.getUnitCombatRepelModifiers().empty())) ||
 			kBuilding.getRiverDefensePenalty() < 0 ||
 			kBuilding.getLocalRepel() > 0 ||
 			kBuilding.getMinDefense() > 0 ||
 			kBuilding.getBuildingDefenseRecoverySpeedModifier() > 0 ||
 			kBuilding.getCityDefenseRecoverySpeedModifier() > 0 ||
-			kBuilding.getNumUnitCombatRepelAgainstModifiers() > 0 ||
-			kBuilding.getNumUnitCombatDefenseAgainstModifiers() > 0 ||
+			
+			!kBuilding.getUnitCombatDefenseAgainstModifiers().empty() ||
 			(kBuilding.getDamageAttackerChance() > 0 && kBuilding.getDamageToAttacker() > 0))
 		{
 			return true;
@@ -14653,7 +14671,7 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 		if (kBuilding.getFreeExperience() > 0 ||
 			kBuilding.getGlobalFreeExperience() > 0 ||
 			kBuilding.getFreePromotion() != NO_PROMOTION ||
-			kBuilding.getUnitCombatFreeExperience(NO_UNITCOMBAT) > 0 ||
+			!kBuilding.getUnitCombatFreeExperience().empty() ||
 			kBuilding.getDomainFreeExperience(NO_DOMAIN) > 0 ||
 			kBuilding.getFreePromotion_2() != NO_PROMOTION ||
 			kBuilding.getFreePromotion_3() != NO_PROMOTION ||
@@ -14662,8 +14680,10 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 			!kBuilding.getFreePromoTypes().empty() ||
 			kBuilding.getNumUnitCombatRetrainTypes() > 0 ||
 			kBuilding.getNationalCaptureProbabilityModifier() > 0 ||
+#ifdef ONGOING_TRAINING
 			kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0 ||
-			kBuilding.isAnyUnitCombatFreeExperience() ||
+#endif // ONGOING_TRAINING
+			!kBuilding.getUnitCombatFreeExperience().empty() ||
 			kBuilding.isAnyDomainFreeExperience())
 		{
 			return true;
@@ -15035,9 +15055,9 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 			}
 			if (bSkipBuilding) continue;
 
-			for (int iI = 0; iI < iNumReligions; iI++)
+			foreach_(const ReligionModifier& modifier, kBuilding.getReligionChanges())
 			{
-				if (kBuilding.getReligionChange(iI) > 0 && !team.hasHolyCity((ReligionTypes)iI))
+				if (!team.hasHolyCity(modifier.first))
 				{
 					bSkipBuilding = true;
 					break;
@@ -15192,11 +15212,25 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 				//TB Note: Once we have improved methods of evaluating the value of a given combat class and an ability to evaluate the strength
 				//of a given combat class as it exists in volume among perceived or real enemies, we need to update the following to something
 				//more intricate and accurate.  These are just semi-sufficient patches 'for now'.
+				if (GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR))
+				{
+					foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatRepelModifiers())
+					{
+						iValue += modifier.second / 2;
+					}
+					foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatRepelAgainstModifiers())
+					{
+						iValue += modifier.second / 2;
+					}
+				}
+
+				foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatDefenseAgainstModifiers())
+				{
+					iValue += modifier.second / 2;
+				}
+
 				for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 				{
-					iValue += kBuilding.getUnitCombatRepelModifier(iI) / 2;
-					iValue += kBuilding.getUnitCombatRepelAgainstModifier(iI) / 2;
-					iValue += kBuilding.getUnitCombatDefenseAgainstModifier(iI) / 2;
 					if (kBuilding.isMayDamageAttackingUnitCombatType(iI))
 					{
 						iValue += (kBuilding.getDamageAttackerChance() * kBuilding.getDamageToAttacker()) / 4;
@@ -15349,27 +15383,30 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 			}
 			{
 				PROFILE("CalculateAllBuildingValues.Experience");
-				int iValue = 0;
-				iValue += kBuilding.getFreeExperience() * (bMetAnyCiv ? 12 : 6);
+				int iValue = kBuilding.getFreeExperience() * (bMetAnyCiv ? 12 : 6);
+
+				foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatFreeExperience())
+				{
+					if (canTrain(modifier.first))
+					{
+						iValue += modifier.second * (bMetAnyCiv ? 6 : 3);
+					}
+				}
 
 				for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 				{
-					if (kBuilding.getUnitCombatFreeExperience((UnitCombatTypes)iI) != 0 && canTrain((UnitCombatTypes)iI))
-					{
-						iValue += kBuilding.getUnitCombatFreeExperience(iI) * (bMetAnyCiv ? 6 : 3);
-					}
-
 					if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iI))
 					{
 						iValue += 20;
 					}
-
+#ifdef ONGOING_TRAINING
 					if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0
 						&& kBuilding.getUnitCombatOngoingTrainingDuration(iI) > 0
 						&& kBuilding.getUnitCombatOngoingTrainingDuration(iI) < getUnitCombatOngoingTrainingTimeIncrement((UnitCombatTypes)iI))
 					{
 						iValue = (20 - kBuilding.getUnitCombatOngoingTrainingDuration(iI)) * 10;
 					}
+#endif // ONGOING_TRAINING
 				}
 
 				for (int iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
@@ -15652,23 +15689,25 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 				for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 				{
 					const CvUnitInfo& kUnitInfo = GC.getUnitInfo((UnitTypes)iI);
-					int iCombatType = kUnitInfo.getUnitCombatType();
+					const UnitCombatTypes eCombat = kUnitInfo.getUnitCombatType();
 
-					if (iCombatType != NO_UNITCOMBAT && kUnitInfo.getDomainType() == DOMAIN_SEA && canTrain((UnitTypes)iI))
+					if (eCombat != NO_UNITCOMBAT && kUnitInfo.getDomainType() == DOMAIN_SEA && canTrain((UnitTypes)iI))
 					{
-						iValue += kBuilding.getUnitCombatFreeExperience(iCombatType) * (bMetAnyCiv ? 6 : 3);
+						iValue += kBuilding.getUnitCombatFreeExperience(eCombat) * (bMetAnyCiv ? 6 : 3);
 
-						if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iCombatType))
+						if (kBuilding.isUnitCombatRetrainType(eCombat))
 						{
 							iValue += 20;
 						}
 
+#ifdef ONGOING_TRAINING
 						if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0
-							&& kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType) > 0
-							&& kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType) < getUnitCombatOngoingTrainingTimeIncrement((UnitCombatTypes)iCombatType))
+							&& kBuilding.getUnitCombatOngoingTrainingDuration(eCombat) > 0
+							&& kBuilding.getUnitCombatOngoingTrainingDuration(eCombat) < getUnitCombatOngoingTrainingTimeIncrement(eCombat))
 						{
-							iValue = (20 - kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType)) * 10;
+							iValue = (20 - kBuilding.getUnitCombatOngoingTrainingDuration(eCombat)) * 10;
 						}
+#endif // ONGOING_TRAINING
 					}
 				}
 
@@ -15943,9 +15982,9 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 
 				int iMilitaryProductionModifier = kBuilding.getMilitaryProductionModifier();
 
-				for (int iJ = 0; iJ < kBuilding.getNumUnitCombatProdModifiers(); iJ++)
+				foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatProdModifiers())
 				{
-					iMilitaryProductionModifier += kBuilding.getUnitCombatProdModifier(iJ) / 4;
+					iMilitaryProductionModifier += modifier.second / 4;
 				}
 
 				if (bMetAnyCiv && iMilitaryProductionModifier > 0)
@@ -16498,11 +16537,11 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 					}
 				}
 
-				for (int iI = 0; iI < iNumReligions; iI++)
+				foreach_(const ReligionModifier& modifier, kBuilding.getReligionChanges())
 				{
-					if (kBuilding.getReligionChange(iI) > 0 && team.hasHolyCity((ReligionTypes)iI))
+					if (team.hasHolyCity(modifier.first))
 					{
-						iValue += kBuilding.getReligionChange(iI) * (eStateReligion == iI ? 10 : 1);
+						iValue += modifier.second * (eStateReligion == modifier.first ? 10 : 1);
 					}
 				}
 

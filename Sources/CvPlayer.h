@@ -1331,7 +1331,9 @@ public:
 	void setPledgedSecretaryGeneralVote(TeamTypes eIndex);
 
 	int getUnitCombatFreeExperience(const UnitCombatTypes eIndex) const;
+private:
 	void changeUnitCombatFreeExperience(const UnitCombatTypes eIndex, const int iChange);
+public:
 
 	int getBuildingProductionModifier(const BuildingTypes eIndex) const;
 	void changeBuildingProductionModifier(const BuildingTypes eIndex, const int iChange);
@@ -1341,7 +1343,9 @@ public:
 	int getUnitProductionModifier(const UnitTypes eUnit) const;
 	void changeUnitProductionModifier(const UnitTypes eUnit, const int iChange);
 	int getUnitCombatProductionModifier(const UnitCombatTypes eIndex) const;
+private:
 	void changeUnitCombatProductionModifier(const UnitCombatTypes eIndex, const int iChange);
+public:
 
 	bool isAutomatedCanBuild(BuildTypes eBuild) const;
 	void setAutomatedCanBuild(BuildTypes eBuild, bool bNewValue);

@@ -15363,28 +15363,14 @@ bool CvUnit::hasCombatType(UnitCombatTypes eCombatType) const
 	{
 		return true;
 	}
-	// AIAndy: That loop could be removed if the unit type sub combat types get added to the extra sub combat type counts
-	for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
-	{
-		if (m_pUnitInfo->getSubCombatType(iI) == ((int)eCombatType))
-		{
-			return true;
-		}
-	}
-	return false;
+	// AIAndy - TODO: That loop could be removed if the unit type sub combat types get added to the extra sub combat type counts
+	return algo::contains(m_pUnitInfo->getSubCombatTypes(), eCombatType);
 }
 
 bool CvUnit::hasSubCombatType(UnitCombatTypes eCombatType) const
 {
-	bool bSubCombat = false;
-	for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
-	{
-		if (m_pUnitInfo->getSubCombatType(iI) == ((int)eCombatType))
-		{
-			bSubCombat = true;
-		}
-	}
-	if ((bSubCombat || hasExtraSubCombatType(eCombatType)) && m_pUnitInfo->getUnitCombatType() != eCombatType && !hasRemovesUnitCombatType(eCombatType))
+	if ((algo::contains(m_pUnitInfo->getSubCombatTypes(), eCombatType) || hasExtraSubCombatType(eCombatType))
+	&& m_pUnitInfo->getUnitCombatType() != eCombatType && !hasRemovesUnitCombatType(eCombatType))
 	{
 		return true;
 	}
@@ -21166,7 +21152,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
 			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
 			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif
+#endif // STRENGTH_IN_NUMBERS
 			promotionInfo.getDodgeModifierChange() != 0 ||
 			promotionInfo.getPrecisionModifierChange() != 0 ||
 			promotionInfo.getPowerShotsChange() != 0 ||
@@ -21197,7 +21183,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumHealUnitCombatChangeTypes() != 0 ||
 			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
 			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
@@ -21217,7 +21203,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			||	promotionInfo.getFlankSupportPercentChange() != 0
 			)
 		) return false;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 		return true;
 	}
 	// ! SUPER_SPIES
@@ -21275,7 +21261,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 		||	promotionInfo.getFlankSupportPercentChange() != 0
 		)
 	) return false;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	// Taken out of CvGameCoreUtils so that it could be looking at the final compiled max movement rather than just the unit base movement.
 /*
 	if (maxMoves() < 2 && promotionInfo.isBlitz())
@@ -21350,7 +21336,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
 			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
 			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif
+#endif // STRENGTH_IN_NUMBERS
 			promotionInfo.getDodgeModifierChange() != 0 ||
 			promotionInfo.getPrecisionModifierChange() != 0 ||
 			promotionInfo.getPowerShotsChange() != 0 ||
@@ -21381,7 +21367,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
 			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
 			promotionInfo.getCombatModifierPerVolumeMoreChange() != 0 ||
@@ -21433,7 +21419,7 @@ bool CvUnit::canAcquirePromotionAny() const
 
 	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 	{
-		PromotionTypes ePromotion = (PromotionTypes)iI;
+		const PromotionTypes ePromotion = (PromotionTypes)iI;
 /*
 		bool bEquip = GC.getPromotionInfo(ePromotion).isEquipment();
 		bool bAfflict = GC.getPromotionInfo(ePromotion).isAffliction();
@@ -21819,7 +21805,7 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 	{
 		changeExtraAidChange((PropertyTypes)iI, kUnitCombat.getAidChange(iI) * iChange);//no merge/split
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	changeExtraFrontSupportPercent(kUnitCombat.getFrontSupportPercentChange() * iChange);//no merge/split
 	changeExtraShortRangeSupportPercent(kUnitCombat.getShortRangeSupportPercentChange() * iChange);//no merge/split
@@ -21827,7 +21813,6 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 	changeExtraLongRangeSupportPercent(kUnitCombat.getLongRangeSupportPercentChange() * iChange);//no merge/split
 	changeExtraFlankSupportPercent(kUnitCombat.getFlankSupportPercentChange() * iChange);//no merge/split
 #endif // STRENGTH_IN_NUMBERS
-
 	changeExtraDodgeModifier(kUnitCombat.getDodgeModifierChange() * iChange);//no merge/split
 	changeExtraPrecisionModifier(kUnitCombat.getPrecisionModifierChange() * iChange);//no merge/split
 	changeExtraPowerShots(kUnitCombat.getPowerShotsChange() * iChange);//no merge/split
@@ -22148,7 +22133,7 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 		changeAfflictOnAttackTypeDistanceCount(((PromotionLineTypes)kUnitCombat.getAfflictOnAttackChangeType(iI).eAfflictionLine), kUnitCombat.getAfflictOnAttackChangeType(iI).iDistance * iChange);
 		changeAfflictOnAttackTypeImmediateCount(((PromotionLineTypes)kUnitCombat.getAfflictOnAttackChangeType(iI).eAfflictionLine), kUnitCombat.getAfflictOnAttackChangeType(iI).iImmediate * iChange);
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	if (bSM && bByPromo)
 	{
 		setSMValues();
@@ -22239,7 +22224,7 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 			setAfflictionHitCount(eIndex, 0);
 		}
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if (kPromotion.isParalyze() && bAdding)
 	{
@@ -22331,11 +22316,9 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	}
 
 	changeImmuneToFirstStrikesCount((kPromotion.isImmuneToFirstStrikes()) ? iChange : 0);
-
 	changeDefensiveVictoryMoveCount((kPromotion.isDefensiveVictoryMove()) ? iChange : 0);
 	changeFreeDropCount((kPromotion.isFreeDrop()) ? iChange : 0);
 	changeOffensiveVictoryMoveCount((kPromotion.isOffensiveVictoryMove()) ? iChange : 0);
-
 	changeOneUpCount((kPromotion.isOneUp()) ? iChange : 0);
 	changePillageEspionageCount((kPromotion.isPillageEspionage()) ? iChange : 0);
 	changePillageMarauderCount((kPromotion.isPillageMarauder()) ? iChange : 0);
@@ -22350,12 +22333,10 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	changeExtraDropRange((kPromotion.getExtraDropRange()) * iChange);
 	changeExtraNoDefensiveBonusCount((kPromotion.getNoDefensiveBonusChange()) * iChange);
 	changeExtraGatherHerdCount((kPromotion.getGatherHerdChange()) * iChange);
-
 	changeSurvivorChance((kPromotion.getSurvivorChance()) * iChange);
 	changeVictoryAdjacentHeal((kPromotion.getVictoryAdjacentHeal()) * iChange);
 	changeVictoryHeal((kPromotion.getVictoryHeal()) * iChange);
 	changeVictoryStackHeal((kPromotion.getVictoryStackHeal()) * iChange);
-
 	changeExtraVisibilityRange(kPromotion.getVisibilityChange() * iChange);
 	changeExtraMoves(kPromotion.getMovesChange() * iChange);
 	changeExtraMoveDiscount(kPromotion.getMoveDiscountChange() * iChange);
@@ -22375,10 +22356,8 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	changeExtraArmor(kPromotion.getArmorChange() * iChange);
 	changeExtraPuncture(kPromotion.getPunctureChange() * iChange);
 	changeExtraDamageModifier(kPromotion.getDamageModifierChange() * iChange);
-
 	changeExtraUpkeep100(kPromotion.getExtraUpkeep100() * iChange);
 	changeUpkeepModifier(kPromotion.getUpkeepModifier() * iChange);
-
 	changeExtraOverrun(kPromotion.getOverrunChange() * iChange);
 	changeExtraRepel(kPromotion.getRepelChange() * iChange);
 	changeExtraFortRepel(kPromotion.getFortRepelChange() * iChange);
@@ -22419,7 +22398,7 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	{
 		changeExtraAidChange((PropertyTypes)iI, kPromotion.getAidChange(iI) * iChange);
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	changeExtraFrontSupportPercent(kPromotion.getFrontSupportPercentChange() * iChange);
 	changeExtraShortRangeSupportPercent(kPromotion.getShortRangeSupportPercentChange() * iChange);
@@ -22584,7 +22563,7 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	{
 		changeUnitAfflictionTolerance(kPromotion.getPromotionLine(), GC.getPromotionLineInfo(kPromotion.getPromotionLine()).getToleranceBuildup() * iChange);
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if (kPromotion.isZoneOfControl())
 	{
@@ -22697,7 +22676,8 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	{
 		changeDistanceAttackCommunicability((PromotionLineTypes)kPromotion.getDistanceAttackCommunicabilityTypeChange(iI).eAfflictionLine, kPromotion.getDistanceAttackCommunicabilityTypeChange(iI).iChange * iChange);
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	const int numUnitCombatInfos = GC.getNumUnitCombatInfos();
 	for (iI = 0; iI < numUnitCombatInfos; iI++)
 	{
@@ -25945,13 +25925,10 @@ void CvUnit::flankingStrikeCombat(const CvPlot* pPlot, int iAttackerStrength, in
 		//TB Combat mod end
 		if (pUnit->isDead())
 		{
-			{
-
-				CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_KILLED_UNIT_BY_FLANKING", getNameKey(), pUnit->getNameKey(), pUnit->getVisualCivAdjective(getTeam()));
-				AddDLLMessage(getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), pPlot->getX(), pPlot->getY());
-				szBuffer = gDLL->getText("TXT_KEY_MISC_YOUR_UNIT_DIED_BY_FLANKING", pUnit->getNameKey(), getNameKey(), getVisualCivAdjective(pUnit->getTeam()));
-				AddDLLMessage(pUnit->getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), pPlot->getX(), pPlot->getY());
-			}
+			CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_KILLED_UNIT_BY_FLANKING", getNameKey(), pUnit->getNameKey(), pUnit->getVisualCivAdjective(getTeam()));
+			AddDLLMessage(getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), pPlot->getX(), pPlot->getY());
+			szBuffer = gDLL->getText("TXT_KEY_MISC_YOUR_UNIT_DIED_BY_FLANKING", pUnit->getNameKey(), getNameKey(), getVisualCivAdjective(pUnit->getTeam()));
+			AddDLLMessage(pUnit->getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), pPlot->getX(), pPlot->getY());
 
 			pUnit->kill(false, NO_PLAYER, true);
 		}
@@ -25964,7 +25941,6 @@ void CvUnit::flankingStrikeCombat(const CvPlot* pPlot, int iAttackerStrength, in
 
 	if (iNumUnitsHit > 0)
 	{
-
 		CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_DAMAGED_UNITS_BY_FLANKING", getNameKey(), iNumUnitsHit);
 		AddDLLMessage(getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitVictoryScript(), MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), pPlot->getX(), pPlot->getY());
 
@@ -26101,7 +26077,6 @@ bool CvUnit::airStrike(CvPlot* pPlot)//
 	int iUnitDamage = std::max(pDefender->getDamage(), std::min((pDefender->getDamage() + iDamage), airCombatLimit(pDefender)));
 
 	{
-
 		CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_YOU_ARE_ATTACKED_BY_AIR", pDefender->getNameKey(), getNameKey(), -(((iUnitDamage - pDefender->getDamage()) * 100) / pDefender->getMaxHP()));
 		AddDLLMessage(pDefender->getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_AIR_ATTACK", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_RED(), pPlot->getX(), pPlot->getY(), true, true);
 
@@ -26156,19 +26131,11 @@ bool CvUnit::airStrike(CvPlot* pPlot)//
 		pDefender->setColdDamage(iUnitDamage);
 	}
 	//TB Combat mod end
-/************************************************************************************************/
-/* Afforess	                  Start		 08/03/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	if (GC.getGame().isModderGameOption(MODDERGAMEOPTION_IMPROVED_XP))
 	{
 		setExperience100(getExperience100() + 25);
 	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
 
 	return true;
 }
@@ -29978,13 +29945,11 @@ void CvUnit::setCommander(bool bNewVal)
 
 		GET_PLAYER(getOwner()).Commanders.push_back(this);
 
-		for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
+		foreach_(const UnitCombatTypes eSubCombat, m_pUnitInfo->getSubCombatTypes())
 		{
-			const UnitCombatTypes eUnitCombat = (UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI);
-
-			if (GC.getUnitCombatInfo(eUnitCombat).getQualityBase() > -10)
+			if (GC.getUnitCombatInfo(eSubCombat).getQualityBase() > -10)
 			{
-				setHasUnitCombat(eUnitCombat, false);
+				setHasUnitCombat(eSubCombat, false);
 			}
 		}
 	}
@@ -35946,10 +35911,10 @@ void CvUnit::doSetUnitCombats()
 	bool bUpdated = false;
 	if (getUnitCombatType() != NO_UNITCOMBAT)
 	{
-		setHasUnitCombat(getUnitCombatType(),true);
-		for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
+		setHasUnitCombat(getUnitCombatType(), true);
+		foreach_(const UnitCombatTypes eSubCombat, m_pUnitInfo->getSubCombatTypes())
 		{
-			setHasUnitCombat((UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI),true);
+			setHasUnitCombat(eSubCombat, true);
 			bUpdated = true;
 		}
 	}

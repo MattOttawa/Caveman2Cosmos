@@ -183,10 +183,12 @@ bool BuildingFilterIsMilitary::isFilteredBuilding(const CvPlayer *pPlayer, CvCit
 		|| buildingInfo.getFreePromotion_2() != NO_PROMOTION
 		|| buildingInfo.getFreePromotion_3() != NO_PROMOTION
 		|| buildingInfo.getNumUnitCombatRetrainTypes() > 0
-		|| buildingInfo.getNumUnitCombatProdModifiers() > 0
+		|| !buildingInfo.getUnitCombatProdModifiers().empty()
 		|| !buildingInfo.getFreePromoTypes().empty()
-		|| buildingInfo.getNumUnitCombatOngoingTrainingDurations() > 0
-		|| buildingInfo.isAnyUnitCombatFreeExperience()
+#ifdef ONGOING_TRAINING
+		|| !buildingInfo.getUnitCombatOngoingTrainingDurations().empty()
+#endif // ONGOING_TRAINING
+		|| !buildingInfo.getUnitCombatFreeExperience().empty()
 		|| buildingInfo.isAnyDomainFreeExperience();
 }
 
@@ -215,7 +217,7 @@ bool BuildingFilterIsCityDefense::isFilteredBuilding(const CvPlayer *pPlayer, Cv
 		|| buildingInfo.getAllCityDefenseModifier() > 0
 		|| buildingInfo.getAdjacentDamagePercent() > 0
 		|| buildingInfo.getBombardDefenseModifier() > 0
-		|| buildingInfo.getNumUnitCombatRepelModifiers() > 0
+		|| (GC.getGame().isOption(GAMEOPTION_HEART_OF_WAR) && !buildingInfo.getUnitCombatRepelModifiers().empty())
 		|| buildingInfo.getLocalCaptureProbabilityModifier() > 0
 		|| buildingInfo.getLocalCaptureResistanceModifier() > 0
 		|| buildingInfo.getNationalCaptureResistanceModifier() > 0
@@ -224,8 +226,8 @@ bool BuildingFilterIsCityDefense::isFilteredBuilding(const CvPlayer *pPlayer, Cv
 		|| buildingInfo.getMinDefense() > 0
 		|| buildingInfo.getBuildingDefenseRecoverySpeedModifier() > 0
 		|| buildingInfo.getCityDefenseRecoverySpeedModifier() > 0
-		|| buildingInfo.getNumUnitCombatRepelAgainstModifiers() > 0
-		|| buildingInfo.getNumUnitCombatDefenseAgainstModifiers() > 0;
+		|| !buildingInfo.getUnitCombatRepelAgainstModifiers().empty()
+		|| !buildingInfo.getUnitCombatDefenseAgainstModifiers().empty();
 }
 
 bool BuildingFilterIsProperty::isFilteredBuilding(const CvPlayer *pPlayer, CvCity *pCity, BuildingTypes eBuilding) const

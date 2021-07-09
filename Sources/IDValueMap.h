@@ -160,6 +160,7 @@ private:
 
 typedef std::pair<BuildingTypes, int>	BuildingModifier2;
 typedef std::pair<ProjectTypes, int>	ProjectModifier;
+typedef std::pair<ReligionTypes, int>	ReligionModifier;
 typedef std::pair<TechTypes, int>		TechModifier;
 typedef std::pair<UnitTypes, int>		UnitModifier2;
 typedef std::pair<UnitCombatTypes, int> UnitCombatModifier2;

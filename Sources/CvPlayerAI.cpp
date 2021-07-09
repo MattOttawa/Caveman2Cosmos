@@ -884,11 +884,9 @@ void CvPlayerAI::AI_doTurnUnitsPost()
 							iCityExp += pPlotCity->getDomainFreeExperience(pLoopUnit->getDomainType());
 							iCityExp += pPlotCity->getUnitCombatFreeExperience(pLoopUnit->getUnitCombatType());
 							//TB SubCombat Mod Begin
-							UnitCombatTypes eSubCombatType;
-							for (int iI = 0; iI < pLoopUnit->getUnitInfo().getNumSubCombatTypes(); iI++)
+							foreach_(const UnitCombatTypes eSubCombat, pLoopUnit->getUnitInfo().getSubCombatTypes())
 							{
-								eSubCombatType = ((UnitCombatTypes)pLoopUnit->getUnitInfo().getSubCombatType(iI));
-								iCityExp += pPlotCity->getUnitCombatFreeExperience(eSubCombatType);
+								iCityExp += pPlotCity->getUnitCombatFreeExperience(eSubCombat);
 							}
 							//TB SubCombat Mod End
 
@@ -10846,27 +10844,23 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 		{
 			if (!bisNegativePropertyUnit && kUnitInfo.getCombat() > 0 && !kUnitInfo.isOnlyDefensive())
 			{
-				if (kUnitInfo.getInterceptionProbability() > 0 || kUnitInfo.getNumTargetUnits() > 0)
+				if (kUnitInfo.getInterceptionProbability() > 0
+				|| kUnitInfo.getNumTargetUnits() > 0
+				|| !kUnitInfo.getUnitAttackModifiers().empty())
 				{
 					bValid = true;
 					break;
 				}
-				for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+				foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
 				{
-					if (kUnitInfo.getUnitAttackModifier(iI) > 0)
+					if (modifier.second > 0)
 					{
 						bValid = true;
 						break;
 					}
 				}
-				for (iI = 0; !bValid && iI < numUnitCombatInfos; iI++)
+				for (iI = 0; !bValid && iI < GC.getNumUnitInfos(); iI++)
 				{
-					if (kUnitInfo.getUnitCombatModifier(iI) > 0)
-					{
-						bValid = true;
-						break;
-					}
-
 					if (kUnitInfo.getTargetUnitCombat(iI))
 					{
 						bValid = true;
@@ -10946,27 +10940,12 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 		{
 			if (kUnitInfo.getCombat() > 0 && !bisNegativePropertyUnit && !kUnitInfo.isNoDefensiveBonus())
 			{
-				if (kUnitInfo.getInterceptionProbability() > 0)
+				if (kUnitInfo.getInterceptionProbability() > 0
+				|| !kUnitInfo.getUnitDefenseModifiers().empty()
+				|| !kUnitInfo.getUnitCombatModifiers().empty())
 				{
 					bValid = true;
 					break;
-				}
-
-				for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
-				{
-					if (kUnitInfo.getUnitDefenseModifier(iI) > 0)
-					{
-						bValid = true;
-						break;
-					}
-				}
-				for (iI = 0; !bValid && iI < numUnitCombatInfos; iI++)
-				{
-					if (kUnitInfo.getUnitCombatModifier(iI) > 0)
-					{
-						bValid = true;
-						break;
-					}
 				}
 			}
 			break;
@@ -11235,18 +11214,11 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 				iValue = 0;
 				break;
 			}
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD					  06/12/09								jdog5000	  */
-	/*																							  */
-	/* Unit AI																					  */
-	/************************************************************************************************/
+
 			iFastMoverMultiplier = AI_isDoStrategy(AI_STRATEGY_FASTMOVERS) ? 3 : 1;
 
 			iValue += iCombatValue;
 			iValue += ((iCombatValue * (kUnitInfo.getMoves() - 1) * iFastMoverMultiplier) / 3); // K-Mod put in -1 !
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD					   END												  */
-	/************************************************************************************************/
 			iValue += ((iCombatValue * kUnitInfo.getWithdrawalProbability()) / 100);
 			if (kUnitInfo.getCombatLimit() < 100)
 			{
@@ -11294,9 +11266,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 			}
 
 			//	Combat modifiers matter for attack units
-			for (iI = 0; iI < numUnitCombatInfos; iI++)
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
 			{
-				iValue += ((iCombatValue * kUnitInfo.getUnitCombatModifier(iI) * AI_getUnitCombatWeight((UnitCombatTypes)iI)) / 10000);
+				iValue += ((iCombatValue * modifier.second * AI_getUnitCombatWeight(modifier.first)) / 10000);
 			}
 
 			break;
@@ -11549,12 +11521,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 			}
 			iValue += iCombatValue;
 			iValue += ((iCombatValue * kUnitInfo.getCollateralDamage()) / 200);
-			for (iI = 0; iI < numUnitCombatInfos; iI++)
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
 			{
-	//			int iCombatModifier = kUnitInfo.getUnitCombatModifier(iI);
-	//			iCombatModifier = (iCombatModifier < 40) ? iCombatModifier : (40 + (iCombatModifier - 40) / 2);
-	//			iValue += ((iCombatValue * iCombatModifier) / 100);
-				iValue += ((iCombatValue * kUnitInfo.getUnitCombatModifier(iI) * AI_getUnitCombatWeight((UnitCombatTypes)iI)) / 12000);
+				iValue += ((iCombatValue * modifier.second * AI_getUnitCombatWeight(modifier.first)) / 12000);
 			}
 			iValue += ((iCombatValue * kUnitInfo.getMoves()) / 2);
 			break;
@@ -11582,17 +11551,21 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 				break;
 			}
 			iValue += (iCombatValue / 2);
+
+			foreach_(const UnitModifier2& modifier, kUnitInfo.getUnitAttackModifiers())
+			{
+				iValue += ((iCombatValue * modifier.second * AI_getUnitWeight(modifier.first)) / 7500);
+			}
 			for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
 			{
-				iValue += ((iCombatValue * kUnitInfo.getUnitAttackModifier(iI) * AI_getUnitWeight((UnitTypes)iI)) / 7500);
 				iValue += ((iCombatValue * (kUnitInfo.isTargetUnit(iI) ? 50 : 0)) / 100);
+			}
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
+			{
+				iValue += ((iCombatValue * modifier.second * AI_getUnitCombatWeight(modifier.first)) / 10000);
 			}
 			for (iI = 0; iI < numUnitCombatInfos; iI++)
 			{
-	//			int iCombatModifier = kUnitInfo.getUnitCombatModifier(iI);
-	//			iCombatModifier = (iCombatModifier < 40) ? iCombatModifier : (40 + (iCombatModifier - 40) / 2);
-	//			iValue += ((iCombatValue * iCombatModifier) / 100);
-				iValue += ((iCombatValue * kUnitInfo.getUnitCombatModifier(iI) * AI_getUnitCombatWeight((UnitCombatTypes)iI)) / 10000);
 				iValue += ((iCombatValue * (kUnitInfo.getTargetUnitCombat(iI) ? 50 : 0)) / 100);
 			}
 			for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
@@ -11650,10 +11623,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 			/*iValue += AI_unitPropertyValue(eUnit)/(ePropertyRequested != NO_PROPERTY ? 30 : 60);*/
 			//	Combat modifiers matter for defensive units
 
-
-			for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
 			{
-				iTempValue = ((iCombatValue * kUnitInfo.getUnitCombatModifier(iI) * AI_getUnitCombatWeight((UnitCombatTypes)iI)) / 12000);
+				iTempValue = ((iCombatValue * modifier.second * AI_getUnitCombatWeight(modifier.first)) / 12000);
 				iValue += iTempValue;
 			}
 
@@ -11696,10 +11668,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 			/*iValue += AI_unitPropertyValue(eUnit)/(ePropertyRequested != NO_PROPERTY ? 30 : 60);*/
 			//	Combat modifiers matter for defensive units
 
-
-			for (iI = 0; iI < numUnitCombatInfos; iI++)
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
 			{
-				iTempValue = ((iCombatValue * kUnitInfo.getUnitCombatModifier(iI) * AI_getUnitCombatWeight((UnitCombatTypes)iI)) / 6000);
+				iTempValue = ((iCombatValue * modifier.second * AI_getUnitCombatWeight(modifier.first)) / 6000);
 				iValue += iTempValue;
 			}
 			//  ls612: consider that a unit with OnlyDefensive is less useful
@@ -11754,22 +11725,23 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 			iValue += (iCombatValue / 2);
 			iValue += ((iCombatValue * kUnitInfo.getCityDefenseModifier()) / 100);
 			iValue /= (kUnitInfo.isOnlyDefensive() ? 2 : 1);
+			foreach_(const UnitModifier2& modifier, kUnitInfo.getUnitAttackModifiers())
+			{
+				iValue += ((iCombatValue * modifier.second * AI_getUnitWeight(modifier.first)) / 10000);
+			}
 			for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
 			{
-				iValue += ((iCombatValue * kUnitInfo.getUnitAttackModifier(iI) * AI_getUnitWeight((UnitTypes)iI)) / 10000);
 				iValue += ((iCombatValue * (kUnitInfo.isDefendAgainstUnit(iI) ? 50 : 0)) / 100);
+			}
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
+			{
+				iValue += ((iCombatValue * modifier.second * AI_getUnitCombatWeight(modifier.first)) / 10000);
 			}
 			for (iI = 0; iI < numUnitCombatInfos; iI++)
 			{
-				iValue += ((iCombatValue * kUnitInfo.getUnitCombatModifier(iI) * AI_getUnitCombatWeight((UnitCombatTypes)iI)) / 10000);
 				iValue += ((iCombatValue * (kUnitInfo.getDefenderUnitCombat(iI) ? 50 : 0)) / 100);
 			}
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD					  03/20/10								jdog5000	  */
-	/*																							  */
-	/* War strategy AI																			  */
-	/************************************************************************************************/
-			//iValue += (kUnitInfo.getInterceptionProbability() * 3);
+
 			if( kUnitInfo.getInterceptionProbability() > 0 )
 			{
 				int iTempValue = kUnitInfo.getInterceptionProbability();
@@ -12093,9 +12065,9 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 					iValue ++;
 				}
 			}
-			for (iI = 0; iI < numUnitCombatInfos; iI++)
+			foreach_(const UnitCombatModifier2& modifier, kUnitInfo.getUnitCombatModifiers())
 			{
-				int iCombatModifier = kUnitInfo.getUnitCombatModifier(iI);
+				const int iCombatModifier = modifier.second;
 				if (iCombatModifier < 0)
 				{
 					iValue *= (iCombatModifier + 100);
@@ -32297,8 +32269,6 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 					iTempValue += iTerrainWeight/250;
 				}
 			}
-//Team Project (4)
-	//WorkRateMod
 			//ls612: Terrain work Modifiers //TB Edited for WorkRateMod (THANK you for thinking this out ls!)
 			iTemp = kPromotion.getTerrainWorkPercent(iI);
 			if (iTemp != 0)
@@ -32536,8 +32506,6 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 				}
 			}
 
-//Team Project (4)
-	//WorkRateMod
 			//ls612: Terrain Work Modifiers //TB Edited for WorkRateMod (THANK you for thinking this out ls!)
 			iTemp = kPromotion.getFeatureWorkPercent(iI);
 			if (iTemp != 0)
@@ -32592,11 +32560,11 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 		}
 		if (hasCombat)
 		{
-			iSameCombat += pUnit == NULL ? kUnit.getUnitCombatModifier(iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
+			iSameCombat += pUnit == NULL ? kUnit.getUnitCombatModifier((UnitCombatTypes)iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
 		}
 		else
 		{
-			iOtherCombat += pUnit == NULL ? kUnit.getUnitCombatModifier(iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
+			iOtherCombat += pUnit == NULL ? kUnit.getUnitCombatModifier((UnitCombatTypes)iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
 		}
 	}
 
@@ -32633,7 +32601,7 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 			else
 			{
 				//fighting other kinds
-				if ((pUnit != NULL && pUnit->unitCombatModifier((UnitCombatTypes)iI) > 10) || (pUnit == NULL && kUnit.getUnitCombatModifier(iI) > 10))
+				if ((pUnit != NULL && pUnit->unitCombatModifier((UnitCombatTypes)iI) > 10) || (pUnit == NULL && kUnit.getUnitCombatModifier((UnitCombatTypes)iI) > 10))
 				{
 					iCombatWeight = 70;//"spearman takes formation"
 				}
@@ -37046,11 +37014,11 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 	{
 		if (hasCombat)
 		{
-			iSameCombat += pUnit == NULL ? kUnit.getUnitCombatModifier(iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
+			iSameCombat += pUnit == NULL ? kUnit.getUnitCombatModifier((UnitCombatTypes)iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
 		}
 		else
 		{
-			iOtherCombat += pUnit == NULL ? kUnit.getUnitCombatModifier(iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
+			iOtherCombat += pUnit == NULL ? kUnit.getUnitCombatModifier((UnitCombatTypes)iI) : pUnit->unitCombatModifier((UnitCombatTypes)iI);
 		}
 	}
 
@@ -37077,7 +37045,7 @@ int CvPlayerAI::AI_unitCombatValue(UnitCombatTypes eUnitCombat, UnitTypes eUnit,
 				else
 				{
 					//fighting other kinds
-					if ((pUnit != NULL && pUnit->unitCombatModifier((UnitCombatTypes)iJ) > 10) || (pUnit == NULL && kUnit.getUnitCombatModifier(iJ) > 10))
+					if ((pUnit != NULL && pUnit->unitCombatModifier((UnitCombatTypes)iJ) > 10) || (pUnit == NULL && kUnit.getUnitCombatModifier((UnitCombatTypes)iJ) > 10))
 					{
 						iCombatWeight = 70;//"spearman takes formation"
 					}

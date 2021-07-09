@@ -139,6 +139,7 @@ DECLARE_FLAGS(ECacheAccess::flags);
 // Feature macros
 //
 #define OUTBREAKS_AND_AFFLICTIONS
+#define HEART_OF_WAR
 // #define BATTLEWORN
 // #define STRENGTH_IN_NUMBERS
 // #define GLOBAL_WARMING
