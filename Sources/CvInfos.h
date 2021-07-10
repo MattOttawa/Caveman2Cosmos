@@ -853,13 +853,8 @@ public:
 	int getNumRemovesUnitCombatTypes() const;
 	bool isRemovesUnitCombatType(int i) const;
 
-	int getOnGameOption(int i) const;
-	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
-
-	int getNotOnGameOption(int i) const;
-	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
+	const std::vector<GameOptionTypes>& getOnGameOptions() const	{ return m_aiOnGameOptions; }
+	const std::vector<GameOptionTypes>& getNotOnGameOptions() const	{ return m_aiNotOnGameOptions; }
 
 	int getFreetoUnitCombat(int i) const;
 	int getNumFreetoUnitCombats() const;
@@ -882,12 +877,12 @@ public:
 	bool isMapType(int i) const;
 	const std::vector<int>& getMapTypes() const { return m_aiMapTypes; }
 
-	// bool vector with delayed resolution
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getCureAfflictionChangeType(int i) const;
 	int getNumCureAfflictionChangeTypes() const;
 	bool isCureAfflictionChangeType(int i) const;
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	int getPrereqBonusType(int i) const;
 	int getNumPrereqBonusTypes() const;
 	bool isPrereqBonusType(int i) const;
@@ -1000,9 +995,8 @@ public:
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
 	bool isAidChange(int iProperty) const;
-#endif
-	//Team Project (4)
-	//WorkRateMod
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	int getNumTerrainWorkRateModifierChangeTypes() const;
 	int getTerrainWorkRateModifierChangeType(int iTerrain) const;
 	bool isTerrainWorkRateModifierChangeType(int iTerrain) const;
@@ -1036,7 +1030,8 @@ public:
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	int getNumHealUnitCombatChangeTypes() const;
 	const HealUnitCombat& getHealUnitCombatChangeType(int iUnitCombat) const;
 
@@ -1353,17 +1348,16 @@ protected:
 	//bool m_bAnyAIWeightbyUnitCombat;
 	//Arrays
 	//int* m_piAIWeightbyUnitCombatTypes;
-	// bool vectors without delayed resolution
+
 	std::vector<int> m_aiSubCombatChangeTypes;
 	std::vector<int> m_aiRemovesUnitCombatTypes;
-	std::vector<int> m_aiOnGameOptions;
-	std::vector<int> m_aiNotOnGameOptions;
+	std::vector<GameOptionTypes> m_aiOnGameOptions;
+	std::vector<GameOptionTypes> m_aiNotOnGameOptions;
 	std::vector<int> m_aiFreetoUnitCombats;
 	std::vector<int> m_aiNotOnUnitCombatTypes;
 	std::vector<int> m_aiNotOnDomainTypes;
 	std::vector<int> m_aiNoAutoEquiptoCombatClassTypes;
 	std::vector<int> m_aiMapTypes;
-	// bool vector with delayed resolution
 	std::vector<int> m_aiPrereqBonusTypes;
 	std::vector<int> m_aiAddsBuildTypes;
 	std::vector<int> m_aiNegatesInvisibilityTypes;
@@ -5777,16 +5771,9 @@ public:
 	bool isFreedomFighter() const;
 	bool isValidTrait(bool bGameStart=false) const;
 
-	// bool vector without delayed resolution
-	int getNotOnGameOption(int i) const;
-	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
+	const std::vector<GameOptionTypes>& getOnGameOptions() const	{ return m_aiOnGameOptions; }
+	const std::vector<GameOptionTypes>& getNotOnGameOptions() const	{ return m_aiNotOnGameOptions; }
 
-	int getOnGameOption(int i) const;
-	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
-
-	//Arrays
 	int getSpecialistYieldChange(int i, int j) const;
 	int* getSpecialistYieldChangeArray(int i) const;
 	bool isAnySpecialistYieldChanges() const { return m_ppaiSpecialistYieldChange != NULL; }
@@ -6025,9 +6012,9 @@ protected:
 	bool m_bAllReligionsActive;
 	bool m_bBansNonStateReligions;
 	bool m_bFreedomFighter;
-	// bool vector without delayed resolution
-	std::vector<int> m_aiNotOnGameOptions;
-	std::vector<int> m_aiOnGameOptions;
+
+	std::vector<GameOptionTypes> m_aiNotOnGameOptions;
+	std::vector<GameOptionTypes> m_aiOnGameOptions;
 	//Arrays
 	int** m_ppaiSpecialistYieldChange;
 	int* m_piYieldModifier;
@@ -6041,7 +6028,6 @@ protected:
 	int* m_paiLessYieldThreshold;
 	int* m_piSeaPlotYieldChanges;
 	int** m_ppaiImprovementYieldChange;
-	//Team Project (7)
 	int* m_piGoldenAgeYieldChanges;
 	int* m_piGoldenAgeCommerceChanges;
 	//Arrays for Pure Traits
@@ -7708,14 +7694,8 @@ public:
 	const char* getPythonCanDoCity() const;
 	const char* getPythonCanDoUnit() const;
 
-	// bool vector without delayed resolution
-	int getNotOnGameOption(int i) const;
-	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
-
-	int getOnGameOption(int i) const;
-	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
+	const std::vector<GameOptionTypes>& getOnGameOptions() const	{ return m_aiOnGameOptions; }
+	const std::vector<GameOptionTypes>& getNotOnGameOptions() const	{ return m_aiNotOnGameOptions; }
 
 	bool read(CvXMLLoadUtility* pXML);
 
@@ -7806,9 +7786,8 @@ private:
 	CvString m_szPythonCanDoCity;
 	CvString m_szPythonCanDoUnit;
 
-	// bool vector without delayed resolution
-	std::vector<int> m_aiNotOnGameOptions;
-	std::vector<int> m_aiOnGameOptions;
+	std::vector<GameOptionTypes> m_aiNotOnGameOptions;
+	std::vector<GameOptionTypes> m_aiOnGameOptions;
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -8502,13 +8481,8 @@ public:
 	int getNumNotOnDomainTypes() const;
 	bool isNotOnDomainType(int i) const;
 
-	int getOnGameOption(int i) const;
-	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
-
-	int getNotOnGameOption(int i) const;
-	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
+	const std::vector<GameOptionTypes>& getOnGameOptions() const	{ return m_aiOnGameOptions; }
+	const std::vector<GameOptionTypes>& getNotOnGameOptions() const	{ return m_aiNotOnGameOptions; }
 
 	int getCriticalOriginCombatClassType(int i) const;
 	int getNumCriticalOriginCombatClassTypes() const;
@@ -8578,8 +8552,8 @@ protected:
 	std::vector<int> m_aiUnitCombatPrereqTypes;
 	std::vector<int> m_aiNotOnUnitCombatTypes;
 	std::vector<int> m_aiNotOnDomainTypes;
-	std::vector<int> m_aiOnGameOptions;
-	std::vector<int> m_aiNotOnGameOptions;
+	std::vector<GameOptionTypes> m_aiOnGameOptions;
+	std::vector<GameOptionTypes> m_aiNotOnGameOptions;
 	std::vector<int> m_aiCriticalOriginCombatClassTypes;
 	std::vector<int> m_aiPromotions;
 	std::vector<int> m_aiBuildings;
@@ -8823,13 +8797,8 @@ public:
 	int getNumFeatureDoubleMoveChangeTypes() const;
 	bool isFeatureDoubleMoveChangeType(int i) const;
 
-	int getOnGameOption(int i) const;
-	int getNumOnGameOptions() const;
-	bool isOnGameOption(int i) const;
-
-	int getNotOnGameOption(int i) const;
-	int getNumNotOnGameOptions() const;
-	bool isNotOnGameOption(int i) const;
+	const std::vector<GameOptionTypes>& getOnGameOptions() const	{ return m_aiOnGameOptions; }
+	const std::vector<GameOptionTypes>& getNotOnGameOptions() const	{ return m_aiNotOnGameOptions; }
 
 	int getGGptsforUnitType(int i) const;
 	int getNumGGptsforUnitTypes() const;
@@ -9172,8 +9141,8 @@ protected:
 	std::vector<int> m_aiTerrainIgnoreDamageChangeTypes;
 	std::vector<int> m_aiTerrainDoubleMoveChangeTypes;
 	std::vector<int> m_aiFeatureDoubleMoveChangeTypes;
-	std::vector<int> m_aiOnGameOptions;
-	std::vector<int> m_aiNotOnGameOptions;
+	std::vector<GameOptionTypes> m_aiOnGameOptions;
+	std::vector<GameOptionTypes> m_aiNotOnGameOptions;
 	std::vector<int> m_aiGGptsforUnitTypes;
 	std::vector<int> m_aiDefaultStatusTypes;
 	std::vector<int> m_aiTrapImmunityUnitCombatTypes;
@@ -9184,9 +9153,6 @@ protected:
 	InvisibilityArray m_aInvisibilityIntensityChangeTypes;
 	InvisibilityArray m_aVisibilityIntensityRangeChangeTypes;
 	InvisibilityArray m_aVisibilityIntensitySameTileChangeTypes;
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-	AidArray m_aAidChanges;
-#endif
 	// int vector utilizing struct with delayed resolution
 	std::vector<TerrainModifier> m_aTerrainAttackChangeModifiers;
 	std::vector<TerrainModifier> m_aTerrainDefenseChangeModifiers;
@@ -9213,6 +9179,7 @@ protected:
 	std::vector<PromotionLineModifier> m_aAfflictionFortitudeChangeModifiers;
 	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
 	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
+	AidArray m_aAidChanges;
 #endif // OUTBREAKS_AND_AFFLICTIONS
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
 	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;

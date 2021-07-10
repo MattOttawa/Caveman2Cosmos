@@ -10464,22 +10464,16 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_CIVILIZATION"));
 		}
 		//On Game Option denotation
-		for (int i = 0; i < NUM_GAMEOPTION_TYPES; i++)
+		foreach_(const GameOptionTypes eOption, GC.getTraitInfo(eTrait).getOnGameOptions())
 		{
-			if (GC.getTraitInfo(eTrait).isOnGameOption(i))
-			{
-				szHelpString.append(NEWLINE);
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_ON_GAME_OPTION", GC.getGameOptionInfo((GameOptionTypes)i).getDescription()));
-			}
+			szHelpString.append(NEWLINE);
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_ON_GAME_OPTION", GC.getGameOptionInfo(eOption).getDescription()));
 		}
 		//Not On Game Option denotation
-		for (int i = 0; i < NUM_GAMEOPTION_TYPES; i++)
+		foreach_(const GameOptionTypes eOption, GC.getTraitInfo(eTrait).getNotOnGameOptions())
 		{
-			if (GC.getTraitInfo(eTrait).isNotOnGameOption(i))
-			{
-				szHelpString.append(NEWLINE);
-				szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_NOT_ON_GAME_OPTION", GC.getGameOptionInfo((GameOptionTypes)i).getDescription()));
-			}
+			szHelpString.append(NEWLINE);
+			szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_NOT_ON_GAME_OPTION", GC.getGameOptionInfo(eOption).getDescription()));
 		}
 
 		//Leaderhead Levelup option prereq notations

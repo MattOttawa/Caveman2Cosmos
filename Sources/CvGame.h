@@ -910,9 +910,27 @@ public:
 	CvProperties* getProperties();
 	const CvProperties* getPropertiesConst() const;
 
-	bool isValidByGameOption(const CvUnitCombatInfo& info) const;
-
 	void enforceOptionCompatibility(GameOptionTypes eOption);
+
+	template <class T>
+	bool isValidByGameOption(const T& info) const
+	{
+		foreach_(const GameOptionTypes eOption, info.getNotOnGameOptions())
+		{
+			if (isOption(eOption))
+			{
+				return false;
+			}
+		}
+		foreach_(const GameOptionTypes eOption, info.getOnGameOptions())
+		{
+			if (!isOption(eOption))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 };
 
 #define CURRENT_MAP GC.getGame().getCurrentMap()

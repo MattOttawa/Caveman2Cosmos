@@ -21101,38 +21101,15 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 		)
 		return false;
 
-	//Disable via NotOnGameOption tag:
-	for (int iI = 0; iI < promotionInfo.getNumNotOnGameOptions(); iI++)
+	if (!GC.getGame().isValidByGameOption(promotionInfo))
 	{
-		if (GC.getGame().isOption((GameOptionTypes)promotionInfo.getNotOnGameOption(iI)))
-		{
-			return false;
-		}
-	}
-	for (int iI = 0; iI < promotionInfo.getNumOnGameOptions(); iI++)
-	{
-		if (!GC.getGame().isOption((GameOptionTypes)promotionInfo.getOnGameOption(iI)))
-		{
-			return false;
-		}
+		return false;
 	}
 
-	if (promotionInfo.getPromotionLine() != NO_PROMOTIONLINE)
+	if (promotionInfo.getPromotionLine() != NO_PROMOTIONLINE
+	&& !GC.getGame().isValidByGameOption(GC.getPromotionLineInfo(promotionInfo.getPromotionLine())))
 	{
-		for (int iI = 0; iI < GC.getPromotionLineInfo(promotionInfo.getPromotionLine()).getNumNotOnGameOptions(); iI++)
-		{
-			if (GC.getGame().isOption((GameOptionTypes)GC.getPromotionLineInfo(promotionInfo.getPromotionLine()).getNotOnGameOption(iI)))
-			{
-				return false;
-			}
-		}
-		for (int iI = 0; iI < GC.getPromotionLineInfo(promotionInfo.getPromotionLine()).getNumNotOnGameOptions(); iI++)
-		{
-			if (!GC.getGame().isOption((GameOptionTypes)GC.getPromotionLineInfo(promotionInfo.getPromotionLine()).getNotOnGameOption(iI)))
-			{
-				return false;
-			}
-		}
+		return false;
 	}
 
 	// SUPER_SPIES
@@ -21170,7 +21147,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
 			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
 			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif
+#endif // STRENGTH_IN_NUMBERS
 			promotionInfo.getDodgeModifierChange() != 0 ||
 			promotionInfo.getPrecisionModifierChange() != 0 ||
 			promotionInfo.getPowerShotsChange() != 0 ||
@@ -21201,7 +21178,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumHealUnitCombatChangeTypes() != 0 ||
 			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
 			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
@@ -21221,7 +21198,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			||	promotionInfo.getFlankSupportPercentChange() != 0
 			)
 		) return false;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 		return true;
 	}
 	// ! SUPER_SPIES
@@ -21279,7 +21256,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 		||	promotionInfo.getFlankSupportPercentChange() != 0
 		)
 	) return false;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	// Taken out of CvGameCoreUtils so that it could be looking at the final compiled max movement rather than just the unit base movement.
 /*
 	if (maxMoves() < 2 && promotionInfo.isBlitz())
@@ -21354,7 +21331,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
 			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
 			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif
+#endif // STRENGTH_IN_NUMBERS
 			promotionInfo.getDodgeModifierChange() != 0 ||
 			promotionInfo.getPrecisionModifierChange() != 0 ||
 			promotionInfo.getPowerShotsChange() != 0 ||
@@ -21385,7 +21362,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
 			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
 			promotionInfo.getCombatModifierPerVolumeMoreChange() != 0 ||

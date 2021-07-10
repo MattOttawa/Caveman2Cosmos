@@ -11815,24 +11815,6 @@ void CvGame::changeImprovementCount(ImprovementTypes eIndex, int iChange)
 	FASSERT_NOT_NEGATIVE(getImprovementCount(eIndex))
 }
 
-bool CvGame::isValidByGameOption(const CvUnitCombatInfo& info) const
-{
-	for (int iI = 0; iI < info.getNumNotOnGameOptions(); iI++)
-	{
-		if (isOption((GameOptionTypes) info.getNotOnGameOption(iI)))
-		{
-			return false;
-		}
-	}
-	for (int iI = 0; iI < info.getNumOnGameOptions(); iI++)
-	{
-		if (!isOption((GameOptionTypes) info.getOnGameOption(iI)))
-		{
-			return false;
-		}
-	}
-	return true;
-}
 
 int CvGame::SorenRand::operator()(const int maxVal) const
 {
