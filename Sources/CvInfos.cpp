@@ -3160,7 +3160,7 @@ int CvPromotionInfo::getFlankSupportPercentChange() const
 	}
 	return m_iFlankSupportPercentChange;
 }
-#endif
+#endif // STRENGTH_IN_NUMBERS
 
 int CvPromotionInfo::getDodgeModifierChange() const
 {
@@ -3697,46 +3697,6 @@ bool CvPromotionInfo::isRemovesUnitCombatType(int i) const
 {
 	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
 	if (find(m_aiRemovesUnitCombatTypes.begin(), m_aiRemovesUnitCombatTypes.end(), i) == m_aiRemovesUnitCombatTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvPromotionInfo::getOnGameOption(int i) const
-{
-	return m_aiOnGameOptions[i];
-}
-
-int CvPromotionInfo::getNumOnGameOptions() const
-{
-	return (int)m_aiOnGameOptions.size();
-}
-
-bool CvPromotionInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvPromotionInfo::getNotOnGameOption(int i) const
-{
-	return m_aiNotOnGameOptions[i];
-}
-
-int CvPromotionInfo::getNumNotOnGameOptions() const
-{
-	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvPromotionInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
 	{
 		return false;
 	}
@@ -6057,23 +6017,8 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 		}
 	}
 
-	if (getNumOnGameOptions() == 0)
-	{
-		m_aiOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumOnGameOptions(); i++)
-		{
-			m_aiOnGameOptions.push_back(pClassInfo->getOnGameOption(i));
-		}
-	}
-
-	if (getNumNotOnGameOptions() == 0)
-	{
-		m_aiNotOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnGameOptions(); i++)
-		{
-			m_aiNotOnGameOptions.push_back(pClassInfo->getNotOnGameOption(i));
-		}
-	}
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->getOnGameOptions());
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->getNotOnGameOptions());
 
 	if (getNumFreetoUnitCombats() == 0)
 	{
@@ -22276,7 +22221,6 @@ bool CvTraitInfo::isExtraGoody() const
 	return m_bExtraGoody;
 }
 
-//Team Project (5)
 bool CvTraitInfo::isAllReligionsActive() const
 {
 	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
@@ -22313,56 +22257,11 @@ bool CvTraitInfo::isFreedomFighter() const
 	return m_bFreedomFighter;
 }
 
-// bool vector without delayed resolution
-int CvTraitInfo::getNotOnGameOption(int i) const
-{
-	return m_aiNotOnGameOptions[i];
-}
-
-int CvTraitInfo::getNumNotOnGameOptions() const
-{
-	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvTraitInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvTraitInfo::getOnGameOption(int i) const
-{
-	return m_aiOnGameOptions[i];
-}
-
-int CvTraitInfo::getNumOnGameOptions() const
-{
-	return (int)m_aiOnGameOptions.size();
-}
-
-bool CvTraitInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 bool CvTraitInfo::isValidTrait(bool bGameStart) const
 {
-	for (int iI = 0; iI < GC.getNumGameOptionInfos(); iI++)
+	if (!GC.getGame().isValidByGameOption(*this))
 	{
-		if (GC.getGame().isOption((GameOptionTypes)iI))
-		{
-			if (isNotOnGameOption(iI)) return false;
-		}
-		else if (isOnGameOption(iI)) return false;
+		return false;
 	}
 
 	if (bGameStart && isBarbarianSelectionOnly())
@@ -24763,24 +24662,9 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo)
 	if (isBansNonStateReligions() == bDefault) m_bBansNonStateReligions = pClassInfo->isBansNonStateReligions();
 	if (isFreedomFighter() == bDefault) m_bFreedomFighter = pClassInfo->isFreedomFighter();
 
-	// bool vector without delayed resolution
-	if (getNumNotOnGameOptions() == 0)
-	{
-		m_aiNotOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnGameOptions(); i++)
-		{
-			m_aiNotOnGameOptions.push_back(pClassInfo->getNotOnGameOption(i));
-		}
-	}
-	if (getNumOnGameOptions() == 0)
-	{
-		m_aiOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumOnGameOptions(); i++)
-		{
-			m_aiOnGameOptions.push_back(pClassInfo->getOnGameOption(i));
-		}
-	}
-	//Arrays
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->getOnGameOptions());
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->getNotOnGameOptions());
+
 	for ( int i = 0; i < GC.getNumSpecialistInfos(); i++)	// "Init2DIntList" verify method
 	{
 		for ( int j = 0; j < NUM_YIELD_TYPES; j++)
@@ -24963,7 +24847,6 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo)
 			m_piSpecialistExtraCommerceFiltered[i] = pClassInfo->getSpecialistExtraCommerce(i);
 		}
 
-//Team Project (7)
 		if ( m_piGoldenAgeCommerceChanges[i] == iDefault )
 		{
 			m_piGoldenAgeCommerceChanges[i] = pClassInfo->getGoldenAgeCommerceChanges(i);
@@ -29782,47 +29665,6 @@ const char* CvEventTriggerInfo::getPythonCanDoUnit() const
 	return m_szPythonCanDoUnit;
 }
 
-// bool vector without delayed resolution
-int CvEventTriggerInfo::getNotOnGameOption(int i) const
-{
-	return m_aiNotOnGameOptions[i];
-}
-
-int CvEventTriggerInfo::getNumNotOnGameOptions() const
-{
-	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvEventTriggerInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvEventTriggerInfo::getOnGameOption(int i) const
-{
-	return m_aiOnGameOptions[i];
-}
-
-int CvEventTriggerInfo::getNumOnGameOptions() const
-{
-	return (int)m_aiOnGameOptions.size();
-}
-
-bool CvEventTriggerInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
 //TBSpot
 void CvEventTriggerInfo::getCheckSum(unsigned int& iSum) const
 {
@@ -30361,23 +30203,9 @@ void CvEventTriggerInfo::copyNonDefaults(const CvEventTriggerInfo* pClassInfo)
 	if (getPythonCanDo() == cDefault) m_szPythonCanDo = pClassInfo->getPythonCanDo();
 	if (getPythonCanDoCity() == cDefault) m_szPythonCanDoCity = pClassInfo->getPythonCanDoCity();
 	if (getPythonCanDoUnit() == cDefault) m_szPythonCanDoUnit = pClassInfo->getPythonCanDoUnit();
-	// bool vector without delayed resolution
-	if (getNumNotOnGameOptions() == 0)
-	{
-		m_aiNotOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnGameOptions(); i++)
-		{
-			m_aiNotOnGameOptions.push_back(pClassInfo->getNotOnGameOption(i));
-		}
-	}
-	if (getNumOnGameOptions() == 0)
-	{
-		m_aiOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumOnGameOptions(); i++)
-		{
-			m_aiOnGameOptions.push_back(pClassInfo->getOnGameOption(i));
-		}
-	}
+
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->getOnGameOptions());
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->getNotOnGameOptions());
 }
 
 
@@ -33889,23 +33717,8 @@ void CvPromotionLineInfo::copyNonDefaults(const CvPromotionLineInfo* pClassInfo)
 		}
 	}
 
-	if (getNumOnGameOptions() == 0)
-	{
-		m_aiOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumOnGameOptions(); i++)
-		{
-			m_aiOnGameOptions.push_back(pClassInfo->getOnGameOption(i));
-		}
-	}
-
-	if (getNumNotOnGameOptions() == 0)
-	{
-		m_aiNotOnGameOptions.clear();
-		for ( int i = 0; i < pClassInfo->getNumNotOnGameOptions(); i++)
-		{
-			m_aiNotOnGameOptions.push_back(pClassInfo->getNotOnGameOption(i));
-		}
-	}
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->getOnGameOptions());
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->getNotOnGameOptions());
 
 	if (getNumCriticalOriginCombatClassTypes() == 0)
 	{
@@ -34160,46 +33973,6 @@ bool CvPromotionLineInfo::isNotOnDomainType(int i) const
 {
 	FAssert (i > -1 && i < NUM_DOMAIN_TYPES);
 	if (find(m_aiNotOnDomainTypes.begin(), m_aiNotOnDomainTypes.end(), i) == m_aiNotOnDomainTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvPromotionLineInfo::getOnGameOption(int i) const
-{
-	return m_aiOnGameOptions[i];
-}
-
-int CvPromotionLineInfo::getNumOnGameOptions() const
-{
-	return (int)m_aiOnGameOptions.size();
-}
-
-bool CvPromotionLineInfo::isOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvPromotionLineInfo::getNotOnGameOption(int i) const
-{
-	return m_aiNotOnGameOptions[i];
-}
-
-int CvPromotionLineInfo::getNumNotOnGameOptions() const
-{
-	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvPromotionLineInfo::isNotOnGameOption(int i) const
-{
-	FAssert (i > -1 && i < GC.getNumGameOptionInfos());
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
 	{
 		return false;
 	}
@@ -35769,43 +35542,6 @@ int CvUnitCombatInfo::getNumFeatureDoubleMoveChangeTypes() const
 bool CvUnitCombatInfo::isFeatureDoubleMoveChangeType(int i) const
 {
 	if (find(m_aiFeatureDoubleMoveChangeTypes.begin(), m_aiFeatureDoubleMoveChangeTypes.end(), i) == m_aiFeatureDoubleMoveChangeTypes.end())
-	{
-		return false;
-	}
-	return true;
-}
-int CvUnitCombatInfo::getOnGameOption(int i) const
-{
-	return m_aiOnGameOptions[i];
-}
-
-int CvUnitCombatInfo::getNumOnGameOptions() const
-{
-	return (int)m_aiOnGameOptions.size();
-}
-
-bool CvUnitCombatInfo::isOnGameOption(int i) const
-{
-	if (find(m_aiOnGameOptions.begin(), m_aiOnGameOptions.end(), i) == m_aiOnGameOptions.end())
-	{
-		return false;
-	}
-	return true;
-}
-
-int CvUnitCombatInfo::getNotOnGameOption(int i) const
-{
-	return m_aiNotOnGameOptions[i];
-}
-
-int CvUnitCombatInfo::getNumNotOnGameOptions() const
-{
-	return (int)m_aiNotOnGameOptions.size();
-}
-
-bool CvUnitCombatInfo::isNotOnGameOption(int i) const
-{
-	if (find(m_aiNotOnGameOptions.begin(), m_aiNotOnGameOptions.end(), i) == m_aiNotOnGameOptions.end())
 	{
 		return false;
 	}
@@ -37874,15 +37610,8 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiFeatureDoubleMoveChangeTypes, pClassInfo->m_aiFeatureDoubleMoveChangeTypes);
 	}
 
-	if (getNumOnGameOptions() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->m_aiOnGameOptions);
-	}
-
-	if (getNumNotOnGameOptions() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->m_aiNotOnGameOptions);
-	}
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiOnGameOptions, pClassInfo->m_aiOnGameOptions);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiNotOnGameOptions, pClassInfo->m_aiNotOnGameOptions);
 
 	if (getNumGGptsforUnitTypes() == 0)
 	{

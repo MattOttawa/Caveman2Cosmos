@@ -21289,26 +21289,9 @@ EventTriggeredData* CvPlayer::initTriggeredData(EventTriggerTypes eEventTrigger,
 	std::vector<CvPlot*> apPlots;
 	bool bPickPlot = ::isPlotEventTrigger(eEventTrigger);
 
-	if (kTrigger.getNumOnGameOptions() > 0)
+	if (!GC.getGame().isValidByGameOption(kTrigger))
 	{
-		for (int iI = 0; iI < kTrigger.getNumOnGameOptions(); iI++)
-		{
-			if (!GC.getGame().isOption((GameOptionTypes)kTrigger.getOnGameOption(iI)))
-			{
-				return NULL;
-			}
-		}
-	}
-
-	if (kTrigger.getNumNotOnGameOptions() > 0)
-	{
-		for (int iI = 0; iI < kTrigger.getNumNotOnGameOptions(); iI++)
-		{
-			if (GC.getGame().isOption((GameOptionTypes)kTrigger.getNotOnGameOption(iI)))
-			{
-				return NULL;
-			}
-		}
+		return NULL;
 	}
 
 	if (kTrigger.isPickCity())
