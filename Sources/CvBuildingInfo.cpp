@@ -371,6 +371,14 @@ CvBuildingInfo::~CvBuildingInfo()
 	SAFE_DELETE(m_pExprConstructCondition);
 	//SAFE_DELETE(m_pExprFreePromotionCondition);
 
+	GC.removeDelayedResolution((int*)&m_ePropertySpawnUnit);
+	GC.removeDelayedResolution((int*)&m_iGreatPeopleUnitType);
+	GC.removeDelayedResolution((int*)&m_iFreeBuilding);
+	GC.removeDelayedResolution((int*)&m_iFreeAreaBuilding);
+	GC.removeDelayedResolution((int*)&m_iProductionContinueBuilding);
+	GC.removeDelayedResolution((int*)&m_iPrereqAnyoneBuilding);
+	GC.removeDelayedResolution((int*)&m_iExtendsBuilding);
+	GC.removeDelayedResolution((int*)&m_iObsoletesToBuilding);
 	GC.removeDelayedResolutionVector(m_aEnabledCivilizationTypes);
 	GC.removeDelayedResolutionVector(m_aAidRateChanges);
 	GC.removeDelayedResolutionVector(m_aiFreeTraitTypes);
@@ -3464,6 +3472,24 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeBuilding");
+	GC.addDelayedResolution((int*)&m_iFreeBuilding, szTextVal);
+
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"FreeAreaBuilding");
+	GC.addDelayedResolution((int*)&m_iFreeAreaBuilding, szTextVal);
+
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"ProductionContinueBuilding");
+	GC.addDelayedResolution((int*)&m_iProductionContinueBuilding, szTextVal);
+
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqAnyoneBuilding");
+	GC.addDelayedResolution((int*)&m_iPrereqAnyoneBuilding, szTextVal);
+
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"ExtendsBuilding");
+	GC.addDelayedResolution((int*)&m_iExtendsBuilding, szTextVal);
+
+	pXML->GetOptionalChildXmlValByName(szTextVal, L"ObsoletesToBuilding");
+	GC.addDelayedResolution((int*)&m_iObsoletesToBuilding, szTextVal);
+
 	pXML->SetOptionalVector(&m_aiUnitCombatRetrainTypes, L"UnitCombatRetrainTypes");
 	pXML->SetOptionalVector(&m_aiMayDamageAttackingUnitCombatTypes, L"MayDamageAttackingUnitCombatTypes");
 	pXML->SetOptionalVector(&m_aeMapCategoryTypes, L"MapCategoryTypes");
@@ -4570,6 +4596,14 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo)
 			}
 		}
 	}
+	GC.copyNonDefaultDelayedResolution((int*)&m_iGreatPeopleUnitType, (int*)&pClassInfo->m_iGreatPeopleUnitType);
+	GC.copyNonDefaultDelayedResolution((int*)&m_ePropertySpawnUnit, (int*)&pClassInfo->m_ePropertySpawnUnit);
+	GC.copyNonDefaultDelayedResolution((int*)&m_iFreeBuilding, (int*)&pClassInfo->m_iFreeBuilding);
+	GC.copyNonDefaultDelayedResolution((int*)&m_iFreeAreaBuilding, (int*)&pClassInfo->m_iFreeAreaBuilding);
+	GC.copyNonDefaultDelayedResolution((int*)&m_iProductionContinueBuilding, (int*)&pClassInfo->m_iProductionContinueBuilding);
+	GC.copyNonDefaultDelayedResolution((int*)&m_iPrereqAnyoneBuilding, (int*)&pClassInfo->m_iPrereqAnyoneBuilding);
+	GC.copyNonDefaultDelayedResolution((int*)&m_iExtendsBuilding, (int*)&pClassInfo->m_iExtendsBuilding);
+	GC.copyNonDefaultDelayedResolution((int*)&m_iObsoletesToBuilding, (int*)&pClassInfo->m_iObsoletesToBuilding);
 	GC.copyNonDefaultDelayedResolutionVector(m_vPrereqOrCivics, pClassInfo->getPrereqOrCivics());
 	GC.copyNonDefaultDelayedResolutionVector(m_vPrereqAndCivics, pClassInfo->getPrereqAndCivics());
 

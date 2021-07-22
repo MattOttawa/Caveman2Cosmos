@@ -1906,22 +1906,10 @@
 				<BuildingType>BUILDING_CISLUNAR_ONEILL_CYLINDER</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SUPERHUMAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
+				<CivicOption>CIVIC_SUPERHUMAN</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>

@@ -22611,26 +22611,11 @@
 			</UnitMeshGroups>
 			<FormationType>FORMATION_TYPE_MACHINE</FormationType>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
 			</PrereqOrCivics>
 		</UnitInfo>
 		<UnitInfo>
@@ -34044,26 +34029,11 @@
 			</UnitMeshGroups>
 			<FormationType>FORMATION_TYPE_MACHINE</FormationType>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
 			</PrereqOrCivics>
 			<FreePromotions>
 				<FreePromotion>
@@ -40137,26 +40107,11 @@
 			</UnitMeshGroups>
 			<FormationType>FORMATION_TYPE_MACHINE</FormationType>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
 			</PrereqOrCivics>
 		</UnitInfo>
 		<UnitInfo>
@@ -48234,26 +48189,11 @@
 				</FreePromotion>
 			</FreePromotions>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
 			</PrereqOrCivics>
 		</UnitInfo>
 		<UnitInfo>
@@ -49156,26 +49096,11 @@
 			</UnitMeshGroups>
 			<FormationType>FORMATION_TYPE_MACHINE</FormationType>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
 			</PrereqOrCivics>
 			<FreePromotions>
 				<FreePromotion>

@@ -1189,10 +1189,7 @@
 				<BuildingType>BUILDING_CULTURE_ACTIVE_EUROPEAN</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DEMOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DEMOCRACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>3480</iCost>
@@ -3036,10 +3033,7 @@
 				<BuildingType>BUILDING_CULTURE_ACTIVE_EUROPEAN</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CONFEDERACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CONFEDERACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>3210</iCost>

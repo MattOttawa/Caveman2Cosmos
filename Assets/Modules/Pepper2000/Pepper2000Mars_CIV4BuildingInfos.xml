@@ -852,22 +852,10 @@
 				<BuildingType>BUILDING_MARS_CITY</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_COSMIC_ENLIGHTENING</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
+				<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_COSMIC_ENLIGHTENING</CivicOption>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>

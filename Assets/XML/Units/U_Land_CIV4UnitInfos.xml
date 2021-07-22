@@ -5117,10 +5117,7 @@
 			<bStateReligion>1</bStateReligion>
 			<PrereqGameOption>GAMEOPTION_INQUISITIONS</PrereqGameOption>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
 			</PrereqOrCivics>
 			<PrereqTech>TECH_FUNDAMENTALISM</PrereqTech>
 			<iCost>150</iCost>
@@ -25524,10 +25521,7 @@
 				</UnitAI>
 			</UnitAIs>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
 			</PrereqOrCivics>
 			<PrereqAndBuildings>
 				<BuildingType>BUILDING_PALACE</BuildingType>
@@ -25627,10 +25621,7 @@
 				</UnitAI>
 			</UnitAIs>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
 			</PrereqOrCivics>
 			<PrereqAndBuildings>
 				<BuildingType>BUILDING_PALACE</BuildingType>
@@ -25736,10 +25727,7 @@
 				</UnitAI>
 			</UnitAIs>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
 			</PrereqOrCivics>
 			<PrereqAndBuildings>
 				<BuildingType>BUILDING_PALACE</BuildingType>
@@ -25841,10 +25829,7 @@
 				</UnitAI>
 			</UnitAIs>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
 			</PrereqOrCivics>
 			<PrereqAndBuildings>
 				<BuildingType>BUILDING_PALACE</BuildingType>

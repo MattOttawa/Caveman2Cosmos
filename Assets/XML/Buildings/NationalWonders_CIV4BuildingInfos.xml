@@ -616,30 +616,12 @@
 				<BuildingType>BUILDING_BANK</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CORPORATISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GREEN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GUILDS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PLANNED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_REGULATED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CORPORATISM</CivicOption>
+				<CivicOption>CIVIC_GREEN</CivicOption>
+				<CivicOption>CIVIC_GUILDS</CivicOption>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_PLANNED</CivicOption>
+				<CivicOption>CIVIC_REGULATED</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>910</iCost>
@@ -683,10 +665,7 @@
 				<BuildingType>BUILDING_CHIEFS_HUT</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHIEFDOM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CHIEFDOM</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MONARCHY</ObsoleteTech>
@@ -1470,10 +1449,7 @@
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<Bonus>BONUS_BRICKS</Bonus>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CHURCH</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MEDICINE</ObsoleteTech>
@@ -3016,10 +2992,7 @@
 				</Or>
 			</ConstructCondition>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_LEGISLATURE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_LEGISLATURE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>850</iCost>
@@ -3951,18 +3924,9 @@
 				</PrereqBuilding>
 			</PrereqAmountBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_COINAGE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_MARKET</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_COINAGE</CivicOption>
+				<CivicOption>CIVIC_FREE_MARKET</CivicOption>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>736</iCost>
@@ -4891,10 +4855,7 @@
 				<BuildingType>BUILDING_COMPUTER_NETWORK</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ONLINE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ONLINE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>4810</iCost>
@@ -5055,10 +5016,7 @@
 				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROPAGANDA</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PROPAGANDA</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1900</iCost>
@@ -5971,26 +5929,11 @@
 			<Civilopedia>TXT_KEY_BUILDING_TOMB_PEDIA</Civilopedia>
 			<PrereqTech>TECH_CALENDAR</PrereqTech>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHIEFDOM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SOVEREIGNTY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_CHIEFDOM</CivicOption>
+				<CivicOption>CIVIC_SOVEREIGNTY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>468</iCost>
@@ -6762,14 +6705,8 @@
 			<Advisor>ADVISOR_GROWTH</Advisor>
 			<PrereqTech>TECH_NEW_URBANISM</PrereqTech>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GREEN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PUBLIC_WORKS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_GREEN</CivicOption>
+				<CivicOption>CIVIC_PUBLIC_WORKS</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>3080</iCost>
@@ -6904,14 +6841,8 @@
 			</Flavors>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VASSAL_LEVIES</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_VASSAL_LEVIES</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>

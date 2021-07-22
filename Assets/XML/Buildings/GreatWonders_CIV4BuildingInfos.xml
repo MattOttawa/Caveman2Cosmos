@@ -4239,30 +4239,12 @@
 				<BuildingType>BUILDING_STATUE_OF_LIBERTY</BuildingType>
 			</PrereqNotInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARXIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROPAGANDA</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SINGLE_PARTY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GRID</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
+				<CivicOption>CIVIC_MARXIST</CivicOption>
+				<CivicOption>CIVIC_PROPAGANDA</CivicOption>
+				<CivicOption>CIVIC_SINGLE_PARTY</CivicOption>
+				<CivicOption>CIVIC_GRID</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>12030</iCost>
@@ -7081,10 +7063,7 @@
 				<BuildingType>BUILDING_MANOR</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VASSALAGE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_VASSALAGE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_ASSEMBLY_LINE</ObsoleteTech>
@@ -7251,10 +7230,7 @@
 				<BuildingType>BUILDING_MANOR</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VASSALAGE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_VASSALAGE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_AGRICULTURAL_ENGINEERING</ObsoleteTech>
@@ -8068,10 +8044,7 @@
 			<PrereqTech>TECH_EDUCATION</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BOURGEOIS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_BOURGEOIS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>2208</iCost>
@@ -11141,10 +11114,7 @@
 				<BuildingType>BUILDING_ADVANCED_IRONWORKS</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_EGALITARIAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_EGALITARIAN</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>3480</iCost>
@@ -11622,10 +11592,7 @@
 				<BuildingType>BUILDING_MESOAMERICAN_CATHEDRAL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_HUMANISM</ObsoleteTech>
@@ -12500,14 +12467,8 @@
 			<fVisibilityPriority>100</fVisibilityPriority>
 			<PrereqTech>TECH_WOMENS_SUFFRAGE</PrereqTech>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DEMOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_REPUBLIC</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DEMOCRACY</CivicOption>
+				<CivicOption>CIVIC_REPUBLIC</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>4800</iCost>
@@ -15653,18 +15614,9 @@
 			<iAdjacentDamagePercent>25</iAdjacentDamagePercent>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
+				<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<PropertyManipulators>
@@ -16082,10 +16034,7 @@
 			</CommerceChangeDoubleTimes>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CLOSED_BORDERS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CLOSED_BORDERS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<PropertyManipulators>
@@ -16763,10 +16712,7 @@
 				<BuildingType>BUILDING_INTERNATIONAL_PORT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<PropertyManipulators>
@@ -16811,10 +16757,7 @@
 				<iCommerce>1000</iCommerce>
 			</CommerceChangeDoubleTimes>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_RIGHT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIVINE_RIGHT</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<UnitCombatProdModifiers>
@@ -16871,14 +16814,8 @@
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<Help>TXT_KEY_BUILDING_FIELD_GOLD_HELP</Help>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VASSAL_LEVIES</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_VASSAL_LEVIES</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
@@ -17063,22 +17000,10 @@
 				<iCommerce>1000</iCommerce>
 			</CommerceChangeDoubleTimes>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHIEFDOM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_THEOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CHIEFDOM</CivicOption>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_THEOCRACY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<PropertyManipulators>
@@ -17786,10 +17711,7 @@
 			</BuildingHappinessChanges>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARXIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MARXIST</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<PropertyManipulators>
@@ -19330,10 +19252,7 @@
 				<BuildingType>BUILDING_ARTIFICIAL_INTELLIGENCE_CORE</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MACHINE_RULE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MACHINE_RULE</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
@@ -21985,30 +21904,12 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARXIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROPAGANDA</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SINGLE_PARTY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GRID</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
+				<CivicOption>CIVIC_MARXIST</CivicOption>
+				<CivicOption>CIVIC_PROPAGANDA</CivicOption>
+				<CivicOption>CIVIC_SINGLE_PARTY</CivicOption>
+				<CivicOption>CIVIC_GRID</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>

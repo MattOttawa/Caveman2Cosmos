@@ -671,10 +671,7 @@
 				<Bonus>BONUS_MARBLE</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_REPUBLIC</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_REPUBLIC</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_LEADERSHIP</ObsoleteTech>
@@ -818,10 +815,7 @@
 				<BuildingType>BUILDING_INTELLIGENCE_AGENCY</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TECHNOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_TECHNOCRACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>3975</iCost>
@@ -1345,10 +1339,7 @@
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STRONGMAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STRONGMAN</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MATRIARCHY</ObsoleteTech>
@@ -1387,10 +1378,7 @@
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STRONGMAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STRONGMAN</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_PATRIARCHY</ObsoleteTech>
@@ -3701,10 +3689,7 @@
 			<ObsoleteTech>TECH_ANDROIDS</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_APPRENTICESHIP</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_APPRENTICESHIP</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>332</iCost>
@@ -4577,10 +4562,7 @@
 			<ObsoleteTech>TECH_POP_ART</ObsoleteTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BOURGEOIS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_BOURGEOIS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>425</iCost>
@@ -5909,10 +5891,7 @@
 			<PrereqTech>TECH_MILITARY_ROBOTICS</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ROBOTIC</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ROBOTIC</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>2865</iCost>
@@ -6365,18 +6344,9 @@
 				<BuildingType>BUILDING_BACTERIUM_BIOFORGE</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_LANDFILLS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_LANDFILLS</CivicOption>
+				<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
+				<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>2865</iCost>
@@ -6966,10 +6936,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_THEFT</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BANDITRY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_BANDITRY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>0</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_GUERRILLA_WARFARE</ObsoleteTech>
@@ -10111,14 +10078,8 @@
 				<BuildingType>BUILDING_BLOOD_DANCE</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ANARCHISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHIEFDOM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ANARCHISM</CivicOption>
+				<CivicOption>CIVIC_CHIEFDOM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_HUMANISM</ObsoleteTech>
@@ -11059,10 +11020,7 @@
 				<BuildingType>BUILDING_SCHOOL_OF_SCRIBES</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CASTE_SYSTEM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CASTE_SYSTEM</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_LIBERALISM</ObsoleteTech>
@@ -11118,10 +11076,7 @@
 				<BuildingType>BUILDING_CHARCOAL_FIRE</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_OBEDIENCE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_OBEDIENCE</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MEDICINE</ObsoleteTech>
@@ -17112,28 +17067,13 @@
 				<BuildingType>BUILDING_OFFICIUM</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CORPORATISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_MARKET</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GREEN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_REGULATED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CORPORATISM</CivicOption>
+				<CivicOption>CIVIC_FREE_MARKET</CivicOption>
+				<CivicOption>CIVIC_GREEN</CivicOption>
+				<CivicOption>CIVIC_REGULATED</CivicOption>
 			</PrereqOrCivics>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PRIVATIZED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PRIVATIZED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>710</iCost>
@@ -17169,14 +17109,8 @@
 				<BuildingType>BUILDING_KINGSCOUNCIL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>368</iCost>
@@ -17326,10 +17260,7 @@
 				<BuildingType>BUILDING_MILITARY_BASE</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>990</iCost>
@@ -17833,10 +17764,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_CHIEFDOM</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHIEFDOM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CHIEFDOM</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_HERALDRY</ObsoleteTech>
@@ -18446,10 +18374,7 @@
 				<Bonus>BONUS_CEMENT</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ANTIRELIGION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ANTIRELIGION</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>870</iCost>
@@ -18516,14 +18441,8 @@
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_RELIGIOUS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_RELIGIOUS</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_COMPULSORY_EDUCATION</ObsoleteTech>
@@ -19485,10 +19404,7 @@
 				<Bonus>BONUS_BOOKS</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BUREAUCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_BUREAUCRACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_COMPULSORY_EDUCATION</ObsoleteTech>
@@ -20579,10 +20495,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_COMMUNISM</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_OWNED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STATE_OWNED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>990</iCost>
@@ -21131,10 +21044,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_LANGUAGE</PrereqTech>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIVE_LANGUAGE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_NATIVE_LANGUAGE</CivicOption>
 			</PrereqOrCivics>
 			<ObsoleteTech>TECH_SEDENTARY_LIFESTYLE</ObsoleteTech>
 			<iCost>10</iCost>
@@ -21253,10 +21163,7 @@
 			<PrereqTech>TECH_ECOLOGY</PrereqTech>
 			<ObsoleteTech>TECH_ACCELERATED_GERMINATION</ObsoleteTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ORGANIC_FARMING</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ORGANIC_FARMING</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1345</iCost>
@@ -22746,14 +22653,8 @@
 				<BuildingType>BUILDING_KINGSCOUNCIL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>368</iCost>
@@ -23135,10 +23036,7 @@
 				<BuildingType>BUILDING_STORYTELLERS_HUT</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ORAL_TRADITION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ORAL_TRADITION</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_LITERATURE</ObsoleteTech>
@@ -23568,22 +23466,10 @@
 				<BuildingType>BUILDING_STATUE_OF_LIBERTY</BuildingType>
 			</PrereqNotInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SUPERHUMAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
+				<CivicOption>CIVIC_SUPERHUMAN</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>5455</iCost>
@@ -23838,10 +23724,7 @@
 				<BuildingType>BUILDING_PARK_ARCOLOGY</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ECO_FRIENDLY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ECO_FRIENDLY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>5905</iCost>
@@ -25934,10 +25817,7 @@
 			<ObsoleteTech>TECH_VIRTUAL_SOCIETY</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DEMOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DEMOCRACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>580</iCost>
@@ -26017,10 +25897,7 @@
 			<PrereqTech>TECH_MYSTICISM</PrereqTech>
 			<ObsoleteTech>TECH_COMMUNISM</ObsoleteTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>98</iCost>
@@ -26400,10 +26277,7 @@
 			<ObsoleteTech>TECH_WARMACHINES</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CONSCRIPTION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CONSCRIPTION</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>216</iCost>
@@ -29662,10 +29536,7 @@
 				<BuildingType>BUILDING_SKYROAD_TOWER</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_REGULATED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_REGULATED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_TELEPORTATION</ObsoleteTech>
@@ -30022,10 +29893,7 @@
 			<PrereqTech>TECH_ECONOMICS</PrereqTech>
 			<ObsoleteTech>TECH_ORGANIC_CITIES</ObsoleteTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PRIVATE_OWNED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PRIVATE_OWNED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>535</iCost>
@@ -30067,10 +29935,7 @@
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<bNeedStateReligionInCity>1</bNeedStateReligionInCity>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>990</iCost>
@@ -30672,22 +30537,10 @@
 				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_AGRICULTURAL_GUILDS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PRIVATE_OWNED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INCENTIVIZED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ORGANIC_FARMING</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_AGRICULTURAL_GUILDS</CivicOption>
+				<CivicOption>CIVIC_PRIVATE_OWNED</CivicOption>
+				<CivicOption>CIVIC_INCENTIVIZED</CivicOption>
+				<CivicOption>CIVIC_ORGANIC_FARMING</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>332</iCost>
@@ -31226,10 +31079,7 @@
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROLETARIAT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PROLETARIAT</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MARXISM</ObsoleteTech>
@@ -33283,10 +33133,7 @@
 				<BuildingType>BUILDING_AGORA</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_REPUBLIC</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_REPUBLIC</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>234</iCost>
@@ -33335,10 +33182,7 @@
 				<Bonus>BONUS_PAPER</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PHILANTHROPIC</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PHILANTHROPIC</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>332</iCost>
@@ -33632,10 +33476,7 @@
 				<BuildingType>BUILDING_INTERNATIONAL_PORT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_MARKET</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FREE_MARKET</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>535</iCost>
@@ -34313,10 +34154,7 @@
 				<BuildingType>BUILDING_INTERNATIONAL_PORT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_TO_SEA</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_WASTE_TO_SEA</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_ECOLOGY</ObsoleteTech>
@@ -34360,10 +34198,7 @@
 				<BuildingType>BUILDING_NASA</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_OFF_PLANET_DUMPING</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_OFF_PLANET_DUMPING</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>4485</iCost>
@@ -36244,10 +36079,7 @@
 			<PrereqTech>TECH_NATIONALISM</PrereqTech>
 			<ObsoleteTech>TECH_ASTROENGINEERING</ObsoleteTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GOLD_STANDARD</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_GOLD_STANDARD</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>555</iCost>
@@ -36685,10 +36517,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_FEUDALISM</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_AGRICULTURAL_ENGINEERING</ObsoleteTech>
@@ -36734,10 +36563,7 @@
 				<BuildingType>BUILDING_FOUNDRY</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VASSALAGE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_VASSALAGE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_AGRICULTURAL_ENGINEERING</ObsoleteTech>
@@ -36787,14 +36613,8 @@
 			<PrereqTech>TECH_MATHEMATICS</PrereqTech>
 			<ObsoleteTech>TECH_MEGASTRUCTURE_ENGINEERING</ObsoleteTech>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MAGISTRATES</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BOURGEOIS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MAGISTRATES</CivicOption>
+				<CivicOption>CIVIC_BOURGEOIS</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>216</iCost>
@@ -37907,10 +37727,7 @@
 				<BuildingType>BUILDING_FOUNDRY</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GUILDS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_GUILDS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_INDUSTRIALISM</ObsoleteTech>
@@ -38311,14 +38128,8 @@
 				<BuildingType>BUILDING_CHIEFS_HUT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STRONGMAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHIEFDOM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STRONGMAN</CivicOption>
+				<CivicOption>CIVIC_CHIEFDOM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_THEOLOGY</ObsoleteTech>
@@ -39778,26 +39589,11 @@
 				<Bonus>BONUS_SULPHUR</Bonus>
 			</PrereqBonuses>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>0</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_RAILROAD</ObsoleteTech>
@@ -42833,14 +42629,8 @@
 				<Bonus>BONUS_CEMENT</Bonus>
 			</PrereqBonuses>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_JUNTA</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARTIAL_LAW</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_JUNTA</CivicOption>
+				<CivicOption>CIVIC_MARTIAL_LAW</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>990</iCost>
@@ -44806,10 +44596,7 @@
 			<ObsoleteTech>TECH_MEGACITIES</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>950</iCost>
@@ -45174,14 +44961,8 @@
 				<BuildingType>BUILDING_PALACE</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>368</iCost>
@@ -45228,10 +45009,7 @@
 				<BuildingType>BUILDING_HOUSE_ERA2_MDLW</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FOLKLORE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FOLKLORE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_ARCHITECTURE</ObsoleteTech>
@@ -45786,18 +45564,9 @@
 			<PrereqTech>TECH_SANITATION</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_LANDFILLS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_LANDFILLS</CivicOption>
+				<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
+				<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>270</iCost>
@@ -46574,10 +46343,7 @@
 				<BuildingType>BUILDING_UNIVERSITY</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CORPORATE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CORPORATE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>455</iCost>
@@ -49761,14 +49527,8 @@
 				<BuildingType>BUILDING_KINGSCOUNCIL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>368</iCost>
@@ -50922,10 +50682,7 @@
 				</PrereqTerrain>
 			</PrereqOrTerrain>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CORPORATE_OWNED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CORPORATE_OWNED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>740</iCost>
@@ -52863,10 +52620,7 @@
 			<PrereqTech>TECH_MILITARY_TRAINING</PrereqTech>
 			<ObsoleteTech>TECH_MIND_UPLOADING</ObsoleteTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARTIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MARTIAL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<PrereqOrBuildings>
@@ -53059,10 +52813,7 @@
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MIND_CONTROL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MIND_CONTROL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>5255</iCost>
@@ -54957,10 +54708,7 @@
 			<PrereqTech>TECH_PRINTING_PRESS</PrereqTech>
 			<ObsoleteTech>TECH_ASTROENGINEERING</ObsoleteTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PAPER_MONEY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PAPER_MONEY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>410</iCost>
@@ -55149,10 +54897,7 @@
 			<ObsoleteTech>TECH_SOCIAL_CALCULUS</ObsoleteTech>
 			<Bonus>BONUS_SCULPTURES</Bonus>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>184</iCost>
@@ -56194,10 +55939,7 @@
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROPHETS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PROPHETS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_EDUCATION</ObsoleteTech>
@@ -58687,10 +58429,7 @@
 				<PrereqTech>TECH_TOOL_MAKING</PrereqTech>
 			</TechTypes>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_COMMUNAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_COMMUNAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>0</bRequiresActiveCivics>
 			<PrereqBonuses>
@@ -60479,10 +60218,7 @@
 			</PrereqOrBuildings>
 			<PrereqTech>TECH_MILITARY_TRAINING</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARTIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MARTIAL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>216</iCost>
@@ -60580,10 +60316,7 @@
 				<BuildingType>BUILDING_LAUNCH_ARCO</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_ECO_FRIENDLY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_ECO_FRIENDLY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>5905</iCost>
@@ -62918,26 +62651,11 @@
 			<bWater>1</bWater>
 			<iMinAreaSize>10</iMinAreaSize>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_SCREW_PROPELLER</ObsoleteTech>
@@ -63242,10 +62960,7 @@
 				</And>
 			</ConstructCondition>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CHARITY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CHARITY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MEDICINE</ObsoleteTech>
@@ -63377,10 +63092,7 @@
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PLANNED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PLANNED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>990</iCost>
@@ -64357,10 +64069,7 @@
 				<BuildingType>BUILDING_CAPITAL_ADMINISTRATION</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_LEGISLATURE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_LEGISLATURE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_REPRESENTATIVE_DEMOCRACY</ObsoleteTech>
@@ -65323,10 +65032,7 @@
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<Bonus>BONUS_BRICKS</Bonus>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DEMOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DEMOCRACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>580</iCost>
@@ -65561,10 +65267,7 @@
 				<BuildingType>BUILDING_PRESS_AGENCY</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROPAGANDA</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PROPAGANDA</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>950</iCost>
@@ -65608,18 +65311,9 @@
 				<BuildingType>BUILDING_MILITARY_SPACEPORT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TECHNOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
+				<CivicOption>CIVIC_TECHNOCRACY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>2005</iCost>
@@ -67345,10 +67039,7 @@
 			<ObsoleteTech>TECH_SAPIENTROIDS</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VOLUNTARY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_VOLUNTARY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>580</iCost>
@@ -67381,10 +67072,7 @@
 				<BuildingType>BUILDING_RECYCLING_CENTER</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GREEN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_GREEN</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1475</iCost>
@@ -67603,10 +67291,7 @@
 				<BuildingType>BUILDING_JAIL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>990</iCost>
@@ -68413,18 +68098,9 @@
 				<BuildingType>BUILDING_CHRISTIAN_TEMPLE</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SECULARISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_SECULARISM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>455</iCost>
@@ -69764,10 +69440,7 @@
 				<Bonus>BONUS_MARBLE</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>200</iCost>
@@ -72303,18 +71976,9 @@
 			</PrereqBonuses>
 			<bNeedStateReligionInCity>1</bNeedStateReligionInCity>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_RELIGIOUS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_RELIGIOUS</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_COMPULSORY_EDUCATION</ObsoleteTech>
@@ -73361,18 +73025,9 @@
 				<Bonus>BONUS_MARBLE</Bonus>
 			</PrereqBonuses>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FOLKLORE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PROPHETS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FOLKLORE</CivicOption>
+				<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
+				<CivicOption>CIVIC_PROPHETS</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>132</iCost>
@@ -74456,30 +74111,12 @@
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DESPOTISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_NATIONALIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MERCANTILISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BANDITRY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DESPOTISM</CivicOption>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
+				<CivicOption>CIVIC_NATIONALIST</CivicOption>
+				<CivicOption>CIVIC_MERCANTILISM</CivicOption>
+				<CivicOption>CIVIC_BANDITRY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_RAILROAD</ObsoleteTech>
@@ -74894,14 +74531,8 @@
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MARXIST</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SOCIALIZED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MARXIST</CivicOption>
+				<CivicOption>CIVIC_SOCIALIZED</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1180</iCost>
@@ -74975,10 +74606,7 @@
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SUBSIDIZED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_SUBSIDIZED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>740</iCost>
@@ -75481,10 +75109,7 @@
 				<BuildingType>BUILDING_FACTORY</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MIND_CONTROL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MIND_CONTROL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>5255</iCost>
@@ -76107,14 +75732,8 @@
 				<BuildingType>BUILDING_KINGSCOUNCIL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>368</iCost>
@@ -76170,10 +75789,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_FEUDALISM</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_VASSAL_LEVIES</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_VASSAL_LEVIES</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_CIVIL_ENGINEERING</ObsoleteTech>
@@ -77050,14 +76666,8 @@
 				<BuildingType>BUILDING_KINGSCOUNCIL</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_MONARCHY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FEUDAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_MONARCHY</CivicOption>
+				<CivicOption>CIVIC_FEUDAL</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>368</iCost>
@@ -80471,26 +80081,11 @@
 				<BuildingType>BUILDING_TV_STUDIO</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SECULARISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIVINE_CULT</CivicOption>
+				<CivicOption>CIVIC_STATE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_FREE_CHURCH</CivicOption>
+				<CivicOption>CIVIC_INQUISITORIAL</CivicOption>
+				<CivicOption>CIVIC_SECULARISM</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1130</iCost>
@@ -81385,10 +80980,7 @@
 				<BuildingType>BUILDING_PRESS_AGENCY</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TECHNOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_TECHNOCRACY</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>2405</iCost>
@@ -82309,10 +81901,7 @@
 				<BuildingType>BUILDING_WOODCARVERS_HUT</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TRIBAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_TRIBAL</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_ASTRONOMY</ObsoleteTech>
@@ -84108,10 +83697,7 @@
 				<Bonus>BONUS_CEMENT</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SECULARISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_SECULARISM</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1180</iCost>
@@ -85690,10 +85276,7 @@
 			</MapCategoryTypes>
 			<PrereqTech>TECH_WARFARE</PrereqTech>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TRIBAL_WARFARE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_TRIBAL_WARFARE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_MILITARY_TRAINING</ObsoleteTech>
@@ -85821,18 +85404,9 @@
 				<BuildingType>BUILDING_GARBAGE_DUMP</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_LANDFILLS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_LANDFILLS</CivicOption>
+				<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
+				<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>740</iCost>
@@ -85865,10 +85439,7 @@
 			<ObsoleteTech>TECH_MEGACITIES</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_EXPORTATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_WASTE_EXPORTATION</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>535</iCost>
@@ -85912,18 +85483,9 @@
 				<BuildingType>BUILDING_RECYCLING_CENTER</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_LANDFILLS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_WASTE_TO_ENERGY</CivicOption>
+				<CivicOption>CIVIC_WASTE_IMPORTATION</CivicOption>
+				<CivicOption>CIVIC_LANDFILLS</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>1475</iCost>
@@ -86857,10 +86419,7 @@
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SOCIALIZED</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_SOCIALIZED</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>770</iCost>
@@ -86892,18 +86451,9 @@
 				<BuildingType>BUILDING_CHILDBIRTH_HUT</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_COMMUNALISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_BARTER</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SUBSISTENCE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_COMMUNALISM</CivicOption>
+				<CivicOption>CIVIC_BARTER</CivicOption>
+				<CivicOption>CIVIC_SUBSISTENCE</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_WOMENS_SUFFRAGE</ObsoleteTech>
@@ -86981,10 +86531,7 @@
 				<VicinityBonus>BONUS_WHALE</VicinityBonus>
 			</PrereqVicinityBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_FOLKLORE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_FOLKLORE</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iCost>86</iCost>
@@ -88046,10 +87593,7 @@
 				<Bonus>BONUS_WOOD</Bonus>
 			</PrereqBonuses>
 			<PrereqAndCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_PUBLIC_WORKS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_PUBLIC_WORKS</CivicOption>
 			</PrereqAndCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<ObsoleteTech>TECH_INDUSTRIALISM</ObsoleteTech>
@@ -91431,10 +90975,7 @@
 				<BuildingType>BUILDING_TELEPHONE_NETWORK</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DEMOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DEMOCRACY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iRevIdxLocal>-1</iRevIdxLocal>
@@ -93821,10 +93362,7 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DIGITAL</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DIGITAL</CivicOption>
 			</PrereqOrCivics>
 			<iAIWeight>1</iAIWeight>
 		</BuildingInfo>
@@ -93907,10 +93445,7 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_DEMOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_DEMOCRACY</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
@@ -96294,10 +95829,7 @@
 				<BuildingType>BUILDING_MEGATOWER_OFFICE</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CORPOR_NATION</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CORPOR_NATION</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iAIWeight>1</iAIWeight>
@@ -96775,22 +96307,10 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_GERONTOCRACY</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_UNIVERSAL_EMPIRE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_SUPERHUMAN</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_GERONTOCRACY</CivicOption>
+				<CivicOption>CIVIC_UNIVERSAL_EMPIRE</CivicOption>
+				<CivicOption>CIVIC_TOTALITARIANISM</CivicOption>
+				<CivicOption>CIVIC_SUPERHUMAN</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iAIWeight>1</iAIWeight>
@@ -99665,10 +99185,7 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INSTANT</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_INSTANT</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
@@ -102593,18 +102110,9 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_CITY_STATES</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_POLYSTATE</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_CITY_STATES</CivicOption>
+				<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
+				<CivicOption>CIVIC_POLYSTATE</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
@@ -104598,14 +104106,8 @@
 				<BuildingType>BUILDING_STARPORT</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INTERSTELLAR</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
+				<CivicOption>CIVIC_INTERSTELLAR</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
@@ -104626,14 +104128,8 @@
 				<BuildingType>BUILDING_STARPORT</BuildingType>
 			</PrereqInCityBuildings>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
-				<PrereqCivic>
-					<CivicOption>CIVIC_INTERSTELLAR</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_OPEN_BORDERS</CivicOption>
+				<CivicOption>CIVIC_INTERSTELLAR</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 			<iAIWeight>1</iAIWeight>
@@ -104784,10 +104280,7 @@
 				<iCommerce>25</iCommerce>
 			</CommerceChanges>
 			<PrereqOrCivics>
-				<PrereqCivic>
-					<CivicOption>CIVIC_COSMIC_ENLIGHTENING</CivicOption>
-					<bPrereqCivic>1</bPrereqCivic>
-				</PrereqCivic>
+				<CivicOption>CIVIC_COSMIC_ENLIGHTENING</CivicOption>
 			</PrereqOrCivics>
 			<bRequiresActiveCivics>1</bRequiresActiveCivics>
 		</BuildingInfo>
