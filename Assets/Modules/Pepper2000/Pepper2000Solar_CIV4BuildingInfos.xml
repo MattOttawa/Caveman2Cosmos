@@ -9,7 +9,6 @@
 			<ArtDefineTag>ART_DEF_BUILDING_PLANETARY_BASE</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_DEEP_SPACE_COLONIES</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
 			</MapCategoryTypes>
@@ -1828,7 +1827,7 @@
 			<MovieDefineTag>ART_DEF_MOVIE_BRACEWELL_PROBES</MovieDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_ACNP_PROPULSION</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
+			<iCost>34707</iCost>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
 			</MapCategoryTypes>
@@ -1983,30 +1982,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_BISHOP_RING_REGULAR</BuildingType>
 			</PrereqInCityBuildings>
-		</BuildingInfo>
-		<BuildingInfo>
-			<Type>BUILDING_SOLAR_DYSON_SPHERE_EFFECT</Type>
-			<Description>TXT_KEY_BUILDING_SOLAR_DYSON_SPHERE_EFFECT</Description>
-			<Civilopedia>TXT_KEY_BUILDING_SOLAR_DYSON_SPHERE_EFFECT_PEDIA</Civilopedia>
-			<Advisor>ADVISOR_SCIENCE</Advisor>
-			<ArtDefineTag>ART_DEF_BUILDING_SOLAR_DYSON_SPHERE_EFFECT</ArtDefineTag>
-			<fVisibilityPriority>1</fVisibilityPriority>
-			<PrereqTech>TECH_ASTROENGINEERING</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
-			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_CISLUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_VENUSIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_JOVIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_TITANIC</MapCategoryType>
-			</MapCategoryTypes>
-			<YieldChanges>
-				<iYield>0</iYield>
-				<iYield>100</iYield>
-			</YieldChanges>
 		</BuildingInfo>
 		<BuildingInfo>
 			<Type>BUILDING_SOLAR_MATRIOSHKA_BRAIN</Type>

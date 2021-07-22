@@ -9,7 +9,6 @@
 			<ArtDefineTag>ART_DEF_BUILDING_INTERGALACTIC_COLONY</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_SPACE_CREASING</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_UNIVERSAL</MapCategoryType>
 			</MapCategoryTypes>
@@ -18,9 +17,6 @@
 				<iYield>1000</iYield>
 				<iYield>0</iYield>
 			</YieldChanges>
-			<ReplacementBuildings>
-				<BuildingType>BUILDING_HYPESPACE_PORTAL</BuildingType>
-			</ReplacementBuildings>
 			<iRevIdxLocal>-5</iRevIdxLocal>
 			<bAutoBuild>1</bAutoBuild>
 		</BuildingInfo>
@@ -43,8 +39,8 @@
 			</YieldChanges>
 			<iMaintenanceModifier>-3</iMaintenanceModifier>
 			<PrereqInCityBuildings>
-				<BuildingType>BUILDING_INTERGALACTIC_COLONY</BuildingType>
 				<BuildingType>BUILDING_GALACTIC_EFFECT</BuildingType>
+				<BuildingType>BUILDING_INTERGALACTIC_COLONY</BuildingType>
 			</PrereqInCityBuildings>
 			<iRevIdxLocal>-5</iRevIdxLocal>
 		</BuildingInfo>
@@ -763,7 +759,6 @@
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_INTERGALACTIC_WORMHOLE</BuildingType>
 				<BuildingType>BUILDING_DIMENSION_X</BuildingType>
-				<BuildingType>BUILDING_HYPESPACE_PORTAL</BuildingType>
 			</PrereqOrBuildings>
 		</BuildingInfo>
 		<BuildingInfo>
@@ -2311,8 +2306,8 @@
 			<Advisor>ADVISOR_SCIENCE</Advisor>
 			<ArtDefineTag>ART_DEF_BUILDING_VOID_BASE</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
-			<PrereqTech>TECH_INTERGALACTIC_EMPIRE</PrereqTech>
-			<iCost>3531</iCost>
+			<PrereqTech>TECH_MEGAWORMHOLES</PrereqTech>
+			<iCost>4004</iCost>
 			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_UNIVERSAL</MapCategoryType>
@@ -2511,37 +2506,6 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_GALACTIC_SUPERCLUSTER_COLONY</BuildingType>
 			</PrereqInCityBuildings>
-		</BuildingInfo>
-		<BuildingInfo>
-			<Type>BUILDING_COSMIC_EXPANSION_POWER_PLANT_EFFECT</Type>
-			<Description>TXT_KEY_BUILDING_COSMIC_EXPANSION_POWER_PLANT_EFFECT</Description>
-			<Civilopedia>TXT_KEY_BUILDING_COSMIC_EXPANSION_POWER_PLANT_EFFECT_PEDIA</Civilopedia>
-			<Advisor>ADVISOR_SCIENCE</Advisor>
-			<ArtDefineTag>ART_DEF_BUILDING_COSMIC_EXPANSION_POWER_PLANT_EFFECT</ArtDefineTag>
-			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_CISLUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_LUNAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_VENUSIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_SOLAR_SYSTEM</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_JOVIAN</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_TITANIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_INTERSTELLAR</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_PLASMA</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_GALACTIC</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_MILKY_WAY</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_UNIVERSAL</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_DISTANT</MapCategoryType>
-				<MapCategoryType>MAPCATEGORY_HYPERSPACE</MapCategoryType>
-			</MapCategoryTypes>
-			<fVisibilityPriority>1</fVisibilityPriority>
-			<PrereqTech>TECH_CONTROLLED_VACUUM_COLLAPSE</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
-			<YieldChanges>
-				<iYield>0</iYield>
-				<iYield>200</iYield>
-			</YieldChanges>
 		</BuildingInfo>
 		<BuildingInfo>
 			<Type>BUILDING_SMALL_MAGELLANIC_CLOUD</Type>

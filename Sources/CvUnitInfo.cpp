@@ -804,12 +804,12 @@ int CvUnitInfo::getUnitCombatType() const
 	return m_iUnitCombatType;
 }
 
-int CvUnitInfo::getDomainType() const
+DomainTypes CvUnitInfo::getDomainType() const
 {
 	return m_iDomainType;
 }
 
-int CvUnitInfo::getDefaultUnitAIType() const
+UnitAITypes CvUnitInfo::getDefaultUnitAIType() const
 {
 	return m_iDefaultUnitAIType;
 }
@@ -1518,7 +1518,7 @@ const CvOutcomeList* CvUnitInfo::getKillOutcomeList() const
 	return &m_KillOutcomeList;
 }
 
-int CvUnitInfo::getNumActionOutcomes() const 
+int CvUnitInfo::getNumActionOutcomes() const
 {
 	return m_aOutcomeMissions.size();
 }
@@ -1892,7 +1892,7 @@ void CvUnitInfo::setReligionSubCombat()
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getReligion() == (ReligionTypes)getReligionType())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
@@ -1903,7 +1903,7 @@ void CvUnitInfo::setReligionSubCombat()
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getReligion() == (ReligionTypes)getStateReligion())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
@@ -1914,7 +1914,7 @@ void CvUnitInfo::setReligionSubCombat()
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getReligion() == (ReligionTypes)getPrereqReligion())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
@@ -1936,7 +1936,7 @@ void CvUnitInfo::setCultureSubCombat()
 		{
 			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getCulture() == (BonusTypes)getPrereqAndBonus())
 			{
-				m_aiSubCombatTypes.push_back(iI);
+				m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 				break;
 			}
 		}
@@ -1980,7 +1980,7 @@ void CvUnitInfo::setEraSubCombat()
 	{
 		if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getEra() == getEraInfo())
 		{
-			m_aiSubCombatTypes.push_back(iI);
+			m_aiSubCombatTypes.push_back((UnitCombatTypes)iI);
 			break;
 		}
 	}
@@ -2602,7 +2602,7 @@ bool CvUnitInfo::isGatherHerd() const
 
 
 //boolean vectors without delayed resolution
-int CvUnitInfo::getSubCombatType(int i) const
+UnitCombatTypes CvUnitInfo::getSubCombatType(int i) const
 {
 	return m_aiSubCombatTypes[i];
 }
@@ -2614,11 +2614,11 @@ int CvUnitInfo::getNumSubCombatTypes() const
 
 bool CvUnitInfo::isSubCombatType(int i) const
 {
-	FAssert (i > -1 && i < GC.getNumUnitCombatInfos());
-	return find(m_aiSubCombatTypes.begin(), m_aiSubCombatTypes.end(), i) != m_aiSubCombatTypes.end();
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), i);
+	return algo::contains(m_aiSubCombatTypes, (UnitCombatTypes)i);
 }
 
-const std::vector<int>& CvUnitInfo::getSubCombatTypes() const
+const std::vector<UnitCombatTypes>& CvUnitInfo::getSubCombatTypes() const
 {
 	return m_aiSubCombatTypes;
 }
@@ -2713,22 +2713,6 @@ bool CvUnitInfo::isFeatureImpassableType(int i) const
 		return false;
 	}
 	return true;
-}
-
-int CvUnitInfo::getMapType(int i) const
-{
-	return m_aiMapTypes[i];
-}
-
-int CvUnitInfo::getNumMapTypes() const
-{
-	return m_aiMapTypes.size();
-}
-
-bool CvUnitInfo::isMapType(int i) const
-{
-	FASSERT_BOUNDS(0, NUM_MAPS, i)
-	return algo::contains(m_aiMapTypes, i);
 }
 
 int CvUnitInfo::getTrapSetWithPromotionType(int i) const
@@ -3676,7 +3660,7 @@ bool CvUnitInfo::isAidChange(int iProperty) const
 #endif
 //TB Combat Mods End  TB SubCombat Mod end
 
-void CvUnitInfo::getCheckSum(unsigned int &iSum) const
+void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 {
 	CheckSum(iSum, m_iMaxGlobalInstances);
 	CheckSum(iSum, m_iMaxPlayerInstances);
@@ -4003,7 +3987,7 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum) const
 	CheckSumC(iSum, m_aiHealAsTypes);
 	CheckSumC(iSum, m_aiTerrainImpassableTypes);
 	CheckSumC(iSum, m_aiFeatureImpassableTypes);
-	CheckSumC(iSum, m_aiMapTypes);
+	CheckSumC(iSum, m_aeMapCategoryTypes);
 	CheckSumC(iSum, m_aiTrapSetWithPromotionTypes);
 	CheckSumC(iSum, m_aiTrapImmunityUnitCombatTypes);
 	// int vectors utilizing struct with delayed resolution
@@ -4185,10 +4169,10 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	m_iUnitCombatType = pXML->GetInfoClass(szTextVal);
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Domain");
-	m_iDomainType = pXML->GetInfoClass(szTextVal);
+	m_iDomainType = static_cast<DomainTypes>(pXML->GetInfoClass(szTextVal));
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"DefaultUnitAI", "UNITAI_UNKNOWN");
-	m_iDefaultUnitAIType = pXML->GetInfoClass(szTextVal);
+	m_iDefaultUnitAIType = static_cast<UnitAITypes>(pXML->GetInfoClass(szTextVal));
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Invisible");
 	m_iInvisibleType = pXML->GetInfoClass(szTextVal);
@@ -4668,21 +4652,14 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bNoNonTypeProdMods, L"bNoNonTypeProdMods");
 	pXML->GetOptionalChildXmlValByName(&m_bGatherHerd, L"bGatherHerd");
 
-	//boolean vectors without delayed resolution
 	pXML->SetOptionalVector(&m_aiSubCombatTypes, L"SubCombatTypes");
-
 	pXML->SetOptionalVector(&m_aiCureAfflictionTypes, L"CureAfflictionTypes");
-
 	pXML->SetOptionalVector(&m_aiTerrainImpassableTypes, L"TerrainImpassableTypes");
 	pXML->SetOptionalVector(&m_aiFeatureImpassableTypes, L"FeatureImpassableTypes");
-
-	pXML->SetOptionalVector(&m_aiMapTypes, L"MapCategoryTypes");
-
+	pXML->SetOptionalVector(&m_aeMapCategoryTypes, L"MapCategoryTypes");
 	pXML->SetOptionalVector(&m_aiTrapSetWithPromotionTypes, L"TrapSetWithPromotionTypes");
-
 	pXML->SetOptionalVector(&m_aiTrapImmunityUnitCombatTypes, L"TrapImmunityUnitCombatTypes");
 
-	// int vectors utilizing struct with delayed resolution
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionFortitudeModifiers"))
 	{
 		int i = 0;
@@ -5654,7 +5631,7 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo)
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiCureAfflictionTypes, pClassInfo->m_aiCureAfflictionTypes);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiTerrainImpassableTypes, pClassInfo->m_aiTerrainImpassableTypes);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiFeatureImpassableTypes, pClassInfo->m_aiFeatureImpassableTypes);
-	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiMapTypes, pClassInfo->m_aiMapTypes);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aeMapCategoryTypes, pClassInfo->getMapCategories());
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiTrapSetWithPromotionTypes, pClassInfo->m_aiTrapSetWithPromotionTypes);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiTrapImmunityUnitCombatTypes, pClassInfo->m_aiTrapImmunityUnitCombatTypes);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aAfflictionFortitudeModifiers, pClassInfo->m_aAfflictionFortitudeModifiers);

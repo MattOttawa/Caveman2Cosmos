@@ -406,9 +406,10 @@
 					</YieldChanges>
 				</BonusYieldChange>
 			</BonusYieldChanges>
-			<PrereqInCityBuildings>
+			<PrereqOrBuildings>
 				<BuildingType>BUILDING_CANNERY</BuildingType>
-			</PrereqInCityBuildings>
+				<BuildingType>BUILDING_FARMSCRAPER_II</BuildingType>
+			</PrereqOrBuildings>
 			<bPrereqPower>1</bPrereqPower>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<iAIWeight>1</iAIWeight>
@@ -424,7 +425,6 @@
 				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
 			</MapCategoryTypes>
 			<Bonus>BONUS_ATOMPUNK</Bonus>
-			<iHurryCostModifier>100</iHurryCostModifier>
 			<iHealth>-3</iHealth>
 			<YieldChanges>
 				<iYield>0</iYield>

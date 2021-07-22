@@ -25,7 +25,7 @@ def recalculateModifiers():
 		pInterstateEventTriggerData = GC.getPlayer(i).getEventOccured(eInterstateEvent)
 		if pInterstateEventTriggerData is not None:
 			applyInterstate((eInterstateEvent, pInterstateEventTriggerData))
-			
+
 
 ######## BLESSED SEA ###########
 
@@ -419,7 +419,7 @@ def canApplyLooters3(argsList):
 	CyTeam = GC.getTeam(CyPlayer.getTeam())
 	CyCity = CyPlayer.getCity(data.iOtherPlayerCityId)
 	iEra = CyPlayer.getCurrentEra()
-	iTreshold = (100 + 20 * iEra * iEra) * GC.getGameSpeedInfo(GAME.getGameSpeedType()).getConstructPercent() / 100
+	iTreshold = (100 + 20 * iEra * iEra) * GC.getGameSpeedInfo(GAME.getGameSpeedType()).getHammerCostPercent() / 100
 
 	for i in xrange(GC.getNumBuildingInfos()):
 		if isLimitedWonder(i) or CyCity.getNumRealBuilding(i) < 1:
@@ -441,7 +441,7 @@ def applyLooters3(argsList):
 	CyTeam = GC.getTeam(CyPlayer.getTeam())
 	CyCity = CyPlayer.getCity(data.iOtherPlayerCityId)
 	iEra = CyPlayer.getCurrentEra()
-	iTreshold = (100 + 20 * iEra * iEra) * GC.getGameSpeedInfo(GAME.getGameSpeedType()).getConstructPercent() / 100
+	iTreshold = (100 + 20 * iEra * iEra) * GC.getGameSpeedInfo(GAME.getGameSpeedType()).getHammerCostPercent() / 100
 
 	aList = []
 	for i in xrange(GC.getNumBuildingInfos()):
@@ -856,7 +856,7 @@ def canTriggerChampionUnit(argsList):
 
   unit = GC.getPlayer(ePlayer).getUnit(iUnit)
 
-  if unit.isNone():
+  if unit is None:
     return False
 
   if unit.getDamage() > 0:
@@ -2448,7 +2448,7 @@ def canTriggerExperiencedCaptain(argsList):
   player = GC.getPlayer(data.ePlayer)
   unit = player.getUnit(data.iUnitId)
 
-  if unit.isNone():
+  if unit is None:
     return False
 
   if unit.getExperience() < 7:
@@ -3385,7 +3385,7 @@ def canTriggerRubiconUnit(argsList):
   pPlayer = GC.getPlayer(ePlayer)
   unit = pPlayer.getUnit(iUnit)
 
-  if unit.isNone():
+  if unit is None:
     return False
 
   if unit.getExperience() < 25:
@@ -3549,7 +3549,7 @@ def canTriggerCarnationUnit(argsList):
 
   unit = GC.getPlayer(ePlayer).getUnit(iUnit)
 
-  if unit.isNone():
+  if unit is None:
     return False
 
   if unit.getExperience() < 50:
@@ -5811,7 +5811,7 @@ def canTriggerUnlimitedPower1(argsList):
 
 def TriggerUnlimitedPower1(argsList):
 	data = argsList[1]
-	GC.getPlayer(data.ePlayer).getCity(data.iCityId).changePowerCount(1, False)
+	GC.getPlayer(data.ePlayer).getCity(data.iCityId).changePowerCount(1)
 
 def getHelpUnlimitedPower1(argsList):
 	data = argsList[1]
@@ -6704,7 +6704,7 @@ def doGlobalWarming(argsList):
 		elif iFeature in (
 			GC.getInfoTypeForString("FEATURE_FOREST_YOUNG"),
 			GC.getInfoTypeForString("FEATURE_SAVANNA")
-		): 
+		):
 			iGW -= 1
 		elif iFeature in (
 			GC.getFEATURE_FOREST(),
@@ -6892,7 +6892,7 @@ def doGlobalWarming(argsList):
 			plot.setRouteType(-1)
 			if GC.getInfoTypeForString("TERRAIN_LAKE_SHORE"):
 				plot.setTerrainType(GC.getInfoTypeForString("TERRAIN_MUDDY"), True, True)
-			else: 
+			else:
 				plot.setTerrainType(GC.getInfoTypeForString("TERRAIN_SALT_FLATS"), True, True)
 			plot.setPlotType(PlotTypes.PLOT_LAND, True, True)
 

@@ -9,7 +9,6 @@
 			<ArtDefineTag>ART_DEF_BUILDING_MARS_COLONY</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_PLANETARY_COLONIZATION</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
 			</MapCategoryTypes>
@@ -359,11 +358,11 @@
 			<iNumFreeBonuses>1</iNumFreeBonuses>
 			<ExtraFreeBonuses>
 				<ExtraFreeBonus>
-					<FreeBonus>BONUS_PLASTIC</FreeBonus>
+					<FreeBonus>BONUS_COPPER_WARES</FreeBonus>
 					<iNumFreeBonuses>1</iNumFreeBonuses>
 				</ExtraFreeBonus>
 				<ExtraFreeBonus>
-					<FreeBonus>BONUS_COPPER_WARES</FreeBonus>
+					<FreeBonus>BONUS_PLASTIC</FreeBonus>
 					<iNumFreeBonuses>1</iNumFreeBonuses>
 				</ExtraFreeBonus>
 			</ExtraFreeBonuses>
@@ -551,30 +550,6 @@
 			<Bonus>BONUS_MARTIAN_MANUFACTURED_GOODS</Bonus>
 		</BuildingInfo>
 		<BuildingInfo>
-			<Type>BUILDING_MARS_CYCLER</Type>
-			<iMaxPlayerInstances>1</iMaxPlayerInstances>
-			<bNeverCapture>1</bNeverCapture>
-			<Description>TXT_KEY_BUILDING_MARS_CYCLER</Description>
-			<Civilopedia>TXT_KEY_BUILDING_MARS_CYCLER_PEDIA</Civilopedia>
-			<Advisor>ADVISOR_SCIENCE</Advisor>
-			<ArtDefineTag>ART_DEF_BUILDING_MARS_CYCLER</ArtDefineTag>
-			<MovieDefineTag>ART_DEF_MOVIE_MARS_CYCLER</MovieDefineTag>
-			<fVisibilityPriority>1</fVisibilityPriority>
-			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
-			</MapCategoryTypes>
-			<PrereqTech>TECH_PLANETARY_TRADE</PrereqTech>
-			<iCost>10110</iCost>
-			<CommerceChanges>
-				<iCommerce>600</iCommerce>
-			</CommerceChanges>
-			<FreeBuilding>BUILDING_MARS_CYCLER_EFFECT</FreeBuilding>
-			<PrereqInCityBuildings>
-				<BuildingType>BUILDING_COMMERCIAL_SPACEPORT</BuildingType>
-			</PrereqInCityBuildings>
-			<iAIWeight>1</iAIWeight>
-		</BuildingInfo>
-		<BuildingInfo>
 			<Type>BUILDING_MARS_CYCLER_EFFECT</Type>
 			<Description>TXT_KEY_BUILDING_MARS_CYCLER_EFFECT</Description>
 			<Civilopedia>TXT_KEY_BUILDING_MARS_CYCLER_EFFECT_PEDIA</Civilopedia>
@@ -582,7 +557,6 @@
 			<ArtDefineTag>ART_DEF_BUILDING_MARS_CYCLER_EFFECT</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_PLANETARY_TRADE</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
 			</MapCategoryTypes>
@@ -719,7 +693,6 @@
 			<ArtDefineTag>ART_DEF_BUILDING_MARTIAN_ASTEROID_MINE</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_PLANETARY_EXTRACTION</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
 			</MapCategoryTypes>
@@ -831,18 +804,6 @@
 			<iNumFreeBonuses>1</iNumFreeBonuses>
 			<ExtraFreeBonuses>
 				<ExtraFreeBonus>
-					<FreeBonus>BONUS_LOBSTER</FreeBonus>
-					<iNumFreeBonuses>1</iNumFreeBonuses>
-				</ExtraFreeBonus>
-				<ExtraFreeBonus>
-					<FreeBonus>BONUS_SHRIMP</FreeBonus>
-					<iNumFreeBonuses>1</iNumFreeBonuses>
-				</ExtraFreeBonus>
-				<ExtraFreeBonus>
-					<FreeBonus>BONUS_WHALE</FreeBonus>
-					<iNumFreeBonuses>1</iNumFreeBonuses>
-				</ExtraFreeBonus>
-				<ExtraFreeBonus>
 					<FreeBonus>BONUS_ALGAE</FreeBonus>
 					<iNumFreeBonuses>1</iNumFreeBonuses>
 				</ExtraFreeBonus>
@@ -852,6 +813,18 @@
 				</ExtraFreeBonus>
 				<ExtraFreeBonus>
 					<FreeBonus>BONUS_CRAB</FreeBonus>
+					<iNumFreeBonuses>1</iNumFreeBonuses>
+				</ExtraFreeBonus>
+				<ExtraFreeBonus>
+					<FreeBonus>BONUS_LOBSTER</FreeBonus>
+					<iNumFreeBonuses>1</iNumFreeBonuses>
+				</ExtraFreeBonus>
+				<ExtraFreeBonus>
+					<FreeBonus>BONUS_SHRIMP</FreeBonus>
+					<iNumFreeBonuses>1</iNumFreeBonuses>
+				</ExtraFreeBonus>
+				<ExtraFreeBonus>
+					<FreeBonus>BONUS_WHALE</FreeBonus>
 					<iNumFreeBonuses>1</iNumFreeBonuses>
 				</ExtraFreeBonus>
 			</ExtraFreeBonuses>
@@ -1909,7 +1882,6 @@
 			<ArtDefineTag>ART_DEF_BUILDING_MARS_TERRA_EFFECT</ArtDefineTag>
 			<fVisibilityPriority>1</fVisibilityPriority>
 			<PrereqTech>TECH_PLANETARY_TERRAFORMING</PrereqTech>
-			<iHurryCostModifier>10000</iHurryCostModifier>
 			<MapCategoryTypes>
 				<MapCategoryType>MAPCATEGORY_MARTIAN</MapCategoryType>
 			</MapCategoryTypes>

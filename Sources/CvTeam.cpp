@@ -1123,18 +1123,6 @@ void CvTeam::updateYield()
 }
 
 
-void CvTeam::updatePowerHealth()
-{
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
-	{
-		if (GET_PLAYER((PlayerTypes)iI).isAliveAndTeam(getID()))
-		{
-			GET_PLAYER((PlayerTypes)iI).updatePowerHealth();
-		}
-	}
-}
-
-
 void CvTeam::updateCommerce()
 {
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
@@ -2670,8 +2658,7 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 
 	if (GC.getGame().isOption(GAMEOPTION_UPSCALED_RESEARCH_COSTS))
 	{
-		iCost *= 100 + GC.getUPSCALED_RESEARCH_COST_MODIFIER();
-		iCost /= 100;
+		iCost = getModifiedIntValue64(iCost, GC.getUPSCALED_RESEARCH_COST_MODIFIER());
 	}
 	iCost /= 100;
 
@@ -4627,10 +4614,10 @@ void CvTeam::processProjectChange(ProjectTypes eIndex, int iChange, int iOldProj
 					player.changeProjectHappiness(kProject.getGlobalHappiness());
 					player.changeProjectHealth(kProject.getGlobalHealth());
 					player.changeProjectInflation(kProject.getInflationModifier());
-					player.changeMaintenanceModifier(GC.getProjectInfo(eIndex).getGlobalMaintenanceModifier());
-					player.changeDistanceMaintenanceModifier(GC.getProjectInfo(eIndex).getDistanceMaintenanceModifier());
-					player.changeNumCitiesMaintenanceModifier(GC.getProjectInfo(eIndex).getNumCitiesMaintenanceModifier());
-					player.changeConnectedCityMaintenanceModifier(GC.getProjectInfo(eIndex).getConnectedCityMaintenanceModifier());
+					player.changeMaintenanceModifier(kProject.getGlobalMaintenanceModifier());
+					player.changeDistanceMaintenanceModifier(kProject.getDistanceMaintenanceModifier());
+					player.changeNumCitiesMaintenanceModifier(kProject.getNumCitiesMaintenanceModifier());
+					player.changeConnectedCityMaintenanceModifier(kProject.getConnectedCityMaintenanceModifier());
 
 					for (int iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
 					{
@@ -4785,10 +4772,10 @@ void CvTeam::changeObsoleteBuildingCount(BuildingTypes eIndex, int iChange)
 						{
 							pLoopCity->setNumRealBuilding(eIndex, 0);
 
-							const int iObsoletesToBuilding = GC.getBuildingInfo(eIndex).getObsoletesToBuilding();
-							if (iObsoletesToBuilding != -1 && pLoopCity->getNumRealBuilding((BuildingTypes)iObsoletesToBuilding) == 0)
+							const BuildingTypes iObsoletesToBuilding = GC.getBuildingInfo(eIndex).getObsoletesToBuilding();
+							if (iObsoletesToBuilding != NO_BUILDING && pLoopCity->getNumRealBuilding(iObsoletesToBuilding) == 0)
 							{
-								pLoopCity->setNumRealBuilding((BuildingTypes)iObsoletesToBuilding, 1);
+								pLoopCity->setNumRealBuilding(iObsoletesToBuilding, 1);
 							}
 						}
 					}
@@ -5445,7 +5432,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 					}
 
 					CvWString szBuffer;
-					for (int iI = 0; iI < MAX_PLAYERS; iI++)
+					for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 					{
 						if (GET_PLAYER((PlayerTypes)iI).isAlive())
 						{
@@ -5460,9 +5447,11 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 							AddDLLMessage(((PlayerTypes)iI), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_FIRSTTOTECH", MESSAGE_TYPE_MAJOR_EVENT, NULL, GC.getCOLOR_HIGHLIGHT_TEXT());
 						}
 					}
-
-					szBuffer = gDLL->getText("TXT_KEY_MISC_SOMEONE_FIRST_TO_TECH", GET_PLAYER(ePlayer).getName(), GC.getTechInfo(eIndex).getTextKeyWide());
-					GC.getGame().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, ePlayer, szBuffer, -1, -1, GC.getCOLOR_HIGHLIGHT_TEXT());
+					if (!GET_PLAYER(ePlayer).isNPC())
+					{
+						szBuffer = gDLL->getText("TXT_KEY_MISC_SOMEONE_FIRST_TO_TECH", GET_PLAYER(ePlayer).getName(), GC.getTechInfo(eIndex).getTextKeyWide());
+						GC.getGame().addReplayMessage(REPLAY_MESSAGE_MAJOR_EVENT, ePlayer, szBuffer, -1, -1, GC.getCOLOR_HIGHLIGHT_TEXT());
+					}
 				}
 
 				if (bClearResearchQueueAI)
@@ -5957,8 +5946,8 @@ void CvTeam::processTech(TechTypes eTech, int iChange, bool bAnnounce)
 		{
 			changeObsoleteBuildingCount((BuildingTypes)iI, iChange);
 		}
-		if (GC.getBuildingInfo((BuildingTypes) iI).getSpecialBuildingType() != NO_SPECIALBUILDING
-		&& GC.getSpecialBuildingInfo((SpecialBuildingTypes)GC.getBuildingInfo((BuildingTypes)iI).getSpecialBuildingType()).getObsoleteTech() == eTech)
+		if (GC.getBuildingInfo((BuildingTypes) iI).getSpecialBuilding() != NO_SPECIALBUILDING
+		&& GC.getSpecialBuildingInfo(GC.getBuildingInfo((BuildingTypes)iI).getSpecialBuilding()).getObsoleteTech() == eTech)
 		{
 			changeObsoleteBuildingCount((BuildingTypes)iI, iChange);
 		}
@@ -7768,10 +7757,10 @@ bool CvTeam::isAnyVassal() const
 
 ImprovementTypes CvTeam::getImprovementUpgrade(ImprovementTypes eImprovement) const
 {
-	const ImprovementTypes eUpgrade = (ImprovementTypes)GC.getImprovementInfo(eImprovement).getImprovementUpgrade();
+	const ImprovementTypes eUpgrade = GC.getImprovementInfo(eImprovement).getImprovementUpgrade();
 
 	if (eUpgrade != NO_IMPROVEMENT && GC.getImprovementInfo(eUpgrade).getPrereqTech() != NO_TECH
-	&& !isHasTech((TechTypes)GC.getImprovementInfo(eUpgrade).getPrereqTech()))
+	&& !isHasTech(GC.getImprovementInfo(eUpgrade).getPrereqTech()))
 	{
 		return NO_IMPROVEMENT;
 	}

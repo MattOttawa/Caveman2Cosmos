@@ -177,12 +177,6 @@ bool CvUnitAI::AI_update()
 
 	FAssertMsg(isGroupHead(), "isGroupHead is expected to be true"); // XXX is this a good idea???
 
-	// Toffer - will have to look into the python code DH made for this for immigrant units, it might be useful
-	if (false && Cy::call<bool>(PYGameModule, "AI_unitUpdate", Cy::Args() << this))
-	{
-		return false;
-	}
-
 	CvReachablePlotSet::ClearCache();
 
 	if (getDomainType() == DOMAIN_LAND)
@@ -263,7 +257,7 @@ bool CvUnitAI::AI_update()
 						break;
 					}
 				case NO_DOMAIN:
-				case DOMAIN_IMMOBILE: 
+				case DOMAIN_IMMOBILE:
 				case NUM_DOMAIN_TYPES:
 				default:
 					{
@@ -803,7 +797,7 @@ bool CvUnitAI::AI_promote()
 	PROFILE_FUNC();
 
 	if (!isPromotionReady()) return false;
-	
+
 	int iBestValue = 0;
 	PromotionTypes eBestPromotion = NO_PROMOTION;
 
@@ -1480,7 +1474,7 @@ UnitAITypes CvUnitAI::AI_getUnitAIType() const
 	{
 		FErrorMsg("Unit has no UnitAI!");
 
-		((CvUnitAI*)this)->m_eUnitAIType = (UnitAITypes)m_pUnitInfo->getDefaultUnitAIType();
+		((CvUnitAI*)this)->m_eUnitAIType = m_pUnitInfo->getDefaultUnitAIType();
 
 		area()->changeNumAIUnits(getOwner(), m_eUnitAIType, 1);
 		GET_PLAYER(getOwner()).AI_changeNumAIUnits(m_eUnitAIType, 1);
@@ -1751,8 +1745,8 @@ void CvUnitAI::AI_settleMove()
 	// Don't found new cities if that would cause more unhappiness when we already have happiness issues
 	bool bInhibitFounding = false;
 
-	
-	
+
+
 	if (GET_PLAYER(getOwner()).getCityLimit() > 0)
 	{
 		if (GET_PLAYER(getOwner()).getCityOverLimitUnhappy() > 0)
@@ -1852,7 +1846,7 @@ void CvUnitAI::AI_settleMove()
 		}
 
 		if (iAreaBestFoundValue == 0 && iOtherBestFoundValue == 0
-		&& GC.getGame().getGameTurn() - getGameTurnCreated() > intSqrt(GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getTrainPercent()))
+		&& GC.getGame().getGameTurn() - getGameTurnCreated() > intSqrt(GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getHammerCostPercent()))
 		{
 			if (NULL != getTransportUnit())
 			{
@@ -2061,7 +2055,7 @@ void CvUnitAI::AI_workerMove()
 			return;
 		}
 	}
-		
+
 	if (!isHuman() && !isNPC())
 	{
 		if (AI_workerReleaseDefenderIfNotNeeded())
@@ -2124,7 +2118,7 @@ void CvUnitAI::AI_workerMove()
 	}
 
 	// Afforess - worker financial trouble check
-	if (!isHuman() && AI_getUnitAIType() == UNITAI_WORKER && GET_PLAYER(getOwner()).AI_isFinancialTrouble()) // not evaluated 
+	if (!isHuman() && AI_getUnitAIType() == UNITAI_WORKER && GET_PLAYER(getOwner()).AI_isFinancialTrouble()) // not evaluated
 	{
 		const int iWorkers = GET_PLAYER(getOwner()).AI_totalUnitAIs(UNITAI_WORKER);
 
@@ -11143,7 +11137,7 @@ void CvUnitAI::AI_InfiltratorMove()
 			&& (
 				GC.getGame().getSorenRandNum(
 					5 +
-					7 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getBuildPercent() / 100,
+					7 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getHammerCostPercent() / 100,
 					"Leave city to pillage"
 				) == 0
 			) && AI_pillageRange(1, 20))
@@ -11157,7 +11151,7 @@ void CvUnitAI::AI_InfiltratorMove()
 			{
 				// Only enact when it is a long build that has been heavily invested into already
 				const int iEstTurns = plot()->getPlotCity()->getProductionNeeded() / iProduction;
-				const int iLongBuild = 1 + 6 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getConstructPercent() / 100;
+				const int iLongBuild = 1 + 6 * GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getHammerCostPercent() / 100;
 
 				if (iEstTurns >= iLongBuild)
 				{
@@ -12284,11 +12278,9 @@ bool CvUnitAI::AI_guardCity(bool bLeave, bool bSearch, int iMaxPath)
 						//	Guard a good spot outside the city but in its vicinity
 						int iBestValue = 0;
 
-						for(int iI = 0; iI < NUM_CITY_PLOTS_2; iI++)
+						foreach_(CvPlot* pLoopPlot, pPlot->rect(NUM_CITY_PLOTS_2, NUM_CITY_PLOTS_2))
 						{
-							CvPlot* pLoopPlot = plotCity(pPlot->getX(),pPlot->getY(),iI);
-
-							if (pLoopPlot != NULL && AI_plotValid(pLoopPlot) && pLoopPlot->area() == area())
+							if (AI_plotValid(pLoopPlot) && pLoopPlot->area() == area())
 							{
 								if (pLoopPlot->getOwner() == getOwner() &&
 									pLoopPlot->getNumVisibleEnemyUnits(getOwner()) == 0)
@@ -13673,7 +13665,7 @@ bool CvUnitAI::AI_spreadReligion()
 	const ReligionTypes eStateReligion = owner.getStateReligion();
 
 	// More often than not, it is the state religion the AI spreads.
-	ReligionTypes eReligion = 
+	ReligionTypes eReligion =
 	(
 		(eStateReligion != NO_RELIGION && m_pUnitInfo->getReligionSpreads(eStateReligion) > 0)
 		?
@@ -15643,7 +15635,7 @@ namespace scoring {
 		std::sort(scores.begin(), scores.end(), ScoringTraits<ItemScore<ItemTy_>, Compare_>::compare());
 
 		// Find the first city we can path to safely
-		std::vector< ItemScore<ItemTy_> >::iterator foundItr = std::find_if(scores.begin(), scores.end(), bst::bind(validationFnUnwrap<ItemTy_>, validationFn, _1));
+		std::vector< ItemScore<ItemTy_> >::iterator foundItr = std::find_if(scores.begin(), scores.end(), bind(validationFnUnwrap<ItemTy_>, validationFn, _1));
 
 		if (foundItr != scores.end())
 		{
@@ -15770,9 +15762,9 @@ namespace {
 			findBestScore<CvCity, LeastScore>(
 				player.beginCities(), player.endCities(),
 				// scoring the city for inquisition attractiveness
-				bst::bind(scoreInquisitionTarget, unit, _1),
+				bind(scoreInquisitionTarget, unit, _1),
 				// final validation is that we can actually path to the city
-				bst::bind(canSafePathToCity, unit, _1)
+				bind(canSafePathToCity, unit, _1)
 			)
 		);
 		return bestCityScore.found? bestCityScore.result.item : nullptr;
@@ -18155,7 +18147,7 @@ bool CvUnitAI::AI_pillageAroundCity(const CvCity* pTargetCity, int iBonusValueTh
 	CvPlot* pBestPlot = NULL;
 	const CvPlot* pBestPillagePlot = NULL;
 
-	foreach_(const CvPlot* pLoopPlot, pTargetCity->plots())
+	foreach_(const CvPlot* pLoopPlot, pTargetCity->plots(NUM_CITY_PLOTS))
 	{
 		if (AI_plotValid(pLoopPlot) && !(pLoopPlot->isNPC()))
 		{
@@ -23593,7 +23585,7 @@ bool CvUnitAI::AI_travelToUpgradeCity()
 				}
 			}
 			int iClosestCityPathTurns;
-			const CvPlot* pThisTurnPlotForAirlift = 
+			const CvPlot* pThisTurnPlotForAirlift =
 			(
 				generatePath(pClosestCity->plot(), 0, true, &iClosestCityPathTurns)
 				?
@@ -27980,7 +27972,7 @@ bool CvUnitAI::AI_StrategicForts()
 				if (generateSafePathforVulnerable(pLoopPlot, &iPathTurns))
 				{
 					//	Koshling - adjusted a bit to take advantage of super forts choke calculations
-					const int iValue = 
+					const int iValue =
 					(
 						1000
 						*
@@ -30135,34 +30127,32 @@ bool CvUnitAI::AI_foundReligion()
 {
 	PROFILE_FUNC();
 
-	ReligionTypes eBestReligion;
 	ReligionTypes eReligion;
 	int iI;
 	int iJ;
 	int value;
 	int bestValue;
-	int iProphetCount;
 
-	eBestReligion = NO_RELIGION;
-	iProphetCount = GET_PLAYER(getOwner()).AI_getNumAIUnits(UNITAI_PROPHET);
+	ReligionTypes eBestReligion = NO_RELIGION;
+	int iProphetCount = GET_PLAYER(getOwner()).AI_getNumAIUnits(UNITAI_PROPHET);
 
-	ReligionTypes eFavorite = (ReligionTypes)GC.getLeaderHeadInfo(GET_PLAYER(getOwner()).getLeaderType()).getFavoriteReligion();
+	const ReligionTypes eFavorite = (ReligionTypes)GC.getLeaderHeadInfo(GET_PLAYER(getOwner()).getLeaderType()).getFavoriteReligion();
 	if (GC.getGame().isOption(GAMEOPTION_DIVINE_PROPHETS))
 	{
-		if (canSpread(plot(), eFavorite))
+		if (eFavorite != NO_RELIGION && !GC.getGame().isReligionFounded(eFavorite))
 		{
-		//if favorite religion of current player was not founded:
-			if (eFavorite != NO_RELIGION && !GC.getGame().isReligionFounded(eFavorite))
+			if (canSpread(plot(), eFavorite))
 			{
+		//if favorite religion of current player was not founded:
 //	push mission 'found religion' with parameter 'favorite religion' and return true
 				getGroup()->pushMission(MISSION_SPREAD, eFavorite);
 				return true;
 			}
 		}
 //if favorite religion was not founded and CAN'T yet be, hold on to one prophet.			   GC.getLeaderHeadInfo(GET_PLAYER(getOwner()).getLeaderType()).getFavoriteReligion()(GC.getTechInfo((TechTypes)(GC.getBonusInfo((BonusTypes)iK).getTechCityTrade())).getEra()
-		if ((eFavorite != NO_RELIGION) &&
-			(!GC.getGame().isReligionFounded(eFavorite)) &&
-			(((int)(GC.getTechInfo((TechTypes)GC.getReligionInfo((ReligionTypes)eFavorite).getTechPrereq()).getEra()) - (int)(GET_PLAYER(getOwner()).getCurrentEra()) < 2)) &&
+		if (eFavorite != NO_RELIGION &&
+			!GC.getGame().isReligionFounded(eFavorite) &&
+			(((int)(GC.getTechInfo(GC.getReligionInfo(eFavorite).getTechPrereq()).getEra()) - (int)(GET_PLAYER(getOwner()).getCurrentEra()) < 2)) &&
 			(iProphetCount == 1))
 		{
 			getGroup()->pushMission(MISSION_SKIP);
@@ -30296,7 +30286,7 @@ int CvUnitAI::AI_beneficialPropertyValueToCity(const CvCity* pCity, PropertyType
 	//void unitSourcesValueToCity(CvGameObject * pObject, CvPropertyManipulators * pMani, const CvUnit * pUnit, const CvCityAI * pCity, int* iValue, PropertyTypes eProperty)
 
 	this->getGameObject()->foreachManipulator(
-		bst::bind(unitSourcesValueToCity, this->getGameObject(), _1, this, static_cast<const CvCityAI*>(pCity), &iValue, eProperty)
+		bind(unitSourcesValueToCity, this->getGameObject(), _1, this, static_cast<const CvCityAI*>(pCity), &iValue, eProperty)
 	);
 
 	return iValue;
@@ -30497,8 +30487,8 @@ bool CvUnitAI::AI_fulfillCityHealerNeed(const CvPlot* pPlot)
 	using namespace scoring;
 	ScoreResult<CvCity> bestCityScore = findBestScore<CvCity, GreatestScore>(
 		player.beginCities(), player.endCities(),
-		bst::bind(&CvUnitAI::scoreCityHealerNeed, this, eUnitCombat, eDomain, _1), // scoring the city for healing need
-		bst::bind(canSafePathToCity, this, _1) // final validation is that we can actually path to the city
+		bind(&CvUnitAI::scoreCityHealerNeed, this, eUnitCombat, eDomain, _1), // scoring the city for healing need
+		bind(canSafePathToCity, this, _1) // final validation is that we can actually path to the city
 	);
 
 	if (bestCityScore.found)
@@ -30628,8 +30618,8 @@ bool CvUnitAI::AI_fulfillPropertyControlNeed()
 	using namespace scoring;
 	ScoreResult<CvCity> bestCityScore = findBestScore<CvCity, GreatestScore>(
 		player.beginCities(), player.endCities(),
-		bst::bind(scorePropertyControlNeed, propertyScores, this, _1),
-		bst::bind(canSafePathToCity, this, _1)
+		bind(scorePropertyControlNeed, propertyScores, this, _1),
+		bind(canSafePathToCity, this, _1)
 	);
 
 	if(bestCityScore.found)

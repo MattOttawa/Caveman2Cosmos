@@ -40,10 +40,8 @@ def getGameSpeedMod():
 	global gameSpeedMod
 	if gameSpeedMod == None:
 		CvGameSpeedInfo = GC.getGameSpeedInfo(GAME.getGameSpeedType())
-		gameSpeedMod = CvGameSpeedInfo.getSpeedPercent()
-		gameSpeedMod += CvGameSpeedInfo.getTrainPercent()
-		gameSpeedMod += CvGameSpeedInfo.getConstructPercent()
-		gameSpeedMod = 300.0 / gameSpeedMod
+		gameSpeedMod = CvGameSpeedInfo.getSpeedPercent() + CvGameSpeedInfo.getHammerCostPercent()
+		gameSpeedMod = 200.0 / gameSpeedMod
 	return gameSpeedMod
 
 
@@ -254,7 +252,7 @@ def moveEnemyUnits( iPlotX, iPlotY, iEnemyOfPlayer, iMoveToX, iMoveToY, iInjureM
 			pUnit.setXY(iMoveToX, iMoveToY, False, False, False)
 
 	for pUnit in toKillList :
-		if not pUnit.isNone() and not pUnit.plot().isNone():
+		if pUnit is not None:
 			pUnit.kill(False,iEnemyOfPlayer)
 
 

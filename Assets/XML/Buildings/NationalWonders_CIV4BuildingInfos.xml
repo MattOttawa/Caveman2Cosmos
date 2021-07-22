@@ -307,6 +307,7 @@
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
+				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>990</iCost>
@@ -352,12 +353,10 @@
 			<Civilopedia>TXT_KEY_BUILDING_BOTANICAL_GARDENS_PEDIA</Civilopedia>
 			<PrereqTech>TECH_BOTANY</PrereqTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_ARBORETUM</BuildingType>
-					<iNumBuildingNeeded>5</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
+			<PrereqOrBuildings>
+				<BuildingType>BUILDING_ARBORETUM</BuildingType>
+				<BuildingType>BUILDING_AGROFOREST</BuildingType>
+			</PrereqOrBuildings>
 			<iCost>1070</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
@@ -1019,6 +1018,7 @@
 			</PrereqInCityBuildings>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
+				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>1540</iCost>
@@ -1154,6 +1154,7 @@
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
+				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>368</iCost>
@@ -1609,9 +1610,10 @@
 			<Description>TXT_KEY_BUILDING_GREAT_BONFIRE</Description>
 			<Civilopedia>TXT_KEY_BUILDING_GREAT_BONFIRE_PEDIA</Civilopedia>
 			<PrereqTech>TECH_FIRE_MAKING</PrereqTech>
-			<PrereqInCityBuildings>
+			<PrereqOrBuildings>
 				<BuildingType>BUILDING_BONFIRE</BuildingType>
-			</PrereqInCityBuildings>
+				<BuildingType>BUILDING_CHARCOAL_FIRE</BuildingType>
+			</PrereqOrBuildings>
 			<ObsoleteTech>TECH_FIREFIGHTING</ObsoleteTech>
 			<iCost>112</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
@@ -2307,7 +2309,7 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_GLASSSMITH</BuildingType>
 			</PrereqInCityBuildings>
-			<ObsoleteTech>TECH_GLOBALIZATION</ObsoleteTech>
+			<ObsoleteTech>TECH_ASSEMBLY_LINE</ObsoleteTech>
 			<iCost>664</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
@@ -2625,7 +2627,7 @@
 			<PrereqInCityBuildings>
 				<BuildingType>BUILDING_POTTERS_WORKSHOP</BuildingType>
 			</PrereqInCityBuildings>
-			<ObsoleteTech>TECH_GLOBALIZATION</ObsoleteTech>
+			<ObsoleteTech>TECH_ASSEMBLY_LINE</ObsoleteTech>
 			<iCost>664</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
@@ -3057,6 +3059,7 @@
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
+				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 				<BuildingType>BUILDING_FACTORY</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>1480</iCost>
@@ -3164,11 +3167,19 @@
 			</PrereqBonuses>
 			<PrereqOrFeature>
 				<PrereqFeature>
+					<FeatureType>FEATURE_FOREST_YOUNG</FeatureType>
+					<bPrereqFeature>1</bPrereqFeature>
+				</PrereqFeature>
+				<PrereqFeature>
 					<FeatureType>FEATURE_FOREST</FeatureType>
 					<bPrereqFeature>1</bPrereqFeature>
 				</PrereqFeature>
 				<PrereqFeature>
 					<FeatureType>FEATURE_FOREST_ANCIENT</FeatureType>
+					<bPrereqFeature>1</bPrereqFeature>
+				</PrereqFeature>
+				<PrereqFeature>
+					<FeatureType>FEATURE_FOREST_BURNT</FeatureType>
 					<bPrereqFeature>1</bPrereqFeature>
 				</PrereqFeature>
 			</PrereqOrFeature>
@@ -3479,15 +3490,11 @@
 			<PrereqTech>TECH_ADVANCED_ROCKETRY</PrereqTech>
 			<iPrereqPopulation>7</iPrereqPopulation>
 			<Bonus>BONUS_ROCKET_FUEL</Bonus>
-			<PrereqAmountBuildings>
-				<PrereqBuilding>
-					<BuildingType>BUILDING_MILITARY_AIRBASE</BuildingType>
-					<iNumBuildingNeeded>3</iNumBuildingNeeded>
-				</PrereqBuilding>
-			</PrereqAmountBuildings>
-			<PrereqInCityBuildings>
+			<PrereqOrBuildings>
 				<BuildingType>BUILDING_MILITARY_AIRBASE</BuildingType>
-			</PrereqInCityBuildings>
+				<BuildingType>BUILDING_AEROSPACE_COMPLEX</BuildingType>
+			</PrereqOrBuildings>
+			<FreeBuilding>BUILDING_LAUNCH_SITE_EFFECT</FreeBuilding>
 			<iCost>2690</iCost>
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<BonusProductionModifiers>
@@ -3892,6 +3899,7 @@
 			</PrereqInCityBuildings>
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
+				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 			</PrereqOrBuildings>
 			<iCost>1030</iCost>
@@ -3922,6 +3930,7 @@
 			<bNeverCapture>1</bNeverCapture>
 			<fVisibilityPriority>10</fVisibilityPriority>
 			<ArtDefineTag>ART_DEF_BUILDING_NATIONAL_LIBRARY_SERVICE</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_NATIONAL_LIBRARY_SERVICE</MovieDefineTag>
 			<iAIWeight>1</iAIWeight>
 		</BuildingInfo>
 		<BuildingInfo>
@@ -3960,7 +3969,7 @@
 			<iHurryCostModifier>100</iHurryCostModifier>
 			<Advisor>ADVISOR_ECONOMY</Advisor>
 			<ConstructSound>AS2D_BUILD_BANK</ConstructSound>
-			<iMaintenanceModifier>10</iMaintenanceModifier>
+			<iMaintenanceModifier>1</iMaintenanceModifier>
 			<CommerceChanges>
 				<iCommerce>2</iCommerce>
 			</CommerceChanges>
@@ -4913,36 +4922,6 @@
 			<MovieDefineTag>ART_DEF_MOVIE_ONLINE_UNIVERSITY</MovieDefineTag>
 		</BuildingInfo>
 		<BuildingInfo>
-			<Type>BUILDING_ORBITAL_PRISON</Type>
-			<iMaxPlayerInstances>1</iMaxPlayerInstances>
-			<MapCategoryTypes>
-				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
-			</MapCategoryTypes>
-			<Description>TXT_KEY_BUILDING_ORBITAL_PRISON</Description>
-			<Civilopedia>TXT_KEY_BUILDING_ORBITAL_PRISON_PEDIA</Civilopedia>
-			<PrereqTech>TECH_ADVANCED_ENVIRONMENTAL_SYSTEMS</PrereqTech>
-			<iPrereqPopulation>13</iPrereqPopulation>
-			<bPrereqPower>1</bPrereqPower>
-			<Bonus>BONUS_COMPUTERS</Bonus>
-			<PrereqBonuses>
-				<Bonus>BONUS_NANOTUBES</Bonus>
-			</PrereqBonuses>
-			<PrereqInCityBuildings>
-				<BuildingType>BUILDING_MILITARY_SPACEPORT</BuildingType>
-			</PrereqInCityBuildings>
-			<iCost>6490</iCost>
-			<iHurryCostModifier>100</iHurryCostModifier>
-			<Advisor>ADVISOR_ECONOMY</Advisor>
-			<CommerceChanges>
-				<iCommerce>-1000</iCommerce>
-			</CommerceChanges>
-			<FreeBuilding>BUILDING_SAFETY_ORBITAL_PRISON</FreeBuilding>
-			<iAIWeight>10</iAIWeight>
-			<bNeverCapture>1</bNeverCapture>
-			<ArtDefineTag>ART_DEF_BUILDING_ORBITAL_PRISON</ArtDefineTag>
-			<MovieDefineTag>ART_DEF_MOVIE_ORBITAL_PRISON</MovieDefineTag>
-		</BuildingInfo>
-		<BuildingInfo>
 			<Type>BUILDING_PALACE</Type>
 			<iMaxPlayerInstances>1</iMaxPlayerInstances>
 			<iExtraPlayerInstances>1</iExtraPlayerInstances>
@@ -5073,6 +5052,7 @@
 			<PrereqOrBuildings>
 				<BuildingType>BUILDING_OFFICES</BuildingType>
 				<BuildingType>BUILDING_VIKING_TRADING_POST</BuildingType>
+				<BuildingType>BUILDING_SHOPPING_DISTRICT</BuildingType>
 			</PrereqOrBuildings>
 			<PrereqAndCivics>
 				<PrereqCivic>
@@ -5534,6 +5514,7 @@
 			<Description>TXT_KEY_BUILDING_STATUE_OF_CHAMPION</Description>
 			<Civilopedia>TXT_KEY_BUILDING_STATUE_OF_CHAMPION_PEDIA</Civilopedia>
 			<PrereqTech>TECH_COMBAT_SPORTS</PrereqTech>
+			<ObsoleteTech>TECH_BINARY_PSYCHOKINESIS</ObsoleteTech>
 			<iPrereqPopulation>3</iPrereqPopulation>
 			<Bonus>BONUS_SCULPTURES</Bonus>
 			<PrereqBonuses>
@@ -6203,10 +6184,6 @@
 				</BuildingProductionModifier>
 				<BuildingProductionModifier>
 					<BuildingType>BUILDING_CAMP_GROUNDS</BuildingType>
-					<iProductionModifier>15</iProductionModifier>
-				</BuildingProductionModifier>
-				<BuildingProductionModifier>
-					<BuildingType>BUILDING_UNDERWATER_HOTEL</BuildingType>
 					<iProductionModifier>15</iProductionModifier>
 				</BuildingProductionModifier>
 				<BuildingProductionModifier>
@@ -7049,6 +7026,667 @@
 					<iFlavor>10</iFlavor>
 				</Flavor>
 			</Flavors>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_EMANCIPATION_PROCLAMATION</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_EMANCIPATION_PROCLAMATION</Description>
+			<Civilopedia>TXT_KEY_BUILDING_EMANCIPATION_PROCLAMATION_PEDIA</Civilopedia>
+			<Help>TXT_KEY_BUILDING_EMANCIPATION_PROCLAMATION_HELP</Help>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_EMANCIPATION_PROCLAMATION</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_EMANCIPATION_PROCLAMATION</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_EMANCIPATION</PrereqTech>
+			<iCost>1310</iCost>
+			<FreeBuilding>BUILDING_EMANCIPATION_PROCLAMATION_EFFECT</FreeBuilding>
+			<iHappinessPercentPerPopulation>5</iHappinessPercentPerPopulation>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_INTERNET_OF_THINGS</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_INTERNET_OF_THINGS</Description>
+			<Civilopedia>TXT_KEY_BUILDING_INTERNET_OF_THINGS_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_INTERNET_OF_THINGS</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_INTERNET_OF_THINGS</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<iCost>4810</iCost>
+			<PrereqTech>TECH_RAPID_PROTOTYPING</PrereqTech>
+			<TechTypes>
+				<PrereqTech>TECH_DIGITIZATION</PrereqTech>
+			</TechTypes>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_MECHATRONICS_LAB</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>3</iExtraCommerce>
+				</BuildingExtraCommerce>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_DIGITAL_OFFICES</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>3</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_CLOUD_SERVER</BuildingType>
+			</PrereqInCityBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_SEMANTIC_WEB</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_SEMANTIC_WEB</Description>
+			<Civilopedia>TXT_KEY_BUILDING_SEMANTIC_WEB_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_SEMANTIC_WEB</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_SEMANTIC_WEB</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_ONTOLOGICAL_ENGINEERING</PrereqTech>
+			<iCost>7330</iCost>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_NATURAL_LANGUAGE_ALGORITHMS</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>3</iExtraCommerce>
+				</BuildingExtraCommerce>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_E_STOCK_MARKET</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>3</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_NATURAL_LANGUAGE_ALGORITHMS</BuildingType>
+			</PrereqInCityBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_TIME_ZONES</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_TIME_ZONES</Description>
+			<Civilopedia>TXT_KEY_BUILDING_TIME_ZONES_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_TIME_ZONES</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_TIME_ZONES</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_MANAGEMENT</PrereqTech>
+			<iCost>1660</iCost>
+			<YieldChanges>
+				<iYield>0</iYield>
+				<iYield>5</iYield>
+			</YieldChanges>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_PUBLIC_TRANSPORTATION</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>1</iExtraCommerce>
+				</BuildingExtraCommerce>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_COMMERCIAL_AIRPORT</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>1</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqOrBuildings>
+				<BuildingType>BUILDING_OFFICES</BuildingType>
+				<BuildingType>BUILDING_COMPUTER_NETWORK</BuildingType>
+			</PrereqOrBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_NATIONAL_CENSUS</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_NATIONAL_CENSUS</Description>
+			<Civilopedia>TXT_KEY_BUILDING_NATIONAL_CENSUS_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_NATIONAL_CENSUS</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_NATIONAL_CENSUS</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_STATISTICS</PrereqTech>
+			<iCost>1260</iCost>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_METROPOLITAN_ADMINISTRATION</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>3</iExtraCommerce>
+				</BuildingExtraCommerce>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_CAPITAL_ADMINISTRATION</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>3</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<FreeSpecialistCounts>
+				<FreeSpecialistCount>
+					<SpecialistType>SPECIALIST_SPY</SpecialistType>
+					<iFreeSpecialistCount>1</iFreeSpecialistCount>
+				</FreeSpecialistCount>
+			</FreeSpecialistCounts>
+			<PrereqOrBuildings>
+				<BuildingType>BUILDING_POST_OFFICE</BuildingType>
+				<BuildingType>BUILDING_COMPUTER_NETWORK</BuildingType>
+			</PrereqOrBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_CENTER_FOR_AI_SAFETY</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_CENTER_FOR_AI_SAFETY</Description>
+			<Civilopedia>TXT_KEY_BUILDING_CENTER_FOR_AI_SAFETY_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_CENTER_FOR_AI_SAFETY</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_CENTER_FOR_AI_SAFETY</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_COMPUTATIONAL_SOCIOLOGY</PrereqTech>
+			<iCost>5010</iCost>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>20</iCommerce>
+			</CommerceChanges>
+			<YieldChanges>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+				<iYield>3</iYield>
+			</YieldChanges>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_INTUITIVE_ALGORITHMS</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>1</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_APPLIED_SOCIOLOGY_LAB</BuildingType>
+			</PrereqInCityBuildings>
+			<PropertyManipulators>
+				<PropertySource>
+					<PropertySourceType>PROPERTYSOURCE_CONSTANT</PropertySourceType>
+					<PropertyType>PROPERTY_CRIME</PropertyType>
+					<iAmountPerTurn>-10</iAmountPerTurn>
+				</PropertySource>
+			</PropertyManipulators>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_CENTER_FOR_BIOTECH_SAFETY</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_CENTER_FOR_BIOTECH_SAFETY</Description>
+			<Civilopedia>TXT_KEY_BUILDING_CENTER_FOR_BIOTECH_SAFETY_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_CENTER_FOR_BIOTECH_SAFETY</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_CENTER_FOR_BIOTECH_SAFETY</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_COMPUTATIONAL_SOCIOLOGY</PrereqTech>
+			<iCost>5010</iCost>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>20</iCommerce>
+			</CommerceChanges>
+			<YieldChanges>
+				<iYield>3</iYield>
+			</YieldChanges>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_BIOINFO_LAB</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>1</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_APPLIED_SOCIOLOGY_LAB</BuildingType>
+			</PrereqInCityBuildings>
+			<PropertyManipulators>
+				<PropertySource>
+					<PropertySourceType>PROPERTYSOURCE_CONSTANT</PropertySourceType>
+					<PropertyType>PROPERTY_DISEASE</PropertyType>
+					<iAmountPerTurn>-10</iAmountPerTurn>
+				</PropertySource>
+			</PropertyManipulators>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_CENTER_FOR_NANOTECH_SAFETY</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_CENTER_FOR_NANOTECH_SAFETY</Description>
+			<Civilopedia>TXT_KEY_BUILDING_CENTER_FOR_NANOTECH_SAFETY_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_CENTER_FOR_NANOTECH_SAFETY</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_CENTER_FOR_NANOTECH_SAFETY</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_COMPUTATIONAL_SOCIOLOGY</PrereqTech>
+			<iCost>5010</iCost>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>20</iCommerce>
+			</CommerceChanges>
+			<YieldChanges>
+				<iYield>0</iYield>
+				<iYield>4</iYield>
+			</YieldChanges>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_NANO_RESEARCH_DEPARTMENT</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>1</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_APPLIED_SOCIOLOGY_LAB</BuildingType>
+			</PrereqInCityBuildings>
+			<PropertyManipulators>
+				<PropertySource>
+					<PropertySourceType>PROPERTYSOURCE_CONSTANT</PropertySourceType>
+					<PropertyType>PROPERTY_AIR_POLLUTION</PropertyType>
+					<iAmountPerTurn>-10</iAmountPerTurn>
+				</PropertySource>
+			</PropertyManipulators>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_DIGITAL_EMBASSY</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_DIGITAL_EMBASSY</Description>
+			<Civilopedia>TXT_KEY_BUILDING_DIGITAL_EMBASSY_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<Help>TXT_KEY_BUILDING_DIGITAL_EMBASSY_HELP</Help>
+			<ArtDefineTag>ART_DEF_BUILDING_DIGITAL_EMBASSY</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_DIGITAL_EMBASSY</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_FIBER_OPTICS</PrereqTech>
+			<iCost>3690</iCost>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>15</iCommerce>
+			</CommerceChanges>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_INTELLIGENCE_AGENCY</BuildingType>
+			</PrereqInCityBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_SOCIAL_CREDIT_SYSTEM</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_SOCIAL_CREDIT_SYSTEM</Description>
+			<Civilopedia>TXT_KEY_BUILDING_SOCIAL_CREDIT_SYSTEM_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_SOCIAL_CREDIT_SYSTEM</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_SOCIAL_CREDIT_SYSTEM</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_VIRTUAL_SOCIETY</PrereqTech>
+			<iCost>4810</iCost>
+			<CommerceChanges>
+				<iCommerce>-20</iCommerce>
+				<iCommerce>10</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>50</iCommerce>
+			</CommerceChanges>
+			<iGlobalHappiness>-1</iGlobalHappiness>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_CLOUD_SERVER</BuildingType>
+			</PrereqInCityBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_MANTLE_VACTRAIN_NETWORK</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_MANTLE_VACTRAIN_NETWORK</Description>
+			<Civilopedia>TXT_KEY_BUILDING_MANTLE_VACTRAIN_NETWORK_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_MANTLE_VACTRAIN_NETWORK</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_MANTLE_VACTRAIN_NETWORK</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_SUBTERRANEAN_EXPLORATION</PrereqTech>
+			<iCost>13810</iCost>
+			<YieldChanges>
+				<iYield>0</iYield>
+				<iYield>0</iYield>
+				<iYield>17</iYield>
+			</YieldChanges>
+			<FreeBuilding>BUILDING_GRAVITY_TRAIN</FreeBuilding>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_MINING_NANOBOT_CONTROL_CENTER</BuildingType>
+				<BuildingType>BUILDING_GRAVITY_TRAIN</BuildingType>
+			</PrereqInCityBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_METI</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_METI</Description>
+			<Civilopedia>TXT_KEY_BUILDING_METI_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_METI</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_METI</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_UNIVERSAL_TRANSLATOR</PrereqTech>
+			<iCost>8970</iCost>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>10</iCommerce>
+				<iCommerce>20</iCommerce>
+			</CommerceChanges>
+			<FreeBuilding>BUILDING_ASTROBIOLOGY_LAB</FreeBuilding>
+			<TechCommerceChanges>
+				<TechCommerceChange>
+					<PrereqTech>TECH_XENODIPLOMACY</PrereqTech>
+					<TechCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>5</iCommerce>
+					</TechCommerce>
+				</TechCommerceChange>
+				<TechCommerceChange>
+					<PrereqTech>TECH_BINARY_SEMIOTICS</PrereqTech>
+					<TechCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>5</iCommerce>
+					</TechCommerce>
+				</TechCommerceChange>
+				<TechCommerceChange>
+					<PrereqTech>TECH_INTERSTELLAR_COMMUNICATION</PrereqTech>
+					<TechCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>5</iCommerce>
+					</TechCommerce>
+				</TechCommerceChange>
+			</TechCommerceChanges>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_ASTROBIOLOGY_LAB</BuildingType>
+			</PrereqInCityBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_NEUROIMPLANT_EXPORTER</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_NEUROIMPLANT_EXPORTER</Description>
+			<Civilopedia>TXT_KEY_BUILDING_NEUROIMPLANT_EXPORTER_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_NEUROIMPLANT_EXPORTER</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_NEUROIMPLANT_EXPORTER</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_COMPREHENSIVE_CYBERNETICS</PrereqTech>
+			<iCost>11810</iCost>
+			<CommerceChanges>
+				<iCommerce>10</iCommerce>
+			</CommerceChanges>
+			<FreeBuilding>BUILDING_NEUROIMPLANT_EXPORTER_EFFECT</FreeBuilding>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_STARPORT</BuildingType>
+			</PrereqInCityBuildings>
+			<Bonus>BONUS_NEUROIMPLANTS</Bonus>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_GPS</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_GPS</Description>
+			<Civilopedia>TXT_KEY_BUILDING_GPS_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_GPS</ArtDefineTag>
+			<MovieDefineTag>ART_DEF_MOVIE_GPS</MovieDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_COMMUNICATION_NETWORKS</PrereqTech>
+			<iCost>3850</iCost>
+			<CommerceChanges>
+				<iCommerce>-50</iCommerce>
+				<iCommerce>5</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>10</iCommerce>
+			</CommerceChanges>
+			<FreeBuilding>BUILDING_EFFECT_GPS</FreeBuilding>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_ATOMIC_CLOCK</BuildingType>
+			</PrereqInCityBuildings>
+			<PrereqOrBuildings>
+				<BuildingType>BUILDING_MILITARY_SATELLITES</BuildingType>
+				<BuildingType>BUILDING_MILITARY_SPACEPORT</BuildingType>
+			</PrereqOrBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_CRISPR_CAS9_BACTERIA</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_CRISPR_CAS9_BACTERIA</Description>
+			<Civilopedia>TXT_KEY_BUILDING_CRISPR_CAS9_BACTERIA_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_CRISPR_CAS9_BACTERIA</ArtDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_BACTERIUM_ENGINEERING</PrereqTech>
+			<iCost>5730</iCost>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_BACTERIUM_BIOFORGE</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>2</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_BACTERIUM_BIOFORGE</BuildingType>
+			</PrereqInCityBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_C4_CROPS</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_C4_CROPS</Description>
+			<Civilopedia>TXT_KEY_BUILDING_C4_CROPS_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_C4_CROPS</ArtDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_BACTERIUM_ENGINEERING</PrereqTech>
+			<iCost>5730</iCost>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_GENFARM_LAB</BuildingType>
+					<CommerceType>COMMERCE_RESEARCH</CommerceType>
+					<iExtraCommerce>2</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqAmountBuildings>
+				<PrereqBuilding>
+					<BuildingType>BUILDING_CRISPR_CAS9_BACTERIA</BuildingType>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
+				</PrereqBuilding>
+			</PrereqAmountBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_FLUORESCENT_BACTERIA</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_FLUORESCENT_BACTERIA</Description>
+			<Civilopedia>TXT_KEY_BUILDING_FLUORESCENT_BACTERIA_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_FLUORESCENT_BACTERIA</ArtDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_BACTERIUM_ENGINEERING</PrereqTech>
+			<iCost>5730</iCost>
+			<GlobalBuildingExtraCommerces>
+				<BuildingExtraCommerce>
+					<BuildingType>BUILDING_BACTERIUM_BIOFORGE</BuildingType>
+					<CommerceType>COMMERCE_GOLD</CommerceType>
+					<iExtraCommerce>2</iExtraCommerce>
+				</BuildingExtraCommerce>
+			</GlobalBuildingExtraCommerces>
+			<PrereqAmountBuildings>
+				<PrereqBuilding>
+					<BuildingType>BUILDING_CRISPR_CAS9_BACTERIA</BuildingType>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
+				</PrereqBuilding>
+			</PrereqAmountBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_STRUCTURAL_BACTERIA</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_STRUCTURAL_BACTERIA</Description>
+			<Civilopedia>TXT_KEY_BUILDING_STRUCTURAL_BACTERIA_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_STRUCTURAL_BACTERIA</ArtDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_PROTOTYPED_PATHOGENS</PrereqTech>
+			<iCost>6490</iCost>
+			<PrereqAmountBuildings>
+				<PrereqBuilding>
+					<BuildingType>BUILDING_CRISPR_CAS9_BACTERIA</BuildingType>
+					<iNumBuildingNeeded>1</iNumBuildingNeeded>
+				</PrereqBuilding>
+			</PrereqAmountBuildings>
+			<iAIWeight>1</iAIWeight>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_NONPHOTOSYNTHETIC_PLANTS</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<bNeverCapture>1</bNeverCapture>
+			<Description>TXT_KEY_BUILDING_NONPHOTOSYNTHETIC_PLANTS</Description>
+			<Civilopedia>TXT_KEY_BUILDING_NONPHOTOSYNTHETIC_PLANTS_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_SCIENCE</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_NONPHOTOSYNTHETIC_PLANTS</ArtDefineTag>
+			<fVisibilityPriority>1</fVisibilityPriority>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<PrereqTech>TECH_HYPOTHETICAL_BIOCHEMISTRY</PrereqTech>
+			<iCost>9310</iCost>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>20</iCommerce>
+			</CommerceChanges>
+			<YieldChanges>
+				<iYield>15</iYield>
+			</YieldChanges>
+			<TechCommerceChanges>
+				<TechCommerceChange>
+					<PrereqTech>TECH_ADAPTIVE_RADIATION</PrereqTech>
+					<TechCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>4</iCommerce>
+					</TechCommerce>
+				</TechCommerceChange>
+			</TechCommerceChanges>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_TRANSGENETICS_LAB</BuildingType>
+			</PrereqInCityBuildings>
+		</BuildingInfo>
+		<BuildingInfo>
+			<Type>BUILDING_MORMON_MONASTERY</Type>
+			<iMaxPlayerInstances>1</iMaxPlayerInstances>
+			<Description>TXT_KEY_BUILDING_MORMON_MONASTERY</Description>
+			<Civilopedia>TXT_KEY_BUILDING_MORMON_MONASTERY_PEDIA</Civilopedia>
+			<Advisor>ADVISOR_RELIGION</Advisor>
+			<ArtDefineTag>ART_DEF_BUILDING_MORMON_MONASTERY</ArtDefineTag>
+			<MapCategoryTypes>
+				<MapCategoryType>MAPCATEGORY_EARTH</MapCategoryType>
+			</MapCategoryTypes>
+			<ReligionType>RELIGION_MORMON</ReligionType>
+			<PrereqReligion>RELIGION_MORMON</PrereqReligion>
+			<bNeverCapture>1</bNeverCapture>
+			<iCost>1540</iCost>
+			<iConquestProb>0</iConquestProb>
+			<iAsset>3</iAsset>
+			<fVisibilityPriority>1.0</fVisibilityPriority>
+			<CommerceChanges>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>2</iCommerce>
+			</CommerceChanges>
+			<CommerceChangeDoubleTimes>
+				<iCommerce>0</iCommerce>
+				<iCommerce>0</iCommerce>
+				<iCommerce>1000</iCommerce>
+			</CommerceChangeDoubleTimes>
+			<CommerceModifiers>
+				<iCommerce>0</iCommerce>
+				<iCommerce>5</iCommerce>
+			</CommerceModifiers>
+			<ReligionChanges>
+				<ReligionChange>
+					<ReligionType>RELIGION_MORMON</ReligionType>
+					<iReligionChange>1</iReligionChange>
+				</ReligionChange>
+			</ReligionChanges>
+			<ConstructSound>AS2D_BUILD_MORMON</ConstructSound>
+			<PrereqInCityBuildings>
+				<BuildingType>BUILDING_MORMON_TEMPLE</BuildingType>
+			</PrereqInCityBuildings>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>10</iFlavor>
+				</Flavor>
+			</Flavors>
+			<PropertyManipulators>
+				<PropertySource>
+					<PropertySourceType>PROPERTYSOURCE_CONSTANT</PropertySourceType>
+					<PropertyType>PROPERTY_EDUCATION</PropertyType>
+					<iAmountPerTurn>2</iAmountPerTurn>
+				</PropertySource>
+			</PropertyManipulators>
 		</BuildingInfo>
 	</BuildingInfos>
 </Civ4BuildingInfos>

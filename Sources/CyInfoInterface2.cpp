@@ -82,16 +82,12 @@ void CyInfoPythonInterface2()
 		.def("getAIUnitUpgradePercent", &CvHandicapInfo::getAIUnitUpgradePercent, "int ()")
 		.def("getAIPerEraModifier", &CvHandicapInfo::getAIPerEraModifier, "int ()")
 		.def("getRevolutionIndexPercent", &CvHandicapInfo::getRevolutionIndexPercent, "int ()")
-
-		// Arrays
 	;
 
 	python::class_<CvGameSpeedInfo, python::bases<CvInfoBase> >("CvGameSpeedInfo")
 
 		.def("getSpeedPercent", &CvGameSpeedInfo::getSpeedPercent, "int ()")
-		.def("getTrainPercent", &CvGameSpeedInfo::getTrainPercent, "int ()")
-		.def("getConstructPercent", &CvGameSpeedInfo::getConstructPercent, "int ()")
-		.def("getBuildPercent", &CvGameSpeedInfo::getBuildPercent, "int ()")
+		.def("getHammerCostPercent", &CvGameSpeedInfo::getHammerCostPercent, "int ()")
 
 		.def("getNumTurnIncrements", &CvGameSpeedInfo::getNumTurnIncrements, "int ()")
 		.def("getGameTurnInfo", &CvGameSpeedInfo::getGameTurnInfo, python::return_value_policy<python::reference_existing_object>(), "GameTurnInfo ()")
@@ -158,7 +154,9 @@ void CyInfoPythonInterface2()
 		.def("getDefenseModifier", &CvImprovementInfo::getDefenseModifier, "int ()")
 		.def("getHappiness", &CvImprovementInfo::getHappiness, "int ()")
 		.def("getPillageGold", &CvImprovementInfo::getPillageGold, "int ()")
+		.def("getImprovementPillage", &CvImprovementInfo::getImprovementPillage, "int ()")
 		.def("getImprovementUpgrade", &CvImprovementInfo::getImprovementUpgrade, "int ()")
+		.def("getNumAlternativeImprovementUpgradeTypes", &CvImprovementInfo::getNumAlternativeImprovementUpgradeTypes, "int ()")
 		.def("getPrereqTech", &CvImprovementInfo::getPrereqTech, "int ()")
 
 		.def("isActsAsCity", &CvImprovementInfo::isActsAsCity, "bool ()")
@@ -181,9 +179,11 @@ void CyInfoPythonInterface2()
 		.def("getYieldChange", &CvImprovementInfo::getYieldChange, "int (int i)")
 		.def("getRiverSideYieldChange", &CvImprovementInfo::getRiverSideYieldChange, "int (int i)")
 		.def("getIrrigatedYieldChange", &CvImprovementInfo::getIrrigatedYieldChange, "int (int i)")
+		.def("getAlternativeImprovementUpgradeType", &CvImprovementInfo::getAlternativeImprovementUpgradeType, "int (int i)")
 
 		.def("getTerrainMakesValid", &CvImprovementInfo::getTerrainMakesValid, "bool (int i)")
 		.def("getFeatureMakesValid", &CvImprovementInfo::getFeatureMakesValid, "bool (int i)")
+		.def("isAlternativeImprovementUpgradeType", &CvImprovementInfo::isAlternativeImprovementUpgradeType, "bool (int i)")
 
 		.def("getImprovementBonusYield", &CvImprovementInfo::getImprovementBonusYield, "int (int i, int j)")
 		.def("isImprovementBonusMakesValid", &CvImprovementInfo::isImprovementBonusMakesValid, "bool (int i)")

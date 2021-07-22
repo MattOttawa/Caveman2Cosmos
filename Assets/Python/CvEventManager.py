@@ -405,6 +405,7 @@ class CvEventManager:
 				# key down event for the 'D' in 'ctrl+shift+alt+D' seems to be consumed by the exe in some cases
 				if key == 16: # D
 					DebugUtils.toggleDebugMode()
+					CvScreensInterface.mainInterface.pythonDebugToggle(DebugUtils.bDebugMode)
 					return 1
 
 		elif eventType == 6: # Key down
@@ -570,7 +571,7 @@ class CvEventManager:
 					CyTeam.setIsMinorCiv(True, False)
 
 		CvGameSpeedInfo = GC.getGameSpeedInfo(GAME.getGameSpeedType())
-		self.iTrainPrcntGS = CvGameSpeedInfo.getTrainPercent()
+		self.iTrainPrcntGS = CvGameSpeedInfo.getHammerCostPercent()
 		self.iGameSpeedPercent = CvGameSpeedInfo.getSpeedPercent()
 		# Find special buildings built where by whom.
 		mapBuildingType = self.mapBuildingType
@@ -1489,11 +1490,10 @@ class CvEventManager:
 						break
 		# NANITE DEFUSER - destroyes all nukes from all players
 		elif iBuilding == mapBuildingType["NANITE_DEFUSER"]:
-
 			for iPlayerX in xrange(self.MAX_PLAYERS):
 				for CyUnit in GC.getPlayer(iPlayerX).units():
-					if CyUnit.isNone() or CyUnit.isDead():
-						print "CvEventManager\onBuildingBuilt", ("CyUnit.isDead()", CyUnit.isDead()), ("CyUnit.isNone()", CyUnit.isNone())
+					if CyUnit.isDead():
+						print "CvEventManager\onBuildingBuilt", ("CyUnit.isDead()", CyUnit.isDead())
 					elif CyUnit.nukeRange() > -1:
 						CyUnit.kill(0, -1)
 				# Global message
@@ -2044,11 +2044,11 @@ class CvEventManager:
 		if DebugUtils.bDebugMode:
 			print "%s Built %s in %s" %(GC.getPlayer(CyCity.getOwner()).getCivilizationDescription(0), CyUnit.getName(), CyCity.getName())
 		CvAdvisorUtils.unitBuiltFeats(CyCity, CyUnit)
-		CyPlayer = GC.getPlayer(CyUnit.getOwner())
+		iPlayer = CyUnit.getOwner()
+		CyPlayer = GC.getPlayer(iPlayer)
 		iUnit = CyUnit.getUnitType()
 		'''
 		## Hero Movie (Not implemented yet)
-		iPlayer = CyUnit.getOwner()
 		if not self.bNetworkMP and iPlayer == GAME.getActivePlayer() and isWorldUnit(iUnit):
 			popupInfo = CyPopupInfo()
 			popupInfo.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_PYTHON_SCREEN)
@@ -2069,11 +2069,11 @@ class CvEventManager:
 
 		# Immigration Mod
 		if iUnit == self.UNIT_IMMIGRANT:
-			CyCity.setPopulation(CyCity.getPopulation() - 2)
-			import Immigration
-			CyCityX = Immigration.getLeastPopulatedCity(CyPlayer)
-			if CyCityX:
-				Immigration.doImmigrantPlacementAI(CyUnit, CyCityX)
+			iNewPop = CyCity.getPopulation() - 2
+			if iNewPop > -1:
+				if iNewPop == 0:
+					iNewPop = 1
+				CyCity.setPopulation(iNewPop)
 
 
 	def onUnitKilled(self, argsList):
@@ -2257,7 +2257,7 @@ class CvEventManager:
 				# Message
 				if iPlayer == GAME.getActivePlayer():
 					CvUtil.sendMessage(
-						TRNSLTR.getText("TXT_KEY_BARBCIV_DISCOVER_WRITING", ()), iPlayer, 16, 
+						TRNSLTR.getText("TXT_KEY_BARBCIV_DISCOVER_WRITING", ()), iPlayer, 16,
 						eColor = GC.getInfoTypeForString("COLOR_HIGHLIGHT_TEXT"),
 						eMsgType = InterfaceMessageTypes.MESSAGE_TYPE_MAJOR_EVENT, bForce = False
 					)
