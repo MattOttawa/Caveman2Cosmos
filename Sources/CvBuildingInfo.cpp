@@ -3590,7 +3590,7 @@ bool CvBuildingInfo::readPass2(CvXMLLoadUtility* pXML)
 
 bool CvBuildingInfo::readPass3()
 {
-	const int iCount = getNumReplacementBuilding();
+	int iCount = getNumReplacementBuilding();
 	if (iCount > 0)
 	{
 		// Toffer - Prune self reference, to make the code XML idiot proof.
