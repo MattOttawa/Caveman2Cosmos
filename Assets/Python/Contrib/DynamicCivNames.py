@@ -76,16 +76,10 @@ class DynamicCivNames:
 		return
 
 	def onKbdEvent(self, argsList):
-		'keypress handler'
-		#eventType, key, mx, my, px, py = argsList
-		eventType = argsList[0]; key = argsList[1]
-
-		if eventType == RevDefs.EventKeyDown:
-			theKey = int(key)
-
-			# For debug or trial only
-			if theKey == int(InputTypes.KB_U) and self.customEM.bShift and self.customEM.bCtrl:
-				self.showNewNames()
+		# For debug or trial only
+		eventType, key, bAlt, bCtrl, bShift = argsList[:5]
+		if eventType == EventType.EVT_KEYDOWN and key == InputTypes.KB_U and bShift and bCtrl:
+			self.showNewNames()
 
 
 	def onBeginPlayerTurn(self, argsList):

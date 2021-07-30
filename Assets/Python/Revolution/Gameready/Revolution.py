@@ -226,12 +226,10 @@ class Revolution:
 ##--- Keyboard handling and Rev Watch popup -------------------------------------------
 
 	def onKbdEvent(self, argsList):
-		eventType, key, mx, my, px, py = argsList
-
-		if eventType == 6:
-			# multiplayer warning, need to tell other computers about any city bribery
-			if key == InputTypes.KB_G and self.customEM.bShift and self.customEM.bCtrl:
-				CvScreensInterface.showRevolutionWatchAdvisor(self)
+		# multiplayer warning, need to tell other computers about any city bribery
+		eventType, key, bAlt, bCtrl, bShift = argsList[:5]
+		if eventType == EventType.EVT_KEYDOWN and key == InputTypes.KB_G and bShift and bCtrl:
+			CvScreensInterface.showRevolutionWatchAdvisor(self)
 
 
 	def showRevWatchPopup(self, iPlayer):

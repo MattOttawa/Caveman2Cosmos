@@ -55,13 +55,9 @@ class RevolutionInit:
 
 
 	def onKbdEvent(self, argsList):
-		'keypress handler'
-		eventType,key,mx,my,px,py = argsList
-
-		if eventType == 6:
-			theKey = int(key)
-			if theKey == int(InputTypes.KB_Q) and self.customEM.bShift and self.customEM.bCtrl:
-				self.showActivePopup()
+		eventType, key, bAlt, bCtrl, bShift = argsList[:5]
+		if eventType == EventType.EVT_KEYDOWN and key == InputTypes.KB_Q and bShift and bCtrl:
+			self.showActivePopup()
 
 	def onGameStart(self, argsList):
 		self.onGameLoad()

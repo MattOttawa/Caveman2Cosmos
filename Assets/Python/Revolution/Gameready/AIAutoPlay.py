@@ -135,14 +135,12 @@ class AIAutoPlay :
 
 	# keypress handler
 	def onKbdEvent(self, argsList):
-		eventType, key, mx, my, px, py = argsList
+		eventType, key, bAlt, bCtrl, bShift = argsList[:5]
 
-		if eventType == 6 and self.customEM.bShift and self.customEM.bCtrl:
+		if eventType == EventType.EVT_KEYDOWN and bShift and bCtrl:
 
 			if key == InputTypes.KB_X:
-
 				iPlayer = GAME.getActivePlayer()
-
 				if GAME.getAIAutoPlay(iPlayer) > 0:
 					try:
 						bCanCancelAuto = SdToolKit.sdObjectGetVal("AIAutoPlay", GAME, "bCanCancelAuto")

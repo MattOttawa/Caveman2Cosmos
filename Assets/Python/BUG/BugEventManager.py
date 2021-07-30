@@ -139,9 +139,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 			raise BugUtil.ConfigError("BugEventManager already created")
 		g_eventManager = self
 
-		self.bDbg = False
-		self.bMultiPlayer = False
-
 		# used to register shortcut handlers
 		self.shortcuts = {}
 
@@ -292,8 +289,7 @@ class BugEventManager(CvEventManager.CvEventManager):
 
 	def handleEvent(self, argsList):
 		"""Handles events by calling all installed handlers."""
-		self.bDbg, self.bMultiPlayer, self.bAlt, self.bCtrl, self.bShift, self.bAllowCheats = argsList[-6:]
-		return self._dispatchEvent(argsList[0], argsList[1:-6])
+		return self._dispatchEvent(argsList[0], argsList[1:])
 
 	def _dispatchEvent(self, eventType, argsList):
 		if DebugUtils.bDebugMode and eventType != "gameUpdate":

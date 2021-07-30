@@ -35,9 +35,9 @@ class StatusDumpEvent(AbstractStatusDumpEvent):
 		print "StatusDump-Start-0"
 
 	def onKbdEvent(self, argsList):
-		eventType,key,mx,my,px,py = argsList
+		eventType, key, bAlt, bCtrl = argsList[:4]
 
-		if eventType == self.eventMgr.EventKeyDown and int(key) == int(InputTypes.KB_D) and self.eventMgr.bCtrl and self.eventMgr.bAlt:
+		if eventType == EventType.EVT_KEYDOWN and key == InputTypes.KB_D and bCtrl and bAlt:
 			print "StatusDump-Start-2"
 			self.DumpStatus()
 			return 1

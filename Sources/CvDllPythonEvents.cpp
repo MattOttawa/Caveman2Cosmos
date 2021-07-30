@@ -271,13 +271,6 @@ bool postEvent(EventArgs eventData, const char* eventName)
 		logging::log_json_event("pyevent", eventData.jsonArgs);
 	}
 
-	eventData.pyArgs << GC.getGame().isDebugMode();
-	eventData.pyArgs << false;
-	eventData.pyArgs << gDLL->altKey();
-	eventData.pyArgs << gDLL->ctrlKey();
-	eventData.pyArgs << gDLL->shiftKey();
-	eventData.pyArgs << (gDLL->getChtLvl() > 0);
-
 #ifdef FP_PROFILE_ENABLE				// Turn Profiling On or Off ..
 #ifdef USE_INTERNAL_PROFILER
 	static	std::map<int,ProfileSample*>*	g_pythonProfiles = NULL;
@@ -331,8 +324,12 @@ bool CvDllPythonEvents::reportKbdEvent(int evt, int key, int iCursorX, int iCurs
 		.arg("key", key)
 		.arg("iCursorX", iCursorX)
 		.arg("iCursorY", iCursorY)
-		.arg("plotx", (pPlot ? pPlot->getX() : -1))
-		.arg("ploty", (pPlot ? pPlot->getY() : -1));
+		.arg("plotx", pPlot ? pPlot->getX() : -1)
+		.arg("ploty", pPlot ? pPlot->getY() : -1)
+		.arg("bAlt", gDLL->altKey())
+		.arg("bCtrl", gDLL->ctrlKey())
+		.arg("bShift", gDLL->shiftKey())
+	;
 	return postEvent(eventData, "kbdEvent");
 }
 

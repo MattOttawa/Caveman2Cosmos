@@ -28,10 +28,6 @@ class CvEventManager:
 	def __init__(self):
 		self.bNotReady = True
 		self.bNetworkMP = False
-		self.bCtrl = False
-		self.bShift = False
-		self.bAlt = False
-		self.bAllowCheats = False
 		self.aWonderTuple = [[],[],[],[],[]]
 
 		# OnEvent Enums
@@ -158,7 +154,6 @@ class CvEventManager:
 		# extract the last 6 args in the list, the first arg has already been consumed
 		tag = argsList[0]				# event type string
 		idx = len(argsList)-6
-		self.bDbg, bDummy, self.bAlt, self.bCtrl, self.bShift, self.bAllowCheats = argsList[idx:]
 		ret = 0
 		if self.EventHandlerMap.has_key(tag):
 			fxn = self.EventHandlerMap[tag]
@@ -361,7 +356,7 @@ class CvEventManager:
 		'mouse handler - returns 1 if the event was consumed'
 		eventType, mx, my, px, py, interfaceConsumed, screens = argsList
 
-		if not interfaceConsumed and not self.bNetworkMP and (self.bAllowCheats or DebugUtils.bDebugMode):
+		if not interfaceConsumed and not self.bNetworkMP and (GAME.getChtLvl() > 0 or DebugUtils.bDebugMode):
 			if eventType == 1 and px != -1 and py != -1 and self.bCtrl:
 				if self.bAlt and GC.getMap().plot(px, py).isCity():
 					# Launch Edit City Event
@@ -381,7 +376,7 @@ class CvEventManager:
 
 	def onKbdEvent(self, argsList):
 		'keypress handler - return 1 if the event was consumed'
-		eventType, key, mx, my, px, py = argsList
+		eventType, key, bAlt, bCtrl, bShift, mx, my, px, py = argsList
 
 		# Screen specific input handlers
 		iCode = eventType + 10
@@ -392,9 +387,6 @@ class CvEventManager:
 		):
 			return 1
 
-		bAlt = self.bAlt
-		bCtrl = self.bCtrl
-		bShift = self.bShift
 		iModifiers = bAlt + bCtrl + bShift
 
 		if eventType == 7: # Key up

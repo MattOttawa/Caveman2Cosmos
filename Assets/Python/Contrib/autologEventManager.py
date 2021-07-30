@@ -233,21 +233,15 @@ class AutoLogEvent(AbstractAutoLogEvent):
 		self.CityConscriptCounter = None
 
 	def onKbdEvent(self, argsList):
-		eventType,key,mx,my,px,py = argsList
-		if ( eventType == self.eventMgr.EventKeyDown ):
-			theKey=int(key)
+		eventType, key, bAlt = argsList[:3]
+		if eventType == EventType.EVT_KEYDOWN:
 			'Check if ALT + E was hit == echoes to text log and in-game log'
-			if (theKey == int(InputTypes.KB_E)
-			and self.eventMgr.bAlt
-			and AutologOpt.isEnabled()
-			and isLoggingOn()):
+			if key == InputTypes.KB_E and bAlt and AutologOpt.isEnabled() and isLoggingOn():
 				self.eventMgr.beginEvent(CUSTOM_ENTRY_EVENT_ID)
 				return 1
 
 			'Check if ALT + L was hit == open in-game log'
-			if (theKey == int(InputTypes.KB_L)
-			and self.eventMgr.bAlt
-			and AutologOpt.isEnabled()):
+			if key == InputTypes.KB_L and bAlt and AutologOpt.isEnabled():
 				if AutologOpt.isSilent():
 					setLoggingOn(True)
 					StartLogger("")
@@ -257,10 +251,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 				return 1
 
 			'Check if ALT + B was hit == dump battle stats, and reset'
-			if (theKey == int(InputTypes.KB_B)
-			and self.eventMgr.bAlt
-			and AutologOpt.isEnabled()
-			and isLoggingOn()):
+			if key == InputTypes.KB_B and bAlt and AutologOpt.isEnabled() and isLoggingOn():
 				Logger.writeLog("")
 				Logger.writeLog(BugUtil.getPlainText("TXT_KEY_AUTOLOG_BATTLE_STATS"), vBold=True)
 				msg = TRNSLTR.getText("TXT_KEY_AUTOLOG_UNITS_VICTORIOUS_ATTACKING", (self.iBattleWonAttacking, ))

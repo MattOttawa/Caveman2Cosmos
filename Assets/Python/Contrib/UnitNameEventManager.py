@@ -194,10 +194,9 @@ class BuildUnitName(AbstractBuildUnitName):
 		self.config = None
 
 	def onKbdEvent(self, argsList):
-		#eventType, key, mx, my, px, py = argsList
-		eventType = argsList[0]; key = argsList[1]
-		if eventType == self.eventMgr.EventKeyDown:
-			if key == InputTypes.KB_N and self.eventMgr.bCtrl and self.eventMgr.bAlt:
+		eventType, key, bAlt, bCtrl = argsList[:4]
+		if eventType == EventType.EVT_KEYDOWN:
+			if key == InputTypes.KB_N and bCtrl and bAlt:
 				if UnitNamingOpt.isEnabled():
 					self.eventMgr.beginEvent(RENAME_EVENT_ID)
 		return 0
