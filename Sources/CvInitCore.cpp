@@ -1,7 +1,13 @@
 // game.cpp
 #include "CvGameCoreDLL.h"
+#include "CvGameAI.h"
+#include "CvGlobals.h"
 #include "CvInitCore.h"
 #include "CvPlayerAI.h"
+#include "CvPopupInfo.h"
+#include "CvPython.h"
+#include "CvSelectionGroup.h"
+#include "CvXMLLoadUtility.h"
 
 // BUG - EXE/DLL Paths - start
 //#include <shlobj.h>
@@ -21,7 +27,7 @@ bool CvInitCore::bPathsSet;
 
 CvInitCore::CvInitCore()
 {
-	OutputDebugString("Calling constructor for InitCore: Start");
+	OutputDebugString("Calling constructor for InitCore: Start\n");
 
 	// Moved to Init as the number is no more predetermined
 	//m_abOptions = new bool[NUM_GAMEOPTION_TYPES];
@@ -75,7 +81,7 @@ CvInitCore::CvInitCore()
 
 	reset(NO_GAMEMODE);
 
-	OutputDebugString("Calling constructor for InitCore: End");
+	OutputDebugString("Calling constructor for InitCore: End\n");
 }
 
 
@@ -109,20 +115,11 @@ CvInitCore::~CvInitCore()
 	SAFE_DELETE_ARRAY(m_abReady);
 	SAFE_DELETE_ARRAY(m_aszPythonCheck);
 	SAFE_DELETE_ARRAY(m_aszXMLCheck);
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/30/07                                MRGENIE      */
-/*                                                                                              */
-/* Savegame compatibility                                                                       */
-/************************************************************************************************/
-	m_aszSaveGameVector.clear();
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 }
 
 void CvInitCore::init(GameMode eMode)
 {
-	OutputDebugString("Initialize InitCore: Start");
+	OutputDebugString("Initialize InitCore: Start\n");
 
 	if (m_abOptions == NULL)
 		m_abOptions = new bool[NUM_GAMEOPTION_TYPES];
@@ -130,7 +127,7 @@ void CvInitCore::init(GameMode eMode)
 	// Init saved data
 	reset(eMode);
 
-	OutputDebugString("Initialize InitCore: Start");
+	OutputDebugString("Initialize InitCore: Start\n");
 }
 
 void CvInitCore::uninit()
@@ -144,7 +141,7 @@ void CvInitCore::uninit()
 // Initializes data members that are serialized.
 void CvInitCore::reset(GameMode eMode)
 {
-	OutputDebugString("Reseting InitCore: Start");
+	OutputDebugString("Reseting InitCore: Start\n");
 
 	//--------------------------------
 	// Uninit class
@@ -160,7 +157,7 @@ void CvInitCore::reset(GameMode eMode)
 		setDefaults();
 	}
 	CvXMLLoadUtility::RemoveTGAFiller();
-	OutputDebugString("Reseting InitCore: End");
+	OutputDebugString("Reseting InitCore: End\n");
 }
 
 void CvInitCore::setDefaults()
@@ -168,7 +165,7 @@ void CvInitCore::setDefaults()
 	for (int i = 0; i < NUM_GAMEOPTION_TYPES; ++i)
 	{
 		//	Allow the DLL to run against older assets that define fewer options, leaving
-		//	more recent ones turned off by defaul always
+		//	more recent ones turned off by default always
 		if ( i < GC.getNumGameOptionInfos() )
 		{
 			m_abOptions[i] = GC.getGameOptionInfo((GameOptionTypes)i).getDefault();
@@ -183,23 +180,23 @@ void CvInitCore::setDefaults()
 			m_abMPOptions[i] = GC.getMPOptionInfo((MultiplayerOptionTypes)i).getDefault();
 		}
 	}
-}	
+}
 
 
 bool CvInitCore::getHuman(PlayerTypes eID) const
 {
-	if (getSlotStatus(eID) == SS_TAKEN)
+	if (eID < MAX_PC_PLAYERS)
 	{
-		return true;
+		if (getSlotStatus(eID) == SS_TAKEN)
+		{
+			return true;
+		}
+		if (getSlotStatus(eID) == SS_OPEN)
+		{
+			return gDLL->isGameActive() || getHotseat() || getPitboss() || getPbem();
+		}
 	}
-	else if (getSlotStatus(eID) == SS_OPEN)
-	{
-		return ( gDLL->isGameActive() || getHotseat() || getPitboss() || getPbem());
-	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 int CvInitCore::getNumHumans() const
@@ -218,9 +215,9 @@ int CvInitCore::getNumHumans() const
 int CvInitCore::getNumDefinedPlayers() const
 {
 	int iCount = 0;
-	for (int i = 0; i < MAX_PC_PLAYERS; ++i)
+	for (int i = 0; i < MAX_PLAYERS; ++i)
 	{
-		if ((getCiv((PlayerTypes)i) != NO_CIVILIZATION) && (getLeader((PlayerTypes)i) != NO_LEADER))
+		if (getCiv((PlayerTypes)i) != NO_CIVILIZATION && getLeader((PlayerTypes)i) != NO_LEADER)
 		{
 			iCount++;
 		}
@@ -275,22 +272,38 @@ bool CvInitCore::getSavedGame() const
 
 bool CvInitCore::getPitboss() const
 {
-	return (getMode() == GAMEMODE_PITBOSS);
+	return getMode() == GAMEMODE_PITBOSS;
 }
 
 bool CvInitCore::getHotseat() const
 {
-	return ( (getType() == GAME_HOTSEAT_NEW) || (getType() == GAME_HOTSEAT_SCENARIO) || (getType() == GAME_HOTSEAT_LOAD) );
+	switch (getType())
+	{
+	case GAME_HOTSEAT_NEW:
+	case GAME_HOTSEAT_SCENARIO:
+	case GAME_HOTSEAT_LOAD:
+		return true;
+	default:
+		return false;
+	}
 }
 
 
 bool CvInitCore::getPbem() const
 {
-	return ( (getType() == GAME_PBEM_NEW) || (getType() == GAME_PBEM_SCENARIO) || (getType() == GAME_PBEM_LOAD) );
+	switch (getType())
+	{
+	case GAME_PBEM_NEW:
+	case GAME_PBEM_SCENARIO:
+	case GAME_PBEM_LOAD:
+		return true;
+	default:
+		return false;
+	}
 }
 
 
-bool CvInitCore::checkBounds( int iValue, int iLower, int iUpper ) const
+bool CvInitCore::checkBounds(int iValue, int iLower, int iUpper) const
 {
 	if (iValue >= iLower)
 	{
@@ -305,35 +318,32 @@ bool CvInitCore::checkBounds( int iValue, int iLower, int iUpper ) const
 
 bool CvInitCore::getSlotVacant(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PC_PLAYERS, eID, "CvInitCore::getSlotVacant");
+	FASSERT_BOUNDS(0, MAX_PC_PLAYERS, eID);
 
 	bool bRetVal = false;
 
-	if ( checkBounds(eID, 0, MAX_PC_PLAYERS) )
+	if (checkBounds(eID, 0, MAX_PC_PLAYERS))
 	{
-		bool bTakeoverAI = getMPOption(MPOPTION_TAKEOVER_AI);
-		SlotStatus eStatus = getSlotStatus(eID);
+		const SlotStatus eStatus = getSlotStatus(eID);
 
 		// Check the status of this slot
-		if ( (eStatus == SS_OPEN) || (bTakeoverAI && (eStatus == SS_COMPUTER)) )
+		if (eStatus == SS_OPEN || getMPOption(MPOPTION_TAKEOVER_AI) && eStatus == SS_COMPUTER)
 		{
-			bRetVal = ( getSlotClaim(eID) != SLOTCLAIM_ASSIGNED );
+			bRetVal = getSlotClaim(eID) != SLOTCLAIM_ASSIGNED;
 		}
 	}
-
 	return bRetVal;
 }
 
 PlayerTypes CvInitCore::getAvailableSlot()
 {
-	int i;
-
 	// Get the next ID available ID
 	// First check for open slots only
-	for (i = 0; i < MAX_PC_PLAYERS; ++i)
+	for (int i = 0; i < MAX_PC_PLAYERS; ++i)
 	{
-		PlayerTypes eID = (PlayerTypes)i;
-		if ( (getSlotClaim(eID) == SLOTCLAIM_UNASSIGNED) && (getSlotStatus(eID) == SS_OPEN) )
+		const PlayerTypes eID = static_cast<PlayerTypes>(i);
+
+		if (getSlotClaim(eID) == SLOTCLAIM_UNASSIGNED && getSlotStatus(eID) == SS_OPEN)
 		{
 			setSlotClaim(eID, SLOTCLAIM_ASSIGNED);
 			return eID;
@@ -343,27 +353,29 @@ PlayerTypes CvInitCore::getAvailableSlot()
 	// That didn't work, check to see if we can assign computer slots
 	if (getMPOption(MPOPTION_TAKEOVER_AI))
 	{
-		for (i = 0; i < MAX_PC_PLAYERS; ++i)
+		for (int i = 0; i < MAX_PC_PLAYERS; ++i)
 		{
-			PlayerTypes eID = (PlayerTypes)i;
-			if ( (getSlotClaim(eID) == SLOTCLAIM_UNASSIGNED) && (getSlotStatus(eID) == SS_COMPUTER) )
+			const PlayerTypes eID = static_cast<PlayerTypes>(i);
+
+			if (getSlotClaim(eID) == SLOTCLAIM_UNASSIGNED && getSlotStatus(eID) == SS_COMPUTER)
 			{
 				setSlotClaim(eID, SLOTCLAIM_ASSIGNED);
 				return eID;
 			}
 		}
 	}
-
 	// None available at all...
 	return NO_PLAYER;
 }
 
 void CvInitCore::reassignPlayer(PlayerTypes eOldID, PlayerTypes eNewID)
 {
-	FASSERT_BOUNDS(0, MAX_PC_PLAYERS, eOldID, "CvInitCore::reassignPlayer (eOldID)");
-	FASSERT_BOUNDS(0, MAX_PC_PLAYERS, eNewID, "CvInitCore::reassignPlayer (eNewID)");
+	/* Toffer - Not really much point in not allowing empty slots inbetween taken slots.
+	//	This is called by the exe upon creating a new game to give players a lower player slot index if one is available.
+	FASSERT_BOUNDS(0, 0, eOldID);
+	FASSERT_BOUNDS(0, 0, eNewID);
 
-	if ( checkBounds(eOldID, 0, MAX_PC_PLAYERS) && checkBounds(eNewID, 0, MAX_PC_PLAYERS) )
+	if (checkBounds(eOldID, 0, MAX_PC_PLAYERS) && checkBounds(eNewID, 0, MAX_PC_PLAYERS))
 	{
 		// *** SAVE TARGET SLOT DETAILS TEMPORARILY
 		// Temp civ details
@@ -470,16 +482,16 @@ void CvInitCore::reassignPlayer(PlayerTypes eOldID, PlayerTypes eNewID)
 			GET_PLAYER(eNewID).updateHuman();
 		}
 	}
+	*/
 }
 
-void CvInitCore::closeInactiveSlots()
+void CvInitCore::endGameSetup()
 {
 	// Open inactive slots mean different things to different game modes and types...
 	// Let's figure out what they mean for us
-
 	for (int i = 0; i < MAX_PC_PLAYERS; i++)
 	{
-		PlayerTypes eID = (PlayerTypes)i;
+		const PlayerTypes eID = static_cast<PlayerTypes>(i);
 		if (getSlotStatus(eID) == SS_OPEN)
 		{
 			if (getPitboss() || getHotseat() || getPbem())
@@ -502,7 +514,21 @@ void CvInitCore::closeInactiveSlots()
 			gDLL->sendPlayerInfo(eID);
 		}
 	}
+
+	// Toffer - Not all NPC slots are in use, so just close them all at this point.
+	for (int i = MAX_PC_PLAYERS; i < MAX_PLAYERS; i++)
+	{
+		const PlayerTypes eID = static_cast<PlayerTypes>(i);
+		m_aeSlotStatus[eID] = SS_CLOSED;
+		m_aeSlotClaim[eID] = SLOTCLAIM_UNASSIGNED;
+	}
 }
+
+
+// Toffer - Only called for host when starting a MP game, called by exe.
+//	Be careful of what you add to this one, OOS alert.
+//	Moved its content to endGameSetup() above, which is called shortly after for all players.
+void CvInitCore::closeInactiveSlots() { }
 
 void CvInitCore::reopenInactiveSlots()
 {
@@ -511,14 +537,11 @@ void CvInitCore::reopenInactiveSlots()
 	{
 		for (int i = 0; i < MAX_PC_PLAYERS; ++i)
 		{
-			PlayerTypes eID = (PlayerTypes)i;
+			const PlayerTypes eID = static_cast<PlayerTypes>(i);
 			// Reopen all slots that don't have active connections
-			if (getSlotStatus(eID) == SS_TAKEN)
+			if (getSlotStatus(eID) == SS_TAKEN && getSlotClaim(eID) != SLOTCLAIM_ASSIGNED)
 			{
-				if ( getSlotClaim(eID) != SLOTCLAIM_ASSIGNED )
-				{
-					setSlotStatus(eID, SS_OPEN);
-				}
+				setSlotStatus(eID, SS_OPEN);
 			}
 		}
 	}
@@ -668,12 +691,12 @@ void CvInitCore::resetGame(CvInitCore * pSource, bool bClear, bool bSaveGameType
 
 void CvInitCore::resetPlayers()
 {
-	OutputDebugString("Reseting Players: Start");
+	OutputDebugString("Reseting Players: Start/n");
 	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		resetPlayer((PlayerTypes)i);
 	}
-	OutputDebugString("Reseting Players: End");
+	OutputDebugString("Reseting Players: End/n");
 }
 
 void CvInitCore::resetPlayers(CvInitCore * pSource, bool bClear, bool bSaveSlotInfo)
@@ -686,7 +709,7 @@ void CvInitCore::resetPlayers(CvInitCore * pSource, bool bClear, bool bSaveSlotI
 
 void CvInitCore::resetPlayer(PlayerTypes eID)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::resetPlayer");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 
 	if ( checkBounds(eID, 0, MAX_PLAYERS) )
 	{
@@ -713,8 +736,16 @@ void CvInitCore::resetPlayer(PlayerTypes eID)
 
 
 		// Slot data
-		m_aeSlotStatus[eID] = SS_CLOSED;
-		m_aeSlotClaim[eID] = SLOTCLAIM_UNASSIGNED;
+		if (eID < MAX_PC_PLAYERS)
+		{
+			m_aeSlotStatus[eID] = SS_CLOSED;
+			m_aeSlotClaim[eID] = SLOTCLAIM_UNASSIGNED;
+		}
+		else
+		{
+			m_aeSlotStatus[eID] = SS_MAX_SLOT_STATUS;
+			m_aeSlotClaim[eID] = NUM_SLOTCLAIMS;
+		}
 
 		// Civ flags
 		m_abPlayableCiv[eID] = false;
@@ -726,7 +757,7 @@ void CvInitCore::resetPlayer(PlayerTypes eID)
 		m_aszPythonCheck[eID].clear();
 		m_aszXMLCheck[eID].clear();
 
-		if(CvPlayerAI::areStaticsInitialized())
+		if (CvPlayerAI::areStaticsInitialized())
 		{
 			GET_PLAYER(eID).updateTeamType();
 			GET_PLAYER(eID).updateHuman();
@@ -737,7 +768,7 @@ void CvInitCore::resetPlayer(PlayerTypes eID)
 void CvInitCore::resetPlayer(PlayerTypes eID, CvInitCore * pSource, bool bClear, bool bSaveSlotInfo)
 {
 	FAssertMsg(pSource, "Passed null pointer to CvInitCore::resetPlayer");
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::resetPlayer");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 
 	FAssertMsg(!bClear || !bSaveSlotInfo, "Should not be clearing data while trying to preserve slot info in CvInitCore::resetPlayer");
 
@@ -785,17 +816,14 @@ void CvInitCore::resetPlayer(PlayerTypes eID, CvInitCore * pSource, bool bClear,
 
 
 CvWString CvInitCore::getMapScriptName() const
-{ 
-	if (gDLL->getTransferredMap())
+{
+	if (gDLL->getTransferredMap() && !getWBMapScript())
 	{
-		if (!getWBMapScript())
-		{
-			// If it's a transferred Python file, we have to hack in the transferred extension
-			return ( m_szMapScriptName + CvWString(MAP_TRANSFER_EXT) );
-		}
+		// If it's a transferred Python file, we have to hack in the transferred extension
+		return m_szMapScriptName + CvWString(MAP_TRANSFER_EXT);
 	}
-	return m_szMapScriptName; 
-}	
+	return m_szMapScriptName;
+}
 
 void CvInitCore::setMapScriptName(const CvWString & szMapScriptName)
 {
@@ -822,16 +850,13 @@ void CvInitCore::setWorldSize(const CvWString & szWorldSize)
 
 const CvWString & CvInitCore::getWorldSizeKey(CvWString & szBuffer) const
 {
-	if ( checkBounds(getWorldSize(), 0, GC.getNumWorldInfos()) )
+	if (checkBounds(getWorldSize(), 0, GC.getNumWorldInfos()))
 	{
 		szBuffer = GC.getWorldInfo(getWorldSize()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_WORLDSIZE";
-		return szBuffer;
-	}
+	szBuffer = L"NO_WORLDSIZE";
+	return szBuffer;
 }
 
 void CvInitCore::setClimate(const CvWString & szClimate)
@@ -852,11 +877,8 @@ const CvWString & CvInitCore::getClimateKey(CvWString & szBuffer) const
 		szBuffer = GC.getClimateInfo(getClimate()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_CLIMATE";
-		return szBuffer;
-	}
+	szBuffer = L"NO_CLIMATE";
+	return szBuffer;
 }
 
 void CvInitCore::setSeaLevel(const CvWString & szSeaLevel)
@@ -877,11 +899,8 @@ const CvWString & CvInitCore::getSeaLevelKey(CvWString & szBuffer) const
 		szBuffer = GC.getSeaLevelInfo(getSeaLevel()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_SEALEVEL";
-		return szBuffer;
-	}
+	szBuffer = L"NO_SEALEVEL";
+	return szBuffer;
 }
 
 void CvInitCore::setEra(const CvWString & szEra)
@@ -902,11 +921,8 @@ const CvWString & CvInitCore::getEraKey(CvWString & szBuffer) const
 		szBuffer = GC.getEraInfo(getEra()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_ERA";
-		return szBuffer;
-	}
+	szBuffer = L"NO_ERA";
+	return szBuffer;
 }
 
 void CvInitCore::setGameSpeed(const CvWString & szGameSpeed)
@@ -927,11 +943,8 @@ const CvWString & CvInitCore::getGameSpeedKey(CvWString & szBuffer) const
 		szBuffer = GC.getGameSpeedInfo(getGameSpeed()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_GAMESPEED";
-		return szBuffer;
-	}
+	szBuffer = L"NO_GAMESPEED";
+	return szBuffer;
 }
 
 void CvInitCore::setTurnTimer(const CvWString & szTurnTimer)
@@ -952,11 +965,8 @@ const CvWString & CvInitCore::getTurnTimerKey(CvWString & szBuffer) const
 		szBuffer = GC.getTurnTimerInfo(getTurnTimer()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_TURNTIMER";
-		return szBuffer;
-	}
+	szBuffer = L"NO_TURNTIMER";
+	return szBuffer;
 }
 
 void CvInitCore::setCalendar(const CvWString & szCalendar)
@@ -977,11 +987,8 @@ const CvWString & CvInitCore::getCalendarKey(CvWString & szBuffer) const
 		szBuffer = GC.getCalendarInfo(getCalendar()).getType();
 		return szBuffer;
 	}
-	else
-	{
-		szBuffer = L"NO_CALENDAR";
-		return szBuffer;
-	}
+	szBuffer = L"NO_CALENDAR";
+	return szBuffer;
 }
 
 
@@ -995,28 +1002,23 @@ void CvInitCore::refreshCustomMapOptions()
 {
 	clearCustomMapOptions();
 
-	if ( !getWBMapScript() )
+	if (!getWBMapScript() && gDLL->pythonMapExists(CvString(getMapScriptName()).GetCString()))
 	{
-		if ( gDLL->pythonMapExists(CvString(getMapScriptName()).GetCString()) )
+		Cy::call_optional<int>(CvString(getMapScriptName()).GetCString(), "getNumHiddenCustomMapOptions", m_iNumHiddenCustomMapOptions);
+		int iNumOptions = 0;
+		if (Cy::call_optional<int>(CvString(getMapScriptName()).GetCString(), "getNumCustomMapOptions", iNumOptions) && iNumOptions > 0)
 		{
-			Cy::call_optional<int>(CvString(getMapScriptName()).GetCString(), "getNumHiddenCustomMapOptions", m_iNumHiddenCustomMapOptions);
-			int iNumOptions = 0;
-			if (Cy::call_optional<int>(CvString(getMapScriptName()).GetCString(), "getNumCustomMapOptions", iNumOptions) 
-				&& iNumOptions > 0)
+			// Got number of custom map options - now get the option defaults
+			std::vector<CustomMapOptionTypes> aeMapOptions(iNumOptions, NO_CUSTOM_MAPOPTION);
+			for (int i = 0; i < iNumOptions; ++i)
 			{
-				// Got number of custom map options - now get the option defaults
-				std::vector<CustomMapOptionTypes> aeMapOptions(iNumOptions, NO_CUSTOM_MAPOPTION);
-				for (int i = 0; i < iNumOptions; ++i)
-				{	
-					if (!Cy::call_optional(CvString(getMapScriptName()).GetCString(), "getCustomMapOptionDefault", Cy::Args() << i, aeMapOptions[i]))
-					{
-						FErrorMsg(CvString::format("Python function getCustomMapOptionDefault in mapscript %s failed to return correctly for option index %d", getMapScriptName(), i).c_str());
-					}
+				if (!Cy::call_optional(CvString(getMapScriptName()).GetCString(), "getCustomMapOptionDefault", Cy::Args() << i, aeMapOptions[i]))
+				{
+					FErrorMsg(CvString::format("Python function getCustomMapOptionDefault in mapscript %s failed to return correctly for option index %d", getMapScriptName(), i).c_str());
 				}
-
-				setCustomMapOptions(aeMapOptions.size(), &aeMapOptions[0]);
-				// SAFE_DELETE_ARRAY(aeMapOptions);
 			}
+			setCustomMapOptions(aeMapOptions.size(), &aeMapOptions[0]);
+			// SAFE_DELETE_ARRAY(aeMapOptions);
 		}
 	}
 }
@@ -1061,20 +1063,16 @@ void CvInitCore::setCustomMapOptions(int iNumCustomMapOptions, const CustomMapOp
 
 CustomMapOptionTypes CvInitCore::getCustomMapOption(int iOptionID) const
 {
-	FASSERT_BOUNDS(0, m_iNumCustomMapOptions, iOptionID, "CvInitCore::getCustomMapOptions");
-	if ( checkBounds(iOptionID, 0, m_iNumCustomMapOptions) )
+	if (checkBounds(iOptionID, 0, m_iNumCustomMapOptions))
 	{
 		return m_aeCustomMapOptions[iOptionID];
 	}
-	else
-	{
-		return NO_CUSTOM_MAPOPTION;
-	}
+	return NO_CUSTOM_MAPOPTION;
 }
 
 void CvInitCore::setCustomMapOption(int iOptionID, CustomMapOptionTypes eCustomMapOption)
 {
-	FASSERT_BOUNDS(0, m_iNumCustomMapOptions, iOptionID, "CvInitCore::setCustomMapOption");
+	FASSERT_BOUNDS(0, m_iNumCustomMapOptions, iOptionID);
 	if ( checkBounds(iOptionID, 0, m_iNumCustomMapOptions) )
 	{
 		m_aeCustomMapOptions[iOptionID] = eCustomMapOption;
@@ -1100,20 +1098,17 @@ void CvInitCore::setVictories(int iNumVictories, const bool * abVictories)
 
 bool CvInitCore::getVictory(VictoryTypes eVictoryID) const
 {
-	FASSERT_BOUNDS(0, m_iNumVictories, eVictoryID, "CvInitCore::getVictory");
+	FASSERT_BOUNDS(0, m_iNumVictories, eVictoryID);
 	if ( checkBounds(eVictoryID, 0, m_iNumVictories) )
 	{
 		return m_abVictories[eVictoryID];
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void CvInitCore::setVictory(VictoryTypes eVictoryID, bool bVictory)
 {
-	FASSERT_BOUNDS(0, m_iNumVictories, eVictoryID, "CvInitCore::setVictory");
+	FASSERT_BOUNDS(0, m_iNumVictories, eVictoryID);
 	if ( checkBounds(eVictoryID, 0, m_iNumVictories) )
 	{
 		m_abVictories[eVictoryID] = bVictory;
@@ -1124,21 +1119,18 @@ void CvInitCore::setVictory(VictoryTypes eVictoryID, bool bVictory)
 bool CvInitCore::getOption(GameOptionTypes eIndex) const
 {
 	const int numGameOptionTypes = NUM_GAMEOPTION_TYPES;
-	FASSERT_BOUNDS(0, numGameOptionTypes, eIndex, "CvInitCore::getOption");
+	FASSERT_BOUNDS(0, numGameOptionTypes, eIndex);
 	FAssertMsg(m_abOptions != NULL, "Access to unconstructed game option array");
 	if ( m_abOptions != NULL && checkBounds(eIndex, 0, numGameOptionTypes) )
 	{
 		return m_abOptions[eIndex];
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void CvInitCore::setOption(GameOptionTypes eIndex, bool bOption)
 {
-	FASSERT_BOUNDS(0, NUM_GAMEOPTION_TYPES, eIndex, "CvInitCore::setOption");
+	FASSERT_BOUNDS(0, NUM_GAMEOPTION_TYPES, eIndex);
 	if ( checkBounds(eIndex, 0, NUM_GAMEOPTION_TYPES) )
 	{
 		m_abOptions[eIndex] = bOption;
@@ -1147,20 +1139,17 @@ void CvInitCore::setOption(GameOptionTypes eIndex, bool bOption)
 
 bool CvInitCore::getMPOption(MultiplayerOptionTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, NUM_MPOPTION_TYPES, eIndex, "CvInitCore::getMPOption");
+	FASSERT_BOUNDS(0, NUM_MPOPTION_TYPES, eIndex);
 	if ( checkBounds(eIndex, 0, NUM_MPOPTION_TYPES) )
 	{
 		return m_abMPOptions[eIndex];
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void CvInitCore::setMPOption(MultiplayerOptionTypes eIndex, bool bOption)
 {
-	FASSERT_BOUNDS(0, NUM_MPOPTION_TYPES, eIndex, "CvInitCore::setMPOption");
+	FASSERT_BOUNDS(0, NUM_MPOPTION_TYPES, eIndex);
 	if ( checkBounds(eIndex, 0, NUM_MPOPTION_TYPES) )
 	{
 		m_abMPOptions[eIndex] = bOption;
@@ -1169,20 +1158,17 @@ void CvInitCore::setMPOption(MultiplayerOptionTypes eIndex, bool bOption)
 
 bool CvInitCore::getForceControl(ForceControlTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, NUM_FORCECONTROL_TYPES, eIndex, "CvInitCore::getForceControl");
+	FASSERT_BOUNDS(0, NUM_FORCECONTROL_TYPES, eIndex);
 	if ( checkBounds(eIndex, 0, NUM_FORCECONTROL_TYPES) )
 	{
 		return m_abForceControls[eIndex];
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 void CvInitCore::setForceControl(ForceControlTypes eIndex, bool bOption)
 {
-	FASSERT_BOUNDS(0, NUM_FORCECONTROL_TYPES, eIndex, "CvInitCore::setForceControl");
+	FASSERT_BOUNDS(0, NUM_FORCECONTROL_TYPES, eIndex);
 	if ( checkBounds(eIndex, 0, NUM_FORCECONTROL_TYPES) )
 	{
 		m_abForceControls[eIndex] = bOption;
@@ -1207,9 +1193,9 @@ void CvInitCore::setType(GameType eType)
 	{
 		m_eType = eType;
 
-		if(CvPlayerAI::areStaticsInitialized())
+		if (CvPlayerAI::areStaticsInitialized())
 		{
-			for (int i = 0; i < MAX_PLAYERS; i++)
+			for (int i = 0; i < MAX_PC_PLAYERS; i++)
 			{
 				GET_PLAYER((PlayerTypes)i).updateHuman();
 			}
@@ -1229,7 +1215,7 @@ void CvInitCore::setType(const CvWString & szType)
 	}
 	else
 	{
-		//FAssertMsg(false, "Invalid game type in ini file!");
+		//FErrorMsg("Invalid game type in ini file!");
 		setType(GAME_NONE);
 	}
 }
@@ -1240,9 +1226,9 @@ void CvInitCore::setMode(GameMode eMode)
 	{
 		m_eMode = eMode;
 
-		if(CvPlayerAI::areStaticsInitialized())
+		if (CvPlayerAI::areStaticsInitialized())
 		{
-			for (int i = 0; i < MAX_PLAYERS; i++)
+			for (int i = 0; i < MAX_PC_PLAYERS; i++)
 			{
 				GET_PLAYER((PlayerTypes)i).updateHuman();
 			}
@@ -1253,14 +1239,14 @@ void CvInitCore::setMode(GameMode eMode)
 
 const CvWString & CvInitCore::getLeaderName(PlayerTypes eID, uint uiForm) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getLeaderName");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_szTemp = gDLL->getObjectText(CvString(m_aszLeaderName[eID]).GetCString(), uiForm, true);
 	return m_szTemp;
 }
 
 void CvInitCore::setLeaderName(PlayerTypes eID, const CvWString & szLeaderName)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setLeaderName");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	CvWString szName = szLeaderName;
 	gDLL->stripSpecialCharacters(szName);
 
@@ -1269,21 +1255,21 @@ void CvInitCore::setLeaderName(PlayerTypes eID, const CvWString & szLeaderName)
 
 const CvWString & CvInitCore::getLeaderNameKey(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getLeaderNameKey");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 
 	return m_aszLeaderName[eID];
 }
 
 const CvWString & CvInitCore::getCivDescription(PlayerTypes eID, uint uiForm) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivDescription");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_szTemp = gDLL->getObjectText(CvString(m_aszCivDescription[eID]).GetCString(), uiForm, true);
 	return m_szTemp;
 }
 
 void CvInitCore::setCivDescription(PlayerTypes eID, const CvWString & szCivDescription)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setCivDescription");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	CvWString szName = szCivDescription;
 	gDLL->stripSpecialCharacters(szName);
 	m_aszCivDescription[eID] = szName;
@@ -1291,13 +1277,13 @@ void CvInitCore::setCivDescription(PlayerTypes eID, const CvWString & szCivDescr
 
 const CvWString & CvInitCore::getCivDescriptionKey(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivDescriptionKey");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszCivDescription[eID];
 }
 
 const CvWString & CvInitCore::getCivShortDesc(PlayerTypes eID, uint uiForm) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivShortDesc");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 
 	// Assume we have stored the key
 	m_szTemp = gDLL->getObjectText(CvString(m_aszCivShortDesc[eID]).GetCString(), uiForm, true);
@@ -1306,7 +1292,7 @@ const CvWString & CvInitCore::getCivShortDesc(PlayerTypes eID, uint uiForm) cons
 
 void CvInitCore::setCivShortDesc(PlayerTypes eID, const CvWString & szCivShortDesc)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setCivShortDesc");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	CvWString szName = szCivShortDesc;
 	gDLL->stripSpecialCharacters(szName);
 	m_aszCivShortDesc[eID] = szName;
@@ -1314,13 +1300,13 @@ void CvInitCore::setCivShortDesc(PlayerTypes eID, const CvWString & szCivShortDe
 
 const CvWString & CvInitCore::getCivShortDescKey(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivShortDescKey");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszCivShortDesc[eID];
 }
 
 const CvWString & CvInitCore::getCivAdjective(PlayerTypes eID, uint uiForm) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivAdjective");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 
 	// Assume we have stored the key
 	m_szTemp = gDLL->getObjectText(CvString(m_aszCivAdjective[eID]).GetCString(), uiForm, true);
@@ -1329,7 +1315,7 @@ const CvWString & CvInitCore::getCivAdjective(PlayerTypes eID, uint uiForm) cons
 
 void CvInitCore::setCivAdjective(PlayerTypes eID, const CvWString & szCivAdjective)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setCivAdjective");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	CvWString szName = szCivAdjective;
 	gDLL->stripSpecialCharacters(szName);
 	m_aszCivAdjective[eID] = szName;
@@ -1337,19 +1323,19 @@ void CvInitCore::setCivAdjective(PlayerTypes eID, const CvWString & szCivAdjecti
 
 const CvWString & CvInitCore::getCivAdjectiveKey(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivAdjectiveKey");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszCivAdjective[eID];
 }
 
 const CvWString & CvInitCore::getCivPassword(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCivPassword");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszCivPassword[eID];
 }
 
 void CvInitCore::setCivPassword(PlayerTypes eID, const CvWString & szCivPassword, bool bEncrypt)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setCivPassword");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	if (szCivPassword.empty() || !bEncrypt)
 	{
 		m_aszCivPassword[eID] = szCivPassword;
@@ -1363,92 +1349,92 @@ void CvInitCore::setCivPassword(PlayerTypes eID, const CvWString & szCivPassword
 
 const CvString & CvInitCore::getEmail(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getEmail");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszEmail[eID];
 }
 
 void CvInitCore::setEmail(PlayerTypes eID, const CvString & szEmail)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setEmail");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aszEmail[eID] = szEmail;
 }
 
 const CvString & CvInitCore::getSmtpHost(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getSmtpHost");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszSmtpHost[eID];
 }
 
 void CvInitCore::setSmtpHost(PlayerTypes eID, const CvString & szHost)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setSmtpHost");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aszSmtpHost[eID] = szHost;
 }
 
 
 bool CvInitCore::getWhiteFlag(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getWhiteFlag");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_abWhiteFlag[eID];
 }
 
 void CvInitCore::setWhiteFlag(PlayerTypes eID, bool bWhiteFlag)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setWhiteFlag");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_abWhiteFlag[eID] = bWhiteFlag;
 }
 
 const CvWString & CvInitCore::getFlagDecal(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getFlagDecal");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszFlagDecal[eID];
 }
 
 void CvInitCore::setFlagDecal(PlayerTypes eID, const CvWString & szFlagDecal)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setFlagDecal");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aszFlagDecal[eID] = szFlagDecal;
 }
 
 
 CivilizationTypes CvInitCore::getCiv(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getCiv");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aeCiv[eID];
 }
 
 void CvInitCore::setCiv(PlayerTypes eID, CivilizationTypes eCiv)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setCiv");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aeCiv[eID] = eCiv;
 }
 
 LeaderHeadTypes CvInitCore::getLeader(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getLeader");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aeLeader[eID];
 }
 
 void CvInitCore::setLeader(PlayerTypes eID, LeaderHeadTypes eLeader)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setLeader");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aeLeader[eID] = eLeader;
 }
 
 TeamTypes CvInitCore::getTeam(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getTeam");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aeTeam[eID];
 }
 
 void CvInitCore::setTeam(PlayerTypes eID, TeamTypes eTeam)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setTeam");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	if (getTeam(eID) != eTeam)
 	{
 		m_aeTeam[eID] = eTeam;
 
-		if(CvPlayerAI::areStaticsInitialized())
+		if (CvPlayerAI::areStaticsInitialized())
 		{
 			GET_PLAYER(eID).updateTeamType();
 		}
@@ -1457,55 +1443,56 @@ void CvInitCore::setTeam(PlayerTypes eID, TeamTypes eTeam)
 
 HandicapTypes CvInitCore::getHandicap(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getHandicap");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aeHandicap[eID];
 }
 
 void CvInitCore::setHandicap(PlayerTypes eID, HandicapTypes eHandicap)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setHandicap");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aeHandicap[eID] = eHandicap;
 }
 
 PlayerColorTypes CvInitCore::getColor(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getColor");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aeColor[eID];
 }
 
 void CvInitCore::setColor(PlayerTypes eID, PlayerColorTypes eColor)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setColor");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aeColor[eID] = eColor;
 }
 
 ArtStyleTypes CvInitCore::getArtStyle(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getArtStyle");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aeArtStyle[eID];
 }
 
 void CvInitCore::setArtStyle(PlayerTypes eID, ArtStyleTypes eArtStyle)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setArtStyle");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aeArtStyle[eID] = eArtStyle;
 }
 
 
 SlotStatus CvInitCore::getSlotStatus(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getSlotStatus");
-	return m_aeSlotStatus[eID];
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
+
+	return m_aeSlotStatus[eID] == SS_MAX_SLOT_STATUS ? SS_CLOSED : m_aeSlotStatus[eID];
 }
 
 void CvInitCore::setSlotStatus(PlayerTypes eID, SlotStatus eSlotStatus)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setSlotStatus");
-	if (getSlotStatus(eID) != eSlotStatus)
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
+	if (m_aeSlotStatus[eID] != SS_MAX_SLOT_STATUS && m_aeSlotStatus[eID] != eSlotStatus)
 	{
 		m_aeSlotStatus[eID] = eSlotStatus;
 
-		if(CvPlayerAI::areStaticsInitialized())
+		if (eID < MAX_PC_PLAYERS && CvPlayerAI::areStaticsInitialized())
 		{
 			GET_PLAYER(eID).updateHuman();
 		}
@@ -1514,101 +1501,102 @@ void CvInitCore::setSlotStatus(PlayerTypes eID, SlotStatus eSlotStatus)
 
 SlotClaim CvInitCore::getSlotClaim(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getSlotClaim");
-	return m_aeSlotClaim[eID];
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
+
+	return m_aeSlotClaim[eID] == NUM_SLOTCLAIMS ? SLOTCLAIM_UNASSIGNED : m_aeSlotClaim[eID];
 }
 
 void CvInitCore::setSlotClaim(PlayerTypes eID, SlotClaim eSlotClaim)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setSlotClaim");
-	m_aeSlotClaim[eID] = eSlotClaim;
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
+
+	if (m_aeSlotStatus[eID] != NUM_SLOTCLAIMS)
+	{
+		m_aeSlotClaim[eID] = eSlotClaim;
+	}
 }
 
 bool CvInitCore::getReady(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getReady");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_abReady[eID];
 }
 
 void CvInitCore::setReady(PlayerTypes eID, bool bReady)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setReady");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_abReady[eID] = bReady;
 }
 
 
 bool CvInitCore::getPlayableCiv(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getPlayableCiv");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	if (getWBMapScript() && !getWBMapNoPlayers())
 	{
 		return m_abPlayableCiv[eID];
 	}
-	else
+
+	if (getCiv(eID) != NO_CIVILIZATION)
 	{
-		if (getCiv(eID) != NO_CIVILIZATION)
-		{
-			return GC.getCivilizationInfo(getCiv(eID)).isPlayable();
-		}
-		else
-		{
-			// Don't allow people to play an NPC civ
-			return (eID < MAX_PC_PLAYERS);
-		}
+		return GC.getCivilizationInfo(getCiv(eID)).isPlayable();
 	}
+
+	// Don't allow people to play an NPC civ
+	return (eID < MAX_PC_PLAYERS);
 }
 
 void CvInitCore::setPlayableCiv(PlayerTypes eID, bool bPlayableCiv)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setPlayableCiv");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_abPlayableCiv[eID] = bPlayableCiv;
 }
 
 bool CvInitCore::getMinorNationCiv(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getMinorNationCiv");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_abMinorNationCiv[eID];
 }
 
 void CvInitCore::setMinorNationCiv(PlayerTypes eID, bool bMinorNationCiv)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setMinorNationCiv");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_abMinorNationCiv[eID] = bMinorNationCiv;
 }
 
 int CvInitCore::getNetID(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getNetID");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aiNetID[eID];
 }
 
 void CvInitCore::setNetID(PlayerTypes eID, int iNetID)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setNetID");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aiNetID[eID] = iNetID;
 }
 
 const CvString & CvInitCore::getPythonCheck(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getPythonCheck");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszPythonCheck[eID];
 }
 
 void CvInitCore::setPythonCheck(PlayerTypes eID, const CvString & szPythonCheck)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setPythonCheck");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aszPythonCheck[eID] = szPythonCheck;
 }
 
 const CvString & CvInitCore::getXMLCheck(PlayerTypes eID) const
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::getXMLCheck");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	return m_aszXMLCheck[eID];
 }
 
 void CvInitCore::setXMLCheck(PlayerTypes eID, const CvString & szXMLCheck)
 {
-	FASSERT_BOUNDS(0, MAX_PLAYERS, eID, "CvInitCore::setXMLCheck");
+	FASSERT_BOUNDS(0, MAX_PLAYERS, eID);
 	m_aszXMLCheck[eID] = szXMLCheck;
 }
 
@@ -1632,16 +1620,16 @@ void CvInitCore::resetAdvancedStartPoints()
 	{
 		iPoints += GC.getEraInfo(getEra()).getAdvancedStartPoints();
 	}
-	
+
 	if (NO_WORLDSIZE != getWorldSize())
 	{
 		iPoints *= GC.getWorldInfo(getWorldSize()).getAdvancedStartPointsMod();
 		iPoints /= 100;
 	}
-	
+
 	if (NO_GAMESPEED != getGameSpeed())
 	{
-		iPoints *= GC.getGameSpeedInfo(getGameSpeed()).getGrowthPercent();
+		iPoints *= GC.getGameSpeedInfo(getGameSpeed()).getSpeedPercent();
 		iPoints /= 100;
 	}
 
@@ -1678,11 +1666,11 @@ void CvInitCore::read(FDataStreamBase* pStream)
 
 	WRAPPER_READ_OBJECT_START(wrapper);
 
-	//	SAVE_FORMAT_VERSION of the build that did the save
-	int saveVersion = 0;	//	If save doesn't have the info
+	// SAVE_FORMAT_VERSION of the build that did the save
+	int saveVersion;
 	WRAPPER_READ_DECORATED(wrapper, "CvInitCore", &saveVersion, "SAVE_FORMAT_VERSION")
 	// AlbertS2: Save file format version, can be use to make a new dll incompatible with older saves
-	if(saveVersion != SAVE_FORMAT_VERSION)
+	if (saveVersion != SAVE_FORMAT_VERSION)
 	{
 		const char* reason = CvString::format("Save format version is not compatible, version=(%d) expected version=(%d)!", saveVersion, SAVE_FORMAT_VERSION).c_str();
 
@@ -1691,38 +1679,12 @@ void CvInitCore::read(FDataStreamBase* pStream)
 	}
 
 	m_bRecalcRequestProcessed = false;
-	int m_svnRev = -1;
-	WRAPPER_READ_DECORATED(wrapper, "CvInitCore", &m_svnRev, "m_svnRev");
-	if (m_svnRev == -1)
-	{
-		WRAPPER_SKIP_ELEMENT(wrapper, "CvInitCore", m_gitSHA, SAVE_VALUE_ANY);
-	}
 
 	//	Asset checksum of the build that did the save
 	m_uiSavegameAssetCheckSum = -1;	//	If save doesn't have the info
 	WRAPPER_READ(wrapper, "CvInitCore", &m_uiSavegameAssetCheckSum);
 	OutputDebugString(CvString::format("Asset CheckSum of save is %d\n", m_uiSavegameAssetCheckSum).c_str());
 
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/30/07                                MRGENIE      */
-/*                                                                                              */
-/* Savegame compatibility                                                                       */
-/************************************************************************************************/
-	int iNumSaveGameVector;
-	WRAPPER_READ_DECORATED(wrapper, "CvInitCore", &iNumSaveGameVector, "numModControlVectors");
-
-	// Empty the Vector
-	m_aszSaveGameVector.erase(m_aszSaveGameVector.begin(), m_aszSaveGameVector.end());
-
-	CvString szSaveGameVector;
-	for (int uiIndex = 0; uiIndex < iNumSaveGameVector; ++uiIndex)
-	{
-		WRAPPER_READ_STRING_DECORATED(wrapper, "CvInitCore", szSaveGameVector, "ModControlVector");
-		m_aszSaveGameVector.push_back(szSaveGameVector);
-	}
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 	// GAME DATA
 	WRAPPER_READ(wrapper, "CvInitCore", (int*)&m_eType);
 	WRAPPER_READ_STRING(wrapper, "CvInitCore", m_szGameName);
@@ -1780,17 +1742,6 @@ void CvInitCore::read(FDataStreamBase* pStream)
 /*                                                                                              */
 /* Savegame compatibility                                                                       */
 /************************************************************************************************/
-/*
-	if (uiSaveFlag > 0)
-	{
-		WRAPPER_READ(wrapper, "CvInitCore", NUM_GAMEOPTION_TYPES, m_abOptions);
-	}
-	else
-	{
-		WRAPPER_READ(wrapper, "CvInitCore", NUM_GAMEOPTION_TYPES-1, m_abOptions);
-		m_abOptions[NUM_GAMEOPTION_TYPES-1] = false;
-	}
-*/
 	// Set options to default values to handle cases of loading games that pre-dated an added otpion
 	setDefaults();
 
@@ -1824,7 +1775,7 @@ void CvInitCore::read(FDataStreamBase* pStream)
 
 	WRAPPER_READ_CLASS_ENUM_ARRAY_ALLOW_MISSING(wrapper, "CvInitCore", REMAPPED_CLASS_TYPE_CIVILIZATIONS, MAX_PLAYERS, (int*)m_aeCiv);
 	WRAPPER_READ_CLASS_ENUM_ARRAY_ALLOW_MISSING(wrapper, "CvInitCore", REMAPPED_CLASS_TYPE_LEADERHEADS, MAX_PLAYERS, (int*)m_aeLeader);
-			
+
 	WRAPPER_READ_ARRAY(wrapper, "CvInitCore", MAX_PLAYERS, (int*)m_aeTeam);
 
 	WRAPPER_READ_ARRAY(wrapper, "CvInitCore", MAX_PLAYERS, (int*)m_aeHandicap);
@@ -1836,23 +1787,23 @@ void CvInitCore::read(FDataStreamBase* pStream)
 
 	WRAPPER_READ_ARRAY(wrapper, "CvInitCore", MAX_PLAYERS, m_abPlayableCiv);
 	WRAPPER_READ_ARRAY(wrapper, "CvInitCore", MAX_PLAYERS, m_abMinorNationCiv);
-	
+
 	//	Special case for LEADERHEADS - if one that is in use is no longer defined we just warn
 	//	and use another one from the same Civ
 	//	Similarly if no Civ yet the slot status implies there should be assign a new one
 	if (wrapper.isUsingTaggedFormat())
 	{
-		bool	bWarned = false;
+		bool bWarned = false;
 
-		for(int i = 0; i < MAX_PLAYERS; i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
-			if ( m_aeColor[i] >= GC.getNumPlayerColorInfos() )
+			if (m_aeColor[i] >= GC.getNumPlayerColorInfos())
 			{
-				for(int j = 0; j < GC.getNumPlayerColorInfos(); j++)
+				for (int j = 0; j < GC.getNumPlayerColorInfos(); j++)
 				{
-					bool	colorUsed = false;
+					bool colorUsed = false;
 
-					for(int k = 0; k < MAX_PLAYERS; k++)
+					for (int k = 0; k < MAX_PLAYERS; k++)
 					{
 						if (m_aeColor[k] == (PlayerColorTypes)j)
 						{
@@ -1861,7 +1812,7 @@ void CvInitCore::read(FDataStreamBase* pStream)
 						}
 					}
 
-					if ( !colorUsed )
+					if (!colorUsed)
 					{
 						m_aeColor[i] = (PlayerColorTypes)j;
 						break;
@@ -1869,20 +1820,20 @@ void CvInitCore::read(FDataStreamBase* pStream)
 				}
 			}
 
-			if ( m_aeCiv[i] == NO_CIVILIZATION && (m_aeSlotStatus[i] == SS_TAKEN || m_aeSlotStatus[i] == SS_COMPUTER || m_aeColor[i] != NO_PLAYERCOLOR) )
+			if (m_aeCiv[i] == NO_CIVILIZATION && (m_aeSlotStatus[i] == SS_TAKEN || m_aeSlotStatus[i] == SS_COMPUTER || m_aeColor[i] != NO_PLAYERCOLOR))
 			{
 				//	Must have been removed in an asset change - assign a new one from those
 				//	not currently in use
-				for(int j = 0; j < GC.getNumCivilizationInfos(); j++)
+				for (int j = 0; j < GC.getNumCivilizationInfos(); j++)
 				{
 					//	Game structures not yet loaded so have to search just via the arrays loaded here
-					bool	civUsed = false;
+					bool civUsed = false;
 
-					for(int k = 0; k < MAX_PLAYERS; k++)
+					for (int k = 0; k < MAX_PLAYERS; k++)
 					{
 						if (m_aeSlotStatus[i] == SS_TAKEN || m_aeSlotStatus[i] == SS_COMPUTER)
 						{
-							if ( m_aeCiv[k] == j )
+							if (m_aeCiv[k] == j)
 							{
 								civUsed = true;
 								break;
@@ -1890,7 +1841,7 @@ void CvInitCore::read(FDataStreamBase* pStream)
 						}
 					}
 
-					if ( !civUsed )
+					if (!civUsed)
 					{
 						m_aeCiv[i] = (CivilizationTypes)j;
 						m_aeLeader[i] = NO_LEADER;
@@ -1903,30 +1854,26 @@ void CvInitCore::read(FDataStreamBase* pStream)
 				}
 			}
 
-			if ( m_aeCiv[i] != NO_CIVILIZATION && m_aeLeader[i] == NO_LEADER )
+			if (m_aeCiv[i] != NO_CIVILIZATION && m_aeLeader[i] == NO_LEADER)
 			{
-				int j;
+				bool bNoSubstitute = true;
 
-				for (j = 0; j < GC.getNumLeaderHeadInfos(); ++j)
+				for (int j = 0; j < GC.getNumLeaderHeadInfos(); ++j)
 				{
 					if (GC.getCivilizationInfo(m_aeCiv[i]).isLeaders(j))
 					{
+						bNoSubstitute = false;
+						if (!bWarned)
+						{
+							const CvLeaderHeadInfo& leader = GC.getLeaderHeadInfo((LeaderHeadTypes)j);
+							wrapper.warning(CvString::format("An in-use leader is no longer defined.  Using leader %S in its place (others may also have been replaced)", leader.getDescription()));
+							bWarned = true;
+						}
+						m_aeLeader[i] = (LeaderHeadTypes)j;
 						break;
 					}
 				}
-
-				if ( j < GC.getNumLeaderHeadInfos() )
-				{
-					if ( !bWarned )
-					{
-						const CvLeaderHeadInfo& leader = GC.getLeaderHeadInfo((LeaderHeadTypes)j);
-						wrapper.warning(CvString::format("An in-use leader is no longer defined.  Using leader %S in its place (others may also have been replaced)", leader.getDescription()));
-						bWarned = true;
-					}
-
-					m_aeLeader[i] = (LeaderHeadTypes)j;
-				}
-				else
+				if (bNoSubstitute)
 				{
 					wrapper.error(CvString::format("An in-use leader is no longer defined and no subsitute can be found"));
 				}
@@ -1934,7 +1881,7 @@ void CvInitCore::read(FDataStreamBase* pStream)
 		}
 	}
 
-	for (int i=0;i<MAX_PLAYERS;i++)
+	for (int i = 0; i < MAX_PLAYERS; i++)
 	{
 		if (m_aeSlotClaim[i] == SLOTCLAIM_ASSIGNED)
 		{
@@ -1942,15 +1889,14 @@ void CvInitCore::read(FDataStreamBase* pStream)
 		}
 	}
 
-	if(CvPlayerAI::areStaticsInitialized())
+	if (CvPlayerAI::areStaticsInitialized())
 	{
-		for (int i=0;i<MAX_PLAYERS;i++)
+		for (int i = 0; i < MAX_PLAYERS; i++)
 		{
 			GET_PLAYER((PlayerTypes)i).updateHuman();
 			GET_PLAYER((PlayerTypes) i).updateTeamType();
 		}
 	}
-
 	WRAPPER_READ_OBJECT_END(wrapper);
 }
 
@@ -1970,7 +1916,7 @@ void CvInitCore::write(FDataStreamBase* pStream)
 	uint uiSaveFlag=1;
 	*/
 	uint uiSaveFlag=0;
-	
+
 // BUG - Save Format - start
 	// If any optional mod alters the number of game options or save format in any way,
 	// set the BUG save format bit and write out the number of game options later.
@@ -1999,21 +1945,6 @@ void CvInitCore::write(FDataStreamBase* pStream)
 	// record the asset checksum of the build doing the save
 	WRAPPER_WRITE_DECORATED(wrapper, "CvInitCore", m_uiAssetCheckSum, "m_uiSavegameAssetCheckSum");
 
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/30/07                                MRGENIE      */
-/*                                                                                              */
-/* Savegame compatibility                                                                       */
-/************************************************************************************************/
-	const int iNumModLoadControlVector = GC.getModLoadControlVectorSize();
-	WRAPPER_WRITE_DECORATED(wrapper, "CvInitCore", iNumModLoadControlVector, "numModControlVectors");
-
-	for (int uiIndex = 0; uiIndex < iNumModLoadControlVector; ++uiIndex)
-	{
-		WRAPPER_WRITE_STRING_DECORATED(wrapper, "CvInitCore", GC.getModLoadControlVector(uiIndex), "ModControlVector");
-	}
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 	// GAME DATA
 	WRAPPER_WRITE(wrapper, "CvInitCore", m_eType);
 	WRAPPER_WRITE_STRING(wrapper, "CvInitCore", m_szGameName);
@@ -2083,30 +2014,6 @@ void CvInitCore::write(FDataStreamBase* pStream)
 
 	WRAPPER_WRITE_OBJECT_END(wrapper);
 }
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 11/30/07                                MRGENIE      */
-/*                                                                                              */
-/* Savegame compatibility                                                                       */
-/************************************************************************************************/
-int CvInitCore::getNumSaveGameVector()
-{
-	return m_aszSaveGameVector.size();
-}
-
-CvString CvInitCore::getSaveGameVector(int i)
-{
-	FAssert( i > -1);
-	FAssert( i < (int)m_aszSaveGameVector.size() );
-	return m_aszSaveGameVector[i];
-}
-
-void CvInitCore::doReloadInfoClasses()
-{
-	GC.doResetInfoClasses((int)m_aszSaveGameVector.size(), m_aszSaveGameVector);
-}
-/************************************************************************************************/
-/* MODULAR_LOADING_CONTROL                 END                                                  */
-/************************************************************************************************/
 
 // BUG - EXE/DLL Paths - start
 CvString CvInitCore::getDLLPath() const
@@ -2150,7 +2057,7 @@ void CvInitCore::setPathNames()
 	TCHAR pathBuffer[4096];
 	DWORD result;
 	TCHAR* pos;
-	
+
 	result = GetModuleFileName(NULL, pathBuffer, sizeof(pathBuffer));
 	pos = strchr(pathBuffer, '\\');
 	while (pos != NULL && *pos != NULL)
@@ -2232,7 +2139,7 @@ void CvInitCore::reassignPlayerAdvanced(PlayerTypes eOldID, PlayerTypes eNewID)
 			GET_PLAYER(eNewID).setOption((PlayerOptionTypes)iI,GET_PLAYER(eOldID).isOption((PlayerOptionTypes)iI));
 			GET_PLAYER(eOldID).setOption((PlayerOptionTypes)iI,false);
 		}
-		
+
 		for (int iI = 0; iI < NUM_MODDEROPTION_TYPES; iI++)
 		{
 			GET_PLAYER(eNewID).setModderOption((ModderOptionTypes)iI,GET_PLAYER(eOldID).getModderOption((ModderOptionTypes)iI));
@@ -2261,19 +2168,17 @@ void CvInitCore::reassignPlayerAdvanced(PlayerTypes eOldID, PlayerTypes eNewID)
 
 void CvInitCore::checkInitialCivics()
 {
-	int iI, iJ, iK;
-	bool bFound;
-	
-	for (iI = 0; iI < GC.getNumCivilizationInfos(); iI++)
+	for (int iI = 0; iI < GC.getNumCivilizationInfos(); iI++)
 	{
-		for (iJ = 0; iJ < GC.getNumCivicOptionInfos(); iJ++)
+		for (int iJ = 0; iJ < GC.getNumCivicOptionInfos(); iJ++)
 		{
 			//No Initial Civic Found
-			CivicTypes eCivic = (CivicTypes)GC.getCivilizationInfo((CivilizationTypes)iI).getCivilizationInitialCivics(iJ);
+			const CivicTypes eCivic = (CivicTypes)GC.getCivilizationInfo((CivilizationTypes)iI).getCivilizationInitialCivics(iJ);
+
 			if (eCivic == NO_CIVIC || GC.getCivicInfo(eCivic).getCivicOptionType() != iJ)
 			{
-				bFound = false;
-				for (iK = 0; iK < GC.getNumCivicInfos(); iK++)
+				bool bFound = false;
+				for (int iK = 0; iK < GC.getNumCivicInfos(); iK++)
 				{
 					if (GC.getCivicInfo((CivicTypes)iK).getCivicOptionType() == iJ)
 					{
@@ -2291,7 +2196,7 @@ void CvInitCore::checkInitialCivics()
 				else
 				{
 					//Should not get here, having no initial civic is very bad
-					FAssertMsg(false, "Error, No Valid Civic Was Found!");
+					FErrorMsg("Error, No Valid Civic Was Found!");
 				}
 			}
 		}
@@ -2325,23 +2230,20 @@ void CvInitCore::checkVersions()
 {
 	if (!m_bRecalcRequestProcessed && !getNewGame())
 	{
-		bool bAssetsChanged = m_uiSavegameAssetCheckSum != GC.getInitCore().getAssetCheckSum();
-		if (bAssetsChanged)
+		// If assets changed
+		if (m_uiSavegameAssetCheckSum != GC.getInitCore().getAssetCheckSum())
 		{
+			const PlayerTypes ePlayer = GC.getGame().getActivePlayer();
 			// DLL or assets changed, recommend modifier reloading
-			if ( NO_PLAYER != GC.getGame().getActivePlayer() )
+			if (NO_PLAYER != ePlayer && GET_PLAYER(ePlayer).isAlive() && GET_PLAYER(ePlayer).isHuman())
 			{
-				CvPlayer& kPlayer = GET_PLAYER(GC.getGame().getActivePlayer());
-				if (kPlayer.isAlive() && kPlayer.isHuman())
+				CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_MODIFIER_RECALCULATION);
+				if (NULL != pInfo)
 				{
-					CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_MODIFIER_RECALCULATION);
-					if (NULL != pInfo)
-					{
-						gDLL->getInterfaceIFace()->addPopup(pInfo, GC.getGame().getActivePlayer(), true, true);
-					}
-					m_uiSavegameAssetCheckSum = GC.getInitCore().getAssetCheckSum();
-					m_bRecalcRequestProcessed = true;
+					gDLL->getInterfaceIFace()->addPopup(pInfo, ePlayer, true, true);
 				}
+				m_uiSavegameAssetCheckSum = GC.getInitCore().getAssetCheckSum();
+				m_bRecalcRequestProcessed = true;
 			}
 		}
 	}

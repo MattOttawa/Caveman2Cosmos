@@ -6,8 +6,7 @@ import WBUnitScreen
 import WBPlayerScreen
 import WBTeamScreen
 import WBInfoScreen
-import CvWorldBuilderScreen
-import CvScreensInterface
+
 GC = CyGlobalContext()
 
 iSelectedEvent = -1
@@ -21,23 +20,24 @@ iSelectedBuilding = -1
 
 class WBEventScreen:
 
-	def __init__(self):
+	def __init__(self, WB):
+		self.WB = WB
 		self.iTable_Y = 80
 
 	def interfaceScreen(self, pPlotX):
 		screen = CyGInterfaceScreen( "WBEventScreen", CvScreenEnums.WB_EVENT)
-		
+
 		global pPlot
 		global iWidth
 
 		pPlot = pPlotX
 		iWidth = screen.getXResolution()/5 - 20
-		
+
 		screen.setRenderInterfaceOnly(True)
 		screen.addPanel( "MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
 
-		screen.setText("PlotExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("PlotExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 
 		screen.addDropDownBoxGFC("CurrentPage", 10, screen.getYResolution() - 42, iWidth, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_KEY_WB_PLOT_DATA", ()), 0, 0, False)
@@ -116,7 +116,7 @@ class WBEventScreen:
 				iLeader = pPlayerX.getLeaderType()
 				screen.setTableText("WBEventPlayer", 0, iRow, "", GC.getCivilizationInfo(iCivilization).getButton(), WidgetTypes.WIDGET_PYTHON, 7872, iPlayerX * 10000 + iCivilization, 1<<0 )
 				screen.setTableText("WBEventPlayer", 1, iRow, "<font=3>" + sColor + pPlayerX.getName() + "</font></color>", GC.getLeaderHeadInfo(iLeader).getButton(), WidgetTypes.WIDGET_PYTHON, 7876, iPlayerX * 10000 + iLeader, 1<<0 )
-		
+
 		screen.setLabel("EventPlayerText", "Background", "<font=3b>" + sHeader + "</font>", 1<<2, screen.getXResolution() * 3/10, self.iTable_Y - 30, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 
@@ -131,9 +131,7 @@ class WBEventScreen:
 		screen.setTableColumnHeader("WBEventUnit", 1, "", 24)
 		screen.setTableColumnHeader("WBEventUnit", 2, "", iWidth - 48)
 
-		for i in xrange(pPlot.getNumUnits()):
-			pUnitX = pPlot.getUnit(i)
-			if pUnitX.isNone(): continue
+		for pUnitX in pPlot.units():
 			iRow = screen.appendTableRow("WBEventUnit")
 			sText = pUnitX.getName()
 			if len(pUnitX.getNameNoDesc()):
@@ -209,21 +207,19 @@ class WBEventScreen:
 			return
 		iHeight = (screen.getYResolution()/2 - self.iTable_Y - 2) / 24 * 24 + 2
 
-		sHeader = CyTranslator().getText("TXT_KEY_WB_CITY", ()) + " II"
+		sHeader = CyTranslator().getText("TXT_WORD_CITY", ()) + " II"
 		screen.addTableControlGFC("WBOtherCity", 1, screen.getXResolution() * 3/5 + 10, self.iTable_Y, iWidth, iHeight, False, False, 24, 24, TableStyles.TABLE_STYLE_STANDARD)
 		screen.setTableColumnHeader("WBOtherCity", 0, "", iWidth)
 
-		(loopCity, iter) = GC.getPlayer(iOtherPlayer).firstCity(False)
-		while(loopCity):
+		for loopCity in GC.getPlayer(iOtherPlayer).cities():
 			iRow = screen.appendTableRow("WBOtherCity")
 			sColor = CyTranslator().getText("[COLOR_WARNING_TEXT]", ())
 			if loopCity.getID() == iOtherCity:
 				sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
 				sHeader = loopCity.getName()
 			screen.setTableText("WBOtherCity", 0, iRow, "<font=3>" + sColor + loopCity.getName() + "</font></color>", "", WidgetTypes.WIDGET_PYTHON, 7200 + iOtherPlayer, loopCity.getID(), 1<<0)
-			(loopCity, iter) = GC.getPlayer(iOtherPlayer).nextCity(iter, False)
 		screen.setLabel("OtherCityText", "Background", "<font=3b>" + sHeader + "</font>", 1<<2, screen.getXResolution() *7/10, self.iTable_Y - 30, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
-		
+
 	def placeOtherPlayers(self):
 		screen = CyGInterfaceScreen("WBEventScreen", CvScreenEnums.WB_EVENT)
 		iHeight = (screen.getYResolution()/2 - self.iTable_Y - 2) / 24 * 24 + 2
@@ -246,7 +242,7 @@ class WBEventScreen:
 				iLeader = pPlayerX.getLeaderType()
 				screen.setTableText("WBOtherPlayer", 0, iRow, "", GC.getCivilizationInfo(iCivilization).getButton(), WidgetTypes.WIDGET_PYTHON, 7872, iPlayerX * 10000 + iCivilization, 1<<0 )
 				screen.setTableText("WBOtherPlayer", 1, iRow, "<font=3>" + sColor + pPlayerX.getName() + "</font></color>", GC.getLeaderHeadInfo(iLeader).getButton(), WidgetTypes.WIDGET_PYTHON, 7876, iPlayerX * 10000 + iLeader, 1<<0 )
-		
+
 		screen.setLabel("OtherPlayerText", "Background", "<font=3b>" + sHeader + "</font>", 1<<2, screen.getXResolution()/2, self.iTable_Y - 30, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 	def placeEvents(self):
@@ -282,26 +278,26 @@ class WBEventScreen:
 		if inputClass.getFunctionName() == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 0:
-				WBPlotScreen.WBPlotScreen().interfaceScreen(pPlot)
+				WBPlotScreen.WBPlotScreen(self.WB).interfaceScreen(pPlot)
 			elif iIndex == 2:
-				WBPlayerScreen.WBPlayerScreen().interfaceScreen(pPlot.getOwner())
+				WBPlayerScreen.WBPlayerScreen(self.WB).interfaceScreen(pPlot.getOwner())
 			elif iIndex == 3:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(pPlot.getTeam())
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(pPlot.getTeam())
 			elif iIndex == 4:
 				if pPlot.isCity():
-					WBCityEditScreen.WBCityEditScreen(CvScreensInterface.worldBuilderScreen).interfaceScreen(pPlot.getPlotCity())
+					WBCityEditScreen.WBCityEditScreen(self.WB).interfaceScreen(pPlot.getPlotCity())
 			elif iIndex == 5:
 				if iSelectedUnit > -1 and iEventPlayer > -1:
 					pUnit = GC.getPlayer(iEventPlayer).getUnit(iSelectedUnit)
 				else:
 					pUnit = pPlot.getUnit(0)
 				if pUnit:
-					WBUnitScreen.WBUnitScreen(CvScreensInterface.worldBuilderScreen).interfaceScreen(pUnit)
+					WBUnitScreen.WBUnitScreen(self.WB).interfaceScreen(pUnit)
 			elif iIndex == 11:
 				iPlayer = pPlot.getOwner()
 				if iPlayer == -1:
 					iPlayer = CyGame().getActivePlayer()
-				WBInfoScreen.WBInfoScreen().interfaceScreen(iPlayer)
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(iPlayer)
 
 		elif inputClass.getFunctionName() == "WBEvent":
 			iSelectedEvent = inputClass.getData2()

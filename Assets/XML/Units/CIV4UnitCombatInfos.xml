@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--
+	iUpkeepModifier - Applied directly on the unit's base upkeep value.
+	iExtraUpkeep100 - 100 = 1 gold; Its value is added to the upkeep before iBaseUpkeepModifier is applied.
+-->
 <Civ4UnitCombatInfos xmlns="x-schema:../Schema/C2C_CIV4UnitSchema.xml">
 	<UnitCombatInfos>
 		<UnitCombatInfo>
@@ -119,6 +123,8 @@
 				<TerrainType>TERRAIN_COAST</TerrainType>
 				<TerrainType>TERRAIN_COAST_TROPICAL</TerrainType>
 				<TerrainType>TERRAIN_COAST_DEEP</TerrainType>
+				<TerrainType>TERRAIN_COAST_DEEP_TROPICAL</TerrainType>
+				<TerrainType>TERRAIN_COAST_DEEP_POLAR</TerrainType>
 				<TerrainType>TERRAIN_LAKE_SHORE</TerrainType>
 			</TerrainDoubleMoveChangeTypes>
 			<VisibilityIntensityChangeTypes>
@@ -192,6 +198,8 @@
 				<TerrainType>TERRAIN_OCEAN</TerrainType>
 				<TerrainType>TERRAIN_OCEAN_TROPICAL</TerrainType>
 				<TerrainType>TERRAIN_TRENCH</TerrainType>
+				<TerrainType>TERRAIN_TRENCH_POLAR</TerrainType>
+				<TerrainType>TERRAIN_TRENCH_TROPICAL</TerrainType>
 			</TerrainDoubleMoveChangeTypes>
 			<Button>Art/Interface/Buttons/units/sparth/categories/submarines.dds</Button>
 		</UnitCombatInfo>
@@ -243,15 +251,6 @@
 			<iDefenseOnlyChange>-1</iDefenseOnlyChange>
 			<iAnimalIgnoresBordersChange>-1</iAnimalIgnoresBordersChange>
 			<Button>Art/Interface/Buttons/units/sparth/categories/nature_pounce.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
-			<Type>UNITCOMBAT_COSTLESS</Type>
-			<Description>TXT_KEY_UNITCOMBAT_COSTLESS</Description>
-			<NotOnGameOptions>
-				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
-			</NotOnGameOptions>
-			<iCostModifierChange>-100</iCostModifierChange>
-			<Button>Art/Interface/Buttons/units/sparth/categories/idea.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_PIRATE</Type>
@@ -3338,41 +3337,6 @@
 			<Button>Art/Interface/Buttons/units/sparth/categories/mammal.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
-			<Type>UNITCOMBAT_MAMMAL_URSINE</Type>
-			<Description>TXT_KEY_UNITCOMBAT_MAMMAL_URSINE</Description>
-			<iPursuitChange>10</iPursuitChange>
-			<FeatureAttacks>
-				<FeatureAttack>
-					<FeatureType>FEATURE_CAVES</FeatureType>
-					<iFeatureAttack>10</iFeatureAttack>
-				</FeatureAttack>
-			</FeatureAttacks>
-			<FeatureDefenses>
-				<FeatureDefense>
-					<FeatureType>FEATURE_CAVES</FeatureType>
-					<iFeatureDefense>20</iFeatureDefense>
-				</FeatureDefense>
-			</FeatureDefenses>
-			<InvisibleFeatureChanges>
-				<InvisibleFeatureChange>
-					<InvisibleType>INVISIBLE_CAMOUFLAGE</InvisibleType>
-					<FeatureType>FEATURE_CAVES</FeatureType>
-					<iIntensity>1</iIntensity>
-				</InvisibleFeatureChange>
-				<InvisibleFeatureChange>
-					<InvisibleType>INVISIBLE_CAMOUFLAGE</InvisibleType>
-					<FeatureType>FEATURE_FOREST</FeatureType>
-					<iIntensity>1</iIntensity>
-				</InvisibleFeatureChange>
-				<InvisibleFeatureChange>
-					<InvisibleType>INVISIBLE_CAMOUFLAGE</InvisibleType>
-					<FeatureType>FEATURE_FOREST_ANCIENT</FeatureType>
-					<iIntensity>1</iIntensity>
-				</InvisibleFeatureChange>
-			</InvisibleFeatureChanges>
-			<Button>Art/Interface/Buttons/units/sparth/categories/mammal.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
 			<Type>UNITCOMBAT_MAMMAL_RACCOON</Type>
 			<Description>TXT_KEY_UNITCOMBAT_MAMMAL_RACCOON</Description>
 			<Button>Art/Interface/Buttons/units/sparth/categories/mammal.dds</Button>
@@ -3437,11 +3401,6 @@
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_MAMMAL_TAPIR</Type>
 			<Description>TXT_KEY_UNITCOMBAT_MAMMAL_TAPIR</Description>
-			<Button>Art/Interface/Buttons/units/sparth/categories/mammal.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
-			<Type>UNITCOMBAT_MAMMAL_RHINO</Type>
-			<Description>TXT_KEY_UNITCOMBAT_MAMMAL_RHINO</Description>
 			<Button>Art/Interface/Buttons/units/sparth/categories/mammal.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
@@ -3865,11 +3824,6 @@
 				</InvisibleTerrainChange>
 				<InvisibleTerrainChange>
 					<InvisibleType>INVISIBLE_SUBMARINE</InvisibleType>
-					<TerrainType>TERRAIN_SEA</TerrainType>
-					<iIntensity>1</iIntensity>
-				</InvisibleTerrainChange>
-				<InvisibleTerrainChange>
-					<InvisibleType>INVISIBLE_SUBMARINE</InvisibleType>
 					<TerrainType>TERRAIN_SEA_DEEP</TerrainType>
 					<iIntensity>1</iIntensity>
 				</InvisibleTerrainChange>
@@ -3881,6 +3835,11 @@
 				<InvisibleTerrainChange>
 					<InvisibleType>INVISIBLE_SUBMARINE</InvisibleType>
 					<TerrainType>TERRAIN_SEA_DEEP_TROPICAL</TerrainType>
+					<iIntensity>1</iIntensity>
+				</InvisibleTerrainChange>
+				<InvisibleTerrainChange>
+					<InvisibleType>INVISIBLE_SUBMARINE</InvisibleType>
+					<TerrainType>TERRAIN_SEA</TerrainType>
 					<iIntensity>1</iIntensity>
 				</InvisibleTerrainChange>
 				<InvisibleTerrainChange>
@@ -5513,216 +5472,144 @@
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_JUDAISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_JUDAISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_JUDAISM</Description>
 			<ReligionType>RELIGION_JUDAISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_judaism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_CHRISTIANITY</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_CHRISTIANITY</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_CHRISTIANITY</Description>
 			<ReligionType>RELIGION_CHRISTIANITY</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_christianity.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_ISLAM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_ISLAM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_ISLAM</Description>
 			<ReligionType>RELIGION_ISLAM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_islam.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_HINDUISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_HINDUISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_HINDUISM</Description>
 			<ReligionType>RELIGION_HINDUISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_hinduism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_BUDDHISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_BUDDHISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_BUDDHISM</Description>
 			<ReligionType>RELIGION_BUDDHISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_buddism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_CONFUCIANISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_CONFUCIANISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_CONFUCIANISM</Description>
 			<ReligionType>RELIGION_CONFUCIANISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_confucianism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_TAOISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_TAOISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_TAOISM</Description>
 			<ReligionType>RELIGION_TAOISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_taosim.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_ZOROASTRIANISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_ZOROASTRIANISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_ZOROASTRIANISM</Description>
 			<ReligionType>RELIGION_ZOROASTRIANISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_zoroastrianism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_NGAIISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_NGAIISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_NGAIISM</Description>
 			<ReligionType>RELIGION_NGAIISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_ngaiism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_KEMETISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_KEMETISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_KEMETISM</Description>
 			<ReligionType>RELIGION_KEMETISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_kemetism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_HELLENISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_HELLENISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_HELLENISM</Description>
 			<ReligionType>RELIGION_HELLENISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_hellenism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_NAGHUALISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_NAGHUALISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_NAGHUALISM</Description>
 			<ReligionType>RELIGION_NAGHUALISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_naghualism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_MORMON</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_MORMON</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_MORMON</Description>
 			<ReligionType>RELIGION_MORMON</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_mormon.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_YORUBA</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_YORUBA</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_YORUBA</Description>
 			<ReligionType>RELIGION_YORUBA</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_yoruba.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_TENGRIISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_TENGRIISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_TENGRIISM</Description>
 			<ReligionType>RELIGION_TENGRIISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_tengrism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_SHINTO</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_SHINTO</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_SHINTO</Description>
 			<ReligionType>RELIGION_SHINTO</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_shinto.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_VOODOO</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_VOODOO</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_VOODOO</Description>
 			<ReligionType>RELIGION_VOODOO</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_voodoo.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_DRUIDIC_TRADITIONS</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_DRUIDIC_TRADITIONS</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_DRUIDIC_TRADITIONS</Description>
 			<ReligionType>RELIGION_DRUIDIC_TRADITIONS</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_druidism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_SHAMANISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_SHAMANISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_SHAMANISM</Description>
 			<ReligionType>RELIGION_SHAMANISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_shamanism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_MESOPOTAMISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_MESOPOTAMISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_MESOPOTAMISM</Description>
 			<ReligionType>RELIGION_MESOPOTAMISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_mesopotamism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_SCIENTOLOGY</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_SCIENTOLOGY</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_SCIENTOLOGY</Description>
 			<ReligionType>RELIGION_SCIENTOLOGY</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_scientology.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_JAINISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_JAINISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_JAINISM</Description>
 			<ReligionType>RELIGION_JAINISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_jainism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_SIKHISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_SIKHISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_SIKHISM</Description>
 			<ReligionType>RELIGION_SIKHISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_sikhism.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_RELIGION_CANAANISM</Type>
-			<AndDependencyTypes>
-				<DependencyType>RELIGION_CANAANISM</DependencyType>
- 			</AndDependencyTypes>
 			<Description>TXT_KEY_UNITCOMBAT_RELIGION_CANAANISM</Description>
 			<ReligionType>RELIGION_CANAANISM</ReligionType>
 			<Button>Art/Interface/Buttons/units/sparth/categories/religion_canaanism.dds</Button>
@@ -6644,17 +6531,10 @@
 			<Button>Art/Interface/Buttons/units/sparth/categories/wild.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
-			<Type>UNITCOMBAT_SUBDUED</Type>
-			<Description>TXT_KEY_UNITCOMBAT_SUBDUED</Description>
-			<bCannotMergeSplit>1</bCannotMergeSplit>
-			<Button>Art/Interface/Buttons/units/sparth/categories/subdued.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
 			<Type>UNITCOMBAT_IDEA</Type>
 			<Description>TXT_KEY_UNITCOMBAT_IDEA</Description>
 			<bCannotMergeSplit>1</bCannotMergeSplit>
 			<bInvisible>1</bInvisible>
-			<iCostModifierChange>-100</iCostModifierChange>
 			<Button>Art/Interface/Buttons/units/sparth/categories/idea.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
@@ -6688,7 +6568,6 @@
 			<iExperiencePercent>140</iExperiencePercent>
 			<iSelfHealModifier>18</iSelfHealModifier>
 			<iGroupBase>1</iGroupBase>
-			<iCostModifierChange>-75</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6706,7 +6585,6 @@
 			<iExperiencePercent>90</iExperiencePercent>
 			<iSelfHealModifier>12</iSelfHealModifier>
 			<iGroupBase>2</iGroupBase>
-			<iCostModifierChange>-65</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6724,7 +6602,6 @@
 			<iExperiencePercent>50</iExperiencePercent>
 			<iSelfHealModifier>7</iSelfHealModifier>
 			<iGroupBase>3</iGroupBase>
-			<iCostModifierChange>-50</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6742,7 +6619,6 @@
 			<iExperiencePercent>20</iExperiencePercent>
 			<iSelfHealModifier>3</iSelfHealModifier>
 			<iGroupBase>4</iGroupBase>
-			<iCostModifierChange>-30</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6775,7 +6651,6 @@
 			<iExperiencePercent>-20</iExperiencePercent>
 			<iSelfHealModifier>-3</iSelfHealModifier>
 			<iGroupBase>6</iGroupBase>
-			<iCostModifierChange>50</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6797,7 +6672,6 @@
 			<iExperiencePercent>-50</iExperiencePercent>
 			<iSelfHealModifier>-7</iSelfHealModifier>
 			<iGroupBase>7</iGroupBase>
-			<iCostModifierChange>100</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6819,7 +6693,6 @@
 			<iExperiencePercent>-90</iExperiencePercent>
 			<iSelfHealModifier>-12</iSelfHealModifier>
 			<iGroupBase>8</iGroupBase>
-			<iCostModifierChange>150</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6840,7 +6713,6 @@
 			<Description>TXT_KEY_UNITCOMBAT_GROUP_MULTITUDES</Description>
 			<iExperiencePercent>-140</iExperiencePercent>
 			<iSelfHealModifier>-18</iSelfHealModifier>
-			<iCostModifierChange>200</iCostModifierChange>
 			<iGroupBase>9</iGroupBase>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
@@ -6863,7 +6735,6 @@
 			<iExperiencePercent>-200</iExperiencePercent>
 			<iSelfHealModifier>-25</iSelfHealModifier>
 			<iGroupBase>10</iGroupBase>
-			<iCostModifierChange>250</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6885,7 +6756,6 @@
 			<iExperiencePercent>-270</iExperiencePercent>
 			<iSelfHealModifier>-33</iSelfHealModifier>
 			<iGroupBase>11</iGroupBase>
-			<iCostModifierChange>300</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6907,7 +6777,6 @@
 			<iExperiencePercent>-350</iExperiencePercent>
 			<iSelfHealModifier>-42</iSelfHealModifier>
 			<iGroupBase>12</iGroupBase>
-			<iCostModifierChange>350</iCostModifierChange>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -6922,6 +6791,23 @@
 				</InvisibilityIntensityChangeType>
 			</InvisibilityIntensityChangeTypes>
 			<Button>Art/Interface/Buttons/units/sparth/categories/group_trillions.dds</Button>
+		</UnitCombatInfo>
+		<UnitCombatInfo>
+			<Type>UNITCOMBAT_GROUP_COUNTLESS</Type>
+			<Description>TXT_KEY_UNITCOMBAT_GROUP_COUNTLESS</Description>
+			<iExperiencePercent>-440</iExperiencePercent>
+			<iSelfHealModifier>-52</iSelfHealModifier>
+			<iGroupBase>13</iGroupBase>
+			<OnGameOptions>
+				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
+			</OnGameOptions>
+			<InvisibilityIntensityChangeTypes>
+				<InvisibilityIntensityChangeType>
+					<InvisibleType>INVISIBLE_SIZE</InvisibleType>
+					<iIntensity>-8</iIntensity>
+				</InvisibilityIntensityChangeType>
+			</InvisibilityIntensityChangeTypes>
+			<Button>Art/Interface/Buttons/units/sparth/categories/group_countless.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_ARMOR_TYPE_PADDED</Type>
@@ -7140,7 +7026,7 @@
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_SHIELD_MATERIAL_COPPER</Type>
-			<Description>TXT_KEY_UNITCOMBAT_SHIELD_MATERIAL_BRONZE</Description>
+			<Description>TXT_KEY_UNITCOMBAT_SHIELD_MATERIAL_COPPER</Description>
 			<Button>Art/Interface/Buttons/units/sparth/categories/shield_material.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
@@ -7174,11 +7060,22 @@
 			<Button>Art/Interface/Buttons/units/sparth/categories/shield_material.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
+			<Type>UNITCOMBAT_QUALITY_INCAPABLE</Type>
+			<Description>TXT_KEY_UNITCOMBAT_QUALITY_INCAPABLE</Description>
+			<OnGameOptions>
+				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
+			</OnGameOptions>
+			<iExperiencePercent>150</iExperiencePercent>
+			<iQualityBase>0</iQualityBase>
+			<iUpkeepModifier>-200</iUpkeepModifier>
+			<Button>Art/Interface/Buttons/units/sparth/categories/combat_quality_incapable.dds</Button>
+		</UnitCombatInfo>
+		<UnitCombatInfo>
 			<Type>UNITCOMBAT_QUALITY_PATHETIC</Type>
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_PATHETIC</Description>
 			<iExperiencePercent>120</iExperiencePercent>
 			<iQualityBase>1</iQualityBase>
-			<iCostModifierChange>-20</iCostModifierChange>
+			<iUpkeepModifier>-140</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7195,7 +7092,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_INFERIOR</Description>
 			<iExperiencePercent>90</iExperiencePercent>
 			<iQualityBase>2</iQualityBase>
-			<iCostModifierChange>-15</iCostModifierChange>
+			<iUpkeepModifier>-90</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7218,7 +7115,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_POOR</Description>
 			<iExperiencePercent>60</iExperiencePercent>
 			<iQualityBase>3</iQualityBase>
-			<iCostModifierChange>-10</iCostModifierChange>
+			<iUpkeepModifier>-50</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7241,7 +7138,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_MEDIOCRE</Description>
 			<iExperiencePercent>30</iExperiencePercent>
 			<iQualityBase>4</iQualityBase>
-			<iCostModifierChange>-5</iCostModifierChange>
+			<iUpkeepModifier>-20</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7285,7 +7182,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_SUPERIOR</Description>
 			<iExperiencePercent>-30</iExperiencePercent>
 			<iQualityBase>6</iQualityBase>
-			<iCostModifierChange>20</iCostModifierChange>
+			<iUpkeepModifier>20</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7308,7 +7205,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_EXCEPTIONAL</Description>
 			<iExperiencePercent>-60</iExperiencePercent>
 			<iQualityBase>7</iQualityBase>
-			<iCostModifierChange>50</iCostModifierChange>
+			<iUpkeepModifier>50</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7331,7 +7228,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_ELITE</Description>
 			<iExperiencePercent>-90</iExperiencePercent>
 			<iQualityBase>8</iQualityBase>
-			<iCostModifierChange>90</iCostModifierChange>
+			<iUpkeepModifier>90</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7354,7 +7251,7 @@
 			<Description>TXT_KEY_UNITCOMBAT_QUALITY_EPIC</Description>
 			<iExperiencePercent>-120</iExperiencePercent>
 			<iQualityBase>9</iQualityBase>
-			<iCostModifierChange>140</iCostModifierChange>
+			<iUpkeepModifier>140</iUpkeepModifier>
 			<OnGameOptions>
 				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
 			</OnGameOptions>
@@ -7371,6 +7268,29 @@
 				</VisibilityIntensitySameTileChangeType>
 			</VisibilityIntensitySameTileChangeTypes>
 			<Button>Art/Interface/Buttons/units/sparth/categories/combat_quality_epic.dds</Button>
+		</UnitCombatInfo>
+		<UnitCombatInfo>
+			<Type>UNITCOMBAT_QUALITY_DIVINE</Type>
+			<Description>TXT_KEY_UNITCOMBAT_QUALITY_DIVINE</Description>
+			<OnGameOptions>
+				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
+			</OnGameOptions>
+			<iExperiencePercent>-150</iExperiencePercent>
+			<iQualityBase>10</iQualityBase>
+			<iUpkeepModifier>200</iUpkeepModifier>
+			<VisibilityIntensityChangeTypes>
+				<VisibilityIntensityChangeType>
+					<InvisibleType>INVISIBLE_SIZE</InvisibleType>
+					<iIntensity>9</iIntensity>
+				</VisibilityIntensityChangeType>
+			</VisibilityIntensityChangeTypes>
+			<VisibilityIntensitySameTileChangeTypes>
+				<VisibilityIntensitySameTileChangeType>
+					<InvisibleType>INVISIBLE_SIZE</InvisibleType>
+					<iIntensity>2</iIntensity>
+				</VisibilityIntensitySameTileChangeType>
+			</VisibilityIntensitySameTileChangeTypes>
+			<Button>Art/Interface/Buttons/units/sparth/categories/combat_quality_divine.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_PROMOTED_CAUTIOUS</Type>
@@ -7391,58 +7311,6 @@
 			<Type>UNITCOMBAT_REPTILE_DINOSAUR</Type>
 			<Description>TXT_KEY_UNITCOMBAT_REPTILE_DINOSAUR</Description>
 			<Button>Art/Interface/Buttons/units/sparth/categories/reptile.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
-			<Type>UNITCOMBAT_QUALITY_INCAPABLE</Type>
-			<Description>TXT_KEY_UNITCOMBAT_QUALITY_INCAPABLE</Description>
-			<OnGameOptions>
-				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
-			</OnGameOptions>
-			<iExperiencePercent>150</iExperiencePercent>
-			<iQualityBase>0</iQualityBase>
-			<iCostModifierChange>-25</iCostModifierChange>
-			<Button>Art/Interface/Buttons/units/sparth/categories/combat_quality_incapable.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
-			<Type>UNITCOMBAT_QUALITY_DIVINE</Type>
-			<Description>TXT_KEY_UNITCOMBAT_QUALITY_DIVINE</Description>
-			<OnGameOptions>
-				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
-			</OnGameOptions>
-			<iExperiencePercent>-150</iExperiencePercent>
-			<iQualityBase>10</iQualityBase>
-			<iCostModifierChange>200</iCostModifierChange>
-			<VisibilityIntensityChangeTypes>
-				<VisibilityIntensityChangeType>
-					<InvisibleType>INVISIBLE_SIZE</InvisibleType>
-					<iIntensity>9</iIntensity>
-				</VisibilityIntensityChangeType>
-			</VisibilityIntensityChangeTypes>
-			<VisibilityIntensitySameTileChangeTypes>
-				<VisibilityIntensitySameTileChangeType>
-					<InvisibleType>INVISIBLE_SIZE</InvisibleType>
-					<iIntensity>2</iIntensity>
-				</VisibilityIntensitySameTileChangeType>
-			</VisibilityIntensitySameTileChangeTypes>
-			<Button>Art/Interface/Buttons/units/sparth/categories/combat_quality_divine.dds</Button>
-		</UnitCombatInfo>
-		<UnitCombatInfo>
-			<Type>UNITCOMBAT_GROUP_COUNTLESS</Type>
-			<Description>TXT_KEY_UNITCOMBAT_GROUP_COUNTLESS</Description>
-			<iExperiencePercent>-440</iExperiencePercent>
-			<iSelfHealModifier>-52</iSelfHealModifier>
-			<iGroupBase>13</iGroupBase>
-			<iCostModifierChange>400</iCostModifierChange>
-			<OnGameOptions>
-				<GameOptionType>GAMEOPTION_SIZE_MATTERS</GameOptionType>
-			</OnGameOptions>
-			<InvisibilityIntensityChangeTypes>
-				<InvisibilityIntensityChangeType>
-					<InvisibleType>INVISIBLE_SIZE</InvisibleType>
-					<iIntensity>-8</iIntensity>
-				</InvisibilityIntensityChangeType>
-			</InvisibilityIntensityChangeTypes>
-			<Button>Art/Interface/Buttons/units/sparth/categories/group_countless.dds</Button>
 		</UnitCombatInfo>
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_TAMED</Type>
@@ -8970,14 +8838,12 @@
 			<CultureType>BONUS_RED_OCHER</CultureType>
 			<Button>Art/categories/culture_newcultures.dds</Button>
 		</UnitCombatInfo>
-<!-- Wrong flag
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_CULTURE_SABBATEAN</Type>
 			<Description>TXT_KEY_UNITCOMBAT_CULTURE_SABBATEAN</Description>
 			<CultureType>BONUS_SABBATEAN</CultureType>
 			<Button>Art/categories/culture_newcultures.dds</Button>
 		</UnitCombatInfo>
--->
 		<UnitCombatInfo>
 			<Type>UNITCOMBAT_CULTURE_SAFAVIDS</Type>
 			<Description>TXT_KEY_UNITCOMBAT_CULTURE_SAFAVIDS</Description>
@@ -9289,6 +9155,24 @@
 			<Description>TXT_KEY_UNITCOMBAT_CULTURE_ZIMBABWE</Description>
 			<CultureType>BONUS_ZIMBABWEAN</CultureType>
 			<Button>Art/categories/culture_newcultures.dds</Button>
+		</UnitCombatInfo>
+		<UnitCombatInfo>
+			<Type>UNITCOMBAT_RELIGION_ANDEANISM</Type>
+			<Description>TXT_KEY_UNITCOMBAT_RELIGION_ANDEANISM</Description>
+			<ReligionType>RELIGION_ANDEANISM</ReligionType>
+			<Button>Art/Interface/Buttons/units/sparth/categories/religion_andeanism.dds</Button>
+		</UnitCombatInfo>
+		<UnitCombatInfo>
+			<Type>UNITCOMBAT_RELIGION_ASATRU</Type>
+			<Description>TXT_KEY_UNITCOMBAT_RELIGION_ASATRU</Description>
+			<ReligionType>RELIGION_ASATRU</ReligionType>
+			<Button>Art/Interface/Buttons/units/sparth/categories/religion_asatru.dds</Button>
+		</UnitCombatInfo>
+		<UnitCombatInfo>
+			<Type>UNITCOMBAT_RELIGION_BAHAI</Type>
+			<Description>TXT_KEY_UNITCOMBAT_RELIGION_BAHAI</Description>
+			<ReligionType>RELIGION_BAHAI</ReligionType>
+			<Button>Art/Interface/Buttons/units/sparth/categories/religion_bahai.dds</Button>
 		</UnitCombatInfo>
 	</UnitCombatInfos>
 </Civ4UnitCombatInfos>

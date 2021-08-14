@@ -1,21 +1,20 @@
 from CvPythonExtensions import *
 import CvScreenEnums
 import WBProjectScreen
-import WBTechScreen
 import WBTeamScreen
 import WBPlayerUnits
 import WBReligionScreen
 import WBCorporationScreen
 import WBInfoScreen
-import CvWorldBuilderScreen
-import CvScreensInterface
 import Popup
+
 GC = CyGlobalContext()
 iChange = 1
 
 class WBPlayerScreen:
 
-	def __init__(self):
+	def __init__(self, WB):
+		self.WB = WB
 		self.iIconSize = 64
 
 	def interfaceScreen(self, iPlayerX):
@@ -32,7 +31,7 @@ class WBPlayerScreen:
 		screen.setRenderInterfaceOnly(True)
 		screen.addPanel("MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
-		screen.setText("PlayerExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("PlayerExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 
 		screen.addDropDownBoxGFC("CurrentPage", 20, screen.getYResolution() - 42, screen.getXResolution()/5, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_KEY_WB_PLAYER_DATA", ()), 0, 0, True)
@@ -104,14 +103,14 @@ class WBPlayerScreen:
 					sText += "/"
 			sText += "]"
 		sText += " (ID: " + str(pPlayer.getID()) + ")"
-		
+
 		screen.setLabel("PlayerName", "Background", "<font=4b>" + sText + "</font>", 1<<2, screen.getXResolution()/2, 20, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		screen.setLabel("CivilizationName", "Background", "<font=4b>" + pPlayer.getCivilizationDescription(0) + "</font>", 1<<2, screen.getXResolution()/2, 50, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		
+
 		iY = 110
 		screen.setButtonGFC("PlayerGoldPlus", "", "", 20, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1030, -1, ButtonStyles.BUTTON_STYLE_CITY_PLUS)
 		screen.setButtonGFC("PlayerGoldMinus", "", "", 45, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1031, -1, ButtonStyles.BUTTON_STYLE_CITY_MINUS)
-		sText = u"%s %s%c" %(CyTranslator().getText("TXT_KEY_WB_GOLD", ()), CvScreensInterface.worldBuilderScreen.addComma(pPlayer.getGold()), GC.getCommerceInfo(CommerceTypes.COMMERCE_GOLD).getChar())
+		sText = u"%s %s%c" %(CyTranslator().getText("TXT_KEY_WB_GOLD", ()), self.WB.addComma(pPlayer.getGold()), GC.getCommerceInfo(CommerceTypes.COMMERCE_GOLD).getChar())
 		screen.setLabel("PlayerGoldText", "Background", "<font=3>" + sText + "</font>", 1<<0, 75, iY + 1, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 		iY += 30
@@ -304,19 +303,19 @@ class WBPlayerScreen:
 		elif inputClass.getFunctionName() == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 1:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(iTeam)
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(iTeam)
 			elif iIndex == 2:
-				WBProjectScreen.WBProjectScreen().interfaceScreen(iTeam)
+				WBProjectScreen.WBProjectScreen(self.WB).interfaceScreen(iTeam)
 			elif iIndex == 3:
-				WBTechScreen.WBTechScreen().interfaceScreen(iTeam)
+				self.WB.goToSubScreen("TechScreen")
 			elif iIndex == 4:
-				WBPlayerUnits.WBPlayerUnits().interfaceScreen(iPlayer)
+				WBPlayerUnits.WBPlayerUnits(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 8:
-				WBReligionScreen.WBReligionScreen().interfaceScreen(iPlayer)
+				WBReligionScreen.WBReligionScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 9:
-				WBCorporationScreen.WBCorporationScreen().interfaceScreen(iPlayer)
+				WBCorporationScreen.WBCorporationScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 11:
-				WBInfoScreen.WBInfoScreen().interfaceScreen(iPlayer)
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(iPlayer)
 
 		elif inputClass.getFunctionName() == "CurrentPlayer":
 			iIndex = screen.getPullDownData("CurrentPlayer", screen.getSelectedPullDownID("CurrentPlayer"))
@@ -362,7 +361,7 @@ class WBPlayerScreen:
 
 		elif inputClass.getFunctionName().find("CoastalTrade") > -1:
 			if inputClass.getData1() == 1030:
-				pPlayer.changeCoastalTradeRoutes(min(iChange, GC.getDefineINT("MAX_TRADE_ROUTES") - pPlayer.getCoastalTradeRoutes()))
+				pPlayer.changeCoastalTradeRoutes(iChange)
 			elif inputClass.getData1() == 1031:
 				pPlayer.changeCoastalTradeRoutes(- min(iChange, pPlayer.getCoastalTradeRoutes()))
 			self.placeStats()

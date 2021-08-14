@@ -7,9 +7,8 @@ import WBUnitScreen
 import WBPlayerScreen
 import WBTeamScreen
 import WBInfoScreen
-import CvWorldBuilderScreen
 import Popup
-import CvScreensInterface
+
 GC = CyGlobalContext()
 
 bAdd = True
@@ -22,7 +21,8 @@ iSelectedClass = -1
 
 class WBPlotScreen:
 
-	def __init__(self):
+	def __init__(self, WB):
+		self.WB = WB
 		self.iTable_Y = 110
 
 	def interfaceScreen(self, pPlotX):
@@ -36,7 +36,7 @@ class WBPlotScreen:
 		screen.addPanel( "MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
 
-		screen.setText("PlotExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("PlotExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 
 		iX = 10
 		iY = 50
@@ -95,8 +95,8 @@ class WBPlotScreen:
 		if pPlot.isCity():
 			pCity = pPlot.getPlotCity()
 			sText += " (" + pCity.getName() + ")"
-		screen.setLabel("PlotScreenHeader", "Background", "<font=4b>" + sText + "</font>", 1<<2, screen.getXResolution()/2, 20, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		sText = u"<font=3b>%s ID: %d, %s: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_PLOT", ()), iIndex, CyTranslator().getText("TXT_KEY_WB_AREA_ID", ()), pPlot.getArea())
+		screen.setLabel("PlotScreenHeader", "Background", "<font=4b>" + sText, 1<<2, screen.getXResolution()/2, 20, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		sText = u"<font=3b>%s ID: %d, %s: %d</font>" %(CyTranslator().getText("TXT_WORD_PLOT", ()), iIndex, CyTranslator().getText("TXT_KEY_WB_AREA_ID", ()), pPlot.getArea())
 		screen.setLabel("PlotScreenHeaderB", "Background", "<font=4b>" + sText + "</font>", 1<<2, screen.getXResolution()/2, 50, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		sText = "<font=3b>%s, X: %d, Y: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_LATITUDE",(pPlot.getLatitude(),)), pPlot.getX(), pPlot.getY())
 		screen.setLabel("PlotLocation", "Background", sText, 1<<2, screen.getXResolution()/2, 70, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
@@ -195,7 +195,7 @@ class WBPlotScreen:
 				iLeader = pPlayerX.getLeaderType()
 				screen.setTableText("WBSigns", 0, iRow, "", GC.getCivilizationInfo(iCivilization).getButton(), WidgetTypes.WIDGET_PYTHON, 7872, iPlayerX * 10000 + iCivilization, 1<<0 )
 				screen.setTableText("WBSigns", 1, iRow, "", GC.getLeaderHeadInfo(iLeader).getButton(), WidgetTypes.WIDGET_PYTHON, 7876, iPlayerX * 10000 + iLeader, 1<<0 )
-				sText = "<font=3>" + CvScreensInterface.worldBuilderScreen.addComma(pPlot.getCulture(iPlayerX)) + CyTranslator().getText("[ICON_CULTURE]", ()) + "</font>"
+				sText = "<font=3>" + self.WB.addComma(pPlot.getCulture(iPlayerX)) + CyTranslator().getText("[ICON_CULTURE]", ()) + "</font>"
 				screen.setTableText("WBSigns", 2, iRow, sText, "", WidgetTypes.WIDGET_GENERAL, -1, -1, 1<<1)
 				iIndex = lSigns[iPlayerX]
 				sText = ""
@@ -512,24 +512,24 @@ class WBPlotScreen:
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			iPlayer = pPlot.getOwner()
 			if iIndex == 1:
-				WBEventScreen.WBEventScreen().interfaceScreen(pPlot)
+				WBEventScreen.WBEventScreen(self.WB).interfaceScreen(pPlot)
 			elif iIndex == 2:
-				WBPlayerScreen.WBPlayerScreen().interfaceScreen(iPlayer)
+				WBPlayerScreen.WBPlayerScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 3:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(pPlot.getTeam())
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(pPlot.getTeam())
 			elif iIndex == 4:
 				if pPlot.isCity():
-					WBCityEditScreen.WBCityEditScreen(CvScreensInterface.worldBuilderScreen).interfaceScreen(pPlot.getPlotCity())
+					WBCityEditScreen.WBCityEditScreen(self.WB).interfaceScreen(pPlot.getPlotCity())
 			elif iIndex == 5:
 				pUnit = pPlot.getUnit(0)
 				if pUnit:
-					WBUnitScreen.WBUnitScreen(CvScreensInterface.worldBuilderScreen).interfaceScreen(pUnit)
+					WBUnitScreen.WBUnitScreen(self.WB).interfaceScreen(pUnit)
 			elif iIndex == 6:
-				WBPlayerUnits.WBPlayerUnits().interfaceScreen(iPlayer)
+				WBPlayerUnits.WBPlayerUnits(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 11:
 				if iPlayer == -1:
 					iPlayer = CyGame().getActivePlayer()
-				WBInfoScreen.WBInfoScreen().interfaceScreen(iPlayer)
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(iPlayer)
 
 		elif inputClass.getFunctionName() == "NextPlotUpButton":
 			pNewPlot = CyMap().plot(pPlot.getX(), pPlot.getY() + 1)
@@ -622,8 +622,7 @@ class WBPlotScreen:
 			if iEditType == 0:
 				pPlot.setPlotType(PlotTypes(inputClass.getData()), True, True)
 			elif iEditType == 1:
-				for i in xrange(CyMap().numPlots()):
-					pLoopPlot = CyMap().plotByIndex(i)
+				for pLoopPlot in CyMap().plots():
 					if pLoopPlot.isNone(): continue
 					if pLoopPlot.getArea() == pPlot.getArea():
 						pLoopPlot.setPlotType(PlotTypes(inputClass.getData()), True, True)
@@ -636,8 +635,7 @@ class WBPlotScreen:
 			if iEditType == 0:
 				pPlot.setTerrainType(iTerrain, True, True)
 			else:
-				for i in xrange(CyMap().numPlots()):
-					pLoopPlot = CyMap().plotByIndex(i)
+				for pLoopPlot in CyMap().plots():
 					if pLoopPlot.isNone(): continue
 					if iEditType == 1:
 						if pLoopPlot.getArea() == pPlot.getArea():
@@ -659,8 +657,7 @@ class WBPlotScreen:
 				else:
 					pPlot.setBonusType(-1)
 			else:
-				for i in xrange(CyMap().numPlots()):
-					pLoopPlot = CyMap().plotByIndex(i)
+				for pLoopPlot in CyMap().plots():
 					if pLoopPlot.isNone(): continue
 					if iEditType == 1 and pLoopPlot.getArea() != pPlot.getArea(): continue
 					iOld = pLoopPlot.getBonusType(-1)
@@ -682,8 +679,7 @@ class WBPlotScreen:
 				else:
 					pPlot.setImprovementType(-1)
 			else:
-				for i in xrange(CyMap().numPlots()):
-					pLoopPlot = CyMap().plotByIndex(i)
+				for pLoopPlot in CyMap().plots():
 					if pLoopPlot.isNone(): continue
 					if iEditType == 1 and pLoopPlot.getArea() != pPlot.getArea(): continue
 					if bAdd:
@@ -695,9 +691,9 @@ class WBPlotScreen:
 
 		elif inputClass.getFunctionName().find("UpgradeTime") > -1:
 			if inputClass.getData1() == 1030:
-				pPlot.changeUpgradeProgress(- iChange)
+				pPlot.changeImprovementUpgradeProgress(- iChange)
 			elif inputClass.getData1() == 1031:
-				pPlot.changeUpgradeProgress(min(iChange, pPlot.getUpgradeTimeLeft(pPlot.getImprovementType(), pPlot.getOwner()) - 1))
+				pPlot.changeImprovementUpgradeProgress(min(iChange, pPlot.getUpgradeTimeLeft(pPlot.getImprovementType(), pPlot.getOwner()) - 1))
 			self.placeImprovements()
 
 		elif inputClass.getFunctionName() == "WBPlotFeature":
@@ -712,8 +708,7 @@ class WBPlotScreen:
 				else:
 					pPlot.setFeatureType(-1, 0)
 			else:
-				for i in xrange(CyMap().numPlots()):
-					pLoopPlot = CyMap().plotByIndex(i)
+				for pLoopPlot in CyMap().plots():
 					if pLoopPlot.isNone(): continue
 					if iEditType == 1 and pLoopPlot.getArea() != pPlot.getArea(): continue
 					iOldFeature = pLoopPlot.getFeatureType()
@@ -736,8 +731,7 @@ class WBPlotScreen:
 				else:
 					pPlot.setRouteType(-1)
 			else:
-				for i in xrange(CyMap().numPlots()):
-					pLoopPlot = CyMap().plotByIndex(i)
+				for pLoopPlot in CyMap().plots():
 					if pLoopPlot.isNone(): continue
 					if bSensibility:
 						if pLoopPlot.isImpassable(): continue

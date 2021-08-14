@@ -5,14 +5,12 @@
 #ifndef CIV4_DLL_BUTTON_POPUP_H
 #define CIV4_DLL_BUTTON_POPUP_H
 
-//#include "CvEnums.h"
-#include "CvPopupInfo.h"
-#include "CvPopupReturn.h"
-
 class CvPopup;
+class CvPopupInfo;
+class PopupReturn;
+
 class CvDLLButtonPopup
 {
-
 public:
 	CvDLLButtonPopup();
 	virtual ~CvDLLButtonPopup();
@@ -74,7 +72,7 @@ private:
 	bool launchNameListPopup(CvPopup* pPopup, CvPopupInfo &info);
 	// ls612: Added City Go-To popup.
 	bool launchGoToCityPopup(CvPopup* pPopup, CvPopupInfo &info);
-	
+
 /************************************************************************************************/
 /* Afforess	                  Start		 09/19/10                                               */
 /*                                                                                              */

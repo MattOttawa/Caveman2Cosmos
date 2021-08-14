@@ -10,9 +10,7 @@ import WBPlayerUnits
 import WBReligionScreen
 import WBCorporationScreen
 import WBInfoScreen
-import CvWorldBuilderScreen
-import CvScreensInterface
-import CvEventManager
+import WorldBuilder
 
 GC = CyGlobalContext()
 
@@ -24,7 +22,8 @@ bApplyAll = False
 
 class WBBuildingScreen:
 
-	def __init__(self):
+	def __init__(self, WB):
+		self.WB = WB
 		self.iTable_Y = 80
 		self.lCities = []
 		import CvEventInterface
@@ -47,7 +46,7 @@ class WBBuildingScreen:
 		sText = CyTranslator().getText("[COLOR_SELECTED_TEXT]", ()) + "<font=3b>" + CyTranslator().getText("TXT_KEY_WB_GRANT_AVAILABLE", ()) + "</color></font>"
 		screen.setText("BuildingAvailable", "Background", sText, 1<<2, screen.getXResolution() * 5/8 - 10, screen.getYResolution()/2 + 30, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		screen.setText("WonderAvailable", "Background", sText, 1<<2, screen.getXResolution() * 5/8 - 10, 50, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		screen.setText("WBBuildingExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("WBBuildingExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 
 		iWidth = screen.getXResolution()/4 - 40
 
@@ -103,14 +102,12 @@ class WBBuildingScreen:
 			pPlayerX = GC.getPlayer(iPlayerX)
 			if iOwnerType == 1 and iPlayerX != iPlayer: continue
 			if iOwnerType == 2 and pPlayerX.getTeam() != pCity.getTeam(): continue
-			(loopCity, iter) = pPlayerX.firstCity(False)
-			while(loopCity):
+			for loopCity in pPlayerX.cities():
 				if iPlotType == 2 or (iPlotType == 1 and loopCity.plot().getArea() == pCity.plot().getArea()):
 					sColor = CyTranslator().getText("[COLOR_WARNING_TEXT]", ())
 					if loopCity.getID() == pCity.getID() and iPlayerX == iPlayer:
 						sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
 					self.lCities.append([loopCity, iPlayerX, sColor])
-				(loopCity, iter) = pPlayerX.nextCity(iter, False)
 		self.placeCityTable()
 
 	def placeCityTable(self):
@@ -179,7 +176,7 @@ class WBBuildingScreen:
 			sColor = CyTranslator().getText("[COLOR_WARNING_TEXT]", ())
 			if pCity.getNumRealBuilding(item[1]):
 				sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
-			elif pCity.isHasBuilding(item[1]):
+			elif pCity.getNumRealBuilding(item[1]):
 				sColor = CyTranslator().getText("[COLOR_YELLOW]", ())
 			screen.setTableText("WBBuilding", iColumn, iRow, "<font=3>" + sColor + item[0] + "</font></color>", ItemInfo.getButton(), WidgetTypes.WIDGET_HELP_BUILDING, item[1], 1, 1<<0 )
 
@@ -200,7 +197,7 @@ class WBBuildingScreen:
 		iHeight = iMaxRows * 24 + 2
 		screen.addTableControlGFC("WBWonders", nColumns, screen.getXResolution()/4, self.iTable_Y, iWidth, iHeight, False, False, 24, 24, TableStyles.TABLE_STYLE_STANDARD )
 		for i in xrange(nColumns):
-			screen.setTableColumnHeader( "WBWonders", i, "", iWidth/nColumns)		
+			screen.setTableColumnHeader( "WBWonders", i, "", iWidth/nColumns)
 
 		nRows = (len(lWonders) + nColumns - 1) / nColumns
 		for i in xrange(nRows):
@@ -214,7 +211,7 @@ class WBBuildingScreen:
 			sColor = CyTranslator().getText("[COLOR_WARNING_TEXT]", ())
 			if pCity.getNumRealBuilding(item[1]):
 				sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
-			elif pCity.isHasBuilding(item[1]):
+			elif pCity.getNumRealBuilding(item[1]):
 				sColor = CyTranslator().getText("[COLOR_YELLOW]", ())
 			screen.setTableText("WBWonders", iColumn, iRow, "<font=3>" + sColor + item[0] + "</font></color>", ItemInfo.getButton(), WidgetTypes.WIDGET_HELP_BUILDING, item[1], 1, 1<<0 )
 
@@ -229,25 +226,25 @@ class WBBuildingScreen:
 		if inputClass.getFunctionName() == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 0:
-				WBCityEditScreen.WBCityEditScreen(CvScreensInterface.worldBuilderScreen).interfaceScreen(pCity)
+				WBCityEditScreen.WBCityEditScreen(self.WB).interfaceScreen(pCity)
 			elif iIndex == 1:
-				WBCityDataScreen.WBCityDataScreen().interfaceScreen(pCity)
+				WBCityDataScreen.WBCityDataScreen(self.WB).interfaceScreen(pCity)
 			elif iIndex == 3:
-				WBPlayerScreen.WBPlayerScreen().interfaceScreen(iPlayer)
+				WBPlayerScreen.WBPlayerScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 4:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(pCity.getTeam())
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(pCity.getTeam())
 			elif iIndex == 5:
-				WBPlayerUnits.WBPlayerUnits().interfaceScreen(iPlayer)
+				WBPlayerUnits.WBPlayerUnits(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 6:
-				WBPlotScreen.WBPlotScreen().interfaceScreen(pCity.plot())
+				WBPlotScreen.WBPlotScreen(self.WB).interfaceScreen(pCity.plot())
 			elif iIndex == 7:
-				WBEventScreen.WBEventScreen().interfaceScreen(pCity.plot())
+				WBEventScreen.WBEventScreen(self.WB).interfaceScreen(pCity.plot())
 			elif iIndex == 8:
-				WBReligionScreen.WBReligionScreen().interfaceScreen(iPlayer)
+				WBReligionScreen.WBReligionScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 9:
-				WBCorporationScreen.WBCorporationScreen().interfaceScreen(iPlayer)
+				WBCorporationScreen.WBCorporationScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 11:
-				WBInfoScreen.WBInfoScreen().interfaceScreen(iPlayer)
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(iPlayer)
 
 		elif inputClass.getFunctionName() == "OwnerType":
 			iOwnerType = screen.getPullDownData("OwnerType", screen.getSelectedPullDownID("OwnerType"))
@@ -345,8 +342,7 @@ class WBBuildingScreen:
 		info = GC.getBuildingInfo(item)
 		iType = iChangeType or bAvailable
 		if bApplyAll and not bWonder:
-			cityX, i = pPlayerX.firstCity(False)
-			while cityX:
+			for cityX in pPlayerX.cities():
 				bModify = True
 				if info.isWater() and not cityX.isCoastal(info.getMinAreaSize()): bModify = False
 				if info.isRiver() and not cityX.plot().isRiver(): bModify = False
@@ -359,7 +355,6 @@ class WBBuildingScreen:
 					if iChangeType == 2 and not bAvailable:
 						iType = not cityX.getNumRealBuilding(item)
 					self.doEffects(cityX, item, iType)
-				cityX, i = pPlayerX.nextCity(i, False)
 		else:
 			if bAvailable:
 				if info.isCapital(): return
@@ -376,7 +371,7 @@ class WBBuildingScreen:
 
 	def doEffects(self, pCity, item, bAdd):
 		bEffects = False
-		if bAdd and CvWorldBuilderScreen.bPython and pCity.getNumRealBuilding(item) == 0:
+		if bAdd and WorldBuilder.bPython and pCity.getNumRealBuilding(item) == 0:
 			bEffects = True
 		pCity.setNumRealBuilding(item, bAdd)
 		if bEffects:

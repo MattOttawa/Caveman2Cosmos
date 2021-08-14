@@ -7,6 +7,8 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
 #include "CvPlayerAI.h"
 
 CvUnitList::CvUnitList(CvPlayer* pPlayer, CvCity* pCity) :
@@ -108,8 +110,7 @@ int CvUnitList::getNumInGroup(int iGroup)
 	{
 		doGroup();
 	}
-	FAssertMsg(iGroup < (int) m_aaiGroupedUnitList.size(), "Index out of bounds");
-	FAssertMsg(iGroup > -1, "Index out of bounds");
+	FASSERT_BOUNDS(0, (int)m_aaiGroupedUnitList.size(), iGroup)
 	return m_aaiGroupedUnitList[iGroup]->size();
 }
 
@@ -119,10 +120,8 @@ UnitTypes CvUnitList::getUnitType(int iGroup, int iPos)
 	{
 		doSort();
 	}
-	FAssertMsg(iGroup < getGroupNum(), "Index out of bounds");
-	FAssertMsg(iGroup > -1, "Index out of bounds");
-	FAssertMsg(iPos < getNumInGroup(iGroup), "Index out of bounds");
-	FAssertMsg(iPos > -1, "Index out of bounds");
+	FASSERT_BOUNDS(0, getGroupNum(), iGroup)
+	FASSERT_BOUNDS(0, getNumInGroup(iGroup), iPos)
 	return (*m_aaiGroupedUnitList[iGroup])[iPos];
 }
 
@@ -154,7 +153,7 @@ void CvUnitList::doGroup()
 
 	for (int i=0; i < iSize; i++)
 		mmap_Units.insert(std::pair<int,UnitTypes>(m_UnitGrouping.getGroup(m_aiUnitList[i]), m_aiUnitList[i]));
-	
+
 	int index = -1;
 	int iLastKey = MIN_INT;
 	for (std::multimap<int, UnitTypes>::iterator it = mmap_Units.begin(); it != mmap_Units.end(); ++it)
@@ -209,4 +208,4 @@ UnitTypes CvUnitList::getSelectedUnit() const
 	return m_eSelectedUnit;
 }
 
-	
+

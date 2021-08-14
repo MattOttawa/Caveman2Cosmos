@@ -10,8 +10,6 @@ import WBPlayerUnits
 import WBReligionScreen
 import WBCorporationScreen
 import WBInfoScreen
-import CvWorldBuilderScreen
-import CvScreensInterface
 import Popup
 GC = CyGlobalContext()
 
@@ -21,8 +19,8 @@ iPlotType = 2
 
 class WBCityEditScreen:
 
-	def __init__(self, main):
-		self.top = main
+	def __init__(self, WB):
+		self.WB = WB
 		self.lCities = []
 
 	def interfaceScreen(self, pCityX):
@@ -39,10 +37,10 @@ class WBCityEditScreen:
 		screen.addPanel( "MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
 
-		screen.setText("WBCityEditExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("WBCityEditExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 		sText = "<font=3b>%s, X: %d, Y: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_LATITUDE",(pCity.plot().getLatitude(),)), pCity.getX(), pCity.getY())
 
-		sText = u"<font=3b>%s ID: %d, %s: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_CITY", ()), pCity.getID(), CyTranslator().getText("TXT_KEY_WB_AREA_ID", ()), pPlot.getArea())
+		sText = u"<font=3b>%s ID: %d, %s: %d</font>" %(CyTranslator().getText("TXT_WORD_CITY", ()), pCity.getID(), CyTranslator().getText("TXT_KEY_WB_AREA_ID", ()), pPlot.getArea())
 		screen.setLabel("PlotScreenHeaderB", "Background", "<font=4b>" + sText + "</font>", 1<<2, screen.getXResolution()/2, 50, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		sText = "<font=3b>%s, X: %d, Y: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_LATITUDE",(pPlot.getLatitude(),)), pPlot.getX(), pPlot.getY())
 		screen.setLabel("PlotLocation", "Background", sText, 1<<2, screen.getXResolution()/2, 70, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
@@ -114,14 +112,12 @@ class WBCityEditScreen:
 			pPlayerX = GC.getPlayer(iPlayerX)
 			if iOwnerType == 1 and iPlayerX != iPlayer: continue
 			if iOwnerType == 2 and pPlayerX.getTeam() != pCity.getTeam(): continue
-			city, i = pPlayerX.firstCity(False)
-			while city:
+			for city in pPlayerX.cities():
 				if iPlotType == 2 or (iPlotType == 1 and city.plot().getArea() == pCity.plot().getArea()):
 					sColor = CyTranslator().getText("[COLOR_WARNING_TEXT]", ())
 					if city.getID() == pCity.getID() and iPlayerX == iPlayer:
 						sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
 					self.lCities.append([city, iPlayerX, sColor])
-				city, i = pPlayerX.nextCity(i, False)
 		self.placeCityTable()
 
 	def placeCityTable(self):
@@ -167,22 +163,13 @@ class WBCityEditScreen:
 		iY += 30
 		screen.setButtonGFC("CityChangeCulturePlus", "", "", iX, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1030, -1, ButtonStyles.BUTTON_STYLE_CITY_PLUS)
 		screen.setButtonGFC("CityChangeCultureMinus", "", "", iX + 25, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1031, -1, ButtonStyles.BUTTON_STYLE_CITY_MINUS)
-		sText = u"<font=3>%s %s/%s%c</font>" %(CyTranslator().getText("TXT_KEY_WB_CULTURE",()), CvScreensInterface.worldBuilderScreen.addComma(pCity.getCulture(iPlayer)), CvScreensInterface.worldBuilderScreen.addComma(pCity.getCultureThreshold()), GC.getCommerceInfo(CommerceTypes.COMMERCE_CULTURE).getChar())
+		sText = u"<font=3>%s %s/%s%c</font>" %(CyTranslator().getText("TXT_KEY_WB_CULTURE",()), self.WB.addComma(pCity.getCulture(iPlayer)), self.WB.addComma(pCity.getCultureThreshold()), GC.getCommerceInfo(CommerceTypes.COMMERCE_CULTURE).getChar())
 		screen.setLabel("CityChangeCultureText", "Background", sText, 1<<0, iX + 50, iY + 1, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 		iY += 30
-		for i in xrange(YieldTypes.NUM_YIELD_TYPES):
-			iYield = pCity.getBaseYieldRate(YieldTypes(i))
-			screen.setButtonGFC("BaseYieldPlus" + str(i), "", "", iX, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1030, i, ButtonStyles.BUTTON_STYLE_CITY_PLUS)
-			screen.setButtonGFC("BaseYieldMinus" + str(i), "", "", iX + 25, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1031, i, ButtonStyles.BUTTON_STYLE_CITY_MINUS)
-			sText = CyTranslator().getText("TXT_KEY_WB_BASE_YIELD", (GC.getYieldInfo(i).getDescription(), iYield,))
-			sText = u"%s%c" %(sText, GC.getYieldInfo(i).getChar())
-			screen.setLabel("BaseYieldText" + str(i), "Background", "<font=3>" + sText + "</font>", 1<<0, iX + 50, iY + 1, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-			iY += 30
-
 		screen.setButtonGFC("CityFoodPlus", "", "", iX, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1030, -1, ButtonStyles.BUTTON_STYLE_CITY_PLUS)
 		screen.setButtonGFC("CityFoodMinus", "", "", iX + 25, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1031, -1, ButtonStyles.BUTTON_STYLE_CITY_MINUS)
-		sText = u"<font=3>%s: %d/%d%c</font>" %(CyTranslator().getText("TXT_KEY_CONCEPT_FOOD",()), pCity.getFood(), pCity.growthThreshold(), GC.getYieldInfo(YieldTypes.YIELD_FOOD).getChar())
+		sText = u"<font=3>%s: %d/%d%c</font>" %(CyTranslator().getText("TXT_WORD_FOOD",()), pCity.getFood(), pCity.growthThreshold(), GC.getYieldInfo(YieldTypes.YIELD_FOOD).getChar())
 		screen.setLabel("CityFoodText", "Background", sText, 1<<0, iX + 50, iY + 1, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 		iY += 30
@@ -246,7 +233,7 @@ class WBCityEditScreen:
 		iY += 30
 		screen.setButtonGFC("CityEspionageHealthPlus", "", "", iX, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1030, -1, ButtonStyles.BUTTON_STYLE_CITY_PLUS)
 		screen.setButtonGFC("CityEspionageHealthMinus", "", "", iX + 25, iY, 24, 24, WidgetTypes.WIDGET_PYTHON, 1031, -1, ButtonStyles.BUTTON_STYLE_CITY_MINUS)
-		sText = u"<font=3>%s %s: %d</font>" %(CyTranslator().getText("TXT_KEY_ESPIONAGE_CULTURE",()), CyTranslator().getText("[ICON_UNHEALTHY]", ()), pCity.getEspionageHealthCounter())
+		sText = u"<font=3>%s %s: %d</font>" %(CyTranslator().getText("TXT_WORD_ESPIONAGE",()), CyTranslator().getText("[ICON_UNHEALTHY]", ()), pCity.getEspionageHealthCounter())
 		screen.setLabel("CityEspionageHealthText", "Background", sText, 1<<0, iX + 50, iY + 1, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 		iY += 30
@@ -344,7 +331,7 @@ class WBCityEditScreen:
 				iRow += 1
 
 		for i in xrange(GC.getNumProcessInfos()):
-			if pCity.canMaintain(i, True):
+			if pCity.canMaintain(i):
 				if iRow > iMaxRow:
 					screen.appendTableRow("WBCityProduction")
 					iMaxRow = iRow
@@ -367,25 +354,25 @@ class WBCityEditScreen:
 		elif inputClass.getFunctionName() == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 1:
-				WBCityDataScreen.WBCityDataScreen().interfaceScreen(pCity)
+				WBCityDataScreen.WBCityDataScreen(self.WB).interfaceScreen(pCity)
 			elif iIndex == 2:
-				WBBuildingScreen.WBBuildingScreen().interfaceScreen(pCity)
+				WBBuildingScreen.WBBuildingScreen(self.WB).interfaceScreen(pCity)
 			elif iIndex == 3:
-				WBPlayerScreen.WBPlayerScreen().interfaceScreen(iPlayer)
+				WBPlayerScreen.WBPlayerScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 4:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(pCity.getTeam())
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(pCity.getTeam())
 			elif iIndex == 5:
-				WBPlayerUnits.WBPlayerUnits().interfaceScreen(iPlayer)
+				WBPlayerUnits.WBPlayerUnits(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 6:
-				WBPlotScreen.WBPlotScreen().interfaceScreen(pCity.plot())
+				WBPlotScreen.WBPlotScreen(self.WB).interfaceScreen(pCity.plot())
 			elif iIndex == 7:
-				WBEventScreen.WBEventScreen().interfaceScreen(pCity.plot())
+				WBEventScreen.WBEventScreen(self.WB).interfaceScreen(pCity.plot())
 			elif iIndex == 8:
-				WBReligionScreen.WBReligionScreen().interfaceScreen(iPlayer)
+				WBReligionScreen.WBReligionScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 9:
-				WBCorporationScreen.WBCorporationScreen().interfaceScreen(iPlayer)
+				WBCorporationScreen.WBCorporationScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 11:
-				WBInfoScreen.WBInfoScreen().interfaceScreen(iPlayer)
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(iPlayer)
 
 		elif inputClass.getFunctionName() == "OwnerType":
 			iOwnerType = screen.getPullDownData("OwnerType", screen.getSelectedPullDownID("OwnerType"))
@@ -410,14 +397,6 @@ class WBCityEditScreen:
 			GC.getPlayer(screen.getPullDownData("CityOwner", iIndex)).acquireCity(pCity, False, True)
 			self.interfaceScreen(pPlot.getPlotCity())
 
-		elif inputClass.getFunctionName().find("BaseYield") > -1:
-			iYield = YieldTypes(inputClass.getData2())
-			if inputClass.getData1() == 1030:
-				pCity.changeBaseYieldRate(iYield, iChange)
-			elif inputClass.getData1() == 1031:
-				pCity.changeBaseYieldRate(iYield, - min(iChange, pCity.getBaseYieldRate(iYield)))
-			self.placeStats()
-
 		elif inputClass.getFunctionName().find("CityPopulation") > -1:
 			if inputClass.getData1() == 1030:
 				pCity.changePopulation(iChange)
@@ -441,7 +420,7 @@ class WBCityEditScreen:
 
 		elif inputClass.getFunctionName().find("CityTradeRoute") > -1:
 			if inputClass.getData1() == 1030:
-				pCity.changeExtraTradeRoutes(min(iChange, GC.getDefineINT("MAX_TRADE_ROUTES") - pCity.getTradeRoutes()))
+				pCity.changeExtraTradeRoutes(min(iChange, pCity.getMaxTradeRoutes() - pCity.getTradeRoutes()))
 			elif inputClass.getData1() == 1031:
 				pCity.changeExtraTradeRoutes(- min(iChange, pCity.getTradeRoutes()))
 			self.placeStats()
@@ -549,26 +528,24 @@ class WBCityEditScreen:
 			if iIndex == 5:
 				pCity.kill()
 			else:
-				self.top.iMoveCity = pCity.getID()
-				self.top.iCurrentPlayer = iPlayer
+				self.WB.iMoveCity = pCity.getID()
+				self.WB.iCurrentPlayer = iPlayer
 				if iIndex == 1:
-					self.top.iPlayerAddMode = "MoveCity"
+					self.WB.iPlayerAddMode = "MoveCity"
 				elif iIndex == 2:
-					self.top.iPlayerAddMode = "DuplicateCity"
+					self.WB.iPlayerAddMode = "DuplicateCity"
 				elif iIndex == 3:
-					self.top.iPlayerAddMode = "MoveCityPlus"
-					self.top.lMoveUnit = []
-					for i in xrange(pPlot.getNumUnits()):
-						pUnitX = pPlot.getUnit(i)
+					self.WB.iPlayerAddMode = "MoveCityPlus"
+					self.WB.lMoveUnit = []
+					for pUnitX in pPlot.units():
 						if pUnitX.getOwner() == iPlayer:
-							self.top.lMoveUnit.append([iPlayer, pUnitX.getID()])
+							self.WB.lMoveUnit.append([iPlayer, pUnitX.getID()])
 				elif iIndex == 4:
-					self.top.iPlayerAddMode = "DuplicateCityPlus"
-					self.top.lMoveUnit = []
-					for i in xrange(pPlot.getNumUnits()):
-						pUnitX = pPlot.getUnit(i)
+					self.WB.iPlayerAddMode = "DuplicateCityPlus"
+					self.WB.lMoveUnit = []
+					for pUnitX in pPlot.units():
 						if pUnitX.getOwner() == iPlayer:
-							self.top.lMoveUnit.append([iPlayer, pUnitX.getID()])
+							self.WB.lMoveUnit.append([iPlayer, pUnitX.getID()])
 			screen.hideScreen()
 		return 1
 

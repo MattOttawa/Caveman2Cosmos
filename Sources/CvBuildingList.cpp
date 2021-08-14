@@ -7,9 +7,13 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvBuildingList.h"
+#include "CvBuildingSort.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
 #include "CvPlayerAI.h"
 
-CvBuildingList::CvBuildingList(CvPlayer* pPlayer, CvCity* pCity) 
+CvBuildingList::CvBuildingList(CvPlayer* pPlayer, CvCity* pCity)
 	: m_bFilteringValid(false)
 	, m_bGroupingValid(false)
 	, m_bSortingValid(false)
@@ -106,8 +110,7 @@ int CvBuildingList::getNumInGroup(int iGroup)
 	{
 		doGroup();
 	}
-	FAssertMsg(iGroup < (int) m_aaiGroupedBuildingList.size(), "Index out of bounds");
-	FAssertMsg(iGroup > -1, "Index out of bounds");
+	FASSERT_BOUNDS(0, (int)m_aaiGroupedBuildingList.size(), iGroup)
 	return m_aaiGroupedBuildingList[iGroup].size();
 }
 
@@ -117,10 +120,8 @@ BuildingTypes CvBuildingList::getBuildingType(int iGroup, int iPos)
 	{
 		doSort();
 	}
-	FAssertMsg(iGroup < getGroupNum(), "Index out of bounds");
-	FAssertMsg(iGroup > -1, "Index out of bounds");
-	FAssertMsg(iPos < getNumInGroup(iGroup), "Index out of bounds");
-	FAssertMsg(iPos > -1, "Index out of bounds");
+	FASSERT_BOUNDS(0, getGroupNum(), iGroup)
+	FASSERT_BOUNDS(0, getNumInGroup(iGroup), iPos)
 	return m_aaiGroupedBuildingList[iGroup][iPos];
 }
 
@@ -150,7 +151,7 @@ void CvBuildingList::doGroup()
 	{
 		mmap_Buildings.insert(std::pair<int, BuildingTypes>(m_BuildingGrouping.getGroup(m_aiBuildingList[i]), m_aiBuildingList[i]));
 	}
-	
+
 	int iLastKey = MIN_INT;
 	for (std::multimap<int, BuildingTypes>::iterator it = mmap_Buildings.begin(); it != mmap_Buildings.end(); ++it)
 	{

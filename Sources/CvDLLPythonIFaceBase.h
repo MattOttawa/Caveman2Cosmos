@@ -38,7 +38,7 @@ public:
 	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, long* result) = 0;
 	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, CvString* result) = 0;
 	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, CvWString* result) = 0;
-	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, std::vector<byte>* pList) = 0;
+	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, std::vector<uint8_t>* pList) = 0;
 	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, std::vector<int> *pIntList) = 0;
 	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, int* pIntList, int* iListSize) = 0;
 	virtual bool callFunction(const char* moduleName, const char* fxnName, void* fxnArg, std::vector<float> *pFloatList) = 0;
@@ -49,16 +49,12 @@ public:
 };
 
 
-/* THESE MACROS ARE DEPRECATED, use CvPython::call and CyArgsList() << operation like so:
+/* Use CvPython::call and CyArgsList() << operation like so:
 
 std::vector<int> arr = CvPython::call(PYGameModule, "getOrderArray", CyArgsList() << arg1 << arg2 << CyArrayArg(enabled, 4));
 or
 std::vector<int> arr = CvPython::call(PYGameModule, "getOrderArray", arg1, arg2, CyArrayArg(enabled, 4));
 */
-
-#define PYTHON_CALL_FUNCTION2(_callingfn_, _module_, _function_)					gDLL->getPythonIFace()->callFunction(_module_, _function_)
-#define PYTHON_CALL_FUNCTION(_callingfn_, _module_, _function_, _args_)				gDLL->getPythonIFace()->callFunction(_module_, _function_, _args_)
-#define PYTHON_CALL_FUNCTION4(_callingfn_, _module_, _function_, _args_, _result_)	gDLL->getPythonIFace()->callFunction(_module_, _function_, _args_, _result_)
 
 template <typename T>
 PyObject* CvDLLPythonIFaceBase::makePythonObject(T* pObj)
@@ -69,7 +65,7 @@ PyObject* CvDLLPythonIFaceBase::makePythonObject(T* pObj)
 	boost::python::object bpo(pObj);
 	PyObject* pyobj = bpo.ptr();
 	Py_INCREF(pyobj);
-	assert(pyobj->ob_refcnt==2);
+	FAssert(pyobj->ob_refcnt==2);
 	return pyobj;	// decrefs pyobj when bpo goes out of scope
 }
 
@@ -93,7 +89,7 @@ void CvDLLPythonIFaceBase::setSeqFromArray(const T* aSrc, int size, PyObject* ds
 #ifdef FASSERT_ENABLE
 		int ret=
 #endif
-			PySequence_SetItem(dst, i, x); 
+			PySequence_SetItem(dst, i, x);
 		FAssertMsg(ret!=-1, "PySequence_SetItem failed");
 		Py_DECREF(x);
 	}
@@ -110,7 +106,7 @@ void CvDLLPythonIFaceBase::setSeqFromArray(const T* aSrc, int size, PyObject* ds
 }
 
 //
-// static 
+// static
 // convert python list to array
 // allocates array
 //
@@ -135,7 +131,7 @@ int CvDLLPythonIFaceBase::putSeqInArray(PyObject* src, T** aDst)
 }
 
 //
-// static 
+// static
 // convert python list to array
 // allocates array
 //
@@ -160,7 +156,7 @@ int CvDLLPythonIFaceBase::putFloatSeqInArray(PyObject* src, T** aDst)
 }
 
 //
-// static 
+// static
 // convert python list to array
 // allocates array
 //

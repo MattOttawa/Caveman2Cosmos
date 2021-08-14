@@ -3,16 +3,19 @@
 //
 //  FILE:    CvInfoWater.cpp
 //
-//  AUTHOR:	
-//					
-//					
+//  AUTHOR:
 //
-//  PURPOSE: The base class for all info classes to inherit from.  
+//
+//
+//  PURPOSE: The base class for all info classes to inherit from.
 //
 //------------------------------------------------------------------------------------------------
 //  Copyright (c) 2003 Firaxis Games, Inc. All rights reserved.
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvInfos.h"
+#include "CvInfoWater.h"
+#include "CvXMLLoadUtility.h"
 
 //======================================================================================================
 //					CvWaterPlaneInfo
@@ -25,7 +28,7 @@
 //  PURPOSE :   Default constructor
 //
 //------------------------------------------------------------------------------------------------------
-CvWaterPlaneInfo::CvWaterPlaneInfo() 
+CvWaterPlaneInfo::CvWaterPlaneInfo()
 	: m_fMaterialAlpha(0.0f)
 	, m_BaseTextureScale(0.0f)
 	, m_fURate(0.0f)
@@ -151,26 +154,18 @@ bool CvWaterPlaneInfo::read(CvXMLLoadUtility* pXML)
 			pXML->GetChildXmlValByName( szTextVal, L"TextureFile");
 			m_szTransitionTexture = szTextVal;
 		}
-		
+
 		pXML->MoveToXmlParent();
 	}
 
 	pXML->MoveToXmlParent();
 	return true;
 }
-/************************************************************************************************/
-/* XMLCOPY                                 11/20/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-void CvWaterPlaneInfo::copyNonDefaults(CvWaterPlaneInfo* pClassInfo, CvXMLLoadUtility* pXML)
+
+void CvWaterPlaneInfo::copyNonDefaults(CvWaterPlaneInfo* pClassInfo)
 {
 	// This is a bogus CopyNonDefault. Modders/Users should set the XML completely with all tags
 }
-/************************************************************************************************/
-/* XMLCOPY                                 END                                                  */
-/************************************************************************************************/
-//------------------------------------------------------------------------------------------------------
 
 //======================================================================================================
 //					CvTerrainPlaneInfo
@@ -293,28 +288,21 @@ bool CvTerrainPlaneInfo::read(CvXMLLoadUtility* pXML)
 		m_eFogType = FOG_TYPE_PROJECTED;
 	else
 	{
-		FAssertMsg(false, "[Jason] Unknown fog type.");
+		FErrorMsg("[Jason] Unknown fog type.");
 		m_eFogType = FOG_TYPE_NONE;
 	}
 
 	return true;
 }
-/************************************************************************************************/
-/* XMLCOPY                                 11/20/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-void CvTerrainPlaneInfo::copyNonDefaults(CvTerrainPlaneInfo* pClassInfo, CvXMLLoadUtility* pXML)
+
+void CvTerrainPlaneInfo::copyNonDefaults(CvTerrainPlaneInfo* pClassInfo)
 {
 	bool bDefault = false;
-	int iDefault = 0;
-	int iTextDefault = -1;  //all integers which are TEXT_KEYS in the xml are -1 by default
-	int iAudioDefault = -1;  //all audio is default -1	
 	float fDefault = 0.0f;
 	CvString cDefault = CvString::format("").GetCString();
 	CvWString wDefault = CvWString::format(L"").GetCString();
 
-	CvInfoBase::copyNonDefaults(pClassInfo, pXML);
+	CvInfoBase::copyNonDefaults(pClassInfo);
 
 	if (isVisible() == bDefault) m_bVisible = pClassInfo->isVisible();
 	if (isGroundPlane() == bDefault) m_bGroundPlane = pClassInfo->isGroundPlane();
@@ -334,10 +322,6 @@ void CvTerrainPlaneInfo::copyNonDefaults(CvTerrainPlaneInfo* pClassInfo, CvXMLLo
 		m_eFogType = pClassInfo->getFogType();
 	}
 }
-/************************************************************************************************/
-/* XMLCOPY                                 END                                                  */
-/************************************************************************************************/
-//------------------------------------------------------------------------------------------------------
 
 //======================================================================================================
 //					CvCameraOverlayInfo
@@ -389,7 +373,7 @@ bool CvCameraOverlayInfo::read(CvXMLLoadUtility* pXML)
 		return false;
 
 	pXML->GetChildXmlValByName( &m_bVisible, L"bVisible");
-	
+
 	pXML->GetChildXmlValByName( szTextVal, L"TextureFile");
 	m_szBaseTexture = szTextVal;
 
@@ -400,28 +384,20 @@ bool CvCameraOverlayInfo::read(CvXMLLoadUtility* pXML)
 		m_eCameraOverlayType = CAMERA_OVERLAY_ADDITIVE;
 	else
 	{
-		FAssertMsg(false, "[Jason] Unknown camera overlay type.");
+		FErrorMsg("[Jason] Unknown camera overlay type.");
 		m_eCameraOverlayType = CAMERA_OVERLAY_DECAL;
 	}
 
 	return true;
 }
-/************************************************************************************************/
-/* XMLCOPY                                 11/20/07                                MRGENIE      */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-void CvCameraOverlayInfo::copyNonDefaults(CvCameraOverlayInfo* pClassInfo, CvXMLLoadUtility* pXML)
+
+void CvCameraOverlayInfo::copyNonDefaults(CvCameraOverlayInfo* pClassInfo)
 {
 	bool bDefault = false;
-	int iDefault = 0;
-	int iTextDefault = -1;  //all integers which are TEXT_KEYS in the xml are -1 by default
-	int iAudioDefault = -1;  //all audio is default -1	
-	float fDefault = 0.0f;
 	CvString cDefault = CvString::format("").GetCString();
 	CvWString wDefault = CvWString::format(L"").GetCString();
 
-	CvInfoBase::copyNonDefaults(pClassInfo, pXML);
+	CvInfoBase::copyNonDefaults(pClassInfo);
 
 	if (isVisible() == bDefault) m_bVisible = pClassInfo->isVisible();
 	if (getBaseTexture() == cDefault) m_szBaseTexture = pClassInfo->getBaseTexture();
@@ -429,9 +405,5 @@ void CvCameraOverlayInfo::copyNonDefaults(CvCameraOverlayInfo* pClassInfo, CvXML
 	if ( getCameraOverlayType() == CAMERA_OVERLAY_DECAL )
 	{
 		m_eCameraOverlayType = pClassInfo->getCameraOverlayType();
-	}	
+	}
 }
-/************************************************************************************************/
-/* XMLCOPY                                 END                                                  */
-/************************************************************************************************/
-//------------------------------------------------------------------------------------------------------

@@ -104,7 +104,7 @@ class CityDemolish:
 		iconGold = self.iconGold
 		fGoldMod = 0.09
 		fGoldMod *= GC.getDefineINT("BUILDING_PRODUCTION_PERCENT") / 100.0
-		fFactorGS = self.CvGameSpeedInfo.getConstructPercent() / 100.0
+		fFactorGS = self.CvGameSpeedInfo.getHammerCostPercent() / 100.0
 		fGoldMod *= fFactorGS
 		self.fGoldMod = fGoldMod
 		# Build List
@@ -113,7 +113,7 @@ class CityDemolish:
 		aList = []
 		iSum = 0
 		for iType in xrange(GC.getNumBuildingInfos()):
-			if CyCity.getNumRealBuilding(iType) and not CyTeam.isObsoleteBuilding(iType):
+			if CyCity.getNumRealBuilding(iType) and not CyCity.isFreeBuilding(iType):
 				if isWorldWonder(iType) or isTeamWonder(iType):
 					continue
 				CvBuildingInfo = GC.getBuildingInfo(iType)
@@ -185,11 +185,14 @@ class CityDemolish:
 			X = CyCity.getX()
 			Y = CyCity.getY()
 
+			iCulturePercent = CyCity.calculateCulturePercent(iPlayer)
+			iPopulation = CyCity.getPopulation()
+			iOwnCulturePop = iPopulation * iCulturePercent / 100
+			iForeignPop = iPopulation - iOwnCulturePop
+
 			# Judge
-			UNIT = GC.getInfoTypeForString("UNIT_JUDGE")
-			iBuilding = GC.getInfoTypeForString("BUILDING_COURTHOUSE")
-			if UNIT > -1 and iBuilding > -1 and CyCity.getNumBuilding(iBuilding):
-				CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, UNIT)
+			if CyCity.getNumActiveBuilding(GC.getInfoTypeForString("BUILDING_COURTHOUSE")):
+				CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, GC.getInfoTypeForString("UNIT_JUDGE"))
 
 			# Tribal Guardian
 			iExp = -1
@@ -204,52 +207,73 @@ class CityDemolish:
 						CyMessageControl().sendModNetMessage(902, iPlayer, CyUnit.getID(), 0, 0)
 						break
 
-			# Settler
 			CyTeam = GC.getTeam(CyPlayer.getTeam())
-			NUM_UNIT_AND_TECH_PREREQS = GC.getDefineINT("NUM_UNIT_AND_TECH_PREREQS")
-			NUM_UNIT_PREREQ_OR_BONUSES = GC.getNUM_UNIT_PREREQ_OR_BONUSES()
-			aSettlerList = [
-				GC.getInfoTypeForString("UNIT_AIRSETTLER"),
-				GC.getInfoTypeForString("UNIT_PIONEER"),
-				GC.getInfoTypeForString("UNIT_COLONIST"),
-				GC.getInfoTypeForString("UNIT_SETTLER"),
-				GC.getInfoTypeForString("UNIT_TRIBE"),
-				GC.getInfoTypeForString("UNIT_BAND")
-			]
-			for iUnit in aSettlerList:
-				if iUnit < 0: continue
-				bContinue = False
-				CvUnitInfo = GC.getUnitInfo(iUnit)
-				# Tech Prereq
-				iTech = CvUnitInfo.getPrereqAndTech()
-				if iTech > -1 and not CyTeam.isHasTech(iTech):
-					continue
-				for i in range(NUM_UNIT_AND_TECH_PREREQS):
-					iTech = CvUnitInfo.getPrereqAndTechs(i)
+			# Settler
+			if iOwnCulturePop > 0 or iForeignPop > 2:
+				aSettlerList = [
+					GC.getInfoTypeForString("UNIT_AIRSETTLER"),
+					GC.getInfoTypeForString("UNIT_PIONEER"),
+					GC.getInfoTypeForString("UNIT_COLONIST"),
+					GC.getInfoTypeForString("UNIT_SETTLER"),
+					GC.getInfoTypeForString("UNIT_TRIBE"),
+					GC.getInfoTypeForString("UNIT_BAND")
+				]
+				for iUnit in aSettlerList:
+					if iUnit < 0: continue
+					bContinue = False
+					CvUnitInfo = GC.getUnitInfo(iUnit)
+					# Tech Prereq
+					iTech = CvUnitInfo.getPrereqAndTech()
 					if iTech > -1 and not CyTeam.isHasTech(iTech):
-						bContinue = True
-						break
-				if bContinue: continue
-				# Building Prereq
-				for i in xrange(CvUnitInfo.getNumPrereqAndBuildings()):
-					if not CyCity.getNumBuilding(CvUnitInfo.getPrereqAndBuilding(i)):
 						continue
-				# Bonus Prereq
-				iBonus = CvUnitInfo.getPrereqAndBonus()
-				if iBonus > -1 and not CyCity.getNumBonuses(iBonus):
-					continue
-				for i in range(NUM_UNIT_PREREQ_OR_BONUSES):
-					iBonus = CvUnitInfo.getPrereqOrBonuses(i)
+					for iTech in CvUnitInfo.getPrereqAndTechs():
+						if not CyTeam.isHasTech(iTech):
+							bContinue = True
+							break
+					if bContinue: continue
+					# Building Prereq
+					for i in xrange(CvUnitInfo.getNumPrereqAndBuildings()):
+						if not CyCity.getNumActiveBuilding(CvUnitInfo.getPrereqAndBuilding(i)):
+							continue
+					# Bonus Prereq
+					iBonus = CvUnitInfo.getPrereqAndBonus()
 					if iBonus > -1 and not CyCity.getNumBonuses(iBonus):
-						bContinue = True
-						break
-				if bContinue: continue
-				# Found Valid Settler
-				CyMessageControl().sendModNetMessage(906, iPlayer, iCity, iExp, iUnit)
-				break
+						continue
+					for iBonus in CvUnitInfo.getPrereqOrBonuses():
+						if not CyCity.getNumBonuses(iBonus):
+							bContinue = True
+							break
+					if bContinue: continue
+					# Found Valid Settler
+					CyMessageControl().sendModNetMessage(906, iPlayer, iCity, iExp, iUnit)
+					if iOwnCulturePop:
+						iOwnCulturePop -= 1
+					else: iForeignPop -= 2
+					break
+
+			# Captives
+			if iForeignPop > 0:
+				if iPopulation > 1 or GC.getGame().getSorenRandNum(2, "50%"):
+					iCaptives = (iForeignPop + 1) / 2
+				else: iCaptives = iForeignPop / 2
+
+				if iCaptives > 0:
+					UNIT = GC.getInfoTypeForString("UNIT_CAPTIVE_CIVILIAN")
+					for i in xrange(iCaptives):
+						CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, UNIT)
+					# Attitude Penalty if the dominant city culture is of another player
+					iCulturalOwner = CyCity.findHighestCulture()
+					if iCulturalOwner not in (-1, iPlayer):
+						CyMessageControl().sendModNetMessage(901, iPlayer, iCulturalOwner, 1, 1)
+
+			# Immigrants
+			if iOwnCulturePop > 0:
+				UNIT = GC.getInfoTypeForString("UNIT_IMMIGRANT")
+				for i in xrange(iOwnCulturePop):
+					CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, UNIT)
 
 			# Merchants
-			fModifierGS = self.CvGameSpeedInfo.getTrainPercent() / 100.0
+			fModifierGS = self.CvGameSpeedInfo.getHammerCostPercent() / 100.0
 			aMerchantList = [
 				GC.getInfoTypeForString("UNIT_FREIGHT"),
 				GC.getInfoTypeForString("UNIT_SUPPLY_TRAIN"),
@@ -264,9 +288,8 @@ class CityDemolish:
 				iTech = CvUnitInfo.getPrereqAndTech()
 				if iTech > -1 and not CyTeam.isHasTech(iTech):
 					continue
-				for i in range(NUM_UNIT_AND_TECH_PREREQS):
-					iTech = CvUnitInfo.getPrereqAndTechs(i)
-					if iTech > -1 and not CyTeam.isHasTech(iTech):
+				for iTech in CvUnitInfo.getPrereqAndTechs():
+					if not CyTeam.isHasTech(iTech):
 						bContinue = True
 						break
 				if bContinue: continue
@@ -292,9 +315,8 @@ class CityDemolish:
 				iTech = CvUnitInfo.getPrereqAndTech()
 				if iTech > -1 and not CyTeam.isHasTech(iTech):
 					continue
-				for i in range(NUM_UNIT_AND_TECH_PREREQS):
-					iTech = CvUnitInfo.getPrereqAndTechs(i)
-					if iTech > -1 and not CyTeam.isHasTech(iTech):
+				for iTech in CvUnitInfo.getPrereqAndTechs():
+					if not CyTeam.isHasTech(iTech):
 						bContinue = True
 						break
 				if bContinue: continue
@@ -305,24 +327,7 @@ class CityDemolish:
 					CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, iUnit)
 				break
 
-			# Population-Units
-			iPopulation = CyCity.getPopulation() - 1
-			if iPopulation:
-				UNIT = GC.getInfoTypeForString("UNIT_CAPTIVE_CIVILIAN")
-				if UNIT > 0:
-					iPopulationPlayer = CyCity.findHighestCulture()
-					if iPopulationPlayer != iPlayer:
-						iCulturePercent = CyCity.calculateCulturePercent(iPopulationPlayer)
-						iCaptives = iCulturePercent * iPopulation / 100
-						iPopulation -= iCaptives
-						for i in xrange(iCaptives):
-							CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, UNIT)
-						# Attitude Penalty
-						CyMessageControl().sendModNetMessage(901, iPlayer, iPopulationPlayer, 1, 1)
-				UNIT = GC.getInfoTypeForString("UNIT_IMMIGRANT")
-				if UNIT > 0:
-					for i in xrange(iPopulation):
-						CyMessageControl().sendModNetMessage(905, iPlayer, iCity, -1, UNIT)
+			# Attitude Penalty for destroying holy city of someones state religion
 			if CyCity.isHolyCity():
 				for iReligion in xrange(GC.getNumReligionInfos()):
 					if CyCity.isHolyCityByType(iReligion):
@@ -331,20 +336,23 @@ class CityDemolish:
 							CyPlayer = GC.getPlayer(iOtherPlayer)
 							if CyPlayer.isAlive() and CyPlayer.getStateReligion() == iReligion:
 								CyMessageControl().sendModNetMessage(901, iPlayer, iOtherPlayer, 0, 1)
+
 			# Abandon the City
 			CyMessageControl().sendModNetMessage(904, iPlayer, iCity, 0, self.iAbandonGold)
 			CyAudioGame().Play2DSound("AS2D_DISCOVERBONUS")
-		else: # Sell Building
+
+		else: # Sell a building
 			CvBuildingInfo = GC.getBuildingInfo(iSelected)
 			iGold = int(CvBuildingInfo.getProductionCost() * self.fGoldMod)
 			CyMessageControl().sendModNetMessage(903, iPlayer, iCity, iSelected, iGold)
 			CyAudioGame().Play2DSound("AS2D_DISCOVERBONUS")
 
+
 	def handleInput(self, screen, szSplit, iNotifyCode, szFlag, ID, iData1):
 		print "ACEM - handleInput"
 		if iNotifyCode == NotifyCode.NOTIFY_CURSOR_MOVE_ON:
 			if szSplit[0] in ("List", "ListBtn"):
-				szText = CyGameTextMgr().getBuildingHelp(ID, False, False, False, self.CyCity, True)
+				szText = CyGameTextMgr().getBuildingHelp(ID, True, self.CyCity, False, False, False)
 				self.updateTooltip(screen, szText, self.xListTooltip)
 		elif iNotifyCode == NotifyCode.NOTIFY_CLICKED:
 			if szSplit[0] == "Exit":

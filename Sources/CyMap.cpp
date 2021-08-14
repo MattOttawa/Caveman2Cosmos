@@ -1,16 +1,18 @@
 //
-// Python wrapper class for CvMap 
-// 
+// Python wrapper class for CvMap
+//
 
 #include "CvGameCoreDLL.h"
+#include "CvArea.h"
 #include "CvInitCore.h"
+#include "CvGlobals.h"
+#include "CvMap.h"
 #include "CvMapGenerator.h"
+#include "CvPathGenerator.h"
 #include "CvSelectionGroup.h"
 #include "CyArea.h"
-#include "CyCity.h"
 #include "CyMap.h"
 #include "CyPlot.h"
-#include "CySelectionGroup.h"
 
 CyMap::CyMap() : m_pMap(NULL)
 {
@@ -21,25 +23,20 @@ CyMap::CyMap(CvMap* pMap) : m_pMap(pMap)
 {
 }
 
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
-
 int CyMap::getType()
 {
 	return m_pMap ? m_pMap->getType() : NO_MAP;
-}
-
-void CyMap::setType(int iNewType)
-{
-	if (m_pMap)
-		m_pMap->setType((MapTypes)iNewType);
 }
 
 CyMap& CyMap::operator=(CvMap& kMap)
 {
 	m_pMap = &kMap;
 	return *this;
+}
+
+bool CyMap::plotsInitialized() const
+{
+	return m_pMap->plotsInitialized();
 }
 
 bool CyMap::viewportsEnabled()
@@ -76,10 +73,15 @@ int	CyMap::getViewportYFromMapY(int iY)
 {
 	return GC.getCurrentViewport()->getViewportYFromMapY(iY);
 }
-	
+
 bool CyMap::isInViewport(int iX, int iY)
 {
 	return GC.getCurrentViewport()->isInViewport(iX, iY);
+}
+
+bool CyMap::isMidSwitch() const
+{
+	return CvMap::m_bSwitchInProgress;
 }
 
 void CyMap::closeAdvisor(int advisorWidth, int iMinimapLeft, int iMinimapRight, int iMinimapTop, int iMinimapBottom)
@@ -91,10 +93,6 @@ void CyMap::bringIntoView(int iX, int iY, bool bLookAt, bool bForceCenter, bool 
 {
 	GC.getCurrentViewport()->bringIntoView(iX, iY, NULL, bLookAt, bForceCenter, bDisplayCityScreen, bSelectCity, bAddSelectedCity);
 }
-
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/
 
 void CyMap::erasePlots()
 {
@@ -120,19 +118,13 @@ void CyMap::setAllPlotTypes(int /*PlotTypes*/ ePlotType)
 		m_pMap->setAllPlotTypes((PlotTypes) ePlotType);
 }
 
-/************************************************************************************************/
-/* REVOLUTION_MOD                         02/29/08                                jdog5000      */
-/*                                                                                              */
-/* Used by Barbarian civ                                                                        */
-/************************************************************************************************/
+
 void CyMap::verifyUnitValidPlot()
 {
-	if( m_pMap )
+	if (m_pMap)
 		m_pMap->verifyUnitValidPlot();
 }
-/************************************************************************************************/
-/* REVOLUTION_MOD                          END                                                  */
-/************************************************************************************************/
+
 void CyMap::updateVisibility()
 {
 	if (m_pMap)
@@ -144,29 +136,15 @@ CyPlot* CyMap::syncRandPlot(int iFlags, int iArea, int iMinUnitDistance, int iTi
 	return m_pMap ? new CyPlot(m_pMap->syncRandPlot(iFlags, iArea, iMinUnitDistance, iTimeout)) : NULL;
 }
 
-CyCity* CyMap::findCity(int iX, int iY, int /*PlayerTypes*/ eOwner, int /*TeamTypes*/ eTeam, bool bSameArea, bool bCoastalOnly, int /*TeamTypes*/ eTeamAtWarWith, int /*DirectionTypes*/ eDirection, CyCity* pSkipCity)
-{
-	return m_pMap ? new CyCity(m_pMap->findCity(iX, iY, (PlayerTypes)eOwner, (TeamTypes)eTeam, bSameArea, bCoastalOnly, ((TeamTypes)eTeamAtWarWith), (DirectionTypes)eDirection, pSkipCity->getCity())) : NULL;
-}
-
-CySelectionGroup* CyMap::findSelectionGroup(int iX, int iY, int /*PlayerTypes*/ eOwner, bool bReadyToSelect, bool bWorkers)
-{
-	return m_pMap ? new CySelectionGroup(m_pMap->findSelectionGroup(iX, iY, (PlayerTypes)eOwner, bReadyToSelect, bWorkers)) : NULL;
-}
-
 CyArea* CyMap::findBiggestArea(bool bWater)
 {
-	return m_pMap ? new CyArea(m_pMap->findBiggestArea(bWater)) : NULL;
+	CvArea* area = m_pMap->findBiggestArea(bWater);
+	return area ? new CyArea(area) : NULL;
 }
 
 int CyMap::getMapFractalFlags()
 {
 	return m_pMap ? m_pMap->getMapFractalFlags() : -1;
-}
-
-bool CyMap::findWater(CyPlot* pPlot, int iRange, bool bFreshWater)
-{
-	return m_pMap ? m_pMap->findWater(pPlot->getPlot(), iRange, bFreshWater) : false;
 }
 
 bool CyMap::isPlot(int iX, int iY)
@@ -194,7 +172,7 @@ int CyMap::plotY(int iIndex)
 	return m_pMap ? m_pMap->plotY(iIndex) : -1;
 }
 
-int CyMap::getGridWidth() 
+int CyMap::getGridWidth()
 {
 	return m_pMap->getGridWidth();
 }
@@ -285,6 +263,17 @@ int CyMap::getNumBonusesOnLand(int /* BonusTypes */ eIndex)
 	return m_pMap ? m_pMap->getNumBonusesOnLand((BonusTypes)eIndex) : -1;
 }
 
+python::list CyMap::plots() const
+{
+	python::list list = python::list();
+
+	for (int i = 0, numPlots = m_pMap->numPlots(); i < numPlots; i++)
+	{
+		list.append(CyPlot(m_pMap->plotByIndex(i)));
+	}
+	return list;
+}
+
 CyPlot* CyMap::plotByIndex(int iIndex)
 {
 	return m_pMap ? new CyPlot(m_pMap->plotByIndex(iIndex)) : NULL;
@@ -304,7 +293,7 @@ CyPlot* CyMap::sPlotByIndex(int iIndex)
 	return NULL;
 }
 
-CyPlot* CyMap::plot(int iX, int iY) 
+CyPlot* CyMap::plot(int iX, int iY)
 {
 	return new CyPlot(m_pMap->plot(iX, iY));
 }
@@ -312,7 +301,7 @@ CyPlot* CyMap::plot(int iX, int iY)
 //
 // static version
 //
-CyPlot* CyMap::sPlot(int iX, int iY) 
+CyPlot* CyMap::sPlot(int iX, int iY)
 {
 	static CyPlot p;
 	p.setPlot(m_pMap->plot(iX, iY));
@@ -322,11 +311,6 @@ CyPlot* CyMap::sPlot(int iX, int iY)
 CyPlot* CyMap::pointToPlot(float fX, float fY)
 {
 	return m_pMap ? new CyPlot(m_pMap->pointToPlot(fX, fY)) : NULL;
-}
-
-int CyMap::getIndexAfterLastArea()
-{
-	return m_pMap ? m_pMap->getIndexAfterLastArea() : -1;
 }
 
 int CyMap::getNumAreas()
@@ -342,6 +326,17 @@ int CyMap::getNumLandAreas()
 CyArea* CyMap::getArea(int iID)
 {
 	return m_pMap ? new CyArea(m_pMap->getArea(iID)) : NULL;
+}
+
+python::list CyMap::areas() const
+{
+	python::list list = python::list();
+
+	foreach_(CvArea* area, m_pMap->areas())
+	{
+		list.append(new CyArea(area));
+	}
+	return list;
 }
 
 void CyMap::recalculateAreas()
@@ -432,40 +427,17 @@ CyPlot* CyMap::getLastPathPlotByIndex(int index) const
 	return new CyPlot(it.plot());
 }
 
-/************************************************************************************************/
-/* Afforess	                  Start		 07/15/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-python::tuple CyMap::firstArea(bool bRev)
-{
-	int iterIn = 0;
-	CvArea* pvObj = m_pMap ? m_pMap->firstArea(&iterIn, bRev) : NULL;
-	CyArea* pyObj = pvObj ? new CyArea(pvObj) : NULL;
-	python::tuple tup=python::make_tuple(pyObj, iterIn);
-	delete pyObj;
-	return tup;
-}
 
-// returns tuple of (CyArea, iterOut)
-python::tuple CyMap::nextArea(int iterIn, bool bRev)
-{
-	CvArea* pvObj = m_pMap ? m_pMap->nextArea(&iterIn, bRev) : NULL;
-	CyArea* pyObj = pvObj ? new CyArea(pvObj) : NULL;
-	python::tuple tup=python::make_tuple(pyObj, iterIn);
-	delete pyObj;
-	return tup;
-}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
-// Super Forts begin *canal* *choke*
+// Super Forts *canal* *choke*
 void CyMap::calculateCanalAndChokePoints()
 {
-	if(m_pMap)
+	if (m_pMap)
 	{
 		m_pMap->calculateCanalAndChokePoints();
 	}
 }
-// Super Forts end
+
+void CyMap::moveUnitToMap(const CyUnit* unit, int numTravelTurns)
+{
+	m_pMap->moveUnitToMap(*unit->getUnit(), numTravelTurns);
+}

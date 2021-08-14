@@ -7,6 +7,9 @@
 //
 //------------------------------------------------------------------------------------------------
 #include "CvGameCoreDLL.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
+#include "CvPlayer.h"
 
 bool UnitSortBase::isLesserUnit(const CvPlayer *pPlayer, const CvCity *pCity, UnitTypes eUnit1, UnitTypes eUnit2) const
 {
@@ -104,7 +107,7 @@ UnitSortList::UnitSortList(const CvPlayer *pPlayer, const CvCity *pCity)
 {
 	m_pPlayer = pPlayer;
 	m_pCity = pCity;
-	
+
 	m_apUnitSort[UNIT_SORT_NAME] = new UnitSortName();
 	m_apUnitSort[UNIT_SORT_COST] = new UnitSortCost(true);
 	m_apUnitSort[UNIT_SORT_STRENGTH] = new UnitSortStrength();
@@ -134,8 +137,7 @@ UnitSortTypes UnitSortList::getActiveSort() const
 
 bool UnitSortList::setActiveSort(UnitSortTypes eActiveSort)
 {
-	FAssertMsg(eActiveSort < NUM_UNIT_SORT, "Index out of bounds");
-	FAssertMsg(eActiveSort > -1, "Index out of bounds");
+	FASSERT_BOUNDS(0, NUM_UNIT_SORT, eActiveSort)
 	const bool bChanged = m_eActiveSort != eActiveSort;
 	m_eActiveSort = eActiveSort;
 	return bChanged;

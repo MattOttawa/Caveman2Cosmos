@@ -7,7 +7,8 @@ iSelected = 0
 
 class WBTradeScreen:
 
-	def __init__(self):
+	def __init__(self, WB):
+		self.WB = WB
 		self.iTable_Y = 80
 
 	def interfaceScreen(self):
@@ -16,16 +17,16 @@ class WBTradeScreen:
 		screen.setRenderInterfaceOnly(True)
 		screen.addPanel("MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
-	
-		screen.setLabel("TradeHeader", "Background", "<font=4b>" + CyTranslator().getText("TXT_KEY_CONCEPT_TRADE", ()) + "</font>", 1<<2, screen.getXResolution()/2, 20, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		screen.setText("WBTradeExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
-		screen.setText("TradeCancel", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_SCREEN_CANCEL", ()).upper() + "</font>", 1<<2, screen.getXResolution()/2, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
+
+		screen.setLabel("TradeHeader", "Background", "<font=4b>" + CyTranslator().getText("TXT_KEY_CONCEPT_TRADE", ()), 1<<2, screen.getXResolution()/2, 20, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		screen.setText("WBTradeExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper(), 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("TradeCancel", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_SCREEN_CANCEL", ()).upper(), 1<<2, screen.getXResolution()/2, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 		screen.addDropDownBoxGFC("CurrentPage", 20, screen.getYResolution() - 42, screen.getXResolution()/5, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_KEY_GLOBELAYER_RESOURCES_GENERAL", ()), 0, 0, False)
-		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_KEY_ESPIONAGE_CULTURE", ()), 1, 1, False)
+		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_WORD_ESPIONAGE", ()), 1, 1, False)
 		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_KEY_CONCEPT_TRADE", ()), 2, 2, True)
-		
+
 		self.placeDeals()
 
 	def placeDeals(self):
@@ -97,9 +98,9 @@ class WBTradeScreen:
 		if inputClass.getFunctionName() == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 0:
-				WBDiplomacyScreen.WBDiplomacyScreen().interfaceScreen(0, False)
+				WBDiplomacyScreen.WBDiplomacyScreen(self.WB).interfaceScreen(0, False)
 			elif iIndex == 1:
-				WBDiplomacyScreen.WBDiplomacyScreen().interfaceScreen(0, True)
+				WBDiplomacyScreen.WBDiplomacyScreen(self.WB).interfaceScreen(0, True)
 		elif inputClass.getFunctionName() == "TradeTable":
 			iSelected = inputClass.getData2()
 		elif inputClass.getFunctionName() == "TradeCancel":

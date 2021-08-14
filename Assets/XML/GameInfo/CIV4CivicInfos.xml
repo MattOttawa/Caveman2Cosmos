@@ -19,6 +19,7 @@
 		bCanDoElection: -->
 <Civ4CivicInfos xmlns="x-schema:../Schema/C2C_CIV4GameInfoSchema.xml">
 	<CivicInfos>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_GOVERNMENT</CivicOptionType>
 			<Type>CIVIC_ANARCHISM</Type>
@@ -39,19 +40,13 @@
 			<iDistanceMaintenanceModifier>30</iDistanceMaintenanceModifier>
 			<iNumCitiesMaintenanceModifier>30</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>1</iHomeAreaMaintenanceModifier>
-			<iOtherAreaMaintenanceModifier>1</iOtherAreaMaintenanceModifier>
+			<iOtherAreaMaintenanceModifier>2</iOtherAreaMaintenanceModifier>
 			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -84,8 +79,8 @@
 			<TradeYieldModifiers/>
 			<CommerceModifiers/>
 			<CapitalCommerceModifiers>
-				<iCommerce>-5</iCommerce>
-				<iCommerce>-5</iCommerce>
+				<iCommerce>-4</iCommerce>
+				<iCommerce>-3</iCommerce>
 				<iCommerce>-5</iCommerce>
 				<iCommerce>-5</iCommerce>
 			</CapitalCommerceModifiers>
@@ -152,6 +147,10 @@
 					<FlavorType>FLAVOR_GROWTH</FlavorType>
 					<iFlavor>0</iFlavor>
 				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
 			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
@@ -181,12 +180,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -317,12 +311,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>15</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>1</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -454,21 +443,16 @@
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
 			<iDistanceMaintenanceModifier>20</iDistanceMaintenanceModifier>
-			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
-			<iHomeAreaMaintenanceModifier>5</iHomeAreaMaintenanceModifier>
-			<iOtherAreaMaintenanceModifier>5</iOtherAreaMaintenanceModifier>
+			<iNumCitiesMaintenanceModifier>20</iNumCitiesMaintenanceModifier>
+			<iHomeAreaMaintenanceModifier>6</iHomeAreaMaintenanceModifier>
+			<iOtherAreaMaintenanceModifier>4</iOtherAreaMaintenanceModifier>
 			<iCorporationMaintenanceModifier>5</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>1</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>3</iMaxConscript>
@@ -494,7 +478,7 @@
 			<bNoCapitalUnhappiness>0</bNoCapitalUnhappiness>
 			<iTaxRateUnhappiness>0</iTaxRateUnhappiness>
 			<YieldModifiers>
-				<iYield>4</iYield>
+				<iYield>2</iYield>
 				<iYield>3</iYield>
 				<iYield>2</iYield>
 			</YieldModifiers>
@@ -509,8 +493,8 @@
 			<CapitalCommerceModifiers>
 				<iCommerce>2</iCommerce>
 				<iCommerce>0</iCommerce>
-				<iCommerce>5</iCommerce>
-				<iCommerce>5</iCommerce>
+				<iCommerce>3</iCommerce>
+				<iCommerce>3</iCommerce>
 			</CapitalCommerceModifiers>
 			<SpecialistExtraCommerces>
 				<iCommerce>0</iCommerce>
@@ -701,21 +685,15 @@
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
 			<iDistanceMaintenanceModifier>15</iDistanceMaintenanceModifier>
-			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
+			<iNumCitiesMaintenanceModifier>20</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>5</iHomeAreaMaintenanceModifier>
-			<iOtherAreaMaintenanceModifier>5</iOtherAreaMaintenanceModifier>
+			<iOtherAreaMaintenanceModifier>6</iOtherAreaMaintenanceModifier>
 			<iCorporationMaintenanceModifier>5</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -853,18 +831,12 @@
 			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>7</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>5</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>5</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -889,9 +861,9 @@
 			<iStateReligionFreeExperience>0</iStateReligionFreeExperience>
 			<iTaxRateUnhappiness>0</iTaxRateUnhappiness>
 			<YieldModifiers>
-				<iYield>5</iYield>
-				<iYield>5</iYield>
-				<iYield>4</iYield>
+				<iYield>3</iYield>
+				<iYield>3</iYield>
+				<iYield>3</iYield>
 			</YieldModifiers>
 			<CapitalYieldModifiers>
 				<iYield>2</iYield>
@@ -1027,6 +999,150 @@
 						<iCommerce>0</iCommerce>
 					</CommerceModifiers>
 				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_YORUBA_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_VOODOO_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_TENGRI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SIKH_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SHINTO_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SHAMAN_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SCIENTOLOGY_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_RODNOVERY_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_NGAI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_MORMON_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>10</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_MESO_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_JAINISM_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_DRUID_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_CAODAI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_CANAANISM_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_BAHAI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_ASATRU_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_ANDEAN_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
 			</BuildingCommerceModifiers>
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges/>
@@ -1102,20 +1218,15 @@
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
 			<iDistanceMaintenanceModifier>10</iDistanceMaintenanceModifier>
 			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
-			<iHomeAreaMaintenanceModifier>7</iHomeAreaMaintenanceModifier>
-			<iOtherAreaMaintenanceModifier>6</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iHomeAreaMaintenanceModifier>9</iHomeAreaMaintenanceModifier>
+			<iOtherAreaMaintenanceModifier>7</iOtherAreaMaintenanceModifier>
+			<iCorporationMaintenanceModifier>5</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>15</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>1</iGoldPerMilitaryUnit>
+			<iMilitaryUnitUpkeepMod>10</iMilitaryUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -1150,13 +1261,13 @@
 				<iCommerce>5</iCommerce>
 				<iCommerce>5</iCommerce>
 				<iCommerce>5</iCommerce>
-				<iCommerce>3</iCommerce>
+				<iCommerce>0</iCommerce>
 			</CommerceModifiers>
 			<CapitalCommerceModifiers>
 				<iCommerce>5</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>5</iCommerce>
-				<iCommerce>5</iCommerce>
+				<iCommerce>2</iCommerce>
 			</CapitalCommerceModifiers>
 			<SpecialistExtraCommerces>
 				<iCommerce>1</iCommerce>
@@ -1251,23 +1362,18 @@
 			<iGreatGeneralRateModifier>10</iGreatGeneralRateModifier>
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
-			<iDistanceMaintenanceModifier>10</iDistanceMaintenanceModifier>
+			<iDistanceMaintenanceModifier>20</iDistanceMaintenanceModifier>
 			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>10</iHomeAreaMaintenanceModifier>
-			<iOtherAreaMaintenanceModifier>7</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iOtherAreaMaintenanceModifier>8</iOtherAreaMaintenanceModifier>
+			<iCorporationMaintenanceModifier>10</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>2</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>15</iMilitaryProductionModifier>
 			<iPopulationgrowthratepercentage>0</iPopulationgrowthratepercentage>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>10</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepCivilianPopPercent>30</iFreeUnitUpkeepCivilianPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>5</iMaxConscript>
@@ -1293,14 +1399,14 @@
 			<iStateReligionFreeExperience>0</iStateReligionFreeExperience>
 			<iTaxRateUnhappiness>0</iTaxRateUnhappiness>
 			<YieldModifiers>
-				<iYield>3</iYield>
-				<iYield>10</iYield>
+				<iYield>1</iYield>
+				<iYield>5</iYield>
 				<iYield>2</iYield>
 			</YieldModifiers>
 			<CapitalYieldModifiers/>
 			<TradeYieldModifiers/>
 			<CommerceModifiers>
-				<iCommerce>5</iCommerce>
+				<iCommerce>1</iCommerce>
 				<iCommerce>5</iCommerce>
 				<iCommerce>-3</iCommerce>
 				<iCommerce>5</iCommerce>
@@ -1308,7 +1414,7 @@
 			<CapitalCommerceModifiers>
 				<iCommerce>5</iCommerce>
 				<iCommerce>2</iCommerce>
-				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
 				<iCommerce>7</iCommerce>
 			</CapitalCommerceModifiers>
 			<SpecialistExtraCommerces>
@@ -1344,10 +1450,6 @@
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
 					<BuildingType>BUILDING_PENTAGON</BuildingType>
-					<iHappinessChange>1</iHappinessChange>
-				</BuildingHappinessChange>
-				<BuildingHappinessChange>
-					<BuildingType>BUILDING_VENETIAN_ARSENAL</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
@@ -1431,22 +1533,16 @@
 			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
-			<iDistanceMaintenanceModifier>0</iDistanceMaintenanceModifier>
+			<iDistanceMaintenanceModifier>15</iDistanceMaintenanceModifier>
 			<iNumCitiesMaintenanceModifier>10</iNumCitiesMaintenanceModifier>
-			<iHomeAreaMaintenanceModifier>10</iHomeAreaMaintenanceModifier>
+			<iHomeAreaMaintenanceModifier>15</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>10</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>10</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>7</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -1486,7 +1582,7 @@
 			<CapitalCommerceModifiers/>
 			<SpecialistExtraCommerces>
 				<iCommerce>0</iCommerce>
-				<iCommerce>0</iCommerce>
+				<iCommerce>1</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 			</SpecialistExtraCommerces>
@@ -1563,28 +1659,23 @@
 			<Button>art/Interface/buttons/civics/sparth/government_noocracy.dds</Button>
 			<TechPrereq>TECH_SENTIENT_EARTH</TechPrereq>
 			<iAnarchyLength>1</iAnarchyLength>
-			<Upkeep>UPKEEP_LOW</Upkeep>
+			<Upkeep>UPKEEP_MEDIUM</Upkeep>
 			<iAIWeight>0</iAIWeight>
 			<iGreatPeopleRateModifier>25</iGreatPeopleRateModifier>
 			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
-			<iDistanceMaintenanceModifier>5</iDistanceMaintenanceModifier>
-			<iNumCitiesMaintenanceModifier>10</iNumCitiesMaintenanceModifier>
+			<iDistanceMaintenanceModifier>10</iDistanceMaintenanceModifier>
+			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>10</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>10</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>7</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>20</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>1</iGoldPerMilitaryUnit>
+			<iMilitaryUnitUpkeepMod>10</iMilitaryUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -1609,9 +1700,9 @@
 			<iStateReligionFreeExperience>0</iStateReligionFreeExperience>
 			<iTaxRateUnhappiness>0</iTaxRateUnhappiness>
 			<YieldModifiers>
-				<iYield>0</iYield>
-				<iYield>0</iYield>
-				<iYield>10</iYield>
+				<iYield>3</iYield>
+				<iYield>5</iYield>
+				<iYield>5</iYield>
 			</YieldModifiers>
 			<CapitalYieldModifiers/>
 			<TradeYieldModifiers/>
@@ -1619,7 +1710,7 @@
 				<iCommerce>0</iCommerce>
 				<iCommerce>10</iCommerce>
 				<iCommerce>0</iCommerce>
-				<iCommerce>20</iCommerce>
+				<iCommerce>10</iCommerce>
 			</CommerceModifiers>
 			<CapitalCommerceModifiers/>
 			<SpecialistExtraCommerces>
@@ -1664,7 +1755,7 @@
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>-2</iFlavor>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -1701,7 +1792,7 @@
 			<Button>art/Interface/buttons/civics/sparth/government_gerontocracy.dds</Button>
 			<TechPrereq>TECH_GERONTOCRACY</TechPrereq>
 			<iAnarchyLength>1</iAnarchyLength>
-			<Upkeep>UPKEEP_MEDIUM</Upkeep>
+			<Upkeep>UPKEEP_HIGH</Upkeep>
 			<iAIWeight>0</iAIWeight>
 			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
 			<iGreatGeneralRateModifier>50</iGreatGeneralRateModifier>
@@ -1709,20 +1800,16 @@
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
 			<iDistanceMaintenanceModifier>25</iDistanceMaintenanceModifier>
 			<iNumCitiesMaintenanceModifier>20</iNumCitiesMaintenanceModifier>
-			<iHomeAreaMaintenanceModifier>0</iHomeAreaMaintenanceModifier>
-			<iOtherAreaMaintenanceModifier>-20</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iHomeAreaMaintenanceModifier>10</iHomeAreaMaintenanceModifier>
+			<iOtherAreaMaintenanceModifier>10</iOtherAreaMaintenanceModifier>
+			<iCorporationMaintenanceModifier>10</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>2</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>20</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>1</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
+			<iMilitaryUnitUpkeepMod>10</iMilitaryUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -1749,15 +1836,15 @@
 			<iTaxRateUnhappiness>0</iTaxRateUnhappiness>
 			<YieldModifiers>
 				<iYield>0</iYield>
-				<iYield>20</iYield>
+				<iYield>10</iYield>
 				<iYield>0</iYield>
 			</YieldModifiers>
 			<CapitalYieldModifiers/>
 			<TradeYieldModifiers/>
 			<CommerceModifiers>
 				<iCommerce>0</iCommerce>
-				<iCommerce>0</iCommerce>
-				<iCommerce>0</iCommerce>
+				<iCommerce>3</iCommerce>
+				<iCommerce>3</iCommerce>
 			</CommerceModifiers>
 			<CapitalCommerceModifiers/>
 			<SpecialistExtraCommerces>
@@ -1797,19 +1884,19 @@
 			<!-- Revolution Mod End -->
 			<iNationalCaptureProbabilityModifier>0</iNationalCaptureProbabilityModifier>
 			<iNationalCaptureResistanceModifier>0</iNationalCaptureResistanceModifier>
-			<bFixedBorders>1</bFixedBorders>
+			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing>TXT_KEY_CIVIC_WE_LOVE_MONARCH</WeLoveTheKing>
-			<CivicAttitudeChanges>
+			<!-- <CivicAttitudeChanges>
 				<CivicAttitudeChange>
 					<CivicType>CIVIC_MONARCHY</CivicType>
 					<iAttitudeChange>1</iAttitudeChange>
 					<Description>TXT_KEY_CIVIC_ATTITUDE_MONARCHY_TO_MONARCHY</Description>
 				</CivicAttitudeChange>
-			</CivicAttitudeChanges>
+			</CivicAttitudeChanges> -->
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>15</iFlavor>
+					<iFlavor>10</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -1833,7 +1920,7 @@
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_GROWTH</FlavorType>
-					<iFlavor>-3</iFlavor>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 			</Flavors>
 		</CivicInfo>
@@ -1846,15 +1933,15 @@
 			<Button>art/Interface/buttons/civics/sparth/government_galactic_federation.dds</Button>
 			<TechPrereq>TECH_GALACTIC_FEDERATION</TechPrereq>
 			<iAnarchyLength>1</iAnarchyLength>
-			<Upkeep>UPKEEP_LOW</Upkeep>
+			<Upkeep>UPKEEP_HIGH</Upkeep>
 			<iAIWeight>0</iAIWeight>
 			<iGreatPeopleRateModifier>0</iGreatPeopleRateModifier>
 			<iGreatGeneralRateModifier>35</iGreatGeneralRateModifier>
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
 			<iDistanceMaintenanceModifier>15</iDistanceMaintenanceModifier>
-			<iNumCitiesMaintenanceModifier>10</iNumCitiesMaintenanceModifier>
-			<iHomeAreaMaintenanceModifier>0</iHomeAreaMaintenanceModifier>
+			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
+			<iHomeAreaMaintenanceModifier>15</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>20</iOtherAreaMaintenanceModifier>
 			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
@@ -1862,12 +1949,6 @@
 			<iWorkerSpeedModifier>25</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -1911,7 +1992,7 @@
 			</CommerceModifiers>
 			<CapitalCommerceModifiers>
 				<iCommerce>0</iCommerce>
-				<iCommerce>25</iCommerce>
+				<iCommerce>20</iCommerce>
 				<iCommerce>0</iCommerce>
 				<iCommerce>0</iCommerce>
 			</CapitalCommerceModifiers>
@@ -1993,23 +2074,17 @@
 			<iGreatGeneralRateModifier>0</iGreatGeneralRateModifier>
 			<iDomesticGreatGeneralRateModifier>0</iDomesticGreatGeneralRateModifier>
 			<iStateReligionGreatPeopleRateModifier>0</iStateReligionGreatPeopleRateModifier>
-			<iDistanceMaintenanceModifier>15</iDistanceMaintenanceModifier>
-			<iNumCitiesMaintenanceModifier>5</iNumCitiesMaintenanceModifier>
+			<iDistanceMaintenanceModifier>25</iDistanceMaintenanceModifier>
+			<iNumCitiesMaintenanceModifier>25</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>10</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>20</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>10</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>3</iFreeExperience>
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>15</iMilitaryProductionModifier>
 			<iPopulationgrowthratepercentage>0</iPopulationgrowthratepercentage>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>5</iMaxConscript>
@@ -2036,7 +2111,7 @@
 			<iTaxRateUnhappiness>0</iTaxRateUnhappiness>
 			<YieldModifiers>
 				<iYield>0</iYield>
-				<iYield>30</iYield>
+				<iYield>20</iYield>
 				<iYield>0</iYield>
 			</YieldModifiers>
 			<CapitalYieldModifiers/>
@@ -2119,6 +2194,7 @@
 				</Flavor>
 			</Flavors>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_RULE</CivicOptionType>
 			<Type>CIVIC_OBEDIENCE</Type>
@@ -2139,6 +2215,40 @@
 			<iNationalCaptureProbabilityModifier>10</iNationalCaptureProbabilityModifier>
 			<iNationalCaptureResistanceModifier>-20</iNationalCaptureResistanceModifier>
 			<Button>art/Interface/buttons/civics/sparth/rule_obedience.dds</Button>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_RULE</CivicOptionType>
@@ -2163,12 +2273,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>5</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>5</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -2282,12 +2388,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>3</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -2389,12 +2489,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>3</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -2537,12 +2631,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -2678,12 +2766,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>10</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>15</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepCivilian>10</iFreeUnitUpkeepCivilian>
+			<iFreeUnitUpkeepCivilianPopPercent>45</iFreeUnitUpkeepCivilianPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>5</iMaxConscript>
@@ -2791,12 +2875,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>3</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>9</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>2</iMaxConscript>
@@ -2960,12 +3039,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>10</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3127,12 +3200,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>20</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>1</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>5</iMaxConscript>
@@ -3233,12 +3300,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3331,12 +3392,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>-30</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3409,6 +3464,12 @@
 			<iAttitudeShareMod>0</iAttitudeShareMod>
 			<iPopulationgrowthratepercentage>0</iPopulationgrowthratepercentage>
 			<Flavors/>
+			<BuildingProductionModifiers>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_NOMAD_SKYSCRAPER</BuildingType>
+					<iProductionModifier>100</iProductionModifier>
+				</BuildingProductionModifier>
+			</BuildingProductionModifiers>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_RULE</CivicOptionType>
@@ -3435,12 +3496,6 @@
 			<iWorkerSpeedModifier>30</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3517,6 +3572,24 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
+			<BuildingProductionModifiers>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_AI_INVESTMENT</BuildingType>
+					<iProductionModifier>30</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_AI_LAWYER</BuildingType>
+					<iProductionModifier>30</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_AI_POLICE_FORCE</BuildingType>
+					<iProductionModifier>30</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_AI_SURVEILLANCE</BuildingType>
+					<iProductionModifier>30</iProductionModifier>
+				</BuildingProductionModifier>
+			</BuildingProductionModifiers>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_RULE</CivicOptionType>
@@ -3541,12 +3614,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3654,12 +3721,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3765,12 +3826,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3875,6 +3930,7 @@
 				</Flavor>
 			</Flavors>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_POWER</CivicOptionType>
 			<Type>CIVIC_STRONGMAN</Type>
@@ -3900,12 +3956,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -3985,27 +4035,7 @@
 			<iPopulationgrowthratepercentage>0</iPopulationgrowthratepercentage>
 			<Flavors>
 				<Flavor>
-					<FlavorType>FLAVOR_CULTURE</FlavorType>
-					<iFlavor>0</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
-					<iFlavor>0</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_GOLD</FlavorType>
-					<iFlavor>0</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_GROWTH</FlavorType>
-					<iFlavor>0</iFlavor>
-				</Flavor>
-				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>2</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
 					<iFlavor>0</iFlavor>
 				</Flavor>
 				<Flavor>
@@ -4013,7 +4043,27 @@
 					<iFlavor>0</iFlavor>
 				</Flavor>
 				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
 					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
 					<iFlavor>0</iFlavor>
 				</Flavor>
 			</Flavors>
@@ -4043,12 +4093,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -4154,12 +4198,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -4267,12 +4305,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -4382,12 +4415,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -4485,12 +4512,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>3</iMaxConscript>
@@ -4595,12 +4616,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>3</iMaxConscript>
@@ -4704,12 +4720,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -4802,12 +4812,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -4903,12 +4908,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5009,12 +5008,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5108,12 +5101,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>15</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>45</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5183,7 +5171,8 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
-		</CivicInfo>		
+		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_MILITARY</CivicOptionType>
 			<Type>CIVIC_MILITIA</Type>
@@ -5210,12 +5199,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>-10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5294,20 +5277,36 @@
 			<iAttitudeShareMod>1</iAttitudeShareMod>
 			<Flavors>
 				<Flavor>
-					<FlavorType>FLAVOR_GROWTH</FlavorType>
-					<iFlavor>3</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_GOLD</FlavorType>
-					<iFlavor>5</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_CULTURE</FlavorType>
-					<iFlavor>3</iFlavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
-					<iFlavor>3</iFlavor>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 			</Flavors>
 		</CivicInfo>
@@ -5337,12 +5336,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>5</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>5</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5427,7 +5422,7 @@
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_CULTURE</FlavorType>
-					<iFlavor>-1</iFlavor>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 			</Flavors>
 			<UnitProductionModifiers>
@@ -5489,12 +5484,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>7</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>7</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5541,16 +5532,16 @@
 			<SpecialistValids/>
 			<UnitCombatProductionModifiers>
 				<UnitCombatProductionModifier>
-						<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
-						<iProductionModifier>20</iProductionModifier>
+					<UnitCombatType>UNITCOMBAT_MELEE</UnitCombatType>
+					<iProductionModifier>20</iProductionModifier>
 				</UnitCombatProductionModifier>
 				<UnitCombatProductionModifier>
-						<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
-						<iProductionModifier>15</iProductionModifier>
+					<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+					<iProductionModifier>15</iProductionModifier>
 				</UnitCombatProductionModifier>
 				<UnitCombatProductionModifier>
-						<UnitCombatType>UNITCOMBAT_THROWING</UnitCombatType>
-						<iProductionModifier>15</iProductionModifier>
+					<UnitCombatType>UNITCOMBAT_THROWING</UnitCombatType>
+					<iProductionModifier>15</iProductionModifier>
 				</UnitCombatProductionModifier>
 			</UnitCombatProductionModifiers>
 			<BuildingHappinessChanges/>
@@ -5618,12 +5609,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>15</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>1</bMilitaryFoodProduction>
 			<iMaxConscript>7</iMaxConscript>
@@ -5674,8 +5660,8 @@
 					<iProductionModifier>20</iProductionModifier>
 				</UnitCombatProductionModifier>
 				<UnitCombatProductionModifier>
-						<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
-						<iProductionModifier>15</iProductionModifier>
+					<UnitCombatType>UNITCOMBAT_ARCHER</UnitCombatType>
+					<iProductionModifier>15</iProductionModifier>
 				</UnitCombatProductionModifier>
 				<UnitCombatProductionModifier>
 					<UnitCombatType>UNITCOMBAT_MOUNTED</UnitCombatType>
@@ -5747,12 +5733,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>1</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
+			<iMilitaryUnitUpkeepMod>10</iMilitaryUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5852,12 +5834,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>-20</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -5951,10 +5927,6 @@
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
 					<BuildingType>BUILDING_GLADIATOR_SCHOOL</BuildingType>
-					<iHappinessChange>-2</iHappinessChange>
-				</BuildingHappinessChange>
-				<BuildingHappinessChange>
-					<BuildingType>BUILDING_WARRIOR_HUT</BuildingType>
 					<iHappinessChange>-2</iHappinessChange>
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
@@ -6056,7 +6028,7 @@
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>-5</iFlavor>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -6068,7 +6040,7 @@
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_GOLD</FlavorType>
-					<iFlavor>-5</iFlavor>
+					<iFlavor>0</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_SCIENCE</FlavorType>
@@ -6110,12 +6082,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>5</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>5</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -6237,12 +6205,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -6366,12 +6328,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -6446,7 +6402,7 @@
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>15</iFlavor>
+					<iFlavor>10</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -6516,12 +6472,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -6665,12 +6615,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -6745,7 +6689,7 @@
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>15</iFlavor>
+					<iFlavor>10</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -6825,12 +6769,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>75</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>2</iGoldPerMilitaryUnit>
+			<iMilitaryUnitUpkeepMod>20</iMilitaryUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -6903,7 +6842,7 @@
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>15</iFlavor>
+					<iFlavor>10</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -6963,12 +6902,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>50</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>2</iGoldPerMilitaryUnit>
+			<iMilitaryUnitUpkeepMod>20</iMilitaryUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -7041,7 +6975,7 @@
 			<Flavors>
 				<Flavor>
 					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>15</iFlavor>
+					<iFlavor>10</iFlavor>
 				</Flavor>
 				<Flavor>
 					<FlavorType>FLAVOR_RELIGION</FlavorType>
@@ -7075,6 +7009,7 @@
 				</UnitCombatProductionModifier>
 			</UnitCombatProductionModifiers>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_RELIGION</CivicOptionType>
 			<Type>CIVIC_IRRELIGION</Type>
@@ -7100,12 +7035,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -7173,7 +7102,40 @@
 			<iNationalCaptureResistanceModifier>0</iNationalCaptureResistanceModifier>
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_RELIGION</CivicOptionType>
@@ -7200,12 +7162,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -7246,7 +7202,12 @@
 			<Hurrys/>
 			<SpecialBuildingNotRequireds/>
 			<SpecialistValids/>
-			<BuildingHappinessChanges/>
+			<BuildingHappinessChanges>
+				<BuildingHappinessChange>
+					<BuildingType>BUILDING_SHAMANHUT</BuildingType>
+					<iHappinessChange>1</iHappinessChange>
+				</BuildingHappinessChange>
+			</BuildingHappinessChanges>
 			<BuildingHealthChanges/>
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges>
@@ -7386,12 +7347,7 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>6</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>6</iFreeUnitUpkeepMilitary>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -7535,12 +7491,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -7651,12 +7601,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>3</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>9</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -7834,6 +7779,150 @@
 						<iCommerce>0</iCommerce>
 					</CommerceModifiers>
 				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_YORUBA_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_VOODOO_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_TENGRI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SIKH_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SHINTO_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SHAMAN_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_SCIENTOLOGY_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_RODNOVERY_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_NGAI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_MORMON_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>10</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_MESO_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_JAINISM_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_DRUID_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_CAODAI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_CANAANISM_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_BAHAI_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_ASATRU_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>0</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
+				<BuildingCommerceModifier>
+					<BuildingType>BUILDING_ANDEAN_SHRINE</BuildingType>
+					<CommerceModifiers>
+						<iCommerce>15</iCommerce>
+						<iCommerce>0</iCommerce>
+						<iCommerce>20</iCommerce>
+					</CommerceModifiers>
+				</BuildingCommerceModifier>
 			</BuildingCommerceModifiers>
 			<SpecialistCommercePercentChanges>
 				<SpecialistCommercePercentChange>
@@ -7872,12 +7961,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8002,12 +8085,8 @@
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>9</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>9</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8122,12 +8201,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8225,12 +8298,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8279,10 +8346,6 @@
 			<BuildingHappinessChanges>
 				<BuildingHappinessChange>
 					<BuildingType>BUILDING_EINSTEIN_LAB</BuildingType>
-					<iHappinessChange>1</iHappinessChange>
-				</BuildingHappinessChange>
-				<BuildingHappinessChange>
-					<BuildingType>BUILDING_HAGIA_SOPHIA</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
@@ -8357,12 +8420,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8455,12 +8512,7 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>6</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>6</iFreeUnitUpkeepMilitary>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8557,12 +8609,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>12</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>10</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>12</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepMilitaryPopPercent>30</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8641,6 +8689,7 @@
 				</SpecialistCommercePercentChange>
 			</SpecialistCommercePercentChanges>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_SOCIETY</CivicOptionType>
 			<Type>CIVIC_PRIMITIVE</Type>
@@ -8679,6 +8728,40 @@
 				</BuildingHappinessChange>
 			</BuildingHappinessChanges>
 			<Button>art/Interface/buttons/civics/sparth/society_primitive.dds</Button>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_SOCIETY</CivicOptionType>
@@ -8707,12 +8790,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -8877,12 +8954,6 @@
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -9058,18 +9129,12 @@
 			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>2</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>2</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-10</iCorporationMaintenanceModifier>
 			<iExtraHealth>-2</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -9277,7 +9342,6 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>-10</iRealCorporationMaintenanceModifier>
 			<BuildingProductionModifiers>
 				<BuildingProductionModifier>
 					<BuildingType>BUILDING_BUTCHERY</BuildingType>
@@ -9308,18 +9372,12 @@
 			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>2</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>2</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>2</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>10</iCorporationMaintenanceModifier>
 			<iExtraHealth>1</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>20</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -9481,7 +9539,6 @@
 			<iNationalCaptureResistanceModifier>10</iNationalCaptureResistanceModifier>
 			<WeLoveTheKing/>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>10</iRealCorporationMaintenanceModifier>
 			<BuildingProductionModifiers>
 				<BuildingProductionModifier>
 					<BuildingType>BUILDING_GRANARY</BuildingType>
@@ -9532,12 +9589,7 @@
 			<iWorkerSpeedModifier>-5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>-5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -9678,12 +9730,6 @@
 			<iWorkerSpeedModifier>-5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>-5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>-5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -9898,12 +9944,7 @@
 			<iWorkerSpeedModifier>20</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>20</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>5</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>5</iFreeUnitUpkeepMilitary>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10060,12 +10101,9 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>5</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>7</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>5</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepCivilianPopPercent>21</iFreeUnitUpkeepCivilianPopPercent>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10200,12 +10238,7 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>10</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepCivilian>10</iFreeUnitUpkeepCivilian>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10320,12 +10353,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10488,12 +10515,8 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>10</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>10</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>10</iFreeUnitUpkeepMilitary>
+			<iFreeUnitUpkeepCivilianPopPercent>30</iFreeUnitUpkeepCivilianPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10566,6 +10589,7 @@
 			<WeLoveTheKing/>
 			<Flavors/>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
 			<Type>CIVIC_COMMUNALISM</Type>
@@ -10591,12 +10615,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10709,8 +10727,41 @@
 			<iNationalCaptureResistanceModifier>0</iNationalCaptureResistanceModifier>
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
-			<Flavors/>
 			<iInflation>0</iInflation>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
@@ -10737,12 +10788,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10846,12 +10891,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -10955,12 +10994,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11066,18 +11099,12 @@
 			<iNumCitiesMaintenanceModifier>10</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>2</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>3</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>-10</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-50</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11152,7 +11179,6 @@
 			<BuildingProductionModifiers/>
 			<iHurryCostModifier>10</iHurryCostModifier>
 			<iHurryInflationModifier>5</iHurryInflationModifier>
-			<iRealCorporationMaintenanceModifier>-50</iRealCorporationMaintenanceModifier>
 			<SpecialistCommercePercentChanges>
 				<SpecialistCommercePercentChange>
 					<SpecialistType>SPECIALIST_MERCHANT</SpecialistType>
@@ -11217,18 +11243,12 @@
 			<iNumCitiesMaintenanceModifier>7</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>3</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>5</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-50</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11310,8 +11330,6 @@
 			<iInflation>20</iInflation>
 			<iHurryCostModifier>-50</iHurryCostModifier>
 			<iHurryInflationModifier>20</iHurryInflationModifier>
-			<iSharedCivicTradeRouteModifier>-25</iSharedCivicTradeRouteModifier>
-			<iRealCorporationMaintenanceModifier>-50</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
@@ -11338,12 +11356,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11463,18 +11475,12 @@
 			<iNumCitiesMaintenanceModifier>5</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>4</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>6</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>-33</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-75</iCorporationMaintenanceModifier>
 			<iExtraHealth>-1</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11559,7 +11565,6 @@
 			<Flavors/>
 			<iInflation>15</iInflation>
 			<bNoLandmarkAnger>0</bNoLandmarkAnger>
-			<iRealCorporationMaintenanceModifier>-75</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
@@ -11580,18 +11585,12 @@
 			<iNumCitiesMaintenanceModifier>0</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>5</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>7</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>5</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-75</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11712,7 +11711,6 @@
 			<iInflation>-10</iInflation>
 			<iHurryCostModifier>-33</iHurryCostModifier>
 			<iSharedCivicTradeRouteModifier>0</iSharedCivicTradeRouteModifier>
-			<iRealCorporationMaintenanceModifier>-75</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
@@ -11733,18 +11731,12 @@
 			<iNumCitiesMaintenanceModifier>0</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>4</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>5</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>5</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-10</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -11803,16 +11795,6 @@
 			<BuildingHealthChanges/>
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges>
-				<!--
-				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_GUILDS</ImprovementType>
-					<ImprovementYields>
-						<iYield>0</iYield>
-						<iYield>1</iYield>
-						<iYield>0</iYield>
-					</ImprovementYields>
-				</ImprovementYieldChange>
-				-->
 				<ImprovementYieldChange>
 					<ImprovementType>IMPROVEMENT_COTTAGE</ImprovementType>
 					<ImprovementYields>
@@ -11880,7 +11862,6 @@
 			<Flavors/>
 			<iInflation>-10</iInflation>
 			<iSharedCivicTradeRouteModifier>5</iSharedCivicTradeRouteModifier>
-			<iRealCorporationMaintenanceModifier>-10</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
@@ -11907,12 +11888,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12074,7 +12049,6 @@
 			<Flavors/>
 			<iInflation>5</iInflation>
 			<iLandmarkHappiness>1</iLandmarkHappiness>
-			<iRealCorporationMaintenanceModifier>15</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_ECONOMY</CivicOptionType>
@@ -12095,18 +12069,12 @@
 			<iNumCitiesMaintenanceModifier>10</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>0</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>0</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-10</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12185,7 +12153,6 @@
 			<Flavors/>
 			<iHurryCostModifier>33</iHurryCostModifier>
 			<iSharedCivicTradeRouteModifier>0</iSharedCivicTradeRouteModifier>
-			<iRealCorporationMaintenanceModifier>-10</iRealCorporationMaintenanceModifier>
 			<PropertyManipulators>
 				<PropertySource>
 					<PropertySourceType>PROPERTYSOURCE_CONSTANT</PropertySourceType>
@@ -12235,12 +12202,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12318,7 +12279,8 @@
 				<iYield>1</iYield>
 				<iYield>0</iYield>
 			</LandmarkYieldChanges>
-		</CivicInfo>		
+		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WELFARE</CivicOptionType>
 			<Type>CIVIC_SURVIVAL</Type>
@@ -12344,12 +12306,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>1</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitary>1</iFreeUnitUpkeepMilitary>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12424,7 +12381,40 @@
 			<!-- Revolution Mod End -->
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WELFARE</CivicOptionType>
@@ -12451,12 +12441,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12602,12 +12586,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>10</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12693,6 +12671,78 @@
 					<BuildingType>BUILDING_SHAOLIN</BuildingType>
 					<iHealthChange>2</iHealthChange>
 				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_OLOFIN</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_VOODOO_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_SHAMANS_YURTA</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_SIKH_TEMPLE</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_SHINTO_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_SHAMAN_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_SCIENTOLOGY_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_RODNOVERY_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_NGAI</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_MORMON_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_AN</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_JAIN_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_DRUID_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_CAODAI_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_CANAANISM_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_BAHAI_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_ASATRU_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
+				<BuildingHealthChange>
+					<BuildingType>BUILDING_ANDEAN_MONASTERY</BuildingType>
+					<iHealthChange>1</iHealthChange>
+				</BuildingHealthChange>
 			</BuildingHealthChanges>
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges/>
@@ -12743,12 +12793,6 @@
 			<iWorkerSpeedModifier>20</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -12915,18 +12959,12 @@
 			<iNumCitiesMaintenanceModifier>0</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>0</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>0</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>10</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-45</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13070,7 +13108,6 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>-45</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WELFARE</CivicOptionType>
@@ -13091,18 +13128,12 @@
 			<iNumCitiesMaintenanceModifier>15</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>3</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>4</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>25</iCorporationMaintenanceModifier>
 			<iExtraHealth>1</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13218,7 +13249,6 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>-55</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WELFARE</CivicOptionType>
@@ -13239,18 +13269,12 @@
 			<iNumCitiesMaintenanceModifier>10</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>4</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>5</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>-25</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-45</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13346,7 +13370,6 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>-45</iRealCorporationMaintenanceModifier>
 			<!-- Wrong Civic for these Modifiers
 			<BuildingProductionModifiers>
 				<BuildingProductionModifier>
@@ -13398,18 +13421,12 @@
 			<iNumCitiesMaintenanceModifier>0</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>3</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>3</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>30</iCorporationMaintenanceModifier>
 			<iExtraHealth>1</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13533,7 +13550,6 @@
 			<bFixedBorders>0</bFixedBorders>
 			<WeLoveTheKing/>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>-125</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WELFARE</CivicOptionType>
@@ -13560,12 +13576,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13701,12 +13711,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13809,12 +13813,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>1</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iCivilianUnitUpkeepMod>10</iCivilianUnitUpkeepMod>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -13925,12 +13924,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14018,6 +14011,7 @@
 				</PropertySource>
 			</PropertyManipulators>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_CURRENCY</CivicOptionType>
 			<Type>CIVIC_CURRENCY_LESS</Type>
@@ -14041,12 +14035,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>-10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14123,7 +14111,40 @@
 			<iInflation>0</iInflation>
 			<iAttitudeShareMod>0</iAttitudeShareMod>
 			<iPopulationgrowthratepercentage>0</iPopulationgrowthratepercentage>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_CURRENCY</CivicOptionType>
@@ -14148,12 +14169,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14284,18 +14299,12 @@
 			<iNumCitiesMaintenanceModifier>5</iNumCitiesMaintenanceModifier>
 			<iHomeAreaMaintenanceModifier>1</iHomeAreaMaintenanceModifier>
 			<iOtherAreaMaintenanceModifier>3</iOtherAreaMaintenanceModifier>
-			<iCorporationMaintenanceModifier>0</iCorporationMaintenanceModifier>
+			<iCorporationMaintenanceModifier>-55</iCorporationMaintenanceModifier>
 			<iExtraHealth>0</iExtraHealth>
 			<iFreeExperience>0</iFreeExperience>
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14381,7 +14390,6 @@
 				</Flavor>
 			</Flavors>
 			<iInflation>0</iInflation>
-			<iRealCorporationMaintenanceModifier>-55</iRealCorporationMaintenanceModifier>
 			<iForeignTradeRouteModifier>-5</iForeignTradeRouteModifier>
 			<BuildingProductionModifiers>
 				<BuildingProductionModifier>
@@ -14421,12 +14429,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14529,12 +14531,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14657,12 +14653,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14765,12 +14755,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14873,12 +14857,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -14994,12 +14972,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15102,12 +15074,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15218,12 +15184,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15326,12 +15286,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15411,6 +15365,7 @@
 			<Flavors/>
 			<iForeignTradeRouteModifier>30</iForeignTradeRouteModifier>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WORKFORCE</CivicOptionType>
 			<Type>CIVIC_UNORGANIZED</Type>
@@ -15440,6 +15395,40 @@
 				</BuildingHappinessChange>
 			</BuildingHappinessChanges>
 			<Button>art/Interface/buttons/civics/sparth/labor_unorganized.dds</Button>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WORKFORCE</CivicOptionType>
@@ -15467,12 +15456,6 @@
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15608,12 +15591,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15804,12 +15781,6 @@
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -15894,7 +15865,6 @@
 			<WeLoveTheKing/>
 			<iAttitudeShareMod>1</iAttitudeShareMod>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>0</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WORKFORCE</CivicOptionType>
@@ -15922,12 +15892,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16070,12 +16034,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16186,12 +16144,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16296,12 +16248,7 @@
 			<iWorkerSpeedModifier>25</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>5</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepCivilian>5</iFreeUnitUpkeepCivilian>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16411,12 +16358,6 @@
 			<iWorkerSpeedModifier>35</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16501,7 +16442,6 @@
 			<WeLoveTheKing/>
 			<iAttitudeShareMod>1</iAttitudeShareMod>
 			<Flavors/>
-			<iRealCorporationMaintenanceModifier>-85</iRealCorporationMaintenanceModifier>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_WORKFORCE</CivicOptionType>
@@ -16528,12 +16468,6 @@
 			<iWorkerSpeedModifier>33</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16620,6 +16554,7 @@
 			<WeLoveTheKing/>
 			<Flavors/>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_EDUCATION</CivicOptionType>
 			<Type>CIVIC_IGNORANCE</Type>
@@ -16639,6 +16574,40 @@
 				<iCommerce>0</iCommerce>
 			</CapitalCommerceModifiers>
 			<Button>art/Interface/buttons/civics/sparth/education_ignorance.dds</Button>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_EDUCATION</CivicOptionType>
@@ -16663,12 +16632,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16782,12 +16745,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -16905,12 +16862,7 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>20</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>5</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
+			<iFreeUnitUpkeepMilitaryPopPercent>15</iFreeUnitUpkeepMilitaryPopPercent>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17018,12 +16970,6 @@
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17151,6 +17097,46 @@
 					<BuildingType>BUILDING_MESOAMERICAN_MONASTERY</BuildingType>
 					<iProductionModifier>20</iProductionModifier>
 				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_VOODOO_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_SHINTO_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_SHAMAN_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_SCIENTOLOGY_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_DRUID_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_CAODAI_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_CANAANISM_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_BAHAI_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_ASATRU_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_ANDEAN_MONASTERY</BuildingType>
+					<iProductionModifier>20</iProductionModifier>
+				</BuildingProductionModifier>
 			</BuildingProductionModifiers>
 		</CivicInfo>
 		<CivicInfo>
@@ -17176,12 +17162,6 @@
 			<iWorkerSpeedModifier>5</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17288,12 +17268,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17395,12 +17369,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>10</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17512,12 +17480,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>10</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17636,12 +17598,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17758,12 +17714,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17866,12 +17816,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -17974,12 +17918,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18064,8 +18002,18 @@
 			<iAttitudeShareMod>0</iAttitudeShareMod>
 			<CivicAttitudeChanges/>
 			<Flavors/>
-			<BuildingProductionModifiers/>
+			<BuildingProductionModifiers>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_UNIVERSAL_LIBRARY</BuildingType>
+					<iProductionModifier>50</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_ENCYCLOPEDIA_GALACTICA</BuildingType>
+					<iProductionModifier>100</iProductionModifier>
+				</BuildingProductionModifier>
+			</BuildingProductionModifiers>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_LANGUAGE</CivicOptionType>
 			<Type>CIVIC_NONVERBAL</Type>
@@ -18089,12 +18037,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18151,7 +18093,40 @@
 			<!-- Revolution Mod End -->
 			<WeLoveTheKing/>
 			<iAttitudeShareMod>0</iAttitudeShareMod>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 			<CivicAttitudeChanges>
 				<CivicAttitudeChange>
 					<CivicType>CIVIC_NONVERBAL</CivicType>
@@ -18213,12 +18188,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18347,12 +18316,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18481,12 +18444,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18615,12 +18572,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18744,12 +18695,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -18873,12 +18818,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19002,12 +18941,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19132,12 +19065,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19248,6 +19175,7 @@
 				</CivicAttitudeChange>
 			</CivicAttitudeChanges>
 		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_IMMIGRATION</CivicOptionType>
 			<Type>CIVIC_BORDERLESS</Type>
@@ -19271,12 +19199,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19351,7 +19273,40 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<iAttitudeShareMod>0</iAttitudeShareMod>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_IMMIGRATION</CivicOptionType>
@@ -19376,12 +19331,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19499,12 +19448,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19615,12 +19558,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19736,12 +19673,6 @@
 			<iWorkerSpeedModifier>10</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>10</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19860,12 +19791,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -19978,12 +19903,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20097,12 +20016,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20175,7 +20088,8 @@
 			</PropertyManipulators>
 			<iAttitudeShareMod>0</iAttitudeShareMod>
 			<Flavors/>
-		</CivicInfo>		
+		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_AGICULTURE</CivicOptionType>
 			<Type>CIVIC_HUNTER_GATHERING</Type>
@@ -20199,12 +20113,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20271,7 +20179,40 @@
 			<WeLoveTheKing/>
 			<iAttitudeShareMod>0</iAttitudeShareMod>
 			<iPopulationgrowthratepercentage>50</iPopulationgrowthratepercentage>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_AGICULTURE</CivicOptionType>
@@ -20296,12 +20237,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20407,12 +20342,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20507,12 +20436,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20608,12 +20531,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20709,12 +20626,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20843,12 +20754,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -20961,12 +20866,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21078,12 +20977,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21171,6 +21064,16 @@
 				</PropertySource>
 			</PropertyManipulators>
 			<Flavors/>
+			<BuildingProductionModifiers>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_SYNTHETIC_MEAT_BIOREACTOR</BuildingType>
+					<iProductionModifier>40</iProductionModifier>
+				</BuildingProductionModifier>
+				<BuildingProductionModifier>
+					<BuildingType>BUILDING_FOOD_MANUFACTURING_DISTRICT</BuildingType>
+					<iProductionModifier>40</iProductionModifier>
+				</BuildingProductionModifier>
+			</BuildingProductionModifiers>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_AGICULTURE</CivicOptionType>
@@ -21195,12 +21098,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21288,7 +21185,8 @@
 			<iAttitudeShareMod>0</iAttitudeShareMod>
 			<iPopulationgrowthratepercentage>0</iPopulationgrowthratepercentage>
 			<Flavors/>
-		</CivicInfo>		
+		</CivicInfo>
+		<!-- Starter Civic -->
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_GARBAGE</CivicOptionType>
 			<Type>CIVIC_GARBAGE_ANYWHERE</Type>
@@ -21312,12 +21210,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21396,7 +21288,40 @@
 					<iAmountPerTurn>1</iAmountPerTurn>
 				</PropertySource>
 			</PropertyManipulators>
-			<Flavors/>
+			<Flavors>
+				<Flavor>
+					<FlavorType>FLAVOR_MILITARY</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_RELIGION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_PRODUCTION</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GOLD</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_SCIENCE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_CULTURE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_GROWTH</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+				<Flavor>
+					<FlavorType>FLAVOR_ESPIONAGE</FlavorType>
+					<iFlavor>0</iFlavor>
+				</Flavor>
+			</Flavors>
 		</CivicInfo>
 		<CivicInfo>
 			<CivicOptionType>CIVICOPTION_GARBAGE</CivicOptionType>
@@ -21421,12 +21346,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21548,12 +21467,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21657,12 +21570,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21778,12 +21685,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -21883,12 +21784,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -22009,12 +21904,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -22126,12 +22015,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>5</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>5</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -22250,12 +22133,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -22350,12 +22227,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>
@@ -22454,12 +22325,6 @@
 			<iWorkerSpeedModifier>0</iWorkerSpeedModifier>
 			<iImprovementUpgradeRateModifier>0</iImprovementUpgradeRateModifier>
 			<iMilitaryProductionModifier>0</iMilitaryProductionModifier>
-			<iBaseFreeUnits>0</iBaseFreeUnits>
-			<iBaseFreeMilitaryUnits>0</iBaseFreeMilitaryUnits>
-			<iFreeUnitsPopulationPercent>0</iFreeUnitsPopulationPercent>
-			<iFreeMilitaryUnitsPopulationPercent>0</iFreeMilitaryUnitsPopulationPercent>
-			<iGoldPerUnit>0</iGoldPerUnit>
-			<iGoldPerMilitaryUnit>0</iGoldPerMilitaryUnit>
 			<iHappyPerMilitaryUnit>0</iHappyPerMilitaryUnit>
 			<bMilitaryFoodProduction>0</bMilitaryFoodProduction>
 			<iMaxConscript>0</iMaxConscript>

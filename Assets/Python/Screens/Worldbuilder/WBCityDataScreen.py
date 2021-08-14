@@ -10,8 +10,7 @@ import WBPlayerUnits
 import WBReligionScreen
 import WBCorporationScreen
 import WBInfoScreen
-import CvWorldBuilderScreen
-import CvScreensInterface
+
 GC = CyGlobalContext()
 
 iChange = 1
@@ -23,7 +22,8 @@ bWonder = False
 iSelectedYield = 0
 
 class WBCityDataScreen:
-	def __init__(self):
+	def __init__(self, WB):
+		self.WB = WB
 		self.iTable_Y = 80
 		self.lCities = []
 
@@ -40,7 +40,7 @@ class WBCityDataScreen:
 		screen.setRenderInterfaceOnly(True)
 		screen.addPanel("MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
-		screen.setText("CityDataExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+		screen.setText("CityDataExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
 
 		screen.addDropDownBoxGFC("CurrentPage", 20, screen.getYResolution() - 42, iWidth - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("CurrentPage", CyTranslator().getText("TXT_KEY_WB_CITY_DATA", ()), 0, 0, False)
@@ -125,14 +125,12 @@ class WBCityDataScreen:
 			pPlayerX = GC.getPlayer(iPlayerX)
 			if iOwnerType == 1 and iPlayerX != iPlayer: continue
 			if iOwnerType == 2 and pPlayerX.getTeam() != pCity.getTeam(): continue
-			(loopCity, iter) = pPlayerX.firstCity(False)
-			while(loopCity):
+			for loopCity in pPlayerX.cities():
 				if iPlotType == 2 or (iPlotType == 1 and loopCity.plot().getArea() == pCity.plot().getArea()):
 					sColor = CyTranslator().getText("[COLOR_WARNING_TEXT]", ())
 					if loopCity.getID() == pCity.getID() and iPlayerX == iPlayer:
 						sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
 					self.lCities.append([loopCity, iPlayerX, sColor])
-				(loopCity, iter) = pPlayerX.nextCity(iter, False)
 		self.placeCityTable()
 
 	def placeCityTable(self):
@@ -344,25 +342,25 @@ class WBCityDataScreen:
 		elif inputClass.getFunctionName() == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 0:
-				WBCityEditScreen.WBCityEditScreen(CvScreensInterface.worldBuilderScreen).interfaceScreen(pCity)
+				WBCityEditScreen.WBCityEditScreen(self.WB).interfaceScreen(pCity)
 			elif iIndex == 2:
-				WBBuildingScreen.WBBuildingScreen().interfaceScreen(pCity)
+				WBBuildingScreen.WBBuildingScreen(self.WB).interfaceScreen(pCity)
 			elif iIndex == 3:
-				WBPlayerScreen.WBPlayerScreen().interfaceScreen(iPlayer)
+				WBPlayerScreen.WBPlayerScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 4:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(pCity.getTeam())
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(pCity.getTeam())
 			elif iIndex == 5:
-				WBPlayerUnits.WBPlayerUnits().interfaceScreen(iPlayer)
+				WBPlayerUnits.WBPlayerUnits(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 6:
-				WBPlotScreen.WBPlotScreen().interfaceScreen(pCity.plot())
+				WBPlotScreen.WBPlotScreen(self.WB).interfaceScreen(pCity.plot())
 			elif iIndex == 7:
-				WBEventScreen.WBEventScreen().interfaceScreen(pCity.plot())
+				WBEventScreen.WBEventScreen(self.WB).interfaceScreen(pCity.plot())
 			elif iIndex == 8:
-				WBReligionScreen.WBReligionScreen().interfaceScreen(iPlayer)
+				WBReligionScreen.WBReligionScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 9:
-				WBCorporationScreen.WBCorporationScreen().interfaceScreen(iPlayer)
+				WBCorporationScreen.WBCorporationScreen(self.WB).interfaceScreen(iPlayer)
 			elif iIndex == 11:
-				WBInfoScreen.WBInfoScreen().interfaceScreen(iPlayer)
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(iPlayer)
 
 		elif inputClass.getFunctionName() == "OwnerType":
 			iOwnerType = screen.getPullDownData("OwnerType", screen.getSelectedPullDownID("OwnerType"))

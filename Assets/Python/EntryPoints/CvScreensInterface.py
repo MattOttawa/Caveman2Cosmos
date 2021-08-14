@@ -4,16 +4,9 @@
 from CvPythonExtensions import *
 from CvScreenEnums import *
 import types
-
 import CvMainInterface
-
 import CvOptionsScreen
 import CvReplayScreen
-
-#import CvDiplomacy
-
-import CvEventInterface
-import CvPopupInterface
 import ScreenInput as PyScreenInput
 
 import BugCore
@@ -140,12 +133,13 @@ def showTopCivs():
 
 def showInfoScreen(argsList):
 	if CyGame().getActivePlayer() != -1:
-		iTabID = argsList[0]
-		iEndGame = argsList[1]
-		screenMap[INFO_SCREEN].showScreen(-1, iTabID, iEndGame)
+		screenMap[INFO_SCREEN].interfaceScreen(argsList[0], argsList[1])
 
 def showDebugInfoScreen():
 	screenMap[DEBUG_INFO_SCREEN].interfaceScreen()
+
+def showDebugScreen():
+	screenMap[DEBUG_SCREEN].interfaceScreen()
 
 def configTechSplash(option=None, value=None):
 	if value is None:
@@ -403,7 +397,7 @@ def WorldBuilderNormalPlayerTabModeCB():
 # Called by the exe for WB and AS #
 #---------------------------------#
 def WorldBuilderOnAdvancedStartBrushSelected(argsList):
-	iList, iIndex, iTab = argsList;
+	iList, iIndex, iTab = argsList
 	print "WorldBuilderOnAdvancedStartBrushSelected, iList=%d, iIndex=%d, type=%d" %(iList, iIndex, iTab)
 	if iTab == advancedStartScreen.getTechTab():
 		showTechChooser()
@@ -569,7 +563,7 @@ def cityWarningOnClickedCallback(argsList):
 	bOption1 = argsList[6]
 	bOption2 = argsList[7]
 	city = CyGlobalContext().getPlayer(CyGlobalContext().getGame().getActivePlayer()).getCity(iData1)
-	if not city.isNone():
+	if city:
 		if (iButtonId == 0):
 			if (city.isProductionProcess()):
 				CyMessageControl().sendPushOrder(iData1, iData2, iData3, False, False, False)
@@ -593,7 +587,7 @@ def liberateOnClickedCallback(argsList):
 	bOption1 = argsList[6]
 	bOption2 = argsList[7]
 	city = CyGlobalContext().getPlayer(CyGlobalContext().getGame().getActivePlayer()).getCity(iData1)
-	if not city.isNone():
+	if city:
 		if iButtonId == 0:
 			CyMessageControl().sendDoTask(iData1, TaskTypes.TASK_LIBERATE, 0, -1, False, False, False, False)
 		elif iButtonId == 2:
@@ -609,7 +603,7 @@ def colonyOnClickedCallback(argsList):
 	bOption1 = argsList[6]
 	bOption2 = argsList[7]
 	city = CyGlobalContext().getPlayer(CyGlobalContext().getGame().getActivePlayer()).getCity(iData1)
-	if not city.isNone():
+	if city:
 		if iButtonId == 0:
 			CyMessageControl().sendEmpireSplit(CyGlobalContext().getGame().getActivePlayer(), city.area().getID())
 		elif iButtonId == 2:
@@ -682,9 +676,10 @@ def lateInit():
 	import CvDawnOfMan
 	import CvTopCivs
 	import Forgetful
-	import CvDebugInfoScreen
 	import CvTechChooser
 	import BuildListScreen
+	import CvDebugInfoScreen
+	import DebugScreen
 	screenMap[CORPORATION_SCREEN]	= CvCorporationScreen.CvCorporationScreen()
 	screenMap[ESPIONAGE_ADVISOR]	= CvEspionageAdvisor.CvEspionageAdvisor()
 	screenMap[MILITARY_ADVISOR]		= CvMilitaryAdvisor.CvMilitaryAdvisor(MILITARY_ADVISOR)
@@ -699,14 +694,15 @@ def lateInit():
 	screenMap[DAWN_OF_MAN]			= CvDawnOfMan.CvDawnOfMan()
 	screenMap[TOP_CIVS]				= CvTopCivs.CvTopCivs(TOP_CIVS)
 	screenMap[FORGETFUL_SCREEN]		= Forgetful.Forgetful()
-	screenMap[DEBUG_INFO_SCREEN]	= CvDebugInfoScreen.CvDebugInfoScreen()
 	screenMap[TECH_CHOOSER]			= CvTechChooser.CvTechChooser()
 	screenMap[BUILD_LIST_SCREEN]	= BuildListScreen.BuildListScreen()
+	screenMap[DEBUG_INFO_SCREEN]	= CvDebugInfoScreen.CvDebugInfoScreen()
+	screenMap[DEBUG_SCREEN]			= DebugScreen.DebugScreen(DEBUG_SCREEN)
 
-	import CvWorldBuilderScreen, CvAdvancedStartScreen
+	import WorldBuilder, CvAdvancedStartScreen
 	global worldBuilderScreen, advancedStartScreen
 	advancedStartScreen = CvAdvancedStartScreen.CvAdvancedStartScreen()
-	worldBuilderScreen = CvWorldBuilderScreen.CvWorldBuilderScreen(WORLDBUILDER_SCREEN)
+	worldBuilderScreen = WorldBuilder.WorldBuilder(WORLDBUILDER_SCREEN)
 	screenMap[WORLDBUILDER_SCREEN] = worldBuilderScreen
 	import WBPlotScreen
 	import WBEventScreen
@@ -719,29 +715,27 @@ def lateInit():
 	import WBUnitScreen
 	import WBPromotionScreen
 	import WBDiplomacyScreen
-	import WBGameDataScreen
 	import WBPlayerUnits
 	import WBReligionScreen
 	import WBCorporationScreen
 	import WBInfoScreen
 	import WBTradeScreen
-	screenMap[WB_PLOT]			= WBPlotScreen.WBPlotScreen()
-	screenMap[WB_EVENT]			= WBEventScreen.WBEventScreen()
-	screenMap[WB_BUILDING]		= WBBuildingScreen.WBBuildingScreen()
-	screenMap[WB_CITYDATA]		= WBCityDataScreen.WBCityDataScreen()
+	screenMap[WB_PLOT]			= WBPlotScreen.WBPlotScreen(worldBuilderScreen)
+	screenMap[WB_EVENT]			= WBEventScreen.WBEventScreen(worldBuilderScreen)
+	screenMap[WB_BUILDING]		= WBBuildingScreen.WBBuildingScreen(worldBuilderScreen)
+	screenMap[WB_CITYDATA]		= WBCityDataScreen.WBCityDataScreen(worldBuilderScreen)
 	screenMap[WB_CITYEDIT]		= WBCityEditScreen.WBCityEditScreen(worldBuilderScreen)
-	screenMap[WB_PROJECT]		= WBProjectScreen.WBProjectScreen()
-	screenMap[WB_TEAM]			= WBTeamScreen.WBTeamScreen()
-	screenMap[WB_PLAYER]		= WBPlayerScreen.WBPlayerScreen()
+	screenMap[WB_PROJECT]		= WBProjectScreen.WBProjectScreen(worldBuilderScreen)
+	screenMap[WB_TEAM]			= WBTeamScreen.WBTeamScreen(worldBuilderScreen)
+	screenMap[WB_PLAYER]		= WBPlayerScreen.WBPlayerScreen(worldBuilderScreen)
 	screenMap[WB_UNIT]			= WBUnitScreen.WBUnitScreen(worldBuilderScreen)
-	screenMap[WB_PROMOTION]		= WBPromotionScreen.WBPromotionScreen()
-	screenMap[WB_DIPLOMACY]		= WBDiplomacyScreen.WBDiplomacyScreen()
-	screenMap[WB_GAMEDATA]		= WBGameDataScreen.WBGameDataScreen(worldBuilderScreen)
-	screenMap[WB_UNITLIST]		= WBPlayerUnits.WBPlayerUnits()
-	screenMap[WB_RELIGION]		= WBReligionScreen.WBReligionScreen()
-	screenMap[WB_CORPORATION]	= WBCorporationScreen.WBCorporationScreen()
-	screenMap[WB_INFO]			= WBInfoScreen.WBInfoScreen()
-	screenMap[WB_TRADE]			= WBTradeScreen.WBTradeScreen()
+	screenMap[WB_PROMOTION]		= WBPromotionScreen.WBPromotionScreen(worldBuilderScreen)
+	screenMap[WB_DIPLOMACY]		= WBDiplomacyScreen.WBDiplomacyScreen(worldBuilderScreen)
+	screenMap[WB_UNITLIST]		= WBPlayerUnits.WBPlayerUnits(worldBuilderScreen)
+	screenMap[WB_RELIGION]		= WBReligionScreen.WBReligionScreen(worldBuilderScreen)
+	screenMap[WB_CORPORATION]	= WBCorporationScreen.WBCorporationScreen(worldBuilderScreen)
+	screenMap[WB_INFO]			= WBInfoScreen.WBInfoScreen(worldBuilderScreen)
+	screenMap[WB_TRADE]			= WBTradeScreen.WBTradeScreen(worldBuilderScreen)
 
 
 

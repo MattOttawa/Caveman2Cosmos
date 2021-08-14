@@ -6,9 +6,10 @@ import WBTeamScreen
 import WBPlotScreen
 import WBEventScreen
 import WBPlayerUnits
-import CvWorldBuilderScreen
+import WorldBuilder
 import WBInfoScreen
 import Popup
+
 GC = CyGlobalContext()
 
 iChange = 1
@@ -25,8 +26,8 @@ bUnitType = True
 
 class WBUnitScreen:
 
-	def __init__(self, main):
-		self.top = main
+	def __init__(self, WB):
+		self.WB = WB
 		self.iTable_Y = 110
 		self.iScriptH = 90
 		self.lSelectableMissions = {	"MISSION_SPREAD":		[GC.getReligionInfo, 7869],
@@ -37,7 +38,7 @@ class WBUnitScreen:
 
 	def interfaceScreen(self, pUnitX):
 		screen = CyGInterfaceScreen( "WBUnitScreen", CvScreenEnums.WB_UNIT)
-		
+
 		global pUnit
 		global pPlot
 
@@ -45,16 +46,16 @@ class WBUnitScreen:
 		pPlot = pUnitX.plot()
 		iWidth = screen.getXResolution()/5 - 20
 
-		if self.top.iTargetPlotX == -1 or self.top.iTargetPlotY == -1:
-			self.top.iTargetPlotX = pPlot.getX()
-			self.top.iTargetPlotY = pPlot.getY()
-		
+		if self.WB.iTargetPlotX == -1 or self.WB.iTargetPlotY == -1:
+			self.WB.iTargetPlotX = pPlot.getX()
+			self.WB.iTargetPlotY = pPlot.getY()
+
 		screen.setRenderInterfaceOnly(True)
 		screen.addPanel( "MainBG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN )
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
 
-		screen.setText("UnitExit", "Background", "<font=4>" + CyTranslator().getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
-		
+		screen.setText("UnitExit", "Background", "<font=4>" + CyTranslator().getText("TXT_WORD_EXIT", ()).upper() + "</font>", 1<<1, screen.getXResolution() - 30, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1 )
+
 		screen.addDropDownBoxGFC("OwnerType", 20, self.iTable_Y - 90, iWidth, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("OwnerType", CyTranslator().getText("TXT_KEY_WB_CITY_ALL", ()), 0, 0, 0 == iOwnerType)
 		screen.addPullDownString("OwnerType", CyTranslator().getText("TXT_KEY_PITBOSS_TEAM", ()), 2, 2, 2 == iOwnerType)
@@ -86,7 +87,7 @@ class WBUnitScreen:
 		screen.addDropDownBoxGFC("ChangeType", iX, screen.getYResolution() - 42, iWidth, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_XLEVEL", ()), 0, 0, 0 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("INTERFACE_PANE_EXPERIENCE", ()), 1, 1, 1 == iChangeType)
-		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_DEMO_SCREEN_STRENGTH_TEXT", ()), 2, 2, 2 == iChangeType)
+		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_DEMO_SCREEN_STRENGTH", ()), 2, 2, 2 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_DAMAGE", ()), 3, 3, 3 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_MOVES", ()), 4, 4, 4 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_IMMOBILE_TIMER", ()), 5, 5, 5 == iChangeType)
@@ -95,13 +96,13 @@ class WBUnitScreen:
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_MADE_INTERCEPT", ()), 8, 8, 8 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_DIRECTION", ()), 9, 9, 9 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_UNIT_AI", ()), 10, 10, 10 == iChangeType)
-		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_CARGO_SPACE", ()), 11, 11, 11 == iChangeType)
+		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_WORD_CARGO", ()), 11, 11, 11 == iChangeType)
 		screen.addPullDownString("ChangeType", CyTranslator().getText("TXT_KEY_WB_SCRIPT_DATA", ()), 12, 12, 12 == iChangeType)
 
 		iX += iWidth
 		sText = CyTranslator().getText("[COLOR_SELECTED_TEXT]", ()) + "<font=3b>" + CyTranslator().getText("TXT_KEY_WB_COPY_ALL", (CyTranslator().getText("TXT_KEY_PEDIA_CATEGORY_UNIT", ()),)) + "</color></font>"
 		screen.setText("CopyStats", "Background", sText, 1<<0, iX, screen.getYResolution() - 42, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		
+
 		global lUnitAI
 		lUnitAI = []
 		for i in xrange(UnitAITypes.NUM_UNITAI_TYPES):
@@ -144,9 +145,9 @@ class WBUnitScreen:
 		global iMissionData1
 
 		screen.setText("PushMission", "Background", "<font=3b>" + CyTranslator().getText("[COLOR_SELECTED_TEXT]", ()) + CyTranslator().getText("TXT_KEY_WB_PUSH_MISSION", ()) + "</color></font>", 1<<2, screen.getXResolution() *7/10, iY - 30, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		sText = (CyTranslator().getText("[COLOR_SELECTED_TEXT]", ()) + "<font=3>" + CyTranslator().getText("TXT_KEY_WB_TARGET_PLOT", ()) + ": " + "(%d,%d)" + "</color></font>") % (self.top.iTargetPlotX, self.top.iTargetPlotY)
+		sText = (CyTranslator().getText("[COLOR_SELECTED_TEXT]", ()) + "<font=3>" + CyTranslator().getText("TXT_KEY_WB_TARGET_PLOT", ()) + ": " + "(%d,%d)" + "</color></font>") % (self.WB.iTargetPlotX, self.WB.iTargetPlotY)
 		screen.setText("TargetPlot", "Background", sText, 1<<2, screen.getXResolution() *7/10, iY, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		
+
 		iY += 30
 		screen.addDropDownBoxGFC("Missions", iX, iY, iWidth, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		UnitInfo = GC.getUnitInfo(pUnit.getUnitType())
@@ -163,7 +164,7 @@ class WBUnitScreen:
 				continue
 			elif sType == "MISSION_BUILD":
 				for j in xrange(GC.getNumBuildInfos()):
-					if UnitInfo.getBuilds(j):
+					if UnitInfo.hasBuild(BuildTypes(j)):
 						lData1.append(j)
 			elif sType == "MISSION_SPREAD":
 				for j in xrange(GC.getNumReligionInfos()):
@@ -183,8 +184,8 @@ class WBUnitScreen:
 			elif sType == "MISSION_GOLDEN_AGE":
 				lData1 = [-1]
 			else:
-				lData1 = [self.top.iTargetPlotX]
-				iData2 = self.top.iTargetPlotY
+				lData1 = [self.WB.iTargetPlotX]
+				iData2 = self.WB.iTargetPlotY
 				pTargetPlot = CyMap().plot(lData1[0], iData2)
 				if pTargetPlot.isNone():
 					lData1 = [pPlot.getX()]
@@ -359,8 +360,8 @@ class WBUnitScreen:
 		iY += 30
 		sText = ""
 		iActivity = pUnit.getGroup().getActivityType()
-		if iActivity > -1 and iActivity < len(CvWorldBuilderScreen.Activities):
-			sText = "<font=3>" + CvWorldBuilderScreen.Activities[iActivity] + "</font>"
+		if iActivity > -1 and iActivity < len(WorldBuilder.Activities):
+			sText = "<font=3>" + WorldBuilder.Activities[iActivity] + "</font>"
 		screen.setLabel("UnitActivity", "Background", sText, 1<<2, screen.getXResolution()/2, iY + 1, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 	def placeScript(self):
@@ -377,7 +378,7 @@ class WBUnitScreen:
 		screen = CyGInterfaceScreen("WBUnitScreen", CvScreenEnums.WB_UNIT)
 		sText = CyTranslator().getText("[COLOR_SELECTED_TEXT]", ()) + "<font=4b>" + pUnit.getName() + "</color></font>"
 		screen.setText("UnitScreenHeader", "Background", sText, 1<<2, screen.getXResolution()/2, 20, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_UNIT_NAME, -1, -1)
-		sText = u"<font=3b>%s ID: %d, %s ID: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_UNIT", ()), pUnit.getID(), CyTranslator().getText("TXT_KEY_WB_GROUP", ()), pUnit.getGroupID())
+		sText = u"<font=3b>%s ID: %d, %s ID: %d</font>" %(CyTranslator().getText("TXT_WORD_UNIT", ()), pUnit.getID(), CyTranslator().getText("TXT_KEY_WB_GROUP", ()), pUnit.getGroupID())
 		screen.setLabel("UnitScreenHeaderB", "Background", sText, 1<<2, screen.getXResolution()/2, 50, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		sText = "<font=3b>%s, X: %d, Y: %d</font>" %(CyTranslator().getText("TXT_KEY_WB_LATITUDE",(pPlot.getLatitude(),)), pPlot.getX(), pPlot.getY())
 		screen.setLabel("UnitLocation", "Background", sText, 1<<2, screen.getXResolution()/2, 70, -0.1, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
@@ -409,7 +410,7 @@ class WBUnitScreen:
 
 		iY += 30
 		screen.addDropDownBoxGFC("CommandUnits", iX, iY, iWidth, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
-		screen.addPullDownString("CommandUnits", CyTranslator().getText("TXT_KEY_WB_UNIT", ()), 0, 0, iCommandUnitType == 0)
+		screen.addPullDownString("CommandUnits", CyTranslator().getText("TXT_WORD_UNIT", ()), 0, 0, iCommandUnitType == 0)
 		screen.addPullDownString("CommandUnits", CyTranslator().getText("TXT_KEY_SPACE_SHIP_SCREEN_TYPE_BUTTON", ()), 1, 1, iCommandUnitType == 1)
 		screen.addPullDownString("CommandUnits", CyTranslator().getText("TXT_KEY_PEDIA_CATEGORY_UNIT_COMBAT", ()), 2, 2, iCommandUnitType == 2)
 		screen.addPullDownString("CommandUnits", CyTranslator().getText("TXT_KEY_DOMAIN", ()), 3, 3, 3 == iCommandUnitType == 3)
@@ -517,8 +518,7 @@ class WBUnitScreen:
 			if iOwnerType == 1 and iPlayerX != pUnit.getOwner(): continue
 			if iOwnerType == 2 and pPlayerX.getTeam() != pUnit.getTeam(): continue
 			if pPlayerX.isAlive():
-				(loopUnit, iter) = pPlayerX.firstUnit(False)
-				while(loopUnit):
+				for loopUnit in pPlayerX.units():
 					bCopy = True
 					if iPlotType == 0:
 						if loopUnit.getX() != pUnit.getX() or loopUnit.getY() != pUnit.getY():
@@ -540,10 +540,9 @@ class WBUnitScreen:
 							bCopy = False
 					if bCopy:
 						lUnits.append([loopUnit.getOwner(), loopUnit.getID()])
-					(loopUnit, iter) = pPlayerX.nextUnit(iter, False)
 		lUnits.sort()
 		self.placeCurrentUnit()
-		
+
 	def placeCurrentUnit(self):
 		screen = CyGInterfaceScreen("WBUnitScreen", CvScreenEnums.WB_UNIT)
 
@@ -558,7 +557,7 @@ class WBUnitScreen:
 		for i in lUnits:
 			pPlayerX = GC.getPlayer(i[0])
 			pUnitX = pPlayerX.getUnit(i[1])
-			if pUnitX.isNone(): continue
+			if pUnitX is None: continue
 			iRow = screen.appendTableRow("WBCurrentUnit")
 			sText = pUnitX.getName()
 			if len(pUnitX.getNameNoDesc()):
@@ -582,7 +581,7 @@ class WBUnitScreen:
 		iWidth = screen.getXResolution()/5 - 20
 		screen.addDropDownBoxGFC("CargoType", iX, iY - 30, iWidth, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
 		screen.addPullDownString("CargoType", CyTranslator().getText("TXT_KEY_UNIT_TRANSPORT", ()), 0, 0, not bCargo)
-		screen.addPullDownString("CargoType", CyTranslator().getText("TXT_KEY_WB_CARGO_SPACE", ()), 1, 1, bCargo)
+		screen.addPullDownString("CargoType", CyTranslator().getText("TXT_WORD_CARGO", ()), 1, 1, bCargo)
 
 		iHeight = (screen.getYResolution() - iY - 42) /24 * 24 + 2
 
@@ -595,13 +594,11 @@ class WBUnitScreen:
 		if bCargo:
 			screen.setButtonGFC("UnitCargoPlus", "", "", iX, screen.getYResolution() - 42, 24, 24, WidgetTypes.WIDGET_PYTHON, 1030, -1, ButtonStyles.BUTTON_STYLE_CITY_PLUS)
 			screen.setButtonGFC("UnitCargoMinus", "", "", iX + 25, screen.getYResolution() - 42, 24, 24, WidgetTypes.WIDGET_PYTHON, 1031, -1, ButtonStyles.BUTTON_STYLE_CITY_MINUS)
-			sText = CyTranslator().getText("TXT_KEY_WB_CARGO_SPACE", ()) + " (" + str(pUnit.getCargo()) + "/" + str(pUnit.cargoSpace()) + ")"
+			sText = CyTranslator().getText("TXT_WORD_CARGO", ()) + " (" + str(pUnit.getCargo()) + "/" + str(pUnit.cargoSpace()) + ")"
 			screen.setLabel("CargoSpaceHeader", "Background", "<font=3b>" + sText + "</font>", 1<<0, iX + 50, screen.getYResolution() - 41, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 			if pUnit.cargoSpace() > 0:
-				for i in xrange(pPlot.getNumUnits()):
-					pUnitX = pPlot.getUnit(i)
-					if pUnitX.isNone(): continue
+				for pUnitX in pPlot.units():
 					if pUnitX.getID() == pUnit.getID(): continue
 					if pUnit.domainCargo() > -1:
 						if pUnitX.getDomainType() != pUnit.domainCargo(): continue
@@ -620,9 +617,7 @@ class WBUnitScreen:
 						sColor = CyTranslator().getText("[COLOR_POSITIVE_TEXT]", ())
 					screen.setTableText("WBCargoUnits", 0, iRow, "<font=3>" + sColor + sText + "</font></color>", pUnitX.getButton(), WidgetTypes.WIDGET_PYTHON, 8300 + iPlayerX, pUnitX.getID(), 1<<0)
 		else:
-			for i in xrange(pPlot.getNumUnits()):
-				pUnitX = pPlot.getUnit(i)
-				if pUnitX.isNone(): continue
+			for pUnitX in pPlot.units():
 				if pUnitX.getID() == pUnit.getID(): continue
 				if pUnitX.cargoSpace() < 1: continue
 				if pUnitX.domainCargo() > -1:
@@ -664,19 +659,19 @@ class WBUnitScreen:
 		elif sName == "CurrentPage":
 			iIndex = screen.getPullDownData("CurrentPage", screen.getSelectedPullDownID("CurrentPage"))
 			if iIndex == 1:
-				WBPromotionScreen.WBPromotionScreen().interfaceScreen(pUnit)
+				WBPromotionScreen.WBPromotionScreen(self.WB).interfaceScreen(pUnit)
 			elif iIndex == 2:
-				WBPlayerScreen.WBPlayerScreen().interfaceScreen(pUnit.getOwner())
+				WBPlayerScreen.WBPlayerScreen(self.WB).interfaceScreen(pUnit.getOwner())
 			elif iIndex == 3:
-				WBTeamScreen.WBTeamScreen().interfaceScreen(pUnit.getTeam())
+				WBTeamScreen.WBTeamScreen(self.WB).interfaceScreen(pUnit.getTeam())
 			elif iIndex == 4:
-				WBPlotScreen.WBPlotScreen().interfaceScreen(pPlot)
+				WBPlotScreen.WBPlotScreen(self.WB).interfaceScreen(pPlot)
 			elif iIndex == 5:
-				WBEventScreen.WBEventScreen().interfaceScreen(pPlot)
+				WBEventScreen.WBEventScreen(self.WB).interfaceScreen(pPlot)
 			elif iIndex == 6:
-				WBPlayerUnits.WBPlayerUnits().interfaceScreen(pUnit.getOwner())
+				WBPlayerUnits.WBPlayerUnits(self.WB).interfaceScreen(pUnit.getOwner())
 			elif iIndex == 11:
-				WBInfoScreen.WBInfoScreen().interfaceScreen(pUnit.getOwner())
+				WBInfoScreen.WBInfoScreen(self.WB).interfaceScreen(pUnit.getOwner())
 
 		elif sName == "CargoType":
 			bCargo = not bCargo
@@ -699,7 +694,7 @@ class WBUnitScreen:
 
 		elif sName == "UnitScreenHeader":
 			popup = Popup.PyPopup(5006, EventContextTypes.EVENTCONTEXT_ALL)
-			popup.setUserData((pUnit.getID(), pUnit.getOwner()))
+			popup.setUserData((pUnit.getOwner(), pUnit.getID()))
 			popup.setBodyString(CyTranslator().getText("TXT_KEY_RENAME_UNIT", ()))
 			popup.createEditBox(pUnit.getNameNoDesc())
 			popup.setEditBoxMaxCharCount(25)
@@ -827,13 +822,11 @@ class WBUnitScreen:
 		elif sName == "Commands":
 			iIndex = screen.getPullDownData("Commands", screen.getSelectedPullDownID("Commands"))
 			lUnits = []
-			self.top.lMoveUnit = []
+			self.WB.lMoveUnit = []
 			if iCommandUnitType == 0:
 				lUnits.append(pUnit)
 			else:
-				for i in xrange(pPlot.getNumUnits()):
-					pUnitX = pPlot.getUnit(i)
-					if pUnitX.isNone(): continue
+				for pUnitX in pPlot.units():
 					if pUnitX.getOwner() != pUnit.getOwner(): continue
 					if iCommandUnitType == 1:
 						if pUnitX.getUnitType() != pUnit.getUnitType(): continue
@@ -866,17 +859,17 @@ class WBUnitScreen:
 			self.doMission()
 
 		elif sName == "TargetPlot":
-			self.top.iPlayerAddMode = "TargetPlot"
-			self.top.TempInfo = [pUnit.getOwner(), pUnit.getID()]
+			self.WB.iPlayerAddMode = "TargetPlot"
+			self.WB.TempInfo = [pUnit.getOwner(), pUnit.getID()]
 			screen.hideScreen()
 
 		elif sName == "UnitExit":
-			self.top.iTargetPlotX = -1
-			self.top.iTargetPlotY = -1
+			self.WB.iTargetPlotX = -1
+			self.WB.iTargetPlotY = -1
 
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CHARACTER) and inputClass.getData() == int(InputTypes.KB_ESCAPE):
-			self.top.iTargetPlotX = -1
-			self.top.iTargetPlotY = -1
+			self.WB.iTargetPlotX = -1
+			self.WB.iTargetPlotY = -1
 		return 1
 
 	def doAllCommands(self, pUnitX, iIndex):
@@ -895,8 +888,8 @@ class WBUnitScreen:
 			pUnitX.setScriptData("")
 			return 2
 		elif iIndex == 2:
-			self.top.iPlayerAddMode = "MoveUnits"
-			self.top.lMoveUnit.append([pUnitX.getOwner(), pUnitX.getID()])
+			self.WB.iPlayerAddMode = "MoveUnits"
+			self.WB.lMoveUnit.append([pUnitX.getOwner(), pUnitX.getID()])
 			return 0
 		elif iIndex == 3:
 			for i in xrange(iChange + 1):
@@ -926,9 +919,9 @@ class WBUnitScreen:
 		elif sType == "MISSION_GOLDEN_AGE":
 			iData1 = -1
 		else:
-			iData1 = self.top.iTargetPlotX
-			iData2 = self.top.iTargetPlotY
-		pTargetPlot = CyMap().plot(self.top.iTargetPlotX, self.top.iTargetPlotY)
+			iData1 = self.WB.iTargetPlotX
+			iData2 = self.WB.iTargetPlotY
+		pTargetPlot = CyMap().plot(self.WB.iTargetPlotX, self.WB.iTargetPlotY)
 		pUnit.getGroup().pushMission(MissionTypes(iMissionType), iData1, iData2, 0, False, True, MissionAITypes.NO_MISSIONAI, pTargetPlot, pUnit)
 		self.interfaceScreen(pUnit)
 
@@ -959,8 +952,7 @@ class WBUnitScreen:
 			pNewUnit.convert(pUnit)
 			pNewUnit.setScriptData("PlatyUnit" + pUnit.getScriptData())
 			pUnit.kill(False, -1)
-			for i in xrange(pPlot.getNumUnits()):
-				pUnitX = pPlot.getUnit(i)
+			for pUnitX in pPlot.units():
 				if pUnitX.getScriptData().find("PlatyUnit") == 0:
 					pUnitX.setScriptData(pUnitX.getScriptData()[9:])
 					break
@@ -975,7 +967,7 @@ class WBUnitScreen:
 	def handleCopyAll(self):
 		for i in lUnits:
 			loopUnit = GC.getPlayer(i[0]).getUnit(i[1])
-			if loopUnit.isNone(): continue
+			if loopUnit is None: continue
 			if iChangeType == 0:
 				loopUnit.setLevel(pUnit.getLevel())
 			elif iChangeType == 1:
