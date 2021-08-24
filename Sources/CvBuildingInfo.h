@@ -284,11 +284,11 @@ public:
 	int getSpecialistCount(int i) const;
 	int getFreeSpecialistCount(int i) const;
 
-	int getBonusHealthChanges(int i) const;
+	int getBonusHealthChanges(BonusTypes eBonus) const;
 	const IDValueMap<BonusTypes, int>& getBonusHealth() const { return m_piBonusHealthChanges; }
 	const python::list cyGetBonusHealth() const { return m_piBonusHealthChanges.makeList(); }
 
-	int getBonusHappinessChanges(int i) const;
+	int getBonusHappinessChanges(BonusTypes eBonus) const;
 	const IDValueMap<BonusTypes, int>& getBonusHappiness() const { return m_piBonusHappinessChanges; }
 	const python::list cyGetBonusHappiness() const { return m_piBonusHappinessChanges.makeList(); }
 
