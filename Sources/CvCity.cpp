@@ -2544,9 +2544,6 @@ bool CvCity::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool b
 	{
 		if (m_canTrainCachePopulated)
 		{
-			bool bHaveCachedResult;
-			bool bResult;
-
 			if (m_canTrainCacheDirty)
 			{
 				PROFILE("CvCity::canTrain.ProcessDirtyCache");
@@ -2564,8 +2561,7 @@ bool CvCity::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool b
 					FErrorMsg("Consistency check failure in canTrain cache - false negative\n");
 				}
 #endif
-				bResult = false;
-				bHaveCachedResult = true;
+				return false;
 			}
 			else if (itr->second)
 			{
@@ -2575,30 +2571,20 @@ bool CvCity::canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible, bool b
 					FErrorMsg("Consistency check failure in canTrain cache - false positive\n");
 				}
 #endif
-				bResult = true;
-				bHaveCachedResult = true;
+				return true;
 			}
 			else	//	In map but with false => recalculate
 			{
-				bHaveCachedResult = false;
-			}
-
-			if (!bHaveCachedResult)
-			{
-				bResult = canTrainInternal(eUnit);
-
-				if (bResult)
+				if (canTrainInternal(eUnit))
 				{
 					m_canTrainCacheUnits[eUnit] = true;
+					return true;
 				}
 				else
 				{
 					m_canTrainCacheUnits.erase(eUnit);
 				}
-
 			}
-
-			return bResult;
 		}
 	}
 #endif
@@ -2626,7 +2612,6 @@ void CvCity::invalidateCachedCanTrainForUnit(UnitTypes eUnit) const
 	}
 
 	clearUpgradeCache(eUnit);
-
 }
 
 bool CvCity::canTrain(UnitCombatTypes eUnitCombat) const
@@ -2687,7 +2672,6 @@ bool CvCity::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestVis
 
 		if (m_bCanConstruct == NULL)
 		{
-
 			m_bCanConstruct = new std::map<int, bool>();
 			bHaveCachedResult = false;
 		}

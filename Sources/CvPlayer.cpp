@@ -4836,7 +4836,8 @@ int CvPlayer::countUnimprovedBonuses(const CvArea* pArea, const CvPlot* pFromPlo
 {
 	PROFILE_FUNC();
 
-	if (pFromPlot != NULL)
+	FAssert(pFromPlot != NULL);
+	//if (pFromPlot != NULL)
 	{
 		gDLL->getFAStarIFace()->ForceReset(&GC.getBorderFinder());
 	}
@@ -6779,7 +6780,6 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 	if (eBuilding == NO_BUILDING) return false;
 
 	bool bResult;
-	bool bHaveCachedResult;
 
 	//	Cache the param variant with false, true, true as this is used VERY heavily and
 	//	also the default param flavor
@@ -6788,14 +6788,8 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		if ( m_bCanConstructCached[eBuilding] )
 		{
 			bResult = m_bCanConstruct[eBuilding];
-			bHaveCachedResult = true;
 		}
 		else
-		{
-			bHaveCachedResult = false;
-		}
-
-		if ( !bHaveCachedResult )
 		{
 			bResult = canConstructInternal(eBuilding, bContinue, bTestVisible, bIgnoreCost);
 
@@ -6808,14 +6802,8 @@ bool CvPlayer::canConstruct(BuildingTypes eBuilding, bool bContinue, bool bTestV
 		if ( m_bCanConstructCachedDefaultParam[eBuilding] )
 		{
 			bResult = m_bCanConstructDefaultParam[eBuilding];
-			bHaveCachedResult = true;
 		}
 		else
-		{
-			bHaveCachedResult = false;
-		}
-
-		if ( !bHaveCachedResult )
 		{
 			bResult = canConstructInternal(eBuilding, bContinue, bTestVisible, bIgnoreCost);
 
