@@ -166,7 +166,6 @@ m_fUnitPadTime(0.0f),
 m_pbPrereqOrCivics(NULL),
 m_pbTargetUnitCombat(NULL),
 m_pbDefenderUnitCombat(NULL),
-m_piFlankingStrikeUnit(NULL),
 m_pbUnitAIType(NULL),
 m_pbNotUnitAIType(NULL),
 m_piReligionSpreads(NULL),
@@ -181,8 +180,6 @@ m_piTerrainAttackModifier(NULL),
 m_piTerrainDefenseModifier(NULL),
 m_piFeatureAttackModifier(NULL),
 m_piFeatureDefenseModifier(NULL),
-m_piUnitAttackModifier(NULL),
-m_piUnitDefenseModifier(NULL),
 m_piUnitCombatModifier(NULL),
 m_piUnitCombatCollateralImmune(NULL),
 m_piDomainModifier(NULL),
@@ -333,7 +330,6 @@ CvUnitInfo::~CvUnitInfo()
 	SAFE_DELETE_ARRAY(m_pbPrereqOrCivics);
 	SAFE_DELETE_ARRAY(m_pbTargetUnitCombat);
 	SAFE_DELETE_ARRAY(m_pbDefenderUnitCombat);
-	SAFE_DELETE_ARRAY(m_piFlankingStrikeUnit);
 	SAFE_DELETE_ARRAY(m_pbUnitAIType);
 	SAFE_DELETE_ARRAY(m_pbNotUnitAIType);
 	SAFE_DELETE_ARRAY(m_piReligionSpreads);
@@ -348,8 +344,6 @@ CvUnitInfo::~CvUnitInfo()
 	SAFE_DELETE_ARRAY(m_piTerrainDefenseModifier);
 	SAFE_DELETE_ARRAY(m_piFeatureAttackModifier);
 	SAFE_DELETE_ARRAY(m_piFeatureDefenseModifier);
-	SAFE_DELETE_ARRAY(m_piUnitAttackModifier);
-	SAFE_DELETE_ARRAY(m_piUnitDefenseModifier);
 	SAFE_DELETE_ARRAY(m_piUnitCombatModifier);
 	SAFE_DELETE_ARRAY(m_piUnitCombatCollateralImmune);
 	SAFE_DELETE_ARRAY(m_piDomainModifier);
@@ -372,6 +366,9 @@ CvUnitInfo::~CvUnitInfo()
 
 	GC.removeDelayedResolutionVector(m_piPrereqOrBonuses);
 	GC.removeDelayedResolutionVector(m_piPrereqOrVicinityBonuses);
+	m_aFlankingStrikeUnit.removeDelayedResolution();
+	m_aUnitAttackModifier.removeDelayedResolution();
+	m_aUnitDefenseModifier.removeDelayedResolution();
 
 	foreach_(const CvOutcomeMission* outcomeMission, m_aOutcomeMissions)
 	{
@@ -1362,16 +1359,16 @@ int CvUnitInfo::getFeatureDefenseModifier(int i) const
 	return m_piFeatureDefenseModifier ? m_piFeatureDefenseModifier[i] : 0;
 }
 
-int CvUnitInfo::getUnitAttackModifier(int i) const
+int CvUnitInfo::getUnitAttackModifier(UnitTypes e) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), i)
-	return m_piUnitAttackModifier ? m_piUnitAttackModifier[i] : 0;
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), e)
+	return m_piUnitAttackModifier.getValue(e);
 }
 
-int CvUnitInfo::getUnitDefenseModifier(int i) const
+int CvUnitInfo::getUnitDefenseModifier(UnitTypes e) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), i)
-	return m_piUnitDefenseModifier ? m_piUnitDefenseModifier[i] : 0;
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), e)
+	return m_piUnitDefenseModifier.getValue(e);
 }
 
 int CvUnitInfo::getUnitCombatModifier(int i) const
@@ -3833,8 +3830,8 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum) const
 	CheckSumI(iSum, GC.getNumTerrainInfos(), m_piTerrainDefenseModifier);
 	CheckSumI(iSum, GC.getNumFeatureInfos(), m_piFeatureAttackModifier);
 	CheckSumI(iSum, GC.getNumFeatureInfos(), m_piFeatureDefenseModifier);
-	CheckSumI(iSum, GC.getNumUnitInfos(), m_piUnitAttackModifier);
-	CheckSumI(iSum, GC.getNumUnitInfos(), m_piUnitDefenseModifier);
+	CheckSumC(iSum, m_aUnitAttackModifier);
+	CheckSumC(iSum, m_aUnitDefenseModifier);
 	CheckSumI(iSum, GC.getNumUnitCombatInfos(), m_piUnitCombatModifier);
 	CheckSumI(iSum, GC.getNumUnitCombatInfos(), m_piUnitCombatCollateralImmune);
 	CheckSumI(iSum, NUM_DOMAIN_TYPES, m_piDomainModifier);
@@ -3854,7 +3851,7 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum) const
 
 	CheckSumI(iSum, GC.getNumUnitCombatInfos(), m_pbTargetUnitCombat);
 	CheckSumI(iSum, GC.getNumUnitCombatInfos(), m_pbDefenderUnitCombat);
-	CheckSumI(iSum, GC.getNumUnitInfos(), m_piFlankingStrikeUnit);
+	CheckSumC(iSum, m_aFlankingStrikeUnit);
 	CheckSumI(iSum, NUM_UNITAI_TYPES, m_pbUnitAIType);
 	CheckSumI(iSum, NUM_UNITAI_TYPES, m_pbNotUnitAIType);
 	CheckSumI(iSum, GC.getNumReligionInfos(), m_piReligionSpreads);
@@ -6001,6 +5998,10 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo)
 		SAFE_DELETE_ARRAY(m_paszNewNames)
 	}
 
+	m_aFlankingStrikeUnit.readWithDelayedResolution(pXML, L"FlankingStrikes");
+	m_aUnitAttackModifier.readWithDelayedResolution(pXML, L"UnitAttackMods");
+	m_aUnitDefenseModifier.readWithDelayedResolution(pXML, L"UnitDefenseMods");
+
 	if (m_iGroupSize != 0)
 	{
 		updateArtDefineButton();
@@ -6017,66 +6018,11 @@ bool CvUnitInfo::readPass2(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"Capture");
 	m_iUnitCaptureType = pXML->GetInfoClass(szTextVal);
 
-	pXML->SetVariableListTagPair(&m_piFlankingStrikeUnit, L"FlankingStrikes", GC.getNumUnitInfos(), -1);
-	pXML->SetVariableListTagPair(&m_piUnitAttackModifier, L"UnitAttackMods", GC.getNumUnitInfos());
-	pXML->SetVariableListTagPair(&m_piUnitDefenseModifier, L"UnitDefenseMods", GC.getNumUnitInfos());
-
 	return true;
 }
 
 void CvUnitInfo::copyNonDefaultsReadPass2(CvUnitInfo* pClassInfo, CvXMLLoadUtility* pXML, bool bOver)
 {
-	if (pClassInfo->m_piFlankingStrikeUnit != NULL)
-	{
-		for (int i = 0; i < GC.getNumUnitInfos(); i++)
-		{
-			if (bOver || getFlankingStrikeUnit(i) == -1 && pClassInfo->getFlankingStrikeUnit(i) != -1)
-			{
-				if (m_piFlankingStrikeUnit == NULL)
-				{
-					CvXMLLoadUtility::InitList(&m_piFlankingStrikeUnit, GC.getNumUnitInfos(), -1);
-				}
-				m_piFlankingStrikeUnit[i] = pClassInfo->getFlankingStrikeUnit(i);
-			}
-		}
-	}
-	else if (bOver) SAFE_DELETE_ARRAY(m_piFlankingStrikeUnit);
-
-
-	if (pClassInfo->m_piUnitAttackModifier != NULL)
-	{
-		for (int i = 0; i < GC.getNumUnitInfos(); i++)
-		{
-			if (bOver || getUnitAttackModifier(i) == -1 && pClassInfo->getUnitAttackModifier(i) != -1)
-			{
-				if (m_piUnitAttackModifier == NULL)
-				{
-					CvXMLLoadUtility::InitList(&m_piUnitAttackModifier, GC.getNumUnitInfos(), -1);
-				}
-				m_piUnitAttackModifier[i] = pClassInfo->getUnitAttackModifier(i);
-			}
-		}
-	}
-	else if (bOver) SAFE_DELETE_ARRAY(m_piUnitAttackModifier);
-
-
-	if (pClassInfo->m_piUnitDefenseModifier != NULL)
-	{
-		for (int i = 0; i < GC.getNumUnitInfos(); i++)
-		{
-			if (bOver || getUnitDefenseModifier(i) == -1 && pClassInfo->getUnitDefenseModifier(i) != -1)
-			{
-				if (m_piUnitDefenseModifier == NULL)
-				{
-					CvXMLLoadUtility::InitList(&m_piUnitDefenseModifier, GC.getNumUnitInfos(), -1);
-				}
-				m_piUnitDefenseModifier[i] = pClassInfo->getUnitDefenseModifier(i);
-			}
-		}
-	}
-	else if (bOver) SAFE_DELETE_ARRAY(m_piUnitDefenseModifier);
-
-
 	if (bOver || m_iUnitCaptureType == -1 && pClassInfo->getUnitCaptureType() != -1)
 	{
 		m_iUnitCaptureType = pClassInfo->getUnitCaptureType();

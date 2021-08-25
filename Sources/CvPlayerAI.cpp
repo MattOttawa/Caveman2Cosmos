@@ -10964,15 +10964,12 @@ int CvPlayerAI::AI_unitValue(UnitTypes eUnit, UnitAITypes eUnitAI, const CvArea*
 					break;
 				}
 
-				for (iI = 0; iI < GC.getNumUnitInfos(); iI++)
+				if (algo::contains(kUnitInfo.getUnitDefenseModifiers(), (UnitTypes)iI))
 				{
-					if (kUnitInfo.getUnitDefenseModifier(iI) > 0)
-					{
-						bValid = true;
-						break;
-					}
+					bValid = true;
+					break;
 				}
-				for (iI = 0; !bValid && iI < numUnitCombatInfos; iI++)
+				for (iI = 0; iI < numUnitCombatInfos; iI++)
 				{
 					if (kUnitInfo.getUnitCombatModifier(iI) > 0)
 					{

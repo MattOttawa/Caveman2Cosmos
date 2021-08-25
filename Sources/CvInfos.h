@@ -1643,7 +1643,6 @@ protected:
 
 private:
 	CvHotkeyInfo* getHotkeyInfo() const;
-
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1879,14 +1878,10 @@ public:
 	int getEndurance() const;
 	int getRoundStunProb() const;
 	int getPoisonProbabilityModifier() const;
-	//Team Project (3)
 	int getCaptureProbabilityModifier() const;
 	int getCaptureResistanceModifier() const;
-	//Team Project (4)
-	//WorkRateMod
 	int getHillsWorkModifier() const;
 	int getPeaksWorkModifier() const;
-
 	int getBreakdownChance() const;
 	int getBreakdownDamage() const;
 	int getTaunt() const;
@@ -2020,14 +2015,13 @@ public:
 	int getNumVisibleImprovementRangeChanges() const;
 	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
 
-	//Bool vector utilizing delayed resolution
 	int getNumEnabledCivilizationTypes() const;
 	const EnabledCivilizations& getEnabledCivilizationType(int iIndex) const;
 
-	// int vector utilizing pairing without delayed resolution
 	int getNumFlankingStrikesbyUnitCombatTypes() const;
 	int getFlankingStrengthbyUnitCombatType(int iUnitCombat) const;
 	bool isFlankingStrikebyUnitCombatType(int iUnitCombat) const;
+	const IDValueMap<UnitTypes, int>& getFlankingStrengthbyUnitCombatTypes() const { return m_aFlankingStrikeUnit; }
 
 	int getNumWithdrawOnTerrainTypes() const;
 	int getWithdrawOnTerrainType(int iTerrain) const;
@@ -2115,8 +2109,6 @@ public:
 	bool isVisibilityIntensityRangeType(int iInvisibility) const;
 	const InvisibilityArray& getVisibilityIntensityRangeTypes() const;
 
-	//Team Project (4)
-		//WorkRateMod
 	int getNumTerrainWorkRateModifierTypes() const;
 	int getTerrainWorkRateModifierType(int iTerrain) const;
 	bool isTerrainWorkRateModifierType(int iTerrain) const;
@@ -2216,14 +2208,18 @@ public:
 	const std::vector<TechTypes>& getPrereqAndTechs() const;
 	const python::list cyGetPrereqAndTechs() const;
 
+	int getUnitAttackModifier(UnitTypes e) const;
+	const IDValueMap<UnitTypes, int>& getUnitDefenseModifiers() const { return m_aUnitDefenseModifier; }
+
+	int getUnitDefenseModifier(UnitTypes e) const;
+	const IDValueMap<UnitTypes, int>& getUnitAttackModifiers() const { return m_aUnitAttackModifier; }
+
 	// Arrays
 	int getFlavorValue(int i) const;
 	int getTerrainAttackModifier(int i) const;
 	int getTerrainDefenseModifier(int i) const;
 	int getFeatureAttackModifier(int i) const;
 	int getFeatureDefenseModifier(int i) const;
-	int getUnitAttackModifier(int i) const;
-	int getUnitDefenseModifier(int i) const;
 	int getUnitCombatModifier(int i) const;
 	int getUnitCombatCollateralImmune(int i) const;
 	int getDomainModifier(int i) const;
@@ -2472,8 +2468,6 @@ private:
 	int* m_piTerrainDefenseModifier;
 	int* m_piFeatureAttackModifier;
 	int* m_piFeatureDefenseModifier;
-	int* m_piUnitAttackModifier;
-	int* m_piUnitDefenseModifier;
 	int* m_piUnitCombatModifier;
 	int* m_piUnitCombatCollateralImmune;
 	int* m_piDomainModifier;
@@ -2483,10 +2477,8 @@ private:
 	int* m_piCorporationSpreads;
 	int* m_piTerrainPassableTech;
 	int* m_piFeaturePassableTech;
-	int* m_piFlankingStrikeUnit;
 
 	bool* m_pbPrereqOrCivics;
-
 	bool* m_pbTargetUnitCombat;
 	bool* m_pbDefenderUnitCombat;
 	bool* m_pbUnitAIType;
@@ -2545,7 +2537,7 @@ private:
 	int m_iMediumRangeSupportPercent;
 	int m_iLongRangeSupportPercent;
 	int m_iFlankSupportPercent;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	int m_iDodgeModifier;
 	int m_iPrecisionModifier;
 	int m_iPowerShots;
@@ -2557,14 +2549,10 @@ private:
 	int m_iEndurance;
 	int m_iRoundStunProb;
 	int m_iPoisonProbabilityModifier;
-	//Team Project (3)
 	int m_iCaptureProbabilityModifier;
 	int m_iCaptureResistanceModifier;
-	//Team Project (4)
-	//WorkRateMod
 	int m_iHillsWorkModifier;
 	int m_iPeaksWorkModifier;
-
 	int m_iBreakdownChance;
 	int m_iBreakdownDamage;
 	int m_iTaunt;
@@ -2673,6 +2661,9 @@ private:
 	TerrainModifierArray m_aTerrainWorkRateModifierTypes;
 	FeatureModifierArray m_aFeatureWorkRateModifierTypes;
 	BuildModifierArray m_aBuildWorkRateModifierTypes;
+	IDValueMap<UnitTypes, int> m_aFlankingStrikeUnit;
+	IDValueMap<UnitTypes, int> m_aUnitAttackModifier;
+	IDValueMap<UnitTypes, int> m_aUnitDefenseModifier;
 	//TB Combat Mods End  TB SubCombat Mod end
 	//Pediahelp
 	std::vector<int> m_aiQualifiedPromotionTypes;
