@@ -27767,18 +27767,18 @@ bool CvPlayer::hasValidBuildings(TechTypes eTech) const
 	bool bRequiresOrBuilding = false;
 	bool bHasOneOrBuilding = false;
 
-	for (int iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqBuildings(); iI++)
+	foreach_(const BuildingModifier2& prereBuilding, GC.getTechInfo(eTech).getPrereqBuildings())
 	{
-		const int iRequired = GC.getTechInfo(eTech).getPrereqBuilding(iI).iMinimumRequired;
+		const int iRequired = prereBuilding.second;
 		if (iRequired > 0)
 		{
-			if (getBuildingCount(GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding) < iRequired)
+			if (getBuildingCount(prereBuilding.first) < iRequired)
 			{
 				return false;
 			}
 		}
 	}
-	for (iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqOrBuildings(); iI++)
+	for (int iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqOrBuildings(); iI++)
 	{
 		if (!bHasOneOrBuilding)
 		{

@@ -223,10 +223,10 @@ class PediaTech:
 
 		# Building Req
 		szChild = PF + "BUILDING"
-		for i in range(CvTheTechInfo.getNumPrereqBuildings()):
-			iAmount = CvTheTechInfo.getPrereqBuildingMinimumRequired(i)
+		for prereqBuilding in CvTheTechInfo.getPrereqBuildings():
+			iAmount = prereqBuilding.value
 			if iAmount > 0:
-				iType = CvTheTechInfo.getPrereqBuildingType(i)
+				iType = prereqBuilding.id
 				aList2.append((iType, iAmount))
 		nOr = 0
 		for i in range(CvTheTechInfo.getNumPrereqOrBuildings()):

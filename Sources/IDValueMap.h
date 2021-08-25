@@ -132,6 +132,11 @@ struct IDValueMap
 		return false;
 	}
 
+	int size() const
+	{
+		return m_map.size();
+	}
+
 	bool empty() const
 	{
 		return m_map.empty();

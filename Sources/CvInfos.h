@@ -411,10 +411,8 @@ public:
 	int getFreeSpecialistCount(int i) const;
 	int getPrereqGameOption() const;
 
-	int getNumPrereqBuildings() const;
-	const PrereqBuilding& getPrereqBuilding(int iIndex) const;
-	int getPrereqBuildingType(int iIndex) const;
-	int getPrereqBuildingMinimumRequired(int iIndex) const;
+	const IDValueMap<BuildingTypes, int>& getPrereqBuildings() const { return m_aPrereqBuilding; }
+	const python::list cyGetPrereqBuildings() const { return m_aPrereqBuilding.makeList(); }
 
 	int getNumPrereqOrBuildings() const;
 	const PrereqBuilding& getPrereqOrBuilding(int iIndex) const;
@@ -543,7 +541,7 @@ protected:
 	int m_iPrereqGameOption;
 	int* m_piFreeSpecialistCount;
 
-	std::vector<PrereqBuilding> m_aPrereqBuilding;
+	IDValueMap<BuildingTypes, int> m_aPrereqBuilding;
 	std::vector<PrereqBuilding> m_aPrereqOrBuilding;
 };
 
@@ -8557,6 +8555,7 @@ public:
 	bool isCapture() const;
 	int getNumPrereqBuildings() const;
 	BuildingTypes getPrereqBuilding(int i) const;
+	const std::vector<BuildingTypes>& getPrereqBuildings() const { return m_aePrereqBuildings; }
 	int getNumExtraChancePromotions() const;
 	PromotionTypes getExtraChancePromotion(int i) const;
 	int getExtraChancePromotionChance(int i) const;
@@ -8569,7 +8568,7 @@ public:
 	void copyNonDefaults(const CvOutcomeInfo* pClassInfo);
 	void copyNonDefaultsReadPass2(CvOutcomeInfo* pClassInfo, CvXMLLoadUtility* pXML, bool bOver = false);
 
-	void getCheckSum(unsigned int& iSum) const;
+	void getCheckSum(uint32_t& iSum) const;
 
 protected:
 

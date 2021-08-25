@@ -17648,20 +17648,19 @@ void CvGameTextMgr::setTechTradeHelp(CvWStringBuffer &szBuffer, TechTypes eTech,
 
 	if (bCivilopediaText || GC.getGame().getActivePlayer() == NO_PLAYER || !GET_PLAYER(GC.getGame().getActivePlayer()).canResearch(eTech))
 	{
-		for (iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqBuildings(); iI++)
+		foreach_(const BuildingModifier2& prereqBuilding, GC.getTechInfo(eTech).getPrereqBuildings())
 		{
-			const int iPrereq = GC.getTechInfo(eTech).getPrereqBuilding(iI).iMinimumRequired;
+			const int iPrereq = prereqBuilding.second;
 			if (iPrereq > 0)
 			{
+				const BuildingTypes eLoopBuilding = prereqBuilding.first;
 				if (GC.getGame().getActivePlayer() == NO_PLAYER)
 				{
-					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding;
 					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS_NO_CITY", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), iPrereq).c_str());
 				}
 				else
 				{
-					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding;
-					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), GET_PLAYER(GC.getGame().getActivePlayer()).getBuildingCount(GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding), iPrereq).c_str());
+					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), GET_PLAYER(GC.getGame().getActivePlayer()).getBuildingCount(eLoopBuilding), iPrereq).c_str());
 				}
 				szBuffer.append(szTempBuffer);
 			}
@@ -17676,12 +17675,12 @@ void CvGameTextMgr::setTechTradeHelp(CvWStringBuffer &szBuffer, TechTypes eTech,
 			{
 				if (GC.getGame().getActivePlayer() == NO_PLAYER)
 				{
-					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding;
+					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding;
 					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS_NO_CITY", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), iPrereq).c_str());
 				}
 				else
 				{
-					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding;
+					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding;
 					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), GET_PLAYER(GC.getGame().getActivePlayer()).getBuildingCount(GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding), iPrereq).c_str());
 				}
 				szBuffer.append(szTempBuffer);

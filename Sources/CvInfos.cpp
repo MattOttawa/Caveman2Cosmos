@@ -1162,7 +1162,7 @@ CvTechInfo::~CvTechInfo()
 	SAFE_DELETE_ARRAY(m_piCommerceModifier);
 	GC.removeDelayedResolutionVector(m_piPrereqOrTechs);
 	GC.removeDelayedResolutionVector(m_piPrereqAndTechs);
-	GC.removeDelayedResolutionVector(m_aPrereqBuilding);
+	m_aPrereqBuilding.removeDelayedResolution();
 	GC.removeDelayedResolutionVector(m_aPrereqOrBuilding);
 	GC.removeDelayedResolution((int*)&m_iFirstFreeUnit);
 	GC.removeDelayedResolution((int*)&m_iFirstFreeProphet);
@@ -1534,7 +1534,7 @@ int CvTechInfo::getFreeSpecialistCount(int i) const
 {
 	return m_piFreeSpecialistCount ? m_piFreeSpecialistCount[i] : 0;
 }
-
+/*
 int CvTechInfo::getNumPrereqBuildings() const
 {
 	return m_aPrereqBuilding.size();
@@ -1552,9 +1552,9 @@ int CvTechInfo::getPrereqBuildingType(int iIndex) const
 
 int CvTechInfo::getPrereqBuildingMinimumRequired(int iIndex) const
 {
-	return m_aPrereqBuilding[iIndex].iMinimumRequired;
+	return m_aPrereqBuilding[iIndex].second;
 }
-
+*/
 int CvTechInfo::getNumPrereqOrBuildings() const
 {
 	return m_aPrereqOrBuilding.size();
@@ -1691,28 +1691,7 @@ bool CvTechInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetVariableListTagPair(&m_piFreeSpecialistCount, L"FreeSpecialistCounts", GC.getNumSpecialistInfos());
 
-	if(pXML->TryMoveToXmlFirstChild(L"PrereqBuildings"))
-	{
-		int i = 0;
-		const int iNum = pXML->GetXmlChildrenNumber(L"PrereqBuilding" );
-		m_aPrereqBuilding.resize(iNum); // Important to keep the delayed resolution pointers correct
-
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"PrereqBuilding"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"BuildingType");
-					pXML->GetChildXmlValByName(&(m_aPrereqBuilding[i].iMinimumRequired), L"iNumBuildingNeeded");
-					GC.addDelayedResolution((int*)&(m_aPrereqBuilding[i].eBuilding), szTextVal);
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"PrereqBuilding"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
+	m_aPrereqBuilding.readWithDelayedResolution(pXML, L"PrereqBuildings");
 
 	if(pXML->TryMoveToXmlFirstChild(L"PrereqOrBuildings"))
 	{
@@ -1895,16 +1874,7 @@ void CvTechInfo::copyNonDefaults(const CvTechInfo* pClassInfo)
 		}
 	}
 
-	if (getNumPrereqBuildings() == 0)
-	{
-		const int iNum = pClassInfo->getNumPrereqBuildings();
-		m_aPrereqBuilding.resize(iNum);
-		for (int i=0; i<iNum; i++)
-		{
-			m_aPrereqBuilding[i].iMinimumRequired = pClassInfo->m_aPrereqBuilding[i].iMinimumRequired;
-			GC.copyNonDefaultDelayedResolution((int*)&(m_aPrereqBuilding[i].eBuilding), (int*)&(pClassInfo->m_aPrereqBuilding[i].eBuilding));
-		}
-	}
+	m_aPrereqBuilding.copyNonDefaultDelayedResolution(pClassInfo->getPrereqBuildings());
 
 	if (getNumPrereqOrBuildings() == 0)
 	{
@@ -1986,18 +1956,9 @@ void CvTechInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iCorporationRevenueModifier);
 	CheckSum(iSum, m_iCorporationMaintenanceModifier);
 	CheckSum(iSum, m_iPrereqGameOption);
-
 	CheckSum(iSum, m_piFreeSpecialistCount, GC.getNumSpecialistInfos());
-
-	const int iNumElements = m_aPrereqBuilding.size();
-	for (int i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aPrereqBuilding[i].eBuilding);
-		CheckSum(iSum, m_aPrereqBuilding[i].iMinimumRequired);
-	}
-	//TB Tech Tags
+	CheckSumC(iSum, m_aPrereqBuilding);
 	CheckSum(iSum, m_bGlobal);
-	//TB Tech Tags end
 }
 
 //======================================================================================================
