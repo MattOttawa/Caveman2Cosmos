@@ -1361,14 +1361,14 @@ int CvUnitInfo::getFeatureDefenseModifier(int i) const
 
 int CvUnitInfo::getUnitAttackModifier(UnitTypes e) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), e)
-	return m_piUnitAttackModifier.getValue(e);
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), e);
+	return m_aUnitAttackModifier.getValue(e);
 }
 
 int CvUnitInfo::getUnitDefenseModifier(UnitTypes e) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), e)
-	return m_piUnitDefenseModifier.getValue(e);
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), e);
+	return m_aUnitDefenseModifier.getValue(e);
 }
 
 int CvUnitInfo::getUnitCombatModifier(int i) const
@@ -1415,7 +1415,7 @@ bool CvUnitInfo::getDefenderUnitCombat(int i) const
 
 int CvUnitInfo::getFlankingStrikeUnit(int i) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), i)
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), i);
 	return m_piFlankingStrikeUnit ? m_piFlankingStrikeUnit[i] : -1;
 }
 
