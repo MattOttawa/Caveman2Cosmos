@@ -67,7 +67,7 @@
 #include <sparsehash/type_traits.h>
 
 
-#define DllExport   __declspec( dllexport ) 
+#define DllExport   __declspec( dllexport )
 
 #include "NiPoint.h"
 
@@ -180,12 +180,16 @@ void EnableDetailedTrace(bool enable);
 void IFPSetCount(ProfileSample* sample, int count);
 #endif
 
+// Toffer
 int intSqrt(const unsigned int iValue, const bool bTreatNegAsPos=false);
 int64_t intSqrt64(const uint64_t iValue);
+
 int intPow(const int x, const int p);
 int64_t intPow64(const int64_t x, const int p);
 
 int getModifiedIntValue(const int iValue, const int iMod);
+int64_t getModifiedIntValue64(const int64_t iValue, const int iMod);
+// ! Toffer
 
 const std::string getModDir();
 
@@ -220,9 +224,6 @@ const std::string getModDir();
 #include <boost155/foreach.hpp>
 #include <boost155/functional.hpp>
 
-
-// #include <boost155/phoenix.hpp> Doesn't work, see https://github.com/boostorg/phoenix/issues/91
-
 // Ranges
 #include <boost155/range.hpp>
 #include <boost155/range/adaptor/filtered.hpp>
@@ -234,6 +235,7 @@ const std::string getModDir();
 
 // Make boost foreach look nice enough to actually use
 #define foreach_ BOOST_155_FOREACH
+#define reverse_foreach_ BOOST_155_REVERSE_FOREACH
 
 // Alias our latest boost version
 namespace bst = boost155;
@@ -259,6 +261,7 @@ using bst::bind;
 #include <boost/python/manage_new_object.hpp>
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/to_python_converter.hpp>
+#include <boost/python/suite/indexing/container_utils.hpp>
 namespace python = boost::python;
 #endif
 

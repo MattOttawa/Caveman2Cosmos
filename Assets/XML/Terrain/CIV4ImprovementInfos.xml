@@ -349,14 +349,6 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_NOMAD</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- Hunting Camp -> Hunting Preserve Era -->
 		<ImprovementInfo>
@@ -487,14 +479,6 @@
 			</BonusTypeStructs>
 			<ImprovementPillage>IMPROVEMENT_SCAVENGING_CAMP</ImprovementPillage>
 			<ImprovementUpgrade>IMPROVEMENT_HUNTING_PRESERVE</ImprovementUpgrade>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_NOMAD</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- Pasture -> Vertical Farm -->
 		<ImprovementInfo>
@@ -709,14 +693,6 @@
 			</BonusTypeStructs>
 			<ImprovementPillage>IMPROVEMENT_SCAVENGING_CAMP</ImprovementPillage>
 			<ImprovementUpgrade>IMPROVEMENT_PASTURE</ImprovementUpgrade>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_NOMAD</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- Scavenging Camp -> Nomadic Herd OR Hunting Camp -->
 		<ImprovementInfo>
@@ -895,14 +871,6 @@
 			<AlternativeImprovementUpgradeTypes>
 				<ImprovementType>IMPROVEMENT_HUNTING_CAMP</ImprovementType>
 			</AlternativeImprovementUpgradeTypes>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_HUNTER_GATHERER</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- Winery -> Vertical Farm -->
 		<ImprovementInfo>
@@ -1560,7 +1528,7 @@
 					<TechYields>
 						<iYield>1</iYield>
 					</TechYields>
-				</TechYieldChange>				
+				</TechYieldChange>
 			</TechYieldChanges>
 		</ImprovementInfo>
 		<!-- Grape Gathering Camp -> Grape Picker -->
@@ -1845,7 +1813,7 @@
 						<iYield>0</iYield>
 						<iYield>1</iYield>
 					</TechYields>
-				</TechYieldChange>				
+				</TechYieldChange>
 				<TechYieldChange>
 					<PrereqTech>TECH_DERIVATIVES</PrereqTech>
 					<TechYields>
@@ -8268,7 +8236,7 @@
 						<iYield>0</iYield>
 						<iYield>1</iYield>
 					</TechYields>
-				</TechYieldChange>				
+				</TechYieldChange>
 			</TechYieldChanges>
 			<RouteYieldChanges>
 				<RouteYieldChange>
@@ -8409,7 +8377,7 @@
 						<iYield>0</iYield>
 						<iYield>1</iYield>
 					</TechYields>
-				</TechYieldChange>				
+				</TechYieldChange>
 			</TechYieldChanges>
 			<RouteYieldChanges>
 				<RouteYieldChange>
@@ -8542,7 +8510,7 @@
 						<iYield>0</iYield>
 						<iYield>1</iYield>
 					</TechYields>
-				</TechYieldChange>				
+				</TechYieldChange>
 			</TechYieldChanges>
 		</ImprovementInfo>
 		<!-- Cottage -> Hamlet Era -->
@@ -9812,99 +9780,33 @@
 			</TechYieldChanges>
 			<iUniqueRange>2</iUniqueRange>
 		</ImprovementInfo>
-		<!-- Moai Statues | Independent -->
+		<!-- Machu Picchu  | Independent -->
 		<ImprovementInfo>
-			<Type>IMPROVEMENT_MOAI</Type>
+			<Type>IMPROVEMENT_MACHU_PICCHU</Type>
 			<CreatingBuilds>
-				<CreatingBuild>BUILD_MOAI_STATUES</CreatingBuild>
+				<CreatingBuild>BUILD_MACHU_PICCHU</CreatingBuild>
 			</CreatingBuilds>
-			<Description>TXT_KEY_IMPROVEMENT_MOAI</Description>
-			<Civilopedia>TXT_KEY_IMPROVEMENT_SACRED_SITE_PEDIA</Civilopedia>
-			<ArtDefineTag>ART_DEF_IMPROVEMENT_MOAI</ArtDefineTag>
+			<Description>TXT_KEY_BUILDING_MACHU_PICCHU</Description>
+			<Civilopedia>TXT_KEY_BUILDING_MACHU_PICCHU_PEDIA</Civilopedia>
+			<ArtDefineTag>ART_DEF_IMPROVEMENT_MACHU_PICCHU</ArtDefineTag>
+			<PrereqTech>TECH_MOUNTAINEERING</PrereqTech>
+			<bPeakMakesValid>1</bPeakMakesValid>
+			<bPeakImprovement>1</bPeakImprovement>
 			<YieldChanges>
-				<iYieldChange>-1</iYieldChange>
-				<iYieldChange>0</iYieldChange>
 				<iYieldChange>1</iYieldChange>
+				<iYieldChange>0</iYieldChange>
+				<iYieldChange>6</iYieldChange>
 			</YieldChanges>
+			<bPermanent>1</bPermanent>
 			<bActsAsCity>0</bActsAsCity>
-			<PrereqTech>TECH_MEGALITH_CONSTRUCTION</PrereqTech>
-			<bNoFreshWater>1</bNoFreshWater>
-			<iAdvancedStartCost>30</iAdvancedStartCost>
-			<iAirBombDefense>5</iAirBombDefense>
-			<iPillageGold>25</iPillageGold>
+			<iAdvancedStartCost>-1</iAdvancedStartCost>
+			<iAirBombDefense>-1</iAirBombDefense>
 			<TerrainMakesValids>
 				<TerrainMakesValid>
-					<TerrainType>TERRAIN_BARREN</TerrainType>
-					<bMakesValid>1</bMakesValid>
-				</TerrainMakesValid>
-				<TerrainMakesValid>
-					<TerrainType>TERRAIN_DESERT</TerrainType>
-					<bMakesValid>1</bMakesValid>
-				</TerrainMakesValid>
-				<TerrainMakesValid>
-					<TerrainType>TERRAIN_LUSH</TerrainType>
-					<bMakesValid>1</bMakesValid>
-				</TerrainMakesValid>
-				<TerrainMakesValid>
-					<TerrainType>TERRAIN_GRASSLAND</TerrainType>
-					<bMakesValid>1</bMakesValid>
-				</TerrainMakesValid>
-				<TerrainMakesValid>
-					<TerrainType>TERRAIN_PLAINS</TerrainType>
+					<TerrainType>TERRAIN_PEAK</TerrainType>
 					<bMakesValid>1</bMakesValid>
 				</TerrainMakesValid>
 			</TerrainMakesValids>
-			<TechYieldChanges>
-				<TechYieldChange>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
-					<TechYields>
-						<iYield>0</iYield>
-						<iYield>0</iYield>
-						<iYield>1</iYield>
-					</TechYields>
-				</TechYieldChange>
-				<TechYieldChange>
-					<PrereqTech>TECH_SCULPTURE</PrereqTech>
-					<TechYields>
-						<iYield>0</iYield>
-						<iYield>0</iYield>
-						<iYield>1</iYield>
-					</TechYields>
-				</TechYieldChange>
-				<TechYieldChange>
-					<PrereqTech>TECH_AESTHETICS</PrereqTech>
-					<TechYields>
-						<iYield>0</iYield>
-						<iYield>0</iYield>
-						<iYield>1</iYield>
-					</TechYields>
-				</TechYieldChange>
-				<TechYieldChange>
-					<PrereqTech>TECH_ANCESTOR_WORSHIP</PrereqTech>
-					<TechYields>
-						<iYield>0</iYield>
-						<iYield>0</iYield>
-						<iYield>1</iYield>
-					</TechYields>
-				</TechYieldChange>
-				<TechYieldChange>
-					<PrereqTech>TECH_ARCHEOLOGY</PrereqTech>
-					<TechYields>
-						<iYield>0</iYield>
-						<iYield>0</iYield>
-						<iYield>2</iYield>
-					</TechYields>
-				</TechYieldChange>
-				<TechYieldChange>
-					<PrereqTech>TECH_TOURISM</PrereqTech>
-					<TechYields>
-						<iYield>0</iYield>
-						<iYield>0</iYield>
-						<iYield>2</iYield>
-					</TechYields>
-				</TechYieldChange>
-			</TechYieldChanges>
-			<iUniqueRange>2</iUniqueRange>
 		</ImprovementInfo>
 		<!-- PREHISTORIC CAMPS -->
 		<!-- Jungle Camp | End - Information Lifestyle -->
@@ -10076,14 +9978,6 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_NOMAD</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- Desert Camp | End - Information Lifestyle -->
 		<!-- Kill Switchpoint: Sedentary Lifestyle -->
@@ -10226,14 +10120,6 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_NOMAD</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- Wetlands Camp | End - Information Lifestyle -->
 		<!-- Kill Switchpoint: Sedentary Lifestyle -->
@@ -10334,14 +10220,6 @@
 					</TechYields>
 				</TechYieldChange>
 			</TechYieldChanges>
-			<TraitYieldChanges>
-				<TraitYieldChange>
-					<TraitType>TRAIT_NOMAD</TraitType>
-					<TraitYields>
-						<iYield>1</iYield>
-					</TraitYields>
-				</TraitYieldChange>
-			</TraitYieldChanges>
 		</ImprovementInfo>
 		<!-- DEFENSIVE IMPROVEMENTS (LAND) -->
 		<!-- Radar Watchtower | End -->
@@ -12236,6 +12114,30 @@
 			</FeatureMakesValids>
 			<bGraphicalOnly>1</bGraphicalOnly>
 		</ImprovementInfo>
+		<ImprovementInfo>
+			<Type>IMPROVEMENT_LIGHTHOUSE_GREAT_BARRIER_REEF</Type>
+			<CreatingBuilds>
+				<CreatingBuild>BUILD_LIGHTHOUSE_GREAT_BARRIER_REEF</CreatingBuild>
+			</CreatingBuilds>
+			<Description>TXT_KEY_IMPROVEMENT_LIGHTHOUSE_GREAT_BARRIER_REEF</Description>
+			<Civilopedia>TXT_KEY_IMPROVEMENT_LIGHTHOUSE_PEDIA</Civilopedia>
+			<ArtDefineTag>ART_DEF_IMPROVEMENT_LIGHTHOUSE</ArtDefineTag>
+			<PrereqTech>TECH_ENGINEERING</PrereqTech>
+			<bActsAsCity>0</bActsAsCity>
+			<bWaterImprovement>1</bWaterImprovement>
+			<iAdvancedStartCost>-1</iAdvancedStartCost>
+			<FeatureMakesValids>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_PLATY_GREAT_BARRIER</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_GREAT_BARRIER_REEF_BEACON</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+			</FeatureMakesValids>
+			<bGraphicalOnly>1</bGraphicalOnly>
+		</ImprovementInfo>
 		<!-- Beacons -->
 		<ImprovementInfo>
 			<Type>IMPROVEMENT_BEACON_CORAL</Type>
@@ -12272,6 +12174,26 @@
 			<FeatureMakesValids>
 				<FeatureMakesValid>
 					<FeatureType>FEATURE_REEF</FeatureType>
+					<bMakesValid>1</bMakesValid>
+				</FeatureMakesValid>
+			</FeatureMakesValids>
+			<bGraphicalOnly>1</bGraphicalOnly>
+		</ImprovementInfo>
+		<ImprovementInfo>
+			<Type>IMPROVEMENT_BEACON_GREAT_BARRIER_REEF</Type>
+			<CreatingBuilds>
+				<CreatingBuild>BUILD_BEACON_GREAT_BARRIER_REEF</CreatingBuild>
+			</CreatingBuilds>
+			<Description>TXT_KEY_IMPROVEMENT_BEACON_GREAT_BARRIER_REEF</Description>
+			<Civilopedia>TXT_KEY_IMPROVEMENT_LIGHTHOUSE_PEDIA</Civilopedia>
+			<ArtDefineTag>ART_DEF_IMPROVEMENT_BEACON</ArtDefineTag>
+			<PrereqTech>TECH_SAILING</PrereqTech>
+			<bActsAsCity>0</bActsAsCity>
+			<bWaterImprovement>1</bWaterImprovement>
+			<iAdvancedStartCost>-1</iAdvancedStartCost>
+			<FeatureMakesValids>
+				<FeatureMakesValid>
+					<FeatureType>FEATURE_PLATY_GREAT_BARRIER</FeatureType>
 					<bMakesValid>1</bMakesValid>
 				</FeatureMakesValid>
 			</FeatureMakesValids>
@@ -12651,7 +12573,7 @@
 						<iYield>1</iYield>
 						<iYield>1</iYield>
 					</TechYields>
-				</TechYieldChange>				
+				</TechYieldChange>
 			</TechYieldChanges>
 			<RouteYieldChanges>
 				<RouteYieldChange>
