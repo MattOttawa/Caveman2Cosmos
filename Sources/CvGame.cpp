@@ -9075,6 +9075,8 @@ bool CvGame::isCompetingCorporation(CorporationTypes eCorporation1, CorporationT
 	return false;
 }
 
+// Toffer - ToDo - I think we want to use this more extensively,
+//	so move it over to CvPlot and store extra yield in an array of three elements per plot.
 int CvGame::getPlotExtraYield(int iX, int iY, YieldTypes eYield) const
 {
 	foreach_(const PlotExtraYield& extraYield, m_aPlotExtraYields)
@@ -9084,7 +9086,6 @@ int CvGame::getPlotExtraYield(int iX, int iY, YieldTypes eYield) const
 			return extraYield.m_aeExtraYield[eYield];
 		}
 	}
-
 	return 0;
 }
 
@@ -11554,26 +11555,11 @@ void CvGame::recalculateModifiers()
 
 	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
+		CvPlot* plotX = GC.getMap().plotByIndex(iI);
+		plotX->clearModifierTotals();
 
-		// Toffer - Yield cache
-		pLoopPlot->recalculateBaseYield();
-
-		pLoopPlot->getProperties()->clearForRecalculate();
-
-		//	We will recalculate visibility from first principles
-		pLoopPlot->clearVisibilityCounts();
-
-		//	Fix any spurious routes that are on water tiles
-		const RouteTypes eRoute = pLoopPlot->getRouteType();
-		if (eRoute != NO_ROUTE && pLoopPlot->isWater() && !GC.getRouteInfo(eRoute).isSeaTunnel() )
-		{
-			pLoopPlot->setRouteType(NO_ROUTE, false);
-		}
-		pLoopPlot->unitGameStateCorrections();
-
-		//	Recalc blockades from scratch
-		pLoopPlot->resetBlockadedCounts();
+		// Toffer - Yield cache - Maybe not the perfect spot for this, but it should be done early.
+		plotX->recalculateBaseYield();
 	}
 
 	for (int iI = 0; iI < MAX_TEAMS; iI++)
