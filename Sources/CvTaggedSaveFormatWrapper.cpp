@@ -42,21 +42,21 @@ public:
 	virtual uint32_t	GetEOF() const { return m_wrapped->GetEOF(); }
 	virtual uint32_t			GetSizeLeft() const { return m_wrapped->GetSizeLeft(); }
 	virtual void	CopyToMem(void* mem) { m_wrapped->CopyToMem(mem); }
-	
+
 	virtual uint32_t	WriteString(const wchar_t* szName) { return m_wrapped->WriteString(szName); }
 	virtual uint32_t	WriteString(const char* szName) { return m_wrapped->WriteString(szName); }
 	virtual uint32_t	WriteString(const std::string& szName) { return m_wrapped->WriteString(szName); }
 	virtual uint32_t	WriteString(const std::wstring& szName) { return m_wrapped->WriteString(szName); }
 	virtual uint32_t	WriteString(int count, std::string values[]) { return m_wrapped->WriteString(count,values); }
 	virtual uint32_t	WriteString(int count, std::wstring values[]) { return m_wrapped->WriteString(count,values); }
-	
+
 	virtual uint32_t	ReadString(char* szName){ return m_wrapped->ReadString(szName); m_lenRead += strlen(szName); }
 	virtual uint32_t	ReadString(wchar_t* szName) { return m_wrapped->ReadString(szName); m_lenRead += wcslen(szName); }
 	virtual uint32_t	ReadString(std::string& szName) { return m_wrapped->ReadString(szName); m_lenRead += szName.length(); }
 	virtual uint32_t	ReadString(std::wstring& szName) { return m_wrapped->ReadString(szName); m_lenRead += 2*szName.length(); }
 	virtual uint32_t	ReadString(int count, std::string values[]) { return m_wrapped->ReadString(count,values); m_lenRead += count*values[0].length(); }
 	virtual uint32_t	ReadString(int count, std::wstring values[]) { return m_wrapped->ReadString(count,values); m_lenRead += 2*count*values[0].length(); }
-	
+
 	virtual char*		ReadString() { char* result = m_wrapped->ReadString(); m_lenRead += (result == NULL ? 0 : strlen(result)); return result; }
 	virtual wchar_t*	ReadWideString() { wchar_t* result = m_wrapped->ReadWideString(); m_lenRead += (result == NULL ? 0 : 2*wcslen(result)); return result; }
 	virtual void		Read(char *arg) { m_wrapped->Read(arg); m_lenRead++;}
@@ -667,12 +667,12 @@ CvTaggedSaveFormatWrapper::WriteClassMappingTable(RemappedClassType classType)
 			m_stream->WriteString(info.getType());
 		}
 		break;
-	case REMAPPED_CLASS_TYPE_MAPS:
-		entry.numClasses = NUM_MAPS;
+	case REMAPPED_CLASS_TYPE_MAPCATEGORIES:
+		entry.numClasses = GC.getNumMapCategoryInfos();
 		m_stream->Write(sizeof(class_mapping_table_entry), (uint8_t*)&entry);
 		for(int i = 0; i < entry.numClasses; i++)
 		{
-			const CvMapInfo& info = GC.getMapInfo((MapTypes)i);
+			const CvMapCategoryInfo& info = GC.getMapCategoryInfo((MapCategoryTypes)i);
 
 			DEBUG_TRACE3("\t%d : %s\n", i, info.getType())
 			m_stream->WriteString(info.getType());
@@ -1074,7 +1074,7 @@ CvTaggedSaveFormatWrapper::WriteClassMappingTables()
 	WriteClassMappingTable(REMAPPED_CLASS_TYPE_COMBATINFOS);
 	//TB Promotion Line Mod begin
 	WriteClassMappingTable(REMAPPED_CLASS_TYPE_PROMOTIONLINES);
-	WriteClassMappingTable(REMAPPED_CLASS_TYPE_MAPS);
+	WriteClassMappingTable(REMAPPED_CLASS_TYPE_MAPCATEGORIES);
 	WriteClassMappingTable(REMAPPED_CLASS_TYPE_IDEACLASSES);
 	WriteClassMappingTable(REMAPPED_CLASS_TYPE_IDEAS);
 	WriteClassMappingTable(REMAPPED_CLASS_TYPE_TRAITS);
@@ -1155,8 +1155,8 @@ CvTaggedSaveFormatWrapper::getNumClassEnumValues(RemappedClassType classType)
 		case REMAPPED_CLASS_TYPE_PROMOTIONLINES:
 			result = GC.getNumPromotionLineInfos();
 			break;
-		case REMAPPED_CLASS_TYPE_MAPS:
-			result = NUM_MAPS;
+		case REMAPPED_CLASS_TYPE_MAPCATEGORIES:
+			result = GC.getNumMapCategoryInfos();
 			break;
 		case REMAPPED_CLASS_TYPE_IDEACLASSES:
 			result = GC.getNumIdeaClassInfos();
@@ -3976,16 +3976,6 @@ CvTaggedSaveFormatWrapper::close()
 {
 	if ( m_inUse )
 	{
-		foreach_(const CvWString& it, m_warnings)
-		{
-			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_SAVE_INFO_LOST);
-			if (NULL != pInfo)
-			{
-				pInfo->setText(it.c_str());
-				gDLL->getInterfaceIFace()->addPopup(pInfo);
-			}
-		}
-
 		reset(false);
 
 		m_inUse = false;

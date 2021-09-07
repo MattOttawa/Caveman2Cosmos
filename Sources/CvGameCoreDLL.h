@@ -225,9 +225,6 @@ const std::string getModDir();
 #include <boost155/foreach.hpp>
 #include <boost155/functional.hpp>
 
-
-// #include <boost155/phoenix.hpp> Doesn't work, see https://github.com/boostorg/phoenix/issues/91
-
 // Ranges
 #include <boost155/range.hpp>
 #include <boost155/range/adaptor/filtered.hpp>
@@ -239,6 +236,7 @@ const std::string getModDir();
 
 // Make boost foreach look nice enough to actually use
 #define foreach_ BOOST_155_FOREACH
+#define reverse_foreach_ BOOST_155_REVERSE_FOREACH
 
 // Alias our latest boost version
 namespace bst = boost155;
@@ -264,6 +262,7 @@ using bst::bind;
 #include <boost/python/manage_new_object.hpp>
 #include <boost/python/return_value_policy.hpp>
 #include <boost/python/to_python_converter.hpp>
+#include <boost/python/suite/indexing/container_utils.hpp>
 namespace python = boost::python;
 #endif
 

@@ -8,6 +8,7 @@
 #include "CvString.h"
 
 class BoolExpr;
+class CvPlot;
 
 // XXX these should not be in the DLL per se (if the user changes them, we are screwed...)
 
@@ -305,7 +306,7 @@ struct PlaceBonusTypes
 	TechTypes ePrereqTech;
 	TerrainTypes ePrereqTerrain;
 	FeatureTypes ePrereqFeature;
-	MapTypes ePrereqMap;
+	MapCategoryTypes ePrereqMapCategory;
 	operator int() const {return (int)eBonus;}
 	bool operator< (const PlaceBonusTypes& rhs) const {return (int)eBonus < (int)rhs.eBonus;}
 };
@@ -323,9 +324,10 @@ struct PromotionLineAfflictionModifier
 
 struct XYCoords
 {
-	XYCoords(int x=0, int y=0) : iX(x), iY(y) {}
-	int iX;
-	int iY;
+	XYCoords(int x = INVALID_PLOT_COORD, int y = INVALID_PLOT_COORD);
+	XYCoords(const CvPlot& plot);
+
+	CvPlot* plot() const;
 
 	bool operator<  (const XYCoords xy) const { return ((iY < xy.iY) || (iY == xy.iY && iX < xy.iX)); }
 	bool operator<= (const XYCoords xy) const { return ((iY < xy.iY) || (iY == xy.iY && iX <= xy.iX)); }
@@ -333,6 +335,9 @@ struct XYCoords
 	bool operator== (const XYCoords xy) const { return (!(iY != xy.iY || iX != xy.iX)); }
 	bool operator>= (const XYCoords xy) const { return ((iY > xy.iY) || (iY == xy.iY && iX >= xy.iX)); }
 	bool operator>  (const XYCoords xy) const { return ((iY > xy.iY) || (iY == xy.iY && iX > xy.iX)); }
+
+	int iX;
+	int iY;
 };
 
 struct IDInfo
@@ -741,11 +746,6 @@ struct BuildingCommerceChange
 	void write(FDataStreamBase* pStream);
 };
 
-/************************************************************************************************/
-/* Afforess	                  Start		 01/25/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
 struct PropertySpawns
 {
 	PropertyTypes eProperty;
@@ -791,24 +791,17 @@ struct BuildingCommerceModifier
 	void write(FDataStreamBase* pStream);
 };
 
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-
-
-
-struct FOWVis
+const struct TechCommerceChange
 {
-	uint uiCount;
-	POINT* pOffsets;  // array of "Offset" points
-
-	FOWVis()
-		: uiCount(0)
-		, pOffsets(NULL)
+	TechCommerceChange(TechTypes eTech, CommerceTypes eCommerce, int iChange)
+		: eTech(eTech)
+		, eCommerce(eCommerce)
+		, iChange(iChange)
 	{}
 
-	// python friendly accessors
-	POINT getOffsets(int i) const { return pOffsets[i]; }
+	const TechTypes eTech;
+	const CommerceTypes eCommerce;
+	const int iChange;
 };
 
 struct DllExport PBGameSetupData

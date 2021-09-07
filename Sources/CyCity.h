@@ -17,7 +17,6 @@ struct OrderData;
 class CyCity
 {
 public:
-	CyCity();
 	DllExport explicit CyCity(CvCity* pCity);		// Call from C++
 
 	CvCity* getCity() const { return m_pCity; }	// Call from C++
@@ -96,7 +95,7 @@ public:
 	bool canConscript() const;
 	int getBonusHealth(int /*BonusTypes*/ iBonus) const;
 	int getBonusHappiness(int /*BonusTypes*/ iBonus) const;
-	int getBonusPower(int /*BonusTypes*/ eBonus, bool bDirty) const;
+	int getBonusPower(int /*BonusTypes*/ eBonus) const;
 	int getBonusYieldRateModifier(int /*YieldTypes*/ eIndex, int /*BonusTypes*/ eBonus) const;
 	int /* HandicapTypes */ getHandicapType() const;
 	int /* CivilizationTypes */ getCivilizationType() const;
@@ -236,8 +235,6 @@ public:
 	int getAirModifier() const;
 	int getNukeModifier() const;
 	bool isPower() const;
-	bool isAreaCleanPower() const;
-	bool isDirtyPower() const;
 	int getDefenseDamage() const;
 	void changeDefenseDamage(int iChange);
 	int getNaturalDefense() const;
@@ -314,7 +311,7 @@ public:
 	bool isWeLoveTheKingDay() const;
 	void setWeLoveTheKingDay(bool bWeLoveTheKingDay);
 	int calculateCorporateTaxes() const;
-	void changePowerCount(int iChange, bool bDirty);
+	void changePowerCount(int iChange);
 
 	void changeEventAnger(int iChange);
 
@@ -419,6 +416,7 @@ public:
 
 	int getLiberationPlayer(bool bConquest) const;
 
+	bool AI_isEmphasizeSpecialist(int /*SpecialistTypes*/ iIndex) const;
 	bool AI_isEmphasize(int iEmphasizeType) const;
 	int AI_countBestBuilds(const CyArea& kArea) const;
 	int AI_cityValue() const;

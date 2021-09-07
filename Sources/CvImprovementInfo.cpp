@@ -397,22 +397,6 @@ int CvImprovementInfo::getImprovementBonusDiscoverRand(int i) const
 		return m_paImprovementBonus[i].m_iDiscoverRand;
 }
 
-int CvImprovementInfo::getMapType(int i) const
-{
-	return m_aiMapTypes[i];
-}
-
-int CvImprovementInfo::getNumMapTypes() const
-{
-	return m_aiMapTypes.size();
-}
-
-bool CvImprovementInfo::isMapType(int i) const
-{
-	FASSERT_BOUNDS(0, NUM_MAPS, i)
-		return algo::contains(m_aiMapTypes, i);
-}
-
 const TCHAR* CvImprovementInfo::getButton() const
 {
 	/************************************************************************************************/
@@ -514,11 +498,7 @@ int CvImprovementInfo::getNumAlternativeImprovementUpgradeTypes() const
 
 bool CvImprovementInfo::isAlternativeImprovementUpgradeType(int i) const
 {
-	if (find(m_aiAlternativeImprovementUpgradeTypes.begin(), m_aiAlternativeImprovementUpgradeTypes.end(), i) == m_aiAlternativeImprovementUpgradeTypes.end())
-	{
-		return false;
-	}
-	return true;
+	return algo::contains(m_aiAlternativeImprovementUpgradeTypes, i);
 }
 
 int CvImprovementInfo::getFeatureChangeType(int i) const
@@ -533,11 +513,7 @@ int CvImprovementInfo::getNumFeatureChangeTypes() const
 
 bool CvImprovementInfo::isFeatureChangeType(int i) const
 {
-	if (find(m_aiFeatureChangeTypes.begin(), m_aiFeatureChangeTypes.end(), i) == m_aiFeatureChangeTypes.end())
-	{
-		return false;
-	}
-	return true;
+	return algo::contains(m_aiFeatureChangeTypes, i);
 }
 
 //Post Load functions
@@ -608,7 +584,7 @@ void CvImprovementInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_bGoody);
 	CheckSum(iSum, m_bPermanent);
 	CheckSum(iSum, m_bOutsideBorders);
-	CheckSumC(iSum, m_aiMapTypes);
+	CheckSumC(iSum, m_aeMapCategoryTypes);
 	CheckSumC(iSum, m_improvementBuildTypes);
 
 	// Arrays
@@ -761,7 +737,7 @@ bool CvImprovementInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetVariableListTagPair(&m_pbTerrainMakesValid, L"TerrainMakesValids", GC.getNumTerrainInfos());
 	pXML->SetVariableListTagPair(&m_pbFeatureMakesValid, L"FeatureMakesValids", GC.getNumFeatureInfos());
 
-	pXML->SetOptionalVector(&m_aiMapTypes, L"MapCategoryTypes");
+	pXML->SetOptionalVector(&m_aeMapCategoryTypes, L"MapCategoryTypes");
 	if (pXML->TryMoveToXmlFirstChild(L"BonusTypeStructs"))
 	{
 		// call the function that sets the bonus booleans
@@ -1159,5 +1135,5 @@ void CvImprovementInfo::copyNonDefaults(const CvImprovementInfo* pClassInfo)
 	GC.copyNonDefaultDelayedResolution((int*)&m_iBonusChange, (int*)&pClassInfo->m_iBonusChange);
 
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiFeatureChangeTypes, pClassInfo->m_aiFeatureChangeTypes);
-	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiMapTypes, pClassInfo->m_aiMapTypes);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aeMapCategoryTypes, pClassInfo->getMapCategories());
 }

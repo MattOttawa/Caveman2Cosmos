@@ -815,26 +815,12 @@
 	<ElementType name="TerrainWorkRateModifierTypes" content="eltOnly">
 		<element type="TerrainWorkRateModifierType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
-	<ElementType name="TerrainWorkRateModifierChangeType" content="eltOnly">
-		<element type="TerrainType"/>
-		<element type="iModifier"/>
-	</ElementType>
-	<ElementType name="TerrainWorkRateModifierChangeTypes" content="eltOnly">
-		<element type="TerrainWorkRateModifierChangeType" minOccurs="0" maxOccurs="*"/>
-	</ElementType>
 	<ElementType name="FeatureWorkRateModifierType" content="eltOnly">
 		<element type="FeatureType"/>
 		<element type="iModifier"/>
 	</ElementType>
 	<ElementType name="FeatureWorkRateModifierTypes" content="eltOnly">
 		<element type="FeatureWorkRateModifierType" minOccurs="0" maxOccurs="*"/>
-	</ElementType>
-	<ElementType name="FeatureWorkRateModifierChangeType" content="eltOnly">
-		<element type="FeatureType"/>
-		<element type="iModifier"/>
-	</ElementType>
-	<ElementType name="FeatureWorkRateModifierChangeTypes" content="eltOnly">
-		<element type="FeatureWorkRateModifierChangeType" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 	<ElementType name="BuildWorkRateModifierType" content="eltOnly">
 		<element type="BuildType"/>
@@ -1408,7 +1394,6 @@
 	</ElementType>
 	<!-- RevDCM canTrain -->
 	<ElementType name="MaxStartEra" content="textOnly"/>
-	<ElementType name="ForceObsoleteTech" content="textOnly"/>
 	<ElementType name="bStateReligion" content="textOnly" dt:type="boolean"/>
 	<ElementType name="bUpgradeAnywhere" content="textOnly" dt:type="boolean"/>
 	<ElementType name="PrereqGameOption" content="textOnly"/>
@@ -1912,7 +1897,7 @@
 		<element type="Buildings" minOccurs="0"/>
 		<!-- RevDCM canTrain -->
 		<element type="MaxStartEra" minOccurs="0"/>
-		<element type="ForceObsoleteTech" minOccurs="0"/>
+		<element type="ObsoleteTech" minOccurs="0"/>
 		<element type="bStateReligion" minOccurs="0"/>
 		<element type="bUpgradeAnywhere" minOccurs="0"/>
 		<element type="PrereqGameOption" minOccurs="0"/>
@@ -2475,8 +2460,6 @@
 		<element type="PrecisionVSUnitCombatChangeTypes" minOccurs="0"/>
 		<element type="CriticalVSUnitCombatChangeTypes" minOccurs="0"/>
 		<element type="RoundStunVSUnitCombatChangeTypes" minOccurs="0"/>
-		<element type="TerrainWorkRateModifierChangeTypes" minOccurs="0"/>
-		<element type="FeatureWorkRateModifierChangeTypes" minOccurs="0"/>
 		<element type="BuildWorkRateModifierChangeTypes" minOccurs="0"/>
 		<element type="AddsBuildTypes" minOccurs="0"/>
 		<element type="iCaptureProbabilityModifierChange" minOccurs="0"/>

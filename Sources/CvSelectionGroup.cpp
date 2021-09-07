@@ -3490,6 +3490,9 @@ bool CvSelectionGroup::isHasPathToAreaPlayerCity(const PlayerTypes ePlayer, cons
 				}
 				return true;
 			}
+			// Toffer - This assert is not super accurate, it occur when there's a discrepancy between plotSet and generatePath,
+			//	usually caused by incorrect flags used as input for this function,
+			//	it does however indicate that plotSet and generatePath disagree about plot accessability under some specific flag combinations.
 			FErrorMsg
 			(
 				CvString::format
@@ -3575,7 +3578,8 @@ bool CvSelectionGroup::calculateIsStranded()
 		return false;
 	}
 
-	if (getHeadUnit()->isCargo())
+	const CvUnit* headUnit = getHeadUnit();
+	if (headUnit->isCargo())
 	{
 		return false;
 	}
@@ -3604,7 +3608,7 @@ bool CvSelectionGroup::calculateIsStranded()
 
 	if (plot()->area()->getNumCities() > 0)
 	{
-		if (getHeadUnit()->AI_getUnitAIType() == UNITAI_SPY)
+		if (headUnit->AI_getUnitAIType() == UNITAI_SPY)
 		{
 			return false;
 		}
@@ -3621,20 +3625,26 @@ bool CvSelectionGroup::calculateIsStranded()
 			return false;
 		}
 
-		//	Since we are considering a reachable enemy city as not stranded it follows
-		//	that we expect situations where we can only attack are not considered stranded,
-		//	so include the MOVE_THROUGH_ENEMY flag for consistency
-		if (isHasPathToAreaPlayerCity(getOwner(), MOVE_THROUGH_ENEMY))
+		if (headUnit->canAttack() || headUnit->isBlendIntoCity())
 		{
-			return false;
-		}
+			//	Since we are considering a reachable enemy city as not stranded it follows
+			//	that we expect situations where we can only attack are not considered stranded,
+			//	so include the MOVE_THROUGH_ENEMY flag for consistency
+			if (isHasPathToAreaPlayerCity(getOwner(), MOVE_THROUGH_ENEMY))
+			{
+				return false;
+			}
 
-		if (isHasPathToAreaEnemyCity(MOVE_IGNORE_DANGER | MOVE_THROUGH_ENEMY))
+			if (isHasPathToAreaEnemyCity(MOVE_IGNORE_DANGER | MOVE_THROUGH_ENEMY))
+			{
+				return false;
+			}
+		}
+		else if (isHasPathToAreaPlayerCity(getOwner(), MOVE_IGNORE_DANGER | MOVE_NO_ENEMY_TERRITORY))
 		{
 			return false;
 		}
 	}
-
 	return true;
 }
 
@@ -4747,18 +4757,16 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 		unit->getCargoUnits(aCargoUnits);
 
 		std::vector<CvSelectionGroup*> aCargoGroups;
-		for (uint i = 0; i < aCargoUnits.size(); ++i)
+		foreach_(const CvUnit* pCargoUnit, aCargoUnits)
 		{
-			CvSelectionGroup* pGroup = aCargoUnits[i]->getGroup();
-			if (std::find(aCargoGroups.begin(), aCargoGroups.end(), pGroup) == aCargoGroups.end())
+			if (!algo::contains(aCargoGroups, pCargoUnit->getGroup()))
 			{
-				aCargoGroups.push_back(aCargoUnits[i]->getGroup());
+				aCargoGroups.push_back(pCargoUnit->getGroup());
 			}
 		}
 
-		for (uint i = 0; i < aCargoGroups.size(); ++i)
+		foreach_(CvSelectionGroup* pGroup, aCargoGroups)
 		{
-			CvSelectionGroup* pGroup = aCargoGroups[i];
 			if (pGroup->canAllMove())
 			{
 				FAssert(!pGroup->at(pPlot->getX(), pPlot->getY()));
