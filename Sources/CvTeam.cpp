@@ -1051,14 +1051,16 @@ void CvTeam::doTurn()
 
 	AI_doTurnPre();
 
-	// TB - Keep this valid for barbs only for now.
+	// TB - Keep this valid only for barbs and neanderthals for now.
 	// We may need new rules here for aliens and such, but there's really no need to do anything for animals regarding technology unless we want to represent evolution somehow... lol.
-	// Toffer - Neanderthals get thechs without this, so isHominid() is not necessary. May be a bug that they do, but they do.
-	if (isBarbarian())
+	if (isHominid())
 	{
-		for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
+		// Toffer - if we cached a vector listing all techs currently possible to select for active research per team, we wouldn't have to loop through all techs here.
+		for (int iI = GC.getNumTechInfos() - 1; iI > -1; iI--)
 		{
-			if (!isHasTech((TechTypes)iI))
+			const TechTypes eTechX = static_cast<TechTypes>(iI);
+
+			if (GET_PLAYER(getLeaderID()).canResearch(eTechX))
 			{
 				int iPossibleCount = 0;
 				int iCount = 0;
@@ -1066,7 +1068,7 @@ void CvTeam::doTurn()
 				{
 					if (GET_TEAM((TeamTypes)iJ).isAlive())
 					{
-						if (GET_TEAM((TeamTypes)iJ).isHasTech((TechTypes)iI))
+						if (GET_TEAM((TeamTypes)iJ).isHasTech(eTechX))
 						{
 							iCount++;
 						}
@@ -1075,9 +1077,7 @@ void CvTeam::doTurn()
 				}
 				if (iCount > 0)
 				{
-					FAssertMsg(iPossibleCount > 0, "iPossibleCount is expected to be greater than 0");
-
-					changeResearchProgress((TechTypes)iI, std::max((getResearchCost((TechTypes)iI) * GC.getBARBARIAN_FREE_TECH_PERCENT() * iCount) / (100 * iPossibleCount), 1), getLeaderID());
+					changeResearchProgress(eTechX, std::max(1, getResearchCost(eTechX) * GC.getBARBARIAN_FREE_TECH_PERCENT() * iCount / (100 * iPossibleCount)), getLeaderID());
 				}
 			}
 		}
@@ -2644,21 +2644,27 @@ int CvTeam::getResearchCost(TechTypes eTech) const
 	iCost *= GC.getEraInfo((EraTypes)GC.getTechInfo(eTech).getEra()).getResearchPercent();
 	iCost /= 100;
 
-	iCost *= 100 + iBeelineStingsTechCostModifier;
-	iCost /= 100;
-
 	iCost *= std::max(0, GC.getTECH_COST_EXTRA_TEAM_MEMBER_MODIFIER() * getNumMembers());
 	iCost /= 100;
 
-	if (!isHuman() && !isNPC())
-	{
-		iCost *= GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIResearchPercent();
-		iCost /= 100;
-	}
+	int iMod = iBeelineStingsTechCostModifier;
 
+	if (!isNPC() && !isHuman(true))
+	{
+		iMod =
+		(
+			GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIResearchPercent() - 100
+			+
+			GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIPerEraModifier() * GET_PLAYER(getLeaderID()).getCurrentEra()
+		);
+	}
 	if (GC.getGame().isOption(GAMEOPTION_UPSCALED_RESEARCH_COSTS))
 	{
-		iCost = getModifiedIntValue64(iCost, GC.getUPSCALED_RESEARCH_COST_MODIFIER());
+		iMod += GC.getUPSCALED_RESEARCH_COST_MODIFIER();
+	}
+	if (iMod != 0)
+	{
+		iCost = getModifiedIntValue64(iCost, iMod);
 	}
 	iCost /= 100;
 
@@ -2724,20 +2730,20 @@ bool CvTeam::isBonusObsolete(BonusTypes eBonus) const
 }
 
 
-bool CvTeam::isHuman() const
+bool CvTeam::isHuman(const bool bCountDisabledHuman) const
 {
 	PROFILE_FUNC();
 
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAliveAndTeam(getID()) && GET_PLAYER((PlayerTypes)iI).isHuman())
+		if (GET_PLAYER((PlayerTypes)iI).isAliveAndTeam(getID())
+		&& (GET_PLAYER((PlayerTypes)iI).isHuman() || bCountDisabledHuman && GET_PLAYER((PlayerTypes)iI).isHumanDisabled()))
 		{
 			return true;
 		}
 	}
 	return false;
 }
-
 
 bool CvTeam::isBarbarian() const
 {
@@ -4592,7 +4598,7 @@ void CvTeam::processProjectChange(ProjectTypes eIndex, int iChange, int iOldProj
 			GC.getGame().makeSpecialBuildingValid((SpecialBuildingTypes)(kProject.getEveryoneSpecialBuilding()));
 		}
 
-		for (int iI = 0; iI < MAX_PLAYERS; iI++)
+		for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 		{
 			CvPlayer& player = GET_PLAYER((PlayerTypes)iI);
 			if (player.isAlive())
@@ -4626,7 +4632,7 @@ void CvTeam::processProjectChange(ProjectTypes eIndex, int iChange, int iOldProj
 				}
 				player.changeWorldHappiness(kProject.getWorldHappiness());
 				player.changeWorldHealth(kProject.getWorldHealth());
-				player.changeWorldTradeRoutes(kProject.getWorldTradeRoutes());
+				player.changeTradeRoutes(kProject.getWorldTradeRoutes());
 			}
 		}
 	}
@@ -4814,12 +4820,19 @@ void CvTeam::setResearchProgress(TechTypes eIndex, int iNewValue, PlayerTypes eP
 
 		if (getResearchProgress(eIndex) >= getResearchCost(eIndex))
 		{
-			int iOverflow = (100 * (getResearchProgress(eIndex) - getResearchCost(eIndex))) / std::max(1, GET_PLAYER(ePlayer).calculateResearchModifier(eIndex));
+			setHasTech(eIndex, true, ePlayer, true, true);
 
 			// Multiple Research
-			setHasTech(eIndex, true, ePlayer, true, true);
-			iOverflow = GET_PLAYER(ePlayer).doMultipleResearch(iOverflow);
-			GET_PLAYER(ePlayer).changeOverflowResearch(iOverflow);
+			if (!isNPC())
+			{
+				GET_PLAYER(ePlayer).changeOverflowResearch(
+					GET_PLAYER(ePlayer).doMultipleResearch(
+						100 * (getResearchProgress(eIndex) - getResearchCost(eIndex))
+						/
+						GET_PLAYER(ePlayer).calculateResearchModifier(eIndex)
+					)
+				);
+			}
 		}
 	}
 }
@@ -4827,9 +4840,7 @@ void CvTeam::setResearchProgress(TechTypes eIndex, int iNewValue, PlayerTypes eP
 
 void CvTeam::changeResearchProgress(TechTypes eIndex, int iChange, PlayerTypes ePlayer)
 {
-	int iNewResearch = std::max(0, getResearchProgress(eIndex) + iChange);
-
-	setResearchProgress(eIndex, iNewResearch, ePlayer);
+	setResearchProgress(eIndex, std::max(0, getResearchProgress(eIndex) + iChange), ePlayer);
 }
 
 int CvTeam::changeResearchProgressPercent(TechTypes eIndex, int iPercent, PlayerTypes ePlayer)
@@ -5366,7 +5377,7 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 			const bool bGlobal = GC.getTechInfo(eIndex).isGlobal();
 
-			for (int iI = 0; iI < MAX_PLAYERS; iI++)
+			for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 			{
 				if (GET_PLAYER((PlayerTypes)iI).isAlive())
 				{
@@ -5567,8 +5578,8 @@ void CvTeam::setHasTech(TechTypes eIndex, bool bNewValue, PlayerTypes ePlayer, b
 
 bool CvTeam::isNoTradeTech(const short iTech) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTechInfos(), iTech)
-	return find(m_vNoTradeTech.begin(), m_vNoTradeTech.end(), iTech) != m_vNoTradeTech.end();
+	FASSERT_BOUNDS(0, GC.getNumTechInfos(), iTech);
+	return algo::contains(m_vNoTradeTech, iTech);
 }
 
 
@@ -6059,12 +6070,23 @@ void CvTeam::processTech(TechTypes eTech, int iChange, bool bAnnounce)
 
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAliveAndTeam(getID()))
-		{
-			GET_PLAYER((PlayerTypes)iI).updateCorporation();
+		CvPlayer& player = GET_PLAYER((PlayerTypes) iI);
 
-			// A new tech can effect best plot build decisions so mark stale in all cities
-			algo::for_each(GET_PLAYER((PlayerTypes)iI).cities(), CvCity::fn::AI_markBestBuildValuesStale());
+		if (player.isAliveAndTeam(getID()))
+		{
+			player.updateCorporation();
+
+			foreach_(CvCity* cityX, player.cities())
+			{
+				// A new tech can effect best plot build decisions so mark stale in all cities
+				cityX->AI_markBestBuildValuesStale();
+
+				// Buildings may change commerce output with tech
+				for (int iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
+				{
+					cityX->changeBuildingCommerceTechChange((CommerceTypes)iJ, iChange * cityX->getBuildingCommerceTechChange((CommerceTypes)iJ, eTech));
+				}
+			}
 		}
 	}
 

@@ -183,6 +183,7 @@ public:
 
 	void doTurn();
 	void doAutobuild();
+	void checkPropertyBuildings();
 
 	bool isCitySelected() const;
 	DllExport bool canBeSelected() const;
@@ -965,7 +966,8 @@ public:
 
 	int getPlotYield(YieldTypes eIndex) const;
 	int getBaseYieldRateModifier(YieldTypes eIndex, int iExtra = 0) const;
-	int getYieldRate(YieldTypes eIndex) const;
+	int getYieldRate(const YieldTypes eYield) const;
+	int getYieldRate100(const YieldTypes eYield) const;
 	void changePlotYield(YieldTypes eIndex, int iChange);
 
 	int getExtraYield(YieldTypes eIndex) const;
@@ -1483,6 +1485,11 @@ public:
 	int getBonusCommercePercentChanges(CommerceTypes eIndex, BuildingTypes eBuilding) const;
 	void changeBonusCommercePercentChanges(CommerceTypes eIndex, int iChange);
 
+	void changeBuildingCommerceTechChange(CommerceTypes eIndex, int iChange);
+	int getBuildingCommerceTechChange(CommerceTypes eIndex) const;
+	int getBuildingCommerceTechChange(CommerceTypes eIndex, TechTypes eTech) const;
+	int getBuildingCommerceTechChange(CommerceTypes eIndex, BuildingTypes eBuilding) const;
+
 	bool isAutomatedCanBuild(BuildTypes eBuild) const;
 	void setAutomatedCanBuild(BuildTypes eBuild, bool bNewValue);
 
@@ -1528,18 +1535,18 @@ public:
 	// Represents a building with associated score as measured by the AI
 	struct ScoredBuilding
 	{
-		ScoredBuilding(BuildingTypes building = NO_BUILDING, int score = -1) : building(building), score(score) {}
+		ScoredBuilding(BuildingTypes building = NO_BUILDING, int64_t score = -1) : building(building), score(score) {}
 		bool operator<(const ScoredBuilding& other) const { return score < other.score; }
 
 		BuildingTypes building;
-		int score;
+		int64_t score;
 
 		// Get some interesting stats about a set of scored buildings
-		static void averageMinMax(const std::vector<ScoredBuilding>& scores, float& averageScore, int& minScore, int& maxScore)
+		static void averageMinMax(const std::vector<ScoredBuilding>& scores, float& averageScore, int64_t& minScore, int64_t& maxScore)
 		{
 			averageScore = 0;
-			minScore = MAX_INT;
-			maxScore = -MAX_INT;
+			minScore = LLONG_MAX;
+			maxScore = LLONG_MIN;
 			foreach_(const ScoredBuilding& itr, scores)
 			{
 				averageScore = averageScore + itr.score / scores.size();
@@ -1767,6 +1774,8 @@ protected:
 
 	int* m_aiBonusCommerceRateModifier;
 	int* m_aiBonusCommercePercentChanges;
+	int* m_aiBuildingCommerceTechChange;
+
 	mutable int* m_cachedPropertyNeeds;
 	bool* m_pabHadVicinityBonus;
 	bool* m_pabHadRawVicinityBonus;
@@ -2281,6 +2290,7 @@ public:
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getBaseCommerceRateTimes100, CommerceTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getCultureTimes100, PlayerTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getYieldRate, YieldTypes);
+		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getYieldRate100, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getBaseYieldRate, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, const CvPlotGroup*, plotGroup, PlayerTypes);
 

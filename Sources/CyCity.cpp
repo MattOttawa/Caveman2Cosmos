@@ -10,11 +10,6 @@
 // Python wrapper class for CvCity
 //
 
-CyCity::CyCity() : m_pCity(NULL)
-{
-	FErrorMsg("Error");
-}
-
 CyCity::CyCity(CvCity* pCity) : m_pCity(pCity)
 {
 	FAssert(m_pCity != NULL);
@@ -1712,6 +1707,11 @@ int CyCity::getNumPopulationEmployed() const
 int CyCity::getBonusCommercePercentChanges(int eIndex, int eBuilding) const
 {
 	return m_pCity->getBonusCommercePercentChanges((CommerceTypes)eIndex, (BuildingTypes)eBuilding);
+}
+
+int CyCity::getBuildingCommerceTechChange(int eIndex, int eBuilding) const
+{
+	return m_pCity->getBuildingCommerceTechChange((CommerceTypes)eIndex, (BuildingTypes)eBuilding);
 }
 
 bool CyCity::isAutomatedCanBuild(int /*BuildTypes*/ eIndex) const

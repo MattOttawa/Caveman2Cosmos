@@ -3491,7 +3491,7 @@ bool CvSelectionGroup::isHasPathToAreaPlayerCity(const PlayerTypes ePlayer, cons
 				return true;
 			}
 			// Toffer - This assert is not super accurate, it occur when there's a discrepancy between plotSet and generatePath,
-			//	usually caused by incorrect flags used as input for this function, 
+			//	usually caused by incorrect flags used as input for this function,
 			//	it does however indicate that plotSet and generatePath disagree about plot accessability under some specific flag combinations.
 			FErrorMsg
 			(
@@ -4757,18 +4757,16 @@ bool CvSelectionGroup::groupAmphibMove(CvPlot* pPlot, int iFlags)
 		unit->getCargoUnits(aCargoUnits);
 
 		std::vector<CvSelectionGroup*> aCargoGroups;
-		for (uint i = 0; i < aCargoUnits.size(); ++i)
+		foreach_(const CvUnit* pCargoUnit, aCargoUnits)
 		{
-			CvSelectionGroup* pGroup = aCargoUnits[i]->getGroup();
-			if (std::find(aCargoGroups.begin(), aCargoGroups.end(), pGroup) == aCargoGroups.end())
+			if (!algo::contains(aCargoGroups, pCargoUnit->getGroup()))
 			{
-				aCargoGroups.push_back(aCargoUnits[i]->getGroup());
+				aCargoGroups.push_back(pCargoUnit->getGroup());
 			}
 		}
 
-		for (uint i = 0; i < aCargoGroups.size(); ++i)
+		foreach_(CvSelectionGroup* pGroup, aCargoGroups)
 		{
-			CvSelectionGroup* pGroup = aCargoGroups[i];
 			if (pGroup->canAllMove())
 			{
 				FAssert(!pGroup->at(pPlot->getX(), pPlot->getY()));

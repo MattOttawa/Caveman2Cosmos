@@ -517,23 +517,7 @@ public:
 	// loads the improvement bonuses from the xml file
 	void SetImprovementBonuses(CvImprovementBonusInfo** ppImprovementBonus);
 
-/*************************************************************************************************/
-/**	New Tag Defs	(XMLInfos)				08/09/08								Xienwolf	**/
-/**																								**/
-/**								Defines Function for Use in .cpp								**/
-/*************************************************************************************************/
-	// acquire a list of unknown length of String data from a Child setup in a String (typically for Pass 3 Use)
-	void SetStringWithChildList(int* iNumEntries, std::vector<CvString>* aszXMLLoad);
-	// acquire a list of unknown length of String data from a Child setup in an Array of INTs
-	void SetIntWithChildList(int* iNumEntries, int** piXMLLoad);
-	// acquire a list of known length of String data from a Child setup true values in an Array of BOOLs
-	void SetBoolFromChildList(int iNumEntries, bool** pbXMLLoad);
-/*************************************************************************************************/
-/**	New Tag Defs							END													**/
-/*************************************************************************************************/
-
-	//Searches the InfoClass for the pszVal and returns the location if a match
-	//				is found.
+	// Searches the InfoClass for the pszVal and returns the location if a match is found.
 	static int GetInfoClass(const TCHAR* pszVal);
 
 	template <class T>
@@ -686,13 +670,13 @@ public:
 	{
 		foreach_(const T& it, source)
 		{
-			if (it > -1 && !algo::contains(target, it))
+			if (/*it > -1 &&*/ !algo::contains(target, it))
 			{
 				target.push_back(it);
 			}
 		}
 
-		std::sort(target.begin(), target.end());
+		algo::sort(target);
 	}
 
 	template<class T>
@@ -720,7 +704,7 @@ public:
 						}
 					}
 
-					std::sort(aInfos->begin(), aInfos->end());
+					algo::sort(*aInfos);
 
 					MoveToXmlParent();
 				}

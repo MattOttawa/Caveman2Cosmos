@@ -3941,7 +3941,10 @@ void CvGame::setAIAutoPlay(PlayerTypes iPlayer, int iNewValue, bool bForced)
 
 		if (iNewValue > 0)
 		{
-			GET_PLAYER(iPlayer).setHumanDisabled(true);
+			if (!GET_PLAYER(iPlayer).isHumanDisabled())
+			{
+				GET_PLAYER(iPlayer).setHumanDisabled(true);
+			}
 		}
 		else GET_PLAYER(iPlayer).setHumanDisabled(false);
 	}
@@ -4403,7 +4406,7 @@ bool CvGame::isValidVoteSelection(VoteSourceTypes eVoteSource, const VoteSelecti
 			return false;
 		}
 
-		if (kOtherPlayer.isHuman() && isOption(GAMEOPTION_ONE_CITY_CHALLENGE))
+		if (isOption(GAMEOPTION_ONE_CITY_CHALLENGE))
 		{
 			return false;
 		}
@@ -4517,7 +4520,7 @@ bool CvGame::isFinalInitialized() const
 
 void CvGame::setFinalInitialized(bool bNewValue)
 {
-	OutputDebugString("Setting FinalInitialized: Start");
+	OutputDebugString("Setting FinalInitialized: Start\n");
 	PROFILE_FUNC();
 
 	if (m_bFinalInitialized != bNewValue)
@@ -4539,7 +4542,7 @@ void CvGame::setFinalInitialized(bool bNewValue)
 			}
 		}
 	}
-	OutputDebugString("Setting FinalInitialized: End");
+	OutputDebugString("Setting FinalInitialized: End\n");
 }
 
 
@@ -4671,12 +4674,10 @@ void CvGame::updateUnitEnemyGlow()
 
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		foreach_(CvUnit* pLoopUnit, GET_PLAYER((PlayerTypes)iI).units())
+		foreach_(CvUnit* pLoopUnit, GET_PLAYER((PlayerTypes)iI).units()
+		| filtered(!bind(CvUnit::isUsingDummyEntities, _1)))
 		{
- 			if (!pLoopUnit->isUsingDummyEntities())
-			{
-				gDLL->getEntityIFace()->updateEnemyGlow(pLoopUnit->getUnitEntity());
-			}
+			gDLL->getEntityIFace()->updateEnemyGlow(pLoopUnit->getUnitEntity());
 		}
 	}
 }
@@ -5767,7 +5768,10 @@ void CvGame::doTurn()
 		}
 	}
 
-	GC.getMap().doTurn();
+	reverse_foreach_(CvMap* map, GC.getMaps())
+	{
+		map->doTurn();
+	}
 
 	createBarbarianCities(false);
 	if (isOption(GAMEOPTION_NEANDERTHAL_CITIES))
@@ -5898,6 +5902,14 @@ void CvGame::doTurn()
 
 	PROFILE_END();
 
+	foreach_(CvMap* map, GC.getMaps())
+	{
+		if (!map->plotsInitialized())
+		{
+			map->updateIncomingUnits();
+		}
+	}
+
 	stopProfilingDLL(true);
 	gDLL->getEngineIFace()->AutoSave();
 
@@ -5910,7 +5922,6 @@ void CvGame::doTurn()
 
 void CvGame::doDeals()
 {
-
 	verifyDeals();
 
 	int iLoop;
@@ -5993,20 +6004,9 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 			}
 			// TB - Actually, here the unit is selected already based on the spawn info itself.
 			// Ensure that pPlot has the MapType of the unit... no need to include MapTypes on the Spawn Info file.
+			if (!isMapCategory(*pPlot, unitInfo))
 			{
-				const int iCount = unitInfo.getNumMapTypes();
-				bool bFound = (iCount < 1);
-				for (int iI = 0; !bFound && iI < iCount; iI++)
-				{
-					if (pPlot->isMapType((MapTypes)unitInfo.getMapType(iI)))
-					{
-						bFound = true;
-					}
-				}
-				if (!bFound)
-				{
-					continue;
-				}
+				continue;
 			}
 
 			// Encroaching animals?
@@ -6404,7 +6404,6 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 #ifdef GLOBAL_WARMING
 void CvGame::doGlobalWarming()
 {
-
 	// Loop to look for environmentalism written by EmperorFool
 	bool abTreeHugger[MAX_PC_PLAYERS];
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
@@ -6502,7 +6501,7 @@ void CvGame::doGlobalWarming()
 				continue;
 			}
 			// Toffer - Multimap note - Need to make this whole thing specific to which map global warming is happening on.
-			// For now we could restrict these effects to earth maptype terrains by adding a RANDPLOT_NOT_SPACE flag for syncRandPlot (ToDo).
+			// For now we could restrict these effects to earth mapcategory terrains by adding a RANDPLOT_NOT_SPACE flag for syncRandPlot (ToDo).
 			CvPlot* pPlot = GC.getMap().syncRandPlot(RANDPLOT_NOT_CITY); // GWMod removed check for water tile M.A.
 
 			if (pPlot == NULL)
@@ -6615,7 +6614,7 @@ void CvGame::doGlobalWarming()
 				continue;
 			}
 			// Toffer - Multimap note - Need to make this whole thing specific to which map the nukes were used on.
-			// For now we could restrict these effects to earth maptype terrains by adding a RANDPLOT_NOT_SPACE flag for syncRandPlot (ToDo).
+			// For now we could restrict these effects to earth mapcategory terrains by adding a RANDPLOT_NOT_SPACE flag for syncRandPlot (ToDo).
 			CvPlot* pPlot = GC.getMap().syncRandPlot(RANDPLOT_LAND | RANDPLOT_NOT_CITY);
 
 			if (pPlot == NULL)
@@ -6767,7 +6766,6 @@ void CvGame::doHeadquarters()
 
 void CvGame::doDiploVote()
 {
-
 	doVoteResults();
 	doVoteSelection();
 }
@@ -6775,7 +6773,6 @@ void CvGame::doDiploVote()
 
 void CvGame::createBarbarianCities(bool bNeanderthal)
 {
-
 	if (
 		getMaxCityElimination() > 0
 	||
@@ -6882,7 +6879,7 @@ void CvGame::createBarbarianCities(bool bNeanderthal)
 	}
 
 	// Find plot
-	const MapTypes earth = GC.getMAPCATEGORY_EARTH();
+	const MapCategoryTypes earth = GC.getMAPCATEGORY_EARTH();
 	const int iUnownedTilesThreshold = GC.getHandicapInfo(getHandicapType()).getUnownedTilesPerBarbarianCity();
 
 	int iBestValue = 0;
@@ -6892,7 +6889,7 @@ void CvGame::createBarbarianCities(bool bNeanderthal)
 	{
 		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
 
-		if (pLoopPlot->isMapType(earth) && !pLoopPlot->isWater() && !pLoopPlot->isVisibleToCivTeam())
+		if (pLoopPlot->isMapCategoryType(earth) && !pLoopPlot->isWater() && !pLoopPlot->isVisibleToCivTeam())
 		{
 			int iTargetCities = pLoopPlot->area()->getNumUnownedTiles();
 
@@ -7215,12 +7212,8 @@ void CvGame::updateMoves()
 			{
 				PROFILE("CvGame::updateMoves.AI");
 
-				CvPathGenerator::EnableMaxPerformance(true);
-
 				// Always try to do automations first for the AI
 				algo::for_each(player.groups(), CvSelectionGroup::fn::autoMission());
-
-				CvPathGenerator::EnableMaxPerformance(false);
 
 				if (!player.isAutoMoves())
 				{
@@ -9083,6 +9076,8 @@ bool CvGame::isCompetingCorporation(CorporationTypes eCorporation1, CorporationT
 	return false;
 }
 
+// Toffer - ToDo - I think we want to use this more extensively,
+//	so move it over to CvPlot and store extra yield in an array of three elements per plot.
 int CvGame::getPlotExtraYield(int iX, int iY, YieldTypes eYield) const
 {
 	foreach_(const PlotExtraYield& extraYield, m_aPlotExtraYields)
@@ -9092,7 +9087,6 @@ int CvGame::getPlotExtraYield(int iX, int iY, YieldTypes eYield) const
 			return extraYield.m_aeExtraYield[eYield];
 		}
 	}
-
 	return 0;
 }
 
@@ -9969,12 +9963,12 @@ bool CvGame::foundBarbarianCity()
 	int iBestValue = 0;
 	CvPlot* pBestPlot = NULL;
 
-	const MapTypes earth = GC.getMAPCATEGORY_EARTH();
+	const MapCategoryTypes earth = GC.getMAPCATEGORY_EARTH();
 
 	for (int iPlot = 0; iPlot < GC.getMap().numPlots(); iPlot++)
 	{
 		CvPlot* plotX = GC.getMap().plotByIndex(iPlot);
-		if (plotX->isWater() || plotX->isImpassable() || plotX->isCity() || plotX->getImprovementType() != NO_IMPROVEMENT || !plotX->isMapType(earth))
+		if (plotX->isWater() || plotX->isImpassable() || plotX->isCity() || plotX->getImprovementType() != NO_IMPROVEMENT || !plotX->isMapCategoryType(earth))
 		{
 			continue;
 		}
@@ -11562,26 +11556,11 @@ void CvGame::recalculateModifiers()
 
 	for (int iI = 0; iI < GC.getMap().numPlots(); iI++)
 	{
-		CvPlot* pLoopPlot = GC.getMap().plotByIndex(iI);
+		CvPlot* plotX = GC.getMap().plotByIndex(iI);
+		plotX->clearModifierTotals();
 
-		// Toffer - Yield cache
-		pLoopPlot->recalculateBaseYield();
-
-		pLoopPlot->getProperties()->clearForRecalculate();
-
-		//	We will recalculate visibility from first principles
-		pLoopPlot->clearVisibilityCounts();
-
-		//	Fix any spurious routes that are on water tiles
-		const RouteTypes eRoute = pLoopPlot->getRouteType();
-		if (eRoute != NO_ROUTE && pLoopPlot->isWater() && !GC.getRouteInfo(eRoute).isSeaTunnel() )
-		{
-			pLoopPlot->setRouteType(NO_ROUTE, false);
-		}
-		pLoopPlot->unitGameStateCorrections();
-
-		//	Recalc blockades from scratch
-		pLoopPlot->resetBlockadedCounts();
+		// Toffer - Yield cache - Maybe not the perfect spot for this, but it should be done early.
+		plotX->recalculateBaseYield();
 	}
 
 	for (int iI = 0; iI < MAX_TEAMS; iI++)

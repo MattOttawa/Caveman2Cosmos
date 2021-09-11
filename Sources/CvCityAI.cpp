@@ -557,16 +557,7 @@ bool CvCityAI::AI_avoidGrowth()
 bool CvCityAI::AI_ignoreGrowth()
 {
 	PROFILE_FUNC();
-
-	if (!AI_isEmphasizeYield(YIELD_FOOD) && !AI_isEmphasizeGreatPeople())
-	{
-		if (!AI_foodAvailable((isHuman()) ? 0 : 1))
-		{
-			return true;
-		}
-	}
-
-	return false;
+	return !AI_isEmphasizeYield(YIELD_FOOD) && !AI_isEmphasizeGreatPeople() && !AI_foodAvailable(!isHuman());
 }
 
 
@@ -4245,7 +4236,7 @@ UnitTypes CvCityAI::AI_bestUnitAI(UnitAITypes eUnitAI, int& iBestValue, bool bAs
 
 BuildingTypes CvCityAI::AI_bestBuildingThreshold(int iFocusFlags, int iMaxTurns, int iMinThreshold, bool bAsync, AdvisorTypes eIgnoreAdvisor, bool bMaximizeFlaggedValue, PropertyTypes eProperty)
 {
-	std::vector<ScoredBuilding> scoredBuildings = AI_bestBuildingsThreshold(iFocusFlags, iMaxTurns, iMinThreshold, bAsync, eIgnoreAdvisor, bMaximizeFlaggedValue, eProperty);
+	const std::vector<ScoredBuilding> scoredBuildings = AI_bestBuildingsThreshold(iFocusFlags, iMaxTurns, iMinThreshold, bAsync, eIgnoreAdvisor, bMaximizeFlaggedValue, eProperty);
 	if (!scoredBuildings.empty())
 	{
 		return scoredBuildings[0].building;
@@ -4253,7 +4244,7 @@ BuildingTypes CvCityAI::AI_bestBuildingThreshold(int iFocusFlags, int iMaxTurns,
 	return NO_BUILDING;
 }
 
-std::vector<CvCity::ScoredBuilding> CvCityAI::AI_bestBuildingsThreshold(int iFocusFlags, int iMaxTurns, int iMinThreshold, bool bAsync, AdvisorTypes eIgnoreAdvisor, bool bMaximizeFlaggedValue, PropertyTypes eProperty)
+const std::vector<CvCity::ScoredBuilding> CvCityAI::AI_bestBuildingsThreshold(int iFocusFlags, int iMaxTurns, int iMinThreshold, bool bAsync, AdvisorTypes eIgnoreAdvisor, bool bMaximizeFlaggedValue, PropertyTypes eProperty)
 {
 	std::vector<ScoredBuilding> scoredBuildings;
 
@@ -4347,9 +4338,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 			// Automated production doesn't look at buildings with prerequisites?
 			&& (!isProductionAutomated() || buildingInfo.getPrereqNumOfBuildings().empty()))
 		{
-			// Toffer - ToDo - Change iValue type to int64_t,
-			//	or reduce scoring as it gets dangerously close to overflowing as it is.
-			int iValue = 0;
+			int64_t iValue = 0;
 
 			if (!(iFocusFlags & BUILDINGFOCUS_PROPERTY)
 				// If we want to build a building that influences a property (crime/pollution/tourism etc.) then
@@ -4369,7 +4358,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 
 				if (gCityLogLevel > 3)
 				{
-					logBBAI("City %S base value for %S (flags %08lx)=%d", getName().GetCString(), buildingInfo.getDescription(), iFocusFlags, iValue);
+					logBBAI("City %S base value for %S (flags %08lx)=%ll", getName().GetCString(), buildingInfo.getDescription(), iFocusFlags, iValue);
 				}
 
 				// If this new building replaces an old one, subtract the old value.
@@ -4389,7 +4378,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 
 							if (gCityLogLevel > 3)
 							{
-								logBBAI("    replaces %S - reduce value to %d", GC.getBuildingInfo(eBuildingX).getDescription(), iValue);
+								logBBAI("    replaces %S - reduce value to %ll", GC.getBuildingInfo(eBuildingX).getDescription(), iValue);
 							}
 						}
 					}
@@ -4441,7 +4430,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 
 						if (gCityLogLevel > 3)
 						{
-							logBBAI("    enables %S - increase value to %d", GC.getBuildingInfo((BuildingTypes)iI).getDescription(), iValue);
+							logBBAI("    enables %S - increase value to %ll", GC.getBuildingInfo((BuildingTypes)iI).getDescription(), iValue);
 						}
 					}
 				}
@@ -4466,7 +4455,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 
 			if (gCityLogLevel > 3)
 			{
-				logBBAI("    final value %d", iValue);
+				logBBAI("    final value %ll", iValue);
 			}
 
 			// If we got here, and the building value is above zero, then it certainly
@@ -4513,7 +4502,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 					FAssert(MAX_INT / 100 >= iValue);
 					// Adjust the score based on the turns to complete the building, more turns means lower score
 					// As we got this far we definitely consider this building a candidate so we should give it a score of at least 1
-					iValue = std::max(1, iValue * 100 / (iTurnsLeft + 3));
+					iValue = std::max<int64_t>(1, iValue * 100 / (iTurnsLeft + 3));
 
 					// Add to our list of potential buildings to return later
 					scoredBuildings.push_back(ScoredBuilding(eBuilding, iValue));
@@ -4639,11 +4628,19 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 
 	// Allow a bit of shrinking:
 	// Population is expendable if angry, working a bad tile, or running a not-so-good specialist
-	int iAllowedShrinkRate = (getFoodConsumedPerPopulation100() * (0
-		+ std::max(0, -iBaseHappinessLevel - getPopulation() * getAngerPercent() / GC.getPERCENT_ANGER_DIVISOR())
-		+ std::min(1, std::max(0, getWorkingPopulation() - AI_countGoodTiles(true, false, 50)))
-		+ std::max(0, (visiblePopulation() - AI_countGoodSpecialists(false))))) / 100;
-
+	int iAllowedShrinkRate =
+	(
+		getFoodConsumedPerPopulation100()
+		*
+		(
+			std::max(0, -iBaseHappinessLevel - getPopulation() * getAngerPercent() / GC.getPERCENT_ANGER_DIVISOR())
+			+
+			std::min(1, std::max(0, getWorkingPopulation() - AI_countGoodTiles(true, false, 50)))
+			+
+			std::max(0, visiblePopulation() - AI_countGoodSpecialists(false))
+		)
+		/ 100
+	);
 	if (iUnhealthyPopulationFromBuilding > 0 && (iBaseFoodDifference + iAllowedShrinkRate < iUnhealthyPopulationFromBuilding))
 	{
 		return 0;
@@ -5098,13 +5095,16 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 
 					iValue += (kBuilding.getFreeExperience() * (bMetAnyCiv ? 12 : 6));
 
+					foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatFreeExperience())
+					{
+						if (canTrain(modifier.first))
+						{
+							iValue += modifier.second * (bMetAnyCiv ? 6 : 3);
+						}
+					}
+
 					for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 					{
-						if (kBuilding.getUnitCombatFreeExperience((UnitCombatTypes)iI) != 0 && canTrain((UnitCombatTypes)iI))
-						{
-							iValue += (kBuilding.getUnitCombatFreeExperience((UnitCombatTypes)iI) * (bMetAnyCiv ? 6 : 3));
-						}
-
 						if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iI))
 						{
 							iValue += 20;
@@ -5382,23 +5382,23 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 					for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 					{
 						const CvUnitInfo& kUnitInfo = GC.getUnitInfo((UnitTypes)iI);
-						int iCombatType = kUnitInfo.getUnitCombatType();
+						UnitCombatTypes eCombatType = (UnitCombatTypes)kUnitInfo.getUnitCombatType();
 
-						if (iCombatType != NO_UNITCOMBAT
+						if (eCombatType != NO_UNITCOMBAT
 							&& kUnitInfo.getDomainType() == DOMAIN_SEA
 							&& canTrain((UnitTypes)iI))
 						{
-							iValue += (kBuilding.getUnitCombatFreeExperience(iCombatType) * (bMetAnyCiv ? 6 : 3));
+							iValue += (kBuilding.getUnitCombatFreeExperience(eCombatType) * (bMetAnyCiv ? 6 : 3));
 
-							if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iCombatType))
+							if (kBuilding.isUnitCombatRetrainType(eCombatType))
 							{
 								iValue += 20;
 							}
 
 							if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0)
 							{
-								int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType);
-								if (iDuration > 0 && iDuration < getUnitCombatOngoingTrainingTimeIncrement((UnitCombatTypes)iCombatType))
+								int iDuration = kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType);
+								if (iDuration > 0 && iDuration < getUnitCombatOngoingTrainingTimeIncrement(eCombatType))
 								{
 									iValue = 10 * (20 - iDuration);
 								}
@@ -7236,7 +7236,7 @@ void CvCityAI::AI_updateRouteToCity() const
 		allAreaCitiesConnected->clear();
 	}
 
-	CvCity* pBestCity = NULL;
+	const CvCity* pBestCity = NULL;
 	stdext::hash_map<int, bool>::const_iterator itr;
 	if ((itr = allAreaCitiesConnected->find(area()->getID())) == allAreaCitiesConnected->end() ||
 		!(itr->second))
@@ -7244,7 +7244,6 @@ void CvCityAI::AI_updateRouteToCity() const
 		gDLL->getFAStarIFace()->ForceReset(&GC.getRouteFinder());
 
 		int iBestValue = MAX_INT;
-		pBestCity = NULL;
 
 		for (int iI = 0; iI < MAX_PLAYERS; iI++)
 		{
@@ -7891,7 +7890,7 @@ void CvCityAI::AI_getYieldMultipliers(int& iFoodMultiplier, int& iProductionMult
 		iExtraFoodForGrowth++;
 	}
 
-	const int iFoodDifference = iFoodTotal - iExtraFoodForGrowth - iTargetSize * getFoodConsumedPerPopulation100();
+	const int iFoodDifference = iFoodTotal - iExtraFoodForGrowth - iTargetSize * getFoodConsumedPerPopulation100() / 100;
 
 	iDesiredFoodChange = -iFoodDifference + std::max(0, badHealth() - goodHealth());
 	if (iDesiredFoodChange > 3 && iTargetSize > getPopulation())
@@ -8344,12 +8343,12 @@ void CvCityAI::AI_updateBestBuild()
 	}
 	else iTargetSize = std::min(iTargetSize, getPopulation() + (happyLevel() - unhappyLevel()));
 
-
-	int iFoodTotal = this->getYieldRate(YIELD_FOOD);
-
-	const int iFoodDifference =(iFoodTotal - (iTargetSize * getFoodConsumedPerPopulation100()) -
-			(getPopulation() < iTargetSize) - (std::max(0, iTargetSize - getPopulation()) + 3) / 4);
-
+	const int iFoodDifference =
+	(
+		getYieldRate(YIELD_FOOD) - iTargetSize * getFoodConsumedPerPopulation100() / 100
+		-
+		(getPopulation() < iTargetSize) - (std::max(0, iTargetSize - getPopulation()) + 3) / 4
+	);
 	int iDesiredFoodChange = -iFoodDifference + std::max(0, -iHealth);
 
 	if (iTargetSize > getPopulation() && iDesiredFoodChange > 3)
@@ -8557,7 +8556,7 @@ void CvCityAI::AI_updateBestBuildForPlots()
 				iWorkableFoodPlotCount
 			) *
 			iWorkableFood / iWorkableFoodPlotCount
-			);
+		);
 	}
 
 	const int iHealth = goodHealth() - badHealth();
@@ -8598,7 +8597,7 @@ void CvCityAI::AI_updateBestBuildForPlots()
 
 	const int iFoodDifference =
 		(
-			iFoodTotal - iTargetSize * getFoodConsumedPerPopulation100()
+			iFoodTotal - iTargetSize * getFoodConsumedPerPopulation100() / 100
 			-
 			(getPopulation() < iTargetSize) - (std::max(0, iTargetSize - getPopulation()) + 3) / 4
 			);
@@ -9762,7 +9761,7 @@ bool CvCityAI::AI_chooseBuilding(int iFocusFlags, int iMaxTurns, int iMinThresho
 	m_iBuildPriority = m_iTempBuildPriority;
 #endif
 
-	std::vector<ScoredBuilding> bestBuildings = AI_bestBuildingsThreshold(iFocusFlags, iMaxTurns, iMinThreshold, false, NO_ADVISOR, bMaximizeFlaggedValue, eProperty);
+	const std::vector<ScoredBuilding> bestBuildings = AI_bestBuildingsThreshold(iFocusFlags, iMaxTurns, iMinThreshold, false, NO_ADVISOR, bMaximizeFlaggedValue, eProperty);
 
 	const int maxQueueTurnsForSpeed = GC.getGameSpeedInfo(GC.getGame().getGameSpeedType()).getHammerCostPercent() / 20;
 	const int desiredQueueTurns = std::max(3, std::min(maxQueueTurnsForSpeed, iMaxTurns));
@@ -12262,10 +12261,10 @@ int CvCityAI::AI_cityValue() const
 		+
 		getCommerceRateTimes100(COMMERCE_RESEARCH)
 		+
-		100 * getYieldRate(YIELD_PRODUCTION)
+		getYieldRate100(YIELD_PRODUCTION)
 		-
 		3 * calculateColonyMaintenanceTimes100()
-		);
+	);
 }
 
 bool CvCityAI::AI_doPanic()
@@ -14472,7 +14471,7 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 		|| kBuilding.getWarWearinessModifier() < 0
 		|| kBuilding.getGlobalWarWearinessModifier() < 0
 		|| kBuilding.getCommerceHappiness(NO_COMMERCE) > 0
-		|| kBuilding.getBonusHappinessChanges(NO_BONUS) > 0
+		|| !kBuilding.getBonusHappiness().empty()
 		|| !kBuilding.getBuildingHappinessChanges().empty()
 		|| GET_PLAYER(getOwner()).getExtraBuildingHappiness(eBuilding) > 0)
 		{
@@ -14513,7 +14512,7 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 		if (kBuilding.getFreeExperience() > 0 ||
 			kBuilding.getGlobalFreeExperience() > 0 ||
 			kBuilding.getFreePromotion() != NO_PROMOTION ||
-			kBuilding.getUnitCombatFreeExperience(NO_UNITCOMBAT) > 0 ||
+			!kBuilding.getUnitCombatFreeExperience().empty() ||
 			kBuilding.getDomainFreeExperience(NO_DOMAIN) > 0 ||
 			kBuilding.getFreePromotion_2() != NO_PROMOTION ||
 			kBuilding.getFreePromotion_3() != NO_PROMOTION ||
@@ -14523,7 +14522,7 @@ bool CvCityAI::buildingMayHaveAnyValue(BuildingTypes eBuilding, int iFocusFlags)
 			kBuilding.getNumUnitCombatRetrainTypes() > 0 ||
 			kBuilding.getNationalCaptureProbabilityModifier() > 0 ||
 			kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0 ||
-			kBuilding.isAnyUnitCombatFreeExperience() ||
+			!kBuilding.getUnitCombatFreeExperience().empty() ||
 			kBuilding.isAnyDomainFreeExperience())
 		{
 			return true;
@@ -14753,17 +14752,17 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 
 	const int iCulturalVictoryNumCultureCities = GC.getGame().culturalVictoryNumCultureCities();
 	const int iAllowedShrinkRate =
+	(
+		getFoodConsumedPerPopulation100() *
 		(
-			getFoodConsumedPerPopulation100() *
-			(
-				std::max(0, -iBaseHappinessLevel - getAngerPercent() * iPopulation / GC.getPERCENT_ANGER_DIVISOR())
-				+
-				std::min(1, std::max(0, (getWorkingPopulation() - AI_countGoodTiles(true, false, 50))))
-				+
-				std::max(0, (visiblePopulation() - AI_countGoodSpecialists(false)))
-				)
-			/ 100
-			);
+			std::max(0, -iBaseHappinessLevel - getAngerPercent() * iPopulation / GC.getPERCENT_ANGER_DIVISOR())
+			+
+			std::min(1, std::max(0, (getWorkingPopulation() - AI_countGoodTiles(true, false, 50))))
+			+
+			std::max(0, (visiblePopulation() - AI_countGoodSpecialists(false)))
+		)
+		/ 100
+	);
 	const bool bFinancialTrouble = kOwner.AI_isFinancialTrouble();
 	const bool bCulturalVictory1 = kOwner.AI_isDoVictoryStrategy(AI_VICTORY_CULTURE1);
 	const bool bCulturalVictory2 = kOwner.AI_isDoVictoryStrategy(AI_VICTORY_CULTURE2);
@@ -15212,13 +15211,16 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 				int iValue = 0;
 				iValue += kBuilding.getFreeExperience() * (bMetAnyCiv ? 12 : 6);
 
+				foreach_(const UnitCombatModifier2& modifier, kBuilding.getUnitCombatFreeExperience())
+				{
+					if (canTrain(modifier.first))
+					{
+						iValue += modifier.second * (bMetAnyCiv ? 6 : 3);
+					}
+				}
+
 				for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 				{
-					if (kBuilding.getUnitCombatFreeExperience((UnitCombatTypes)iI) != 0 && canTrain((UnitCombatTypes)iI))
-					{
-						iValue += kBuilding.getUnitCombatFreeExperience(iI) * (bMetAnyCiv ? 6 : 3);
-					}
-
 					if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iI))
 					{
 						iValue += 20;
@@ -15512,23 +15514,24 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 				for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 				{
 					const CvUnitInfo& kUnitInfo = GC.getUnitInfo((UnitTypes)iI);
-					int iCombatType = kUnitInfo.getUnitCombatType();
+					UnitCombatTypes eCombatType = (UnitCombatTypes)kUnitInfo.getUnitCombatType();
 
-					if (iCombatType != NO_UNITCOMBAT && kUnitInfo.getDomainType() == DOMAIN_SEA && canTrain((UnitTypes)iI))
+					if (eCombatType != NO_UNITCOMBAT && kUnitInfo.getDomainType() == DOMAIN_SEA && canTrain((UnitTypes)iI))
 					{
-						iValue += kBuilding.getUnitCombatFreeExperience(iCombatType) * (bMetAnyCiv ? 6 : 3);
+						iValue += kBuilding.getUnitCombatFreeExperience(eCombatType) * (bMetAnyCiv ? 6 : 3);
 
-						if (kBuilding.isUnitCombatRetrainType((UnitCombatTypes)iCombatType))
+						if (kBuilding.isUnitCombatRetrainType(eCombatType))
 						{
 							iValue += 20;
 						}
-
+#ifdef ONGOING_TRAINING
 						if (kBuilding.getNumUnitCombatOngoingTrainingDurations() > 0
-							&& kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType) > 0
-							&& kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType) < getUnitCombatOngoingTrainingTimeIncrement((UnitCombatTypes)iCombatType))
+							&& kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType) > 0
+							&& kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType) < getUnitCombatOngoingTrainingTimeIncrement(eCombatType))
 						{
-							iValue = (20 - kBuilding.getUnitCombatOngoingTrainingDuration(iCombatType)) * 10;
+							iValue = (20 - kBuilding.getUnitCombatOngoingTrainingDuration(eCombatType)) * 10;
 						}
+#endif // ONGOING_TRAINING
 					}
 				}
 
