@@ -99,9 +99,7 @@ void CyInfoPythonInterface1()
 		.def("getNumPrereqBuildings", &CvTechInfo::getNumPrereqBuildings, "int ()")
 		.def("getPrereqBuildingType", &CvTechInfo::getPrereqBuildingType, "int (int i)")
 		.def("getPrereqBuildingMinimumRequired", &CvTechInfo::getPrereqBuildingMinimumRequired, "int (int i)")
-		.def("getNumPrereqOrBuildings", &CvTechInfo::getNumPrereqOrBuildings, "int ()")
-		.def("getPrereqOrBuildingType", &CvTechInfo::getPrereqOrBuildingType, "int (int i)")
-		.def("getPrereqOrBuildingMinimumRequired", &CvTechInfo::getPrereqOrBuildingMinimumRequired, "int (int i)")
+		.def("getPrereqOrBuildings", &CvTechInfo::cyGetPrereqOrBuildings)
 		;
 
 	python::class_<CvPromotionInfo, python::bases<CvInfoBase> >("CvPromotionInfo")

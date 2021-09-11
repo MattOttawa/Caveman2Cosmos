@@ -242,11 +242,8 @@ class PediaTech:
 				iType = CvTheTechInfo.getPrereqBuildingType(i)
 				aList2.append((iType, iAmount))
 		nOr = 0
-		for i in range(CvTheTechInfo.getNumPrereqOrBuildings()):
-			iAmount = CvTheTechInfo.getPrereqOrBuildingMinimumRequired(i)
-			if iAmount > 0:
-				iType = CvTheTechInfo.getPrereqOrBuildingType(i)
-				aList3.append((iType, iAmount))
+		for pair in CvTheTechInfo.getPrereqOrBuildings():
+				aList3.append((pair.first, pair.second))
 				nOr += 1
 		if aList2 or aList3:
 			if aList1:

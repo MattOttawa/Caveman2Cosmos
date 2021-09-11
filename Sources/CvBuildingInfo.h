@@ -309,6 +309,7 @@ public:
 	const IDValueMap<BuildingTypes, int>& getPrereqNumOfBuildings() const { return m_aPrereqNumOfBuilding; }
 	const python::list cyGetPrereqNumOfBuildings() const { return m_aPrereqNumOfBuilding.makeList(); }
 
+	const std::vector<BuildingTypes>& getPrereqOrBuildings() const { return m_vPrereqOrBuilding; }
 	int getPrereqOrBuilding(const int i) const;
 	short getNumPrereqOrBuilding() const;
 	bool isPrereqOrBuilding(const int i) const;
@@ -460,8 +461,9 @@ public:
 	const std::vector<FreePromoTypes>& getFreePromoTypes() const { return m_aFreePromoTypes; }
 	const std::vector<TraitTypes>& getFreeTraitTypes() const { return m_aiFreeTraitTypes; }
 
-	int getNumHealUnitCombatTypes() const;
-	const HealUnitCombat& getHealUnitCombatType(int iUnitCombat) const;
+	//int getNumHealUnitCombatTypes() const;
+	//const HealUnitCombat& getHealUnitCombatType(int iUnitCombat) const;
+	const std::vector<HealUnitCombat>& getHealUnitCombatTypes() const { return m_aHealUnitCombatTypes; }
 
 	int getNumBonusAidModifiers() const;
 	const BonusAidModifiers& getBonusAidModifier(int iIndex) const;
@@ -817,7 +819,7 @@ private:
 	std::vector<int> m_aiPrereqInCityBuildings;
 	std::vector<int> m_vPrereqNotInCityBuildings;
 	std::vector<BonusTypes> m_aePrereqOrBonuses;
-	std::vector<int> m_vPrereqOrBuilding;
+	std::vector<BuildingTypes> m_vPrereqOrBuilding;
 	std::vector<int> m_vReplacementBuilding;
 	std::vector<int> m_vReplacedBuilding;
 	std::vector<FreePromoTypes> m_aFreePromoTypes;

@@ -3047,9 +3047,8 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 
 		bool bValid = false;
 		bool bRequires = false;
-		for (int iI = 0; iI < kBuilding.getNumPrereqOrBuilding(); ++iI)
+		foreach_(const BuildingTypes ePrereqBuilding, kBuilding.getPrereqOrBuildings())
 		{
-			const BuildingTypes ePrereqBuilding = static_cast<BuildingTypes>(kBuilding.getPrereqOrBuilding(iI));
 			if (!GET_TEAM(getTeam()).isObsoleteBuilding(ePrereqBuilding))
 			{
 				bRequires = true;
@@ -5026,12 +5025,9 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		}
 	}
 
-	if (kBuilding.getNumHealUnitCombatTypes() > 0)
+	foreach_(const HealUnitCombat& pHealUnitCombat, kBuilding.getHealUnitCombatTypes())
 	{
-		for (int iI = 0; iI < kBuilding.getNumHealUnitCombatTypes(); iI++)
-		{
-			changeHealUnitCombatTypeVolume((UnitCombatTypes)kBuilding.getHealUnitCombatType(iI).eUnitCombat, kBuilding.getHealUnitCombatType(iI).iHeal * iChange);
-		}
+		m_paiHealUnitCombatTypeVolume[pHealUnitCombat.eUnitCombat] += pHealUnitCombat.iHeal * iChange;
 	}
 
 
@@ -8164,13 +8160,6 @@ int CvCity::getHealUnitCombatTypeTotal(UnitCombatTypes eUnitCombat) const
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
 
 	return m_paiHealUnitCombatTypeVolume[eUnitCombat];
-}
-
-void CvCity::changeHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombat, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
-
-	m_paiHealUnitCombatTypeVolume[eUnitCombat] += iChange;
 }
 
 void CvCity::setHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombat, int iChange)
@@ -23593,18 +23582,6 @@ bool CvCity::canDamageAttackingUnitCombat(UnitCombatTypes eUnitCombat) const
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
 
 	return (m_paiDamageAttackingUnitCombatCount[eUnitCombat] > 0);
-}
-
-int CvCity::getDamageAttackingUnitCombatCount(UnitCombatTypes eUnitCombat) const
-{
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
-
-	return m_paiDamageAttackingUnitCombatCount[eUnitCombat];
-}
-
-void CvCity::setDamageAttackingUnitCombatCount(UnitCombatTypes eUnitCombat, int iValue)
-{
-	m_paiDamageAttackingUnitCombatCount[eUnitCombat] = iValue;
 }
 
 void CvCity::changeDamageAttackingUnitCombatCount(UnitCombatTypes eUnitCombat, int iChange)

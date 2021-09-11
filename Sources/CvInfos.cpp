@@ -1555,25 +1555,25 @@ int CvTechInfo::getPrereqBuildingMinimumRequired(int iIndex) const
 	return m_aPrereqBuilding[iIndex].iMinimumRequired;
 }
 
-int CvTechInfo::getNumPrereqOrBuildings() const
-{
-	return m_aPrereqOrBuilding.size();
-}
+//int CvTechInfo::getNumPrereqOrBuildings() const
+//{
+//	return m_aPrereqOrBuilding.size();
+//}
 
-const PrereqBuilding& CvTechInfo::getPrereqOrBuilding(int iIndex) const
-{
-	return m_aPrereqOrBuilding[iIndex];
-}
+//const PrereqBuilding& CvTechInfo::getPrereqOrBuilding(int iIndex) const
+//{
+//	return m_aPrereqOrBuilding[iIndex];
+//}
 
-int CvTechInfo::getPrereqOrBuildingType(int iIndex) const
-{
-	return (int)m_aPrereqOrBuilding[iIndex].eBuilding;
-}
+//int CvTechInfo::getPrereqOrBuildingType(int iIndex) const
+//{
+//	return (int)m_aPrereqOrBuilding[iIndex].eBuilding;
+//}
 
-int CvTechInfo::getPrereqOrBuildingMinimumRequired(int iIndex) const
-{
-	return m_aPrereqOrBuilding[iIndex].iMinimumRequired;
-}
+//int CvTechInfo::getPrereqOrBuildingMinimumRequired(int iIndex) const
+//{
+//	return m_aPrereqOrBuilding[iIndex].iMinimumRequired;
+//}
 
 bool CvTechInfo::isGlobal() const
 {
@@ -4820,6 +4820,7 @@ const InvisibleImprovementChanges& CvPromotionInfo::getVisibleImprovementRangeCh
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvPromotionInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
 {
 	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
@@ -4829,7 +4830,8 @@ const AfflictionLineChanges& CvPromotionInfo::getDistanceAttackCommunicabilityTy
 {
 	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
 }
-
+#endif // OUTBREAKS_AND_AFFLICTIONS
+/*
 int CvPromotionInfo::getNumHealUnitCombatChangeTypes() const
 {
 	return (int)m_aHealUnitCombatChangeTypes.size();
@@ -4840,7 +4842,7 @@ const HealUnitCombat& CvPromotionInfo::getHealUnitCombatChangeType(int iUnitComb
 	FASSERT_BOUNDS(0, getNumHealUnitCombatChangeTypes(), iUnitCombat)
 	return m_aHealUnitCombatChangeTypes[iUnitCombat];
 }
-
+*/
 int CvPromotionInfo::getQualifiedUnitCombatType(int i) const
 {
 	return m_aiQualifiedUnitCombatTypes[i];
@@ -6367,10 +6369,7 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aAfflictOnAttackChangeTypes, pClassInfo->m_aAfflictOnAttackChangeTypes);
 	}
 #endif
-	if (getNumHealUnitCombatChangeTypes() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aHealUnitCombatChangeTypes, pClassInfo->m_aHealUnitCombatChangeTypes);
-	}
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aHealUnitCombatChangeTypes, pClassInfo->m_aHealUnitCombatChangeTypes);
 
 	if (getNumInvisibleTerrainChanges() == 0)
 	{

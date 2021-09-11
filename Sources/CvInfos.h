@@ -416,10 +416,12 @@ public:
 	int getPrereqBuildingType(int iIndex) const;
 	int getPrereqBuildingMinimumRequired(int iIndex) const;
 
-	int getNumPrereqOrBuildings() const;
-	const PrereqBuilding& getPrereqOrBuilding(int iIndex) const;
-	int getPrereqOrBuildingType(int iIndex) const;
-	int getPrereqOrBuildingMinimumRequired(int iIndex) const;
+	//int getNumPrereqOrBuildings() const;
+	//const PrereqBuilding& getPrereqOrBuilding(int iIndex) const;
+	//int getPrereqOrBuildingType(int iIndex) const;
+	//int getPrereqOrBuildingMinimumRequired(int iIndex) const;
+	const std::vector<PrereqBuilding>& getPrereqOrBuildings() const { return m_aPrereqOrBuilding; }
+	const python::list cyGetPrereqOrBuildings() const { return Cy::makeList(m_aPrereqOrBuilding); }
 
 	bool isGlobal() const;
 
@@ -461,6 +463,41 @@ public:
 	//----------------------PROTECTED MEMBER VARIABLES----------------------------
 protected:
 
+	bool m_bRepeat;
+	bool m_bTrade;
+	bool m_bDisable;
+	bool m_bGoodyTech;
+	bool m_bExtraWaterSeeFrom;
+	bool m_bMapCentering;
+	bool m_bMapVisible;
+	bool m_bMapTrading;
+	bool m_bTechTrading;
+	bool m_bGoldTrading;
+	bool m_bOpenBordersTrading;
+	bool m_bDefensivePactTrading;
+	bool m_bPermanentAllianceTrading;
+	bool m_bVassalStateTrading;
+	bool m_bBridgeBuilding;
+	bool m_bIrrigation;
+	bool m_bIgnoreIrrigation;
+	bool m_bWaterWork;
+	bool m_bRiverTrade;
+	bool m_bGlobal;
+	bool m_bCanPassPeaks;
+	bool m_bMoveFastPeaks;
+	bool m_bCanFoundOnPeaks;
+	bool m_bEmbassyTrading;
+	bool m_bEnableDarkAges;
+	bool m_bRebaseAnywhere;
+	bool m_bEnablesDesertFarming;
+
+	int m_iInflationModifier;
+	int m_iGlobalTradeModifier;
+	int m_iGlobalForeignTradeModifier;
+	int m_iTradeMissionModifier;
+	int m_iCorporationRevenueModifier;
+	int m_iCorporationMaintenanceModifier;
+	int m_iPrereqGameOption;
 	int m_iAdvisorType;
 	int m_iAIWeight;
 	int m_iAITradeModifier;
@@ -482,29 +519,8 @@ protected:
 	int m_iFirstFreeTechs;
 	int m_iAssetValue;
 	int m_iPowerValue;
-
 	int m_iGridX;
 	int m_iGridY;
-
-	bool m_bRepeat;
-	bool m_bTrade;
-	bool m_bDisable;
-	bool m_bGoodyTech;
-	bool m_bExtraWaterSeeFrom;
-	bool m_bMapCentering;
-	bool m_bMapVisible;
-	bool m_bMapTrading;
-	bool m_bTechTrading;
-	bool m_bGoldTrading;
-	bool m_bOpenBordersTrading;
-	bool m_bDefensivePactTrading;
-	bool m_bPermanentAllianceTrading;
-	bool m_bVassalStateTrading;
-	bool m_bBridgeBuilding;
-	bool m_bIrrigation;
-	bool m_bIgnoreIrrigation;
-	bool m_bWaterWork;
-	bool m_bRiverTrade;
 
 	CvString m_szQuoteKey;
 	CvString m_szSound;
@@ -512,36 +528,16 @@ protected:
 
 	// Arrays
 
+	bool* m_pbCommerceFlexible;
+	bool* m_pbTerrainTrade;
+
 	int* m_piDomainExtraMoves;
 	int* m_piFlavorValue;
+	int* m_piCommerceModifier;
+	int* m_piFreeSpecialistCount;
 
 	std::vector<TechTypes> m_piPrereqOrTechs;
 	std::vector<TechTypes> m_piPrereqAndTechs;
-
-	bool* m_pbCommerceFlexible;
-	bool* m_pbTerrainTrade;
-	//ls612: Tech Commerce Modifiers
-	int* m_piCommerceModifier;
-
-	//TB Tech Tags
-	bool m_bGlobal;
-	//TB Tech Tags end
-	bool m_bCanPassPeaks;
-	bool m_bMoveFastPeaks;
-	bool m_bCanFoundOnPeaks;
-	bool m_bEmbassyTrading;
-	bool m_bEnableDarkAges;
-	bool m_bRebaseAnywhere;
-	bool m_bEnablesDesertFarming;
-
-	int m_iInflationModifier;
-	int m_iGlobalTradeModifier;
-	int m_iGlobalForeignTradeModifier;
-	int m_iTradeMissionModifier;
-	int m_iCorporationRevenueModifier;
-	int m_iCorporationMaintenanceModifier;
-	int m_iPrereqGameOption;
-	int* m_piFreeSpecialistCount;
 
 	std::vector<PrereqBuilding> m_aPrereqBuilding;
 	std::vector<PrereqBuilding> m_aPrereqOrBuilding;
@@ -596,7 +592,6 @@ public:
 	int getHillsAttackPercent() const;
 	int getHillsDefensePercent() const;
 	int getHillsWorkPercent() const;
-	//ls612: Work rate modifiers
 	int getWorkRatePercent() const;
 	int getCommandType() const;
 	void setCommandType(int iNewType);
@@ -1027,9 +1022,11 @@ public:
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
-#endif
-	int getNumHealUnitCombatChangeTypes() const;
-	const HealUnitCombat& getHealUnitCombatChangeType(int iUnitCombat) const;
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
+	//int getNumHealUnitCombatChangeTypes() const;
+	//const HealUnitCombat& getHealUnitCombatChangeType(int iUnitCombat) const;
+	const std::vector<HealUnitCombat>& getHealUnitCombatChangeTypes() const { return m_aHealUnitCombatChangeTypes; }
 
 	int getNumInvisibleTerrainChanges() const;
 	const InvisibleTerrainChanges& getInvisibleTerrainChange(int iIndex) const;
@@ -1963,8 +1960,9 @@ public:
 	bool isAidChange(int iProperty) const;
 #endif // OUTBREAKS_AND_AFFLICTIONS
 
-	int getNumHealUnitCombatTypes() const;
-	const HealUnitCombat& getHealUnitCombatType(int iUnitCombat) const;
+	//int getNumHealUnitCombatTypes() const;
+	//const HealUnitCombat& getHealUnitCombatType(int iUnitCombat) const;
+	const std::vector<HealUnitCombat>& getHealUnitCombatTypes() const { return m_aHealUnitCombatTypes; }
 
 	int getNumGroupSpawnUnitCombatTypes() const;
 	const GroupSpawnUnitCombat& getGroupSpawnUnitCombatType(int iIndex) const;

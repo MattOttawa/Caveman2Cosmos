@@ -14705,37 +14705,30 @@ void CvGameTextMgr::parsePromotionHelpInternal(CvWStringBuffer &szBuffer, Promot
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_TARGET_UNITCOMBAT", GC.getUnitCombatInfo(aTargetUnitCombatType[iI]).getTextKeyWide()));
 	}
 
-	std::vector<UnitCombatTypes> eUnitCombat;
+	std::vector<UnitCombatTypes> aUnitCombats;
 	std::vector<int> iHeal;
 	std::vector<int> iAdjacentHeal;
 
 	bool bFirst = true;
-	for( iJ = 0; iJ < (int)linePromotionsOwned.size(); iJ++ )
+	foreach_(const PromotionTypes linePromotion, linePromotionsOwned)
 	{
-		for (iI = 0; iI < GC.getPromotionInfo(linePromotionsOwned[iJ]).getNumHealUnitCombatChangeTypes(); ++iI)
+		foreach_(const HealUnitCombat& kHealUnitCombat, GC.getPromotionInfo(linePromotion).getHealUnitCombatChangeTypes())
 		{
-			bFirst = true;
-			for(iK = 0; iK < (int)eUnitCombat.size(); iK++ )
-			{
-				if (eUnitCombat[iK] == (UnitCombatTypes)GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).eUnitCombat)
-				{
-					bFirst = false;
-				}
-			}
+			bFirst = !algo::contains(aUnitCombats, kHealUnitCombat.eUnitCombat);
 			if (bFirst)
 			{
-				eUnitCombat.push_back((UnitCombatTypes)GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).eUnitCombat);
-				iHeal.push_back(GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).iHeal);
-				iAdjacentHeal.push_back(GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).iAdjacentHeal);
+				eUnitCombat.push_back(kHealUnitCombat.eUnitCombat);
+				iHeal.push_back(kHealUnitCombat.iHeal);
+				iAdjacentHeal.push_back(kHealUnitCombat.iAdjacentHeal);
 			}
 			else
 			{
 				for(iK = 0; iK < (int)eUnitCombat.size(); iK++ )
 				{
-					if (eUnitCombat[iK] == (UnitCombatTypes)GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).eUnitCombat)
+					if (eUnitCombat[iK] == kHealUnitCombat.eUnitCombat)
 					{
-						iHeal[iK] += GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).iHeal;
-						iAdjacentHeal[iK] += GC.getPromotionInfo(linePromotionsOwned[iJ]).getHealUnitCombatChangeType(iI).iAdjacentHeal;
+						iHeal[iK] += kHealUnitCombat.iHeal;
+						iAdjacentHeal[iK] += kHealUnitCombat.iAdjacentHeal;
 					}
 				}
 			}
@@ -17574,20 +17567,18 @@ void CvGameTextMgr::setTechTradeHelp(CvWStringBuffer &szBuffer, TechTypes eTech,
 	}
 	if (bCivilopediaText || GC.getGame().getActivePlayer() == NO_PLAYER || !GET_PLAYER(GC.getGame().getActivePlayer()).canResearch(eTech))
 	{
-		for (iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqOrBuildings(); iI++)
+		foreach_(const PrereqBuilding& kPrereqBuilding, GC.getTechInfo(eTech).getPrereqOrBuildings())
 		{
-			int iPrereq = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).iMinimumRequired;
+			const int iPrereq = kPrereqBuilding.iMinimumRequired;
 			if (iPrereq > 0)
 			{
 				if (GC.getGame().getActivePlayer() == NO_PLAYER)
 				{
-					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding;
-					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS_NO_CITY", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), iPrereq).c_str());
+					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS_NO_CITY", GC.getBuildingInfo(kPrereqBuilding.eBuilding).getTextKeyWide(), iPrereq).c_str());
 				}
 				else
 				{
-					const BuildingTypes eLoopBuilding = GC.getTechInfo(eTech).getPrereqBuilding(iI).eBuilding;
-					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS", GC.getBuildingInfo(eLoopBuilding).getTextKeyWide(), GET_PLAYER(GC.getGame().getActivePlayer()).getBuildingCount(GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding), iPrereq).c_str());
+					szTempBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_REQUIRES_NUM_SPECIAL_BUILDINGS", GC.getBuildingInfo(kPrereqBuilding.eBuilding).getTextKeyWide(), GET_PLAYER(GC.getGame().getActivePlayer()).getBuildingCount(kPrereqBuilding.eBuilding), iPrereq).c_str());
 				}
 				szBuffer.append(szTempBuffer);
 			}
@@ -20090,21 +20081,17 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 			szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_HEAL_SUPPORT", kUnit.getNumHealSupport()));
 		}
 
-		//Heal Unit Combat
-		for (int iI = 0; iI < kUnit.getNumHealUnitCombatTypes(); ++iI)
+		foreach_(const HealUnitCombat& pHealUnitCombat, kUnit.getHealUnitCombatTypes())
 		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)kUnit.getHealUnitCombatType(iI).eUnitCombat);
-			int iHeal = kUnit.getHealUnitCombatType(iI).iHeal;
-			int iAdjHeal = kUnit.getHealUnitCombatType(iI).iAdjacentHeal;
-			if (iHeal > 0)
+			if (pHealUnitCombat.iHeal > 0)
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_HEALS_UNITCOMBAT_SAME", GC.getUnitCombatInfo(eUnitCombat).getTextKeyWide(), iHeal) + gDLL->getText("TXT_KEY_PROMOTIONHELP_DAMAGE_TURN"));
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_HEALS_UNITCOMBAT_SAME", GC.getUnitCombatInfo(pHealUnitCombat.eUnitCombat).getTextKeyWide(), pHealUnitCombat.iHeal) + gDLL->getText("TXT_KEY_PROMOTIONHELP_DAMAGE_TURN"));
 			}
-			if (iAdjHeal > 0)
+			if (pHealUnitCombat.iAdjHeal > 0)
 			{
 				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_HEALS_UNITCOMBAT_ADJACENT", GC.getUnitCombatInfo(eUnitCombat).getTextKeyWide(), iAdjHeal) + gDLL->getText("TXT_KEY_PROMOTIONHELP_DAMAGE_TURN"));
+				szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_HEALS_UNITCOMBAT_ADJACENT", GC.getUnitCombatInfo(pHealUnitCombat.eUnitCombat).getTextKeyWide(), pHealUnitCombat.iAdjHeal) + gDLL->getText("TXT_KEY_PROMOTIONHELP_DAMAGE_TURN"));
 			}
 		}
 
@@ -22025,13 +22012,10 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_HEAL_MOD", kBuilding.getHealRateChange()));
 		}
 
-		if (kBuilding.getNumHealUnitCombatTypes() > 0)
+		foreach_(const HealUnitCombat& pHealUnitCombat, kBuilding.getHealUnitCombatTypes())
 		{
-			for (int iI = 0; iI < kBuilding.getNumHealUnitCombatTypes(); iI++)
-			{
-				szBuffer.append(NEWLINE);
-				szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_HEAL_UNITCOMBAT_MOD", GC.getUnitCombatInfo(kBuilding.getHealUnitCombatType(iI).eUnitCombat).getTextKeyWide(), kBuilding.getHealUnitCombatType(iI).iHeal));
-			}
+			szBuffer.append(NEWLINE);
+			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_HEAL_UNITCOMBAT_MOD", GC.getUnitCombatInfo(pHealUnitCombat.eUnitCombat).getTextKeyWide(), pHealUnitCombat.iHeal));
 		}
 
 		if (kBuilding.getAreaHealth() != 0)
@@ -24013,12 +23997,12 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 		if (pCity != NULL)
 		{
 			bValid = true;
-			for (int iI = 0; iI < kBuilding.getNumPrereqOrBuilding(); ++iI)
+			foreach_(const BuildingTypes ePrereqBuilding, kBuilding.getPrereqOrBuilding())
 			{
-				if (!GET_TEAM(pCity->getTeam()).isObsoleteBuilding((BuildingTypes)kBuilding.getPrereqOrBuilding(iI)))
+				if (!GET_TEAM(pCity->getTeam()).isObsoleteBuilding(ePrereqBuilding))
 				{
 					bValid = false;
-					if (pCity->getNumActiveBuilding((BuildingTypes)kBuilding.getPrereqOrBuilding(iI)) > 0)
+					if (pCity->getNumActiveBuilding(ePrereqBuilding) > 0)
 					{
 						bValid = true;
 						break;
@@ -24028,11 +24012,11 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 		}
 		if (!bValid)
 		{
-			for (int iI = 0; iI < kBuilding.getNumPrereqOrBuilding(); ++iI)
+			foreach_(const BuildingTypes ePrereqBuilding, kBuilding.getPrereqOrBuilding())
 			{
 				setListHelp(
 					szBuffer, gDLL->getText("TXT_KEY_REQUIRES"),
-					GC.getBuildingInfo((BuildingTypes)kBuilding.getPrereqOrBuilding(iI)).getDescription(),
+					GC.getBuildingInfo(ePrereqBuilding).getDescription(),
 					gDLL->getText("TXT_KEY_OR").c_str(), bFirst
 				);
 				bFirst = false;

@@ -21169,8 +21169,8 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif
-			promotionInfo.getNumHealUnitCombatChangeTypes() != 0 ||
+#endif // OUTBREAKS_AND_AFFLICTIONS
+			!promotionInfo.getHealUnitCombatChangeTypes().empty() ||
 			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
 			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
 			promotionInfo.getCombatModifierPerVolumeMoreChange() != 0 ||
@@ -21189,7 +21189,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			||	promotionInfo.getFlankSupportPercentChange() != 0
 			)
 		) return false;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 		return true;
 	}
 	// ! SUPER_SPIES
@@ -21247,7 +21247,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 		||	promotionInfo.getFlankSupportPercentChange() != 0
 		)
 	) return false;
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	// Taken out of CvGameCoreUtils so that it could be looking at the final compiled max movement rather than just the unit base movement.
 /*
 	if (maxMoves() < 2 && promotionInfo.isBlitz())
@@ -21322,7 +21322,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
 			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
 			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif
+#endif // STRENGTH_IN_NUMBERS
 			promotionInfo.getDodgeModifierChange() != 0 ||
 			promotionInfo.getPrecisionModifierChange() != 0 ||
 			promotionInfo.getPowerShotsChange() != 0 ||
@@ -21353,7 +21353,7 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
 			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
 			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
 			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
 			promotionInfo.getCombatModifierPerVolumeMoreChange() != 0 ||
@@ -21405,7 +21405,7 @@ bool CvUnit::canAcquirePromotionAny() const
 
 	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 	{
-		PromotionTypes ePromotion = (PromotionTypes)iI;
+		const PromotionTypes ePromotion = (PromotionTypes)iI;
 /*
 		bool bEquip = GC.getPromotionInfo(ePromotion).isEquipment();
 		bool bAfflict = GC.getPromotionInfo(ePromotion).isAffliction();
@@ -22722,10 +22722,10 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 	}
 #endif // OUTBREAKS_AND_AFFLICTIONS
 
-	for (iI = 0; iI < kPromotion.getNumHealUnitCombatChangeTypes(); iI++)
+	foreach_(const HealUnitCombat& kHealUnitCombat, kPromotion.getHealUnitCombatChangeTypes())
 	{
-		changeHealUnitCombatTypeVolume(((UnitCombatTypes)kPromotion.getHealUnitCombatChangeType(iI).eUnitCombat), kPromotion.getHealUnitCombatChangeType(iI).iHeal * iChange);
-		changeHealUnitCombatTypeAdjacentVolume(((UnitCombatTypes)kPromotion.getHealUnitCombatChangeType(iI).eUnitCombat), kPromotion.getHealUnitCombatChangeType(iI).iAdjacentHeal * iChange);
+		changeHealUnitCombatTypeVolume(kHealUnitCombat.eUnitCombat, kHealUnitCombat.iHeal * iChange);
+		changeHealUnitCombatTypeAdjacentVolume(kHealUnitCombat.eUnitCombat, kHealUnitCombat.iAdjacentHeal * iChange);
 	}
 
 	if (kPromotion.setSpecialUnit() != NO_SPECIALUNIT)
@@ -35820,16 +35820,13 @@ int CvUnit::getHealUnitCombatTypeTotal(UnitCombatTypes eUnitCombatType) const
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombatType);
-
 	int iEvaluation = (info == NULL ? 0 : info->m_iHealUnitCombatTypeVolume);
-	const int iNum = m_pUnitInfo->getNumHealUnitCombatTypes();
 
-	for (int iI = 0; iI < iNum; iI++)
+	foreach_(const HealUnitCombat& pHealUnitCombat, m_pUnitInfo->getHealUnitCombatTypes())
 	{
-		const UnitCombatTypes eUnitCombat = m_pUnitInfo->getHealUnitCombatType(iI).eUnitCombat;
-		if (eUnitCombat == eUnitCombatType)
+		if (pHealUnitCombat.eUnitCombat == eUnitCombatType)
 		{
-			iEvaluation += m_pUnitInfo->getHealUnitCombatType(iI).iHeal;
+			iEvaluation += pHealUnitCombat.iHeal;
 		}
 	}
 
@@ -35869,16 +35866,13 @@ int CvUnit::getHealUnitCombatTypeAdjacentTotal(UnitCombatTypes eUnitCombatType) 
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombatType);
-
 	int iEvaluation = (info == NULL ? 0 : info->m_iHealUnitCombatTypeAdjacentVolume);
-	const int iNum = m_pUnitInfo->getNumHealUnitCombatTypes();
 
-	for (int iI = 0; iI < iNum; iI++)
+	foreach_(const HealUnitCombat& pHealUnitCombat, m_pUnitInfo->getHealUnitCombatTypes())
 	{
-		const UnitCombatTypes eUnitCombat = m_pUnitInfo->getHealUnitCombatType(iI).eUnitCombat;
-		if (eUnitCombat == eUnitCombatType)
+		if (pHealUnitCombat.eUnitCombat == eUnitCombatType)
 		{
-			iEvaluation += m_pUnitInfo->getHealUnitCombatType(iI).iAdjacentHeal;
+			iEvaluation += pHealUnitCombat.iAdjacentHeal;
 		}
 	}
 
@@ -38321,10 +38315,10 @@ void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, bool bRemove, Mis
 						int iValue = 0;
 						if (bCanHeal)
 						{
-							for (int iJ = 0; iJ < kPromotion.getNumHealUnitCombatChangeTypes(); iJ++)
+							foreach_(const HealUnitCombat& kHealUnitCombat, kPromotion.getHealUnitCombatChangeTypes())
 							{
-								iValue += kPromotion.getHealUnitCombatChangeType(iJ).iHeal * getHealUnitCombatTypeTotal((UnitCombatTypes)kPromotion.getHealUnitCombatChangeType(iJ).eUnitCombat);
-								iValue += kPromotion.getHealUnitCombatChangeType(iJ).iAdjacentHeal * getHealUnitCombatTypeAdjacentTotal((UnitCombatTypes)kPromotion.getHealUnitCombatChangeType(iJ).eUnitCombat);
+								iValue += kHealUnitCombat.iHeal * getHealUnitCombatTypeTotal(kHealUnitCombat.eUnitCombat);
+								iValue += kHealUnitCombat.iAdjacentHeal * getHealUnitCombatTypeAdjacentTotal(kHealUnitCombat.eUnitCombat);
 							}
 							iValue += kPromotion.getSameTileHealChange() * 100;
 							iValue += kPromotion.getAdjacentTileHealChange() * 10;

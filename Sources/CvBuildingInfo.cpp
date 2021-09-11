@@ -1335,7 +1335,7 @@ bool CvBuildingInfo::isQuarantine() const
 {
 	return m_bQuarantine;
 }
-
+/*
 int CvBuildingInfo::getNumHealUnitCombatTypes() const
 {
 	return (int)m_aHealUnitCombatTypes.size();
@@ -1346,7 +1346,7 @@ const HealUnitCombat& CvBuildingInfo::getHealUnitCombatType(int iUnitCombat) con
 	FASSERT_BOUNDS(0, getNumHealUnitCombatTypes(), iUnitCombat)
 	return m_aHealUnitCombatTypes[iUnitCombat];
 }
-
+*/
 int CvBuildingInfo::getNumBonusAidModifiers() const
 {
 	return (int)m_aBonusAidModifiers.size();
@@ -3499,7 +3499,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	if(pXML->TryMoveToXmlFirstChild(L"HealUnitCombatTypes"))
 	{
 		const int iNum = pXML->GetXmlChildrenNumber(L"HealUnitCombatType" );
-		m_aHealUnitCombatTypes.resize(iNum); // Important to keep the delayed resolution pointers correct
+		m_aHealUnitCombatTypes.resize(iNum);
 
 		if(pXML->TryMoveToXmlFirstChild())
 		{
@@ -5067,11 +5067,11 @@ const python::list CvBuildingInfo::cyGetPrereqOrBonuses() const
 	return Cy::makeList(m_aePrereqOrBonuses);
 }
 
-bool CvBuildingInfo::isPrereqOrBuilding(const int i) const
-{
-	return find(m_vPrereqOrBuilding.begin(), m_vPrereqOrBuilding.end(), i) != m_vPrereqOrBuilding.end();
-}
-
+//bool CvBuildingInfo::isPrereqOrBuilding(const int i) const
+//{
+//	return find(m_vPrereqOrBuilding.begin(), m_vPrereqOrBuilding.end(), i) != m_vPrereqOrBuilding.end();
+//}
+/*
 int CvBuildingInfo::getPrereqOrBuilding(const int i) const
 {
 	return m_vPrereqOrBuilding[i];
@@ -5080,7 +5080,7 @@ short CvBuildingInfo::getNumPrereqOrBuilding() const
 {
 	return m_vPrereqOrBuilding.size();
 }
-
+*/
 int CvBuildingInfo::getReplacementBuilding(const int i) const
 {
 	return m_vReplacementBuilding[i];

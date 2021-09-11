@@ -5698,9 +5698,9 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 
 					if (!bAreaAlone)
 					{
-						for (int iI = 0; iI < kBuilding.getNumHealUnitCombatTypes(); iI++)
+						foreach_(const HealUnitCombat& pHealUnitCombat, kBuilding.getHealUnitCombatTypes())
 						{
-							iValue += kBuilding.getHealUnitCombatType(iI).iHeal / 4;
+							iValue += pHealUnitCombat.iHeal / 4;
 						}
 						iValue += kBuilding.getHealRateChange() / 2;
 						for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
@@ -15830,9 +15830,9 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 
 				if (!bAreaAlone)
 				{
-					for (int iI = 0; iI < kBuilding.getNumHealUnitCombatTypes(); iI++)
+					foreach_(const HealUnitCombat& pHealUnitCombat, kBuilding.getHealUnitCombatTypes())
 					{
-						iValue += (kBuilding.getHealUnitCombatType(iI).iHeal / 4);
+						iValue += (pHealUnitCombat.iHeal / 4);
 					}
 					iValue += (kBuilding.getHealRateChange() / 2);
 					for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)

@@ -682,7 +682,6 @@ public:
 	void changeHealRate(int iChange);
 
 	int getHealUnitCombatTypeTotal(UnitCombatTypes eUnitCombat) const;
-	void changeHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombat, int iChange);
 	void setHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombat, int iChange);
 
 	int getEspionageHealthCounter() const;
@@ -2134,8 +2133,6 @@ public:
 	void changeExtraCityDefenseRecoverySpeedModifier(int iChange);
 
 	bool canDamageAttackingUnitCombat(UnitCombatTypes eUnitCombat) const;
-	int getDamageAttackingUnitCombatCount(UnitCombatTypes eUnitCombat) const;
-	void setDamageAttackingUnitCombatCount(UnitCombatTypes eUnitCombat, int iValue);
 	void changeDamageAttackingUnitCombatCount(UnitCombatTypes eUnitCombat, int iChange);
 
 	bool canBuildingCostPopulation(BuildingTypes eBuilding) const;

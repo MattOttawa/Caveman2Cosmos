@@ -2496,7 +2496,9 @@ public:
 	int getHealUnitCombatCount() const;
 	void setHealUnitCombatCount();
 	int getHealUnitCombatTypeTotal(UnitCombatTypes eUnitCombatType) const;
+private:
 	void changeHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombatType, int iChange);
+public:
 	void setHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombatType, int iChange);
 	int getHealUnitCombatTypeAdjacentTotal(UnitCombatTypes eUnitCombatType) const;
 	void changeHealUnitCombatTypeAdjacentVolume(UnitCombatTypes eUnitCombatType, int iChange);

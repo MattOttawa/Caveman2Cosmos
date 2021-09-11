@@ -27741,15 +27741,15 @@ bool CvPlayer::hasValidBuildings(TechTypes eTech) const
 			}
 		}
 	}
-	for (iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqOrBuildings(); iI++)
+	foreach_(const PrereqBuilding& kPrereqBuilding, GC.getTechInfo(eTech).getPrereqOrBuildings())
 	{
 		if (!bHasOneOrBuilding)
 		{
-			const int iRequiredOr = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).iMinimumRequired;
+			const int iRequiredOr = kPrereqBuilding.iMinimumRequired;
 			if (iRequiredOr > 0)
 			{
 				bRequiresOrBuilding = true;
-				if (getBuildingCount(GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding) >= iRequiredOr)
+				if (getBuildingCount(kPrereqBuilding.eBuilding) >= iRequiredOr)
 				{
 					bHasOneOrBuilding = true;
 				}

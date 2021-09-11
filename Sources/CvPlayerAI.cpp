@@ -10653,35 +10653,32 @@ int CvPlayerAI::AI_unitImpassableCount(UnitTypes eUnit) const
 int CvPlayerAI::AI_unitHealerValue(UnitTypes eUnit, UnitCombatTypes eUnitCombat) const
 {
 	int iValue = 0;
-	const int iNumHealUnitCombatTypes = GC.getUnitInfo(eUnit).getNumHealUnitCombatTypes();
-	if ( eUnitCombat != NO_UNITCOMBAT )
+
+	if (eUnitCombat != NO_UNITCOMBAT)
 	{
-		for(int iI = 0; iI < iNumHealUnitCombatTypes; iI++)
+		foreach_(const HealUnitCombat& pHealUnitCombat, GC.getUnitInfo(eUnit).getHealUnitCombatTypes())
 		{
-			UnitCombatTypes eHealUnitCombat = (UnitCombatTypes)GC.getUnitInfo(eUnit).getHealUnitCombatType(iI).eUnitCombat;
-			if (eHealUnitCombat == eUnitCombat)
+			if (pHealUnitCombat.eUnitCombat == eUnitCombat)
 			{
-				iValue += GC.getUnitInfo(eUnit).getHealUnitCombatType(iI).iHeal;
-				iValue += GC.getUnitInfo(eUnit).getHealUnitCombatType(iI).iAdjacentHeal;
+				iValue += pHealUnitCombat.iHeal;
+				iValue += pHealUnitCombat.iAdjacentHeal;
 			}
 		}
 	}
-	else if (iNumHealUnitCombatTypes > 0)
+	else if (const int iNumHealUnitCombatTypes = GC.getUnitInfo(eUnit).getHealUnitCombatTypes().size() > 0)
 	{
 		int iAverage = 0;
-		for(int iI = 0; iI < iNumHealUnitCombatTypes; iI++)
+		foreach_(const HealUnitCombat& pHealUnitCombat, GC.getUnitInfo(eUnit).getHealUnitCombatTypes())
 		{
-			iAverage += GC.getUnitInfo(eUnit).getHealUnitCombatType(iI).iHeal;
-			iAverage += GC.getUnitInfo(eUnit).getHealUnitCombatType(iI).iAdjacentHeal;
+			iAverage += pHealUnitCombat.iHeal;
+			iAverage += pHealUnitCombat.iAdjacentHeal;
 		}
 		iAverage /= iNumHealUnitCombatTypes;
 		iValue += iAverage;
 		iValue += iNumHealUnitCombatTypes;
 	}
 
-	iValue *= GC.getUnitInfo(eUnit).getNumHealSupport();
-
-	return iValue;
+	return iValue * GC.getUnitInfo(eUnit).getNumHealSupport();
 }
 
 int CvPlayerAI::AI_unitPropertyValue(UnitTypes eUnit, PropertyTypes eProperty) const
@@ -29177,54 +29174,47 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 		iValue += iTemp;
 	}
 
-	if (kPromotion.getNumHealUnitCombatChangeTypes() > 0)
+	foreach_(const HealUnitCombat& kHealUnitCombat, kPromotion.getHealUnitCombatChangeTypes())
 	{
-		for (int iK = 0; iK < kPromotion.getNumHealUnitCombatChangeTypes(); iK++)
+		iTemp = kHealUnitCombat.iHeal + kHealUnitCombat.iAdjacentHeal + kPromotion.getNumHealSupport();
+		if (iTemp > 0)
 		{
-			UnitCombatTypes eHealUnitCombat = kPromotion.getHealUnitCombatChangeType(iK).eUnitCombat;
-			iTemp = kPromotion.getHealUnitCombatChangeType(iK).iHeal;
-			iTemp += kPromotion.getHealUnitCombatChangeType(iK).iAdjacentHeal;
-			iTemp += kPromotion.getNumHealSupport();
-
-			if (iTemp > 0)
+			const UnitCombatTypes eHealUnitCombat = kHealUnitCombat.eUnitCombat;
+			if (pUnit != NULL)
 			{
-				if (pUnit != NULL)
-				{
-					iTemp += pUnit->getHealUnitCombatTypeTotal(eHealUnitCombat);
-					iTemp += pUnit->getHealUnitCombatTypeAdjacentTotal(eHealUnitCombat);
-					iTemp += (pUnit->getSameTileHeal() * 2);
-					iTemp += ((pUnit->getAdjacentTileHeal() * 2)/3);
+				iTemp += pUnit->getHealUnitCombatTypeTotal(eHealUnitCombat);
+				iTemp += pUnit->getHealUnitCombatTypeAdjacentTotal(eHealUnitCombat);
+				iTemp += (pUnit->getSameTileHeal() * 2);
+				iTemp += ((pUnit->getAdjacentTileHeal() * 2)/3);
 
-					iTemp *= (pUnit->getNumHealSupportTotal() + kPromotion.getNumHealSupport());
-				}
-				if ((eUnitAI == UNITAI_HEALER) ||
-					(eUnitAI == UNITAI_HEALER_SEA))
-				{
-					iTemp *= 4;
-				}
-				else if ((eUnitAI == UNITAI_PROPERTY_CONTROL) ||
-					(eUnitAI == UNITAI_PROPERTY_CONTROL_SEA) ||
-					(eUnitAI == UNITAI_ESCORT_SEA) ||
-					(eUnitAI == UNITAI_HUNTER_ESCORT) ||
-					(eUnitAI == UNITAI_ESCORT))
-				{
-					iTemp *= 2;
-					iTemp /= 3;
-				}
-				else
-				{
-					iTemp /= 4;
-				}
-				if (bForBuildUp && pPlot != NULL && pUnit != NULL)
-				{
-					DomainTypes eDomain = pUnit->getDomainType();
-					int iInjured = pPlot->plotCount(PUF_isInjuredUnitCombatType, eHealUnitCombat, eDomain, NULL, pUnit->getOwner());
-					iValue += iTemp * (iInjured * 5);
-				}
-				else
-				{
-					iValue += iTemp;
-				}
+				iTemp *= (pUnit->getNumHealSupportTotal() + kPromotion.getNumHealSupport());
+			}
+			if ((eUnitAI == UNITAI_HEALER) ||
+				(eUnitAI == UNITAI_HEALER_SEA))
+			{
+				iTemp *= 4;
+			}
+			else if ((eUnitAI == UNITAI_PROPERTY_CONTROL) ||
+				(eUnitAI == UNITAI_PROPERTY_CONTROL_SEA) ||
+				(eUnitAI == UNITAI_ESCORT_SEA) ||
+				(eUnitAI == UNITAI_HUNTER_ESCORT) ||
+				(eUnitAI == UNITAI_ESCORT))
+			{
+				iTemp *= 2;
+				iTemp /= 3;
+			}
+			else
+			{
+				iTemp /= 4;
+			}
+			if (bForBuildUp && pPlot != NULL && pUnit != NULL)
+			{
+				int iInjured = pPlot->plotCount(PUF_isInjuredUnitCombatType, eHealUnitCombat, pUnit->getDomainType(), NULL, pUnit->getOwner());
+				iValue += iTemp * (iInjured * 5);
+			}
+			else
+			{
+				iValue += iTemp;
 			}
 		}
 	}
@@ -29238,9 +29228,9 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 			int iBoost = (pUnit->getSameTileHeal() * 2);
 			for (int iK = 0; iK < GC.getNumUnitCombatInfos(); iK++)
 			{
-				if (GC.getUnitCombatInfo((UnitCombatTypes)iK).isHealsAs())
+				const UnitCombatTypes eHealUnitCombat = (UnitCombatTypes)iK;
+				if (GC.getUnitCombatInfo(eHealUnitCombat).isHealsAs())
 				{
-					UnitCombatTypes eHealUnitCombat = (UnitCombatTypes)iK;
 					iBoost += pUnit->getHealUnitCombatTypeTotal(eHealUnitCombat);
 				}
 			}

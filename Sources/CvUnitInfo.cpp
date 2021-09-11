@@ -2801,7 +2801,7 @@ const AfflictOnAttack& CvUnitInfo::getAfflictOnAttackType(int iAfflictionLine) c
 	FASSERT_BOUNDS(0, getNumAfflictOnAttackTypes(), iAfflictionLine)
 	return m_aAfflictOnAttackTypes[iAfflictionLine];
 }
-
+/*
 int CvUnitInfo::getNumHealUnitCombatTypes() const
 {
 	return (int)m_aHealUnitCombatTypes.size();
@@ -2812,7 +2812,7 @@ const HealUnitCombat& CvUnitInfo::getHealUnitCombatType(int iUnitCombat) const
 	FASSERT_BOUNDS(0, getNumHealUnitCombatTypes(), iUnitCombat)
 	return m_aHealUnitCombatTypes[iUnitCombat];
 }
-
+*/
 int CvUnitInfo::getNumGroupSpawnUnitCombatTypes() const
 {
 	return (int)m_aGroupSpawnUnitCombatTypes.size();

@@ -29591,10 +29591,10 @@ int	CvUnitAI::AI_genericUnitValueTimes100(UnitValueFlags eFlags) const
 				//	Tile and adjacent tile healing are considered with any flags
 				int iUCHeal = 0;
 				int iUCAdjHeal = 0;
-				for (int iK = 0; iK < kPromotion.getNumHealUnitCombatChangeTypes(); iK++)
+				foreach_(const HealUnitCombat& kHealUnitCombat, kPromotion.getHealUnitCombatChangeTypes())
 				{
-					iUCHeal += kPromotion.getHealUnitCombatChangeType(iK).iHeal;
-					iUCAdjHeal += kPromotion.getHealUnitCombatChangeType(iK).iAdjacentHeal;
+					iUCHeal += kHealUnitCombat.iHeal;
+					iUCAdjHeal += kHealUnitCombat.iAdjacentHeal;
 				}
 				if ( kPromotion.getSameTileHealChange() != 0 || iUCHeal > 0 )
 				{
