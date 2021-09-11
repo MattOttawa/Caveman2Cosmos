@@ -29,14 +29,13 @@
 
 // statics
 
-bst::array<CvPlayerAI*, MAX_PLAYERS> CvPlayerAI::m_aPlayers;
+bst::array<CvPlayerAI, MAX_PLAYERS> CvPlayerAI::m_aPlayers;
 
 void CvPlayerAI::initStatics()
 {
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		m_aPlayers[iI] = new CvPlayerAI();
-		m_aPlayers[iI]->m_eID = ((PlayerTypes)iI);
+		m_aPlayers[iI.m_eID = ((PlayerTypes)iI);
 	}
 }
 
@@ -3697,20 +3696,23 @@ CvCity* CvPlayerAI::AI_findTargetCity(const CvArea* pArea) const
 	int iBestValue = 0;
 	CvCity* pBestCity = NULL;
 
-	foreach_(const CvPlayer* loopPlayer, m_aPlayers)
+	foreach_(const CvPlayer& loopPlayer, m_aPlayers)
 	{
-		if (loopPlayer->isAlive() && isPotentialEnemy(getTeam(), loopPlayer->getTeam()))
+		if (loopPlayer.isAlive())
 		{
-			foreach_(CvCity* pLoopCity, loopPlayer->cities())
+			if (isPotentialEnemy(getTeam(), loopPlayer.getTeam()))
 			{
-				if (pLoopCity->area() == pArea)
+				foreach_(CvCity* pLoopCity, loopPlayer.cities())
 				{
-					const int iValue = AI_targetCityValue(pLoopCity, true);
-
-					if (iValue > iBestValue)
+					if (pLoopCity->area() == pArea)
 					{
-						iBestValue = iValue;
-						pBestCity = pLoopCity;
+						const int iValue = AI_targetCityValue(pLoopCity, true);
+
+						if (iValue > iBestValue)
+						{
+							iBestValue = iValue;
+							pBestCity = pLoopCity;
+						}
 					}
 				}
 			}
