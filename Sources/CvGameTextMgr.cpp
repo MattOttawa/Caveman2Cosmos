@@ -14701,7 +14701,7 @@ void CvGameTextMgr::parsePromotionHelpInternal(CvWStringBuffer &szBuffer, Promot
 		szBuffer.append(gDLL->getText("TXT_KEY_PROMOTIONHELP_TARGET_UNITCOMBAT", GC.getUnitCombatInfo(aTargetUnitCombatType[iI]).getTextKeyWide()));
 	}
 
-	std::vector<UnitCombatTypes> aUnitCombats;
+	std::vector<UnitCombatTypes> eUnitCombat;
 	std::vector<int> iHeal;
 	std::vector<int> iAdjacentHeal;
 
@@ -14710,7 +14710,7 @@ void CvGameTextMgr::parsePromotionHelpInternal(CvWStringBuffer &szBuffer, Promot
 	{
 		foreach_(const HealUnitCombat& kHealUnitCombat, GC.getPromotionInfo(linePromotion).getHealUnitCombatChangeTypes())
 		{
-			bFirst = !algo::contains(aUnitCombats, kHealUnitCombat.eUnitCombat);
+			bFirst = !algo::contains(eUnitCombat, kHealUnitCombat.eUnitCombat);
 			if (bFirst)
 			{
 				eUnitCombat.push_back(kHealUnitCombat.eUnitCombat);
