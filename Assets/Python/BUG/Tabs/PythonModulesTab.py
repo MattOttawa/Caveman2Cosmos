@@ -15,7 +15,7 @@ class PythonModulesTab(BugOptionsTab.BugOptionsTab):
 		Parser = ModuleMgr.readIniFile()
 		for module, value in Parser.items("MODULES"):
 			control = module + "Check"
-			screen.attachCheckBox(column, control, module, "BUG_OptionsCB_IF", "handlePythonModuleChange", module, value)
+			screen.attachCheckBox(column, control, module, "BUG_OptionsCB_IF", "handlePythonModuleChange", module, bool(value))
 			#screen.setToolTip(control, module)
 			if column is left:
 				column = right

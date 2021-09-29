@@ -111,6 +111,5 @@
 	<load mod="NaturalWonders"/>
 	<load mod="GreatPersonBornDisplay"/>
 	<events module="DynamicCivNames"/>
-	<events module="ParallelMaps"/>
 	<events module="WoodlandCycle"/>
 </bug>
