@@ -419,9 +419,10 @@ public:
 	int getPrereqBuildingMinimumRequired(int iIndex) const;
 
 	int getNumPrereqOrBuildings() const;
-	const PrereqBuilding& getPrereqOrBuilding(int iIndex) const;
+	//const PrereqBuilding& getPrereqOrBuilding(int iIndex) const;
 	int getPrereqOrBuildingType(int iIndex) const;
 	int getPrereqOrBuildingMinimumRequired(int iIndex) const;
+	const std::vector<PrereqBuilding>& getPrereqOrBuildings() const { return m_aPrereqOrBuilding; }
 
 	bool isGlobal() const;
 
@@ -1718,8 +1719,7 @@ public:
 	int getStateReligion() const;
 	int getPrereqReligion() const;
 	int getPrereqCorporation() const;
-	int getPrereqOrBuildingsNum() const;
-	BuildingTypes getPrereqOrBuilding(int i) const;
+	const std::vector<BuildingTypes>& getPrereqOrBuildings() const { return m_aiPrereqOrBuildings; }
 	int getPrereqAndTech() const;
 	int getPrereqAndBonus() const;
 	// the initial number of individuals in the unit group
@@ -2354,7 +2354,7 @@ protected:
 
 	std::vector<BuildTypes> m_workerBuilds;
 	std::vector<int> m_aiPrereqAndBuildings;
-	std::vector<int> m_aiPrereqOrBuildings;
+	std::vector<BuildingTypes> m_aiPrereqOrBuildings;
 	std::vector<int> m_aiTargetUnit;
 	std::vector<int> m_aiDefendAgainstUnit;
 	std::vector<int> m_aiSupersedingUnits;

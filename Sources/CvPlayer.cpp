@@ -27606,9 +27606,6 @@ void CvPlayer::changeHurriedCount(int iChange)
 
 bool CvPlayer::hasValidBuildings(TechTypes eTech) const
 {
-	bool bRequiresOrBuilding = false;
-	bool bHasOneOrBuilding = false;
-
 	for (int iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqBuildings(); iI++)
 	{
 		const int iRequired = GC.getTechInfo(eTech).getPrereqBuilding(iI).iMinimumRequired;
@@ -27620,24 +27617,21 @@ bool CvPlayer::hasValidBuildings(TechTypes eTech) const
 			}
 		}
 	}
-	for (iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqOrBuildings(); iI++)
+	if (!GC.getTechInfo(eTech).getPrereqOrBuildings().empty())
 	{
-		if (!bHasOneOrBuilding)
+		bool bHasOneOrBuilding = false;
+		foreach_(const PrereqBuilding& kPrereqOrBuilding, GC.getTechInfo(eTech).getPrereqOrBuildings())
 		{
-			const int iRequiredOr = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).iMinimumRequired;
-			if (iRequiredOr > 0)
+			if (getBuildingCount(kPrereqOrBuilding.eBuilding) >= kPrereqOrBuilding.iMinimumRequired)
 			{
-				bRequiresOrBuilding = true;
-				if (getBuildingCount(GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding) >= iRequiredOr)
-				{
-					bHasOneOrBuilding = true;
-				}
+				bHasOneOrBuilding = true;
+				break;
 			}
 		}
-	}
-	if (!bHasOneOrBuilding && bRequiresOrBuilding)
-	{
-		return false;
+		if (!bHasOneOrBuilding)
+		{
+			return false;
+		}
 	}
 	return true;
 }

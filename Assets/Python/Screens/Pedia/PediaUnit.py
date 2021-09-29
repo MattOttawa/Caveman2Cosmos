@@ -293,8 +293,8 @@ class PediaUnit:
 		for i in xrange(CvTheUnitInfo.getNumPrereqAndBuildings()):
 			aList0.append(CvTheUnitInfo.getPrereqAndBuilding(i))
 
-		for i in xrange(CvTheUnitInfo.getPrereqOrBuildingsNum()):
-			aList1.append(CvTheUnitInfo.getPrereqOrBuilding(i))
+		for ePrereqOrBuilding in CvTheUnitInfo.getPrereqOrBuildings():
+			aList1.append(ePrereqOrBuilding)
 			nOr += 1
 
 		# GOM building requirements

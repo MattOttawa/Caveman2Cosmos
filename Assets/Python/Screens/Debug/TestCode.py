@@ -90,8 +90,7 @@ class TestCode:
 			aRequirementTechLocList = []
 			aReqColumnTechIDList = []
 			aReqColumnTechList = []
-			for iBuildingRequirement in xrange(CvBuildingInfo.getNumPrereqOrBuilding()):
-				iPrereqBuilding = CvBuildingInfo.getPrereqOrBuilding(iBuildingRequirement)
+			for iPrereqBuilding in CvBuildingInfo.getPrereqOrBuildings():
 				aRequirementTechLocList.append(self.HF.checkBuildingTechRequirements(GC.getBuildingInfo(iPrereqBuilding))[0])
 				aRequirementTechIDList = self.HF.checkBuildingTechRequirements(GC.getBuildingInfo(iPrereqBuilding))[2]
 				aRequirementTechList = self.HF.checkBuildingTechRequirements(GC.getBuildingInfo(iPrereqBuilding))[3]
@@ -233,8 +232,8 @@ class TestCode:
 
 			#<PrereqOrBuildings> - require one building in list
 			aBuildingOrRequirementList = []
-			for iBuildingRequirement in xrange(CvBuildingInfo.getNumPrereqOrBuilding()):
-				aBuildingOrRequirementList.append(CvBuildingInfo.getPrereqOrBuilding(iBuildingRequirement))
+			for iPrereqBuilding in CvBuildingInfo.getPrereqOrBuildings():
+				aBuildingOrRequirementList.append(iPrereqBuilding)
 			#Generate list of buildings, that replace requirements, ignore bans as their intent is to block stuff
 			aBuildingRequirementReplacementList = []
 			for i in xrange(len(aBuildingOrRequirementList)):
@@ -412,8 +411,7 @@ class TestCode:
 			aBuildingRequirementObsoleteTechLocList = []
 			aBuildingRequirementObsoleteTechIDList = []
 			aBuildingRequirementNameList = []
-			for iBuilding in xrange(CvBuildingInfo.getNumPrereqOrBuilding()):
-				iPrereqBuilding = CvBuildingInfo.getPrereqOrBuilding(iBuilding)
+			for iPrereqBuilding in CvBuildingInfo.getPrereqOrBuildings():
 				aBuildingRequirementObsoleteTechLocList.append(self.HF.checkBuildingTechObsoletionLocation(GC.getBuildingInfo(iPrereqBuilding))[0])
 				aBuildingRequirementObsoleteTechIDList.append(self.HF.checkBuildingTechObsoletionLocation(GC.getBuildingInfo(iPrereqBuilding))[1])
 				aBuildingRequirementNameList.append(GC.getBuildingInfo(iPrereqBuilding).getType())
@@ -2040,8 +2038,7 @@ class TestCode:
 
 			aBuildingRequirementORList = []
 			#<PrereqOrBuildings> - require one building in list
-			for iBuildingRequirement in xrange(CvBuildingInfo.getNumPrereqOrBuilding()):
-				iPrereqBuilding = CvBuildingInfo.getPrereqOrBuilding(iBuildingRequirement)
+			for iPrereqBuilding in CvBuildingInfo.getPrereqOrBuildings():
 				if iPrereqBuilding not in aBuildingRequirementORList:
 					aBuildingRequirementORList.append(iPrereqBuilding)
 
@@ -2222,8 +2219,7 @@ class TestCode:
 
 			#<PrereqOrBuildings> - require one building in list
 			aBuildingRequirementList = []
-			for iBuildingRequirement in xrange(CvBuildingInfo.getNumPrereqOrBuilding()):
-				iPrereqBuilding = CvBuildingInfo.getPrereqOrBuilding(iBuildingRequirement)
+			for iPrereqBuilding in CvBuildingInfo.getPrereqOrBuildings():
 				aBuildingRequirementList.append(iPrereqBuilding)
 			#Find if requirement needs civics
 			for i in xrange(len(aBuildingRequirementList)):
@@ -2738,10 +2734,10 @@ class TestCode:
 			aBuildingNameList = []
 			aBuildingTechLocList = []
 			aBuildingTechObsList = []
-			for iBuilding in xrange(CvUnitInfo.getPrereqOrBuildingsNum()):
-				aBuildingNameList.append(GC.getBuildingInfo(CvUnitInfo.getPrereqOrBuilding(iBuilding)).getType())
-				aBuildingTechLocList.append(self.HF.checkBuildingTechRequirements(GC.getBuildingInfo(CvUnitInfo.getPrereqOrBuilding(iBuilding)))[0])
-				aBuildingTechObsList.append(self.HF.checkBuildingTechObsoletionLocation(GC.getBuildingInfo(CvUnitInfo.getPrereqOrBuilding(iBuilding)))[0])
+			for iPrereqBuilding in CvUnitInfo.getPrereqOrBuildings():
+				aBuildingNameList.append(GC.getBuildingInfo(iPrereqBuilding).getType())
+				aBuildingTechLocList.append(self.HF.checkBuildingTechRequirements(GC.getBuildingInfo(iPrereqBuilding))[0])
+				aBuildingTechObsList.append(self.HF.checkBuildingTechObsoletionLocation(GC.getBuildingInfo(iPrereqBuilding))[0])
 			if len(aBuildingTechLocList) > 0 and min(aBuildingTechLocList) > iTechLoc and iTechLoc > 0:
 				self.log(CvUnitInfo.getType()+" is unlocked before its OR building requirement "+str(aBuildingTechLocList)+" "+str(iTechLoc))
 			if len(aBuildingTechObsList) > 0 and max(aBuildingTechObsList) < iTechObs:
@@ -2825,8 +2821,8 @@ class TestCode:
 
 			#<PrereqOrBuildings> - require one building in list
 			aBuildingList = []
-			for iBuilding in xrange(CvUnitInfo.getPrereqOrBuildingsNum()):
-				aBuildingList.append(CvUnitInfo.getPrereqOrBuilding(iBuilding))
+			for iPrereqBuilding in CvUnitInfo.getPrereqOrBuildings():
+				aBuildingList.append(iPrereqBuilding)
 			#Get unique buildings - distinct requirements
 			aBuildingUniqueList = []
 			for iBuilding in xrange(len(aBuildingList)):
@@ -3271,8 +3267,7 @@ class TestCode:
 			for iBuildingRequirement in xrange(CvBuildingInfo.getNumPrereqInCityBuildings()):
 				iPrereqBuilding = CvBuildingInfo.getPrereqInCityBuilding(iBuildingRequirement)
 				aBuildings[iPrereqBuilding][iBuilding] = 1
-			for iBuildingRequirement in xrange(CvBuildingInfo.getNumPrereqOrBuilding()):
-				iPrereqBuilding = CvBuildingInfo.getPrereqOrBuilding(iBuildingRequirement)
+			for iPrereqBuilding in CvBuildingInfo.getPrereqOrBuildings():
 				aBuildings[iPrereqBuilding][iBuilding] = 1
 			for iPrereqBuilding, iNumRequired in CvBuildingInfo.getPrereqNumOfBuildings():
 				aBuildings[iPrereqBuilding][iBuilding] = 1

@@ -423,8 +423,8 @@ class PediaBuilding:
 					aList3.append((eBuildingX, iPrereqNumOfBuilding))
 
 		# Or building requirements
-		for j in xrange(CvTheBuildingInfo.getNumPrereqOrBuilding()):
-			aList2.append(CvTheBuildingInfo.getPrereqOrBuilding(j))
+		for ePrereqOrBuilding in CvTheBuildingInfo.getPrereqOrBuildings():
+			aList2.append(ePrereqOrBuilding)
 
 		# GOM building requirements
 		aGOMBuildingReqList = []

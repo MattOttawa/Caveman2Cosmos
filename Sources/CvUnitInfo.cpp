@@ -888,17 +888,6 @@ int CvUnitInfo::getPrereqCorporation() const
 	return m_iPrereqCorporation;
 }
 
-int CvUnitInfo::getPrereqOrBuildingsNum() const
-{
-	return m_aiPrereqOrBuildings.size();
-}
-
-BuildingTypes CvUnitInfo::getPrereqOrBuilding(int i) const
-{
-	FASSERT_BOUNDS(0, getPrereqOrBuildingsNum(), i)
-	return (BuildingTypes)m_aiPrereqOrBuildings[i];
-}
-
 int CvUnitInfo::getPrereqAndTech() const
 {
 	return m_iPrereqAndTech;

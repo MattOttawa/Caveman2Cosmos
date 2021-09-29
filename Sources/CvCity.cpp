@@ -2093,12 +2093,12 @@ bool CvCity::isPlotTrainable(UnitTypes eUnit, bool bContinue, bool bTestVisible)
 
 		{
 			bool bFound = true;
-			for (int iI = 0; iI < kUnit.getPrereqOrBuildingsNum(); iI++)
+			foreach_(const BuildingTypes ePrereqOrBuilding, kUnit.getPrereqOrBuildings())
 			{
-				if (!GET_TEAM(getTeam()).isObsoleteBuilding(kUnit.getPrereqOrBuilding(iI)))
+				if (!GET_TEAM(getTeam()).isObsoleteBuilding(ePrereqOrBuilding))
 				{
 					bFound = false;
-					if (getNumActiveBuilding(kUnit.getPrereqOrBuilding(iI)) > 0)
+					if (getNumActiveBuilding(ePrereqOrBuilding) > 0)
 					{
 						bFound = true;
 						break;
@@ -2110,7 +2110,7 @@ bool CvCity::isPlotTrainable(UnitTypes eUnit, bool bContinue, bool bTestVisible)
 
 		if (kUnit.getTrainCondition())
 		{
-			if (!kUnit.getTrainCondition()->evaluate(const_cast<CvGameObjectCity*>(getGameObject())))
+			if (!kUnit.getTrainCondition()->evaluate(getGameObject()))
 			{
 				return false;
 			}
@@ -3031,9 +3031,8 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 
 		bool bValid = false;
 		bool bRequires = false;
-		for (int iI = 0; iI < kBuilding.getNumPrereqOrBuilding(); ++iI)
+		foreach_(const BuildingTypes ePrereqBuilding, kBuilding.getPrereqOrBuildings())
 		{
-			const BuildingTypes ePrereqBuilding = static_cast<BuildingTypes>(kBuilding.getPrereqOrBuilding(iI));
 			if (!GET_TEAM(getTeam()).isObsoleteBuilding(ePrereqBuilding))
 			{
 				bRequires = true;
@@ -3126,7 +3125,7 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 
 	if (!bTestVisible && kBuilding.getConstructCondition() && !bExposed)
 	{
-		CvGameObjectCity* pObject = const_cast<CvGameObjectCity*>(getGameObject());
+		const CvGameObjectCity* pObject = getGameObject();
 		if (withExtraBuilding != NO_BUILDING)
 		{
 			// add the extra building and its bonuses to the override to see if they influence the construct condition of this building

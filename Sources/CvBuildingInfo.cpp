@@ -1626,35 +1626,30 @@ namespace CvBuildingInternal
 			queries.push_back(query);
 		}
 
-		for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
+		foreach_(const CvUnitInfo* pUnit, GC.getUnitInfos())
 		{
-			const CvUnitInfo& kUnit = GC.getUnitInfo((UnitTypes)iI);
-
-			const BoolExpr* condition = kUnit.getTrainCondition();
+			const BoolExpr* condition = pUnit->getTrainCondition();
 			if (condition != NULL && condition->getInvolvesGOM(queries))
 			{
 				return true;
 			}
 
-			if (kUnit.isPrereqAndBuilding(eBuilding))
+			if (pUnit->isPrereqAndBuilding(eBuilding))
 			{
 				return true;
 			}
 
-			for (int iK = 0; iK < kUnit.getPrereqOrBuildingsNum(); iK++)
-			{
-				if (kUnit.getPrereqOrBuilding((BuildingTypes)iK) == eBuilding)
-				{
-					return true;
-				}
-			}
-
-			if (kUnit.getPrereqAndBonus() != NO_BONUS && kBuilding.isFreeBonusOfBuilding((BonusTypes)kUnit.getPrereqAndBonus()))
+			if (algo::contains(pUnit->getPrereqOrBuildings(), eBuilding))
 			{
 				return true;
 			}
 
-			foreach_(const BonusTypes eXtraFreeBonus, kUnit.getPrereqOrBonuses())
+			if (pUnit->getPrereqAndBonus() != NO_BONUS && kBuilding.isFreeBonusOfBuilding((BonusTypes)pUnit->getPrereqAndBonus()))
+			{
+				return true;
+			}
+
+			foreach_(const BonusTypes eXtraFreeBonus, pUnit->getPrereqOrBonuses())
 			{
 				if (kBuilding.isFreeBonusOfBuilding(eXtraFreeBonus))
 				{
@@ -4602,20 +4597,6 @@ bool CvBuildingInfo::getNotShowInCity() const
 void CvBuildingInfo::setNotShowInCity()
 {
 	m_bNotShowInCity = (m_szArtDefineTag == "" || getArtInfo()->getScale() == 0.0 || stricmp(getArtInfo()->getNIF(), "Art/empty.nif") == 0);
-}
-
-bool CvBuildingInfo::isPrereqOrBuilding(const int i) const
-{
-	return algo::contains(m_vPrereqOrBuilding, i);
-}
-
-int CvBuildingInfo::getPrereqOrBuilding(const int i) const
-{
-	return m_vPrereqOrBuilding[i];
-}
-short CvBuildingInfo::getNumPrereqOrBuilding() const
-{
-	return m_vPrereqOrBuilding.size();
 }
 
 int CvBuildingInfo::getReplacementBuilding(const int i) const

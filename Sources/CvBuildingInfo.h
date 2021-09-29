@@ -310,9 +310,7 @@ public:
 
 	const IDValueMap<BuildingTypes, int>& getPrereqNumOfBuildings() const { return m_aPrereqNumOfBuilding; }
 
-	int getPrereqOrBuilding(const int i) const;
-	short getNumPrereqOrBuilding() const;
-	bool isPrereqOrBuilding(const int i) const;
+	const std::vector<BuildingTypes>& getPrereqOrBuildings() const { return m_vPrereqOrBuilding; }
 
 	int getPrereqInCityBuilding(const int i) const;
 	short getNumPrereqInCityBuildings() const;
@@ -787,7 +785,7 @@ private:
 	std::vector<int> m_aiPrereqInCityBuildings;
 	std::vector<int> m_vPrereqNotInCityBuildings;
 	std::vector<BonusTypes> m_aePrereqOrBonuses;
-	std::vector<int> m_vPrereqOrBuilding;
+	std::vector<BuildingTypes> m_vPrereqOrBuilding;
 	std::vector<int> m_vReplacementBuilding;
 	std::vector<int> m_vReplacedBuilding;
 	std::vector<FreePromoTypes> m_aFreePromoTypes;

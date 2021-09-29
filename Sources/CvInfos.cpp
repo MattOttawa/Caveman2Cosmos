@@ -1545,10 +1545,10 @@ int CvTechInfo::getNumPrereqOrBuildings() const
 	return m_aPrereqOrBuilding.size();
 }
 
-const PrereqBuilding& CvTechInfo::getPrereqOrBuilding(int iIndex) const
-{
-	return m_aPrereqOrBuilding[iIndex];
-}
+//const PrereqBuilding& CvTechInfo::getPrereqOrBuilding(int iIndex) const
+//{
+//	return m_aPrereqOrBuilding[iIndex];
+//}
 
 int CvTechInfo::getPrereqOrBuildingType(int iIndex) const
 {

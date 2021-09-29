@@ -17658,22 +17658,19 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 			}
 		}
 		bFirst = true;
-		for (int iI = 0; iI < GC.getTechInfo(eTech).getNumPrereqOrBuildings(); iI++)
+		foreach_(const PrereqBuilding& kPrereqOrBuilding, GC.getTechInfo(eTech).getPrereqOrBuildings())
 		{
-			const int iPrereq = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).iMinimumRequired;
-			if (iPrereq > 0)
+			const int iPrereq = kPrereqOrBuilding.iMinimumRequired;
+			const BuildingTypes eBuildingX = kPrereqOrBuilding.eBuilding;
+			CvWString szTxt;
+			if (ePlayerAct != NO_PLAYER)
 			{
-				const BuildingTypes eBuildingX = GC.getTechInfo(eTech).getPrereqOrBuilding(iI).eBuilding;
-				CvWString szTxt;
-				if (ePlayerAct != NO_PLAYER)
-				{
-					szTxt.Format(L"<link=%s>%s</link> (%d/%d)", CvWString(GC.getBuildingInfo(eBuildingX).getType()).GetCString(), GC.getBuildingInfo(eBuildingX).getDescription(), playerAct->getBuildingCount(eBuildingX), iPrereq);
-				}
-				else szTxt.Format(L"<link=%s>%s</link> (%d)", CvWString(GC.getBuildingInfo(eBuildingX).getType()).GetCString(), GC.getBuildingInfo(eBuildingX).getDescription(), iPrereq);
-
-				setListHelp(szBuffer, gDLL->getText("TXT_KEY_REQUIRES"), szTxt, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
-				bFirst = false;
+				szTxt.Format(L"<link=%s>%s</link> (%d/%d)", CvWString(GC.getBuildingInfo(eBuildingX).getType()).GetCString(), GC.getBuildingInfo(eBuildingX).getDescription(), playerAct->getBuildingCount(eBuildingX), iPrereq);
 			}
+			else szTxt.Format(L"<link=%s>%s</link> (%d)", CvWString(GC.getBuildingInfo(eBuildingX).getType()).GetCString(), GC.getBuildingInfo(eBuildingX).getDescription(), iPrereq);
+
+			setListHelp(szBuffer, gDLL->getText("TXT_KEY_REQUIRES"), szTxt, gDLL->getText("TXT_KEY_OR").c_str(), bFirst);
+			bFirst = false;
 		}
 	}
 
@@ -20619,14 +20616,12 @@ iMaxTeamInstances was unused in CvUnit(Class)Info and removed as part of us shed
 				}
 
 				bFirst = true;
-				int iNum = GC.getUnitInfo(eUnit).getPrereqOrBuildingsNum();
 				bool bNeeded = true;
 				if (pCity)
 				{
 					bNeeded = false;
-					for (iI = 0; iI < iNum; iI++) // Check if this requirement has been met already
+					foreach_(const BuildingTypes eBuildingX, GC.getUnitInfo(eUnit).getPrereqOrBuildings()) // Check if this requirement has been met already
 					{
-						const BuildingTypes eBuildingX = GC.getUnitInfo(eUnit).getPrereqOrBuilding(iI);
 						if (!GET_TEAM(pCity->getTeam()).isObsoleteBuilding(eBuildingX))
 						{
 							bNeeded = true;
@@ -20640,9 +20635,8 @@ iMaxTeamInstances was unused in CvUnit(Class)Info and removed as part of us shed
 				}
 				if (bNeeded)
 				{
-					for (iI = 0; iI < iNum; iI++)
+					foreach_(const BuildingTypes eBuildingX, GC.getUnitInfo(eUnit).getPrereqOrBuildings())
 					{
-						const BuildingTypes eBuildingX = GC.getUnitInfo(eUnit).getPrereqOrBuilding(iI);
 						if (!bFirst)
 						{
 							szBuffer.append(gDLL->getText("TXT_KEY_OR"));
@@ -24178,12 +24172,12 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 		if (pCity != NULL)
 		{
 			bValid = true;
-			for (int iI = 0; iI < kBuilding.getNumPrereqOrBuilding(); ++iI)
+			foreach_(const BuildingTypes ePrereqOrBuilding, kBuilding.getPrereqOrBuildings())
 			{
-				if (!GET_TEAM(pCity->getTeam()).isObsoleteBuilding((BuildingTypes)kBuilding.getPrereqOrBuilding(iI)))
+				if (!GET_TEAM(pCity->getTeam()).isObsoleteBuilding(ePrereqOrBuilding))
 				{
 					bValid = false;
-					if (pCity->getNumActiveBuilding((BuildingTypes)kBuilding.getPrereqOrBuilding(iI)) > 0)
+					if (pCity->getNumActiveBuilding(ePrereqOrBuilding) > 0)
 					{
 						bValid = true;
 						break;
@@ -24193,11 +24187,11 @@ void CvGameTextMgr::buildBuildingRequiresString(CvWStringBuffer& szBuffer, Build
 		}
 		if (!bValid)
 		{
-			for (int iI = 0; iI < kBuilding.getNumPrereqOrBuilding(); ++iI)
+			foreach_(const BuildingTypes ePrereqOrBuilding, kBuilding.getPrereqOrBuildings())
 			{
 				setListHelp(
 					szBuffer, gDLL->getText("TXT_KEY_REQUIRES"),
-					GC.getBuildingInfo((BuildingTypes)kBuilding.getPrereqOrBuilding(iI)).getDescription(),
+					GC.getBuildingInfo(ePrereqOrBuilding).getDescription(),
 					gDLL->getText("TXT_KEY_OR").c_str(), bFirst
 				);
 				bFirst = false;
