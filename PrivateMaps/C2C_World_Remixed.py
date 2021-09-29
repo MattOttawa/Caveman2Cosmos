@@ -318,6 +318,8 @@ class MapConstants:
 		elif selectionID == 2:
 			wrapString = "Flat"
 			self.bWrapX = False
+		else:
+			wrapString = "None - we are just switching maps"
 
 		# New World Rules
 		selectionID = MAP.getCustomMapOption(4)
@@ -4021,7 +4023,7 @@ def getCustomMapOptionDescAt(argsList):
 		if selectionID == 1:
 			return "Pangea"
 		if selectionID == 2:
-			return "Earthlike"
+			return "Continents"
 		if selectionID == 3:
 			return "Archipelago"
 		if selectionID == 4:
