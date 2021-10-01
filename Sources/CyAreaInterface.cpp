@@ -7,9 +7,7 @@
 
 void CyAreaPythonInterface()
 {
-	python::class_<CyArea>("CyArea")
-		.def("isNone", &CyArea::isNone, "bool () - Returns whether the pointer points to a real Area")
-		
+	python::class_<CyArea>("CyArea", python::no_init)
 		.def("calculateTotalBestNatureYield", &CyArea::calculateTotalBestNatureYield, "int () - Returns the total tile yield from the area")
 		.def("countCoastalLand", &CyArea::countCoastalLand)
 		.def("countNumUniqueBonusTypes", &CyArea::countNumUniqueBonusTypes, "int () - Returns the number of unique bonus types in this area")

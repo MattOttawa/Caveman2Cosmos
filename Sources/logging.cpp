@@ -21,52 +21,29 @@ namespace logging
 
 	void logMsg(const char* file, const char* msg, ...)
 	{
-		if (GC.getLogging())
-		{
-			static char buf[2048];
-			_vsnprintf(buf, 2048 -4, msg, (char*)(&msg +1));
-			strcat(buf, "\n");
+		//if (!GC.isXMLLogging())
+		//	return;
 
-			std::ofstream stream((getModDir() + "\\Logs\\" + file).c_str(), std::ios::app);
-			FAssert(stream.is_open())
-			stream << buf;
-			stream.close();
-
-			OutputDebugString(buf);
-		}
+		static char buf[2048];
+		_vsnprintf(buf, 2048 -4, msg, (char*)(&msg +1));
+		gDLL->logMsg(file, buf, false, false);
+#ifdef _DEBUG
+		strcat(buf, "\n");
+		OutputDebugString(buf);
+#endif
 	}
 
 	void logMsgW(const char* file, const wchar_t* msg, ...)
 	{
-		if (GC.getLogging())
-		{
-			static wchar_t buf[2048];
-			_vsnwprintf(buf, 2048 -4, msg, (char*)(&msg +1));
-			static char buf2[2048];
-			wcstombs(buf2, buf, 2048 -4);
-			strcat(buf2, "\n");
-
-			std::ofstream stream((getModDir() + "\\Logs\\" + file).c_str(), std::ios::app);
-			FAssert(stream.is_open())
-			stream << buf2;
-			stream.close();
-
-			OutputDebugString(buf2);
-		}
-	}
-
-	void setOption(bool& option)
-	{
-		FIniParser* parser = gDLL->getIniParserIFace()->create((getModDir() + "\\Caveman2Cosmos.ini").c_str());
-		const bool sectionSet = gDLL->getIniParserIFace()->SetGroupKey(parser, "CONFIG");
-		const bool optionFound = gDLL->getIniParserIFace()->GetKeyValue(parser, "EnableLogging", &option);
-		FAssert(sectionSet && optionFound);
-		gDLL->getIniParserIFace()->destroy(parser);
-	}
-
-	void createLogsFolder()
-	{
-		CreateDirectory((getModDir() + "\\Logs").c_str(), NULL);
+		static wchar_t buf[2048];
+		_vsnwprintf(buf, 2048 -4, msg, (char*)(&msg +1));
+		static char buf2[2048];
+		wcstombs(buf2, buf, 2048 -4);
+		gDLL->logMsg(file, buf2, false, false);
+#ifdef _DEBUG
+		strcat(buf2, "\n");
+		OutputDebugString(buf2);
+#endif
 	}
 
 	void deleteLogs()
@@ -79,17 +56,5 @@ namespace logging
 				DeleteFile((getModDir() + "\\Logs\\" + FileInfo.cFileName).c_str());
 			} while (FindNextFile(hFile, &FileInfo));
 		}
-	}
-
-	namespace {
-		void cyLog(const char* file, const char* msg)
-		{
-			logMsg(file, msg);
-		}
-	}
-
-	void CyLoggingPythonInterface()
-	{
-		python::def("logMsg", cyLog);
 	}
 }

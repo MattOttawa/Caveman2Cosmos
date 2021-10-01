@@ -12,9 +12,6 @@
 void CyUnitPythonInterface1(python::class_<CyUnit>& x)
 {
 	x
-		.def("getMADTargetPlot", &CyUnit::getMADTargetPlot, python::return_value_policy<python::manage_new_object>(), "CyPlot* ()")
-
-		.def("isNone", &CyUnit::isNone, "bool () - Is this a valid unit instance?")
 		.def("convert", &CyUnit::convert, "void (CyUnit* pUnit, bool bKillOriginal)")
 		.def("kill", &CyUnit::kill, "void (bool bDelay, int /*PlayerTypes*/ ePlayer)")
 		.def("NotifyEntity", &CyUnit::NotifyEntity, "void (int EntityEventType)")
@@ -64,8 +61,8 @@ void CyUnitPythonInterface1(python::class_<CyUnit>& x)
 
 		.def("isGoldenAge", &CyUnit::isGoldenAge, "bool ()")
 		.def("isFighting", &CyUnit::isFighting, "bool ()")
-		.def("maxHitPoints", &CyUnit::maxHitPoints, "int ()")
-		.def("currHitPoints", &CyUnit::currHitPoints, "int ()")
+		.def("getMaxHP", &CyUnit::getMaxHP, "int ()")
+		.def("getHP", &CyUnit::getHP, "int ()")
 		.def("isHurt", &CyUnit::isHurt, "bool ()")
 		.def("isDead", &CyUnit::isDead, "bool ()")
 		.def("setBaseCombatStr", &CyUnit::setBaseCombatStr, "void (int)")
@@ -83,15 +80,15 @@ void CyUnitPythonInterface1(python::class_<CyUnit>& x)
 		.def("isWaiting", &CyUnit::isWaiting, "bool ()")
 		.def("isFortifyable", &CyUnit::isFortifyable, "bool ()")
 
-		.def("experienceNeeded", &CyUnit::experienceNeeded, "int ()") 
+		.def("experienceNeeded", &CyUnit::experienceNeeded, "int ()")
 
 		.def("isInvisible", &CyUnit::isInvisible, "bool (int (TeamTypes) eTeam, bool bDebug)")
 		.def("isNukeImmune", &CyUnit::isNukeImmune, "bool ()")
 
-		.def("bombardRate", &CyUnit::bombardRate, "int ()") 
+		.def("bombardRate", &CyUnit::bombardRate, "int ()")
 
-		.def("specialCargo", &CyUnit::specialCargo, "int ()") 
-		.def("domainCargo", &CyUnit::domainCargo, "int ()") 
+		.def("specialCargo", &CyUnit::specialCargo, "int ()")
+		.def("domainCargo", &CyUnit::domainCargo, "int ()")
 		.def("cargoSpace", &CyUnit::cargoSpace, "int ()")
 		.def("changeCargoSpace", &CyUnit::changeCargoSpace, "void (int)")
 		.def("isFull", &CyUnit::isFull, "bool ()")
