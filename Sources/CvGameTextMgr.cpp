@@ -20670,9 +20670,9 @@ iMaxTeamInstances was unused in CvUnit(Class)Info and removed as part of us shed
 
 			if (!bCivilopediaText)
 			{
-				for (iI = 0; iI < GC.getUnitInfo(eUnit).getNumPrereqAndBuildings(); ++iI)
+				foreach_(const int iBuilding, GC.getUnitInfo(eUnit).getPrereqAndBuildings())
 				{
-					const BuildingTypes eBuildingX = (BuildingTypes)GC.getUnitInfo(eUnit).getPrereqAndBuilding(iI);
+					const BuildingTypes eBuildingX = (BuildingTypes)iBuilding;
 					if (pCity == NULL || !GET_TEAM(pCity->getTeam()).isObsoleteBuilding(eBuildingX) && pCity->getNumActiveBuilding(eBuildingX) < 1)
 					{
 						szBuffer.append(NEWLINE);
@@ -23258,19 +23258,19 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 		}
 		
 		bFirst = true;
-		for (int iI = 0; iI < GC.getNumUnitInfos(); ++iI)
+		foreach_(const CvUnitInfo& unitInfoX, GC.getUnitInfos())
 		{
-			if (GC.getUnitInfo((UnitTypes)iI).isPrereqOrBuilding((int)eBuilding))
+			if (unitInfoX.isPrereqOrBuilding(eBuilding))
 			{
 				szFirstBuffer.Format(L"%s%s", NEWLINE, gDLL->getText("TXT_KEY_BUILDINGHELP_NEEDED_TO_TRAIN").c_str());
 
 				if (ePlayer != NO_PLAYER)
 				{
-					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(GC.getUnitInfo((UnitTypes)iI).getType()).GetCString(), GC.getUnitInfo((UnitTypes)iI).getDescription(player->getCivilizationType()));
+					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(unitInfoX.getType()).GetCString(), unitInfoX.getDescription(player->getCivilizationType()));
 				}
 				else
 				{
-					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(GC.getUnitInfo((UnitTypes)iI).getType()).GetCString(), GC.getUnitInfo((UnitTypes)iI).getDescription());
+					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(unitInfoX.getType()).GetCString(), unitInfoX.getDescription());
 				}
 
 				setListHelp(szBuffer, szFirstBuffer, szTempBuffer, L", ", bFirst);
@@ -23281,9 +23281,9 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 		bFirst = true;
 		int iCount = 0;
 
-		for (int iI = 0; iI < GC.getNumUnitInfos(); ++iI)
+		foreach_(const CvUnitInfo& unitInfoX, GC.getUnitInfos())
 		{
-			if (GC.getUnitInfo((UnitTypes)iI).getHasBuilding(eBuilding))
+			if (unitInfoX.getHasBuilding(eBuilding))
 			{
 				iCount++;
 				if (!bCivilopediaText && (iCount > 5))
@@ -23296,11 +23296,11 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 
 				if (player != NULL)
 				{
-					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(GC.getUnitInfo((UnitTypes)iI).getType()).GetCString(), GC.getUnitInfo((UnitTypes)iI).getDescription(player->getCivilizationType()));
+					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(unitInfoX.getType()).GetCString(), unitInfoX.getDescription(player->getCivilizationType()));
 				}
 				else
 				{
-					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(GC.getUnitInfo((UnitTypes)iI).getType()).GetCString(), GC.getUnitInfo((UnitTypes)iI).getDescription());
+					szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_UNIT_TEXT"), CvWString(unitInfoX.getType()).GetCString(), unitInfoX.getDescription());
 				}
 				setListHelp(szBuffer, szFirstBuffer, szTempBuffer, L", ", bFirst);
 				bFirst = false;

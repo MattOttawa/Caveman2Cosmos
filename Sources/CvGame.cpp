@@ -5985,11 +5985,8 @@ void CvGame::doDeals()
 }
 
 //Enumerates all currently possible spawn plots for a spawning rule, for use in a thread, local density is not checked
-void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
+void enumSpawnPlots(const CvSpawnInfo& spawnInfo, std::vector<CvPlot*>* plots)
 {
-	const CvSpawnInfo& spawnInfo = GC.getSpawnInfo((SpawnTypes)iSpawnInfo);
-	//logging::logMsg("C2C.log", "Spawn thread start for %s\n", spawnInfo.getType());
-
 	if (spawnInfo.getRateOverride() == 0)
 	{
 		return;
@@ -6227,10 +6224,8 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 	const bool bRagingBarbarians = isOption(GAMEOPTION_RAGING_BARBARIANS);
 	const bool bSizeMatters = isOption(GAMEOPTION_SIZE_MATTERS);
 
-	for (int j = 0; j < GC.getNumSpawnInfos(); j++)
+	foreach_(const CvSpawnInfo& spawnInfo = GC.getSpawnInfos())
 	{
-		const CvSpawnInfo& spawnInfo = GC.getSpawnInfo((SpawnTypes)j);
-
 		//TB Note: It is at this point that we need to isolate out the player type on spawn info.
 		//I think for the sake of speed and data efficiency we can get away with a singular player reference rather than
 		//making it possible to specify more than one on a spawn info.
@@ -6242,7 +6237,7 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 
 		std::vector<CvPlot*> validPlots;
 
-		enumSpawnPlots(j, &validPlots);
+		enumSpawnPlots(spawnInfo, &validPlots);
 
 		const int iPlotNum = validPlots.size();
 		logging::logMsg("C2C.log", "Spawn thread finished and joined for %s, found %d valid plots.", spawnInfo.getType(), iPlotNum);
@@ -11530,9 +11525,9 @@ bool CvGame::canEverTrain(UnitTypes eUnit) const
 		return false;
 	}
 
-	for (int iI = 0; iI < kUnit.getNumPrereqAndBuildings(); ++iI)
+	foreach_(const int iBuilding, kUnit.getPrereqAndBuildings())
 	{
-		if (!canEverConstruct((BuildingTypes)kUnit.getPrereqAndBuilding(iI)))
+		if (!canEverConstruct((BuildingTypes)iBuilding))
 		{
 			return false;
 		}

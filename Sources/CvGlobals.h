@@ -390,6 +390,7 @@ public:
 	int& getNumAIPlayableCivilizationInfos();
 	int getNumCivilizationInfos() const;
 	CvCivilizationInfo& getCivilizationInfo(CivilizationTypes eCivilizationNum) const;
+	const std::vector<CvCivilizationInfo*>& getCivilizationInfos() const { return m_paCivilizationInfo; }
 
 	int getNumLeaderHeadInfos() const;
 	CvLeaderHeadInfo& getLeaderHeadInfo(LeaderHeadTypes eLeaderHeadNum) const;
@@ -423,9 +424,11 @@ public:
 
 	int getNumUnitInfos() const;
 	CvUnitInfo& getUnitInfo(UnitTypes eUnitNum) const;
+	const std::vector<CvUnitInfo*>& getUnitInfos() const { return m_paUnitInfo; }
 
 	int getNumSpawnInfos() const;
 	CvSpawnInfo& getSpawnInfo(SpawnTypes eSpawnNum) const;
+	const std::vector<CvSpawnInfo*>& getSpawnInfos() const { return m_paSpawnInfo; }
 
 	int getNumSpecialUnitInfos() const;
 	CvSpecialUnitInfo& getSpecialUnitInfo(SpecialUnitTypes eSpecialUnitNum) const;
@@ -438,6 +441,7 @@ public:
 
 	int getNumPropertyInfos() const;
 	CvPropertyInfo& getPropertyInfo(PropertyTypes ePropertyNum) const;
+	const std::vector<CvCivilizationInfo*>& getCivilizationInfos() const { return m_paCivilizationInfo; }
 
 	int getNumOutcomeInfos() const;
 	CvOutcomeInfo& getOutcomeInfo(OutcomeTypes eOutcomeNum) const;
@@ -558,6 +562,7 @@ public:
 
 	int getNumBuildingInfos() const;
 	CvBuildingInfo& getBuildingInfo(BuildingTypes eBuildingNum) const;
+	const std::vector<CvBuildingInfo*>& getBuildingInfos() const { return m_paBuildingInfo; }
 
 	int getNumSpecialBuildingInfos() const;
 	CvSpecialBuildingInfo& getSpecialBuildingInfo(SpecialBuildingTypes eSpecialBuildingNum) const;
@@ -579,6 +584,7 @@ public:
 	CvPromotionInfo& getPromotionInfo(PromotionTypes ePromotionNum) const;
 	typedef bst::function<bool(const CvPromotionInfo*, PromotionTypes)> PromotionPredicateFn;
 	PromotionTypes findPromotion(PromotionPredicateFn predicateFn) const;
+	const std::vector<CvPromotionInfo*>& getPromotionInfos() const { return m_paPromotionInfo; }
 
 	int getNumTechInfos() const;
 	CvTechInfo& getTechInfo(TechTypes eTechNum) const;

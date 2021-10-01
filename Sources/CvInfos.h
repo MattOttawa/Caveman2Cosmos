@@ -1751,8 +1751,6 @@ public:
 	int getStateReligion() const;
 	int getPrereqReligion() const;
 	int getPrereqCorporation() const;
-	int getPrereqOrBuildingsNum() const;
-	BuildingTypes getPrereqOrBuilding(int i) const;
 	int getPrereqAndTech() const;
 	int getPrereqAndBonus() const;
 	// the initial number of individuals in the unit group
@@ -2162,7 +2160,7 @@ public:
 
 	virtual const wchar_t* getExtraHoverText() const;
 
-	void getCheckSum(unsigned int& iSum) const;
+	void getCheckSum(uint32_t& iSum) const;
 
 	const CvPropertyManipulators* getPropertyManipulators() const { return &m_PropertyManipulators; }
 
@@ -2246,10 +2244,17 @@ public:
 
 	bool isPrereqOrCivics(int i) const;
 
-	int getPrereqAndBuilding(int i) const;
+	//BuildingTypes getPrereqAndBuilding(int i) const;
 	int getNumPrereqAndBuildings() const;
-	bool isPrereqAndBuilding(int i) const;
-	bool isPrereqOrBuilding(int i) const;
+	bool isPrereqAndBuilding(BuildingTypes e) const;
+	const std::vector<BuildingTypes>& getPrereqAndBuildings() const;
+	const python::list cyGetPrereqAndBuildings() const;
+
+	int getPrereqOrBuildingsNum() const;
+	//BuildingTypes getPrereqOrBuilding(int i) const;
+	bool isPrereqOrBuilding(BuildingTypes e) const;
+	const std::vector<BuildingTypes>& getPrereqOrBuildings() const;
+	const python::list cyGetPrereqOrBuildings() const;
 
 	int getTargetUnit(int i) const;
 	int getNumTargetUnits() const;
@@ -2407,8 +2412,8 @@ protected:
 	int m_iPrereqAndTech;
 	int m_iPrereqAndBonus;
 
-	std::vector<int> m_aiPrereqAndBuildings;
-	std::vector<int> m_aiPrereqOrBuildings;
+	std::vector<BuildingTypes> m_aePrereqAndBuildings;
+	std::vector<BuildingTypes> m_aePrereqOrBuildings;
 
 	std::vector<int> m_aiTargetUnit;
 	std::vector<int> m_aiDefendAgainstUnit;

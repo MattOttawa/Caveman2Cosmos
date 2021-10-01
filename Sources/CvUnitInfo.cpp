@@ -440,15 +440,13 @@ bool CvUnitInfo::isCivilizationUnit(const PlayerTypes ePlayer) const
 	// nor the best way to stop barbarians from spawning neanderthal units. But good enough for now.
 	const bool bCivUnit = ePlayer != NO_PLAYER;
 
-	for (int iI = 0; iI < getNumPrereqAndBuildings(); ++iI)
+	foreach_(const BuildingTypes eBuilding, m_aePrereqAndBuildings)
 	{
-		const int iBuilding = getPrereqAndBuilding(iI);
-
-		for (int iCiv = 0; iCiv < GC.getNumCivilizationInfos(); iCiv++)
+		foreach_(const CvCivilizationInfo& kCivilizationInfo, GC.getCivilizationInfos())
 		{
 			// Civ specific building prereq?
-			if(GC.getCivilizationInfo((CivilizationTypes)iCiv).isPlayable()
-			&& GC.getCivilizationInfo((CivilizationTypes)iCiv).isCivilizationBuilding(iBuilding))
+			if(kCivilizationInfo.isPlayable()
+			&& kCivilizationInfo.isCivilizationBuilding(iBuilding))
 			{
 				if (!bCivUnit) // NO_PLAYER
 				{
@@ -1226,9 +1224,9 @@ bool CvUnitInfo::canAcquireExperience() const
 {
 	if (m_iUnitCombatType != NO_UNITCOMBAT)
 	{
-		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		foreach_(const CvPromotionInfo& promotionInfo, GC.getPromotionInfos())
 		{
-			if (GC.getPromotionInfo((PromotionTypes)iI).getUnitCombat(m_iUnitCombatType))
+			if (promotionInfo.getUnitCombat(m_iUnitCombatType))
 			{
 				return true;
 			}
@@ -1255,27 +1253,28 @@ bool CvUnitInfo::isPrereqOrCivics(int i) const
 
 int CvUnitInfo::getNumPrereqAndBuildings() const
 {
-	return (int)m_aiPrereqAndBuildings.size();
+	return (int)m_aePrereqAndBuildings.size();
 }
-int CvUnitInfo::getPrereqAndBuilding(int i) const
+//int CvUnitInfo::getPrereqAndBuilding(BuildingTypes e) const
+//{
+//	return m_aePrereqAndBuildings[i];
+//}
+bool CvUnitInfo::isPrereqAndBuilding(BuildingTypes e) const
 {
-	return m_aiPrereqAndBuildings[i];
+	return algo::contains(m_aePrereqAndBuildings, i);
 }
-bool CvUnitInfo::isPrereqAndBuilding(int i) const
+const std::vector<BuildingTypes>& CvUnitInfo::getPrereqAndBuildings() const
 {
-	if (find(m_aiPrereqAndBuildings.begin(), m_aiPrereqAndBuildings.end(), i) == m_aiPrereqAndBuildings.end())
-	{
-		return false;
-	}
-	return true;
+	return m_aePrereqAndBuildings;
 }
-bool CvUnitInfo::isPrereqOrBuilding(int i) const
+const python::list CvUnitInfo::cyGetPrereqAndBuildings() const
 {
-	if (find(m_aiPrereqOrBuildings.begin(), m_aiPrereqOrBuildings.end(), i) == m_aiPrereqOrBuildings.end())
-	{
-		return false;
-	}
-	return true;
+	return Cy::makeList(m_aePrereqAndBuildings);
+}
+
+bool CvUnitInfo::isPrereqOrBuilding(BuildingTypes e) const
+{
+	return algo::contains(m_aiPrereqOrBuildings, i);
 }
 
 //Struct Vector
@@ -2012,20 +2011,16 @@ int CvUnitInfo::getEraInfo() const
 	{
 		return GC.getTechInfo((TechTypes)getPrereqAndTech()).getEra();
 	}
-	TechTypes eHighestTech = NO_TECH;
+	TechTypes eHighestEra = NO_ERA;
 	foreach_(const TechTypes ePrereqTech, getPrereqAndTechs())
 	{
-		if (eHighestTech == NO_TECH
-		|| GC.getTechInfo(ePrereqTech).getEra() > GC.getTechInfo(eHighestTech).getEra())
+		const EraTypes ePrereqEra = GC.getTechInfo(ePrereqTech).getEra();
+		if (ePrereqEra > eHighestEra)
 		{
-			eHighestTech = ePrereqTech;
+			eHighestEra = ePrereqTechEra;
 		}
 	}
-	if (eHighestTech != NO_TECH)
-	{
-		return GC.getTechInfo(eHighestTech).getEra();
-	}
-	return NO_ERA;
+	return eHighestTech;
 }
 void CvUnitInfo::setEraSubCombat()
 {
@@ -3910,8 +3905,8 @@ void CvUnitInfo::getCheckSum(unsigned int &iSum) const
 	//CheckSumI(iSum, m_iGroupDefinitions, m_piUnitGroupRequired);
 	CheckSumI(iSum, GC.getNumCivicInfos(), m_pbPrereqOrCivics);
 
-	CheckSumC(iSum, m_aiPrereqAndBuildings);
-	CheckSumC(iSum, m_aiPrereqOrBuildings);
+	CheckSumC(iSum, m_aePrereqAndBuildings);
+	CheckSumC(iSum, m_aePrereqOrBuildings);
 
 	CheckSumC(iSum, m_aiTargetUnit);
 	CheckSumC(iSum, m_aiDefendAgainstUnit);
@@ -4414,8 +4409,8 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqCorporation");
 	m_iPrereqCorporation = pXML->GetInfoClass(szTextVal);
 
-	pXML->SetOptionalVector(&m_aiPrereqAndBuildings, L"PrereqAndBuildings");
-	pXML->SetOptionalVector(&m_aiPrereqOrBuildings, L"PrereqOrBuildings");
+	pXML->SetOptionalVector(&m_aePrereqAndBuildings, L"PrereqAndBuildings");
+	pXML->SetOptionalVector(&m_aePrereqOrBuildings, L"PrereqOrBuildings");
 
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PrereqTech");
 	m_iPrereqAndTech = pXML->GetInfoClass(szTextVal);
@@ -5569,8 +5564,8 @@ void CvUnitInfo::copyNonDefaults(CvUnitInfo* pClassInfo)
 	if ( m_iStateReligion == iTextDefault ) m_iStateReligion = pClassInfo->getStateReligion();
 	if ( m_iPrereqReligion == iTextDefault ) m_iPrereqReligion = pClassInfo->getPrereqReligion();
 	if ( m_iPrereqCorporation == iTextDefault ) m_iPrereqCorporation = pClassInfo->getPrereqCorporation();
-	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiPrereqAndBuildings, pClassInfo->m_aiPrereqAndBuildings);
-	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiPrereqOrBuildings, pClassInfo->m_aiPrereqOrBuildings);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiPrereqAndBuildings, pClassInfo->m_aePrereqAndBuildings);
+	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiPrereqOrBuildings, pClassInfo->m_aePrereqOrBuildings);
 	if ( m_iPrereqAndTech == iTextDefault ) m_iPrereqAndTech = pClassInfo->getPrereqAndTech();
 	if ( m_iPrereqAndBonus == iTextDefault ) m_iPrereqAndBonus = pClassInfo->getPrereqAndBonus();
 

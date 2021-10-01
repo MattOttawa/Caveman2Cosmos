@@ -2154,9 +2154,9 @@ bool CvCity::isPlotTrainable(UnitTypes eUnit, bool bContinue, bool bTestVisible)
 			return false;
 		}
 
-		for (int iI = 0; iI < kUnit.getNumPrereqAndBuildings(); ++iI)
+		foreach_(const int iBuilding, kUnit.getPrereqAndBuildings())
 		{
-			const BuildingTypes eBuildingX = (BuildingTypes)kUnit.getPrereqAndBuilding(iI);
+			const BuildingTypes eBuildingX = (BuildingTypes)iBuilding;
 			if (!GET_TEAM(getTeam()).isObsoleteBuilding(eBuildingX) && getNumActiveBuilding(eBuildingX) == 0)
 			{
 				SpecialBuildingTypes eSpecialBuilding = (SpecialBuildingTypes)GC.getBuildingInfo(eBuildingX).getSpecialBuildingType();

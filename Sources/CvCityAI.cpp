@@ -5325,10 +5325,10 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 								bUnitIsOtherwiseEnabled = bUnitIsEnabler || kUnit.getNumPrereqAndBuildings() == 0;
 								if (!bUnitIsOtherwiseEnabled)
 								{
-									for (int iI = 0; iI < kUnit.getNumPrereqAndBuildings(); ++iI)
+									foreach_(const int iBuilding, kUnit.getPrereqAndBuildings())
 									{
 										// Toffer - seems strange to use break here if only one of X "AND" requirements are met...
-										if (getNumActiveBuilding((BuildingTypes)kUnit.getPrereqAndBuilding(iI)) > 0)
+										if (getNumActiveBuilding((BuildingTypes)iBuilding) > 0)
 										{
 											bUnitIsOtherwiseEnabled = true;
 											break;
@@ -15612,10 +15612,10 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 							bUnitIsOtherwiseEnabled = bUnitIsEnabler || kUnit.getNumPrereqAndBuildings() == 0;
 							if (!bUnitIsOtherwiseEnabled)
 							{
-								for (int iI = 0; iI < kUnit.getNumPrereqAndBuildings(); ++iI)
+								foreach_(const int iBuilding, kUnit.getPrereqAndBuildings())
 								{
 									// Toffer - seems strange to use break here if only one of X "AND" requirements are met...
-									if (getNumActiveBuilding((BuildingTypes)kUnit.getPrereqAndBuilding(iI)) > 0)
+									if (getNumActiveBuilding((BuildingTypes)iBuilding) > 0)
 									{
 										bUnitIsOtherwiseEnabled = true;
 										break;
@@ -15676,15 +15676,15 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 
 							if (bUnitIsEnabler)
 							{
+								const UnitAITypes eUnitAI = (UnitAITypes)kUnit.getDefaultUnitAIType();
+
 								PROFILE("CalculateAllBuildingValues.IsUnitPrereq");
 
-								if (kUnit.getDefaultUnitAIType() != NO_UNITAI && kOwner.AI_totalAreaUnitAIs(pArea, ((UnitAITypes)(kUnit.getDefaultUnitAIType()))) == 0)
+								if (eUnitAI != NO_UNITAI && kOwner.AI_totalAreaUnitAIs(pArea, eUnitAI) == 0)
 								{
 									iValue += iNumCitiesInArea;
 								}
 								//This forces the AI to build necessary buildings for units.
-
-								UnitAITypes eUnitAI = (UnitAITypes)(kUnit.getDefaultUnitAIType());
 
 								int unitsEnabledValue = 0;
 
