@@ -113,11 +113,11 @@ public:
 	const CvWString & getCalendarKey(CvWString & szBuffer) const;
 
 
-	int getNumCustomMapOptions() const	{ return m_iNumCustomMapOptions; }
-	int getNumHiddenCustomMapOptions() const	{ return m_iNumHiddenCustomMapOptions; }
+	int getNumCustomMapOptions() const	{ return m_iNumCustomMapOptions[CURRENT_MAP]; }
+	int getNumHiddenCustomMapOptions() const	{ return m_iNumHiddenCustomMapOptions[CURRENT_MAP]; }
 
-	const CustomMapOptionTypes * getCustomMapOptions() const	{ return m_aeCustomMapOptions; }
-	DllExport void setCustomMapOptions(int iNumCustomMapOptions, const CustomMapOptionTypes * aeCustomMapOptions);
+	const CustomMapOptionTypes* getCustomMapOptions() const	{ return m_aeCustomMapOptions[CURRENT_MAP]; }
+	DllExport void setCustomMapOptions(int iNumCustomMapOptions, const CustomMapOptionTypes* aeCustomMapOptions);
 
 	DllExport CustomMapOptionTypes getCustomMapOption(int iOptionID) const;
 	DllExport void setCustomMapOption(int iOptionID, CustomMapOptionTypes eCustomMapOption);
@@ -327,9 +327,9 @@ protected:
 	CalendarTypes m_eCalendar;
 
 	// Map-specific custom parameters
-	int m_iNumCustomMapOptions;
-	int m_iNumHiddenCustomMapOptions;
-	CustomMapOptionTypes * m_aeCustomMapOptions;
+	bst::array<int, NUM_MAPS> m_iNumCustomMapOptions;
+	bst::array<int, NUM_MAPS> m_iNumHiddenCustomMapOptions;
+	bst::array<CustomMapOptionTypes*, NUM_MAPS> m_aeCustomMapOptions;
 
 	// Standard game options
 	bool* m_abOptions;

@@ -68,7 +68,10 @@ CvInitCore::CvInitCore()
 	m_aszPythonCheck = new CvString[MAX_PLAYERS];
 	m_aszXMLCheck = new CvString[MAX_PLAYERS];
 
-	m_aeCustomMapOptions = NULL;
+	foreach_(CustomMapOptionTypes* customOptions, m_aeCustomMapOptions)
+	{
+		customOptions = NULL;
+	}
 	m_abVictories = NULL;
 
 // BUG - EXE/DLL Paths - start
@@ -994,8 +997,14 @@ const CvWString & CvInitCore::getCalendarKey(CvWString & szBuffer) const
 
 void CvInitCore::clearCustomMapOptions()
 {
-	SAFE_DELETE_ARRAY(m_aeCustomMapOptions);
-	m_iNumCustomMapOptions = 0;
+	foreach_(CustomMapOptionTypes* customOptions, m_aeCustomMapOptions)
+	{
+		SAFE_DELETE_ARRAY(customOptions);
+	}
+	foreach_(int& numCustomMapOptions, m_iNumCustomMapOptions)
+	{
+		numCustomMapOptions = 0;
+	}
 }
 
 void CvInitCore::refreshCustomMapOptions()
@@ -1045,12 +1054,12 @@ void CvInitCore::refreshVictories()
 	}
 }
 
-void CvInitCore::setCustomMapOptions(int iNumCustomMapOptions, const CustomMapOptionTypes * aeCustomMapOptions)
+void CvInitCore::setCustomMapOptions(int iNumCustomMapOptions, const CustomMapOptionTypes* aeCustomMapOptions)
 {
 	clearCustomMapOptions();
 	if (iNumCustomMapOptions)
 	{
-		FAssertMsg(aeCustomMapOptions, "CustomMap Num/Pointer mismatch in CvInitCore::setCustomMapOptions");
+		FAssertMsg(aeCustomMapOptions, "CustomMap Num/Pointer mismatch");
 		m_iNumCustomMapOptions = iNumCustomMapOptions;
 
 		m_aeCustomMapOptions = new CustomMapOptionTypes[m_iNumCustomMapOptions];
@@ -1963,9 +1972,9 @@ void CvInitCore::write(FDataStreamBase* pStream)
 	WRAPPER_WRITE(wrapper, "CvInitCore", m_eTurnTimer);
 	WRAPPER_WRITE(wrapper, "CvInitCore", m_eCalendar);
 
-	WRAPPER_WRITE(wrapper, "CvInitCore", m_iNumCustomMapOptions);
-	WRAPPER_WRITE(wrapper, "CvInitCore", m_iNumHiddenCustomMapOptions);
-	WRAPPER_WRITE_ARRAY(wrapper, "CvInitCore", m_iNumCustomMapOptions, (int*)m_aeCustomMapOptions);
+	WRAPPER_WRITE(wrapper, "CvInitCore", m_iNumCustomMapOptions[MAP_EARTH]);
+	WRAPPER_WRITE(wrapper, "CvInitCore", m_iNumHiddenCustomMapOptions[MAP_EARTH]);
+	WRAPPER_WRITE_ARRAY(wrapper, "CvInitCore", m_iNumCustomMapOptions[MAP_EARTH], (int*)m_aeCustomMapOptions[MAP_EARTH]);
 
 	WRAPPER_WRITE(wrapper, "CvInitCore", m_iNumVictories);
 	WRAPPER_WRITE_ARRAY(wrapper, "CvInitCore", m_iNumVictories, m_abVictories);
