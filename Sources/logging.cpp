@@ -1,7 +1,6 @@
 #include "CvGameCoreDLL.h"
 #include "CvGlobals.h"
 #include "CvInitCore.h"
-#include "CvDLLIniParserIFaceBase.h"
 #include "logging.h"
 
 namespace logging
@@ -48,13 +47,16 @@ namespace logging
 
 	void deleteLogs()
 	{
-		WIN32_FIND_DATA FileInfo;
-		const HANDLE hFile = FindFirstFile((getModDir() + "\\Logs\\*.*").c_str(), &FileInfo);
+		const std::string path = getModDir() + "\\Logs\\*.*";
+		WIN32_FIND_DATA FileInformation;
+		HANDLE hFile = FindFirstFile(path.c_str(), &FileInformation);
 		if (hFile != INVALID_HANDLE_VALUE)
 		{
 			do {
-				DeleteFile((getModDir() + "\\Logs\\" + FileInfo.cFileName).c_str());
-			} while (FindNextFile(hFile, &FileInfo));
+				const std::string cFile = getModDir() + "\\Logs\\" + FileInformation.cFileName;
+				const bool deleted = DeleteFile(cFile.c_str());
+				//FAssert(deleted)
+			} while (FindNextFile(hFile, &FileInformation));
 		}
 	}
 }

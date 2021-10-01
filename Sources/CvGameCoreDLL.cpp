@@ -701,7 +701,7 @@ int64_t getModifiedIntValue64(const int64_t iValue, const int iMod)
 }
 // ! Toffer
 
-std::string getModDir()
+const std::string getModDir()
 {
 	return modDir;
 }

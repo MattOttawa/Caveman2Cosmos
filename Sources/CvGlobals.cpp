@@ -394,10 +394,6 @@ void cvInternalGlobals::init()
 
 	FAssertMsg(gDLL != NULL, "Civ app needs to set gDLL");
 
-	logging::setOption(m_bLogging);
-	logging::createLogsFolder();
-	logging::deleteLogs();
-
 	m_VarSystem = new FVariableSystem;
 	m_asyncRand = new CvRandom;
 	m_initCore = new CvInitCore;

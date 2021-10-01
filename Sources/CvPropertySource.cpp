@@ -193,7 +193,6 @@ void CvPropertySourceConstant::buildDisplayString(CvWStringBuffer &szBuffer) con
 
 bool CvPropertySourceConstant::read(CvXMLLoadUtility *pXML)
 {
-	DEBUG_LOG("Init.log", "Reading PropertySourceConstant");
 	CvPropertySource::read(pXML);
 	if (pXML->TryMoveToXmlFirstChild(L"iAmountPerTurn"))
 	{
@@ -276,7 +275,6 @@ void CvPropertySourceConstantLimited::buildDisplayString(CvWStringBuffer &szBuff
 
 bool CvPropertySourceConstantLimited::read(CvXMLLoadUtility *pXML)
 {
-	DEBUG_LOG("Init.log", "Reading PropertySourceConstantLimit");
 	CvPropertySource::read(pXML);
 	pXML->GetOptionalChildXmlValByName(&m_iAmountPerTurn, L"iAmountPerTurn");
 	pXML->GetOptionalChildXmlValByName(&m_iLimit, L"iLimit");
@@ -387,7 +385,6 @@ void CvPropertySourceDecay::buildDisplayString(CvWStringBuffer &szBuffer) const
 
 bool CvPropertySourceDecay::read(CvXMLLoadUtility *pXML)
 {
-	DEBUG_LOG("Init.log", "Reading PropertySourceDecay");
 	CvPropertySource::read(pXML);
 	pXML->GetOptionalChildXmlValByName(&m_iPercent, L"iPercent");
 	pXML->GetOptionalChildXmlValByName(&m_iNoDecayAmount, L"iNoDecayAmount");
@@ -453,7 +450,6 @@ void CvPropertySourceAttributeConstant::buildDisplayString(CvWStringBuffer &szBu
 
 bool CvPropertySourceAttributeConstant::read(CvXMLLoadUtility *pXML)
 {
-	DEBUG_LOG("Init.log", "Reading PropertySourceAtributeConstant");
 	CvPropertySource::read(pXML);
 	CvString szTextVal;
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"AttributeType", "NO_ATTRIBUTE");

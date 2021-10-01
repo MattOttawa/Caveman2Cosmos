@@ -305,7 +305,6 @@ namespace python = boost::python;
 //
 // Our code
 //
-#include "CvDLLIniParserIFaceBase.h"
 #include "copy_iterator.h"
 #include "index_iterator_base.h"
 #include "logging.h"
