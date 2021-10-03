@@ -11346,35 +11346,31 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// unit production modifier by Unit Combat
-		for (iI = 0; iI < kTrait.getNumUnitCombatProductionModifiers(); iI++)
+		foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
 		{
-			iCurrentModifier = kTrait.getUnitCombatProductionModifier(iI).iModifier;
-			if (iCurrentModifier != 0)
+			if (!algo::container_contains(iIterationValues, pair.second))
 			{
-				if (!algo::container_contains(iIterationValues, iCurrentModifier))
-				{
-					iIterationValues.push_back(kTrait.getUnitCombatProductionModifier(iI).iModifier);
-				}
+				iIterationValues.push_back(pair.second);
 			}
 		}
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			for (iI = 0; iI < kTrait.getNumUnitCombatProductionModifiers(); iI++)
+			foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
 			{
-				iCurrentModifier = kTrait.getUnitCombatProductionModifier(iI).iModifier;
+				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
 				{
-					UnitCombatTypes eTempUnitCombat = kTrait.getUnitCombatProductionModifier(iI).eUnitCombat;
+					const CvUnitCombatInfo& kTempUnitCombat = GC.getUnitCombatInfo(pair.first);
 					if (bFirst)
 					{
 						szHelpString.append(NEWLINE);
-						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_PRODUCTION_FIRST", iCurrentModifier, CvWString(GC.getUnitCombatInfo(eTempUnitCombat).getType()).GetCString(), GC.getUnitCombatInfo(eTempUnitCombat).getTextKeyWide()));
+						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_PRODUCTION_FIRST", iCurrentModifier, CvWString(kTempUnitCombat.getType()).c_str(), kTempUnitCombat.getTextKeyWide()));
 						bFirst = false;
 					}
 					else
 					{
-						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_PRODUCTION_ADDITIONAL", CvWString(GC.getUnitCombatInfo(eTempUnitCombat).getType()).GetCString(), GC.getUnitCombatInfo(eTempUnitCombat).getTextKeyWide()));
+						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_PRODUCTION_ADDITIONAL", CvWString(kTempUnitCombat.getType()).c_str(), kTempUnitCombat.getTextKeyWide()));
 					}
 				}
 			}

@@ -5774,9 +5774,7 @@ public:
 	int getNumUnitCombatFreeExperiences() const;
 	UnitCombatModifier getUnitCombatFreeExperience(int iUnitCombat) const;
 
-	int getNumUnitCombatProductionModifiers() const;
-	UnitCombatModifier getUnitCombatProductionModifier(int iUnitCombat) const;
-
+	const IDValueMap<UnitCombatTypes, int>::filtered getUnitCombatProductionModifiers() const;
 	const IDValueMap<BonusTypes, int>::filtered getBonusHappinessChanges() const;
 
 	const CvPropertyManipulators* getPropertyManipulators() const;
@@ -5977,7 +5975,7 @@ private:
 	std::vector<SpecialUnitModifier> m_aSpecialUnitProductionModifiers;
 	std::vector<CivicOptionTypeBool> m_aCivicOptionNoUpkeepTypes;
 	std::vector<UnitCombatModifier> m_aUnitCombatFreeExperiences;
-	std::vector<UnitCombatModifier> m_aUnitCombatProductionModifiers;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatProductionModifiers;
 	IDValueMap<BonusTypes, int> m_aBonusHappinessChanges;
 };
 

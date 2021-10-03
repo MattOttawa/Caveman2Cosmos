@@ -26863,14 +26863,12 @@ void CvPlayer::setAutomatedCanBuild(BuildTypes eBuild, bool bNewValue)
 
 bool CvPlayer::hasEnemyDefenderUnit(const CvPlot* pPlot) const
 {
-	std::vector<CvUnit *> plotUnits;
-	CvUnit *pLoopUnit;
+	std::vector<CvUnit*> plotUnits;
 
 	GC.getGame().getPlotUnits(pPlot, plotUnits);
 
-	for (int iI = 0; iI < (int) plotUnits.size(); iI++)
+	foreach_(const CvUnit* pLoopUnit, plotUnits)
 	{
-		pLoopUnit = plotUnits[iI];
 		if (atWar(getTeam(), GET_PLAYER(pLoopUnit->getOwner()).getTeam()))
 		{
 			return true;
@@ -26889,7 +26887,7 @@ void CvPlayer::changeCivicHappiness(int iChange)
 {
 	if (iChange != 0)
 	{
-		m_iCivicHappiness = (m_iCivicHappiness + iChange);
+		m_iCivicHappiness += iChange;
 
 		AI_makeAssignWorkDirty();
 	}
@@ -28890,16 +28888,9 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		}
 	}
 
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumUnitCombatProductionModifiers(); iI++)
+	foreach_(const UnitCombatModifier2& pair, GC.getTraitInfo(eTrait).getUnitCombatProductionModifiers())
 	{
-		const UnitCombatTypes eUnitCombat = (UnitCombatTypes)GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI).eUnitCombat;
-		if (eUnitCombat != NO_UNITCOMBAT)
-		{
-			if (GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI).iModifier != 0)
-			{
-				changeUnitCombatProductionModifier(eUnitCombat, iChange*GC.getTraitInfo(eTrait).getUnitCombatProductionModifier(iI).iModifier);
-			}
-		}
+		changeUnitCombatProductionModifier(pair.first, iChange * pair.second);
 	}
 
 	//Run through Unit Promotion Changes
@@ -28908,7 +28899,7 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 
 void CvPlayer::recalculateModifiers()
 {
-	OutputDebugString("\nStarting recalculateModifiers...");
+	OutputDebugString("\nStarting recalculateModifiers...\n");
 
 	noteOrbitalInfrastructureCountDirty();
 
