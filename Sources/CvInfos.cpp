@@ -19893,7 +19893,6 @@ CvTraitInfo::CvTraitInfo()
 	, m_piGoldenAgeYieldChangesFiltered(NULL)
 	, m_piGoldenAgeCommerceChangesFiltered(NULL)
 	//TB Traits Mods end
-	, m_piBonusHappinessChangesFiltered(NULL)
 {
 	CvInfoUtil(this).initDataMembers();
 }
@@ -22392,50 +22391,19 @@ BuildingModifier CvTraitInfo::getBuildingProductionModifier(int iBuilding) const
 	return m_aBuildingProductionModifiers[iBuilding];
 }
 
-namespace PureTraits
+const IDValueMap<TechTypes>& CvTraitInfo::getTechResearchModifiers() const
 {
-	namespace
-	{
-		template <typename T1, typename T2>
-		bool anyValue(const std::pair<T1, T2>&)
-		{
-			return true;
-		}
-		template <typename T1, typename T2>
-		bool isPositiveValue(const std::pair<T1, T2>& pair)
-		{
-			return pair.second > 0;
-		}
-		template <typename T1, typename T2>
-		bool isNegativeValue(const std::pair<T1, T2>& pair)
-		{
-			return pair.second < 0;
-		}
-	}
-
-	template <typename T1, typename T2>
-	bst::function<bool(const std::pair<T1, T2>&)> getPredicate(bool bNegativeTrait)
-	{
-		if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-			return bind(anyValue<T1, T2>, _1);
-
-		return bNegativeTrait ? bind(isNegativeValue<T1, T2>, _1) : bind(isPositiveValue<T1, T2>, _1);
-	}
-};
-
-const IDValueMap<TechTypes, int>::filtered CvTraitInfo::getTechResearchModifiers() const
-{
-	return filter(m_aTechResearchModifiers, PureTraits::getPredicate<TechTypes, int>(m_bNegativeTrait));
+	return m_aTechResearchModifiers;
 }
 
-const IDValueMap<SpecialBuildingTypes, int>::filtered CvTraitInfo::getSpecialBuildingProductionModifiers() const
+const IDValueMap<SpecialBuildingTypes>& CvTraitInfo::getSpecialBuildingProductionModifiers() const
 {
-	return filter(m_aSpecialBuildingProductionModifiers, PureTraits::getPredicate<SpecialBuildingTypes, int>(m_bNegativeTrait));
+	return m_aSpecialBuildingProductionModifiers;
 }
 
-const IDValueMap<BuildingTypes, int>::filtered CvTraitInfo::getBuildingHappinessModifiersFiltered() const
+const IDValueMap<BuildingTypes>& CvTraitInfo::getBuildingHappinessModifiers() const
 {
-	return filter(m_aBuildingHappinessModifiers, PureTraits::getPredicate<BuildingTypes, int>(m_bNegativeTrait));
+	return m_aBuildingHappinessModifiers;
 }
 
 int CvTraitInfo::getNumUnitProductionModifiers() const
@@ -22463,29 +22431,9 @@ UnitModifier CvTraitInfo::getUnitProductionModifier(int iUnit) const
 	return m_aUnitProductionModifiers[iUnit];
 }
 
-int CvTraitInfo::getNumSpecialUnitProductionModifiers() const
+const IDValueMap<SpecialUnitTypes>& CvTraitInfo::getSpecialUnitProductionModifiers() const
 {
-	return (int)m_aSpecialUnitProductionModifiers.size();
-}
-
-SpecialUnitModifier CvTraitInfo::getSpecialUnitProductionModifier(int iSpecialUnit) const
-{
-	FASSERT_BOUNDS(0, getNumSpecialUnitProductionModifiers(), iSpecialUnit)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		SpecialUnitModifier kMod = m_aSpecialUnitProductionModifiers[iSpecialUnit];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aSpecialUnitProductionModifiers[iSpecialUnit];
+	return m_aSpecialUnitProductionModifiers;
 }
 
 int CvTraitInfo::getNumCivicOptionNoUpkeepTypes() const
@@ -22539,19 +22487,20 @@ UnitCombatModifier CvTraitInfo::getUnitCombatFreeExperience(int iUnitCombat) con
 	return m_aUnitCombatFreeExperiences[iUnitCombat];
 }
 
-const IDValueMap<UnitCombatTypes, int>::filtered CvTraitInfo::getUnitCombatProductionModifiers() const
+const IDValueMap<UnitCombatTypes>& CvTraitInfo::getUnitCombatProductionModifiers() const
 {
-	return filter(m_aUnitCombatProductionModifiers, PureTraits::getPredicate<UnitCombatTypes, int>(m_bNegativeTrait));
+	return m_aUnitCombatProductionModifiers;
 }
 
-const IDValueMap<BonusTypes, int>::filtered CvTraitInfo::getBonusHappinessChanges() const
+const IDValueMap<BonusTypes>& CvTraitInfo::getBonusHappinessChanges() const
 {
-	return filter(m_aBonusHappinessChanges, PureTraits::getPredicate<BonusTypes, int>(m_bNegativeTrait));
+	return m_aBonusHappinessChanges;
 }
 
 void CvTraitInfo::getDataMembers(CvInfoUtil& util)
 {
 	util
+		.addDelayedResolution(m_aSpecialUnitProductionModifiers, L"SpecialUnitProductionModifierTypes")
 		.addDelayedResolution(m_aSpecialBuildingProductionModifiers, L"SpecialBuildingProductionModifierTypes")
 		.addDelayedResolution(m_aBuildingHappinessModifiers, L"BuildingHappinessModifierTypes")
 		.add(m_aTechResearchModifiers, L"TechResearchModifiers")
@@ -23216,29 +23165,6 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 					GC.addDelayedResolution((int*)&(m_aUnitProductionModifiers[i].eUnit), szTextVal);
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"UnitProductionModifierType"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"SpecialUnitProductionModifierTypes"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"SpecialUnitProductionModifierType" );
-		m_aSpecialUnitProductionModifiers.resize(iNum);
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"SpecialUnitProductionModifierType"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"SpecialUnitType");
-					m_aSpecialUnitProductionModifiers[i].eSpecialUnit = (SpecialUnitTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aSpecialUnitProductionModifiers[i].iModifier), L"iSpecialUnitProductionModifier");
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"SpecialUnitProductionModifierType"));
 			}
 			pXML->MoveToXmlParent();
 		}
@@ -24080,22 +24006,6 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo)
 		}
 	}
 
-	if (getNumUnitProductionModifiers() == 0)
-	{
-		int iNum = pClassInfo->getNumUnitProductionModifiers();
-		m_aUnitProductionModifiers.resize(iNum);
-		for (int i=0; i<iNum; i++)
-		{
-			m_aUnitProductionModifiers[i].iModifier = pClassInfo->m_aUnitProductionModifiers[i].iModifier;
-			GC.copyNonDefaultDelayedResolution((int*)&(m_aUnitProductionModifiers[i].eUnit), (int*)&(pClassInfo->m_aUnitProductionModifiers[i].eUnit));
-		}
-	}
-
-	if (getNumSpecialUnitProductionModifiers() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aSpecialUnitProductionModifiers, pClassInfo->m_aSpecialUnitProductionModifiers);
-	}
-
 //Team Project (8)
 	if (getNumUnitCombatFreeExperiences() == 0)
 	{
@@ -24330,13 +24240,6 @@ void CvTraitInfo::getCheckSum(uint32_t& iSum) const
 	{
 		CheckSum(iSum, m_aUnitProductionModifiers[i].eUnit);
 		CheckSum(iSum, m_aUnitProductionModifiers[i].iModifier);
-	}
-
-	iNumElements = m_aSpecialUnitProductionModifiers.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aSpecialUnitProductionModifiers[i].eSpecialUnit);
-		CheckSum(iSum, m_aSpecialUnitProductionModifiers[i].iModifier);
 	}
 
 	iNumElements = m_aCivicOptionNoUpkeepTypes.size();

@@ -179,13 +179,6 @@ struct UnitModifier
 	operator int() const {return (int)eUnit;}
 	bool operator< (const UnitModifier& rhs) const {return (int)eUnit < (int)rhs.eUnit;}
 };
-struct SpecialUnitModifier
-{
-	SpecialUnitTypes eSpecialUnit;
-	int iModifier;
-	operator int() const {return (int)eSpecialUnit;}
-	bool operator< (const SpecialUnitModifier& rhs) const {return (int)eSpecialUnit < (int)rhs.eSpecialUnit;}
-};
 struct ImprovementYieldModifier
 {
 	ImprovementTypes eImprovement;

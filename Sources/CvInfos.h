@@ -5535,6 +5535,43 @@ protected:
 	int* m_paiYieldProduced;
 };
 
+namespace PureTraits
+{
+	namespace
+	{
+		template <typename T>
+		bool anyValue(const T&)
+		{
+			return true;
+		}
+		template <typename T>
+		bool isPositiveValue(const T& pair)
+		{
+			return pair.second > 0;
+		}
+		template <typename T>
+		bool isNegativeValue(const T& pair)
+		{
+			return pair.second < 0;
+		}
+
+		template <typename T>
+		bst::function<bool(const T&)> getPredicate(bool bNegativeTrait)
+		{
+			if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
+				return bind(anyValue<T>, _1);
+
+			return bNegativeTrait ? bind(isNegativeValue<T>, _1) : bind(isPositiveValue<T>, _1);
+		}
+	}
+
+	template <typename Range_t>
+	const typename Range_t::filtered filter(const CvTraitInfo& info, const Range_t& rng)
+	{
+		return bst::adaptors::filter(rng, getPredicate<typename Range_t::value_type>(info.isNegativeTrait()));
+	}
+};
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //
 //  class : CvTraitInfo
@@ -5752,21 +5789,19 @@ public:
 	int getNumDomainProductionModifiers() const;
 	DomainModifier getDomainProductionModifier(int iDomain) const;
 
-	const IDValueMap<TechTypes, int>::filtered getTechResearchModifiers() const;
+	const IDValueMap<TechTypes>& getTechResearchModifiers() const;
 
 	int getNumBuildingProductionModifiers() const;
 	BuildingModifier getBuildingProductionModifier(int iBuilding) const;
 
-	const IDValueMap<SpecialBuildingTypes, int>::filtered getSpecialBuildingProductionModifiers() const;
+	const IDValueMap<SpecialBuildingTypes>& getSpecialBuildingProductionModifiers() const;
 
-	const IDValueMap<BuildingTypes, int>&			getBuildingHappinessModifiers() const { return m_aBuildingHappinessModifiers; }
-	const IDValueMap<BuildingTypes, int>::filtered	getBuildingHappinessModifiersFiltered() const;
+	const IDValueMap<BuildingTypes>& getBuildingHappinessModifiers() const;
 
 	int getNumUnitProductionModifiers() const;
 	UnitModifier getUnitProductionModifier(int iUnit) const;
 
-	int getNumSpecialUnitProductionModifiers() const;
-	SpecialUnitModifier getSpecialUnitProductionModifier(int iSpecialUnit) const;
+	const IDValueMap<SpecialUnitTypes>& getSpecialUnitProductionModifiers() const;
 
 	int getNumCivicOptionNoUpkeepTypes() const;
 	CivicOptionTypeBool isCivicOptionNoUpkeepType(int iCivicOption) const;
@@ -5774,8 +5809,8 @@ public:
 	int getNumUnitCombatFreeExperiences() const;
 	UnitCombatModifier getUnitCombatFreeExperience(int iUnitCombat) const;
 
-	const IDValueMap<UnitCombatTypes, int>::filtered getUnitCombatProductionModifiers() const;
-	const IDValueMap<BonusTypes, int>::filtered getBonusHappinessChanges() const;
+	const IDValueMap<UnitCombatTypes>& getUnitCombatProductionModifiers() const;
+	const IDValueMap<BonusTypes>& getBonusHappinessChanges() const;
 
 	const CvPropertyManipulators* getPropertyManipulators() const;
 
@@ -5942,7 +5977,6 @@ private:
 	int* m_piGoldenAgeYieldChanges;
 	int* m_piGoldenAgeCommerceChanges;
 	//Arrays for Pure Traits
-	int* m_piBonusHappinessChangesFiltered;
 	int* m_paiExtraYieldThresholdFiltered;
 	int* m_paiTradeYieldModifierFiltered;
 	int* m_paiCommerceChangeFiltered;
@@ -5972,7 +6006,7 @@ private:
 	IDValueMap<SpecialBuildingTypes, int> m_aSpecialBuildingProductionModifiers;
 	IDValueMap<BuildingTypes, int> m_aBuildingHappinessModifiers;
 	std::vector<UnitModifier> m_aUnitProductionModifiers;
-	std::vector<SpecialUnitModifier> m_aSpecialUnitProductionModifiers;
+	IDValueMap<SpecialUnitTypes> m_aSpecialUnitProductionModifiers;
 	std::vector<CivicOptionTypeBool> m_aCivicOptionNoUpkeepTypes;
 	std::vector<UnitCombatModifier> m_aUnitCombatFreeExperiences;
 	IDValueMap<UnitCombatTypes, int> m_aUnitCombatProductionModifiers;

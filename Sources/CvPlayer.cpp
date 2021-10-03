@@ -7434,14 +7434,7 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 			}
 			if (GC.getUnitInfo(eUnit).getSpecialUnitType() != NO_SPECIALUNIT)
 			{
-				for (int j = 0; j < kTrait.getNumSpecialUnitProductionModifiers(); j++)
-				{
-					if ((SpecialUnitTypes)kTrait.getSpecialUnitProductionModifier(j).eSpecialUnit == GC.getUnitInfo(eUnit).getSpecialUnitType())
-					{
-						iMultiplier += kTrait.getSpecialUnitProductionModifier(j).iModifier;
-						break;
-					}
-				}
+				iMultiplier += kTrait.getSpecialUnitProductionModifiers().getValue((SpecialUnitTypes)GC.getUnitInfo(eUnit).getSpecialUnitType());
 			}
 		}
 	}
@@ -7469,7 +7462,7 @@ int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 
 			if (eSpecialBuilding != NO_SPECIALBUILDING)
 			{
-				foreach_(const SpecialBuildingModifier& pair, kTrait.getSpecialBuildingProductionModifiers())
+				foreach_(const SpecialBuildingModifier& pair, PureTraits::filter(kTrait, kTrait.getSpecialBuildingProductionModifiers()))
 				{
 					if (pair.first == eSpecialBuilding)
 					{
@@ -28647,7 +28640,7 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeCivilizationHealth(iChange*GC.getTraitInfo(eTrait).getHealth());
 	changeExtraHappiness(iChange*GC.getTraitInfo(eTrait).getHappiness());
 
-	foreach_(const BuildingModifier2& pair, GC.getTraitInfo(eTrait).getBuildingHappinessModifiersFiltered())
+	foreach_(const BuildingModifier2& pair, PureTraits::filter(GC.getTraitInfo(eTrait), GC.getTraitInfo(eTrait).getBuildingHappinessModifiers()))
 	{
 		changeExtraBuildingHappiness(pair.first, iChange * pair.second);
 	}

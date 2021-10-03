@@ -11320,22 +11320,13 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 				}
 			}
 		}
-
 		// Increase SpecialUnit Production Speeds
 		iLast = 0;
-		for (iI = 0; iI < GC.getNumSpecialUnitInfos(); ++iI)
+		foreach_(const SpecialUnitModifier& pair, PureTraits::filter(kTrait, kTrait.getSpecialUnitProductionModifiers()))
 		{
-			const SpecialUnitTypes eSpecialUnit = ((SpecialUnitTypes)iI);
-			for (int j = 0; j < kTrait.getNumSpecialUnitProductionModifiers(); j++)
-			{
-				if ((SpecialUnitTypes)kTrait.getSpecialUnitProductionModifier(j).eSpecialUnit == eSpecialUnit)
-				{
-					szText = gDLL->getText("TXT_KEY_TRAITHELP_PRODUCTION_MODIFIER", kTrait.getSpecialUnitProductionModifier(j).iModifier);
-
-					setListHelp(szHelpString, szText.GetCString(), GC.getSpecialUnitInfo(eSpecialUnit).getDescription(), L", ", (kTrait.getSpecialUnitProductionModifier(j).iModifier != iLast));
-					iLast = kTrait.getSpecialUnitProductionModifier(j).iModifier;
-				}
-			}
+			szText = gDLL->getText("TXT_KEY_TRAITHELP_PRODUCTION_MODIFIER", pair.second);
+			setListHelp(szHelpString, szText.c_str(), GC.getSpecialUnitInfo(pair.first).getDescription(), L", ", (pair.second != iLast));
+			iLast = pair.second;
 		}
 
 		//	Military unit production modifier
@@ -11944,7 +11935,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		// SpecialBuildings
 		iLast = 0;
-		foreach_(const SpecialBuildingModifier& pair, kTrait.getSpecialBuildingProductionModifiers())
+		foreach_(const SpecialBuildingModifier& pair, PureTraits::filter(kTrait, kTrait.getSpecialBuildingProductionModifiers()))
 		{
 			//if (pair.iModifier == 100)
 			//{
@@ -11993,7 +11984,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		// Buildings
 		iLast = 0;
-		foreach_(const BuildingModifier2& pair, kTrait.getBuildingHappinessModifiersFiltered())
+		foreach_(const BuildingModifier2& pair, PureTraits::filter(kTrait, kTrait.getBuildingHappinessModifiers()))
 		{
 			const BuildingTypes eLoopBuilding = pair.first;
 
@@ -23436,7 +23427,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 		{
 			foreach_(const CvTraitInfo* pTrait, GC.getTraitInfos())
 			{
-				foreach_(const BuildingModifier2& pair, pTrait->getBuildingHappinessModifiersFiltered())
+				foreach_(const BuildingModifier2& pair, PureTraits::filter(*pTrait, pTrait->getBuildingHappinessModifiers()))
 				{
 					if (pair.first == eBuilding)
 					{

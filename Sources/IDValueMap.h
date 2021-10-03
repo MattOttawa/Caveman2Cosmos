@@ -18,14 +18,14 @@
 
 // The maps are assumed to be small, so a vector of pairs is used
 
-template <class ID_, class Value_, Value_ defaultValue = 0>
+template <class ID_, class Value_ = int, Value_ defaultValue = 0>
 struct IDValueMap
 {
 	typedef std::pair<ID_, Value_>																	value_type;
 	typedef typename std::vector<value_type>::iterator												iterator;
 	typedef typename std::vector<value_type>::const_iterator										const_iterator;
 	typedef CyIterator<iterator, CovertToTuple>														python_iterator;
-	typedef bst::filtered_range<bst::function<bool(typename const value_type&)>, const IDValueMap>	filtered;
+	typedef bst::filtered_range<bst::function<bool(const typename value_type&)>, const IDValueMap>	filtered;
 
 	iterator begin()	{ return m_map.begin(); }
 	iterator end()		{ return m_map.end(); }
@@ -230,6 +230,7 @@ void publishIDValueMapPythonInterface()
 typedef std::pair<BonusTypes, int> BonusModifier2;
 typedef std::pair<BuildingTypes, int> BuildingModifier2;
 typedef std::pair<SpecialBuildingTypes, int> SpecialBuildingModifier;
+typedef std::pair<SpecialUnitTypes, int> SpecialUnitModifier;
 typedef std::pair<ImprovementTypes, int> ImprovementModifier2;
 typedef std::pair<ReligionTypes, int> ReligionModifier;
 typedef std::pair<TechTypes, int> TechModifier;
