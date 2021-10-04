@@ -10687,7 +10687,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// Extra Happiness by Bonuses
-		foreach_(const BonusModifier2& pair, kTrait.getBonusHappinessChanges())
+		foreach_(const BonusModifier2& pair, PureTraits::filter(kTrait, kTrait.getBonusHappinessChanges()))
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -10697,7 +10697,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const BonusModifier2& pair, kTrait.getBonusHappinessChanges())
+			foreach_(const BonusModifier2& pair, PureTraits::filter(kTrait, kTrait.getBonusHappinessChanges()))
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
@@ -11211,36 +11211,32 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 			szHelpString.append(gDLL->getText("TXT_KEY_CIVICHELP_FREE_XP", kTrait.getFreeExperience()));
 		}
 
-	// Free Experience by Unit Combat
-		for (iI = 0; iI < kTrait.getNumUnitCombatFreeExperiences(); iI++)
+		// Free Experience by Unit Combat
+		foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatFreeExperience()))
 		{
-			iCurrentModifier = kTrait.getUnitCombatFreeExperience(iI).iModifier;
-			if (iCurrentModifier != 0)
+			if (!algo::container_contains(iIterationValues, pair.second))
 			{
-				if (!algo::container_contains(iIterationValues, iCurrentModifier))
-				{
-					iIterationValues.push_back(kTrait.getUnitCombatFreeExperience(iI).iModifier);
-				}
+				iIterationValues.push_back(pair.second);
 			}
 		}
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			for (iI = 0; iI < kTrait.getNumUnitCombatFreeExperiences(); iI++)
+			foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatFreeExperience()))
 			{
-				iCurrentModifier = kTrait.getUnitCombatFreeExperience(iI).iModifier;
+				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
 				{
-					const UnitCombatTypes eTempUnitCombat = kTrait.getUnitCombatFreeExperience(iI).eUnitCombat;
+					const CvUnitCombatInfo& kTempUnitCombat = GC.getUnitCombatInfo(pair.first);
 					if (bFirst)
 					{
 						szHelpString.append(NEWLINE);
-						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_COMBAT_FREE_XP_FIRST", iCurrentModifier, CvWString(GC.getUnitCombatInfo(eTempUnitCombat).getType()).GetCString(), GC.getUnitCombatInfo(eTempUnitCombat).getTextKeyWide()));
+						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_COMBAT_FREE_XP_FIRST", iCurrentModifier, CvWString(kTempUnitCombat.getType()).c_str(), kTempUnitCombat.getTextKeyWide()));
 						bFirst = false;
 					}
 					else
 					{
-						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_COMBAT_FREE_XP_ADDITIONAL", CvWString(GC.getUnitCombatInfo(eTempUnitCombat).getType()).GetCString(), GC.getUnitCombatInfo(eTempUnitCombat).getTextKeyWide()));
+						szHelpString.append(gDLL->getText("TXT_KEY_TRAITHELP_UNIT_COMBAT_FREE_XP_ADDITIONAL", CvWString(kTempUnitCombat.getType()).c_str(), kTempUnitCombat.getTextKeyWide()));
 					}
 				}
 			}
@@ -11337,7 +11333,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// unit production modifier by Unit Combat
-		foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
+		foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatProductionModifiers()))
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -11347,7 +11343,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
+			foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatProductionModifiers()))
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
@@ -11895,7 +11891,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		//RESEARCH MODIFIERS
 				// Tech Research Modifier
-		foreach_(const TechModifier& pair, kTrait.getTechResearchModifiers())
+		foreach_(const TechModifier& pair, PureTraits::filter(kTrait, kTrait.getTechResearchModifiers()))
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -11905,7 +11901,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const TechModifier& pair, kTrait.getTechResearchModifiers())
+			foreach_(const TechModifier& pair, PureTraits::filter(kTrait, kTrait.getTechResearchModifiers()))
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)

@@ -5537,6 +5537,11 @@ protected:
 
 namespace PureTraits
 {
+	int adjustValue(const CvTraitInfo& kTrait, int value)
+	{
+		return (value < 0 == kTrait.isNegativeTrait()) ? value : 0;
+	}
+
 	namespace
 	{
 		template <typename T>
@@ -5554,7 +5559,6 @@ namespace PureTraits
 		{
 			return pair.second < 0;
 		}
-
 		template <typename T>
 		bst::function<bool(const T&)> getPredicate(bool bNegativeTrait)
 		{
@@ -5564,7 +5568,6 @@ namespace PureTraits
 			return bNegativeTrait ? bind(isNegativeValue<T>, _1) : bind(isPositiveValue<T>, _1);
 		}
 	}
-
 	template <typename Range_t>
 	const typename Range_t::filtered filter(const CvTraitInfo& info, const Range_t& rng)
 	{
@@ -5806,9 +5809,7 @@ public:
 	int getNumCivicOptionNoUpkeepTypes() const;
 	CivicOptionTypeBool isCivicOptionNoUpkeepType(int iCivicOption) const;
 
-	int getNumUnitCombatFreeExperiences() const;
-	UnitCombatModifier getUnitCombatFreeExperience(int iUnitCombat) const;
-
+	const IDValueMap<UnitCombatTypes>& getUnitCombatFreeExperience() const;
 	const IDValueMap<UnitCombatTypes>& getUnitCombatProductionModifiers() const;
 	const IDValueMap<BonusTypes>& getBonusHappinessChanges() const;
 
@@ -6008,7 +6009,7 @@ private:
 	std::vector<UnitModifier> m_aUnitProductionModifiers;
 	IDValueMap<SpecialUnitTypes> m_aSpecialUnitProductionModifiers;
 	std::vector<CivicOptionTypeBool> m_aCivicOptionNoUpkeepTypes;
-	std::vector<UnitCombatModifier> m_aUnitCombatFreeExperiences;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatFreeExperiences;
 	IDValueMap<UnitCombatTypes, int> m_aUnitCombatProductionModifiers;
 	IDValueMap<BonusTypes, int> m_aBonusHappinessChanges;
 };

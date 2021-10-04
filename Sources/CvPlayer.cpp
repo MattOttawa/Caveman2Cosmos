@@ -7432,9 +7432,10 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 					break;
 				}
 			}
-			if (GC.getUnitInfo(eUnit).getSpecialUnitType() != NO_SPECIALUNIT)
+			const SpecialUnitTypes eSpecialUnit = GC.getUnitInfo(eUnit).getSpecialUnitType()
+			if (eSpecialUnit != NO_SPECIALUNIT)
 			{
-				iMultiplier += kTrait.getSpecialUnitProductionModifiers().getValue((SpecialUnitTypes)GC.getUnitInfo(eUnit).getSpecialUnitType());
+				iMultiplier += PureTraits::filter(kTrait, kTrait.getSpecialUnitProductionModifiers().getValue(eSpecialUnit));
 			}
 		}
 	}
@@ -28626,52 +28627,54 @@ void CvPlayer::clearModifierTotals()
 
 void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 {
-	changeNonStateReligionCommerce(iChange*((GC.getTraitInfo(eTrait).isNonStateReligionCommerce())? 1 : 0));
-	changeUpgradeAnywhere(iChange*((GC.getTraitInfo(eTrait).isUpgradeAnywhere())? 1 : 0));
-	changeRevIdxLocal(iChange*GC.getTraitInfo(eTrait).getRevIdxLocal());
-	changeRevIdxNational(iChange*GC.getTraitInfo(eTrait).getRevIdxNational());
-	changeRevIdxDistanceModifier(iChange*GC.getTraitInfo(eTrait).getRevIdxDistanceModifier());
-	changeRevIdxHolyCityGood(iChange*GC.getTraitInfo(eTrait).getRevIdxHolyCityGood());
-	changeRevIdxHolyCityBad(iChange*GC.getTraitInfo(eTrait).getRevIdxHolyCityBad());
-	changeRevIdxNationalityMod(iChange*GC.getTraitInfo(eTrait).getRevIdxNationalityMod());
-	changeRevIdxBadReligionMod(iChange*GC.getTraitInfo(eTrait).getRevIdxBadReligionMod());
-	changeRevIdxGoodReligionMod(iChange*GC.getTraitInfo(eTrait).getRevIdxGoodReligionMod());
+	const CvTraitInfo& kTrait = GC.getTraitInfo(eTrait);
 
-	changeCivilizationHealth(iChange*GC.getTraitInfo(eTrait).getHealth());
-	changeExtraHappiness(iChange*GC.getTraitInfo(eTrait).getHappiness());
+	changeNonStateReligionCommerce(iChange*(kTrait.isNonStateReligionCommerce() ? 1 : 0));
+	changeUpgradeAnywhere(iChange*(kTrait.isUpgradeAnywhere() ? 1 : 0));
+	changeRevIdxLocal(iChange*kTrait.getRevIdxLocal());
+	changeRevIdxNational(iChange*kTrait.getRevIdxNational());
+	changeRevIdxDistanceModifier(iChange*kTrait.getRevIdxDistanceModifier());
+	changeRevIdxHolyCityGood(iChange*kTrait.getRevIdxHolyCityGood());
+	changeRevIdxHolyCityBad(iChange*kTrait.getRevIdxHolyCityBad());
+	changeRevIdxNationalityMod(iChange*kTrait.getRevIdxNationalityMod());
+	changeRevIdxBadReligionMod(iChange*kTrait.getRevIdxBadReligionMod());
+	changeRevIdxGoodReligionMod(iChange*kTrait.getRevIdxGoodReligionMod());
 
-	foreach_(const BuildingModifier2& pair, PureTraits::filter(GC.getTraitInfo(eTrait), GC.getTraitInfo(eTrait).getBuildingHappinessModifiers()))
+	changeCivilizationHealth(iChange*kTrait.getHealth());
+	changeExtraHappiness(iChange*kTrait.getHappiness());
+
+	foreach_(const BuildingModifier2& pair, PureTraits::filter(kTrait, kTrait.getBuildingHappinessModifiers()))
 	{
 		changeExtraBuildingHappiness(pair.first, iChange * pair.second);
 	}
 
-	changeUpkeepModifier(iChange*GC.getTraitInfo(eTrait).getUpkeepModifier());
-	changeLevelExperienceModifier(iChange*GC.getTraitInfo(eTrait).getLevelExperienceModifier());
-	changeGreatPeopleRateModifier(iChange*GC.getTraitInfo(eTrait).getGreatPeopleRateModifier());
-	changeGreatGeneralRateModifier(iChange*GC.getTraitInfo(eTrait).getGreatGeneralRateModifier());
-	changeDomesticGreatGeneralRateModifier(iChange*GC.getTraitInfo(eTrait).getDomesticGreatGeneralRateModifier());
+	changeUpkeepModifier(iChange*kTrait.getUpkeepModifier());
+	changeLevelExperienceModifier(iChange*kTrait.getLevelExperienceModifier());
+	changeGreatPeopleRateModifier(iChange*kTrait.getGreatPeopleRateModifier());
+	changeGreatGeneralRateModifier(iChange*kTrait.getGreatGeneralRateModifier());
+	changeDomesticGreatGeneralRateModifier(iChange*kTrait.getDomesticGreatGeneralRateModifier());
 
-	changeMaxGlobalBuildingProductionModifier(iChange*GC.getTraitInfo(eTrait).getMaxGlobalBuildingProductionModifier());
-	changeMaxTeamBuildingProductionModifier(iChange*GC.getTraitInfo(eTrait).getMaxTeamBuildingProductionModifier());
-	changeMaxPlayerBuildingProductionModifier(iChange*GC.getTraitInfo(eTrait).getMaxPlayerBuildingProductionModifier());
+	changeMaxGlobalBuildingProductionModifier(iChange*kTrait.getMaxGlobalBuildingProductionModifier());
+	changeMaxTeamBuildingProductionModifier(iChange*kTrait.getMaxTeamBuildingProductionModifier());
+	changeMaxPlayerBuildingProductionModifier(iChange*kTrait.getMaxPlayerBuildingProductionModifier());
 
 	for (int iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
-		changeTradeYieldModifier(((YieldTypes)iI), iChange*GC.getTraitInfo(eTrait).getTradeYieldModifier(iI));
+		changeTradeYieldModifier(((YieldTypes)iI), iChange*kTrait.getTradeYieldModifier(iI));
 	}
 
 	for (int iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
-		changeFreeCityCommerce(((CommerceTypes)iI), iChange*GC.getTraitInfo(eTrait).getCommerceChange(iI));
-		changeCommerceRateModifier(((CommerceTypes)iI), iChange*GC.getTraitInfo(eTrait).getCommerceModifier(iI));
+		changeFreeCityCommerce(((CommerceTypes)iI), iChange*kTrait.getCommerceChange(iI));
+		changeCommerceRateModifier(((CommerceTypes)iI), iChange*kTrait.getCommerceModifier(iI));
 	}
 
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumCivicOptionNoUpkeepTypes(); iI++)
+	for (int iI = 0; iI < kTrait.getNumCivicOptionNoUpkeepTypes(); iI++)
 	{
-		if ((CivicOptionTypes)GC.getTraitInfo(eTrait).isCivicOptionNoUpkeepType(iI).eCivicOption != NO_CIVICOPTION)
+		if ((CivicOptionTypes)kTrait.isCivicOptionNoUpkeepType(iI).eCivicOption != NO_CIVICOPTION)
 		{
-			CivicOptionTypes eCivicOption = ((CivicOptionTypes)GC.getTraitInfo(eTrait).isCivicOptionNoUpkeepType(iI).eCivicOption);
-			if(GC.getTraitInfo(eTrait).isCivicOptionNoUpkeepType(iI).bBool)
+			CivicOptionTypes eCivicOption = ((CivicOptionTypes)kTrait.isCivicOptionNoUpkeepType(iI).eCivicOption);
+			if(kTrait.isCivicOptionNoUpkeepType(iI).bBool)
 			{
 				changeNoCivicUpkeepCount(eCivicOption, iChange);
 			}
@@ -28690,110 +28693,110 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	{
 		for (int iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 		{
-			changeImprovementYieldChange(((ImprovementTypes)iI), ((YieldTypes)iJ), (GC.getTraitInfo(eTrait).getImprovementYieldChange(iI, iJ) * iChange));
+			changeImprovementYieldChange(((ImprovementTypes)iI), ((YieldTypes)iJ), (kTrait.getImprovementYieldChange(iI, iJ) * iChange));
 		}
 	}
 
 	//TB Traits begin
-	if (GC.getTraitInfo(eTrait).getMaxAnarchy() > -1)
+	if (kTrait.getMaxAnarchy() > -1)
 	{
 		updateMaxAnarchyTurns();
 	}
-	if (GC.getTraitInfo(eTrait).getMinAnarchy() > 0)
+	if (kTrait.getMinAnarchy() > 0)
 	{
 		updateMinAnarchyTurns();
 	}
-	changeWarWearinessModifier(iChange*GC.getTraitInfo(eTrait).getWarWearinessAccumulationModifier());
-	changeCivicAnarchyModifier(iChange*GC.getTraitInfo(eTrait).getCivicAnarchyTimeModifier());
-	changeReligiousAnarchyModifier(iChange*GC.getTraitInfo(eTrait).getReligiousAnarchyTimeModifier());
-	changeImprovementUpgradeRateModifier(iChange*GC.getTraitInfo(eTrait).getImprovementUpgradeRateModifier());
-	changeWorkerSpeedModifier(iChange*GC.getTraitInfo(eTrait).getWorkerSpeedModifier());
-	changeMaxConscript(iChange*GC.getTraitInfo(eTrait).getMaxConscript());
-	changeDistanceMaintenanceModifier(iChange*GC.getTraitInfo(eTrait).getDistanceMaintenanceModifier());
-	changeNumCitiesMaintenanceModifier(iChange*GC.getTraitInfo(eTrait).getNumCitiesMaintenanceModifier());
-	changeCorporationMaintenanceModifier(iChange*GC.getTraitInfo(eTrait).getCorporationMaintenanceModifier());
-	changeStateReligionGreatPeopleRateModifier(iChange*GC.getTraitInfo(eTrait).getStateReligionGreatPeopleRateModifier());
-	changeFreeExperience(iChange*GC.getTraitInfo(eTrait).getFreeExperience());
-	changeBaseFreeUnitUpkeepCivilian(iChange*GC.getTraitInfo(eTrait).getFreeUnitUpkeepCivilian());
-	changeBaseFreeUnitUpkeepMilitary(iChange*GC.getTraitInfo(eTrait).getFreeUnitUpkeepMilitary());
-	changeFreeUnitUpkeepCivilianPopPercent(iChange*GC.getTraitInfo(eTrait).getFreeUnitUpkeepCivilianPopPercent());
-	changeFreeUnitUpkeepMilitaryPopPercent(iChange*GC.getTraitInfo(eTrait).getFreeUnitUpkeepMilitaryPopPercent());
-	changeCivilianUnitUpkeepMod(iChange*GC.getTraitInfo(eTrait).getCivilianUnitUpkeepMod());
-	changeMilitaryUnitUpkeepMod(iChange*GC.getTraitInfo(eTrait).getMilitaryUnitUpkeepMod());
-	changeHappyPerMilitaryUnit(iChange*GC.getTraitInfo(eTrait).getHappyPerMilitaryUnit());
-	changeLargestCityHappiness(iChange*GC.getTraitInfo(eTrait).getLargestCityHappiness());
-	changeFreeSpecialist(iChange*GC.getTraitInfo(eTrait).getFreeSpecialist());
-	changeTradeRoutes(iChange*GC.getTraitInfo(eTrait).getTradeRoutes());
-	changeStateReligionHappiness(iChange*GC.getTraitInfo(eTrait).getStateReligionHappiness());
-	changeNonStateReligionHappiness(iChange*GC.getTraitInfo(eTrait).getNonStateReligionHappiness());
-	changeStateReligionUnitProductionModifier(iChange*GC.getTraitInfo(eTrait).getStateReligionUnitProductionModifier());
-	changeStateReligionBuildingProductionModifier(iChange*GC.getTraitInfo(eTrait).getStateReligionBuildingProductionModifier());
-	changeStateReligionFreeExperience(iChange*GC.getTraitInfo(eTrait).getStateReligionFreeExperience());
-	changeExpInBorderModifier(iChange*GC.getTraitInfo(eTrait).getExpInBorderModifier());
-	changeTraitExtraCityDefense(iChange*GC.getTraitInfo(eTrait).getCityDefenseBonus());
-	changeMilitaryProductionModifier(iChange*GC.getTraitInfo(eTrait).getMilitaryProductionModifier());
-	changeAIAttitudeModifier(iChange*GC.getTraitInfo(eTrait).getAttitudeModifier());
-	changeNationalEspionageDefense(iChange*GC.getTraitInfo(eTrait).getEspionageDefense());
-	changeMaxTradeRoutesAdjustment(iChange*GC.getTraitInfo(eTrait).getMaxTradeRoutesChange());
-	changeGoldenAgeModifier(GC.getTraitInfo(eTrait).getGoldenAgeDurationModifier() * iChange);
-	changeNationalHurryAngerModifier(GC.getTraitInfo(eTrait).getHurryAngerModifier() * iChange);
-	changeHurryCostModifier(GC.getTraitInfo(eTrait).getHurryCostModifier() * iChange);
-	changeForeignTradeRouteModifier(GC.getTraitInfo(eTrait).getForeignTradeRouteModifier() * iChange);
-	changeNationalEnemyWarWearinessModifier(GC.getTraitInfo(eTrait).getEnemyWarWearinessModifier() * iChange);
-	changeNationalBombardDefenseModifier(GC.getTraitInfo(eTrait).getBombardDefense() * iChange);
-	changeUnitUpgradePriceModifier(GC.getTraitInfo(eTrait).getUnitUpgradePriceModifier() * iChange);
-	changeCoastalTradeRoutes(GC.getTraitInfo(eTrait).getCoastalTradeRoutes() * iChange);
-	changeMilitaryFoodProductionCount((GC.getTraitInfo(eTrait).isMilitaryFoodProduction()) ? iChange : 0);
-	changeInquisitionCount((GC.getTraitInfo(eTrait).isAllowsInquisitions())? iChange : 0);
+	changeWarWearinessModifier(iChange*kTrait.getWarWearinessAccumulationModifier());
+	changeCivicAnarchyModifier(iChange*kTrait.getCivicAnarchyTimeModifier());
+	changeReligiousAnarchyModifier(iChange*kTrait.getReligiousAnarchyTimeModifier());
+	changeImprovementUpgradeRateModifier(iChange*kTrait.getImprovementUpgradeRateModifier());
+	changeWorkerSpeedModifier(iChange*kTrait.getWorkerSpeedModifier());
+	changeMaxConscript(iChange*kTrait.getMaxConscript());
+	changeDistanceMaintenanceModifier(iChange*kTrait.getDistanceMaintenanceModifier());
+	changeNumCitiesMaintenanceModifier(iChange*kTrait.getNumCitiesMaintenanceModifier());
+	changeCorporationMaintenanceModifier(iChange*kTrait.getCorporationMaintenanceModifier());
+	changeStateReligionGreatPeopleRateModifier(iChange*kTrait.getStateReligionGreatPeopleRateModifier());
+	changeFreeExperience(iChange*kTrait.getFreeExperience());
+	changeBaseFreeUnitUpkeepCivilian(iChange*kTrait.getFreeUnitUpkeepCivilian());
+	changeBaseFreeUnitUpkeepMilitary(iChange*kTrait.getFreeUnitUpkeepMilitary());
+	changeFreeUnitUpkeepCivilianPopPercent(iChange*kTrait.getFreeUnitUpkeepCivilianPopPercent());
+	changeFreeUnitUpkeepMilitaryPopPercent(iChange*kTrait.getFreeUnitUpkeepMilitaryPopPercent());
+	changeCivilianUnitUpkeepMod(iChange*kTrait.getCivilianUnitUpkeepMod());
+	changeMilitaryUnitUpkeepMod(iChange*kTrait.getMilitaryUnitUpkeepMod());
+	changeHappyPerMilitaryUnit(iChange*kTrait.getHappyPerMilitaryUnit());
+	changeLargestCityHappiness(iChange*kTrait.getLargestCityHappiness());
+	changeFreeSpecialist(iChange*kTrait.getFreeSpecialist());
+	changeTradeRoutes(iChange*kTrait.getTradeRoutes());
+	changeStateReligionHappiness(iChange*kTrait.getStateReligionHappiness());
+	changeNonStateReligionHappiness(iChange*kTrait.getNonStateReligionHappiness());
+	changeStateReligionUnitProductionModifier(iChange*kTrait.getStateReligionUnitProductionModifier());
+	changeStateReligionBuildingProductionModifier(iChange*kTrait.getStateReligionBuildingProductionModifier());
+	changeStateReligionFreeExperience(iChange*kTrait.getStateReligionFreeExperience());
+	changeExpInBorderModifier(iChange*kTrait.getExpInBorderModifier());
+	changeTraitExtraCityDefense(iChange*kTrait.getCityDefenseBonus());
+	changeMilitaryProductionModifier(iChange*kTrait.getMilitaryProductionModifier());
+	changeAIAttitudeModifier(iChange*kTrait.getAttitudeModifier());
+	changeNationalEspionageDefense(iChange*kTrait.getEspionageDefense());
+	changeMaxTradeRoutesAdjustment(iChange*kTrait.getMaxTradeRoutesChange());
+	changeGoldenAgeModifier(kTrait.getGoldenAgeDurationModifier() * iChange);
+	changeNationalHurryAngerModifier(kTrait.getHurryAngerModifier() * iChange);
+	changeHurryCostModifier(kTrait.getHurryCostModifier() * iChange);
+	changeForeignTradeRouteModifier(kTrait.getForeignTradeRouteModifier() * iChange);
+	changeNationalEnemyWarWearinessModifier(kTrait.getEnemyWarWearinessModifier() * iChange);
+	changeNationalBombardDefenseModifier(kTrait.getBombardDefense() * iChange);
+	changeUnitUpgradePriceModifier(kTrait.getUnitUpgradePriceModifier() * iChange);
+	changeCoastalTradeRoutes(kTrait.getCoastalTradeRoutes() * iChange);
+	changeMilitaryFoodProductionCount((kTrait.isMilitaryFoodProduction()) ? iChange : 0);
+	changeInquisitionCount((kTrait.isAllowsInquisitions())? iChange : 0);
 
-	changePopulationgrowthratepercentage(GC.getTraitInfo(eTrait).getGlobalPopulationgrowthratepercentage(),(iChange==1));
-	changeNationalCityStartCulture(GC.getTraitInfo(eTrait).getCityStartCulture() * iChange);
-	changeNationalAirUnitCapacity(GC.getTraitInfo(eTrait).getGlobalAirUnitCapacity() * iChange);
-	changeCapitalXPModifier(GC.getTraitInfo(eTrait).getCapitalXPModifier() * iChange);
-	changeStateReligionHolyCityXPModifier(GC.getTraitInfo(eTrait).getHolyCityofStateReligionXPModifier() * iChange);
-	changeNonStateReligionHolyCityXPModifier(GC.getTraitInfo(eTrait).getHolyCityofNonStateReligionXPModifier() * iChange);
-	changeNationalCityStartBonusPopulation(GC.getTraitInfo(eTrait).getBonusPopulationinNewCities() * iChange);
-	changeNationalMissileRangeChange(GC.getTraitInfo(eTrait).getMissileRange() * iChange);
-	changeNationalFlightOperationRangeChange(GC.getTraitInfo(eTrait).getFlightOperationRange() * iChange);
-	changeNationalNavalCargoSpaceChange(GC.getTraitInfo(eTrait).getNavalCargoSpace() * iChange);
-	changeNationalMissileCargoSpaceChange(GC.getTraitInfo(eTrait).getMissileCargoSpace() * iChange);
-	changeExtraFreedomFighters(GC.getTraitInfo(eTrait).getFreedomFighterChange() * iChange);
+	changePopulationgrowthratepercentage(kTrait.getGlobalPopulationgrowthratepercentage(),(iChange==1));
+	changeNationalCityStartCulture(kTrait.getCityStartCulture() * iChange);
+	changeNationalAirUnitCapacity(kTrait.getGlobalAirUnitCapacity() * iChange);
+	changeCapitalXPModifier(kTrait.getCapitalXPModifier() * iChange);
+	changeStateReligionHolyCityXPModifier(kTrait.getHolyCityofStateReligionXPModifier() * iChange);
+	changeNonStateReligionHolyCityXPModifier(kTrait.getHolyCityofNonStateReligionXPModifier() * iChange);
+	changeNationalCityStartBonusPopulation(kTrait.getBonusPopulationinNewCities() * iChange);
+	changeNationalMissileRangeChange(kTrait.getMissileRange() * iChange);
+	changeNationalFlightOperationRangeChange(kTrait.getFlightOperationRange() * iChange);
+	changeNationalNavalCargoSpaceChange(kTrait.getNavalCargoSpace() * iChange);
+	changeNationalMissileCargoSpaceChange(kTrait.getMissileCargoSpace() * iChange);
+	changeExtraFreedomFighters(kTrait.getFreedomFighterChange() * iChange);
 
-	changeExtraNationalCaptureProbabilityModifier(GC.getTraitInfo(eTrait).getNationalCaptureProbabilityModifier() * iChange);
-	changeExtraNationalCaptureResistanceModifier(GC.getTraitInfo(eTrait).getNationalCaptureResistanceModifier() * iChange);
+	changeExtraNationalCaptureProbabilityModifier(kTrait.getNationalCaptureProbabilityModifier() * iChange);
+	changeExtraNationalCaptureResistanceModifier(kTrait.getNationalCaptureResistanceModifier() * iChange);
 
-	changeExtraStateReligionSpreadModifier(GC.getTraitInfo(eTrait).getStateReligionSpreadProbabilityModifier() * iChange);
-	changeExtraNonStateReligionSpreadModifier(GC.getTraitInfo(eTrait).getNonStateReligionSpreadProbabilityModifier() * iChange);
-	changeCitiesStartwithStateReligionCount((GC.getTraitInfo(eTrait).isCitiesStartwithStateReligion())? iChange : 0);
-	changeDraftsOnCityCaptureCount((GC.getTraitInfo(eTrait).isDraftsOnCityCapture())? iChange : 0);
-	changeFreeSpecialistperWorldWonderCount((GC.getTraitInfo(eTrait).isFreeSpecialistperWorldWonder())? iChange : 0);
-	changeFreeSpecialistperNationalWonderCount((GC.getTraitInfo(eTrait).isFreeSpecialistperNationalWonder())? iChange : 0);
-	changeFreeSpecialistperTeamProjectCount((GC.getTraitInfo(eTrait).isFreeSpecialistperTeamProject())? iChange : 0);
-	changeExtraGoodyCount((GC.getTraitInfo(eTrait).isExtraGoody())? iChange : 0);
+	changeExtraStateReligionSpreadModifier(kTrait.getStateReligionSpreadProbabilityModifier() * iChange);
+	changeExtraNonStateReligionSpreadModifier(kTrait.getNonStateReligionSpreadProbabilityModifier() * iChange);
+	changeCitiesStartwithStateReligionCount((kTrait.isCitiesStartwithStateReligion())? iChange : 0);
+	changeDraftsOnCityCaptureCount((kTrait.isDraftsOnCityCapture())? iChange : 0);
+	changeFreeSpecialistperWorldWonderCount((kTrait.isFreeSpecialistperWorldWonder())? iChange : 0);
+	changeFreeSpecialistperNationalWonderCount((kTrait.isFreeSpecialistperNationalWonder())? iChange : 0);
+	changeFreeSpecialistperTeamProjectCount((kTrait.isFreeSpecialistperTeamProject())? iChange : 0);
+	changeExtraGoodyCount((kTrait.isExtraGoody())? iChange : 0);
 
-	changeAllReligionsActiveCount((GC.getTraitInfo(eTrait).isAllReligionsActive())? iChange : 0);
-	changeAllReligionsActiveCount((GC.getTraitInfo(eTrait).isBansNonStateReligions())? -iChange : 0);
-	changeFreedomFighterCount(GC.getTraitInfo(eTrait).isFreedomFighter() ? iChange : 0);
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumImprovementUpgradeModifierTypes(); iI++)
+	changeAllReligionsActiveCount((kTrait.isAllReligionsActive())? iChange : 0);
+	changeAllReligionsActiveCount((kTrait.isBansNonStateReligions())? -iChange : 0);
+	changeFreedomFighterCount(kTrait.isFreedomFighter() ? iChange : 0);
+	for (int iI = 0; iI < kTrait.getNumImprovementUpgradeModifierTypes(); iI++)
 	{
-		if ((ImprovementTypes)GC.getTraitInfo(eTrait).getImprovementUpgradeModifier(iI).eImprovement != NO_IMPROVEMENT)
+		if ((ImprovementTypes)kTrait.getImprovementUpgradeModifier(iI).eImprovement != NO_IMPROVEMENT)
 		{
-			ImprovementTypes eImprovement = ((ImprovementTypes)GC.getTraitInfo(eTrait).getImprovementUpgradeModifier(iI).eImprovement);
-			if(GC.getTraitInfo(eTrait).getImprovementUpgradeModifier(iI).iModifier != 0)
+			ImprovementTypes eImprovement = ((ImprovementTypes)kTrait.getImprovementUpgradeModifier(iI).eImprovement);
+			if(kTrait.getImprovementUpgradeModifier(iI).iModifier != 0)
 			{
-				changeImprovementUpgradeRateModifierSpecific(eImprovement, iChange*GC.getTraitInfo(eTrait).getImprovementUpgradeModifier(iI).iModifier);
+				changeImprovementUpgradeRateModifierSpecific(eImprovement, iChange*kTrait.getImprovementUpgradeModifier(iI).iModifier);
 			}
 		}
 	}
 
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumBuildWorkerSpeedModifierTypes(); iI++)
+	for (int iI = 0; iI < kTrait.getNumBuildWorkerSpeedModifierTypes(); iI++)
 	{
-		if ((BuildTypes)GC.getTraitInfo(eTrait).getBuildWorkerSpeedModifier(iI).eBuild != NO_BUILD)
+		if ((BuildTypes)kTrait.getBuildWorkerSpeedModifier(iI).eBuild != NO_BUILD)
 		{
-			BuildTypes eBuild = ((BuildTypes)GC.getTraitInfo(eTrait).getBuildWorkerSpeedModifier(iI).eBuild);
-			if (GC.getTraitInfo(eTrait).getBuildWorkerSpeedModifier(iI).iModifier != 0)
+			BuildTypes eBuild = ((BuildTypes)kTrait.getBuildWorkerSpeedModifier(iI).eBuild);
+			if (kTrait.getBuildWorkerSpeedModifier(iI).iModifier != 0)
 			{
-				changeBuildWorkerSpeedModifierSpecific(eBuild, iChange*GC.getTraitInfo(eTrait).getBuildWorkerSpeedModifier(iI).iModifier);
+				changeBuildWorkerSpeedModifierSpecific(eBuild, iChange*kTrait.getBuildWorkerSpeedModifier(iI).iModifier);
 			}
 		}
 	}
@@ -28802,86 +28805,79 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	{
 		for (int iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
 		{
-			changeExtraSpecialistYield(((SpecialistTypes)iI), ((YieldTypes)iJ), (GC.getTraitInfo(eTrait).getSpecialistYieldChange(iI, iJ) * iChange));
+			changeExtraSpecialistYield(((SpecialistTypes)iI), ((YieldTypes)iJ), (kTrait.getSpecialistYieldChange(iI, iJ) * iChange));
 		}
 		for (int iJ = 0; iJ < NUM_COMMERCE_TYPES; iJ++)
 		{
-			changeExtraSpecialistCommerce(((SpecialistTypes)iI), ((CommerceTypes)iJ), (GC.getTraitInfo(eTrait).getSpecialistCommerceChange(iI, iJ) * iChange));
+			changeExtraSpecialistCommerce(((SpecialistTypes)iI), ((CommerceTypes)iJ), (kTrait.getSpecialistCommerceChange(iI, iJ) * iChange));
 		}
 
-		if ((SpecialistTypes)GC.getTraitInfo(eTrait).getEraAdvanceFreeSpecialistType() == ((SpecialistTypes)iI))
+		if ((SpecialistTypes)kTrait.getEraAdvanceFreeSpecialistType() == ((SpecialistTypes)iI))
 		{
-			changeEraAdvanceFreeSpecialistCount((SpecialistTypes)GC.getTraitInfo(eTrait).getEraAdvanceFreeSpecialistType(), iChange);
+			changeEraAdvanceFreeSpecialistCount((SpecialistTypes)kTrait.getEraAdvanceFreeSpecialistType(), iChange);
 		}
 	}
 
 	for (int iI = 0; iI < NUM_YIELD_TYPES; iI++)
 	{
 		const YieldTypes eYield = static_cast<YieldTypes>(iI);
-		changeSeaPlotYield(eYield, GC.getTraitInfo(eTrait).getSeaPlotYieldChanges(iI) * iChange);
-		changeFreeCityYield(eYield, GC.getTraitInfo(eTrait).getYieldChange(iI) * iChange);
-		changeYieldRateModifier(eYield, GC.getTraitInfo(eTrait).getYieldModifier(iI) * iChange);
-		changeCapitalYieldRateModifier(eYield, GC.getTraitInfo(eTrait).getCapitalYieldModifier(iI) * iChange);
-		changeSpecialistExtraYield(eYield, GC.getTraitInfo(eTrait).getSpecialistExtraYield(iI) * iChange);
+		changeSeaPlotYield(eYield, kTrait.getSeaPlotYieldChanges(iI) * iChange);
+		changeFreeCityYield(eYield, kTrait.getYieldChange(iI) * iChange);
+		changeYieldRateModifier(eYield, kTrait.getYieldModifier(iI) * iChange);
+		changeCapitalYieldRateModifier(eYield, kTrait.getCapitalYieldModifier(iI) * iChange);
+		changeSpecialistExtraYield(eYield, kTrait.getSpecialistExtraYield(iI) * iChange);
 		updateExtraYieldThreshold(eYield);
 		updateLessYieldThreshold(eYield);
-		changeGoldenAgeYield(eYield, GC.getTraitInfo(eTrait).getGoldenAgeYieldChanges(iI) * iChange);
+		changeGoldenAgeYield(eYield, kTrait.getGoldenAgeYieldChanges(iI) * iChange);
 	}
 
 	for (int iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
 	{
-		changeCapitalCommerceRateModifier((CommerceTypes)iI, GC.getTraitInfo(eTrait).getCapitalCommerceModifier(iI) * iChange);
-		changeSpecialistExtraCommerce((CommerceTypes)iI, GC.getTraitInfo(eTrait).getSpecialistExtraCommerce(iI) * iChange);
-		changeGoldenAgeCommerce((CommerceTypes)iI, GC.getTraitInfo(eTrait).getGoldenAgeCommerceChanges(iI) * iChange);
+		changeCapitalCommerceRateModifier((CommerceTypes)iI, kTrait.getCapitalCommerceModifier(iI) * iChange);
+		changeSpecialistExtraCommerce((CommerceTypes)iI, kTrait.getSpecialistExtraCommerce(iI) * iChange);
+		changeGoldenAgeCommerce((CommerceTypes)iI, kTrait.getGoldenAgeCommerceChanges(iI) * iChange);
 	}
 
-	int iGPRateChange = GC.getTraitInfo(eTrait).getGreatPeopleRateChange();
+	int iGPRateChange = kTrait.getGreatPeopleRateChange();
 	if (iGPRateChange > 0)
 	{
-		UnitTypes eGreatPeopleUnit = (UnitTypes)GC.getTraitInfo(eTrait).getGreatPeopleUnitType();
-		changeNationalGreatPeopleUnitRate(eGreatPeopleUnit, GC.getTraitInfo(eTrait).getGreatPeopleRateChange() * iChange);
+		UnitTypes eGreatPeopleUnit = (UnitTypes)kTrait.getGreatPeopleUnitType();
+		changeNationalGreatPeopleUnitRate(eGreatPeopleUnit, kTrait.getGreatPeopleRateChange() * iChange);
 	}
 
-	UnitTypes eGreatPeopleUnit = (UnitTypes)GC.getTraitInfo(eTrait).getGoldenAgeonBirthofGreatPeopleType();
+	UnitTypes eGreatPeopleUnit = (UnitTypes)kTrait.getGoldenAgeonBirthofGreatPeopleType();
 	if (eGreatPeopleUnit != NO_UNIT)
 	{
 		changeGoldenAgeOnBirthOfGreatPersonCount(eGreatPeopleUnit, iChange);
 	}
 
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumDomainFreeExperiences(); iI++)
+	for (int iI = 0; iI < kTrait.getNumDomainFreeExperiences(); iI++)
 	{
-		if (GC.getTraitInfo(eTrait).getDomainFreeExperience(iI).iModifier != 0)
+		if (kTrait.getDomainFreeExperience(iI).iModifier != 0)
 		{
-			changeNationalDomainFreeExperience((DomainTypes)GC.getTraitInfo(eTrait).getDomainFreeExperience(iI).eDomain, GC.getTraitInfo(eTrait).getDomainFreeExperience(iI).iModifier);
+			changeNationalDomainFreeExperience((DomainTypes)kTrait.getDomainFreeExperience(iI).eDomain, kTrait.getDomainFreeExperience(iI).iModifier);
 		}
 	}
 
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumDomainProductionModifiers(); iI++)
+	for (int iI = 0; iI < kTrait.getNumDomainProductionModifiers(); iI++)
 	{
-		if (GC.getTraitInfo(eTrait).getDomainProductionModifier(iI).iModifier != 0)
+		if (kTrait.getDomainProductionModifier(iI).iModifier != 0)
 		{
-			changeNationalDomainProductionModifier((DomainTypes)GC.getTraitInfo(eTrait).getDomainProductionModifier(iI).eDomain, GC.getTraitInfo(eTrait).getDomainProductionModifier(iI).iModifier);
+			changeNationalDomainProductionModifier((DomainTypes)kTrait.getDomainProductionModifier(iI).eDomain, kTrait.getDomainProductionModifier(iI).iModifier);
 		}
 	}
 
-	foreach_(const TechModifier& pair, GC.getTraitInfo(eTrait).getTechResearchModifiers())
+	foreach_(const TechModifier& pair, PureTraits::filter(kTrait, kTrait.getTechResearchModifiers()))
 	{
 		changeNationalTechResearchModifier(pair.first, pair.second);
 	}
 
-	for (int iI = 0; iI < GC.getTraitInfo(eTrait).getNumUnitCombatFreeExperiences(); iI++)
+	foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatFreeExperience()))
 	{
-		if ((UnitCombatTypes)GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI).eUnitCombat != NO_UNITCOMBAT)
-		{
-			UnitCombatTypes eUnitCombat = ((UnitCombatTypes)GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI).eUnitCombat);
-			if (GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI).iModifier != 0)
-			{
-				changeUnitCombatFreeExperience(eUnitCombat, iChange*GC.getTraitInfo(eTrait).getUnitCombatFreeExperience(iI).iModifier);
-			}
-		}
+		changeUnitCombatFreeExperience(pair.first, iChange * pair.second);
 	}
 
-	foreach_(const UnitCombatModifier2& pair, GC.getTraitInfo(eTrait).getUnitCombatProductionModifiers())
+	foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatProductionModifiers()))
 	{
 		changeUnitCombatProductionModifier(pair.first, iChange * pair.second);
 	}

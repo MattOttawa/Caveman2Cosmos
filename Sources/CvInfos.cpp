@@ -22461,30 +22461,9 @@ CivicOptionTypeBool CvTraitInfo::isCivicOptionNoUpkeepType(int iCivicOption) con
 	return m_aCivicOptionNoUpkeepTypes[iCivicOption];
 }
 
-//Team Project (8)
-int CvTraitInfo::getNumUnitCombatFreeExperiences() const
+const IDValueMap<UnitCombatTypes>& CvTraitInfo::getUnitCombatFreeExperience() const
 {
-	return (int)m_aUnitCombatFreeExperiences.size();
-}
-
-UnitCombatModifier CvTraitInfo::getUnitCombatFreeExperience(int iUnitCombat) const
-{
-	FASSERT_BOUNDS(0, getNumUnitCombatFreeExperiences(), iUnitCombat)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		UnitCombatModifier kMod = m_aUnitCombatFreeExperiences[iUnitCombat];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aUnitCombatFreeExperiences[iUnitCombat];
+	return m_aUnitCombatFreeExperiences;
 }
 
 const IDValueMap<UnitCombatTypes>& CvTraitInfo::getUnitCombatProductionModifiers() const
@@ -22506,6 +22485,7 @@ void CvTraitInfo::getDataMembers(CvInfoUtil& util)
 		.add(m_aTechResearchModifiers, L"TechResearchModifiers")
 		.add(m_aBonusHappinessChanges, L"BonusHappinessChanges")
 		.add(m_aUnitCombatProductionModifiers, L"UnitCombatProductionModifiers")
+		.add(m_aUnitCombatFreeExperiences, L"UnitCombatFreeExperiences")
 	;
 }
 
@@ -23194,31 +23174,6 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"UnitCombatFreeExperiences"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"UnitCombatFreeExperience" );
-		m_aUnitCombatFreeExperiences.resize(iNum);
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"UnitCombatFreeExperience"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"UnitCombatType");
-					m_aUnitCombatFreeExperiences[i].eUnitCombat = (UnitCombatTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aUnitCombatFreeExperiences[i].iModifier), L"iModifier");
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"UnitCombatFreeExperience"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	//For Pure Traits
 
 	if (pXML->TryMoveToXmlFirstChild(L"ExtraYieldThresholds"))
 	{
@@ -24006,12 +23961,6 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo)
 		}
 	}
 
-//Team Project (8)
-	if (getNumUnitCombatFreeExperiences() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aUnitCombatFreeExperiences, pClassInfo->m_aUnitCombatFreeExperiences);
-	}
-
 	GC.copyNonDefaultDelayedResolution((int*)&m_iPrereqTrait, (int*)&pClassInfo->m_iPrereqTrait);
 	GC.copyNonDefaultDelayedResolution((int*)&m_iPrereqOrTrait1, (int*)&pClassInfo->m_iPrereqOrTrait1);
 	GC.copyNonDefaultDelayedResolution((int*)&m_iPrereqOrTrait2, (int*)&pClassInfo->m_iPrereqOrTrait2);
@@ -24247,14 +24196,6 @@ void CvTraitInfo::getCheckSum(uint32_t& iSum) const
 	{
 		CheckSum(iSum, m_aCivicOptionNoUpkeepTypes[i].eCivicOption);
 		CheckSum(iSum, m_aCivicOptionNoUpkeepTypes[i].bBool);
-	}
-
-//Team Project (8)
-	iNumElements = m_aUnitCombatFreeExperiences.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aUnitCombatFreeExperiences[i].eUnitCombat);
-		CheckSum(iSum, m_aUnitCombatFreeExperiences[i].iModifier);
 	}
 
 	//For Pure Traits

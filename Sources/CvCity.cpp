@@ -4579,13 +4579,7 @@ int CvCity::getBonusHappiness(BonusTypes eBonus) const
 		{
 			if (GET_PLAYER(getOwner()).hasTrait((TraitTypes)iI))
 			{
-				foreach_(const BonusModifier2& pair, GC.getTraitInfo((TraitTypes)iI).getBonusHappinessChanges())
-				{
-					if (pair.first == eBonus)
-					{
-						iHappiness += pair.second;
-					}
-				}
+				iHappiness += PureTraits::adjustValue(GC.getTraitInfo((TraitTypes)iI), GC.getTraitInfo((TraitTypes)iI).getBonusHappinessChanges().getValue(eBonus));
 			}
 		}
 	}
@@ -4674,15 +4668,7 @@ void CvCity::processBonus(BonusTypes eBonus, int iChange)
 			const TraitTypes eTrait = (TraitTypes)iI;
 			if (GET_PLAYER(getOwner()).hasTrait(eTrait))
 			{
-				int iValue = 0;
-				foreach_(const BonusModifier2& pair, GC.getTraitInfo((TraitTypes)iI).getBonusHappinessChanges())
-				{
-					if (pair.first == eBonus)
-					{
-						iValue = pair.second;
-						break;
-					}
-				}
+				const int iValue = PureTraits::adjustValue(GC.getTraitInfo(eTrait), GC.getTraitInfo(eTrait).getBonusHappinessChanges().getValue(eBonus));
 				if (iValue >= 0)
 				{
 					iGoodValue += iValue;
