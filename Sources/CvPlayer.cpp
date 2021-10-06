@@ -7457,7 +7457,7 @@ int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 
 			if (eSpecialBuilding != NO_SPECIALBUILDING)
 			{
-				algo::map::getKeyValue(kTrait.getSpecialBuildingProductionModifiers(), eSpecialBuilding);
+				iMultiplier += algo::map::getKeyValue(kTrait.getSpecialBuildingProductionModifiers(), eSpecialBuilding);
 			}
 		}
 	}
