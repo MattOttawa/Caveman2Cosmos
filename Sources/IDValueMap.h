@@ -21,11 +21,11 @@
 template <class ID_, class Value_ = int, Value_ defaultValue = 0>
 struct IDValueMap
 {
-	typedef std::pair<ID_, Value_>																	value_type;
-	typedef typename std::vector<value_type>::iterator												iterator;
-	typedef typename std::vector<value_type>::const_iterator										const_iterator;
-	typedef CyIterator<iterator, CovertToTuple>														python_iterator;
-	typedef bst::filtered_range<bst::function<bool(const typename value_type&)>, const IDValueMap>	filtered;
+	typedef std::pair<ID_, Value_>															value_type;
+	typedef typename std::vector<value_type>::iterator										iterator;
+	typedef typename std::vector<value_type>::const_iterator								const_iterator;
+	typedef CyIterator<iterator, CovertToTuple>												python_iterator;
+	typedef bst::filtered_range<bst::function<bool(const value_type&)>, const IDValueMap>	filtered;
 
 	iterator begin()	{ return m_map.begin(); }
 	iterator end()		{ return m_map.end(); }
@@ -233,35 +233,20 @@ namespace algo
 	{
 		// FUNCTION TEMPLATE getKeyValue
 		// find the corresponding value for key
-		template <typename Map_t>
-		typename Map_t::value_type::second_type getKeyValue(const Map_t& map, typename Map_t::value_type::first_type key)
+		template <typename Map_t, typename Range_t = Map_t>
+		typename Map_t::value_type::second_type getKeyValue(const Range_t& rng, typename Map_t::value_type::first_type key)
 		{
-			foreach_(const typename Map_t::value_type& pair, map)
+			foreach_(const typename Map_t::value_type& pair, rng)
 				if (pair.first == key)
 					return pair.second;
 			return 0;
 		}
 
-		// FUNCTION TEMPLATE SPECIALIATION getKeyValue
-		// filtered_range specialzation
-		// find the corresponding value for key
+		// helper for boost::filtered_range to deduce the template parameters correctly
 		template <typename Map_t>
-		typename Map_t::value_type::second_type getKeyValue(const typename Map_t::filtered& map, typename Map_t::value_type::first_type key)
+		typename Map_t::value_type::second_type getKeyValue(const typename Map_t::filtered& rng, typename Map_t::value_type::first_type key)
 		{
-			foreach_(const typename Map_t::value_type& pair, map)
-				if (pair.first == key)
-					return pair.second;
-			return 0;
-		}
-
-		// FUNCTION TEMPLATE SPECIALIATION getKeyValue
-		// std::map specialzation
-		// find the corresponding value for key
-		template <typename Key_, typename Value_>
-		Value_ getKeyValue(const std::map<Key_, Value_>& map, Key_ key)
-		{
-			std::map<Key_, Value_>::const_iterator itr = map.find(key);
-			return itr != map.end() ? itr->second : 0;
+			return getKeyValue<Map_t, typename Map_t::filtered>(rng, key);
 		}
 	}
 }

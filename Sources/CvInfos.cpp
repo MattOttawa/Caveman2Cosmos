@@ -22247,58 +22247,6 @@ int* CvTraitInfo::getGoldenAgeCommerceChangesArray() const
 	return m_piGoldenAgeCommerceChanges;
 }
 
-namespace PureTraits
-{
-	namespace Predicate
-	{
-		bool anyValue()
-		{
-			return true;
-		}
-		template <typename Pair_t>
-		bool isPositiveValue(const Pair_t& pair)
-		{
-			return pair.second > 0;
-		}
-		template <typename Pair_t>
-		bool isNegativeValue(const Pair_t& pair)
-		{
-			return pair.second < 0;
-		}
-	}
-
-	template <typename Pair_t>
-	bst::function<bool(const Pair_t&)> getPredicate(bool bNegativeTrait)
-	{
-		if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-			return bind(Predicate::anyValue);
-
-		if (bNegativeTrait)
-			return bind(Predicate::isNegativeValue<Pair_t>, _1);
-		else
-			return bind(Predicate::isPositiveValue<Pair_t>, _1);
-	}
-
-#ifdef PURE_TRAITS_FILTER_2
-	template <typename Range_t>
-	const typename Range_t::filtered filter(const Range_t& rng, bool bNegativeTrait)
-	{
-		if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-			return bst::adaptors::filter(rng, bind(Predicate::anyValue));
-
-		if (bNegativeTrait)
-			return bst::adaptors::filter(rng, bind(Predicate::isNegativeValue<const typename Range_t::value_type>, _1));
-		else
-			return bst::adaptors::filter(rng, bind(Predicate::isPositiveValue<const typename Range_t::value_type>, _1));
-	}
-#endif
-
-	int adjustValue(const CvTraitInfo& kTrait, int value)
-	{
-		return !GC.getGame().isOption(GAMEOPTION_PURE_TRAITS) || (value < 0 == kTrait.isNegativeTrait()) ? value : 0;
-	}
-};
-
 int CvTraitInfo::getNumImprovementUpgradeModifierTypes() const
 {
 	return (int)m_aImprovementUpgradeModifierTypes.size();
@@ -22437,65 +22385,63 @@ BuildingModifier CvTraitInfo::getBuildingProductionModifier(int iBuilding) const
 	return m_aBuildingProductionModifiers[iBuilding];
 }
 
-#ifdef PURE_TRAITS_FILTER_2
+namespace PureTraits
+{
+	namespace Predicate
+	{
+		bool anyValue()
+		{
+			return true;
+		}
+		template <typename Pair_t>
+		bool isPositiveValue(const Pair_t& pair)
+		{
+			return pair.second > 0;
+		}
+		template <typename Pair_t>
+		bool isNegativeValue(const Pair_t& pair)
+		{
+			return pair.second < 0;
+		}
+	}
+
+	template <typename T1, typename T2>
+	bst::function<bool(const std::pair<T1, T2>&)> getFilterMapPredicate(bool bNegativeTrait)
+	{
+		if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
+			return bind(Predicate::anyValue);
+
+		if (bNegativeTrait)
+			return bind(Predicate::isNegativeValue<std::pair<T1, T2> >, _1);
+		else
+			return bind(Predicate::isPositiveValue<std::pair<T1, T2> >, _1);
+	}
+};
+
 const IDValueMap<TechTypes>::filtered CvTraitInfo::getTechResearchModifiers() const
 {
-	return PureTraits::filter(m_aTechResearchModifiers, m_bNegativeTrait);
+	return filter(m_aTechResearchModifiers, PureTraits::getFilterMapPredicate<TechTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<TechTypes>::filtered CvTraitInfo::getTechResearchModifiers() const
-{
-	return filter(m_aTechResearchModifiers, PureTraits::getPredicate<std::pair<TechTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<SpecialBuildingTypes>::filtered CvTraitInfo::getSpecialBuildingProductionModifiers() const
 {
-	return PureTraits::filter(m_aSpecialBuildingProductionModifiers, m_bNegativeTrait);
+	return filter(m_aSpecialBuildingProductionModifiers, PureTraits::getFilterMapPredicate<SpecialBuildingTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<SpecialBuildingTypes>::filtered CvTraitInfo::getSpecialBuildingProductionModifiers() const
-{
-	return filter(m_aSpecialBuildingProductionModifiers, PureTraits::getPredicate<std::pair<SpecialBuildingTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<BuildingTypes>::filtered CvTraitInfo::getBuildingHappinessModifiers() const
 {
-	return PureTraits::filter(m_aBuildingHappinessModifiers, m_bNegativeTrait);
+	return filter(m_aBuildingHappinessModifiers, PureTraits::getFilterMapPredicate<BuildingTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<BuildingTypes>::filtered CvTraitInfo::getBuildingHappinessModifiers() const
-{
-	return filter(m_aBuildingHappinessModifiers, PureTraits::getPredicate<std::pair<BuildingTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<SpecialUnitTypes>::filtered CvTraitInfo::getSpecialUnitProductionModifiers() const
 {
-	return PureTraits::filter(m_aSpecialUnitProductionModifiers, m_bNegativeTrait);
+	return filter(m_aSpecialUnitProductionModifiers, PureTraits::getFilterMapPredicate<SpecialUnitTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<SpecialUnitTypes>::filtered CvTraitInfo::getSpecialUnitProductionModifiers() const
-{
-	return filter(m_aSpecialUnitProductionModifiers, PureTraits::getPredicate<std::pair<SpecialUnitTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<UnitTypes>::filtered CvTraitInfo::getUnitProductionModifiers() const
 {
-	return PureTraits::filter(m_aUnitProductionModifiers, m_bNegativeTrait);
+	return filter(m_aUnitProductionModifiers, PureTraits::getFilterMapPredicate<UnitTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<UnitTypes>::filtered CvTraitInfo::getUnitProductionModifiers() const
-{
-	return filter(m_aUnitProductionModifiers, PureTraits::getPredicate<std::pair<UnitTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
 int CvTraitInfo::getNumCivicOptionNoUpkeepTypes() const
 {
@@ -22522,41 +22468,20 @@ CivicOptionTypeBool CvTraitInfo::isCivicOptionNoUpkeepType(int iCivicOption) con
 	return m_aCivicOptionNoUpkeepTypes[iCivicOption];
 }
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatFreeExperience() const
 {
-	return PureTraits::filter(m_aUnitCombatFreeExperiences, m_bNegativeTrait);
+	return filter(m_aUnitCombatFreeExperiences, PureTraits::getFilterMapPredicate<UnitCombatTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatFreeExperience() const
-{
-	return filter(m_aUnitCombatFreeExperiences, PureTraits::getPredicate<std::pair<UnitCombatTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatProductionModifiers() const
 {
-	return PureTraits::filter(m_aUnitCombatProductionModifiers, m_bNegativeTrait);
+	return filter(m_aUnitCombatProductionModifiers, PureTraits::getFilterMapPredicate<UnitCombatTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatProductionModifiers() const
-{
-	return filter(m_aUnitCombatProductionModifiers, PureTraits::getPredicate<std::pair<UnitCombatTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
-#ifdef PURE_TRAITS_FILTER_2
 const IDValueMap<BonusTypes>::filtered CvTraitInfo::getBonusHappinessChanges() const
 {
-	return PureTraits::filter(m_aBonusHappinessChanges, m_bNegativeTrait);
+	return filter(m_aBonusHappinessChanges, PureTraits::getFilterMapPredicate<BonusTypes, int>(m_bNegativeTrait));
 }
-#else
-const IDValueMap<BonusTypes>::filtered CvTraitInfo::getBonusHappinessChanges() const
-{
-	return filter(m_aBonusHappinessChanges, PureTraits::getPredicate<std::pair<BonusTypes, int> >(m_bNegativeTrait));
-}
-#endif
 
 void CvTraitInfo::getDataMembers(CvInfoUtil& util)
 {
