@@ -7424,18 +7424,12 @@ int CvPlayer::getProductionModifier(UnitTypes eUnit) const
 		{
 			const CvTraitInfo& kTrait = GC.getTraitInfo((TraitTypes)iI);
 
-			for (int j = 0; j < kTrait.getNumUnitProductionModifiers(); j++)
-			{
-				if ((UnitTypes)kTrait.getUnitProductionModifier(j).eUnit == eUnit)
-				{
-					iMultiplier += kTrait.getUnitProductionModifier(j).iModifier;
-					break;
-				}
-			}
-			const SpecialUnitTypes eSpecialUnit = GC.getUnitInfo(eUnit).getSpecialUnitType()
+			iMultiplier += algo::map::getKeyValue(kTrait.getUnitProductionModifiers(), eUnit);
+
+			const SpecialUnitTypes eSpecialUnit = (SpecialUnitTypes)GC.getUnitInfo(eUnit).getSpecialUnitType();
 			if (eSpecialUnit != NO_SPECIALUNIT)
 			{
-				iMultiplier += PureTraits::filter(kTrait, kTrait.getSpecialUnitProductionModifiers().getValue(eSpecialUnit));
+				iMultiplier += algo::map::getKeyValue(kTrait.getSpecialUnitProductionModifiers(), eSpecialUnit);
 			}
 		}
 	}
@@ -7463,13 +7457,7 @@ int CvPlayer::getProductionModifier(BuildingTypes eBuilding) const
 
 			if (eSpecialBuilding != NO_SPECIALBUILDING)
 			{
-				foreach_(const SpecialBuildingModifier& pair, PureTraits::filter(kTrait, kTrait.getSpecialBuildingProductionModifiers()))
-				{
-					if (pair.first == eSpecialBuilding)
-					{
-						iMultiplier += pair.second;
-					}
-				}
+				algo::map::getKeyValue(kTrait.getSpecialBuildingProductionModifiers(), eSpecialBuilding);
 			}
 		}
 	}
@@ -28643,7 +28631,7 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeCivilizationHealth(iChange*kTrait.getHealth());
 	changeExtraHappiness(iChange*kTrait.getHappiness());
 
-	foreach_(const BuildingModifier2& pair, PureTraits::filter(kTrait, kTrait.getBuildingHappinessModifiers()))
+	foreach_(const BuildingModifier2& pair, kTrait.getBuildingHappinessModifiers())
 	{
 		changeExtraBuildingHappiness(pair.first, iChange * pair.second);
 	}
@@ -28867,17 +28855,17 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		}
 	}
 
-	foreach_(const TechModifier& pair, PureTraits::filter(kTrait, kTrait.getTechResearchModifiers()))
+	foreach_(const TechModifier& pair, kTrait.getTechResearchModifiers())
 	{
 		changeNationalTechResearchModifier(pair.first, pair.second);
 	}
 
-	foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatFreeExperience()))
+	foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatFreeExperience())
 	{
 		changeUnitCombatFreeExperience(pair.first, iChange * pair.second);
 	}
 
-	foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatProductionModifiers()))
+	foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
 	{
 		changeUnitCombatProductionModifier(pair.first, iChange * pair.second);
 	}

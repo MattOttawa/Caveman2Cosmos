@@ -10687,7 +10687,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// Extra Happiness by Bonuses
-		foreach_(const BonusModifier2& pair, PureTraits::filter(kTrait, kTrait.getBonusHappinessChanges()))
+		foreach_(const BonusModifier2& pair, kTrait.getBonusHappinessChanges())
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -10697,7 +10697,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const BonusModifier2& pair, PureTraits::filter(kTrait, kTrait.getBonusHappinessChanges()))
+			foreach_(const BonusModifier2& pair, kTrait.getBonusHappinessChanges())
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
@@ -11212,7 +11212,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// Free Experience by Unit Combat
-		foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatFreeExperience()))
+		foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatFreeExperience())
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -11222,7 +11222,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatFreeExperience()))
+			foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatFreeExperience())
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
@@ -11294,31 +11294,21 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		// Unit Class Production Mods
 		iLast = 0;
-		for (iI = 0; iI < GC.getNumUnitInfos(); ++iI)
+		foreach_(const UnitModifier2& pair, kTrait.getUnitProductionModifiers())
 		{
-			if (!isWorldUnit((UnitTypes)iI))
+			if (!isWorldUnit(pair.first))
 			{
-				for (int j = 0; j < kTrait.getNumUnitProductionModifiers(); j++)
-				{
-					if ((UnitTypes)kTrait.getUnitProductionModifier(j).eUnit == (UnitTypes)iI)
-					{
-						if (kTrait.getUnitProductionModifier(j).iModifier != 0)
-						{
-							szText = gDLL->getText("TXT_KEY_TRAITHELP_PRODUCTION_MODIFIER", kTrait.getUnitProductionModifier(j).iModifier);
+				szText = gDLL->getText("TXT_KEY_TRAITHELP_PRODUCTION_MODIFIER", pair.second);
 
-							CvWString szUnit;
-
-							szUnit.Format(L"<link=%s>%s</link>", CvWString(GC.getUnitInfo((UnitTypes)iI).getType()).GetCString(), GC.getUnitInfo((UnitTypes)iI).getDescription());
-							setListHelp(szHelpString, szText.GetCString(), szUnit, L", ", (kTrait.getUnitProductionModifier(j).iModifier != iLast));
-							iLast = kTrait.getUnitProductionModifier(j).iModifier;
-						}
-					}
-				}
+				CvWString szUnit;
+				szUnit.Format(L"<link=%s>%s</link>", CvWString(GC.getUnitInfo(pair.first).getType()).c_str(), GC.getUnitInfo(pair.first).getDescription());
+				setListHelp(szHelpString, szText.c_str(), szUnit, L", ", (pair.second != iLast));
+				iLast = pair.second;
 			}
 		}
 		// Increase SpecialUnit Production Speeds
 		iLast = 0;
-		foreach_(const SpecialUnitModifier& pair, PureTraits::filter(kTrait, kTrait.getSpecialUnitProductionModifiers()))
+		foreach_(const SpecialUnitModifier& pair, kTrait.getSpecialUnitProductionModifiers())
 		{
 			szText = gDLL->getText("TXT_KEY_TRAITHELP_PRODUCTION_MODIFIER", pair.second);
 			setListHelp(szHelpString, szText.c_str(), GC.getSpecialUnitInfo(pair.first).getDescription(), L", ", (pair.second != iLast));
@@ -11333,7 +11323,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		}
 
 		// unit production modifier by Unit Combat
-		foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatProductionModifiers()))
+		foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -11343,7 +11333,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const UnitCombatModifier2& pair, PureTraits::filter(kTrait, kTrait.getUnitCombatProductionModifiers()))
+			foreach_(const UnitCombatModifier2& pair, kTrait.getUnitCombatProductionModifiers())
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
@@ -11891,7 +11881,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		//RESEARCH MODIFIERS
 				// Tech Research Modifier
-		foreach_(const TechModifier& pair, PureTraits::filter(kTrait, kTrait.getTechResearchModifiers()))
+		foreach_(const TechModifier& pair, kTrait.getTechResearchModifiers())
 		{
 			if (!algo::container_contains(iIterationValues, pair.second))
 			{
@@ -11901,7 +11891,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 		foreach_(const int itrValue, iIterationValues)
 		{
 			bFirst = true;
-			foreach_(const TechModifier& pair, PureTraits::filter(kTrait, kTrait.getTechResearchModifiers()))
+			foreach_(const TechModifier& pair, kTrait.getTechResearchModifiers())
 			{
 				iCurrentModifier = pair.second;
 				if (iCurrentModifier == itrValue)
@@ -11931,7 +11921,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		// SpecialBuildings
 		iLast = 0;
-		foreach_(const SpecialBuildingModifier& pair, PureTraits::filter(kTrait, kTrait.getSpecialBuildingProductionModifiers()))
+		foreach_(const SpecialBuildingModifier& pair, kTrait.getSpecialBuildingProductionModifiers())
 		{
 			//if (pair.iModifier == 100)
 			//{
@@ -11980,7 +11970,7 @@ void CvGameTextMgr::parseTraits(CvWStringBuffer &szHelpString, TraitTypes eTrait
 
 		// Buildings
 		iLast = 0;
-		foreach_(const BuildingModifier2& pair, PureTraits::filter(kTrait, kTrait.getBuildingHappinessModifiers()))
+		foreach_(const BuildingModifier2& pair, kTrait.getBuildingHappinessModifiers())
 		{
 			const BuildingTypes eLoopBuilding = pair.first;
 
@@ -20058,26 +20048,20 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 
 		//Modified Production
 			//From Trait
-		for (int i = 0; i < GC.getNumTraitInfos(); ++i)
+		foreach_(const CvTraitInfo* pTrait, GC.getTraitInfos())
 		{
-			TraitTypes eTrait = ((TraitTypes)i);
-			for (int j = 0; j < GC.getTraitInfo(eTrait).getNumUnitProductionModifiers(); j++)
+			const int value = algo::map::getKeyValue(pTrait->getUnitProductionModifiers(), eUnit);
+			if (value != 0)
 			{
-				if ((UnitTypes)GC.getTraitInfo(eTrait).getUnitProductionModifier(j).eUnit == eUnit)
+				if (value == 100)
 				{
-					if (GC.getTraitInfo(eTrait).getUnitProductionModifier(j).iModifier != 0)
-					{
-						if (GC.getTraitInfo(eTrait).getUnitProductionModifier(j).iModifier == 100)
-						{
-							szBuffer.append(NEWLINE);
-							szBuffer.append(gDLL->getText("TXT_KEY_DOUBLE_SPEED_TRAIT", GC.getTraitInfo(eTrait).getTextKeyWide()));
-						}
-						else
-						{
-							szBuffer.append(NEWLINE);
-							szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_MODIFIER_TRAIT", GC.getTraitInfo(eTrait).getUnitProductionModifier(j).iModifier, GC.getTraitInfo(eTrait).getTextKeyWide()));
-						}
-					}
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_DOUBLE_SPEED_TRAIT", pTrait->getTextKeyWide()));
+				}
+				else
+				{
+					szBuffer.append(NEWLINE);
+					szBuffer.append(gDLL->getText("TXT_KEY_PRODUCTION_MODIFIER_TRAIT", value, pTrait->getTextKeyWide()));
 				}
 			}
 		}
@@ -23423,7 +23407,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 		{
 			foreach_(const CvTraitInfo* pTrait, GC.getTraitInfos())
 			{
-				foreach_(const BuildingModifier2& pair, PureTraits::filter(*pTrait, pTrait->getBuildingHappinessModifiers()))
+				foreach_(const BuildingModifier2& pair, pTrait->getBuildingHappinessModifiers())
 				{
 					if (pair.first == eBuilding)
 					{

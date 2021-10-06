@@ -177,7 +177,7 @@ void CyInfoPythonInterface3()
 		.def("getCommerceChange", &CvTraitInfo::getCommerceChange, "int (int i)")
 		.def("getCommerceModifier", &CvTraitInfo::getCommerceModifier, "int (int i)")
 		.def("getBuildingProductionModifier", &CvTraitInfo::getBuildingProductionModifier)
-		.def("getBuildingHappinessModifiers", &CvTraitInfo::getBuildingHappinessModifiers, python::return_value_policy<python::reference_existing_object>())
+		.def("getBuildingHappinessModifiers", &CvTraitInfo::getBuildingHappinessModifiers)
 
 		.def("getImprovementYieldChange", &CvTraitInfo::getImprovementYieldChange, "int (int i, int j)")
 	;

@@ -227,6 +227,45 @@ void publishIDValueMapPythonInterface()
 	publishPythonIteratorInterface<IDValueMap_t::python_iterator>();
 }
 
+namespace algo
+{
+	namespace map
+	{
+		// FUNCTION TEMPLATE getKeyValue
+		// find the corresponding value for key
+		template <typename Map_t>
+		typename Map_t::value_type::second_type getKeyValue(const Map_t& map, typename Map_t::value_type::first_type key)
+		{
+			foreach_(const typename Map_t::value_type& pair, map)
+				if (pair.first == key)
+					return pair.second;
+			return 0;
+		}
+
+		// FUNCTION TEMPLATE SPECIALIATION getKeyValue
+		// filtered_range specialzation
+		// find the corresponding value for key
+		template <typename Map_t>
+		typename Map_t::value_type::second_type getKeyValue(const typename Map_t::filtered& map, typename Map_t::value_type::first_type key)
+		{
+			foreach_(const typename Map_t::value_type& pair, map)
+				if (pair.first == key)
+					return pair.second;
+			return 0;
+		}
+
+		// FUNCTION TEMPLATE SPECIALIATION getKeyValue
+		// std::map specialzation
+		// find the corresponding value for key
+		template <typename Key_, typename Value_>
+		Value_ getKeyValue(const std::map<Key_, Value_>& map, Key_ key)
+		{
+			std::map<Key_, Value_>::const_iterator itr = map.find(key);
+			return itr != map.end() ? itr->second : 0;
+		}
+	}
+}
+
 typedef std::pair<BonusTypes, int> BonusModifier2;
 typedef std::pair<BuildingTypes, int> BuildingModifier2;
 typedef std::pair<SpecialBuildingTypes, int> SpecialBuildingModifier;

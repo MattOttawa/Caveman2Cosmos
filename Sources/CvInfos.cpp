@@ -19942,11 +19942,6 @@ CvTraitInfo::~CvTraitInfo()
 		GC.removeDelayedResolution((int*)&(m_aBuildingProductionModifiers[i]));
 	}
 
-	for (int i=0; i<(int)m_aUnitProductionModifiers.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_aUnitProductionModifiers[i]));
-	}
-
 	for (int i=0; i<(int)m_aCivicOptionNoUpkeepTypes.size(); i++)
 	{
 		GC.removeDelayedResolution((int*)&(m_aCivicOptionNoUpkeepTypes[i]));
@@ -22252,7 +22247,58 @@ int* CvTraitInfo::getGoldenAgeCommerceChangesArray() const
 	return m_piGoldenAgeCommerceChanges;
 }
 
-// int vector utilizing struct with delayed resolution
+namespace PureTraits
+{
+	namespace Predicate
+	{
+		bool anyValue()
+		{
+			return true;
+		}
+		template <typename Pair_t>
+		bool isPositiveValue(const Pair_t& pair)
+		{
+			return pair.second > 0;
+		}
+		template <typename Pair_t>
+		bool isNegativeValue(const Pair_t& pair)
+		{
+			return pair.second < 0;
+		}
+	}
+
+	template <typename Pair_t>
+	bst::function<bool(const Pair_t&)> getPredicate(bool bNegativeTrait)
+	{
+		if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
+			return bind(Predicate::anyValue);
+
+		if (bNegativeTrait)
+			return bind(Predicate::isNegativeValue<Pair_t>, _1);
+		else
+			return bind(Predicate::isPositiveValue<Pair_t>, _1);
+	}
+
+#ifdef PURE_TRAITS_FILTER_2
+	template <typename Range_t>
+	const typename Range_t::filtered filter(const Range_t& rng, bool bNegativeTrait)
+	{
+		if (!GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
+			return bst::adaptors::filter(rng, bind(Predicate::anyValue));
+
+		if (bNegativeTrait)
+			return bst::adaptors::filter(rng, bind(Predicate::isNegativeValue<const typename Range_t::value_type>, _1));
+		else
+			return bst::adaptors::filter(rng, bind(Predicate::isPositiveValue<const typename Range_t::value_type>, _1));
+	}
+#endif
+
+	int adjustValue(const CvTraitInfo& kTrait, int value)
+	{
+		return !GC.getGame().isOption(GAMEOPTION_PURE_TRAITS) || (value < 0 == kTrait.isNegativeTrait()) ? value : 0;
+	}
+};
+
 int CvTraitInfo::getNumImprovementUpgradeModifierTypes() const
 {
 	return (int)m_aImprovementUpgradeModifierTypes.size();
@@ -22391,50 +22437,65 @@ BuildingModifier CvTraitInfo::getBuildingProductionModifier(int iBuilding) const
 	return m_aBuildingProductionModifiers[iBuilding];
 }
 
-const IDValueMap<TechTypes>& CvTraitInfo::getTechResearchModifiers() const
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<TechTypes>::filtered CvTraitInfo::getTechResearchModifiers() const
 {
-	return m_aTechResearchModifiers;
+	return PureTraits::filter(m_aTechResearchModifiers, m_bNegativeTrait);
 }
-
-const IDValueMap<SpecialBuildingTypes>& CvTraitInfo::getSpecialBuildingProductionModifiers() const
+#else
+const IDValueMap<TechTypes>::filtered CvTraitInfo::getTechResearchModifiers() const
 {
-	return m_aSpecialBuildingProductionModifiers;
+	return filter(m_aTechResearchModifiers, PureTraits::getPredicate<std::pair<TechTypes, int> >(m_bNegativeTrait));
 }
+#endif
 
-const IDValueMap<BuildingTypes>& CvTraitInfo::getBuildingHappinessModifiers() const
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<SpecialBuildingTypes>::filtered CvTraitInfo::getSpecialBuildingProductionModifiers() const
 {
-	return m_aBuildingHappinessModifiers;
+	return PureTraits::filter(m_aSpecialBuildingProductionModifiers, m_bNegativeTrait);
 }
-
-int CvTraitInfo::getNumUnitProductionModifiers() const
+#else
+const IDValueMap<SpecialBuildingTypes>::filtered CvTraitInfo::getSpecialBuildingProductionModifiers() const
 {
-	return (int)m_aUnitProductionModifiers.size();
+	return filter(m_aSpecialBuildingProductionModifiers, PureTraits::getPredicate<std::pair<SpecialBuildingTypes, int> >(m_bNegativeTrait));
 }
+#endif
 
-UnitModifier CvTraitInfo::getUnitProductionModifier(int iUnit) const
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<BuildingTypes>::filtered CvTraitInfo::getBuildingHappinessModifiers() const
 {
-	FASSERT_BOUNDS(0, getNumUnitProductionModifiers(), iUnit)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		UnitModifier kMod = m_aUnitProductionModifiers[iUnit];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aUnitProductionModifiers[iUnit];
+	return PureTraits::filter(m_aBuildingHappinessModifiers, m_bNegativeTrait);
 }
-
-const IDValueMap<SpecialUnitTypes>& CvTraitInfo::getSpecialUnitProductionModifiers() const
+#else
+const IDValueMap<BuildingTypes>::filtered CvTraitInfo::getBuildingHappinessModifiers() const
 {
-	return m_aSpecialUnitProductionModifiers;
+	return filter(m_aBuildingHappinessModifiers, PureTraits::getPredicate<std::pair<BuildingTypes, int> >(m_bNegativeTrait));
 }
+#endif
+
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<SpecialUnitTypes>::filtered CvTraitInfo::getSpecialUnitProductionModifiers() const
+{
+	return PureTraits::filter(m_aSpecialUnitProductionModifiers, m_bNegativeTrait);
+}
+#else
+const IDValueMap<SpecialUnitTypes>::filtered CvTraitInfo::getSpecialUnitProductionModifiers() const
+{
+	return filter(m_aSpecialUnitProductionModifiers, PureTraits::getPredicate<std::pair<SpecialUnitTypes, int> >(m_bNegativeTrait));
+}
+#endif
+
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<UnitTypes>::filtered CvTraitInfo::getUnitProductionModifiers() const
+{
+	return PureTraits::filter(m_aUnitProductionModifiers, m_bNegativeTrait);
+}
+#else
+const IDValueMap<UnitTypes>::filtered CvTraitInfo::getUnitProductionModifiers() const
+{
+	return filter(m_aUnitProductionModifiers, PureTraits::getPredicate<std::pair<UnitTypes, int> >(m_bNegativeTrait));
+}
+#endif
 
 int CvTraitInfo::getNumCivicOptionNoUpkeepTypes() const
 {
@@ -22461,20 +22522,41 @@ CivicOptionTypeBool CvTraitInfo::isCivicOptionNoUpkeepType(int iCivicOption) con
 	return m_aCivicOptionNoUpkeepTypes[iCivicOption];
 }
 
-const IDValueMap<UnitCombatTypes>& CvTraitInfo::getUnitCombatFreeExperience() const
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatFreeExperience() const
 {
-	return m_aUnitCombatFreeExperiences;
+	return PureTraits::filter(m_aUnitCombatFreeExperiences, m_bNegativeTrait);
 }
+#else
+const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatFreeExperience() const
+{
+	return filter(m_aUnitCombatFreeExperiences, PureTraits::getPredicate<std::pair<UnitCombatTypes, int> >(m_bNegativeTrait));
+}
+#endif
 
-const IDValueMap<UnitCombatTypes>& CvTraitInfo::getUnitCombatProductionModifiers() const
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatProductionModifiers() const
 {
-	return m_aUnitCombatProductionModifiers;
+	return PureTraits::filter(m_aUnitCombatProductionModifiers, m_bNegativeTrait);
 }
+#else
+const IDValueMap<UnitCombatTypes>::filtered CvTraitInfo::getUnitCombatProductionModifiers() const
+{
+	return filter(m_aUnitCombatProductionModifiers, PureTraits::getPredicate<std::pair<UnitCombatTypes, int> >(m_bNegativeTrait));
+}
+#endif
 
-const IDValueMap<BonusTypes>& CvTraitInfo::getBonusHappinessChanges() const
+#ifdef PURE_TRAITS_FILTER_2
+const IDValueMap<BonusTypes>::filtered CvTraitInfo::getBonusHappinessChanges() const
 {
-	return m_aBonusHappinessChanges;
+	return PureTraits::filter(m_aBonusHappinessChanges, m_bNegativeTrait);
 }
+#else
+const IDValueMap<BonusTypes>::filtered CvTraitInfo::getBonusHappinessChanges() const
+{
+	return filter(m_aBonusHappinessChanges, PureTraits::getPredicate<std::pair<BonusTypes, int> >(m_bNegativeTrait));
+}
+#endif
 
 void CvTraitInfo::getDataMembers(CvInfoUtil& util)
 {
@@ -22482,6 +22564,7 @@ void CvTraitInfo::getDataMembers(CvInfoUtil& util)
 		.addDelayedResolution(m_aSpecialUnitProductionModifiers, L"SpecialUnitProductionModifierTypes")
 		.addDelayedResolution(m_aSpecialBuildingProductionModifiers, L"SpecialBuildingProductionModifierTypes")
 		.addDelayedResolution(m_aBuildingHappinessModifiers, L"BuildingHappinessModifierTypes")
+		.addDelayedResolution(m_aUnitProductionModifiers, L"UnitProductionModifiers")
 		.add(m_aTechResearchModifiers, L"TechResearchModifiers")
 		.add(m_aBonusHappinessChanges, L"BonusHappinessChanges")
 		.add(m_aUnitCombatProductionModifiers, L"UnitCombatProductionModifiers")
@@ -23121,30 +23204,6 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 					GC.addDelayedResolution((int*)&(m_aBuildingProductionModifiers[i].eBuilding), szTextVal);
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"BuildingProductionModifierType"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"UnitProductionModifierTypes"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"UnitProductionModifierType" );
-		m_aUnitProductionModifiers.resize(iNum); // Important to keep the delayed resolution pointers correct
-
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"UnitProductionModifierType"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"UnitType");
-					pXML->GetChildXmlValByName(&(m_aUnitProductionModifiers[i].iModifier), L"iUnitProductionModifier");
-					GC.addDelayedResolution((int*)&(m_aUnitProductionModifiers[i].eUnit), szTextVal);
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"UnitProductionModifierType"));
 			}
 			pXML->MoveToXmlParent();
 		}
@@ -24182,13 +24241,6 @@ void CvTraitInfo::getCheckSum(uint32_t& iSum) const
 	{
 		CheckSum(iSum, m_aBuildingProductionModifiers[i].eBuilding);
 		CheckSum(iSum, m_aBuildingProductionModifiers[i].iModifier);
-	}
-
-	iNumElements = m_aUnitProductionModifiers.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aUnitProductionModifiers[i].eUnit);
-		CheckSum(iSum, m_aUnitProductionModifiers[i].iModifier);
 	}
 
 	iNumElements = m_aCivicOptionNoUpkeepTypes.size();
