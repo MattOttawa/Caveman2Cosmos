@@ -233,20 +233,25 @@ namespace algo
 	{
 		// FUNCTION TEMPLATE getKeyValue
 		// find the corresponding value for key
-		template <typename Map_t, typename Range_t = Map_t>
-		typename Map_t::value_type::second_type getKeyValue(const Range_t& rng, typename Map_t::value_type::first_type key)
+		template <typename Map_t>
+		typename Map_t::value_type::second_type getKeyValue(const Map_t& map, typename Map_t::value_type::first_type key)
 		{
-			foreach_(const typename Map_t::value_type& pair, rng)
+			foreach_(const typename Map_t::value_type& pair, map)
 				if (pair.first == key)
 					return pair.second;
 			return 0;
 		}
 
-		// helper for boost::filtered_range to deduce the template parameters correctly
+		// FUNCTION TEMPLATE getKeyValue
+		// for boost::filtered_range
+		// find the corresponding value for key
 		template <typename Map_t>
-		typename Map_t::value_type::second_type getKeyValue(const typename Map_t::filtered& rng, typename Map_t::value_type::first_type key)
+		typename Map_t::value_type::second_type getKeyValue(const typename Map_t::filtered& map, typename Map_t::value_type::first_type key)
 		{
-			return getKeyValue<Map_t, typename Map_t::filtered>(rng, key);
+			foreach_(const typename Map_t::value_type& pair, map)
+				if (pair.first == key)
+					return pair.second;
+			return 0;
 		}
 	}
 }
