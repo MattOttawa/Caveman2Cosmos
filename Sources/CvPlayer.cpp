@@ -28765,28 +28765,15 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 	changeAllReligionsActiveCount((kTrait.isAllReligionsActive())? iChange : 0);
 	changeAllReligionsActiveCount((kTrait.isBansNonStateReligions())? -iChange : 0);
 	changeFreedomFighterCount(kTrait.isFreedomFighter() ? iChange : 0);
-	for (int iI = 0; iI < kTrait.getNumImprovementUpgradeModifierTypes(); iI++)
+
+	foreach_(const ImprovementModifier& pair, kTrait.getImprovementUpgradeModifiers())
 	{
-		if ((ImprovementTypes)kTrait.getImprovementUpgradeModifier(iI).eImprovement != NO_IMPROVEMENT)
-		{
-			ImprovementTypes eImprovement = ((ImprovementTypes)kTrait.getImprovementUpgradeModifier(iI).eImprovement);
-			if(kTrait.getImprovementUpgradeModifier(iI).iModifier != 0)
-			{
-				changeImprovementUpgradeRateModifierSpecific(eImprovement, iChange*kTrait.getImprovementUpgradeModifier(iI).iModifier);
-			}
-		}
+		changeImprovementUpgradeRateModifierSpecific(pair.first, iChange * pair.second);
 	}
 
-	for (int iI = 0; iI < kTrait.getNumBuildWorkerSpeedModifierTypes(); iI++)
+	foreach_(const BuildModifier2& pair, kTrait.getBuildWorkerSpeedModifiers())
 	{
-		if ((BuildTypes)kTrait.getBuildWorkerSpeedModifier(iI).eBuild != NO_BUILD)
-		{
-			BuildTypes eBuild = ((BuildTypes)kTrait.getBuildWorkerSpeedModifier(iI).eBuild);
-			if (kTrait.getBuildWorkerSpeedModifier(iI).iModifier != 0)
-			{
-				changeBuildWorkerSpeedModifierSpecific(eBuild, iChange*kTrait.getBuildWorkerSpeedModifier(iI).iModifier);
-			}
-		}
+		changeBuildWorkerSpeedModifierSpecific(pair.first, iChange * pair.second);
 	}
 
 	for (int iI = 0; iI < GC.getNumSpecialistInfos(); iI++)
@@ -28800,10 +28787,11 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 			changeExtraSpecialistCommerce(((SpecialistTypes)iI), ((CommerceTypes)iJ), (kTrait.getSpecialistCommerceChange(iI, iJ) * iChange));
 		}
 
-		if ((SpecialistTypes)kTrait.getEraAdvanceFreeSpecialistType() == ((SpecialistTypes)iI))
-		{
-			changeEraAdvanceFreeSpecialistCount((SpecialistTypes)kTrait.getEraAdvanceFreeSpecialistType(), iChange);
-		}
+	}
+
+	if (kTrait.getEraAdvanceFreeSpecialistType() != NO_SPECIALIST)
+	{
+		changeEraAdvanceFreeSpecialistCount((SpecialistTypes)kTrait.getEraAdvanceFreeSpecialistType(), iChange);
 	}
 
 	for (int iI = 0; iI < NUM_YIELD_TYPES; iI++)
@@ -28833,26 +28821,20 @@ void CvPlayer::processTrait(TraitTypes eTrait, int iChange)
 		changeNationalGreatPeopleUnitRate(eGreatPeopleUnit, kTrait.getGreatPeopleRateChange() * iChange);
 	}
 
-	UnitTypes eGreatPeopleUnit = (UnitTypes)kTrait.getGoldenAgeonBirthofGreatPeopleType();
+	const UnitTypes eGreatPeopleUnit = (UnitTypes)kTrait.getGoldenAgeonBirthofGreatPeopleType();
 	if (eGreatPeopleUnit != NO_UNIT)
 	{
 		changeGoldenAgeOnBirthOfGreatPersonCount(eGreatPeopleUnit, iChange);
 	}
 
-	for (int iI = 0; iI < kTrait.getNumDomainFreeExperiences(); iI++)
+	foreach_(const DomainModifier2& pair, kTrait.getDomainFreeExperience())
 	{
-		if (kTrait.getDomainFreeExperience(iI).iModifier != 0)
-		{
-			changeNationalDomainFreeExperience((DomainTypes)kTrait.getDomainFreeExperience(iI).eDomain, kTrait.getDomainFreeExperience(iI).iModifier);
-		}
+		changeNationalDomainFreeExperience(pair.first, pair.second);
 	}
 
-	for (int iI = 0; iI < kTrait.getNumDomainProductionModifiers(); iI++)
+	foreach_(const DomainModifier2& pair, kTrait.getDomainProductionModifiers())
 	{
-		if (kTrait.getDomainProductionModifier(iI).iModifier != 0)
-		{
-			changeNationalDomainProductionModifier((DomainTypes)kTrait.getDomainProductionModifier(iI).eDomain, kTrait.getDomainProductionModifier(iI).iModifier);
-		}
+		changeNationalDomainProductionModifier(pair.first, pair.second);
 	}
 
 	foreach_(const TechModifier& pair, kTrait.getTechResearchModifiers())

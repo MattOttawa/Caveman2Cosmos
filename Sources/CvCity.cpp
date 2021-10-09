@@ -5227,7 +5227,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 			}
 		}
 	}
-	foreach_(const ImprovementModifier2& pair, kBuilding.getImprovementFreeSpecialists())
+	foreach_(const ImprovementModifier& pair, kBuilding.getImprovementFreeSpecialists())
 	{
 		changeImprovementFreeSpecialists(pair.first, pair.second * iChange);
 	}

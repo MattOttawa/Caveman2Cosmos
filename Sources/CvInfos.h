@@ -5737,21 +5737,14 @@ public:
 
 	// int vector utilizing struct with delayed resolution
 
-	int getNumImprovementUpgradeModifierTypes() const;
-	ImprovementModifier getImprovementUpgradeModifier(int iImprovement) const;
-
-	int getNumBuildWorkerSpeedModifierTypes() const;
-	BuildModifier getBuildWorkerSpeedModifier(int iBuild) const;
+	const IDValueMap<ImprovementTypes, int>::filtered getImprovementUpgradeModifiers() const;
+	const IDValueMap<BuildTypes, int>::filtered getBuildWorkerSpeedModifiers() const;
 
 	int getNumDisallowedTraitTypes() const;
 	DisallowedTraitType isDisallowedTraitType(int iTrait) const;
 
-	int getNumDomainFreeExperiences() const;
-	DomainModifier getDomainFreeExperience(int iDomain) const;
-
-	int getNumDomainProductionModifiers() const;
-	DomainModifier getDomainProductionModifier(int iDomain) const;
-
+	const IDValueMap<DomainTypes>::filtered getDomainFreeExperience() const;
+	const IDValueMap<DomainTypes>::filtered getDomainProductionModifiers() const;
 	const IDValueMap<TechTypes>::filtered getTechResearchModifiers() const;
 
 	int getNumBuildingProductionModifiers() const;
@@ -5953,11 +5946,11 @@ private:
 	int* m_piGoldenAgeCommerceChangesFiltered;
 	// bool vector without delayed resolution
 	// int vector utilizing struct with delayed resolution
-	std::vector<ImprovementModifier> m_aImprovementUpgradeModifierTypes;
-	std::vector<BuildModifier> m_aBuildWorkerSpeedModifierTypes;
+	IDValueMap<ImprovementTypes, int> m_aImprovementUpgradeModifierTypes;
+	IDValueMap<BuildTypes, int> m_aBuildWorkerSpeedModifierTypes;
 	std::vector<DisallowedTraitType> m_aDisallowedTraitTypes;
-	std::vector<DomainModifier> m_aDomainFreeExperiences;
-	std::vector<DomainModifier> m_aDomainProductionModifiers;
+	IDValueMap<DomainTypes, int> m_aDomainFreeExperiences;
+	IDValueMap<DomainTypes, int> m_aDomainProductionModifiers;
 	IDValueMap<TechTypes, int> m_aTechResearchModifiers;
 	std::vector<BuildingModifier> m_aBuildingProductionModifiers;
 	IDValueMap<SpecialBuildingTypes, int> m_aSpecialBuildingProductionModifiers;

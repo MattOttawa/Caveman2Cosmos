@@ -19927,11 +19927,6 @@ CvTraitInfo::~CvTraitInfo()
 	SAFE_DELETE_ARRAY2(m_ppaiImprovementYieldChange, GC.getNumImprovementInfos());
 
 //	 int vector utilizing struct with delayed resolution
-	for (int i=0; i<(int)m_aBuildWorkerSpeedModifierTypes.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_aBuildWorkerSpeedModifierTypes[i]));
-	}
-
 	for (int i=0; i<(int)m_aDisallowedTraitTypes.size(); i++)
 	{
 		GC.removeDelayedResolution((int*)&(m_aDisallowedTraitTypes[i]));
@@ -22247,145 +22242,6 @@ int* CvTraitInfo::getGoldenAgeCommerceChangesArray() const
 	return m_piGoldenAgeCommerceChanges;
 }
 
-// int vector utilizing struct with delayed resolution
-int CvTraitInfo::getNumImprovementUpgradeModifierTypes() const
-{
-	return (int)m_aImprovementUpgradeModifierTypes.size();
-}
-
-ImprovementModifier CvTraitInfo::getImprovementUpgradeModifier(int iImprovement) const
-{
-	FASSERT_BOUNDS(0, getNumImprovementUpgradeModifierTypes(), iImprovement)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		ImprovementModifier kMod = m_aImprovementUpgradeModifierTypes[iImprovement];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-
-	return m_aImprovementUpgradeModifierTypes[iImprovement];
-}
-
-int CvTraitInfo::getNumBuildWorkerSpeedModifierTypes() const
-{
-	return (int)m_aBuildWorkerSpeedModifierTypes.size();
-}
-
-BuildModifier CvTraitInfo::getBuildWorkerSpeedModifier(int iBuild) const
-{
-	FASSERT_BOUNDS(0, getNumBuildWorkerSpeedModifierTypes(), iBuild)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		BuildModifier kMod = m_aBuildWorkerSpeedModifierTypes[iBuild];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aBuildWorkerSpeedModifierTypes[iBuild];
-}
-
-int CvTraitInfo::getNumDisallowedTraitTypes() const
-{
-	return (int)m_aDisallowedTraitTypes.size();
-}
-
-DisallowedTraitType CvTraitInfo::isDisallowedTraitType(int iTrait) const
-{
-	FASSERT_BOUNDS(0, getNumDisallowedTraitTypes(), iTrait)
-
-	return m_aDisallowedTraitTypes[iTrait];
-}
-
-int CvTraitInfo::getNumDomainFreeExperiences() const
-{
-	return (int)m_aDomainFreeExperiences.size();
-}
-
-DomainModifier CvTraitInfo::getDomainFreeExperience(int iDomain) const
-{
-	FASSERT_BOUNDS(0, getNumDomainFreeExperiences(), iDomain)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		DomainModifier kMod = m_aDomainFreeExperiences[iDomain];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aDomainFreeExperiences[iDomain];
-}
-
-int CvTraitInfo::getNumDomainProductionModifiers() const
-{
-	return (int)m_aDomainProductionModifiers.size();
-}
-
-DomainModifier CvTraitInfo::getDomainProductionModifier(int iDomain) const
-{
-	FASSERT_BOUNDS(0, getNumDomainProductionModifiers(), iDomain)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		DomainModifier kMod = m_aDomainProductionModifiers[iDomain];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aDomainProductionModifiers[iDomain];
-}
-
-int CvTraitInfo::getNumBuildingProductionModifiers() const
-{
-	return (int)m_aBuildingProductionModifiers.size();
-}
-
-BuildingModifier CvTraitInfo::getBuildingProductionModifier(int iBuilding) const
-{
-	FASSERT_BOUNDS(0, getNumBuildingProductionModifiers(), iBuilding)
-
-	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
-	{
-		BuildingModifier kMod = m_aBuildingProductionModifiers[iBuilding];
-		if (isNegativeTrait() && kMod.iModifier > 0)
-		{
-			kMod.iModifier = 0;
-		}
-		else if (!isNegativeTrait() && kMod.iModifier < 0)
-		{
-			kMod.iModifier = 0;
-		}
-		return kMod;
-	}
-	return m_aBuildingProductionModifiers[iBuilding];
-}
-
 namespace PureTraits
 {
 	namespace
@@ -22418,6 +22274,63 @@ namespace PureTraits
 			return bind(isPositiveValue<T1, T2>, _1);
 	}
 };
+
+const IDValueMap<ImprovementTypes, int>::filtered CvTraitInfo::getImprovementUpgradeModifiers() const
+{
+	return filter(m_aImprovementUpgradeModifierTypes, PureTraits::getPredicate<ImprovementTypes, int>(m_bNegativeTrait));
+}
+
+const IDValueMap<BuildTypes, int>::filtered CvTraitInfo::getBuildWorkerSpeedModifiers() const
+{
+	return filter(m_aBuildWorkerSpeedModifierTypes, PureTraits::getPredicate<BuildTypes, int>(m_bNegativeTrait));
+}
+
+int CvTraitInfo::getNumDisallowedTraitTypes() const
+{
+	return (int)m_aDisallowedTraitTypes.size();
+}
+
+DisallowedTraitType CvTraitInfo::isDisallowedTraitType(int iTrait) const
+{
+	FASSERT_BOUNDS(0, getNumDisallowedTraitTypes(), iTrait)
+
+	return m_aDisallowedTraitTypes[iTrait];
+}
+
+const IDValueMap<DomainTypes, int>::filtered CvTraitInfo::getDomainFreeExperience() const
+{
+	return filter(m_aDomainFreeExperiences, PureTraits::getPredicate<DomainTypes, int>(m_bNegativeTrait));
+}
+
+const IDValueMap<DomainTypes, int>::filtered CvTraitInfo::getDomainProductionModifiers() const
+{
+	return filter(m_aDomainProductionModifiers, PureTraits::getPredicate<DomainTypes, int>(m_bNegativeTrait));
+}
+
+int CvTraitInfo::getNumBuildingProductionModifiers() const
+{
+	return (int)m_aBuildingProductionModifiers.size();
+}
+
+BuildingModifier CvTraitInfo::getBuildingProductionModifier(int iBuilding) const
+{
+	FASSERT_BOUNDS(0, getNumBuildingProductionModifiers(), iBuilding)
+
+	if (GC.getGame().isOption(GAMEOPTION_PURE_TRAITS))
+	{
+		BuildingModifier kMod = m_aBuildingProductionModifiers[iBuilding];
+		if (isNegativeTrait() && kMod.iModifier > 0)
+		{
+			kMod.iModifier = 0;
+		}
+		else if (!isNegativeTrait() && kMod.iModifier < 0)
+		{
+			kMod.iModifier = 0;
+		}
+		return kMod;
+	}
+	return m_aBuildingProductionModifiers[iBuilding];
+}
 
 const IDValueMap<TechTypes>::filtered CvTraitInfo::getTechResearchModifiers() const
 {
@@ -22489,12 +22402,16 @@ void CvTraitInfo::getDataMembers(CvInfoUtil& util)
 	util
 		.addDelayedResolution(m_aSpecialUnitProductionModifiers, L"SpecialUnitProductionModifierTypes")
 		.addDelayedResolution(m_aSpecialBuildingProductionModifiers, L"SpecialBuildingProductionModifierTypes")
+		.addDelayedResolution(m_aBuildWorkerSpeedModifierTypes, L"BuildWorkerSpeedModifierTypes")
 		.addDelayedResolution(m_aBuildingHappinessModifiers, L"BuildingHappinessModifierTypes")
 		.addDelayedResolution(m_aUnitProductionModifiers, L"UnitProductionModifiers")
 		.add(m_aTechResearchModifiers, L"TechResearchModifiers")
 		.add(m_aBonusHappinessChanges, L"BonusHappinessChanges")
 		.add(m_aUnitCombatProductionModifiers, L"UnitCombatProductionModifiers")
 		.add(m_aUnitCombatFreeExperiences, L"UnitCombatFreeExperiences")
+		.add(m_aImprovementUpgradeModifierTypes, L"ImprovementUpgradeModifierTypes")
+		.add(m_aDomainFreeExperiences, L"DomainFreeExperiences")
+		.add(m_aDomainProductionModifiers, L"DomainProductionModifiers")
 	;
 }
 
@@ -22995,54 +22912,6 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 		SAFE_DELETE_ARRAY(m_piGoldenAgeCommerceChanges);
 	}
 
-	// int vector utilizing struct with delayed resolution
-	if(pXML->TryMoveToXmlFirstChild(L"ImprovementUpgradeModifierTypes"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"ImprovementUpgradeModifierType" );
-		m_aImprovementUpgradeModifierTypes.resize(iNum);
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"ImprovementUpgradeModifierType"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"ImprovementType");
-					m_aImprovementUpgradeModifierTypes[i].eImprovement = (ImprovementTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aImprovementUpgradeModifierTypes[i].iModifier), L"iImprovementUpgradeModifier");
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"ImprovementUpgradeModifierType"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"BuildWorkerSpeedModifierTypes"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"BuildWorkerSpeedModifierType" );
-		m_aBuildWorkerSpeedModifierTypes.resize(iNum); // Important to keep the delayed resolution pointers correct
-
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"BuildWorkerSpeedModifierType"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"BuildType");
-					pXML->GetChildXmlValByName(&(m_aBuildWorkerSpeedModifierTypes[i].iModifier), L"iBuildWorkerSpeedModifier");
-					GC.addDelayedResolution((int*)&(m_aBuildWorkerSpeedModifierTypes[i].eBuild), szTextVal);
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"BuildWorkerSpeedModifierType"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
 	if(pXML->TryMoveToXmlFirstChild(L"DisallowedTraitTypes"))
 	{
 		int i = 0;
@@ -23060,52 +22929,6 @@ bool CvTraitInfo::read(CvXMLLoadUtility* pXML)
 					GC.addDelayedResolution((int*)&(m_aDisallowedTraitTypes[i].eTrait), szTextVal);
 					i++;
 				} while(pXML->TryMoveToXmlNextSibling(L"DisallowedTraitType"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"DomainFreeExperiences"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"DomainFreeExperience" );
-		m_aDomainFreeExperiences.resize(iNum);
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"DomainFreeExperience"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"DomainType");
-					m_aDomainFreeExperiences[i].eDomain = (DomainTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aDomainFreeExperiences[i].iModifier), L"iExperience");
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"DomainFreeExperience"));
-			}
-			pXML->MoveToXmlParent();
-		}
-		pXML->MoveToXmlParent();
-	}
-
-	if(pXML->TryMoveToXmlFirstChild(L"DomainProductionModifiers"))
-	{
-		int i = 0;
-		int iNum = pXML->GetXmlChildrenNumber(L"DomainProductionModifier" );
-		m_aDomainProductionModifiers.resize(iNum);
-		if(pXML->TryMoveToXmlFirstChild())
-		{
-
-			if (pXML->TryMoveToXmlFirstOfSiblings(L"DomainProductionModifier"))
-			{
-				do
-				{
-					pXML->GetChildXmlValByName(szTextVal, L"DomainType");
-					m_aDomainProductionModifiers[i].eDomain = (DomainTypes)pXML->GetInfoClass(szTextVal);
-					pXML->GetChildXmlValByName(&(m_aDomainProductionModifiers[i].iModifier), L"iModifier");
-					i++;
-				} while(pXML->TryMoveToXmlNextSibling(L"DomainProductionModifier"));
 			}
 			pXML->MoveToXmlParent();
 		}
@@ -23875,23 +23698,6 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo)
 		}
 	}
 
-	// int vector utilizing struct with delayed resolution
-	if (getNumImprovementUpgradeModifierTypes() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aImprovementUpgradeModifierTypes, pClassInfo->m_aImprovementUpgradeModifierTypes);
-	}
-
-	if (getNumBuildWorkerSpeedModifierTypes() == 0)
-	{
-		int iNum = pClassInfo->getNumBuildWorkerSpeedModifierTypes();
-		m_aBuildWorkerSpeedModifierTypes.resize(iNum);
-		for (int i=0; i<iNum; i++)
-		{
-			m_aBuildWorkerSpeedModifierTypes[i].iModifier = pClassInfo->m_aBuildWorkerSpeedModifierTypes[i].iModifier;
-			GC.copyNonDefaultDelayedResolution((int*)&(m_aBuildWorkerSpeedModifierTypes[i].eBuild), (int*)&(pClassInfo->m_aBuildWorkerSpeedModifierTypes[i].eBuild));
-		}
-	}
-
 	if (getNumDisallowedTraitTypes() == 0)
 	{
 		int iNum = pClassInfo->getNumDisallowedTraitTypes();
@@ -23923,16 +23729,6 @@ void CvTraitInfo::copyNonDefaults(CvTraitInfo* pClassInfo)
 			}
 			m_piFlavorValue[i] = pClassInfo->getFlavorValue(i);
 		}
-	}
-
-	if (getNumDomainFreeExperiences() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aDomainFreeExperiences, pClassInfo->m_aDomainFreeExperiences);
-	}
-
-	if (getNumDomainProductionModifiers() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aDomainProductionModifiers, pClassInfo->m_aDomainProductionModifiers);
 	}
 
 	if (getNumBuildingProductionModifiers() == 0)
@@ -24126,38 +23922,10 @@ void CvTraitInfo::getCheckSum(uint32_t& iSum) const
 	int iNumElements;
 	int i;
 
-	iNumElements = m_aImprovementUpgradeModifierTypes.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aImprovementUpgradeModifierTypes[i].eImprovement);
-		CheckSum(iSum, m_aImprovementUpgradeModifierTypes[i].iModifier);
-	}
-
-	iNumElements = m_aBuildWorkerSpeedModifierTypes.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aBuildWorkerSpeedModifierTypes[i].eBuild);
-		CheckSum(iSum, m_aBuildWorkerSpeedModifierTypes[i].iModifier);
-	}
-
 	iNumElements = m_aDisallowedTraitTypes.size();
 	for (i = 0; i < iNumElements; ++i)
 	{
 		CheckSum(iSum, m_aDisallowedTraitTypes[i].eTrait);
-	}
-
-	iNumElements = m_aDomainFreeExperiences.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aDomainFreeExperiences[i].eDomain);
-		CheckSum(iSum, m_aDomainFreeExperiences[i].iModifier);
-	}
-
-	iNumElements = m_aDomainProductionModifiers.size();
-	for (i = 0; i < iNumElements; ++i)
-	{
-		CheckSum(iSum, m_aDomainProductionModifiers[i].eDomain);
-		CheckSum(iSum, m_aDomainProductionModifiers[i].iModifier);
 	}
 
 	CheckSum(iSum, m_piFlavorValue, GC.getNumFlavorTypes());
