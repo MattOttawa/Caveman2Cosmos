@@ -509,7 +509,6 @@ void cvInternalGlobals::uninit()
 	algo::for_each(m_plotGroupFinders, bind(deleteFAStar, _1));
 
 	m_typesMap.clear();
-	m_aInfoVectors.clear();
 }
 
 void cvInternalGlobals::clearTypesMap()
@@ -1395,9 +1394,7 @@ void cvInternalGlobals::registerUnitAI(const char* szType, int enumVal)
 {
 	FAssertMsg(m_paUnitAIInfos.size() == enumVal, "enumVal not expected value");
 
-	CvInfoBase* entry = new	CvInfoBase(szType);
-
-	m_paUnitAIInfos.push_back(entry);
+	m_paUnitAIInfos.push_back(new CvUnitAIInfo(szType));
 	setInfoTypeFromString(szType, enumVal);
 }
 
@@ -1463,6 +1460,8 @@ void cvInternalGlobals::registerUnitAIs()
 	REGISTER_UNITAI(UNITAI_SEE_INVISIBLE);
 	REGISTER_UNITAI(UNITAI_SEE_INVISIBLE_SEA);
 	REGISTER_UNITAI(UNITAI_ESCORT);
+
+	addToInfosVectors(&m_paUnitAIInfos);
 }
 
 //	AIAndy - added internal registration of supported AIScale types similar to UnitAIs but without info class
@@ -1616,9 +1615,7 @@ void cvInternalGlobals::registerMission(const char* szType, int enumVal)
 {
 	FAssert(m_paMissionInfo.size() == enumVal);
 
-	CvMissionInfo* entry = new CvMissionInfo(szType);
-
-	m_paMissionInfo.push_back(entry);
+	m_paMissionInfo.push_back(new CvMissionInfo(szType));
 	setInfoTypeFromString(szType, enumVal);
 }
 
@@ -2713,7 +2710,6 @@ void cvInternalGlobals::deleteInfoArrays()
 	deleteInfoArray(m_paPropertyInfo);
 
 	clearTypesMap();
-	m_aInfoVectors.clear();
 }
 
 //
@@ -2818,11 +2814,6 @@ void cvInternalGlobals::infoTypeFromStringReset()
 	}
 
 	m_infosMap.clear();
-}
-
-void cvInternalGlobals::addToInfosVectors(void *infoVector, InfoClassTypes infoClass)
-{
-	m_aInfoVectors[infoClass] = static_cast<std::vector<CvInfoBase*>*>(infoVector);
 }
 
 void cvInternalGlobals::infosReset()
