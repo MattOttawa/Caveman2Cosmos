@@ -3128,7 +3128,7 @@ uint32_t cvInternalGlobals::getAssetCheckSum() const
 
 void cvInternalGlobals::reloadInfo(InfoClassTypes infoClass)
 {
-	FASSERT_BOUNDS(0, NUM_INFO_CLASS_TYPES, infoClass)
+	FASSERT_BOUNDS(0, NUM_INFO_CLASSES, infoClass)
 
 	std::vector<CvInfoBase*>& infoVector = *m_aInfoVectors[infoClass];
 	foreach_(const CvInfoBase* info, infoVector)
@@ -3466,10 +3466,6 @@ void cvInternalGlobals::readInfo(CvXMLLoadUtility* pXml, InfoClassTypes infoClas
 			pXml->LoadGlobalClassInfo(m_paVictoryInfo, "CIV4VictoryInfo", "GameInfo", L"/Civ4VictoryInfo/VictoryInfos/VictoryInfo", false);
 			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paVictoryInfo);
 			return;
-		case QUEST_INFO:
-			pXml->LoadGlobalClassInfo(m_paQuestInfo, "CIV4QuestInfos", "Misc", L"/Civ4QuestInfos/QuestInfo", false);
-			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paQuestInfo);
-			return;
 		case GAME_OPTION_INFO:
 			pXml->LoadGlobalClassInfo(m_paGameOptionInfos, "CIV4GameOptionInfos", "GameInfo", L"/Civ4GameOptionInfos/GameOptionInfos/GameOptionInfo", false);
 			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paGameOptionInfos);
@@ -3489,10 +3485,6 @@ void cvInternalGlobals::readInfo(CvXMLLoadUtility* pXml, InfoClassTypes infoClas
 		case GRAPHIC_OPTION_INFO:
 			pXml->LoadGlobalClassInfo(m_paGraphicOptionInfos, "CIV4GraphicOptionInfos", "GameInfo", L"/Civ4GraphicOptionInfos/GraphicOptionInfos/GraphicOptionInfo", false);
 			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paGraphicOptionInfos);
-			return;
-		case TUTORIAL_INFO:
-			pXml->LoadGlobalClassInfo(m_paTutorialInfo, "CIV4TutorialInfos", "Misc", L"/Civ4TutorialInfos/TutorialInfo", false);
-			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paTutorialInfo);
 			return;
 		case EVENT_TRIGGER_INFO:
 			pXml->LoadGlobalClassInfo(m_paEventTriggerInfo, "CIV4EventTriggerInfos", "Events", L"/Civ4EventTriggerInfos/EventTriggerInfos/EventTriggerInfo", false, &GC.m_EventTriggerInfoReplacements);
@@ -3555,10 +3547,6 @@ void cvInternalGlobals::readInfo(CvXMLLoadUtility* pXml, InfoClassTypes infoClas
 		case MAP_INFO:
 			pXml->LoadGlobalClassInfo(m_paMapInfo, "CIV4MapInfo", "GameInfo", L"/Civ4MapInfos/MapInfos/MapInfo", true);
 			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paMapInfo);
-			return;
-		case MAP_SWITCH_INFO:
-			pXml->LoadGlobalClassInfo(m_paMapSwitchInfo, "CIV4MapSwitchInfo", "GameInfo", L"/Civ4MapSwitchInfos/MapSwitchInfos/MapSwitchInfo", false);
-			m_aInfoVectors[infoClass] = reinterpret_cast<std::vector<CvInfoBase*>*>(&m_paMapSwitchInfo);
 			return;
 		case HINT_INFO:
 			pXml->LoadGlobalClassInfo(m_paHints, "CIV4Hints", "GameInfo", L"/Civ4Hints/HintInfos/HintInfo", false);
