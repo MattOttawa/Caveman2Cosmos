@@ -10,7 +10,7 @@
 class CvArea;
 class CvProperties;
 
-class CvTeam
+class CvTeam : bst::noncopyable
 {
 public:
 	CvTeam();
@@ -35,7 +35,6 @@ public:
 	void doTurn();
 
 	void updateYield();
-	void updatePowerHealth();
 	void updateCommerce();
 
 	bool canChangeWarPeace(TeamTypes eTeam, bool bAllowVassal = false) const;
@@ -109,7 +108,7 @@ public:
 	bool hasBonus(BonusTypes eBonus) const;
 	bool isBonusObsolete(BonusTypes eBonus) const;
 
-	bool isHuman() const;
+	bool isHuman(const bool bCountDisabledHuman = false) const;
 	bool isBarbarian() const;
 	bool isNPC() const;
 	bool isHominid() const;
@@ -136,7 +135,6 @@ public:
 	int isAlive() const;
 	void changeAliveCount(int iChange);
 
-	int getEverAliveCount() const;
 	int isEverAlive() const;
 	void changeEverAliveCount(int iChange);
 
@@ -213,19 +211,9 @@ public:
 	bool isHasEmbassy(TeamTypes eIndex) const;
 	void setHasEmbassy(TeamTypes eIndex, bool bNewValue);
 	int getBuildingCommerceChange(BuildingTypes eIndex1, CommerceTypes eIndex2) const;
-	void changeBuildingCommerceChange(BuildingTypes eIndex1, CommerceTypes eIndex2, int iChange);
-
-	int getBuildingYieldChange(BuildingTypes eIndex1, YieldTypes eIndex2) const;
-	void changeBuildingYieldChange(BuildingTypes eIndex1, YieldTypes eIndex2, int iChange);
 
 	int getBuildingSpecialistChange(BuildingTypes eIndex1, SpecialistTypes eIndex2) const;
 	void changeBuildingSpecialistChange(BuildingTypes eIndex1, SpecialistTypes eIndex2, int iChange);
-
-	int getBuildingCommerceModifier(BuildingTypes eIndex1, CommerceTypes eIndex2) const;
-	void changeBuildingCommerceModifier(BuildingTypes eIndex1, CommerceTypes eIndex2, int iChange);
-
-	int getBuildingYieldModifier(BuildingTypes eIndex1, YieldTypes eIndex2) const;
-	void changeBuildingYieldModifier(BuildingTypes eIndex1, YieldTypes eIndex2, int iChange);
 
 	int getLimitedBordersTradingCount() const;
 	bool isLimitedBordersTrading() const;
@@ -324,7 +312,6 @@ public:
 	void changeWarWeariness(TeamTypes eIndex, int iChange);
 	void changeWarWearinessTimes100(TeamTypes eIndex, int iChange);
 
-	int getTechShareCount(int iIndex) const;
 	bool isTechShare(int iIndex) const;
 	void changeTechShareCount(int iIndex, int iChange);
 
@@ -418,6 +405,11 @@ public:
 
 	int getImprovementYieldChange(ImprovementTypes eIndex1, YieldTypes eIndex2) const;
 	void changeImprovementYieldChange(ImprovementTypes eIndex1, YieldTypes eIndex2, int iChange);
+
+	int getBuildingYieldTechChange(const YieldTypes eYield, const BuildingTypes eBuilding) const;
+	int getBuildingYieldTechModifier(const YieldTypes eYield, const BuildingTypes eBuilding) const;
+	int getBuildingCommerceTechChange(const CommerceTypes eIndex, const BuildingTypes eBuilding) const;
+	int getBuildingCommerceTechModifier(const CommerceTypes eIndex, const BuildingTypes eBuilding) const;
 
 	void addPropertiesAllCities(const CvProperties* pProp);
 	void subtractPropertiesAllCities(const CvProperties* pProp);
@@ -565,8 +557,6 @@ protected:
 	bool* m_abIsRebelAgainst;
 	bool* m_pabHasTech;
 
-	int** m_ppiBuildingCommerceChange;
-	int** m_ppiBuildingYieldChange;
 	int** m_ppiBuildingSpecialistChange;
 	int** m_ppiBuildingCommerceModifier;
 	int** m_ppiBuildingYieldModifier;
