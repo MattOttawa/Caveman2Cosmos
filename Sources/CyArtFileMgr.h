@@ -26,7 +26,6 @@ class CyArtFileMgr
 {
 public:
 	CyArtFileMgr();
-	explicit CyArtFileMgr(const CvArtFileMgr& pArtFileMgr);			// Call from C++
 
 	CvArtInfoInterface* getInterfaceArtInfo(const char* szArtDefineTag) const;
 	CvArtInfoMovie* getMovieArtInfo(const char* szArtDefineTag) const;

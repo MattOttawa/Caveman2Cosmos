@@ -2,8 +2,6 @@
 #include "CyHallOfFameInfo.h"
 #include "CyReplayInfo.h"
 
-CyHallOfFameInfo::CyHallOfFameInfo() {}
-
 
 void CyHallOfFameInfo::loadReplays()
 {

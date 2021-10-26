@@ -13,8 +13,8 @@ class CyArea;
 class CyTeam
 {
 public:
-	CyTeam();
-	explicit CyTeam(CvTeam* pTeam);		// Call from C++
+	CyTeam(); // Call from C++
+	explicit CyTeam(CvTeam* pTeam); // Call from C++
 
 	//const CvTeam* getTeam() const { return m_pTeam; }	// Call from C++
 

@@ -1,8 +1,3 @@
-//
-// Python wrapper class for global vars and fxns
-// Author - Mustafa Thamer
-//
-
 #include "CvGameCoreDLL.h"
 #include "CvArtFileMgr.h"
 #include "CvBuildingInfo.h"
@@ -18,17 +13,21 @@
 #include "CyPlayer.h"
 #include "CyTeam.h"
 
-std::vector<CyPlayer> g_cyPlayers;
-std::vector<CyTeam>   g_cyTeams;
-std::vector<CyMap>    g_cyMaps;
+//
+// Python wrapper class for global vars and fxns
+//
+
+bst::array<CyPlayer, MAX_PLAYERS>	g_cyPlayers;
+bst::array<CyTeam, MAX_TEAMS>		g_cyTeams;
+std::vector<CyMap>					g_cyMaps;
 
 void CyGlobalContext::initStatics()
 {
 	for (int i = 0; i < MAX_PLAYERS; i++)
-		g_cyPlayers.push_back(CyPlayer(&GET_PLAYER((PlayerTypes)i)));
+		g_cyPlayers[i] = CyPlayer(&GET_PLAYER((PlayerTypes)i));
 
 	for (int i = 0; i < MAX_TEAMS; i++)
-		g_cyTeams.push_back(CyTeam(&GET_TEAM((TeamTypes)i)));
+		g_cyTeams[i] = CyTeam(&GET_TEAM((TeamTypes)i));
 
 	for (int i = 0; i < NUM_MAPS; i++)
 		g_cyMaps.push_back(CyMap((MapTypes)i));
@@ -51,7 +50,7 @@ bool CyGlobalContext::isDebugBuild() const
 
 CyGame* CyGlobalContext::getCyGame() const
 {
-	static CyGame cyGame(GC.getGame());
+	static CyGame cyGame;
 	return &cyGame;
 }
 

@@ -6,10 +6,9 @@
 // Python wrapper class for CvGame
 //
 
-CyDeal::CyDeal(CvDeal* pDeal) : m_pDeal(pDeal) {}
-
-CyDeal::~CyDeal() {}
-
+CyDeal::CyDeal(CvDeal* pDeal)
+	: m_pDeal(pDeal)
+{}
 
 int CyDeal::getID() const
 {

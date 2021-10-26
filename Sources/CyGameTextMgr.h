@@ -4,10 +4,10 @@
 #define CyGameTextMgr_h
 
 //
-// Python wrapper class for CyGameTextMgr
+// Python wrapper class for CvGameTextMgr
 //
 
-class CvGameTextMgr;
+//class CvGameTextMgr;
 class CyCity;
 class CyUnit;
 class CyDeal;
@@ -17,7 +17,6 @@ class CyGameTextMgr
 {
 public:
 	CyGameTextMgr();
-	CyGameTextMgr(CvGameTextMgr* m_pGameTextMgr);			// Call from C++
 
 	void Reset();
 
@@ -61,7 +60,7 @@ public:
 	std::wstring getDefenseHelp(CyCity* pCity);
 
 protected:
-	CvGameTextMgr* m_pGameTextMgr;
+	//CvGameTextMgr* m_pGameTextMgr;
 };
 
 #endif	// #ifndef CyGameTextMgr_h

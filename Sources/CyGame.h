@@ -4,11 +4,9 @@
 #define CyGame_h
 //
 // Python wrapper class for CvGame
-// SINGLETON
-// updated 6-5
+//
 
 class CvGame;
-class CvGameAI;
 class CyCity;
 class CvRandom;
 class CyDeal;
@@ -19,8 +17,6 @@ class CyGame
 {
 public:
 	CyGame();
-	explicit CyGame(CvGame& pGame);			// Call from C++
-	explicit CyGame(CvGameAI& pGame);		// Call from C++;
 
 	MapTypes getCurrentMap() const;
 

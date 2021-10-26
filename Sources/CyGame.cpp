@@ -1,7 +1,3 @@
-//
-// Python wrapper class for CvGame
-//
-
 #include "CvGameCoreDLL.h"
 #include "CvCity.h"
 #include "CvGameAI.h"
@@ -14,11 +10,13 @@
 #include "CyReplayInfo.h"
 #include "CvReplayInfo.h"
 
-CyGame::CyGame() : m_pGame(GC.getGame()) {}
+//
+// Python wrapper class for CvGame
+//
 
-CyGame::CyGame(CvGame& pGame) : m_pGame(pGame) {}
-
-CyGame::CyGame(CvGameAI& pGame) : m_pGame(pGame) {}
+CyGame::CyGame()
+	: m_pGame(GC.getGame())
+{}
 
 MapTypes CyGame::getCurrentMap() const
 {

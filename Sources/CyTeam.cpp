@@ -1,6 +1,6 @@
 #include "CvGameCoreDLL.h"
 #include "CvPlayerAI.h"
-#include "CvTeam.h"
+#include "CvTeamAI.h"
 #include "CyArea.h"
 #include "CyTeam.h"
 
@@ -8,10 +8,15 @@
 // Python wrapper class for CvTeam
 //
 
-CyTeam::CyTeam() : m_pTeam(NULL) {}
+CyTeam::CyTeam()
+	: m_pTeam(NULL)
+{}
 
-CyTeam::CyTeam(CvTeam* pTeam) : m_pTeam(pTeam) {}
-
+CyTeam::CyTeam(CvTeam* pTeam)
+	: m_pTeam(pTeam)
+{
+	FAssert(m_pTeam != NULL);
+}
 
 bool CyTeam::isRebel() const
 {

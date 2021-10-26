@@ -1,14 +1,14 @@
-//
-// Python wrapper class for CvArtFileMgr
-//
 #include "CvGameCoreDLL.h"
 #include "CvArtFileMgr.h"
 #include "CyArtFileMgr.h"
 
-CyArtFileMgr::CyArtFileMgr() : m_pArtFileMgr(ARTFILEMGR) {}
+//
+// Python wrapper class for CvArtFileMgr
+//
 
-CyArtFileMgr::CyArtFileMgr(const CvArtFileMgr& pArtFileMgr) : m_pArtFileMgr(pArtFileMgr) {}
-
+CyArtFileMgr::CyArtFileMgr()
+	: m_pArtFileMgr(ARTFILEMGR)
+{}
 
 CvArtInfoInterface* CyArtFileMgr::getInterfaceArtInfo(const char* szArtDefineTag) const
 {
