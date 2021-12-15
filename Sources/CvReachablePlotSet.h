@@ -24,20 +24,19 @@ class CvSelectionGroup;
 class CvReachablePlotSet
 {
 public:
-	class const_iterator
+	struct const_iterator :
+		public bst::iterator_facade<const_iterator, const_iterator, bst::forward_traversal_tag>
 	{
-	friend CvReachablePlotSet;
-	protected:
-		const_iterator(const CvReachablePlotSet* parent, stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator& itr);
+		friend CvReachablePlotSet;
+		friend bst::iterator_core_access;
 
 	public:
+		const_iterator(const CvReachablePlotSet* parent, stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator& itr);
+
 		const_iterator& operator++();
 
 		bool operator==(const const_iterator& other) const;
-
 		bool operator!=(const const_iterator& other) const;
-
-		const_iterator& operator=(const const_iterator& other);
 
 		CvPlot*	plot() const;
 
@@ -47,16 +46,19 @@ public:
 		void setOpaqueInfo(int iActivityId, int iValue);
 
 	private:
+		void increment();
+		bool equal(const const_iterator& other) const;
+		const_iterator& dereference();
+
 		stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator m_itr;
 		const CvReachablePlotSet* m_parent;
 	};
+	typedef const_iterator iterator;
 
 	CvReachablePlotSet(const CvSelectionGroup * group, int iFlags, int iRange = -1, bool bCachable = true, int iOutsideOwnedRange = -1);
-
 	~CvReachablePlotSet();
 
 	const_iterator begin() const;
-
 	const_iterator end() const;
 
 	const_iterator find(CvPlot* plot) const;

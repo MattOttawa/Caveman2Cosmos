@@ -16203,8 +16203,8 @@ bool CvUnitAI::AI_seaAreaAttack()
 			return getGroup()->pushMissionInternal(MISSION_MOVE_TO, pBestPlot->getX(), pBestPlot->getY());
 		}
 		// Sharing plot with the enemy
-		FAssertMsg(canAmbush(pBestPlot), "Something is wrong. . .")
-			return getGroup()->pushMissionInternal(MISSION_AMBUSH, pBestPlot->getX(), pBestPlot->getY());
+		FAssertMsg(canAmbush(pBestPlot), "Something is wrong. . .");
+		return getGroup()->pushMissionInternal(MISSION_AMBUSH, pBestPlot->getX(), pBestPlot->getY());
 	}
 	return false;
 }
@@ -21939,7 +21939,7 @@ bool CvUnitAI::AI_improveLocalPlot(int iRange, const CvCity* pIgnoreCity)
 	{
 		FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eBestBuild);
 
-			FAssert(pBestPlot->getWorkingCity() != NULL);
+		FAssert(pBestPlot->getWorkingCity() != NULL);
 
 		MissionTypes eMission = MISSION_MOVE_TO;
 
@@ -22091,7 +22091,7 @@ bool CvUnitAI::AI_nextCityToImprove(CvCity* pCity)
 	{
 		FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eBestBuild);
 
-			CvPlot* pMissionPlot = getGroup()->AI_getMissionAIPlot();
+		CvPlot* pMissionPlot = getGroup()->AI_getMissionAIPlot();
 
 		if (pMissionPlot != NULL && pMissionPlot->getWorkingCity() != NULL && getGroup()->AI_getMissionAIType() == MISSIONAI_BUILD)
 		{
@@ -22252,11 +22252,11 @@ bool CvUnitAI::AI_irrigateTerritory()
 	{
 		FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eBestBuild);
 
-			if (getGroup()->pushMissionInternal(MISSION_ROUTE_TO, pBestPlot->getX(), pBestPlot->getY(), (isHuman() ? 0 : MOVE_WITH_CAUTION), false, false, MISSIONAI_BUILD, pBestPlot))
-			{
-				getGroup()->pushMission(MISSION_BUILD, eBestBuild, -1, 0, (getGroup()->getLengthMissionQueue() > 0), false, MISSIONAI_BUILD, pBestPlot);
-				return true;
-			}
+		if (getGroup()->pushMissionInternal(MISSION_ROUTE_TO, pBestPlot->getX(), pBestPlot->getY(), (isHuman() ? 0 : MOVE_WITH_CAUTION), false, false, MISSIONAI_BUILD, pBestPlot))
+		{
+			getGroup()->pushMission(MISSION_BUILD, eBestBuild, -1, 0, (getGroup()->getLengthMissionQueue() > 0), false, MISSIONAI_BUILD, pBestPlot);
+			return true;
+		}
 	}
 	return false;
 }
@@ -22388,11 +22388,11 @@ bool CvUnitAI::AI_fortTerritory(bool bCanal, bool bAirbase)
 	{
 		FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eBestBuild);
 
-			if (getGroup()->pushMissionInternal(MISSION_ROUTE_TO, pBestPlot->getX(), pBestPlot->getY(), (isHuman() ? 0 : MOVE_WITH_CAUTION), false, false, MISSIONAI_BUILD, pBestPlot))
-			{
-				getGroup()->pushMission(MISSION_BUILD, eBestBuild, -1, 0, (getGroup()->getLengthMissionQueue() > 0), false, MISSIONAI_BUILD, pBestPlot);
-				return true;
-			}
+		if (getGroup()->pushMissionInternal(MISSION_ROUTE_TO, pBestPlot->getX(), pBestPlot->getY(), (isHuman() ? 0 : MOVE_WITH_CAUTION), false, false, MISSIONAI_BUILD, pBestPlot))
+		{
+			getGroup()->pushMission(MISSION_BUILD, eBestBuild, -1, 0, (getGroup()->getLengthMissionQueue() > 0), false, MISSIONAI_BUILD, pBestPlot);
+			return true;
+		}
 	}
 	return false;
 }

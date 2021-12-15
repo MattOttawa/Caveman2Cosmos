@@ -15,12 +15,8 @@ CvReachablePlotSet::const_iterator::const_iterator(const CvReachablePlotSet* par
 
 CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::operator++()
 {
-	do
-	{
-		++m_itr;
-	} while( m_itr != m_parent->end().m_itr && m_itr->second.iStepDistance > m_parent->m_iRange );
-
-	return (*this);
+	increment();
+	return *this;
 }
 
 bool CvReachablePlotSet::const_iterator::operator==(const const_iterator& other) const
@@ -31,14 +27,6 @@ bool CvReachablePlotSet::const_iterator::operator==(const const_iterator& other)
 bool CvReachablePlotSet::const_iterator::operator!=(const const_iterator& other) const
 {
 	return other.m_itr != m_itr;
-}
-
-CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::operator=(const const_iterator& other)
-{
-	m_itr = other.m_itr;
-	m_parent = other.m_parent;
-
-	return (*this);
 }
 
 CvPlot*	CvReachablePlotSet::const_iterator::plot() const
@@ -83,6 +71,24 @@ void CvReachablePlotSet::const_iterator::setOpaqueInfo(int iActivityId, int iVal
 	{
 		*(int*)&(m_itr->second.iOpaqueInfo[iActivityId]) = iValue;
 	}
+}
+
+void CvReachablePlotSet::const_iterator::increment()
+{
+	do
+	{
+		++m_itr;
+	} while (m_itr != m_parent->end().m_itr && m_itr->second.iStepDistance > m_parent->m_iRange);
+}
+
+bool CvReachablePlotSet::const_iterator::equal(const const_iterator& other) const
+{
+	return other.m_itr == m_itr;
+}
+
+CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::dereference()
+{
+	return *this;
 }
 
 CvReachablePlotSet::CvReachablePlotSet(const CvSelectionGroup * group, int iFlags, int iRange, bool bCachable, int iOutsideOwnedRange)
