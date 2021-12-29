@@ -8321,11 +8321,7 @@ void CvPlot::clearFoundValue(PlayerTypes eIndex)
 
 	if (NULL == m_aiFoundValue)
 	{
-		m_aiFoundValue = new unsigned int[MAX_PLAYERS];
-		for (int iI = 0; iI < MAX_PLAYERS; ++iI)
-		{
-			m_aiFoundValue[iI] = 0;
-		}
+		CvXMLLoadUtility::InitList<uint32_t>(&m_aiFoundValue, MAX_PLAYERS, 0);
 	}
 
 	if (NULL != m_aiFoundValue)
@@ -8423,8 +8419,6 @@ void CvPlot::setPlotGroup(PlayerTypes ePlayer, CvPlotGroup* pNewValue, bool bRec
 {
 	PROFILE_FUNC();
 
-	int iI;
-
 	CvPlotGroup* pOldPlotGroup = getPlotGroup(ePlayer);
 
 	//	The id-level check is to handle correction of an old buggy state where
@@ -8435,11 +8429,7 @@ void CvPlot::setPlotGroup(PlayerTypes ePlayer, CvPlotGroup* pNewValue, bool bRec
 
 		if (NULL ==  m_aiPlotGroup)
 		{
-			m_aiPlotGroup = new int[MAX_PLAYERS];
-			for (int iI = 0; iI < MAX_PLAYERS; ++iI)
-			{
-				m_aiPlotGroup[iI] = FFreeList::INVALID_INDEX;
-			}
+			CvXMLLoadUtility::InitList<int>(&m_aiPlotGroup, MAX_PLAYERS, FFreeList::INVALID_INDEX);
 		}
 
 		if ( bRecalculateEffect )
@@ -8459,7 +8449,7 @@ void CvPlot::setPlotGroup(PlayerTypes ePlayer, CvPlotGroup* pNewValue, bool bRec
 					if (pCity->getOwner() == ePlayer)
 					{
 						FAssertMsg((0 < GC.getNumBonusInfos()), "GC.getNumBonusInfos() is not greater than zero but an array is being allocated in CvPlot::setPlotGroup");
-						for (iI = 0; iI < GC.getNumBonusInfos(); ++iI)
+						for (int iI = 0; iI < GC.getNumBonusInfos(); ++iI)
 						{
 							pCity->changeNumBonuses(((BonusTypes)iI), -(pOldPlotGroup->getNumBonuses((BonusTypes)iI)));
 						}
@@ -8486,7 +8476,7 @@ void CvPlot::setPlotGroup(PlayerTypes ePlayer, CvPlotGroup* pNewValue, bool bRec
 					if (pCity->getOwner() == ePlayer)
 					{
 						FAssertMsg((0 < GC.getNumBonusInfos()), "GC.getNumBonusInfos() is not greater than zero but an array is being allocated in CvPlot::setPlotGroup");
-						for (iI = 0; iI < GC.getNumBonusInfos(); ++iI)
+						for (int iI = 0; iI < GC.getNumBonusInfos(); ++iI)
 						{
 							pCity->changeNumBonuses(((BonusTypes)iI), getPlotGroup(ePlayer)->getNumBonuses((BonusTypes)iI));
 						}
@@ -8719,11 +8709,7 @@ void CvPlot::setDangerCount(int /*PlayerTypes*/ ePlayer, int iNewCount)
 
 	if (NULL == m_aiDangerCount)
 	{
-		m_aiDangerCount = new short[MAX_PLAYERS];
-		for (int iI = 0; iI < MAX_PLAYERS; ++iI)
-		{
-			m_aiDangerCount[iI] = 0;
-		}
+		CvXMLLoadUtility::InitList<int16_t>(&m_aiDangerCount, MAX_PLAYERS, 0);
 	}
 
 	m_aiDangerCount[ePlayer] = iNewCount;
@@ -8748,11 +8734,7 @@ void CvPlot::setLastVisibleTurn(TeamTypes eTeam, short turn)
 
 	if (NULL == m_aiLastSeenTurn)
 	{
-		m_aiLastSeenTurn = new short[MAX_TEAMS];
-		for (int iI = 0; iI < MAX_TEAMS; ++iI)
-		{
-			m_aiLastSeenTurn[iI] = 0;
-		}
+		CvXMLLoadUtility::InitList<int16_t>(&m_aiLastSeenTurn, MAX_TEAMS, 0);
 	}
 
 	m_aiLastSeenTurn[eTeam] = turn;
@@ -8765,14 +8747,7 @@ void CvPlot::clearVisibilityCounts()
 		m_aiVisibilityCount[iI] = 0;
 	}
 	SAFE_DELETE(m_aiStolenVisibilityCount);
-	if (NULL != m_apaiInvisibleVisibilityCount)
-	{
-		for (int iI = 0; iI < MAX_TEAMS; ++iI)
-		{
-			SAFE_DELETE_ARRAY(m_apaiInvisibleVisibilityCount[iI]);
-		}
-		SAFE_DELETE_ARRAY(m_apaiInvisibleVisibilityCount);
-	}
+	SAFE_DELETE_ARRAY2(m_apaiInvisibleVisibilityCount);
 
 	m_resultHashMap->clear();
 	g_bestDefenderCache->clear();
@@ -8939,11 +8914,7 @@ void CvPlot::changeBlockadedCount(TeamTypes eTeam, int iChange)
 	{
 		if (NULL == m_aiBlockadedCount)
 		{
-			m_aiBlockadedCount = new short[MAX_TEAMS];
-			for (int iI = 0; iI < MAX_TEAMS; ++iI)
-			{
-				m_aiBlockadedCount[iI] = 0;
-			}
+			CvXMLLoadUtility::InitList<int16_t>(&m_aiBlockadedCount, MAX_TEAMS, 0);
 		}
 
 		m_aiBlockadedCount[eTeam] += iChange;
@@ -9005,11 +8976,7 @@ void CvPlot::setRevealedOwner(TeamTypes eTeam, PlayerTypes eNewValue)
 	{
 		if (NULL == m_aiRevealedOwner)
 		{
-			m_aiRevealedOwner = new char[MAX_TEAMS];
-			for (int iI = 0; iI < MAX_TEAMS; ++iI)
-			{
-				m_aiRevealedOwner[iI] = -1;
-			}
+			CvXMLLoadUtility::InitList<int8_t>(&m_aiRevealedOwner, MAX_TEAMS, -1);
 		}
 
 		m_aiRevealedOwner[eTeam] = eNewValue;
@@ -9190,11 +9157,7 @@ void CvPlot::updateRiverCrossing(DirectionTypes eIndex)
 	{
 		if (NULL == m_abRiverCrossing)
 		{
-			m_abRiverCrossing = new bool[NUM_DIRECTION_TYPES];
-			for (int iI = 0; iI < NUM_DIRECTION_TYPES; ++iI)
-			{
-				m_abRiverCrossing[iI] = false;
-			}
+			CvXMLLoadUtility::InitList<bool>(&m_abRiverCrossing, NUM_DIRECTION_TYPES, false);
 		}
 
 		m_abRiverCrossing[eIndex] = bValid;
@@ -9243,11 +9206,7 @@ void CvPlot::setRevealed(const TeamTypes eTeam, const bool bNewValue, const bool
 	{
 		if (NULL == m_abRevealed)
 		{
-			m_abRevealed = new bool[MAX_TEAMS];
-			for (int iI = 0; iI < MAX_TEAMS; ++iI)
-			{
-				m_abRevealed[iI] = false;
-			}
+			CvXMLLoadUtility::InitList<bool>(&m_abRevealed, MAX_TEAMS, false);
 		}
 
 		m_abRevealed[eTeam] = bNewValue;
@@ -9442,11 +9401,7 @@ void CvPlot::setRevealedImprovementType(TeamTypes eTeam, ImprovementTypes eNewVa
 	{
 		if (NULL == m_aeRevealedImprovementType)
 		{
-			m_aeRevealedImprovementType = new short[MAX_TEAMS];
-			for (int iI = 0; iI < MAX_TEAMS; ++iI)
-			{
-				m_aeRevealedImprovementType[iI] = NO_IMPROVEMENT;
-			}
+			CvXMLLoadUtility::InitList<int16_t>(&m_aeRevealedImprovementType, MAX_TEAMS, NO_IMPROVEMENT);
 		}
 
 		m_aeRevealedImprovementType[eTeam] = eNewValue;
@@ -9487,11 +9442,7 @@ void CvPlot::setRevealedRouteType(TeamTypes eTeam, RouteTypes eNewValue)
 	{
 		if (NULL == m_aeRevealedRouteType)
 		{
-			m_aeRevealedRouteType = new short[MAX_TEAMS];
-			for (int iI = 0; iI < MAX_TEAMS; ++iI)
-			{
-				m_aeRevealedRouteType[iI] = NO_ROUTE;
-			}
+			CvXMLLoadUtility::InitList<int16_t>(&m_aeRevealedRouteType, MAX_TEAMS, NO_ROUTE);
 		}
 
 		m_aeRevealedRouteType[eTeam] = eNewValue;
@@ -10128,20 +10079,12 @@ void CvPlot::changeCultureRangeCities(PlayerTypes eOwnerIndex, int iRangeIndex, 
 
 		if (NULL == m_apaiCultureRangeCities)
 		{
-			m_apaiCultureRangeCities = new char*[MAX_PLAYERS];
-			for (int iI = 0; iI < MAX_PLAYERS; ++iI)
-			{
-				m_apaiCultureRangeCities[iI] = NULL;
-			}
+			CvXMLLoadUtility::InitPointerList(&m_apaiCultureRangeCities, MAX_PLAYERS);
 		}
 
 		if (NULL == m_apaiCultureRangeCities[eOwnerIndex])
 		{
-			m_apaiCultureRangeCities[eOwnerIndex] = new char[GC.getNumCultureLevelInfos()];
-			for (int iI = 0; iI < GC.getNumCultureLevelInfos(); ++iI)
-			{
-				m_apaiCultureRangeCities[eOwnerIndex][iI] = 0;
-			}
+			CvXMLLoadUtility::InitList<int8_t>(&m_apaiCultureRangeCities[eOwnerIndex], GC.getNumCultureLevelInfos(), 0);
 		}
 
 		m_apaiCultureRangeCities[eOwnerIndex][iRangeIndex] += iChange;
@@ -10196,11 +10139,7 @@ void CvPlot::changeInvisibleVisibilityCount(TeamTypes eTeam, InvisibleTypes eInv
 
 		if (NULL == m_apaiInvisibleVisibilityCount[eTeam])
 		{
-			m_apaiInvisibleVisibilityCount[eTeam] = new short[GC.getNumInvisibleInfos()];
-			for (int iI = 0; iI < GC.getNumInvisibleInfos(); ++iI)
-			{
-				m_apaiInvisibleVisibilityCount[eTeam][iI] = 0;
-			}
+			CvXMLLoadUtility::InitList<int16_t>(&m_apaiInvisibleVisibilityCount[eTeam], GC.getNumInvisibleInfos(), 0);
 		}
 		m_apaiInvisibleVisibilityCount[eTeam][eInvisible] += iChange;
 	}
@@ -11030,8 +10969,7 @@ void CvPlot::read(FDataStreamBase* pStream)
 		//	it may or may not actually be present
 		if ( m_paiBuildProgress == NULL )
 		{
-			m_paiBuildProgress = new int[GC.getNumBuildInfos()];
-			memset(m_paiBuildProgress,0,sizeof(int)*GC.getNumBuildInfos());
+			CvXMLLoadUtility::InitList<int16_t>(&m_paiBuildProgress, GC.getNumBuildInfos(), 0);
 		}
 
 		WRAPPER_READ_CLASS_ARRAY_ALLOW_MISSING(wrapper, "CvPlot", REMAPPED_CLASS_TYPE_BUILDS, GC.getNumBuildInfos(), m_paiBuildProgress);
@@ -12645,11 +12583,7 @@ void CvPlot::changeOccupationCultureRangeCities(PlayerTypes eOwnerIndex, int iCh
 	{
 		if (NULL == m_aiOccupationCultureRangeCities)
 		{
-			m_aiOccupationCultureRangeCities = new char[MAX_PLAYERS];
-			for (int iI = 0; iI < MAX_PLAYERS; ++iI)
-			{
-				m_aiOccupationCultureRangeCities[iI] = 0;
-			}
+			CvXMLLoadUtility::InitList<int16_t>(&m_aiOccupationCultureRangeCities, MAX_PLAYERS, 0);
 		}
 
 		m_aiOccupationCultureRangeCities[eOwnerIndex] += iChange;

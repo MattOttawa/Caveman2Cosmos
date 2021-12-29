@@ -165,19 +165,8 @@ void CvArea::reset(int iID, bool bWater, bool bConstructorCall)
 
 	if (!bConstructorCall)
 	{
-		FAssertMsg((0 < GC.getNumBonusInfos()), "GC.getNumBonusInfos() is not greater than zero but an array is being allocated in CvArea::reset");
-		m_paiNumBonuses = new int[GC.getNumBonusInfos()];
-		for (int iI = 0; iI < GC.getNumBonusInfos(); iI++)
-		{
-			m_paiNumBonuses[iI] = 0;
-		}
-
-		FAssertMsg((0 < GC.getNumImprovementInfos()), "GC.getNumImprovementInfos() is not greater than zero but an array is being allocated in CvArea::reset");
-		m_paiNumImprovements = new int[GC.getNumImprovementInfos()];
-		for (int iI = 0; iI < GC.getNumImprovementInfos(); iI++)
-		{
-			m_paiNumImprovements[iI] = 0;
-		}
+		CvXMLLoadUtility::InitList(&m_paiNumBonuses, GC.getNumBonusInfos(), 0);
+		CvXMLLoadUtility::InitList(&m_paiNumImprovements, GC.getNumImprovementInfos(), 0);
 	}
 
 	m_eCachedTeamPlotTypeCounts = NO_TEAM;
@@ -275,22 +264,17 @@ void CvArea::read(FDataStreamBase* pStream)
 	WRAPPER_READ_CLASS_ARRAY(wrapper, "CvArea", REMAPPED_CLASS_TYPE_IMPROVEMENTS, GC.getNumImprovementInfos(), m_paiNumImprovements);
 
 	WRAPPER_READ(wrapper, "CvArea", &m_iLastGameTurnRecorded);
-	for (int iI = 0; iI < COMBAT_RECORD_LENGTH; iI++)
+	foreach_(TurnCombatResults& turnRecord, m_combatRecord)
 	{
-		TurnCombatResults& turnRecord = m_combatRecord[iI];
 		int numRecords = 0;
-
 		WRAPPER_READ(wrapper, "CvArea", &numRecords);
+		turnRecord.resize(numRecords);
 
-		for (int iJ = 0; iJ < numRecords; iJ++)
+		foreach_(CombatResultRecord& record, turnRecord)
 		{
-			CombatResultRecord record;
-
 			WRAPPER_READ(wrapper, "CvArea", (int*)&record.eLoser);
 			WRAPPER_READ_CLASS_ENUM(wrapper, "CvArea", REMAPPED_CLASS_TYPE_UNITS, (int*)&record.eDefeatedUnitType);
 			WRAPPER_READ_CLASS_ENUM(wrapper, "CvArea", REMAPPED_CLASS_TYPE_UNITS, (int*)&record.eVictoriousEnemyUnitType);
-
-			turnRecord.push_back(record);
 		}
 	}
 
@@ -359,17 +343,13 @@ void CvArea::write(FDataStreamBase* pStream)
 	WRAPPER_WRITE_CLASS_ARRAY(wrapper, "CvArea", REMAPPED_CLASS_TYPE_IMPROVEMENTS, GC.getNumImprovementInfos(), m_paiNumImprovements);
 
 	WRAPPER_WRITE(wrapper, "CvArea", m_iLastGameTurnRecorded);
-	for(int iI = 0; iI < COMBAT_RECORD_LENGTH; iI++)
+	foreach_(const TurnCombatResults& turnRecord, m_combatRecord)
 	{
-		TurnCombatResults& turnRecord = m_combatRecord[iI];
-		int numRecords = turnRecord.size();
-
+		const int numRecords = turnRecord.size();
 		WRAPPER_WRITE(wrapper, "CvArea", numRecords);
 
-		for(int iJ = 0; iJ < numRecords; iJ++)
+		foreach_(const CombatResultRecord& record, turnRecord)
 		{
-			CombatResultRecord& record = turnRecord[iJ];
-
 			WRAPPER_WRITE(wrapper, "CvArea", record.eLoser);
 			WRAPPER_WRITE_CLASS_ENUM(wrapper, "CvArea", REMAPPED_CLASS_TYPE_UNITS, record.eDefeatedUnitType);
 			WRAPPER_WRITE_CLASS_ENUM(wrapper, "CvArea", REMAPPED_CLASS_TYPE_UNITS, record.eVictoriousEnemyUnitType);
@@ -1213,11 +1193,7 @@ void CvArea::setNumValidPlotsbySpawn(SpawnTypes eSpawn, int iAmount)
 {
 	if (NULL == m_aiSpawnValidPlotCount)
 	{
-		m_aiSpawnValidPlotCount = new int[GC.getNumSpawnInfos()];
-		for (int iI = 0; iI < GC.getNumSpawnInfos(); ++iI)
-		{
-			m_aiSpawnValidPlotCount[iI] = -1;
-		}
+		CvXMLLoadUtility::InitList(&m_aiSpawnValidPlotCount, GC.getNumSpawnInfos(), -1);
 	}
 	m_aiSpawnValidPlotCount[eSpawn] = iAmount;
 }
