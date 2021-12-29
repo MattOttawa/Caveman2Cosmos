@@ -998,8 +998,7 @@ bool CvGameObjectGame::hasGOM(GOMTypes eType, int iID) const
 		case GOM_TECH:
 		{
 			// If any team has researched that tech, return true
-			const TechTypes eTech = (TechTypes) iID;
-			return GC.getGame().countKnownTechNumTeams(eTech) > 0;
+			return CvGame::countKnownTechNumTeams((TechTypes) iID) > 0;
 		}
 
 		case GOM_CIVIC:

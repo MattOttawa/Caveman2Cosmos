@@ -331,7 +331,7 @@ void CvMap::setRevealedPlots(TeamTypes eTeam, bool bNewValue, bool bTerrainOnly)
 		plotByIndex(iI)->setRevealed(eTeam, bNewValue, bTerrainOnly, NO_TEAM, false);
 	}
 
-	GC.getGame().updatePlotGroups();
+	CvGame::updatePlotGroups();
 }
 
 
@@ -347,7 +347,7 @@ void CvMap::resetRevealedPlots(TeamTypes eTeam)
 		}
 	}
 
-	GC.getGame().updatePlotGroups();
+	CvGame::updatePlotGroups();
 }
 
 
@@ -503,9 +503,9 @@ void CvMap::updateSight(bool bIncrement, bool bUpdatePlotGroups)
 		plotByIndex(iI)->updateSight(bIncrement, false);
 	}
 
-	if ( bUpdatePlotGroups )
+	if (bUpdatePlotGroups)
 	{
-		GC.getGame().updatePlotGroups();
+		CvGame::updatePlotGroups();
 	}
 }
 

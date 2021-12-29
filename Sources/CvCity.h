@@ -2034,7 +2034,7 @@ protected:
 	int getHurryCost(UnitTypes eUnit) const;
 	int getHurryCost(BuildingTypes eBuilding) const;
 	int getHurryCost(int iProductionLeft, int iHurryModifier) const;
-	int getHurryPopulation(HurryTypes eHurry, int iHurryCost) const;
+	static int getHurryPopulation(HurryTypes eHurry, int iHurryCost);
 	bool canHurryUnit(HurryTypes eHurry, UnitTypes eUnit) const;
 	bool canHurryBuilding(HurryTypes eHurry, BuildingTypes eBuilding) const;
 	void recalculateMaxFoodKeptPercent();

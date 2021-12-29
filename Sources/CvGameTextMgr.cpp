@@ -17485,7 +17485,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 	}
 	else if (!GC.getGame().isOption(GAMEOPTION_LIMITED_RELIGIONS))
 	{
-		if (GC.getTechInfo(eTech).getFirstFreeProphet() > -1 && GC.getGame().countKnownTechNumTeams(eTech) == 0)
+		if (GC.getTechInfo(eTech).getFirstFreeProphet() > -1 && CvGame::countKnownTechNumTeams(eTech) == 0)
 		{
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_TECHHELP_FIRST_FREE_PROPHET"));
@@ -17498,7 +17498,7 @@ void CvGameTextMgr::setTechHelp(CvWStringBuffer &szBuffer, TechTypes eTech, bool
 	{
 		if (GC.getGame().canEverSpread((CorporationTypes)iI))
 		{
-			if (!bPlayerContext || !(GC.getGame().isCorporationFounded((CorporationTypes)iI)))
+			if (!bPlayerContext || !GC.getGame().isCorporationFounded((CorporationTypes)iI))
 			{
 				bFirst = buildFoundCorporationString(szBuffer, eTech, iI, bFirst, true, bPlayerContext);
 			}
@@ -21322,7 +21322,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 	if (kBuilding.getFreeBonus() != NO_BONUS)
 	{
 		szBuffer.append(NEWLINE);
-		szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_PROVIDES", GC.getGame().getNumFreeBonuses(eBuilding), CvWString(GC.getBonusInfo((BonusTypes)kBuilding.getFreeBonus()).getType()).GetCString(), GC.getBonusInfo((BonusTypes)kBuilding.getFreeBonus()).getTextKeyWide(), GC.getBonusInfo((BonusTypes)kBuilding.getFreeBonus()).getChar()));
+		szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_PROVIDES", CvGame::getNumFreeBonuses(kBuilding), CvWString(GC.getBonusInfo((BonusTypes)kBuilding.getFreeBonus()).getType()).GetCString(), GC.getBonusInfo((BonusTypes)kBuilding.getFreeBonus()).getTextKeyWide(), GC.getBonusInfo((BonusTypes)kBuilding.getFreeBonus()).getChar()));
 
 		if (GC.getBonusInfo((BonusTypes)(kBuilding.getFreeBonus())).getHealth() != 0)
 		{
@@ -21881,7 +21881,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			szBuffer.append(NEWLINE);
 			if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 			{
-				iTotal *= GC.getGame().getBaseAirUnitIncrementsbyCargoVolume();
+				iTotal *= CvGame::getBaseAirUnitIncrementsbyCargoVolume();
 			}
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_AIR_UNIT_CAPACITY", iTotal));
 		}
@@ -21892,8 +21892,8 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_NUKE_DAMAGE_MOD", kBuilding.getNukeModifier()));
 		}
 
-		int iNukeExplosionRand = kBuilding.getNukeExplosionRand();
-		if ( iNukeExplosionRand != 0)
+		const int iNukeExplosionRand = kBuilding.getNukeExplosionRand();
+		if (iNukeExplosionRand != 0)
 		{
 			szBuffer.append(NEWLINE);
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_NUKE_EXPLOSION_CHANCE", iNukeExplosionRand));
@@ -26934,7 +26934,7 @@ void CvGameTextMgr::buildFreeUnitString(CvWStringBuffer &szBuffer, TechTypes eTe
 {
 	const UnitTypes eFreeUnit = (UnitTypes)GC.getTechInfo(eTech).getFirstFreeUnit();
 
-	if (eFreeUnit != NO_UNIT && (!bPlayerContext || GC.getGame().countKnownTechNumTeams(eTech) == 0))
+	if (eFreeUnit != NO_UNIT && (!bPlayerContext || CvGame::countKnownTechNumTeams(eTech) == 0))
 	{
 		if (bList)
 		{
@@ -27061,7 +27061,7 @@ void CvGameTextMgr::buildFreeTechString(CvWStringBuffer &szBuffer, TechTypes eTe
 {
 	if (GC.getTechInfo(eTech).getFirstFreeTechs() > 0)
 	{
-		if (!bPlayerContext || (GC.getGame().countKnownTechNumTeams(eTech) == 0))
+		if (!bPlayerContext || CvGame::countKnownTechNumTeams(eTech) == 0)
 		{
 			if (bList)
 			{
@@ -27578,16 +27578,15 @@ bool CvGameTextMgr::buildFoundReligionString(CvWStringBuffer &szBuffer, TechType
 
 bool CvGameTextMgr::buildFoundCorporationString(CvWStringBuffer &szBuffer, TechTypes eTech, int iCorporationType, bool bFirst, bool bList, bool bPlayerContext)
 {
-	CvWString szTempBuffer;
-
 	if (GC.getCorporationInfo((CorporationTypes) iCorporationType).getTechPrereq() == eTech)
 	{
-		if (!bPlayerContext || (GC.getGame().countKnownTechNumTeams(eTech) == 0))
+		if (!bPlayerContext || CvGame::countKnownTechNumTeams(eTech) == 0)
 		{
 			if (bList && bFirst)
 			{
 				szBuffer.append(NEWLINE);
 			}
+			CvWString szTempBuffer;
 			szTempBuffer.Format( SETCOLR L"<link=%s>%s</link>" ENDCOLR , TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), CvWString(GC.getCorporationInfo((CorporationTypes) iCorporationType).getType()).GetCString(), GC.getCorporationInfo((CorporationTypes) iCorporationType).getDescription());
 			setListHelp(szBuffer, gDLL->getText("TXT_KEY_MISC_FIRST_DISCOVER_INCORPORATES").c_str(), szTempBuffer, L", ", bFirst);
 			bFirst = false;

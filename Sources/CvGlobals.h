@@ -553,6 +553,7 @@ public:
 
 	int getNumVoteInfos() const;
 	CvVoteInfo& getVoteInfo(VoteTypes e) const;
+	const std::vector<CvVoteInfo*>& getVoteInfos() const { return m_paVoteInfo; }
 
 	int getNumProjectInfos() const;
 	CvProjectInfo& getProjectInfo(ProjectTypes e) const;

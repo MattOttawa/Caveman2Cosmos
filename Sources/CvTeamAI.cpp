@@ -902,11 +902,11 @@ int CvTeamAI::AI_chooseElection(const VoteSelectionData& kVoteSelectionData) con
 		const VoteTypes eVote = kVoteSelectionData.aVoteOptions[iI].eVote;
 
 		FAssert(GC.getVoteInfo(eVote).isVoteSourceType(eVoteSource));
-		FAssert(GC.getGame().isChooseElection(eVote));
+		FAssert(CvGame::isChooseElection(eVote));
 
 		bool bValid = true;
 
-		if (!GC.getGame().isTeamVote(eVote))
+		if (!CvGame::isTeamVote(eVote))
 		{
 			for (int iJ = 0; iJ < MAX_PLAYERS; iJ++)
 			{
@@ -1972,7 +1972,7 @@ DenialTypes CvTeamAI::AI_surrenderTrade(TeamTypes eMasterTeam, int iPowerMultipl
 				}
 			}
 
-			const int iAdjLandPrcnt = GC.getGame().getAdjustedLandPercent((VictoryTypes)i);
+			const int iAdjLandPrcnt = CvGame::getAdjustedLandPercent((VictoryTypes)i);
 			bool bLandThreat = true;
 			if (iAdjLandPrcnt > 0)
 			{
@@ -2313,7 +2313,7 @@ bool CvTeamAI::AI_acceptSurrender(TeamTypes eSurrenderTeam) const
 	// If we're low on the totem poll, accept so enemies don't drag anyone else into war with us
 	// Top rank is 0, second is 1, etc.
 	const int iTeamRank = GC.getGame().getTeamRank(getID());
-	if (iTeamRank > 1 + GC.getGame().countCivTeamsAlive() / 3)
+	if (iTeamRank > 1 + CvGame::countCivTeamsAlive() / 3)
 	{
 		return true;
 	}
@@ -2936,7 +2936,7 @@ DenialTypes CvTeamAI::AI_defensivePactTrade(TeamTypes eTeam) const
 		return NO_DENIAL;
 	}
 
-	if (GC.getGame().countCivTeamsAlive() == 2)
+	if (CvGame::countCivTeamsAlive() == 2)
 	{
 		return DENIAL_NO_GAIN;
 	}
@@ -2976,7 +2976,7 @@ DenialTypes CvTeamAI::AI_permanentAllianceTrade(TeamTypes eTeam) const
 		return DENIAL_WORST_ENEMY;
 	}
 
-	if (getPower(true) + GET_TEAM(eTeam).getPower(true) > GC.getGame().countTotalCivPower() / 2)
+	if (getPower(true) + GET_TEAM(eTeam).getPower(true) > CvGame::countTotalCivPower() / 2)
 	{
 		if (getPower(true) > GET_TEAM(eTeam).getPower(true))
 		{

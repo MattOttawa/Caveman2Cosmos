@@ -2409,8 +2409,6 @@ void CvGame::updatePlotGroups(bool reInitialize)
 
 void CvGame::updateBuildingCommerce()
 {
-	PROFILE_FUNC();
-
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
 		if (GET_PLAYER((PlayerTypes)iI).isAlive())
@@ -2421,19 +2419,17 @@ void CvGame::updateBuildingCommerce()
 }
 
 
-void CvGame::updateCitySight(bool bIncrement)
-{
-	PROFILE_FUNC();
-
-	for (int iI = 0; iI < MAX_PLAYERS; iI++)
-	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive())
-		{
-			GET_PLAYER((PlayerTypes)iI).updateCitySight(bIncrement, false);
-		}
-	}
-	updatePlotGroups();
-}
+//void CvGame::updateCitySight(bool bIncrement)
+//{
+//	for (int iI = 0; iI < MAX_PLAYERS; iI++)
+//	{
+//		if (GET_PLAYER((PlayerTypes)iI).isAlive())
+//		{
+//			GET_PLAYER((PlayerTypes)iI).updateCitySight(bIncrement, false);
+//		}
+//	}
+//	updatePlotGroups();
+//}
 
 
 void CvGame::updateTradeRoutes()
@@ -2471,7 +2467,7 @@ void CvGame::testExtendedGame()
 }
 
 
-void CvGame::cityPushOrder(const CvCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl) const
+void CvGame::cityPushOrder(const CvCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl)
 {
 	CvMessageControl::getInstance().sendPushOrder(pCity->getID(), eOrder, iData, bAlt, bShift, bCtrl);
 }
@@ -2481,8 +2477,7 @@ void CvGame::selectUnit(CvUnit* pUnit, bool bClear, bool bToggle, bool bSound) c
 {
 	PROFILE_FUNC();
 
-	bool bSelectGroup;
-	bool bGroup;
+	bool bSelectGroup, bGroup;
 
 	if (gDLL->getInterfaceIFace()->getHeadSelectedUnit() == NULL)
 	{
@@ -2671,12 +2666,6 @@ void CvGame::getGlobeviewConfigurationParameters(TeamTypes eTeam, bool& bStarsVi
 }
 
 
-int CvGame::getSymbolID(int iSymbol)
-{
-	return gDLL->getInterfaceIFace()->getSymbolID(iSymbol);
-}
-
-
 int CvGame::getAdjustedPopulationPercent(VictoryTypes eVictory) const
 {
 	if (GC.getVictoryInfo(eVictory).getPopulationPercentLead() == 0)
@@ -2710,17 +2699,17 @@ int CvGame::getAdjustedPopulationPercent(VictoryTypes eVictory) const
 		}
 	}
 
-	return std::min(100, (((iNextBestPopulation * 100) / getTotalPopulation()) + GC.getVictoryInfo(eVictory).getPopulationPercentLead()));
+	return std::min(100, ((iNextBestPopulation * 100) / getTotalPopulation()) + GC.getVictoryInfo(eVictory).getPopulationPercentLead());
 }
 
 
-int CvGame::getProductionPerPopulation(HurryTypes eHurry) const
+int CvGame::getProductionPerPopulation(HurryTypes eHurry)
 {
 	return eHurry != NO_HURRY ? GC.getHurryInfo(eHurry).getProductionPerPopulation() : 0;
 }
 
 
-int CvGame::getAdjustedLandPercent(VictoryTypes eVictory) const
+int CvGame::getAdjustedLandPercent(VictoryTypes eVictory)
 {
 	if (GC.getVictoryInfo(eVictory).getLandPercent() == 0)
 	{
@@ -2735,19 +2724,19 @@ int CvGame::getAdjustedLandPercent(VictoryTypes eVictory) const
 }
 
 
-bool CvGame::isTeamVote(VoteTypes eVote) const
+bool CvGame::isTeamVote(VoteTypes eVote)
 {
 	return (GC.getVoteInfo(eVote).isSecretaryGeneral() || GC.getVoteInfo(eVote).isVictory());
 }
 
 
-bool CvGame::isChooseElection(VoteTypes eVote) const
+bool CvGame::isChooseElection(VoteTypes eVote)
 {
-	return !(GC.getVoteInfo(eVote).isSecretaryGeneral());
+	return !GC.getVoteInfo(eVote).isSecretaryGeneral();
 }
 
 
-bool CvGame::isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource) const
+bool CvGame::isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource)
 {
 	const CvTeam& kTeam = GET_TEAM(eTeam);
 
@@ -2798,12 +2787,12 @@ bool CvGame::isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource) co
 }
 
 
-int CvGame::countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice) const
+int CvGame::countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice)
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_PLAYERS; ++iI)
 	{
-		if (GET_PLAYER((PlayerTypes)iI).isAlive() && getPlayerVote(((PlayerTypes)iI), kData.getID()) == eChoice)
+		if (GET_PLAYER((PlayerTypes)iI).isAlive() && getPlayerVote((PlayerTypes)iI, kData.getID()) == eChoice)
 		{
 			iCount += GET_PLAYER((PlayerTypes)iI).getVotes(kData.kVoteOption.eVote, kData.eVoteSource);
 		}
@@ -2812,7 +2801,7 @@ int CvGame::countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice) c
 }
 
 
-int CvGame::countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource) const
+int CvGame::countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource)
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
@@ -2827,7 +2816,7 @@ int CvGame::countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource) cons
 
 
 
-TeamTypes CvGame::findHighestVoteTeam(const VoteTriggeredData& kData) const
+TeamTypes CvGame::findHighestVoteTeam(const VoteTriggeredData& kData)
 {
 	TeamTypes eBestTeam = NO_TEAM;
 	int iBestCount = 0;
@@ -2851,7 +2840,7 @@ TeamTypes CvGame::findHighestVoteTeam(const VoteTriggeredData& kData) const
 }
 
 
-int CvGame::getVoteRequired(VoteTypes eVote, VoteSourceTypes eVoteSource) const
+int CvGame::getVoteRequired(VoteTypes eVote, VoteSourceTypes eVoteSource)
 {
 	return countPossibleVote(eVote, eVoteSource) * GC.getVoteInfo(eVote).getPopulationThreshold() / 100;
 }
@@ -2895,11 +2884,11 @@ TeamTypes CvGame::getSecretaryGeneral(VoteSourceTypes eVoteSource) const
 	return NO_TEAM;
 }
 
-bool CvGame::canHaveSecretaryGeneral(VoteSourceTypes eVoteSource) const
+bool CvGame::canHaveSecretaryGeneral(VoteSourceTypes eVoteSource)
 {
-	for (int iI = 0; iI < GC.getNumVoteInfos(); iI++)
+	foreach_(const CvVoteInfo* pInfo, GC.getVoteInfos())
 	{
-		if (GC.getVoteInfo((VoteTypes)iI).isVoteSourceType(eVoteSource) && GC.getVoteInfo((VoteTypes)iI).isSecretaryGeneral())
+		if (pInfo->isVoteSourceType(eVoteSource) && pInfo->isSecretaryGeneral())
 		{
 			return true;
 		}
@@ -2941,7 +2930,7 @@ void CvGame::updateSecretaryGeneral()
 	}
 }
 
-int CvGame::countCivPlayersAlive() const
+int CvGame::countCivPlayersAlive()
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
@@ -2952,10 +2941,10 @@ int CvGame::countCivPlayersAlive() const
 }
 
 
-int CvGame::countCivPlayersEverAlive() const
+int CvGame::countCivPlayersEverAlive()
 {
 	int iCount = 0;
-	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)//Might be best to USE CIV rather than PC but it's hard to guess.  The exe could be accessing for a loop setup and that could make this the ultimate variable that CIV is supposed to represent.  But what's inside the dll referencing this does not jive with that and better fits a PC count.
+	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
 	{
 		const CvPlayer& kPlayer = GET_PLAYER((PlayerTypes)iI);
 		if (kPlayer.isEverAlive() && kPlayer.getParent() == NO_PLAYER)
@@ -2967,7 +2956,7 @@ int CvGame::countCivPlayersEverAlive() const
 }
 
 
-int CvGame::countCivTeamsAlive() const
+int CvGame::countCivTeamsAlive()
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_TEAMS; iI++)
@@ -2978,7 +2967,7 @@ int CvGame::countCivTeamsAlive() const
 }
 
 
-int CvGame::countCivTeamsEverAlive() const
+int CvGame::countCivTeamsEverAlive()
 {
 	bool teamsAlive[MAX_PC_TEAMS];
 	memset(teamsAlive, 0, sizeof(bool)*MAX_PC_TEAMS);
@@ -3002,7 +2991,7 @@ int CvGame::countCivTeamsEverAlive() const
 }
 
 
-int CvGame::countHumanPlayersAlive() const
+int CvGame::countHumanPlayersAlive()
 {
 	int iCount = 0;
 
@@ -3017,7 +3006,7 @@ int CvGame::countHumanPlayersAlive() const
 }
 
 
-int CvGame::countTotalCivPower() const
+int CvGame::countTotalCivPower()
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
@@ -3031,7 +3020,7 @@ int CvGame::countTotalCivPower() const
 }
 
 
-int CvGame::countTotalNukeUnits() const
+int CvGame::countTotalNukeUnits()
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
@@ -3045,7 +3034,7 @@ int CvGame::countTotalNukeUnits() const
 }
 
 
-int CvGame::countKnownTechNumTeams(TechTypes eTech) const
+int CvGame::countKnownTechNumTeams(TechTypes eTech)
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PC_TEAMS; iI++)
@@ -3059,17 +3048,17 @@ int CvGame::countKnownTechNumTeams(TechTypes eTech) const
 }
 
 
-int CvGame::getNumFreeBonuses(BuildingTypes eBuilding) const
+int CvGame::getNumFreeBonuses(const CvBuildingInfo& kBuilding)
 {
-	if (GC.getBuildingInfo(eBuilding).getNumFreeBonuses() == -1)
+	if (kBuilding.getNumFreeBonuses() == -1)
 	{
 		return GC.getWorldInfo(GC.getMap().getWorldSize()).getNumFreeBuildingBonuses();
 	}
-	return GC.getBuildingInfo(eBuilding).getNumFreeBonuses();
+	return kBuilding.getNumFreeBonuses();
 }
 
 
-int CvGame::countReligionLevels(ReligionTypes eReligion) const
+int CvGame::countReligionLevels(ReligionTypes eReligion)
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
@@ -3082,7 +3071,7 @@ int CvGame::countReligionLevels(ReligionTypes eReligion) const
 	return iCount;
 }
 
-int CvGame::countCorporationLevels(CorporationTypes eCorporation) const
+int CvGame::countCorporationLevels(CorporationTypes eCorporation)
 {
 	int iCount = 0;
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
@@ -3177,7 +3166,7 @@ int CvGame::getImprovementUpgradeTime(ImprovementTypes eImprovement) const
 }
 
 
-bool CvGame::canTrainNukes() const
+bool CvGame::canTrainNukes()
 {
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
@@ -3259,7 +3248,7 @@ bool CvGame::isGameMultiPlayer() const
 bool CvGame::isTeamGame() const
 {
 	FAssert(countCivPlayersAlive() >= countCivTeamsAlive());
-	return (countCivPlayersAlive() > countCivTeamsAlive());
+	return countCivPlayersAlive() > countCivTeamsAlive();
 }
 
 
@@ -5368,7 +5357,7 @@ void CvGame::makeSpecialBuildingValid(SpecialBuildingTypes eIndex, bool bAnnounc
 }
 
 
-bool CvGame::isInAdvancedStart() const
+bool CvGame::isInAdvancedStart()
 {
 	for (int iPlayer = 0; iPlayer < MAX_PC_PLAYERS; iPlayer++)
 	{
@@ -5598,10 +5587,10 @@ void CvGame::setHeadquarters(CorporationTypes eIndex, CvCity* pNewValue, bool bA
 }
 
 
-PlayerVoteTypes CvGame::getPlayerVote(PlayerTypes eOwnerIndex, int iVoteId) const
+PlayerVoteTypes CvGame::getPlayerVote(PlayerTypes eOwnerIndex, int iVoteId)
 {
 	FASSERT_BOUNDS(0, MAX_PC_PLAYERS, eOwnerIndex);
-	FAssert(NULL != getVoteTriggered(iVoteId));
+	FAssert(NULL != GC.getGame().getVoteTriggered(iVoteId));
 
 	return GET_PLAYER(eOwnerIndex).getVote(iVoteId);
 }
@@ -5610,7 +5599,7 @@ PlayerVoteTypes CvGame::getPlayerVote(PlayerTypes eOwnerIndex, int iVoteId) cons
 void CvGame::setPlayerVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes eNewValue)
 {
 	FASSERT_BOUNDS(0, MAX_PC_PLAYERS, eOwnerIndex);
-	FAssert(NULL != getVoteTriggered(iVoteId));
+	FAssert(NULL != GC.getGame().getVoteTriggered(iVoteId));
 
 	GET_PLAYER(eOwnerIndex).setVote(iVoteId, eNewValue);
 }
@@ -7853,13 +7842,13 @@ int CvGame::getNumDeals() const
 
 CvDeal* CvGame::getDeal(int iID)
 {
-	return ((CvDeal *)(m_deals.getAt(iID)));
+	return m_deals.getAt(iID);
 }
 
 
 CvDeal* CvGame::addDeal()
 {
-	return ((CvDeal *)(m_deals.add()));
+	return m_deals.add();
 }
 
 
@@ -8915,11 +8904,6 @@ void CvGame::setReplayInfo(CvReplayInfo* pReplay)
 	m_pReplayInfo = pReplay;
 }
 
-bool CvGame::hasSkippedSaveChecksum() const
-{
-	return gDLL->hasSkippedSaveChecksum();
-}
-
 void CvGame::logNetMsgData(char* format, ...)
 {
 	if (isNetworkMultiPlayer())
@@ -9025,7 +9009,7 @@ void CvGame::changeHumanPlayer( PlayerTypes eOldHuman, PlayerTypes eNewHuman )
 	GET_PLAYER(eOldHuman).setIsHuman(false);
 }
 
-bool CvGame::isCompetingCorporation(CorporationTypes eCorporation1, CorporationTypes eCorporation2) const
+bool CvGame::isCompetingCorporation(CorporationTypes eCorporation1, CorporationTypes eCorporation2)
 {
 	if (GC.getCorporationInfo(eCorporation1).isCompetingCorporation(eCorporation2) || GC.getCorporationInfo(eCorporation2).isCompetingCorporation(eCorporation1))
 		return true;
@@ -9510,7 +9494,7 @@ void CvGame::deleteVoteSelection(int iID)
 
 VoteTriggeredData* CvGame::getVoteTriggered(int iID) const
 {
-	return ((VoteTriggeredData*)(m_votesTriggered.getAt(iID)));
+	return m_votesTriggered.getAt(iID);
 }
 
 VoteTriggeredData* CvGame::addVoteTriggered(const VoteSelectionData& kData, int iChoice)
@@ -9525,7 +9509,7 @@ VoteTriggeredData* CvGame::addVoteTriggered(const VoteSelectionData& kData, int 
 
 VoteTriggeredData* CvGame::addVoteTriggered(VoteSourceTypes eVoteSource, const VoteSelectionSubData& kOptionData)
 {
-	VoteTriggeredData* pData = ((VoteTriggeredData*)(m_votesTriggered.add()));
+	VoteTriggeredData* pData = m_votesTriggered.add();
 
 	if (NULL != pData)
 	{
@@ -9612,7 +9596,7 @@ void CvGame::doVoteResults()
 
 			if (isTeamVote(eVote))
 			{
-				TeamTypes eTeam = findHighestVoteTeam(*pVoteTriggered);
+				const TeamTypes eTeam = findHighestVoteTeam(*pVoteTriggered);
 
 				if (NO_TEAM != eTeam)
 				{
@@ -9871,21 +9855,21 @@ void CvGame::initEvents()
 	}
 }
 
-bool CvGame::isCivEverActive(CivilizationTypes eCivilization) const
-{
-	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
-	{
-		const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
-		if (kLoopPlayer.isEverAlive() && kLoopPlayer.getCivilizationType() == eCivilization)
-		{
-			return true;
-		}
-	}
+//bool CvGame::isCivEverActive(CivilizationTypes eCivilization)
+//{
+//	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
+//	{
+//		const CvPlayer& kLoopPlayer = GET_PLAYER((PlayerTypes)iPlayer);
+//		if (kLoopPlayer.isEverAlive() && kLoopPlayer.getCivilizationType() == eCivilization)
+//		{
+//			return true;
+//		}
+//	}
+//
+//	return false;
+//}
 
-	return false;
-}
-
-bool CvGame::isLeaderEverActive(LeaderHeadTypes eLeader) const
+bool CvGame::isLeaderEverActive(LeaderHeadTypes eLeader)
 {
 	for (int iPlayer = 0; iPlayer < MAX_PLAYERS; iPlayer++)
 	{
@@ -9912,7 +9896,7 @@ void CvGame::processBuilding(BuildingTypes eBuilding, int iChange)
 	}
 }
 
-bool CvGame::pythonIsBonusIgnoreLatitudes() const
+bool CvGame::pythonIsBonusIgnoreLatitudes()
 {
 	bool lResult = false;
 	if (Cy::call_override(GC.getMap().getMapScript(), "isBonusIgnoreLatitude", lResult))
@@ -10075,7 +10059,6 @@ void CvGame::doFinalFive()
 
 void CvGame::doHightoLow()
 {
-
 	if (!isGameMultiPlayer() && isOption(GAMEOPTION_CHALLENGE_HIGH_TO_LOW)
 	&& getGameTurn() >= GC.getDefineINT("HIGH_TO_LOW_FIRST_TURN_CHECK")
 	&& getHighToLowCounter() < 2)
@@ -10099,7 +10082,6 @@ void CvGame::doHightoLow()
 
 void CvGame::doIncreasingDifficulty()
 {
-
 	if (isOption(GAMEOPTION_CHALLENGE_INCREASING_DIFFICULTY))
 	{
 		changeIncreasingDifficultyCounter(1);
@@ -11287,15 +11269,6 @@ int CvGame::getCoastalBuildings() const
 	return m_iCoastalBuildings;
 }
 
-bool CvGame::canExitToMainMenu() const
-{
-	if (gDLL->getInterfaceIFace()->isDebugMenuCreated())
-	{
-		return false;
-	}
-	return true;
-}
-
 void CvGame::calculateNumWonders()
 {
 	m_iNumWonders = 0;
@@ -11679,17 +11652,17 @@ void CvGame::ensureChokePointsEvaluated()
 	}
 }
 
-int CvGame::getBaseAirUnitIncrementsbyCargoVolume() const
+int CvGame::getBaseAirUnitIncrementsbyCargoVolume()
 {
 	const int multiplier = std::max(1, GC.getSIZE_MATTERS_MOST_VOLUMETRIC_MULTIPLIER());
-	int iBase = 10000 / multiplier;
+	const int iBase = 10000 / multiplier;
 	return iBase;
 }
 
-int CvGame::getBaseMissileUnitIncrementsbyCargoVolume() const
+int CvGame::getBaseMissileUnitIncrementsbyCargoVolume() 
 {
 	const int multiplier = std::max(1, GC.getSIZE_MATTERS_MOST_VOLUMETRIC_MULTIPLIER());
-	int iBase = 10000 / (multiplier * multiplier * multiplier);
+	const int iBase = 10000 / (multiplier * multiplier * multiplier);
 	return std::max(1, iBase);
 }
 
@@ -11715,7 +11688,7 @@ void CvGame::logOOSSpecial(int iLocID, int iVar, int iVar2, int iVar3)
 	}
 }
 
-int CvGame::getTopCityCount() const
+int CvGame::getTopCityCount()
 {
 	int iBest = 0;
 	for (int iI = 0; iI < MAX_PC_TEAMS; iI++)
@@ -11729,7 +11702,7 @@ int CvGame::getTopCityCount() const
 	return iBest;
 }
 
-int CvGame::getTopPopCount() const
+int CvGame::getTopPopCount()
 {
 	int iBest = 0;
 	for (int iI = 0; iI < MAX_PC_TEAMS; iI++)

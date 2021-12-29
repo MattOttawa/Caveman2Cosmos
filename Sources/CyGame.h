@@ -34,14 +34,14 @@ public:
 	void selectionListMove(const CyPlot* pPlot, bool bAlt, bool bShift, bool bCtrl);
 	void selectionListGameNetMessage(int eMessage, int iData2, int iData3, int iData4, int iFlags, bool bAlt, bool bShift);
 	void selectedCitiesGameNetMessage(int eMessage, int iData2, int iData3, int iData4, bool bOption, bool bAlt, bool bShift, bool bCtrl);
-	void cityPushOrder(const CyCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl);
+	void cityPushOrder(const CyCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl) const;
 
 	int getSymbolID(int iSymbol) const;
 
 	int getProductionPerPopulation(HurryTypes eHurry) const;
 
 	int getAdjustedPopulationPercent(VictoryTypes eVictory) const;
-	int getAdjustedLandPercent( VictoryTypes eVictory) const;
+	int getAdjustedLandPercent(VictoryTypes eVictory) const;
 
 	bool isTeamVote(VoteTypes eVote) const;
 	bool isChooseElection(VoteTypes eVote) const;
@@ -282,7 +282,7 @@ public:
 	void setPlotExtraYield(int iX, int iY, YieldTypes eYield, int iExtraYield);
 	void changePlotExtraCost(int iX, int iY, int iExtraCost);
 
-	bool isCivEverActive(CivilizationTypes eCivilization) const;
+	//bool isCivEverActive(CivilizationTypes eCivilization) const;
 	bool isLeaderEverActive(LeaderHeadTypes eLeader) const;
 
 	bool isEventActive(EventTriggerTypes eTrigger) const;

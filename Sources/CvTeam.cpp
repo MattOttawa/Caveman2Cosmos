@@ -5257,7 +5257,7 @@ void CvTeam::setHasTech(TechTypes eTech, bool bNewValue, PlayerTypes ePlayer, bo
 		bool bReligionFounded = false;
 		bool bClearResearchQueueAI = false;
 
-		if (bFirst && GC.getGame().countKnownTechNumTeams(eTech) == 1)
+		if (bFirst && CvGame::countKnownTechNumTeams(eTech) == 1)
 		{
 			if (!GC.getGame().isOption(GAMEOPTION_DIVINE_PROPHETS)
 			&& GC.getGame().isTechCanFoundReligion(eTech))
@@ -5389,7 +5389,7 @@ void CvTeam::setHasTech(TechTypes eTech, bool bNewValue, PlayerTypes ePlayer, bo
 			}
 		}
 
-		if (bFirst && GC.getGame().countKnownTechNumTeams(eTech) == 1)
+		if (bFirst && CvGame::countKnownTechNumTeams(eTech) == 1)
 		{
 			const UnitTypes eFreeUnit = (UnitTypes)kTech.getFirstFreeUnit();
 			if (eFreeUnit != NO_UNIT)
@@ -5405,7 +5405,7 @@ void CvTeam::setHasTech(TechTypes eTech, bool bNewValue, PlayerTypes ePlayer, bo
 			//TB Prophet Mod begin
 			if (GC.getGame().isOption(GAMEOPTION_DIVINE_PROPHETS))
 			{
-				const UnitTypes eFreeProphet = GET_PLAYER(ePlayer).getTechFreeProphet(eTech);
+				const UnitTypes eFreeProphet = (UnitTypes) kTech.getFirstFreeProphet();
 				if (eFreeProphet != NO_UNIT)
 				{
 					bClearResearchQueueAI = true;
@@ -7893,14 +7893,13 @@ int CvTeam::getTypicalUnitValue(UnitAITypes eUnitAI) const
 
 int CvTeam::getWinForLosingResearchModifier() const
 {
-	const int iTopCityCount = GC.getGame().getTopCityCount();
-	const int iTopPopCount = GC.getGame().getTopPopCount();
+	const int iTopCityCount = CvGame::getTopCityCount();
+	const int iTopPopCount = CvGame::getTopPopCount();
 	const int iOurCityCount = getNumCities() * 100;
 	const int iOurPopCount = getTotalPopulation(false) * 100;
 	const int iCityPercent = iOurCityCount/std::max(1,iTopCityCount);
 	const int iPopPercent = iOurPopCount/std::max(1,iTopPopCount);
-	int iModifier = iCityPercent+iPopPercent;
-	iModifier /= 2;
+	const int iModifier = iCityPercent+iPopPercent / 2;
 	const int iFinal = 100-iModifier;
 	return iFinal;
 }

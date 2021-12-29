@@ -641,21 +641,20 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 			}
 		}
 
-		if (!isHuman() && (iCurrentEra <= ((iTotalEras * 2) / 3)))
+		if (!isHuman() && iCurrentEra <= iTotalEras * 2 / 3)
 		{
 			// try to spawn a prophet for any shrines we have yet to build
 			bool bNeedProphet = false;
 			int iBestSpreadValue = 0;
 
-
 			for (int iJ = 0; iJ < GC.getNumReligionInfos(); iJ++)
 			{
-				ReligionTypes eReligion = (ReligionTypes)iJ;
+				const ReligionTypes eReligion = (ReligionTypes)iJ;
 
 				if (isHolyCity(eReligion) && !hasShrine(eReligion)
-					&& ((iCurrentEra < iTotalEras / 2) || GC.getGame().countReligionLevels(eReligion) >= 10))
+				&& (iCurrentEra < iTotalEras / 2 || CvGame::countReligionLevels(eReligion) >= 10))
 				{
-					UnitTypes eGreatPeopleUnit = (UnitTypes)GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitType();
+					const UnitTypes eGreatPeopleUnit = (UnitTypes)GC.getSpecialistInfo(eSpecialist).getGreatPeopleUnitType();
 					if (eGreatPeopleUnit != NO_UNIT)
 					{
 						// note, for normal XML, this count will be one (there is only 1 shrine building for each religion)
@@ -668,7 +667,7 @@ int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bAvoidGrowth,
 							if (GC.getUnitInfo(eGreatPeopleUnit).getHasBuilding(eBuilding))
 							{
 								bNeedProphet = true;
-								iBestSpreadValue = std::max(iBestSpreadValue, GC.getGame().countReligionLevels(eReligion));
+								iBestSpreadValue = std::max(iBestSpreadValue, CvGame::countReligionLevels(eReligion));
 							}
 						}
 					}
@@ -3832,7 +3831,7 @@ UnitTypes CvCityAI::AI_bestUnit(int& iBestUnitValue, int iNumSelectableTypes, Un
 
 		if (bPrimaryArea)
 		{
-			aiUnitAIVal[UNITAI_ICBM] += std::max((GET_PLAYER(getOwner()).getTotalPopulation() / 25), ((GC.getGame().countCivPlayersAlive() + GC.getGame().countTotalNukeUnits()) / (GC.getGame().countCivPlayersAlive() + 1)));
+			aiUnitAIVal[UNITAI_ICBM] += std::max((GET_PLAYER(getOwner()).getTotalPopulation() / 25), ((CvGame::countCivPlayersAlive() + CvGame::countTotalNukeUnits()) / (CvGame::countCivPlayersAlive() + 1)));
 		}
 
 		if (isHominid())
@@ -4011,7 +4010,7 @@ UnitTypes CvCityAI::AI_bestUnit(int& iBestUnitValue, int iNumSelectableTypes, Un
 			{
 				int iUnitValue;
 
-				UnitTypes eUnit = AI_bestUnitAI((UnitAITypes)iI, iUnitValue, bAsync, bNoRand, criteria);
+				const UnitTypes eUnit = AI_bestUnitAI((UnitAITypes)iI, iUnitValue, bAsync, bNoRand, criteria);
 
 				if (eUnit != NO_UNIT && AI_meetsUnitSelectionCriteria(eUnit, criteria) && iUnitValue > iBestUnitValue)
 				{
@@ -6620,7 +6619,7 @@ int CvCityAI::AI_projectValue(ProjectTypes eProject) const
 	int iValue = 0;
 	const CvProjectInfo& project = GC.getProjectInfo(eProject);
 
-	if (project.getNukeInterception() > 0 && GC.getGame().canTrainNukes())
+	if (project.getNukeInterception() > 0 && CvGame::canTrainNukes())
 	{
 		iValue += project.getNukeInterception() / 10;
 	}
@@ -14901,7 +14900,7 @@ int CvCityAI::getBuildingCommerceValue(BuildingTypes eBuilding, int iI, int* aiF
 
 		if (eReligionGlobalCommerce != NO_RELIGION)
 		{
-			iResult += GC.getReligionInfo(eReligionGlobalCommerce).getGlobalReligionCommerce(iI) * GC.getGame().countReligionLevels(eReligionGlobalCommerce) * 2;
+			iResult += GC.getReligionInfo(eReligionGlobalCommerce).getGlobalReligionCommerce(iI) * CvGame::countReligionLevels(eReligionGlobalCommerce) * 2;
 
 			if (eStateReligion == eReligionGlobalCommerce)
 			{
@@ -14910,7 +14909,7 @@ int CvCityAI::getBuildingCommerceValue(BuildingTypes eBuilding, int iI, int* aiF
 		}
 	}
 
-	CorporationTypes eCorporation = (CorporationTypes)kBuilding.getFoundsCorporation();
+	const CorporationTypes eCorporation = (CorporationTypes)kBuilding.getFoundsCorporation();
 	int iCorpValue = 0;
 	if (NO_CORPORATION != eCorporation)
 	{
@@ -14919,7 +14918,7 @@ int CvCityAI::getBuildingCommerceValue(BuildingTypes eBuilding, int iI, int* aiF
 		for (int iCorp = 0; iCorp < GC.getNumCorporationInfos(); iCorp++)
 		{
 			if (iCorp != eCorporation && kOwner.hasHeadquarters((CorporationTypes)iCorp)
-				&& GC.getGame().isCompetingCorporation(eCorporation, (CorporationTypes)iCorp))
+				&& CvGame::isCompetingCorporation(eCorporation, (CorporationTypes)iCorp))
 			{
 				if (kOwner.AI_corporationValue((CorporationTypes)iCorp, this) > iCorpValue)
 				{
@@ -14939,7 +14938,7 @@ int CvCityAI::getBuildingCommerceValue(BuildingTypes eBuilding, int iI, int* aiF
 	{
 		if (kBuilding.getGlobalCorporationCommerce() != NO_CORPORATION)
 		{
-			int iGoldValue = (GC.getCorporationInfo((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())).getHeadquarterCommerce(iI) * GC.getGame().countCorporationLevels((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())) * 2);
+			int iGoldValue = (GC.getCorporationInfo((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())).getHeadquarterCommerce(iI) * CvGame::countCorporationLevels((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())) * 2);
 
 			iGoldValue += GC.getCorporationInfo((CorporationTypes)(kBuilding.getGlobalCorporationCommerce())).getHeadquarterCommerce(iI);
 			if (iGoldValue > 0)

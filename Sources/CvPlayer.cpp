@@ -2021,11 +2021,11 @@ int CvPlayer::startingPlotRange() const
 	int iRange = 10 + GC.getMap().maxStepDistance();
 
 	// GC.getSTARTING_DISTANCE_PERCENT() / 100
-	// GC.getMap().getLandPlots() / (NUM_CITY_PLOTS * GC.getWorldInfo(GC.getMap().getWorldSize()).getTargetNumCities() * GC.getGame().countCivPlayersAlive())
+	// GC.getMap().getLandPlots() / (NUM_CITY_PLOTS * GC.getWorldInfo(GC.getMap().getWorldSize()).getTargetNumCities() * CvGame::countCivPlayersAlive())
 	iRange *= GC.getSTARTING_DISTANCE_PERCENT() * GC.getMap().getLandPlots();
-	iRange /= 100 * NUM_CITY_PLOTS * GC.getWorldInfo(GC.getMap().getWorldSize()).getTargetNumCities() * GC.getGame().countCivPlayersAlive();
+	iRange /= 100 * NUM_CITY_PLOTS * GC.getWorldInfo(GC.getMap().getWorldSize()).getTargetNumCities() * CvGame::countCivPlayersAlive();
 
-	iRange += std::min((GC.getMap().getNumAreas() + 1) / 2, GC.getGame().countCivPlayersAlive());
+	iRange += std::min((GC.getMap().getNumAreas() + 1) / 2, CvGame::countCivPlayersAlive());
 
 	int iResult = 0;
 	if (Cy::call_optional(GC.getMap().getMapScript(), "minStartingDistanceModifier", iResult))
@@ -2892,7 +2892,7 @@ void CvPlayer::killCities()
 	}
 	// Super Forts end
 
-	GC.getGame().updatePlotGroups();
+	CvGame::updatePlotGroups();
 }
 
 
@@ -4444,7 +4444,7 @@ void CvPlayer::updateReligionCommerce()
 
 void CvPlayer::updateCorporation()
 {
-	for_each(cities(), CvCity::fn::updateCorporation());
+	algo::for_each(cities(), CvCity::fn::updateCorporation());
 }
 
 
@@ -5531,7 +5531,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 			if (GC.getGame().isOption(GAMEOPTION_ADVANCED_DIPLOMACY)
 			&& !GET_TEAM(getTeam()).isHuman()
 			&& GC.getGame().isDiploVote((VoteSourceTypes)item.m_iData)
-			&& GC.getGame().isTeamVoteEligible(GET_PLAYER(eWhoTo).getTeam(), (VoteSourceTypes)item.m_iData)
+			&& CvGame::isTeamVoteEligible(GET_PLAYER(eWhoTo).getTeam(), (VoteSourceTypes)item.m_iData)
 			&& isVotingMember((VoteSourceTypes)item.m_iData) && getPledgedSecretaryGeneralVote() == NO_TEAM)
 			{
 				bResult = true;
@@ -5549,7 +5549,7 @@ bool CvPlayer::canTradeItem(PlayerTypes eWhoTo, TradeData item, bool bTestDenial
 				{
 					const CvVoteInfo& kVote = GC.getVoteInfo(pVoteTriggered->kVoteOption.eVote);
 
-					if (!GC.getGame().isTeamVote(pVoteTriggered->kVoteOption.eVote)
+					if (!CvGame::isTeamVote(pVoteTriggered->kVoteOption.eVote)
 					&& isVotingMember(pVoteTriggered->eVoteSource)
 					&& GET_PLAYER(eWhoTo).isVotingMember(pVoteTriggered->eVoteSource)
 					&& getPledgedVote() == NO_PLAYER_VOTE)
@@ -6900,7 +6900,7 @@ bool CvPlayer::canConstructInternal(BuildingTypes eBuilding, bool bContinue, boo
 		}
 	}
 
-	if (GC.getGame().countCivTeamsEverAlive() < kBuilding.getNumTeamsPrereq())
+	if (CvGame::countCivTeamsEverAlive() < kBuilding.getNumTeamsPrereq())
 	{
 		return false;
 	}
@@ -8458,7 +8458,7 @@ bool CvPlayer::canEverResearch(TechTypes eTech) const
 		return false;
 	}
 
-	if (GC.getTechInfo(eTech).isGlobal() && (isNPC() || GC.getGame().countKnownTechNumTeams(eTech) > 0))
+	if (GC.getTechInfo(eTech).isGlobal() && (isNPC() || CvGame::countKnownTechNumTeams(eTech) > 0))
 	{
 		return false;
 	}
@@ -11147,7 +11147,7 @@ void CvPlayer::changeNoForeignTradeCount(int iChange, bool bLimited)
 
 		if (!bLimited)
 		{
-			GC.getGame().updateTradeRoutes();
+			CvGame::updateTradeRoutes();
 		}
 	}
 }
@@ -12435,7 +12435,7 @@ void CvPlayer::setTurnActive(bool bNewValue, bool bDoTurn)
 #endif
 				if (!GC.getGame().isMPOption(MPOPTION_SIMULTANEOUS_TURNS))
 				{
-					if ((GC.getGame().isPbem() || GC.getGame().isHotSeat()) && isHuman() && GC.getGame().countHumanPlayersAlive() > 1)
+					if ((GC.getGame().isPbem() || GC.getGame().isHotSeat()) && isHuman() && CvGame::countHumanPlayersAlive() > 1)
 					{
 						GC.getGame().setHotPbemBetweenTurns(true);
 					}
@@ -14345,7 +14345,7 @@ void CvPlayer::changeHasReligionCount(ReligionTypes eIndex, int iChange)
 
 void CvPlayer::changeHasCorporationCount(CorporationTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumCorporationInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumCorporationInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -24507,7 +24507,7 @@ bool CvPlayer::canDefyResolution(VoteSourceTypes eVoteSource, const VoteSelectio
 			return true;
 		}
 	}
-	else if (!GC.getGame().isTeamVote(kData.eVote))
+	else if (!CvGame::isTeamVote(kData.eVote))
 	{
 		return true;
 	}
@@ -24844,17 +24844,6 @@ void CvPlayer::verifyUnitStacksValid()
 {
 	algo::for_each(units(), CvUnit::fn::verifyStackValid());
 }
-
-//TB Prophet Mod begin
-UnitTypes CvPlayer::getTechFreeProphet(TechTypes eTech) const
-{
-	if (GC.getGame().isOption(GAMEOPTION_DIVINE_PROPHETS))
-	{
-		return (UnitTypes) GC.getTechInfo(eTech).getFirstFreeProphet();
-	}
-	return NO_UNIT;
-}
-//TB Prophet Mod end
 
 // BUG - Trade Totals - start
 /*
@@ -26240,7 +26229,7 @@ CvCity* CvPlayer::getBestHQCity(CorporationTypes eCorporation) const
 				{
 					if (pLoopCity->isHeadquarters((CorporationTypes)iCorporation))
 					{
-						if (GC.getGame().isCompetingCorporation((CorporationTypes)iCorporation, eCorporation))
+						if (CvGame::isCompetingCorporation((CorporationTypes)iCorporation, eCorporation))
 						{
 							continue;
 						}
@@ -26433,7 +26422,7 @@ DenialTypes CvPlayer::AI_secretaryGeneralTrade(VoteSourceTypes eVoteSource, Play
 		return DENIAL_WORST_ENEMY;
 	}
 
-	if (GC.getGame().isTeamVoteEligible(getTeam(), eVoteSource))
+	if (CvGame::isTeamVoteEligible(getTeam(), eVoteSource))
 	{
 		return DENIAL_JOKING;
 	}

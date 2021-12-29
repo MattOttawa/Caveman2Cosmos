@@ -563,7 +563,7 @@ void CvDLLButtonPopup::OnOkClicked(CvPopup* pPopup, PopupReturn *pPopupReturn, C
 		else if (pPopupReturn->getButtonClicked() == 1)
 		{
 			// exit to main menu
-			if (GC.getGame().isNetworkMultiPlayer() && GC.getGame().canDoControl(CONTROL_RETIRE) && GC.getGame().countHumanPlayersAlive() > 1)
+			if (GC.getGame().isNetworkMultiPlayer() && GC.getGame().canDoControl(CONTROL_RETIRE) && CvGame::countHumanPlayersAlive() > 1)
 			{
 				GC.getGame().doControl(CONTROL_RETIRE);
 			}
@@ -1620,13 +1620,13 @@ bool CvDLLButtonPopup::launchDiploVotePopup(CvPopup* pPopup, CvPopupInfo &info)
 
 	gDLL->getInterfaceIFace()->popupSetHeaderString(pPopup, GC.getVoteSourceInfo(eVoteSource).getDescription());
 	gDLL->getInterfaceIFace()->popupSetBodyString(pPopup, pVoteTriggered->kVoteOption.szText);
-	if (GC.getGame().isTeamVote(eVote))
+	if (CvGame::isTeamVote(eVote))
 	{
 		for (int iI = 0; iI < MAX_PC_TEAMS; iI++)
 		{
 			if (GET_TEAM((TeamTypes)iI).isAlive())
 			{
-				if (GC.getGame().isTeamVoteEligible((TeamTypes)iI, eVoteSource))
+				if (CvGame::isTeamVoteEligible((TeamTypes)iI, eVoteSource))
 				{
 					if (GET_TEAM(GC.getGame().getActiveTeam()).isVassal((TeamTypes)iI))
 					{
@@ -1641,7 +1641,7 @@ bool CvDLLButtonPopup::launchDiploVotePopup(CvPopup* pPopup, CvPopupInfo &info)
 		{
 			if (GET_TEAM((TeamTypes)iI).isAlive())
 			{
-				if (GC.getGame().isTeamVoteEligible((TeamTypes)iI, eVoteSource))
+				if (CvGame::isTeamVoteEligible((TeamTypes)iI, eVoteSource))
 				{
 					if (eVassalOfTeam == NO_TEAM || eVassalOfTeam == iI || iI == GC.getGame().getActiveTeam())
 					{
@@ -1849,17 +1849,17 @@ bool CvDLLButtonPopup::launchChooseTechPopup(CvPopup* pPopup, CvPopupInfo &info)
 
 				if (player.canFoundReligion() && GC.getGame().isTechCanFoundReligion((TechTypes)iI))
 				{
-					for (int iJ = 0; iJ < GC.getNumReligionInfos(); iJ++)
+					foreach_(const CvReligionInfo* pReligionInfo, GC.getReligionInfos())
 					{
-						if (GC.getReligionInfo((ReligionTypes)iJ).getTechPrereq() == iI)
+						if (pReligionInfo->getTechPrereq() == iI)
 						{
-							if (GC.getGame().countKnownTechNumTeams((TechTypes)iI) < 1)
+							if (CvGame::countKnownTechNumTeams((TechTypes)iI) < 1)
 							{
-								szButton = GC.getReligionInfo((ReligionTypes) iJ).getTechButton();
+								szButton = pReligionInfo->getTechButton();
 							}
 							else
 							{
-								szButton = GC.getReligionInfo((ReligionTypes) iJ).getGenericTechButton();
+								szButton = pReligionInfo->getGenericTechButton();
 							}
 							break;
 						}
@@ -2538,7 +2538,7 @@ bool CvDLLButtonPopup::launchExtendedGamePopup(CvPopup* pPopup, CvPopupInfo &inf
 {
 	gDLL->getInterfaceIFace()->popupSetHeaderString(pPopup, gDLL->getText("TXT_KEY_EXTENDED_GAME_TITLE"));
 
-	if (GC.getGame().countHumanPlayersAlive() > 0)
+	if (CvGame::countHumanPlayersAlive() > 0)
 	{
 		gDLL->getInterfaceIFace()->popupAddGenericButton(pPopup, gDLL->getText("TXT_KEY_EXTENDED_GAME_YES"), NULL, 0, WIDGET_GENERAL);
 	}

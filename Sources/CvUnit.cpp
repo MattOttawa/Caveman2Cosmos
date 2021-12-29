@@ -6209,7 +6209,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 				{
 					if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 					{
-						if (pPlot->airUnitSpaceAvailable(getTeam()) < GC.getGame().getBaseAirUnitIncrementsbyCargoVolume())
+						if (pPlot->airUnitSpaceAvailable(getTeam()) < CvGame::getBaseAirUnitIncrementsbyCargoVolume())
 						{
 							bValid = false;
 						}
@@ -10714,7 +10714,7 @@ bool CvUnit::canSpreadCorporation(const CvPlot* pPlot, CorporationTypes eCorpora
 		{
 			if (pCity->isHeadquarters((CorporationTypes)iCorporation))
 			{
-				if (GC.getGame().isCompetingCorporation((CorporationTypes)iCorporation, eCorporation))
+				if (CvGame::isCompetingCorporation((CorporationTypes)iCorporation, eCorporation))
 				{
 					return false;
 				}
@@ -10762,7 +10762,7 @@ int CvUnit::spreadCorporationCost(CorporationTypes eCorporation, const CvCity* p
 		for (int iCorp = 0; iCorp < GC.getNumCorporationInfos(); ++iCorp)
 		{
 			if (iCorp != eCorporation && pCity->isActiveCorporation((CorporationTypes)iCorp)
-			&& GC.getGame().isCompetingCorporation(eCorporation, (CorporationTypes)iCorp))
+			&& CvGame::isCompetingCorporation(eCorporation, (CorporationTypes)iCorp))
 			{
 				iCost *= 100 + GC.getCorporationInfo((CorporationTypes)iCorp).getSpreadFactor();
 				iCost /= 100;

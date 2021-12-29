@@ -1341,14 +1341,12 @@ void CvGame::setupActionCache() const
 void CvGame::handleAction(int iAction)
 {
 	CvUnit* pHeadSelectedUnit;
-	bool bAlt;
-	bool bShift;
 	bool bSkip;
 
-	bAlt = gDLL->altKey();
-	bShift = gDLL->shiftKey();
+	bool bAlt = gDLL->altKey();
+	bool bShift = gDLL->shiftKey();
 
-	if (!(gDLL->getInterfaceIFace()->canHandleAction(iAction)))
+	if (!gDLL->getInterfaceIFace()->canHandleAction(iAction))
 	{
 		return;
 	}

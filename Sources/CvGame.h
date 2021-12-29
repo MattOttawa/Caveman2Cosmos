@@ -64,10 +64,10 @@ public:
 	DllExport void updateColoredPlots();
 	DllExport void updateBlockadedPlots();
 
-	void updatePlotGroups(bool reInitialize = false);
-	void updateBuildingCommerce();
-	void updateCitySight(bool bIncrement);
-	void updateTradeRoutes();
+	static void updatePlotGroups(bool reInitialize = false);
+	static void updateBuildingCommerce();
+	//static void updateCitySight(bool bIncrement);
+	static void updateTradeRoutes();
 
 	DllExport void updateSelectionList();
 	DllExport void updateTestEndTurn();
@@ -101,7 +101,7 @@ public:
 	DllExport void selectionListGameNetMessage(int eMessage, int iData2 = -1, int iData3 = -1, int iData4 = -1, int iFlags = 0, bool bAlt = false, bool bShift = false) const;
 	void selectionListGameNetMessageInternal(int eMessage, int iData2, int iData3, int iData4, int iFlags, bool bAlt, bool bShift, bool bInViewportCoordinates) const;
 	DllExport void selectedCitiesGameNetMessage(int eMessage, int iData2 = -1, int iData3 = -1, int iData4 = -1, bool bOption = false, bool bAlt = false, bool bShift = false, bool bCtrl = false) const;
-	void cityPushOrder(const CvCity* pCity, OrderTypes eOrder, int iData, bool bAlt = false, bool bShift = false, bool bCtrl = false) const;
+	static void cityPushOrder(const CvCity* pCity, OrderTypes eOrder, int iData, bool bAlt = false, bool bShift = false, bool bCtrl = false);
 
 	DllExport void selectUnit(CvUnit* pUnit, bool bClear, bool bToggle = false, bool bSound = false) const;
 	DllExport void selectGroup(CvUnit* pUnit, bool bShift, bool bCtrl, bool bAlt) const;
@@ -121,46 +121,44 @@ public:
 
 	DllExport void getGlobeviewConfigurationParameters(TeamTypes eTeam, bool& bStarsVisible, bool& bWorldIsRound);
 
-	int getSymbolID(int iSymbol);
-
-	int getProductionPerPopulation(HurryTypes eHurry) const;
+	static int getProductionPerPopulation(HurryTypes eHurry);
 
 	int getAdjustedPopulationPercent(VictoryTypes eVictory) const;
-	int getAdjustedLandPercent(VictoryTypes eVictory) const;
+	static int getAdjustedLandPercent(VictoryTypes eVictory);
 
-	bool isTeamVote(VoteTypes eVote) const;
-	bool isChooseElection(VoteTypes eVote) const;
-	bool isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource) const;
-	int countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice) const;
-	int countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource) const;
-	TeamTypes findHighestVoteTeam(const VoteTriggeredData& kData) const;
-	int getVoteRequired(VoteTypes eVote, VoteSourceTypes eVoteSource) const;
+	static bool isTeamVote(VoteTypes eVote);
+	static bool isChooseElection(VoteTypes eVote);
+	static bool isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource);
+	static int countVote(const VoteTriggeredData& kData, PlayerVoteTypes eChoice);
+	static int countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource);
+	static TeamTypes findHighestVoteTeam(const VoteTriggeredData& kData);
+	static int getVoteRequired(VoteTypes eVote, VoteSourceTypes eVoteSource);
 	TeamTypes getSecretaryGeneral(VoteSourceTypes eVoteSource) const;
-	bool canHaveSecretaryGeneral(VoteSourceTypes eVoteSource) const;
+	static bool canHaveSecretaryGeneral(VoteSourceTypes eVoteSource);
 	void clearSecretaryGeneral(VoteSourceTypes eVoteSource);
 	void updateSecretaryGeneral();
 
-	int countCivPlayersAlive() const;
-	int countCivPlayersEverAlive() const;
-	int countCivTeamsAlive() const;
-	int countCivTeamsEverAlive() const;
-	int countHumanPlayersAlive() const;
+	static int countCivPlayersAlive();
+	static int countCivPlayersEverAlive();
+	static int countCivTeamsAlive();
+	static int countCivTeamsEverAlive();
+	static int countHumanPlayersAlive();
 
-	int countTotalCivPower() const;
-	int countTotalNukeUnits() const;
-	int countKnownTechNumTeams(TechTypes eTech) const;
-	int getNumFreeBonuses(BuildingTypes eBuilding) const;
+	static int countTotalCivPower();
+	static int countTotalNukeUnits();
+	static int countKnownTechNumTeams(TechTypes eTech);
+	static int getNumFreeBonuses(const CvBuildingInfo& kBuilding);
 
-	int countReligionLevels(ReligionTypes eReligion) const;
+	static int countReligionLevels(ReligionTypes eReligion);
 	int calculateReligionPercent(ReligionTypes eReligion) const;
-	int countCorporationLevels(CorporationTypes eCorporation) const;
-	void replaceCorporation(CorporationTypes eCorporation1, CorporationTypes eCorporation2);
+	static int countCorporationLevels(CorporationTypes eCorporation);
+	static void replaceCorporation(CorporationTypes eCorporation1, CorporationTypes eCorporation2);
 
 	int goldenAgeLength() const;
 	int victoryDelay(VictoryTypes eVictory) const;
 	int getImprovementUpgradeTime(ImprovementTypes eImprovement) const;
 
-	bool canTrainNukes() const;
+	static bool canTrainNukes();
 
 	EraTypes getHighestEra() const;
 	EraTypes getCurrentEra() const;
@@ -354,7 +352,6 @@ public:
 	int getCoastalBuildings() const;
 	void calculateNumWonders();
 	int getNumWonders() const;
-	bool canExitToMainMenu() const;
 
 	void loadPirateShip(CvUnit* pUnit);
 
@@ -362,8 +359,8 @@ public:
 	void toggleAnyoneHasUnitZoneOfControl();
 	//TB OOSSPECIAL
 	void logOOSSpecial(int iLocID, int iVar, int iVar2 = 0, int iVar3 = 0);
-	int getTopCityCount() const;
-	int getTopPopCount() const;
+	static int getTopCityCount();
+	static int getTopPopCount();
 	int getImprovementCount(ImprovementTypes eIndex) const;
 	void changeImprovementCount(ImprovementTypes eIndex, int iChange);
 protected:
@@ -507,7 +504,7 @@ public:
 	bool isSpecialBuildingValid(SpecialBuildingTypes eIndex) const;
 	void makeSpecialBuildingValid(SpecialBuildingTypes eIndex, bool bAnnounce = false);
 
-	bool isInAdvancedStart() const;
+	static bool isInAdvancedStart();
 
 	void setVoteChosen(int iSelection, int iVoteId);
 
@@ -540,8 +537,8 @@ public:
 	CvCity* getHeadquarters(CorporationTypes eIndex) const;
 	void setHeadquarters(CorporationTypes eIndex, CvCity* pNewValue, bool bAnnounce);
 
-	PlayerVoteTypes getPlayerVote(PlayerTypes eOwnerIndex, int iVoteId) const;
-	void setPlayerVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes eNewValue);
+	static PlayerVoteTypes getPlayerVote(PlayerTypes eOwnerIndex, int iVoteId);
+	static void setPlayerVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes eNewValue);
 	void castVote(PlayerTypes eOwnerIndex, int iVoteId, PlayerVoteTypes ePlayerVote);
 
 	DllExport const CvWString & getName();
@@ -618,8 +615,6 @@ public:
 	DllExport void setReplayInfo(CvReplayInfo* pReplay);
 	void saveReplay(PlayerTypes ePlayer);
 
-	bool hasSkippedSaveChecksum() const;
-
 	void logNetMsgData(char* format, ...);
 
 	void addPlayer(PlayerTypes eNewPlayer, LeaderHeadTypes eLeader, CivilizationTypes eCiv, bool bSetAlive = true);
@@ -627,7 +622,7 @@ public:
 
 	bool testVictory(VictoryTypes eVictory, TeamTypes eTeam, bool* pbEndScore = NULL); //removed const
 
-	bool isCompetingCorporation(CorporationTypes eCorporation1, CorporationTypes eCorporation2) const;
+	static bool isCompetingCorporation(CorporationTypes eCorporation1, CorporationTypes eCorporation2);
 
 	int getShrineBuildingCount(ReligionTypes eReligion = NO_RELIGION);
 	BuildingTypes getShrineBuilding(int eIndex, ReligionTypes eReligion = NO_RELIGION);
@@ -652,16 +647,16 @@ public:
 	bool isEventActive(EventTriggerTypes eTrigger) const;
 	DllExport void initEvents();
 
-	bool isCivEverActive(CivilizationTypes eCivilization) const;
-	bool isLeaderEverActive(LeaderHeadTypes eLeader) const;
+	//static bool isCivEverActive(CivilizationTypes eCivilization);
+	static bool isLeaderEverActive(LeaderHeadTypes eLeader);
 
 	void processBuilding(BuildingTypes eBuilding, int iChange);
 
 	bool foundBarbarianCity();
 
-	bool pythonIsBonusIgnoreLatitudes() const;
+	static bool pythonIsBonusIgnoreLatitudes();
 
-	inline bool isRecalculatingModifiers() { return m_bRecalculatingModifiers; }
+	inline bool isRecalculatingModifiers() const { return m_bRecalculatingModifiers; }
 
 	DllExport void getGlobeLayers(std::vector<CvGlobeLayerData>& aLayers) const;
 	DllExport void startFlyoutMenu(const CvPlot* pPlot, std::vector<CvFlyoutMenuData>& aFlyoutItems) const;
@@ -864,10 +859,10 @@ protected:
 	void createBarbarianUnits();
 	//void createAnimals();
 
-	void verifyCivics();
+	static void verifyCivics();
 
 	void updateMoves();
-	void updateTimers();
+	static void updateTimers();
 	void updateTurnTimer();
 
 	void testAlive();
@@ -903,8 +898,8 @@ protected:
 public:
 	//	Super forts adaptation to C2C - calc choke points if not already done
 	void ensureChokePointsEvaluated();
-	int getBaseAirUnitIncrementsbyCargoVolume() const;
-	int getBaseMissileUnitIncrementsbyCargoVolume() const;
+	static int getBaseAirUnitIncrementsbyCargoVolume();
+	static int getBaseMissileUnitIncrementsbyCargoVolume();
 
 	CvProperties* getProperties();
 	const CvProperties* getPropertiesConst() const;

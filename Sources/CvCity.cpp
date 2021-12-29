@@ -378,7 +378,7 @@ void CvCity::init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, 
 
 	if (bUpdatePlotGroups)
 	{
-		GC.getGame().updatePlotGroups();
+		CvGame::updatePlotGroups();
 	}
 
 
@@ -2788,7 +2788,7 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 			for (int iCorporation = 0; iCorporation < GC.getNumCorporationInfos(); ++iCorporation)
 			{
 				if (isHeadquarters((CorporationTypes)iCorporation)
-				&& GC.getGame().isCompetingCorporation((CorporationTypes)iCorporation, foundsCorp))
+				&& CvGame::isCompetingCorporation((CorporationTypes)iCorporation, foundsCorp))
 				{
 					return false;
 				}
@@ -4252,8 +4252,8 @@ void CvCity::hurry(HurryTypes eHurry)
 		return;
 	}
 
-	bool bWhip = (GC.getHurryInfo(eHurry).getProductionPerPopulation() > 0);
-	bool bBuy = (GC.getHurryInfo(eHurry).getGoldPerProduction() > 0);
+	const bool bWhip = (GC.getHurryInfo(eHurry).getProductionPerPopulation() > 0);
+	const bool bBuy = (GC.getHurryInfo(eHurry).getGoldPerProduction() > 0);
 
 	if (bBuy)
 	{
@@ -4831,7 +4831,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 
 		if (kBuilding.getFreeBonus() != NO_BONUS)
 		{
-			changeFreeBonus((BonusTypes)kBuilding.getFreeBonus(), GC.getGame().getNumFreeBonuses(eBuilding) * iChange);
+			changeFreeBonus((BonusTypes)kBuilding.getFreeBonus(), CvGame::getNumFreeBonuses(kBuilding) * iChange);
 			clearVicinityBonusCache((BonusTypes)kBuilding.getFreeBonus());
 			clearRawVicinityBonusCache((BonusTypes)kBuilding.getFreeBonus());
 		}
@@ -6468,9 +6468,9 @@ int CvCity::hurryPopulation(HurryTypes eHurry) const
 	return getHurryPopulation(eHurry, hurryCost());
 }
 
-int CvCity::getHurryPopulation(HurryTypes eHurry, int iHurryCost) const
+int CvCity::getHurryPopulation(HurryTypes eHurry, int iHurryCost)
 {
-	int prodPerPop = GC.getGame().getProductionPerPopulation(eHurry);
+	const int prodPerPop = CvGame::getProductionPerPopulation(eHurry);
 	if (prodPerPop == 0)
 	{
 		return 0;
@@ -6482,7 +6482,7 @@ int CvCity::getHurryPopulation(HurryTypes eHurry, int iHurryCost) const
 
 int CvCity::hurryProduction(HurryTypes eHurry) const
 {
-	const int prodPerPop = GC.getGame().getProductionPerPopulation(eHurry);
+	const int prodPerPop = CvGame::getProductionPerPopulation(eHurry);
 	if (prodPerPop > 0)
 	{
 		const int iProduction = 100 * hurryPopulation(eHurry) * prodPerPop / std::max(1, getHurryCostModifier());
@@ -10248,7 +10248,7 @@ void CvCity::changeAirModifier(int iChange)
 int CvCity::getSMAirUnitCapacity(TeamTypes eTeam) const
 {
 	int iCapacity = getAirUnitCapacity(eTeam);
-	iCapacity *= GC.getGame().getBaseAirUnitIncrementsbyCargoVolume();
+	iCapacity *= CvGame::getBaseAirUnitIncrementsbyCargoVolume();
 	return iCapacity;
 }
 
@@ -12209,12 +12209,13 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 	{
 		return 0;
 	}
+	const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
+
 	int iCommerce = 0;
 	int iOtherCommerce = 0;
 
 	if (!isReligiouslyLimitedBuilding(eBuilding))
 	{
-		const CvBuildingInfo& kBuilding = GC.getBuildingInfo(eBuilding);
 		int iBaseCommerceChange = kBuilding.getCommerceChange(eIndex);
 
 		if (iBaseCommerceChange < 0 && eIndex == COMMERCE_GOLD && GC.getTREAT_NEGATIVE_GOLD_AS_MAINTENANCE())
@@ -12251,36 +12252,36 @@ int CvCity::getBuildingCommerceByBuilding(CommerceTypes eIndex, BuildingTypes eB
 				/ 100
 			);
 		}
-		if (GC.getBuildingInfo(eBuilding).getReligionType() != NO_RELIGION
-		&& GC.getBuildingInfo(eBuilding).getReligionType() == GET_PLAYER(getOwner()).getStateReligion())
+		if (kBuilding.getReligionType() != NO_RELIGION
+		&& kBuilding.getReligionType() == GET_PLAYER(getOwner()).getStateReligion())
 		{
 			iCommerce += GET_PLAYER(getOwner()).getStateReligionBuildingCommerce(eIndex);
 		}
 
-		if (GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce() != NO_RELIGION)
+		if (kBuilding.getGlobalReligionCommerce() != NO_RELIGION)
 		{
 			iCommerce +=
 			(
-				GC.getReligionInfo((ReligionTypes)GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce()).getGlobalReligionCommerce(eIndex)
+				GC.getReligionInfo((ReligionTypes)kBuilding.getGlobalReligionCommerce()).getGlobalReligionCommerce(eIndex)
 				*
-				GC.getGame().countReligionLevels((ReligionTypes)GC.getBuildingInfo(eBuilding).getGlobalReligionCommerce())
+				CvGame::countReligionLevels((ReligionTypes)kBuilding.getGlobalReligionCommerce())
 			);
 		}
 	}
 
-	if (GC.getBuildingInfo(eBuilding).getGlobalCorporationCommerce() != NO_CORPORATION)
+	if (kBuilding.getGlobalCorporationCommerce() != NO_CORPORATION)
 	{
 		iCommerce +=
 		(
-			GC.getCorporationInfo((CorporationTypes)GC.getBuildingInfo(eBuilding).getGlobalCorporationCommerce()).getHeadquarterCommerce(eIndex)
+			GC.getCorporationInfo((CorporationTypes)kBuilding.getGlobalCorporationCommerce()).getHeadquarterCommerce(eIndex)
 			*
-			GC.getGame().countCorporationLevels((CorporationTypes)GC.getBuildingInfo(eBuilding).getGlobalCorporationCommerce())
+			CvGame::countCorporationLevels((CorporationTypes)kBuilding.getGlobalCorporationCommerce())
 		);
 	}
 
-	if (GC.getBuildingInfo(eBuilding).getCommerceChangeDoubleTime(eIndex) != 0
+	if (kBuilding.getCommerceChangeDoubleTime(eIndex) != 0
 	&& getBuildingOriginalTime(eBuilding) != MIN_INT
-	&& GC.getGame().getGameTurnYear() - getBuildingOriginalTime(eBuilding) >= GC.getBuildingInfo(eBuilding).getCommerceChangeDoubleTime(eIndex))
+	&& GC.getGame().getGameTurnYear() - getBuildingOriginalTime(eBuilding) >= kBuilding.getCommerceChangeDoubleTime(eIndex))
 	{
 		iCommerce *= 2;
 	}
@@ -12368,7 +12369,7 @@ int CvCity::getBaseCommerceRateFromBuilding100(CommerceTypes eIndex, BuildingTyp
 		iExtraRate100 += 100 * (
 			GC.getReligionInfo((ReligionTypes)kBuilding.getGlobalReligionCommerce()).getGlobalReligionCommerce(eIndex)
 			*
-			GC.getGame().countReligionLevels((ReligionTypes)kBuilding.getGlobalReligionCommerce())
+			CvGame::countReligionLevels((ReligionTypes)kBuilding.getGlobalReligionCommerce())
 		);
 	}
 	if (kBuilding.getGlobalCorporationCommerce() != NO_CORPORATION)
@@ -12376,7 +12377,7 @@ int CvCity::getBaseCommerceRateFromBuilding100(CommerceTypes eIndex, BuildingTyp
 		iExtraRate100 += 100 * (
 			GC.getCorporationInfo((CorporationTypes)kBuilding.getGlobalCorporationCommerce()).getHeadquarterCommerce(eIndex)
 			*
-			GC.getGame().countCorporationLevels((CorporationTypes)kBuilding.getGlobalCorporationCommerce())
+			CvGame::countCorporationLevels((CorporationTypes)kBuilding.getGlobalCorporationCommerce())
 		);
 	}
 
@@ -15190,11 +15191,11 @@ void CvCity::setHasCorporation(CorporationTypes eIndex, bool bNewValue, bool bAn
 			for (int iCorp = 0; iCorp < GC.getNumCorporationInfos(); ++iCorp)
 			{
 				if (iCorp != eIndex && isHasCorporation((CorporationTypes)iCorp)
-				&& GC.getGame().isCompetingCorporation((CorporationTypes)iCorp, eIndex))
+				&& CvGame::isCompetingCorporation((CorporationTypes)iCorp, eIndex))
 				{
 					if (GC.getGame().getHeadquarters((CorporationTypes)iCorp) == this)
 					{
-						GC.getGame().replaceCorporation((CorporationTypes)iCorp, eIndex);
+						CvGame::replaceCorporation((CorporationTypes)iCorp, eIndex);
 						bReplacedHeadquarters = true;
 					}
 					else setHasCorporation((CorporationTypes)iCorp, false, false);
@@ -21501,7 +21502,7 @@ void CvCity::doCorporation()
 				for (int iJ = 0; iJ < GC.getNumCorporationInfos(); iJ++)
 				{
 					if (iI != iJ
-					&& GC.getGame().isCompetingCorporation((CorporationTypes)iJ, (CorporationTypes)iI)
+					&& CvGame::isCompetingCorporation((CorporationTypes)iJ, (CorporationTypes)iI)
 					&& isActiveCorporation((CorporationTypes)iJ))
 					{
 						setHasCorporation((CorporationTypes)iJ, false, false, false);
@@ -21598,7 +21599,7 @@ int CvCity::getCorporationInfluence(CorporationTypes eCorporation) const
 	{
 		if (iI != eCorporation)
 		{
-			if (GC.getGame().isCompetingCorporation(eCorporation, (CorporationTypes)iI))
+			if (CvGame::isCompetingCorporation(eCorporation, (CorporationTypes)iI))
 			{
 				if (isActiveCorporation((CorporationTypes)iI))
 				{
@@ -21611,7 +21612,7 @@ int CvCity::getCorporationInfluence(CorporationTypes eCorporation) const
 	{
 		if (iI != eCorporation)
 		{
-			if (GC.getGame().isCompetingCorporation(eCorporation, (CorporationTypes)iI))
+			if (CvGame::isCompetingCorporation(eCorporation, (CorporationTypes)iI))
 			{
 				if (isActiveCorporation((CorporationTypes)iI))
 				{

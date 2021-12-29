@@ -2468,7 +2468,7 @@ void CvUnitAI::AI_barbAttackMove()
 			}
 		}
 	}
-	else if (GC.getGame().getNumCivCities() > (GC.getGame().countCivPlayersAlive() * 3))
+	else if (GC.getGame().getNumCivCities() > CvGame::countCivPlayersAlive() * 3)
 	{
 		if (AI_cityAttack(1, 15))
 		{
@@ -2503,7 +2503,7 @@ void CvUnitAI::AI_barbAttackMove()
 			}
 		}
 	}
-	else if (GC.getGame().getNumCivCities() > (GC.getGame().countCivPlayersAlive() * 2))
+	else if (GC.getGame().getNumCivCities() > CvGame::countCivPlayersAlive() * 2)
 	{
 		if (AI_pillageRange(2))
 		{
@@ -16786,17 +16786,14 @@ bool CvUnitAI::AI_explore()
 	}
 
 	CvPlot* pLoopPlot;
-	CvPlot* pBestPlot;
-	CvPlot* pBestExplorePlot;
 	int iPathTurns;
 	int iValue;
-	int iBestValue;
 
-	iBestValue = 0;
-	pBestPlot = NULL;
-	pBestExplorePlot = NULL;
+	int iBestValue = 0;
+	CvPlot* pBestPlot = NULL;
+	CvPlot* pBestExplorePlot = NULL;
 
-	bool bNoContact = (GC.getGame().countCivTeamsAlive() > GET_TEAM(getTeam()).getHasMetCivCount(true));
+	const bool bNoContact = (CvGame::countCivTeamsAlive() > GET_TEAM(getTeam()).getHasMetCivCount(true));
 
 	//	If we had previously selected a target make sure we include it in our evaluation this
 	//	time around else dithering between different plots can occur
@@ -16899,9 +16896,7 @@ bool CvUnitAI::AI_explore()
 							}
 
 							//ls612: Make exploring AI aware of terrain damage
-							bool	bHasTerrainDamage = (pLoopPlot->getTotalTurnDamage(getGroup()) > 0 || pLoopPlot->getFeatureTurnDamage() > 0);
-
-							if (bHasTerrainDamage)
+							if (pLoopPlot->getTotalTurnDamage(getGroup()) > 0 || pLoopPlot->getFeatureTurnDamage() > 0)
 							{
 								iValue /= 5;
 							}
@@ -24716,7 +24711,7 @@ bool CvUnitAI::AI_airCarrier()
 
 			if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 			{
-				iValue /= (unitX->SMgetCargo() + GC.getGame().getBaseAirUnitIncrementsbyCargoVolume()) / GC.getGame().getBaseAirUnitIncrementsbyCargoVolume();
+				iValue /= (unitX->SMgetCargo() + CvGame::getBaseAirUnitIncrementsbyCargoVolume()) / CvGame::getBaseAirUnitIncrementsbyCargoVolume();
 			}
 			else iValue /= unitX->getCargo() + 1;
 
@@ -24750,7 +24745,7 @@ bool CvUnitAI::AI_missileLoad(UnitAITypes eTargetUnitAI, int iMaxOwnUnitAI, bool
 	const bool bSM = GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS);
 	const int iCargoValueFactorSM =
 		(
-			bSM ? GC.getGame().getBaseMissileUnitIncrementsbyCargoVolume() : 0
+			bSM ? CvGame::getBaseMissileUnitIncrementsbyCargoVolume() : 0
 		);
 	FAssert(!bSM || iCargoValueFactorSM > 0);
 

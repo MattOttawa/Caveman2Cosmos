@@ -65,19 +65,19 @@ void CyGame::selectedCitiesGameNetMessage(int eMessage, int iData2, int iData3, 
 	GC.getGame().selectedCitiesGameNetMessage(eMessage, iData2, iData3, iData4, bOption, bAlt, bShift, bCtrl);
 }
 
-void CyGame::cityPushOrder(const CyCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl)
+void CyGame::cityPushOrder(const CyCity* pCity, OrderTypes eOrder, int iData, bool bAlt, bool bShift, bool bCtrl) const
 {
-	GC.getGame().cityPushOrder(pCity->getCity(), eOrder, iData, bAlt, bShift, bCtrl);
+	CvGame::cityPushOrder(pCity->getCity(), eOrder, iData, bAlt, bShift, bCtrl);
 }
 
 int CyGame::getSymbolID(int iSymbol) const
 {
-	return m_pGame.getSymbolID(iSymbol);
+	return gDLL->getSymbolID(iSymbol);
 }
 
 int CyGame::getProductionPerPopulation(HurryTypes eHurry) const
 {
-	return m_pGame.getProductionPerPopulation(eHurry);
+	return CvGame::getProductionPerPopulation(eHurry);
 }
 
 int CyGame::getAdjustedPopulationPercent(VictoryTypes eVictory) const
@@ -87,32 +87,32 @@ int CyGame::getAdjustedPopulationPercent(VictoryTypes eVictory) const
 
 int CyGame::getAdjustedLandPercent(VictoryTypes eVictory) const
 {
-	return m_pGame.getAdjustedLandPercent(eVictory);
+	return CvGame::getAdjustedLandPercent(eVictory);
 }
 
 bool CyGame::isTeamVote(VoteTypes eVote) const
 {
-	return m_pGame.isTeamVote(eVote);
+	return CvGame::isTeamVote(eVote);
 }
 
 bool CyGame::isChooseElection(VoteTypes eVote) const
 {
-	return m_pGame.isChooseElection(eVote);
+	return CvGame::isChooseElection(eVote);
 }
 
 bool CyGame::isTeamVoteEligible(TeamTypes eTeam, VoteSourceTypes eVoteSource) const
 {
-	return m_pGame.isTeamVoteEligible(eTeam, eVoteSource);
+	return CvGame::isTeamVoteEligible(eTeam, eVoteSource);
 }
 
 int CyGame::countPossibleVote(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
-	return m_pGame.countPossibleVote(eVote, eVoteSource);
+	return CvGame::countPossibleVote(eVote, eVoteSource);
 }
 
 int CyGame::getVoteRequired(VoteTypes eVote, VoteSourceTypes eVoteSource) const
 {
-	return m_pGame.getVoteRequired(eVote, eVoteSource);
+	return CvGame::getVoteRequired(eVote, eVoteSource);
 }
 
 int CyGame::getSecretaryGeneral(VoteSourceTypes eVoteSource) const
@@ -122,7 +122,7 @@ int CyGame::getSecretaryGeneral(VoteSourceTypes eVoteSource) const
 
 bool CyGame::canHaveSecretaryGeneral(VoteSourceTypes eVoteSource) const
 {
-	return m_pGame.canHaveSecretaryGeneral(eVoteSource);
+	return CvGame::canHaveSecretaryGeneral(eVoteSource);
 }
 
 int CyGame::getVoteSourceReligion(VoteSourceTypes eVoteSource) const
@@ -132,52 +132,52 @@ int CyGame::getVoteSourceReligion(VoteSourceTypes eVoteSource) const
 
 int CyGame::countCivPlayersAlive() const
 {
-	return m_pGame.countCivPlayersAlive();
+	return CvGame::countCivPlayersAlive();
 }
 
 int CyGame::countCivPlayersEverAlive() const
 {
-	return m_pGame.countCivPlayersEverAlive();
+	return CvGame::countCivPlayersEverAlive();
 }
 
 int CyGame::countCivTeamsAlive() const
 {
-	return m_pGame.countCivTeamsAlive();
+	return CvGame::countCivTeamsAlive();
 }
 
 int CyGame::countCivTeamsEverAlive() const
 {
-	return m_pGame.countCivTeamsEverAlive();
+	return CvGame::countCivTeamsEverAlive();
 }
 
 int CyGame::countTotalCivPower() const
 {
-	return m_pGame.countTotalCivPower();
+	return CvGame::countTotalCivPower();
 }
 
 int CyGame::countTotalNukeUnits() const
 {
-	return m_pGame.countTotalNukeUnits();
+	return CvGame::countTotalNukeUnits();
 }
 
 int CyGame::countKnownTechNumTeams(TechTypes eTech) const
 {
-	return m_pGame.countKnownTechNumTeams(eTech);
+	return CvGame::countKnownTechNumTeams(eTech);
 }
 
 int CyGame::getNumFreeBonuses(BuildingTypes eBuilding) const
 {
-	return m_pGame.getNumFreeBonuses(eBuilding);
+	return CvGame::getNumFreeBonuses(GC.getBuildingInfo(eBuilding));
 }
 
 int CyGame::countReligionLevels(ReligionTypes eReligion) const
 {
-	return m_pGame.countReligionLevels(eReligion);
+	return CvGame::countReligionLevels(eReligion);
 }
 
 int CyGame::countCorporationLevels(CorporationTypes eCorporation) const
 {
-	return m_pGame.countCorporationLevels(eCorporation);
+	return CvGame::countCorporationLevels(eCorporation);
 }
 
 int CyGame::calculateReligionPercent(ReligionTypes eReligion) const
@@ -202,7 +202,7 @@ int CyGame::getImprovementUpgradeTime(ImprovementTypes eImprovement) const
 
 bool CyGame::canTrainNukes() const
 {
-	return m_pGame.canTrainNukes();
+	return CvGame::canTrainNukes();
 }
 
 EraTypes CyGame::getHighestEra() const
@@ -849,7 +849,7 @@ void CyGame::makeSpecialBuildingValid(SpecialBuildingTypes eIndex)
 
 bool CyGame::isInAdvancedStart() const
 {
-	return m_pGame.isInAdvancedStart();
+	return CvGame::isInAdvancedStart();
 }
 
 CyCity* CyGame::getHolyCity(ReligionTypes eIndex) const
@@ -886,7 +886,7 @@ void CyGame::clearHeadquarters(CorporationTypes eIndex)
 
 int CyGame::getPlayerVote(PlayerTypes eOwnerIndex, int iVoteId) const
 {
-	return m_pGame.getPlayerVote(eOwnerIndex, iVoteId);
+	return CvGame::getPlayerVote(eOwnerIndex, iVoteId);
 }
 
 std::string CyGame::getScriptData() const
@@ -1041,7 +1041,7 @@ void CyGame::addReplayMessage(ReplayMessageTypes eType, PlayerTypes ePlayer, std
 
 bool CyGame::hasSkippedSaveChecksum() const
 {
-	return m_pGame.hasSkippedSaveChecksum();
+	return gDLL->hasSkippedSaveChecksum();
 }
 
 void CyGame::addPlayer(PlayerTypes eNewPlayer, LeaderHeadTypes eLeader, CivilizationTypes eCiv, bool bSetAlive)
@@ -1083,14 +1083,14 @@ void CyGame::changePlotExtraCost(int iX, int iY, int iCost)
 	m_pGame.changePlotExtraCost(iX, iY, iCost);
 }
 
-bool CyGame::isCivEverActive(CivilizationTypes eCivilization) const
-{
-	return m_pGame.isCivEverActive(eCivilization);
-}
+//bool CyGame::isCivEverActive(CivilizationTypes eCivilization) const
+//{
+//	return m_pGame.isCivEverActive(eCivilization);
+//}
 
 bool CyGame::isLeaderEverActive(LeaderHeadTypes eLeader) const
 {
-	return m_pGame.isLeaderEverActive(eLeader);
+	return CvGame::isLeaderEverActive(eLeader);
 }
 
 bool CyGame::isEventActive(EventTriggerTypes eTrigger) const

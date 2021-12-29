@@ -610,7 +610,7 @@ void CvMapGenerator::addUniqueBonusType(BonusTypes eBonus)
 	{
 		piAreaTried[iI] = FFreeList::INVALID_INDEX;
 	}
-	const bool bIgnoreLatitude = GC.getGame().pythonIsBonusIgnoreLatitudes();
+	const bool bIgnoreLatitude = CvGame::pythonIsBonusIgnoreLatitudes();
 
 	while (true)
 	{
@@ -677,7 +677,7 @@ void CvMapGenerator::addNonUniqueBonusType(BonusTypes eBonus)
 	setBonusClusterValues(GC.getBonusInfo(eBonus), iWorldSize, iGroupRange, iGroupRand, iMaxCluster);
 	if (iMaxCluster > iBonusCount)
 		iMaxCluster = iBonusCount;
-	placeBonusWithCluster(eBonus, iGroupRange, iGroupRand, iMaxCluster, GC.getGame().pythonIsBonusIgnoreLatitudes(), iBonusCount);
+	placeBonusWithCluster(eBonus, iGroupRange, iGroupRand, iMaxCluster, CvGame::pythonIsBonusIgnoreLatitudes(), iBonusCount);
 }
 
 void CvMapGenerator::setBonusClusterValues(const CvBonusInfo& bonus, const int iWorldSize, int& iGroupRange, int& iGroupRand, int& iMaxCluster)
@@ -1007,10 +1007,10 @@ int CvMapGenerator::calculateNumBonusesToAdd(BonusTypes eBonusType)
 		GC.getGame().getMapRandNum(pBonusInfo.getRandAppearance4(), "calculateNumBonusesToAdd-4")
 	);
 
-	iBaseCount += GC.getGame().countCivPlayersAlive() * pBonusInfo.getPercentPerPlayer(); // Toffer: Should imo be removed.
+	iBaseCount += CvGame::countCivPlayersAlive() * pBonusInfo.getPercentPerPlayer(); // Toffer: Should imo be removed.
 
 	// Calculate iNumPossible, the number of plots that are eligible to have this bonus:
-	bool bIgnoreLatitude = GC.getGame().pythonIsBonusIgnoreLatitudes();
+	bool bIgnoreLatitude = CvGame::pythonIsBonusIgnoreLatitudes();
 
 	if (pBonusInfo.getTilesPer() > 0)
 	{

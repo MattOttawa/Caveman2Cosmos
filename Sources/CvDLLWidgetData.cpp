@@ -2409,7 +2409,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						{
 							if (pMissionCity->isHasCorporation((CorporationTypes)iCorp))
 							{
-								if (GC.getGame().isCompetingCorporation(eCorporation, (CorporationTypes)iCorp))
+								if (CvGame::isCompetingCorporation(eCorporation, (CorporationTypes)iCorp))
 								{
 									szBuffer.append(NEWLINE);
 									szBuffer.append(gDLL->getText("TXT_KEY_ACTION_WILL_ELIMINATE_CORPORATION", GC.getCorporationInfo((CorporationTypes)iCorp).getTextKeyWide()));
@@ -2433,7 +2433,7 @@ void CvDLLWidgetData::parseActionHelp(CvWidgetDataStruct &widgetDataStruct, CvWS
 						{
 							if (pMissionCity->isHeadquarters((CorporationTypes)iCorporation))
 							{
-								if (GC.getGame().isCompetingCorporation((CorporationTypes)iCorporation, eCorporation))
+								if (CvGame::isCompetingCorporation((CorporationTypes)iCorporation, eCorporation))
 								{
 									eCompetition = (CorporationTypes)iCorporation;
 									break;
