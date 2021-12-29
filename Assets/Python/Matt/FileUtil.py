@@ -4,47 +4,38 @@ import os.path
 import glob
 
 
-def verifyModDir(szModPath):
-    git_directory = os.path.join(szModPath, "git_directory.txt")
-    if os.path.isfile(git_directory):
-        pFile = open(git_directory)
-        szModPath = pFile.read().rstrip("\n")
-        pFile.close()
-    return szModPath
-
-#g_ModPath = verifyModDir(SP.modDir)
-
-
-dllFiles = [
-	"CyAreaInterface.cpp",
-	"CyArtFileMgrInterface.cpp",
-	"CyCityInterface1.cpp",
-	"CyCityInterface2.cpp",
-	"CyGameInterface.cpp",
-	"CyGameTextMgrInterface.cpp",
-	"CyGlobalContextInterface1.cpp",
-	"CyGlobalContextInterface2.cpp",
-	"CyGlobalContextInterface3.cpp",
-	"CyGlobalContextInterface4.cpp",
-	"CyHallOfFameInterface.cpp",
-	"CyInfoInterface1.cpp",
-	"CyInfoInterface2.cpp",
-	"CyInfoInterface3.cpp",
-	"CyInfoInterface4.cpp",
-	"CyMapGeneratorInterface.cpp",
-	"CyMapInterface.cpp",
-	"CyMessageControlInterface.cpp",
-	"CyPlayerInterface1.cpp",
-	"CyPlayerInterface2.cpp",
-	"CyPlayerInterface3.cpp",
-	"CyPlotInterface1.cpp",
-	#"CyPropertiesInterface.cpp",
-	"CySelectionGroupInterface.cpp",
-	"CyTeamInterface.cpp",
-	"CyUnitInterface1.cpp"
-]
-
 def init():
+	dllFiles = [
+		"CyAreaInterface.cpp",
+		"CyArtFileMgrInterface.cpp",
+		"CyCityInterface1.cpp",
+		"CyCityInterface2.cpp",
+		"CyGameInterface.cpp",
+		"CyGameTextMgrInterface.cpp",
+		"CyGlobalContextInterface1.cpp",
+		"CyGlobalContextInterface2.cpp",
+		"CyGlobalContextInterface3.cpp",
+		"CyGlobalContextInterface4.cpp",
+		"CyHallOfFameInterface.cpp",
+		"CyInfoInterface1.cpp",
+		"CyInfoInterface2.cpp",
+		"CyInfoInterface3.cpp",
+		"CyInfoInterface4.cpp",
+		"CyMapGeneratorInterface.cpp",
+		"CyMapInterface.cpp",
+		"CyMessageControlInterface.cpp",
+		"CyPlayerInterface1.cpp",
+		"CyPlayerInterface2.cpp",
+		"CyPlayerInterface3.cpp",
+		"CyPlotInterface1.cpp",
+		#"CyPropertiesInterface.cpp",
+		"CySelectionGroupInterface.cpp",
+		"CySelectionGroupInterface.cpp",
+		"CyTeamInterface.cpp",
+		"CyUnitInterface1.cpp"
+	]
+	global g_buf
+	g_buf = ""
 	szModPath = getModDir()
 	logFile = open(os.path.join(szModPath, "Assets", "Python", "Matt", "log.txt"), "w")
 
@@ -66,10 +57,14 @@ def init():
 		newFile.write(usedFunctions)
 		newFile.close()
 
+	logFile.write(g_buf)
 	logFile.close()
 
 
 def getFunctionName(line):
+	global g_buf
+	g_buf.append(line[2:7])
+	g_buf.append("\n")
 	functionName = ""
 	if line[2:7] == ".def(":
 		position = 8
