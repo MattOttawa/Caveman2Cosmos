@@ -13,7 +13,7 @@ struct TradeData;
 class CyDeal
 {
 public:
-	CyDeal(CvDeal* pDeal = NULL);
+	CyDeal(CvDeal* pDeal);
 
 	CvDeal* getDeal() const { return m_pDeal; }
 	bool isNone() const { return m_pDeal == NULL;  }

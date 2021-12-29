@@ -7,7 +7,6 @@
 // Python wrapper class for CvGameTextMgr
 //
 
-//class CvGameTextMgr;
 class CyCity;
 class CyUnit;
 class CyDeal;
@@ -16,8 +15,6 @@ struct TradeData;
 class CyGameTextMgr
 {
 public:
-	CyGameTextMgr();
-
 	void Reset();
 
 	std::wstring getTimeStr(int iGameTurn, bool bSave);
@@ -58,9 +55,6 @@ public:
 	std::wstring getDealString(CyDeal* pDeal, int iPlayerPerspective);
 	std::wstring getFinanceUnitUpkeepString(int iPlayer);
 	std::wstring getDefenseHelp(CyCity* pCity);
-
-protected:
-	//CvGameTextMgr* m_pGameTextMgr;
 };
 
 #endif	// #ifndef CyGameTextMgr_h

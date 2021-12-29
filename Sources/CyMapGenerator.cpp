@@ -14,14 +14,9 @@
 #include "CyMapGenerator.h"
 #include "CyPlot.h"
 
-CyMapGenerator::CyMapGenerator() : m_pMapGenerator(NULL)
-{
-	m_pMapGenerator = &CvMapGenerator::GetInstance();
-}
-
-//CyMapGenerator::CyMapGenerator(CvMapGenerator* pMapGenerator) : m_pMapGenerator(pMapGenerator)
-//{
-//}
+CyMapGenerator::CyMapGenerator()
+	: m_pMapGenerator(&CvMapGenerator::GetInstance())
+{}
 
 void CyMapGenerator::doRiver(CyPlot* pStartPlot, CardinalDirectionTypes eCardinalDirection)
 {

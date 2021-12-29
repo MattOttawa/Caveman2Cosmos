@@ -3,7 +3,7 @@
 #include "CyDeal.h"
 
 //
-// Python wrapper class for CvGame
+// Python wrapper class for CvDeal
 //
 
 CyDeal::CyDeal(CvDeal* pDeal)

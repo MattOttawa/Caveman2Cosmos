@@ -9,10 +9,6 @@
 // Python wrapper class for CvGameTextMgr
 //
 
-CyGameTextMgr::CyGameTextMgr()
-	//: m_pGameTextMgr(GAMETEXT)
-{}
-
 void CyGameTextMgr::Reset()
 {
 	GAMETEXT.Reset();

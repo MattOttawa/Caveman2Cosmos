@@ -302,7 +302,7 @@ void CyGamePythonInterface()
 	;
 
 
-	python::class_<CyDeal>("CyDeal")
+	python::class_<CyDeal>("CyDeal", python::no_init)
 
 		.def("isNone", &CyDeal::isNone)
 		.def("getID", &CyDeal::getID)
