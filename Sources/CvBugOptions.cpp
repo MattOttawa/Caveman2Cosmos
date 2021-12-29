@@ -13,19 +13,6 @@ Created:	2009-01-21
 #include "CvPython.h"
 #include "FVariableSystem.h"
 
-bool g_bIsBug = false;
-
-void setIsBug()
-{
-	logging::logMsg("bull.log", "isBug: true");
-	g_bIsBug = true;
-
-	// set the unit and building filters to default state once Bug is available
-	UnitFilterList::setFilterActiveAll(UNIT_FILTER_HIDE_UNBUILDABLE, getBugOptionBOOL("CityScreen__HideUntrainableUnits", false));
-	BuildingFilterList::setFilterActiveAll(BUILDING_FILTER_HIDE_UNBUILDABLE, getBugOptionBOOL("CityScreen__HideUnconstructableBuildings", false));
-}
-
-
 bool getDefineBOOL(const char* xmlKey, bool bDefault)
 {
 	int iResult = 0;
@@ -67,40 +54,16 @@ const char * getDefineSTRING(const char* xmlKey, const char * szDefault)
 }
 
 
-bool getBugOptionBOOL(const char* id, bool bDefault, const char* xmlKey)
+bool getBugOptionBOOL(const char* id, bool bDefault)
 {
 	PROFILE_FUNC();
 
-	if (g_bIsBug)
-	{
-		return Cy::call<bool>(PYBugOptionsModule, "getOptionBOOL", Cy::Args(id, bDefault));
-	}
-	if (!xmlKey)
-	{
-		CvString tmp;
-		tmp.append(OPTION_XML_PREFIX);
-		tmp.append(id);
-		xmlKey = tmp.c_str();
-	}
-	//logging::logMsg("bull.log", "debug - getBugOptionBOOL %s", xmlKey);
-	return getDefineBOOL(xmlKey, bDefault);
+	return Cy::call<bool>("CvAppInterface", "getOptionBOOL", Cy::Args(id, bDefault));
 }
 
-int getBugOptionINT(const char* id, int iDefault, const char* xmlKey)
+int getBugOptionINT(const char* id, int iDefault)
 {
 	PROFILE_FUNC();
 
-	if (g_bIsBug)
-	{
-		return Cy::call<int>(PYBugOptionsModule, "getOptionINT", Cy::Args(id, iDefault));
-	}
-	if (!xmlKey)
-	{
-		CvString tmp;
-		tmp.append(OPTION_XML_PREFIX);
-		tmp.append(id);
-		xmlKey = tmp.c_str();
-	}
-	//logging::logMsg("bull.log", "debug - getBugOptionINT %s", xmlKey);
-	return getDefineINT(xmlKey, iDefault);
+	return Cy::call<int>("CvAppInterface", "getOptionINT", Cy::Args(id, iDefault));
 }

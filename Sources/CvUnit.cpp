@@ -1069,7 +1069,7 @@ void CvUnit::convert(CvUnit* pUnit, const bool bKillOriginal)
 
 	setName(pUnit->getNameNoDesc());
 
-	if (pUnit->isDescInName() && getBugOptionBOOL("MiscHover__UpdateUnitNameOnUpgrade", true, "BUG_UPDATE_UNIT_NAME_ON_UPGRADE"))
+	if (pUnit->isDescInName() && getBugOptionBOOL("MiscHover__UpdateUnitNameOnUpgrade", true))
 	{
 		CvWString szUnitType(pUnit->getDescription());
 

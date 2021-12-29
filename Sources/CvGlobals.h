@@ -187,7 +187,6 @@ public:
 	int getViewportCenteringBorder() const;
 	CvMapExternal& getMapExternal() const;
 
-	bool bugInitCalled() const;
 	bool viewportsEnabled() const;
 	bool getReprocessGreatWallDynamically() const;
 	int getNumMapInfos() const;
@@ -783,7 +782,8 @@ public:
 	void setBorderFinder(FAStar* pVal);
 	void setAreaFinder(FAStar* pVal);
 	void setPlotGroupFinder(FAStar* pVal);
-	void setIsBug();
+
+	void initBUG();
 
 	uint32_t getAssetCheckSum() const;
 

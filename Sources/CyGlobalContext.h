@@ -349,8 +349,6 @@ public:
 	int getNUM_CITY_PLOTS() const { return NUM_CITY_PLOTS; }
 	int getCITY_HOME_PLOT() const { return CITY_HOME_PLOT; }
 
-	void setIsBug() { GC.setIsBug(); }
-
 	int getPEAK_EXTRA_DEFENSE() const { return GC.getPEAK_EXTRA_DEFENSE(); }
 	int getPEAK_EXTRA_MOVEMENT() const { return GC.getPEAK_EXTRA_MOVEMENT(); }
 	

@@ -1190,7 +1190,9 @@ bool CvXMLLoadUtility::LoadPostMenuGlobals()
 	DestroyFXml();
 
 	GC.getInitCore().calculateAssetCheckSum();
-	
+
+	GC.initBUG();
+
 	OutputDebugString("Loading PostMenu Infos: End");
 
 	return true;

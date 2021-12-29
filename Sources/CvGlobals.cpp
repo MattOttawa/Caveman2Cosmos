@@ -3000,26 +3000,20 @@ void cvInternalGlobals::setBorderFinder(FAStar* pVal) { m_borderFinder = pVal; }
 void cvInternalGlobals::setAreaFinder(FAStar* pVal) { m_areaFinder = pVal; }
 void cvInternalGlobals::setPlotGroupFinder(FAStar* pVal) { m_plotGroupFinder = pVal; }
 
-
-static bool bBugInitCalled = false;
-
-bool cvInternalGlobals::bugInitCalled() const
+void cvInternalGlobals::initBUG()
 {
-	return bBugInitCalled;
-}
+	Cy::call("CvAppInterface", "initBUG");
 
-void cvInternalGlobals::setIsBug()
-{
-	bBugInitCalled = true;
-
-	::setIsBug();
+	// set the unit and building filters to default state once Bug is available
+	UnitFilterList::setFilterActiveAll(UNIT_FILTER_HIDE_UNBUILDABLE, getBugOptionBOOL("CityScreen__HideUntrainableUnits", false));
+	BuildingFilterList::setFilterActiveAll(BUILDING_FILTER_HIDE_UNBUILDABLE, getBugOptionBOOL("CityScreen__HideUnconstructableBuildings", false));
 
 	//	If viewports are truned on in BUG the settinsg there override those in the global defines
 	if (getBugOptionBOOL("MainInterface__EnableViewports", false))
 	{
 		m_bViewportsEnabled = true;
 
-		// Push them back inot the globals so that a reload of the globals cache preserves these values
+		// Push them back into the globals so that a reload of the globals cache preserves these values
 		setDefineINT("ENABLE_VIEWPORTS", 1, false);
 		setDefineINT("VIEWPORT_SIZE_X", getBugOptionINT("MainInterface__ViewportX", 40), false);
 		setDefineINT("VIEWPORT_SIZE_Y", getBugOptionINT("MainInterface__ViewportY", 40), false);

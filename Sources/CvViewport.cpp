@@ -68,12 +68,6 @@ void	CvViewport::setOffsetToShow(int iX, int iY)	//	Make this the centre or near
 
 void	CvViewport::resizeForMap()
 {
-	if (m_pMap->getGridWidth() > 0 && !GC.bugInitCalled())
-	{
-		//	Force-load the main interface BUG module so we can get at the viewport BUG settings
-		Cy::call(PYCivModule, "forceBUGModuleInit", Cy::Args() << "BUG Main Interface");
-	}
-
 	m_iXSize = GC.viewportsEnabled() ? GC.getViewportSizeX() : m_pMap->getGridWidth();
 	m_iYSize = GC.viewportsEnabled() ? GC.getViewportSizeY() : m_pMap->getGridHeight();
 

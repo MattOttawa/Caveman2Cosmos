@@ -23,8 +23,7 @@ def RemoveSign(argsList):
 	EventSigns.gSavedSigns.removeSign(argsList[0], argsList[1])
 #Afforess End
 
-# Should be changed to initBUG() with no arguments needed.
-def forceBUGModuleInit(argsList):
+def initBUG():
 	import BugInit
 	BugInit.init()
 

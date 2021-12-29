@@ -257,9 +257,9 @@ void CvSelectionGroup::doTurn()
 // BUG - Sentry Actions - end
 
 // BUG - Sentry Exploring Units - start
-			if (isAutomated() && getAutomateType() == AUTOMATE_EXPLORE && getBugOptionBOOL("Actions__SentryHealing", true, "BUG_SENTRY_HEALING") && sentryAlert())
+			if (isAutomated() && getAutomateType() == AUTOMATE_EXPLORE && getBugOptionBOOL("Actions__SentryHealing", true) && sentryAlert())
 			{
-				if (!(getBugOptionBOOL("Actions__SentryHealingOnlyNeutral", true, "BUG_SENTRY_HEALING_ONLY_NEUTRAL") && plot()->isOwned()))
+				if (!(getBugOptionBOOL("Actions__SentryHealingOnlyNeutral", true) && plot()->isOwned()))
 				{
 					setActivityType(ACTIVITY_AWAKE);
 				}
@@ -4431,14 +4431,14 @@ bool CvSelectionGroup::groupBuild(BuildTypes eBuild)
 		if (kBuildInfo.getImprovement() == NO_IMPROVEMENT)
 		{
 			// clearing a forest or jungle
-			if (getBugOptionBOOL("Actions__PreChopForests", true, "BUG_PRECHOP_FORESTS"))
+			if (getBugOptionBOOL("Actions__PreChopForests", true))
 			{
 				bCheckChop = true;
 			}
 		}
 		else
 		{
-			if (getBugOptionBOOL("Actions__PreChopImprovements", true, "BUG_PRECHOP_IMPROVEMENTS"))
+			if (getBugOptionBOOL("Actions__PreChopImprovements", true))
 			{
 				bCheckChop = true;
 			}

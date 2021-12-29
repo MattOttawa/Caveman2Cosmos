@@ -4256,10 +4256,10 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 	//Note that due to the large amount of extra content added to this function (setCombatPlotHelp), this should never be used in any function that needs to be called repeatedly (e.g. hundreds of times) quickly.
 	//It is fine for a human player mouse-over (which is what it is used for).
 
-	bool ACO_enabled = getBugOptionBOOL("ACO__Enabled", true, "ACO_ENABLED");
+	bool ACO_enabled = getBugOptionBOOL("ACO__Enabled", true);
 	bool bShift = gDLL->shiftKey();
 	int iView = bShift ? 2 : 1;
-	if (getBugOptionBOOL("ACO__SwapViews", false, "ACO_SWAP_VIEWS"))
+	if (getBugOptionBOOL("ACO__SwapViews", false))
 	{
 		iView = 3 - iView; //swaps 1 and 2.
 	}
@@ -4435,7 +4435,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 						szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS", szTempBuffer.GetCString()));
 						*/
 						/* New Code */
-						if ((!ACO_enabled) || (getBugOptionBOOL("ACO__ForceOriginalOdds", false, "ACO_FORCE_ORIGINAL_ODDS")))
+						if ((!ACO_enabled) || (getBugOptionBOOL("ACO__ForceOriginalOdds", false)))
 						{
 							szString.append(gDLL->getText("TXT_KEY_COMBAT_PLOT_ODDS", szTempBuffer.GetCString()));
 						}
@@ -5529,7 +5529,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 						szString.append(NEWLINE);
 
 						//Change this to true when you need to spot errors, particular in the expected hit points calculations
-						bool ACO_debug = getBugOptionBOOL("ACO__Debug", false, "ACO_DEBUG");
+						bool ACO_debug = getBugOptionBOOL("ACO__Debug", false);
 
 						/** phungus sart **/
 	//					bool bctrl; bctrl = gDLL->ctrlKey();
@@ -5591,7 +5591,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 						//TB Combat Mods end
 
 						// Barbarian related code.
-						if (getBugOptionBOOL("ACO__IgnoreBarbFreeWins", false, "ACO_IGNORE_BARB_FREE_WINS"))//Are we not going to ignore barb free wins?  If not, skip this section...
+						if (getBugOptionBOOL("ACO__IgnoreBarbFreeWins", false))//Are we not going to ignore barb free wins?  If not, skip this section...
 						{
 							if (pDefender->isHominid())
 							{
@@ -5917,7 +5917,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 
 
 
-						if (iView & getBugOptionINT("ACO__ShowSurvivalOdds", 3, "ACO_SHOW_SURVIVAL_ODDS"))
+						if (iView & getBugOptionINT("ACO__ShowSurvivalOdds", 3))
 						{
 							szTempBuffer.Format(L"%.2f%%", 100.0f * (AttackerKillOdds + RetreatOdds + PullOutOdds));
 							szTempBuffer2.Format(L"%.2f%%", 100.0f * (RetreatOdds + PullOutOdds + DefenderKillOdds));
@@ -6106,7 +6106,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 
 
 						float HP_percent_cutoff = 0.5f; // Probabilities lower than this (in percent) will not be shown individually for the HP detail section.
-						if (!getBugOptionBOOL("ACO__MergeShortBars", true, "ACO_MERGE_SHORT_BARS"))
+						if (!getBugOptionBOOL("ACO__MergeShortBars", true))
 						{
 							HP_percent_cutoff = 0.0f;
 						}
@@ -6315,7 +6315,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 
 						//START DEFENDER DETAIL HP HERE
 						first_combined_HP_Def = pDefender->currHitPoints();
-						if (iView & getBugOptionINT("ACO__ShowDefenderHealthBars", 2, "ACO_SHOW_DEFENDER_HEALTH_BARS"))
+						if (iView & getBugOptionINT("ACO__ShowDefenderHealthBars", 2))
 						{
 							float prob = 0.0f;
 							int def_HP;
@@ -6506,7 +6506,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 
 						szString.append(NEWLINE);
 
-						if (iView & getBugOptionINT("ACO__ShowBasicInfo", 3, "ACO_SHOW_BASIC_INFO"))
+						if (iView & getBugOptionINT("ACO__ShowBasicInfo", 3))
 						{
 							szTempBuffer.Format(SETCOLR L"%d" ENDCOLR L", " SETCOLR L"%d " ENDCOLR,
 								TEXT_COLOR("COLOR_POSITIVE_TEXT"), iDamageToDefender, TEXT_COLOR("COLOR_NEGATIVE_TEXT"), iDamageToAttacker);
@@ -6524,9 +6524,9 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 								TEXT_COLOR("COLOR_POSITIVE_TEXT"), float(iAttackerOdds) * 100.0f / float(GC.getDefineINT("COMBAT_DIE_SIDES")));
 							szString.append(szTempBuffer.GetCString());
 						}
-						if (!(iView & getBugOptionINT("ACO__ShowExperienceRange", 2, "ACO_SHOW_EXPERIENCE_RANGE")) || (pAttacker->combatLimit(pDefender) < (pDefender->maxHitPoints()))) //medium and high only
+						if (!(iView & getBugOptionINT("ACO__ShowExperienceRange", 2)) || (pAttacker->combatLimit(pDefender) < (pDefender->maxHitPoints()))) //medium and high only
 						{
-							if (iView & getBugOptionINT("ACO__ShowBasicInfo", 3, "ACO_SHOW_BASIC_INFO"))
+							if (iView & getBugOptionINT("ACO__ShowBasicInfo", 3))
 							{
 								szTempBuffer.Format(L". R=" SETCOLR L"%.2f" ENDCOLR,
 									TEXT_COLOR("COLOR_HIGHLIGHT_TEXT"), CombatRatio);
@@ -6616,7 +6616,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 						//Finished Showing XP range display
 
 
-						if (iView & getBugOptionINT("ACO__ShowAverageHealth", 2, "ACO_SHOW_AVERAGE_HEALTH"))
+						if (iView & getBugOptionINT("ACO__ShowAverageHealth", 2))
 						{
 							szTempBuffer.Format(L"%.1f", E_HP_Att);
 							szTempBuffer2.Format(L"%.1f", E_HP_Def);
@@ -6624,7 +6624,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 							szString.append(gDLL->getText("TXT_ACO_VS", szTempBuffer.GetCString(), szTempBuffer2.GetCString()));
 						}
 
-						if (iView & getBugOptionINT("ACO__ShowUnharmedOdds", 2, "ACO_SHOW_UNHARMED_ODDS"))
+						if (iView & getBugOptionINT("ACO__ShowUnharmedOdds", 2))
 						{
 							szTempBuffer.Format(L"%.2f%%", 100.0f * AttackerUnharmed);
 							szTempBuffer2.Format(L"%.2f%%", 100.0f * DefenderUnharmed);
@@ -6632,7 +6632,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 							szString.append(gDLL->getText("TXT_ACO_VS", szTempBuffer.GetCString(), szTempBuffer2.GetCString()));
 						}
 
-						if (iView & getBugOptionINT("ACO__ShowUnroundedExperience", 0, "ACO_SHOW_UNROUNDED_EXPERIENCE"))
+						if (iView & getBugOptionINT("ACO__ShowUnroundedExperience", 0))
 						{
 							szTempBuffer.Format(L"%.2f", AttXP);
 							szTempBuffer2.Format(L"%.2f", DefXP);
@@ -6641,7 +6641,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 						}
 
 						szString.append(NEWLINE);
-						if (iView & getBugOptionINT("ACO__ShowShiftInstructions", 1, "ACO_SHOW_SHIFT_INSTRUCTIONS"))
+						if (iView & getBugOptionINT("ACO__ShowShiftInstructions", 1))
 						{
 							szString.append(gDLL->getText("TXT_ACO_PRESSSHIFT"));
 							szString.append(NEWLINE);
@@ -6695,13 +6695,11 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 							}
 						}//if
 
-						if ((iView & getBugOptionINT("ACO__ShowAttackerInfo", 0, "ACO_SHOW_ATTACKER_INFO")))
+						if ((iView & getBugOptionINT("ACO__ShowAttackerInfo", 0)))
 						{
 							szString.append(NEWLINE);
 							setUnitHelp(szString, pAttacker, true, true);
 						}
-
-
 
 						szString.append(gDLL->getText("TXT_KEY_COLOR_POSITIVE"));
 						szString.append(L' ');//XXX
@@ -6748,13 +6746,13 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 						if (((!(pAttacker->immuneToFirstStrikes())) && (pDefender->maxFirstStrikes() > 0)) || (pDefender->maxCombatStr(pPlot, pAttacker) != pDefender->baseCombatStr() * 100) || bStealthDefense)
 						{
 							//if attacker uninjured strength is not the same as base strength (i.e. modifiers are in effect) or first strikes exist, then
-							if (getBugOptionBOOL("ACO__ShowModifierLabels", false, "ACO_SHOW_MODIFIER_LABELS"))
+							if (getBugOptionBOOL("ACO__ShowModifierLabels", false))
 							{
 								szString.append(gDLL->getText("TXT_ACO_DEFENSEMODIFIERS"));
 							}
 						}
 
-						if (iView & getBugOptionINT("ACO__ShowDefenderInfo", 3, "ACO_SHOW_DEFENDER_INFO"))
+						if (iView & getBugOptionINT("ACO__ShowDefenderInfo", 3))
 						{
 							szString.append(NEWLINE);
 							setUnitHelp(szString, pDefender, true, true);
@@ -7465,7 +7463,7 @@ bool CvGameTextMgr::setCombatPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot, 
 
 						szString.append(L' ');//XXX
 
-						if (iView & getBugOptionINT("ACO__ShowTotalDefenseModifier", 2, "ACO_SHOW_TOTAL_DEFENSE_MODIFIER"))
+						if (iView & getBugOptionINT("ACO__ShowTotalDefenseModifier", 2))
 						{
 							//szString.append(L' ');//XXX
 							if (pDefender->maxCombatStr(pPlot, pAttacker) > pDefender->baseCombatStr() * 100) // modifier is positive
@@ -9179,7 +9177,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 					pOwner.getPlayerTextColorR(), pOwner.getPlayerTextColorG(), pOwner.getPlayerTextColorB(), pOwner.getPlayerTextColorA(),
 					gDLL->getText("TXT_KEY_MISC_OWNER").GetCString(), pOwner.getCivilizationShortDescription());
 
-				if (getBugOptionBOOL("MiscHover__PlotWorkingCity", true, "BUG_PLOT_HOVER_WORKING_CITY"))
+				if (getBugOptionBOOL("MiscHover__PlotWorkingCity", true))
 				{
 					const CvCity* pWorkingCity = pPlot->getWorkingCity();
 
@@ -9564,7 +9562,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 		}
 
 		if (bDebug || GET_TEAM(eActiveTeam).isMapCentering()
-		&& getBugOptionBOOL("MiscHover__LatLongCoords", true, "BUG_PLOT_HOVER_LAT_LONG"))
+		&& getBugOptionBOOL("MiscHover__LatLongCoords", true))
 		{
 			bool bWest = false;
 			int iLong = pPlot->getLongitudeMinutes();
@@ -9640,7 +9638,7 @@ void CvGameTextMgr::setPlotHelp(CvWStringBuffer& szString, CvPlot* pPlot)
 		}
 */
 
-		if (pPlot->hasAnyBuildProgress() && getBugOptionBOOL("MiscHover__PartialBuilds", true, "BUG_PLOT_HOVER_PARTIAL_BUILDS"))
+		if (pPlot->hasAnyBuildProgress() && getBugOptionBOOL("MiscHover__PartialBuilds", true))
 		{
 			const PlayerTypes ePlayer = GC.getGame().getActivePlayer();
 
@@ -9787,7 +9785,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 	int iRate;
 	int iI;
 // BUG - Base Production and Commerce - start
-	bool bBaseValues = (gDLL->ctrlKey() && getBugOptionBOOL("CityBar__BaseValues", true, "BUG_CITYBAR_BASE_VALUES"));
+	bool bBaseValues = (gDLL->ctrlKey() && getBugOptionBOOL("CityBar__BaseValues", true));
 // BUG - Base Production and Commerce - end
 
 	FAssert(pCity->isInViewport());
@@ -9814,7 +9812,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 // BUG - Health - end
 
 // BUG - Happiness - start
-	if (getBugOptionBOOL("CityBar__Happiness", true, "BUG_CITYBAR_HAPPINESS"))
+	if (getBugOptionBOOL("CityBar__Happiness", true))
 	{
 		if (pCity->isDisorder())
 		{
@@ -9843,7 +9841,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 // BUG - Happiness - end
 
 // BUG - Hurry Anger Turns - start
-	if (getBugOptionBOOL("CityBar__HurryAnger", true, "BUG_CITYBAR_HURRY_ANGER") && pCity->getOwner() == GC.getGame().getActivePlayer())
+	if (getBugOptionBOOL("CityBar__HurryAnger", true) && pCity->getOwner() == GC.getGame().getActivePlayer())
 	{
 		iRate = pCity->getHurryAngerTimer();
 		if (iRate > 0)
@@ -9869,7 +9867,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 // BUG - Draft Anger Turns - end
 
 // BUG - Food Assist - start
-	if ((iFoodDifference != 0 || !pCity->isFoodProduction()) && getBugOptionBOOL("CityBar__FoodAssist", true, "BUG_CITYBAR_FOOD_ASSIST"))
+	if ((iFoodDifference != 0 || !pCity->isFoodProduction()) && getBugOptionBOOL("CityBar__FoodAssist", true))
 	{
 		if (iFoodDifference > 0)
 		{
@@ -9925,7 +9923,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 		if (iProductionDiffJustFood > 0)
 		{
 // BUG - Base Production - start
-			if ((iProductionDiffNoFood != iBaseProductionDiffNoFood) && getBugOptionBOOL("CityBar__BaseProduction", true, "BUG_CITYBAR_BASE_PRODUCTION"))
+			if ((iProductionDiffNoFood != iBaseProductionDiffNoFood) && getBugOptionBOOL("CityBar__BaseProduction", true))
 			{
 				szString.append(gDLL->getText("TXT_KEY_CITY_BAR_FOOD_HAMMER_PRODUCTION_WITH_BASE", iProductionDiffJustFood, iProductionDiffNoFood, pCity->getProductionName(), pCity->getProduction(), pCity->getProductionNeeded(), pCity->getProductionTurnsLeft(), iBaseProductionDiffNoFood));
 			}
@@ -9956,7 +9954,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 		}
 
 // BUG - Building Actual Effects - start
-		if (pCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("CityBar__BuildingActualEffects", true, "BUG_CITYBAR_BUILDING_ACTUAL_EFFECTS"))
+		if (pCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("CityBar__BuildingActualEffects", true))
 		{
 			if (pCity->isProductionBuilding())
 			{
@@ -9999,7 +9997,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 // BUG - Base Production - end
 
 // BUG - Hurry Assist - start
-	if (getBugOptionBOOL("CityBar__HurryAssist", true, "BUG_CITYBAR_HURRY_ASSIST") && pCity->getOwner() == GC.getGame().getActivePlayer())
+	if (getBugOptionBOOL("CityBar__HurryAssist", true) && pCity->getOwner() == GC.getGame().getActivePlayer())
 	{
 		bool bFirstHurry = true;
 		for (iI = 0; iI < GC.getNumHurryInfos(); iI++)
@@ -10030,7 +10028,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 				}
 				int iOverflowProduction = 0;
 				int iOverflowGold = 0;
-				if (pCity->hurryOverflow((HurryTypes)iI, &iOverflowProduction, &iOverflowGold, getBugOptionBOOL("CityBar__HurryAssistIncludeCurrent", false, "BUG_CITYBAR_HURRY_ASSIST_INCLUDE_CURRENT")))
+				if (pCity->hurryOverflow((HurryTypes)iI, &iOverflowProduction, &iOverflowGold, getBugOptionBOOL("CityBar__HurryAssistIncludeCurrent", false)))
 				{
 					if (iOverflowProduction > 0)
 					{
@@ -10052,7 +10050,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 // BUG - Hurry Assist - end
 
 // BUG - Trade Detail - start
-	if (getBugOptionBOOL("CityBar__TradeDetail", true, "BUG_CITYBAR_TRADE_DETAIL"))
+	if (getBugOptionBOOL("CityBar__TradeDetail", true))
 	{
 		int iTotalTrade = 0;
 		int iDomesticTrade = 0;
@@ -10117,7 +10115,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 	bFirst = true;
 
 // BUG - Commerce - start
-	if (getBugOptionBOOL("CityBar__Commerce", true, "BUG_CITYBAR_COMMERCE"))
+	if (getBugOptionBOOL("CityBar__Commerce", true))
 	{
 		if (bBaseValues)
 		{
@@ -10202,7 +10200,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
 // BUG - Building Icons - start
 // AIAndy: Changed to show only national and world wonders
-	if (getBugOptionBOOL("CityBar__BuildingIcons", true, "BUG_CITYBAR_BUILDING_ICONS"))
+	if (getBugOptionBOOL("CityBar__BuildingIcons", true))
 	{
 		bFirst = true;
 		for (iI = 0; iI < GC.getNumBuildingInfos(); ++iI)
@@ -10238,7 +10236,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
 // BUG - Culture Turns - start
 	int iCultureRate = pCity->getCommerceRateTimes100(COMMERCE_CULTURE);
-	if (iCultureRate > 0 && getBugOptionBOOL("CityBar__CultureTurns", true, "BUG_CITYBAR_CULTURE_TURNS"))
+	if (iCultureRate > 0 && getBugOptionBOOL("CityBar__CultureTurns", true))
 	{
 		if (pCity->getCultureLevel() != NO_CULTURELEVEL)
 		{
@@ -10267,7 +10265,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 
 // BUG - Great Person Turns - start
 	int iGppRate = pCity->getGreatPeopleRate();
-	if (iGppRate > 0 && getBugOptionBOOL("CityBar__GreatPersonTurns", true, "BUG_CITYBAR_GREAT_PERSON_TURNS"))
+	if (iGppRate > 0 && getBugOptionBOOL("CityBar__GreatPersonTurns", true))
 	{
 		int iGpp = pCity->getGreatPeopleProgress();
 		int iGppTotal = GET_PLAYER(pCity->getOwner()).greatPeopleThresholdNonMilitary();
@@ -10288,7 +10286,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 // BUG - Great Person Turns - end
 
 // BUG - Specialists - start
-	if (getBugOptionBOOL("CityBar__Specialists", true, "BUG_CITYBAR_SPECIALISTS"))
+	if (getBugOptionBOOL("CityBar__Specialists", true))
 	{
 		// regular specialists
 		bFirst = true;
@@ -10369,7 +10367,7 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 	}
 
 // BUG - Revolt Chance - start
-	if (getBugOptionBOOL("CityBar__RevoltChance", true, "BUG_CITYBAR_REVOLT_CHANCE"))
+	if (getBugOptionBOOL("CityBar__RevoltChance", true))
 	{
 		const PlayerTypes eCulturalOwner = pCity->plot()->calculateCulturalOwner();
 
@@ -10416,9 +10414,9 @@ void CvGameTextMgr::setCityBarHelp(CvWStringBuffer &szString, CvCity* pCity)
 	pCity->getProperties()->buildDisplayString(szString);
 
 // BUG - Hide UI Instructions - start
-	if (!getBugOptionBOOL("CityBar__HideInstructions", true, "BUG_CITYBAR_HIDE_INSTRUCTIONS"))
+	if (!getBugOptionBOOL("CityBar__HideInstructions", true))
 	{
-		if (getBugOptionBOOL("CityBar__BaseValues", true, "BUG_CITYBAR_BASE_VALUES"))
+		if (getBugOptionBOOL("CityBar__BaseValues", true))
 		{
 			szString.append(gDLL->getText("TXT_KEY_CITY_BAR_CTRL_BASE_VALUES"));
 		}
@@ -12559,7 +12557,7 @@ void CvGameTextMgr::parseSpecialistHelpActual(CvWStringBuffer &szHelpString, Spe
 /* Specialists Enhancements						  END											  */
 /************************************************************************************************/
 // BUG - Specialist Actual Effects - start
-		if (iChange != 0 && NULL != pCity && pCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__SpecialistActualEffects", true, "BUG_MISC_SPECIALIST_HOVER_ACTUAL_EFFECTS"))
+		if (iChange != 0 && NULL != pCity && pCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__SpecialistActualEffects", true))
 		{
 			bool bStarted = false;
 			CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
@@ -17835,7 +17833,7 @@ void CvGameTextMgr::setTechTradeHelp(CvWStringBuffer &szBuffer, TechTypes eTech,
 	}
 
 // BUG - Trade Denial - start
-	if (eTradePlayer != NO_PLAYER && GC.getGame().getActivePlayer() != NO_PLAYER && getBugOptionBOOL("MiscHover__TechTradeDenial", true, "BUG_TECH_TRADE_DENIAL_HOVER"))
+	if (eTradePlayer != NO_PLAYER && GC.getGame().getActivePlayer() != NO_PLAYER && getBugOptionBOOL("MiscHover__TechTradeDenial", true))
 	{
 		TradeData trade;
 		trade.m_eItemType = TRADE_TECHNOLOGIES;
@@ -17969,7 +17967,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 		}
 
 // BUG - Starting Experience - start
-		if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperience", true, "BUG_UNIT_EXPERIENCE_HOVER"))
+		if (pCity != NULL && getBugOptionBOOL("MiscHover__UnitExperience", true))
 		{
 			setUnitExperienceHelp(szBuffer, L", ", eUnit, pCity, bConscript);
 		}
@@ -20064,7 +20062,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 
 		//Experience
 		if (pCity != NULL && kUnit.canAcquireExperience()
-		&& getBugOptionBOOL("MiscHover__UnitExperienceModifiers", true, "BUG_UNIT_EXPERIENCE_MODIFIERS_HOVER"))
+		&& getBugOptionBOOL("MiscHover__UnitExperienceModifiers", true))
 		{
 			CvPlayer& kPlayer = GET_PLAYER(pCity->getOwner());
 			int iTotalXPBonus = 0;
@@ -20950,10 +20948,10 @@ iMaxTeamInstances was unused in CvUnit(Class)Info and removed as part of us shed
 					szTempBuffer.Format(L" - %d/%d%c", pCity->getUnitProduction(eUnit), pCity->getProductionNeeded(eUnit), GC.getYieldInfo(YIELD_PRODUCTION).getChar());
 					szBuffer.append(szTempBuffer);
 
-					if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true, "BUG_PRODUCTION_DECAY_HOVER"))
+					if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true))
 					{
 						setProductionDecayHelp(szBuffer, pCity->getUnitProductionDecayTurns(eUnit), getBugOptionINT("CityScreen__ProductionDecayHoverUnitThreshold",
-							5, "BUG_PRODUCTION_DECAY_HOVER_UNIT_THRESHOLD"), pCity->getUnitProductionDecay(eUnit), pCity->getProductionUnit() == eUnit);
+							5), pCity->getUnitProductionDecay(eUnit), pCity->getProductionUnit() == eUnit);
 					}
 				}
 				else
@@ -21484,7 +21482,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			}
 
 	// BUG - Building Actual Effects - start
-			if (bActual && NULL != pCity && pCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingActualEffects", true, "BUG_BUILDING_HOVER_ACTUAL_EFFECTS"))
+			if (bActual && NULL != pCity && pCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingActualEffects", true))
 			{
 				CvWString szStart = gDLL->getText("TXT_KEY_ACTUAL_EFFECTS");
 				setBuildingActualEffects(szBuffer, szStart, eBuilding, pCity);
@@ -23867,7 +23865,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 	if (pCity != NULL)
 	{
 		if (GC.getGame().getActivePlayer() != NO_PLAYER
-		&& getBugOptionBOOL("CityScreen__BuildingDoubleCommerce", true, "BUG_BUILDING_DOUBLE_COMMERCE"))
+		&& getBugOptionBOOL("CityScreen__BuildingDoubleCommerce", true))
 		{
 			int iYear = pCity->getBuildingOriginalTime(eBuilding);
 
@@ -23966,10 +23964,10 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 					szTempBuffer.Format(L" - %d/%d%c", pCity->getBuildingProduction(eBuilding), pCity->getProductionNeeded(eBuilding), GC.getYieldInfo(YIELD_PRODUCTION).getChar());
 					szBuffer.append(szTempBuffer);
 
-					if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true, "BUG_PRODUCTION_DECAY_HOVER"))
+					if (getBugOptionBOOL("CityScreen__ProductionDecayHover", true))
 					{
 						setProductionDecayHelp(szBuffer, pCity->getBuildingProductionDecayTurns(eBuilding), getBugOptionINT("CityScreen__ProductionDecayHoverBuildingThreshold",
-							5, "BUG_PRODUCTION_DECAY_HOVER_BUILDING_THRESHOLD"), pCity->getBuildingProductionDecay(eBuilding), pCity->getProductionBuilding() == eBuilding);
+							5), pCity->getBuildingProductionDecay(eBuilding), pCity->getProductionBuilding() == eBuilding);
 					}
 				}
 				else
@@ -25505,7 +25503,7 @@ void CvGameTextMgr::parseHappinessHelp(CvWStringBuffer &szBuffer)
 		szBuffer.append(L"\n=======================\n");
 		setHappyHelp(szBuffer, *pHeadSelectedCity);
 
-		if (pHeadSelectedCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingAdditionalHappiness", true, "BUG_BUILDING_ADDITIONAL_HAPPINESS_HOVER"))
+		if (pHeadSelectedCity->getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingAdditionalHappiness", true))
 		{
 			setBuildingAdditionalHappinessHelp(szBuffer, *pHeadSelectedCity, DOUBLE_SEPARATOR);
 		}
@@ -26682,7 +26680,7 @@ void CvGameTextMgr::setBonusTradeHelp(CvWStringBuffer &szBuffer, BonusTypes eBon
 	}
 
 // BUG - Trade Denial - start
-	if (eTradePlayer != NO_PLAYER && GC.getGame().getActivePlayer() != NO_PLAYER && getBugOptionBOOL("MiscHover__BonusTradeDenial", true, "BUG_BONUS_TRADE_DENIAL_HOVER"))
+	if (eTradePlayer != NO_PLAYER && GC.getGame().getActivePlayer() != NO_PLAYER && getBugOptionBOOL("MiscHover__BonusTradeDenial", true))
 	{
 		TradeData trade;
 		trade.m_eItemType = TRADE_RESOURCES;
@@ -32140,7 +32138,7 @@ void CvGameTextMgr::getAttitudeString(CvWStringBuffer& szBuffer, PlayerTypes ePl
 
 		// BEGIN: Show Hidden Attitude Mod 01/22/2010
 		if (GC.getDefineINT("SHOW_HIDDEN_ATTITUDE")
-			&& getBugOptionBOOL("MiscHover__LeaderheadHiddenAttitude", true, "BUG_LEADERHEAD_HOVER_HIDDEN_ATTITUDE"))
+			&& getBugOptionBOOL("MiscHover__LeaderheadHiddenAttitude", true))
 		{
 			iAttitudeChange = kPlayer.AI_getBetterRankDifferenceAttitude(eTargetPlayer);
 			if ((iPass == 0) ? (iAttitudeChange > 0) : (iAttitudeChange < 0))
@@ -33091,7 +33089,7 @@ void CvGameTextMgr::setFoodHelp(CvWStringBuffer &szBuffer, CvCity& city)
 	// ==========================
 
 // BUG - Building Additional Food - start
-	if (city.getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingAdditionalFood", true, "BUG_BUILDING_ADDITIONAL_FOOD_HOVER"))
+	if (city.getOwner() == GC.getGame().getActivePlayer() && getBugOptionBOOL("MiscHover__BuildingAdditionalFood", true))
 	{
 		setBuildingAdditionalYieldHelp(szBuffer, city, YIELD_FOOD, DOUBLE_SEPARATOR);
 	}
@@ -33217,7 +33215,7 @@ void CvGameTextMgr::setProductionHelp(CvWStringBuffer &szBuffer, CvCity& city)
 		szBuffer.append(NEWLINE);
 	}
 
-	const bool bBuildingAdditionalYield = getBugOptionBOOL("MiscHover__BuildingAdditionalProduction", true, "BUG_BUILDING_ADDITIONAL_PRODUCTION_HOVER");
+	const bool bBuildingAdditionalYield = getBugOptionBOOL("MiscHover__BuildingAdditionalProduction", true);
 	if (city.getCurrentProductionDifference(ProductionCalc::FoodProduction | ProductionCalc::Overflow) == 0 && !bBuildingAdditionalYield)
 	{
 		return;
@@ -33888,7 +33886,7 @@ void CvGameTextMgr::buildHintsList(CvWStringBuffer& szBuffer)
 void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, CommerceTypes eCommerceType)
 {
 	//check if this hover is turned on in the bug options and disable if not.
-	bool bBuildingAdditionalCommerce = getBugOptionBOOL("MiscHover__BuildingAdditionalCommerce", true, "BUG_BUILDING_ADDITIONAL_COMMERCE_HOVER");
+	bool bBuildingAdditionalCommerce = getBugOptionBOOL("MiscHover__BuildingAdditionalCommerce", true);
 	if (NO_COMMERCE == eCommerceType || (0 == city.getCommerceRateTimes100(eCommerceType) && !bBuildingAdditionalCommerce))
 	{
 		return;
@@ -34020,7 +34018,7 @@ void CvGameTextMgr::setCommerceHelp(CvWStringBuffer &szBuffer, CvCity& city, Com
 	}
 
 // BUG - Base Commerce - start
-	if (bNeedSubtotal && city.getTotalCommerceRateModifier(eCommerceType) != 0 && getBugOptionBOOL("MiscHover__BaseCommerce", true, "BUG_CITY_SCREEN_BASE_COMMERCE_HOVER"))
+	if (bNeedSubtotal && city.getTotalCommerceRateModifier(eCommerceType) != 0 && getBugOptionBOOL("MiscHover__BaseCommerce", true))
 	{
 		CvWString szYield = CvWString::format(L"%d.%02d", iBaseCommerceRate/100, iBaseCommerceRate%100);
 		szBuffer.append(gDLL->getText("TXT_KEY_MISC_HELP_COMMERCE_SUBTOTAL_YIELD_FLOAT", info.getTextKeyWide(), szYield.GetCString(), info.getChar()));
@@ -34481,14 +34479,14 @@ void CvGameTextMgr::parseGreatPeopleHelp(CvWStringBuffer &szBuffer, CvCity& city
 	}
 
 
-	const bool bBuildingAdditionalGreatPeople = getBugOptionBOOL("MiscHover__BuildingAdditionalGreatPeople", true, "BUG_BUILDING_ADDITIONAL_GREAT_PEOPLE_HOVER");
+	const bool bBuildingAdditionalGreatPeople = getBugOptionBOOL("MiscHover__BuildingAdditionalGreatPeople", true);
 
 	if (city.getGreatPeopleRate() == 0 && !bBuildingAdditionalGreatPeople)
 	{
 		return;
 	}
 
-	if (getBugOptionBOOL("MiscHover__GreatPeopleRateBreakdown", true, "BUG_GREAT_PEOPLE_RATE_BREAKDOWN_HOVER"))
+	if (getBugOptionBOOL("MiscHover__GreatPeopleRateBreakdown", true))
 	{
 		bool bFirst = true;
 		int iRate = 0;
@@ -34763,7 +34761,7 @@ void CvGameTextMgr::buildCityBillboardIconString( CvWStringBuffer& szBuffer, CvC
 			}
 		}
 
-		if (getBugOptionBOOL("CityBar__AirportIcons", true, "BUG_CITYBAR_AIRPORT_ICONS"))
+		if (getBugOptionBOOL("CityBar__AirportIcons", true))
 		{
 			for (int iBuilding = 0; iBuilding < GC.getNumBuildingInfos(); iBuilding++)
 			{
@@ -34907,7 +34905,7 @@ void CvGameTextMgr::buildCityBillboardCityNameString( CvWStringBuffer& szBuffer,
 				}
 			}
 // BUG - Starvation Turns - start
-			else if (pCity->foodDifference() < 0 && getBugOptionBOOL("CityBar__StarvationTurns", true, "BUG_CITYBAR_STARVATION_TURNS"))
+			else if (pCity->foodDifference() < 0 && getBugOptionBOOL("CityBar__StarvationTurns", true))
 			{
 				int iFoodDifference = pCity->foodDifference();
 				if (pCity->getFood() + iFoodDifference >= 0)
@@ -38127,7 +38125,7 @@ void CvGameTextMgr::getDefenseHelp(CvWStringBuffer &szBuffer, CvCity& city)
 	}
 
 	if (city.getOwner() == GC.getGame().getActivePlayer()
-	&& getBugOptionBOOL("MiscHover__BuildingAdditionalDefense", true, "BUG_BUILDING_ADDITIONAL_DEFENSE_HOVER"))
+	&& getBugOptionBOOL("MiscHover__BuildingAdditionalDefense", true))
 	{
 		setBuildingAdditionalDefenseHelp(szBuffer, city, DOUBLE_SEPARATOR);
 	}
