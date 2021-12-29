@@ -22,8 +22,9 @@ def RemoveSign(argsList):
 	EventSigns.gSavedSigns.removeSign(argsList[0], argsList[1])
 
 def initBUG():
-	import BugInit
+	import BugInit, FileUtil
 	BugInit.init()
+	FileUtil.init()
 
 # don't make this an event - Moose
 def init():

@@ -12,7 +12,7 @@ def verifyModDir(szModPath):
         pFile.close()
     return szModPath
 
-g_ModPath = verifyModDir(SP.modDir)
+#g_ModPath = verifyModDir(SP.modDir)
 
 
 dllFiles = [
@@ -38,19 +38,21 @@ dllFiles = [
 	"CyPlayerInterface2.cpp",
 	"CyPlayerInterface3.cpp",
 	"CyPlotInterface1.cpp",
+	#"CyPropertiesInterface.cpp",
 	"CySelectionGroupInterface.cpp",
 	"CyTeamInterface.cpp",
 	"CyUnitInterface1.cpp"
 ]
 
 def init():
-	logFile = open(os.path.join(g_ModPath, "Assets", "Python", "Matt", "log.txt"), "w")
+	szModPath = getModDir()
+	logFile = open(os.path.join(szModPath, "Assets", "Python", "Matt", "log.txt"), "w")
 
-	PythonFiles  = getGlob(os.path.join(g_ModPath, "Assets", "Python"))
-	PythonFiles += getGlob(os.path.join(SP.dirBtS, "Assets", "Python"))
+	PythonFiles  = getGlob(os.path.join(szModPath, "Assets", "Python"))
+	PythonFiles += getGlob(os.path.join(szModPath, "PrivateMaps"))
 
 	for fileName in dllFiles:
-		path = os.path.join(g_ModPath, "Sources", fileName)
+		path = os.path.join(szModPath, "Sources", fileName)
 		pFile = open(path)
 		usedFunctions = ""
 		for line in pFile:
@@ -71,7 +73,7 @@ def getFunctionName(line):
 	functionName = ""
 	if line[2:7] == ".def(":
 		position = 8
-		while line[position] != "\"":
+		while line[position] != "\"" and line[position] < len(line):
 			functionName += line[position]
 			position += 1
 	return functionName
