@@ -5795,6 +5795,7 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 							iValue += kBuilding.getHealUnitCombatType(iI).iHeal / 4;
 						}
 						iValue += kBuilding.getHealRateChange() / 2;
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 						for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
 						{
 							iValue += kBuilding.getAidRateChange(iI).iChange / 3;//Update
@@ -5807,6 +5808,7 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 							}
 						}
 					}
+#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 					if (kBuilding.getGlobalPopulationChange() != 0)
 					{
@@ -14731,7 +14733,6 @@ int	CvCityAI::GetBuildingValue(BuildingTypes eBuilding, int iFocusFlags, int iTh
 	{
 		if (cachedBuildingValues == NULL)
 		{
-
 			OutputDebugString(CvString::format("Rebuilding building value cache for City %S\n", getName().GetCString()).c_str());
 			cachedBuildingValues = new BuildingValueCache(this);
 		}
@@ -15993,6 +15994,7 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 						iValue += (kBuilding.getHealUnitCombatType(iI).iHeal / 4);
 					}
 					iValue += (kBuilding.getHealRateChange() / 2);
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 					for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
 					{
 						iValue += (kBuilding.getAidRateChange(iI).iChange / 3);//Update
@@ -16004,6 +16006,7 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 							iValue += kBuilding.getBonusAidModifier(iI).iModifier / 3;
 						}
 					}
+#endif // OUTBREAKS_AND_AFFLICTIONS
 				}
 
 				iValue += kBuilding.getGlobalPopulationChange() * iNumCities * 4;

@@ -842,7 +842,6 @@ int* CvBuildingInfo::getSpecialistCommerceChangeArray(int i) const
 	return m_ppaiSpecialistCommerceChange[i];
 }
 
-//Team Project (1)
 int CvBuildingInfo::getLocalSpecialistYieldChange(int i, int j) const
 {
 	FASSERT_BOUNDS(0, GC.getNumSpecialistInfos(), i)
@@ -1200,26 +1199,6 @@ PromotionLineTypes CvBuildingInfo::getPromotionLineType() const
 {
 	return m_ePromotionLineType;
 }
-//integers
-int CvBuildingInfo::getLinePriority() const
-{
-	return m_iLinePriority;
-}
-
-int CvBuildingInfo::getOutbreakBase() const
-{
-	return m_iOutbreakBase;
-}
-
-int CvBuildingInfo::getOvercomeBase() const
-{
-	return m_iOvercomeBase;
-}
-
-int CvBuildingInfo::getTradeCommunicability() const
-{
-	return m_iTradeCommunicability;
-}
 
 int CvBuildingInfo::getNationalCaptureProbabilityModifier() const
 {
@@ -1359,6 +1338,7 @@ const HealUnitCombat& CvBuildingInfo::getHealUnitCombatType(int iUnitCombat) con
 	return m_aHealUnitCombatTypes[iUnitCombat];
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 int CvBuildingInfo::getNumBonusAidModifiers() const
 {
 	return (int)m_aBonusAidModifiers.size();
@@ -1378,6 +1358,7 @@ const AidRateChanges& CvBuildingInfo::getAidRateChange(int iIndex) const
 {
 	return m_aAidRateChanges[iIndex];
 }
+#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 int CvBuildingInfo::getNumEnabledCivilizationTypes() const
 {
@@ -1549,6 +1530,7 @@ int CvBuildingInfo::getUnitCombatOngoingTrainingDuration(int iUnitCombat, bool b
 	return 0;
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 int CvBuildingInfo::getNumAfflictionOutbreakLevelChanges() const
 {
 	return m_aAfflictionOutbreakLevelChanges.size();
@@ -1583,6 +1565,7 @@ int CvBuildingInfo::getTechOutbreakLevelChange(int iTech) const
 	}
 	return 0;
 }
+#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 int CvBuildingInfo::getTechHappiness(TechTypes eTech) const
 {
@@ -1945,7 +1928,6 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 		}
 	}
 
-//Team Project (1)
 	if (m_ppaiLocalSpecialistYieldChange)
 	{
 		for(int i = 0; i < GC.getNumSpecialistInfos(); i++)
@@ -2086,7 +2068,7 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iMediumRangeSupportPercentModifier);
 	CheckSum(iSum, m_iLongRangeSupportPercentModifier);
 	CheckSum(iSum, m_iFlankSupportPercentModifier);
-#endif
+#endif // STRENGTH_IN_NUMBERS
 	CheckSum(iSum, m_iNationalCaptureProbabilityModifier);
 	CheckSum(iSum, m_iNationalCaptureResistanceModifier);
 	CheckSum(iSum, m_iLocalCaptureProbabilityModifier);
@@ -2723,7 +2705,6 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-//Team Project (1)
 	if (pXML->TryMoveToXmlFirstChild(L"LocalSpecialistYieldChanges"))
 	{
 		const int iNumChildren = pXML->GetXmlChildrenNumber();

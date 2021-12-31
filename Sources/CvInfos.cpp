@@ -4836,12 +4836,12 @@ const InvisibleImprovementChanges& CvPromotionInfo::getVisibleImprovementRangeCh
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 int CvPromotionInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
 {
 	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 const AfflictionLineChanges& CvPromotionInfo::getDistanceAttackCommunicabilityTypeChange(int iIndex) const
 {
 	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
@@ -6374,6 +6374,11 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 	{
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aAfflictOnAttackChangeTypes, pClassInfo->m_aAfflictOnAttackChangeTypes);
 	}
+
+	if (getNumDistanceAttackCommunicabilityTypeChanges() == 0)
+	{
+		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aDistanceAttackCommunicabilityTypeChanges, pClassInfo->m_aDistanceAttackCommunicabilityTypeChanges);
+	}
 #endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 	if (getNumHealUnitCombatChangeTypes() == 0)
@@ -6424,11 +6429,6 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 	if (getNumVisibleImprovementRangeChanges() == 0)
 	{
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aVisibleImprovementRangeChanges, pClassInfo->m_aVisibleImprovementRangeChanges);
-	}
-
-	if (getNumDistanceAttackCommunicabilityTypeChanges() == 0)
-	{
-		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aDistanceAttackCommunicabilityTypeChanges, pClassInfo->m_aDistanceAttackCommunicabilityTypeChanges);
 	}
 	//TB Combat Mods End  TB SubCombat Mods end
 
@@ -34469,12 +34469,12 @@ CvUnitCombatInfo::~CvUnitCombatInfo()
 	{
 		GC.removeDelayedResolution((int*)&(m_aAfflictOnAttackChangeTypes[i]));
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 	for (int i=0; i<(int)m_aDistanceAttackCommunicabilityTypeChanges.size(); i++)
 	{
 		GC.removeDelayedResolution((int*)&(m_aDistanceAttackCommunicabilityTypeChanges[i]));
 	}
+#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 }
 
 // Textual References
@@ -36122,12 +36122,12 @@ const InvisibleImprovementChanges& CvUnitCombatInfo::getVisibleImprovementRangeC
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 int CvUnitCombatInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
 {
 	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 const AfflictionLineChanges& CvUnitCombatInfo::getDistanceAttackCommunicabilityTypeChange(int iIndex) const
 {
 	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];

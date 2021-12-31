@@ -1427,7 +1427,7 @@ void CvCity::doTurn()
 
 	doPropertyUnitSpawn();
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 	//TB Combat Mod (Buildings) begin
 	if (GC.getGame().isOption(GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS))
 	{
@@ -1457,7 +1457,7 @@ void CvCity::doTurn()
 			}
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 	{
@@ -5098,12 +5098,11 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		changeTotalFlankSupportPercentModifier(kBuilding.getFlankSupportPercentModifier() * iChange);
 #endif // STRENGTH_IN_NUMBERS
 	}
-#ifdef OUTBREAKS_AND_AFFLICTIONS
+#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 	if (kBuilding.getPromotionLineType() != NO_PROMOTIONLINE && GC.getPromotionLineInfo(kBuilding.getPromotionLineType()).isAffliction())
 	{
 		changeAfflictionTypeCount(kBuilding.getPromotionLineType(), iChange);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	for (int iI = 0; iI < kBuilding.getNumBonusAidModifiers(); iI++)
 	{
@@ -5112,7 +5111,6 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		changeExtraBonusAidModifier(eBonus, ePropertyType, kBuilding.getBonusAidModifier(iI).iModifier);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS
 	for (int iI = 0; iI < GC.getNumPromotionLineInfos(); iI++)
 	{
 		PROFILE("CvCity::processBuilding.PromotionLines");
@@ -5128,7 +5126,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 			}
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 
 	//int iNum = kBuilding.getNumFreePromoTypes();
 	//for (iI=0; iI<iNum; iI++)
@@ -22981,11 +22979,10 @@ void CvCity::setCurrentOvercomeChange(PromotionLineTypes ePromotionLine, int iCh
 
 int CvCity::getTotalTechOutbreakLevelChange(BuildingTypes eBuilding) const
 {
-	TechTypes eTech;
 	int iTotalTechOutbreakLevelChange = 0;
 	for (int iI = 0; iI < GC.getNumTechInfos(); iI++)
 	{
-		eTech = ((TechTypes)iI);
+		const TechTypes eTech = ((TechTypes)iI);
 		if (GET_TEAM(getTeam()).isHasTech(eTech))
 		{
 			iTotalTechOutbreakLevelChange += GC.getBuildingInfo(eBuilding).getTechOutbreakLevelChange(iI);
@@ -23025,7 +23022,6 @@ int CvCity::getOvercomeChangesTotal(BuildingTypes eAfflictionBuilding, Promotion
 int CvCity::getUnitCommunicability(PromotionLineTypes eAfflictionLine) const
 {
 	PROFILE_FUNC();
-
 
 	if (GC.getPromotionLineInfo(eAfflictionLine).isNoSpreadUnittoCity())
 		return 0;
@@ -23200,7 +23196,7 @@ void CvCity::doOvercomeCheck(PromotionLineTypes eAfflictionLine)
 	const CvPromotionLineInfo& kAffliction = GC.getPromotionLineInfo(eAfflictionLine);
 	int iHighestLinePriority = 0;
 	BuildingTypes eBuilding;
-	CvWString szBuffer;
+	szBuffer;
 
 	for (int iI = 0; iI < kAffliction.getNumBuildings(); iI++)
 	{
@@ -23229,7 +23225,7 @@ void CvCity::doOvercomeCheck(PromotionLineTypes eAfflictionLine)
 	if (iOvercomeRollResult < iChancetoOvercome)
 	{
 
-		szBuffer = gDLL->getText("TXT_KEY_MISC_OVERCOME_CITY", getNameKey(), GC.getBuildingInfo(eBuilding).getDescription());
+		CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OVERCOME_CITY", getNameKey(), GC.getBuildingInfo(eBuilding).getDescription());
 		AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
 		setNumRealBuilding(eBuilding, 0);
 	}

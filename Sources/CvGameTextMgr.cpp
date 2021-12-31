@@ -22196,6 +22196,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			}
 		}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 		//TB Combat Mod (Buildings) begin
 		for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
 		{
@@ -22207,8 +22208,10 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 				szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_AID_RATE", iChange, GC.getPropertyInfo(eProperty).getDescription()));
 			}
 		}
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (kBuilding.getTradeCommunicability() > 0)
 	{
 		szBuffer.append(NEWLINE);
@@ -22221,7 +22224,6 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 		szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_TRADE_COMMUNICABILITY_REDUCED", kBuilding.getTradeCommunicability()));
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (kBuilding.getPromotionLineType() != NO_PROMOTIONLINE)
 	{
 		PromotionLineTypes eDiseaseLine = kBuilding.getPromotionLineType();
@@ -22231,7 +22233,6 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_DISEASE_TYPE", GC.getPromotionLineInfo(eDiseaseLine).getDescription()));
 		}
 	}
-#endif
 
 	for (int iI = 0; iI < kBuilding.getNumBonusAidModifiers(); iI++)
 	{
@@ -22263,6 +22264,7 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_TECH_OUTBREAK_LEVEL_CHANGE", GC.getTechInfo(static_cast<TechTypes>(iI)).getDescription(), kBuilding.getTechOutbreakLevelChange(iI)));
 		}
 	}
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	foreach_(const TraitTypes eTrait, kBuilding.getFreeTraitTypes())
 	{
@@ -22272,7 +22274,6 @@ void CvGameTextMgr::setBuildingHelp(CvWStringBuffer &szBuffer, const BuildingTyp
 			szBuffer.append(gDLL->getText("TXT_KEY_BUILDINGHELP_FREE_TRAIT", GC.getTraitInfo(eTrait).getDescription()));
 		}
 	}
-
 
 	if (!bRelDisabled)
 	{
