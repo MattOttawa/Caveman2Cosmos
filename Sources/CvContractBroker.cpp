@@ -2,7 +2,10 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvCity.h"
+#include "CvContractBroker.h"
+#include "CvGameAI.h"
 #include "CvGlobals.h"
+#include "CvInfos.h"
 #include "CvMap.h"
 #include "CvPathGenerator.h"
 #include "CvPlayerAI.h"
@@ -262,8 +265,6 @@ void CvContractBroker::finalizeTenderContracts()
 
 	std::map<int,int>	tenderAllocations;
 
-	CvPathGenerator::EnableMaxPerformance(true);
-
 	//	No need to lock here - this is always run in a single threaded context
 
 	for(int iI = 0; iI < (int)m_workRequests.size(); iI++)
@@ -340,7 +341,7 @@ void CvContractBroker::finalizeTenderContracts()
 								tenderAllocations[iTenderAllocationKey] = 0;
 							}
 
-							FASSERT_NOT_NEGATIVE(iTendersAlreadyInProcess)
+							FASSERT_NOT_NEGATIVE(iTendersAlreadyInProcess);
 
 							if ( iTendersAlreadyInProcess <= 0 )
 							{
@@ -529,8 +530,6 @@ void CvContractBroker::finalizeTenderContracts()
 			}
 		}
 	}
-
-	CvPathGenerator::EnableMaxPerformance(false);
 
 	if( gUnitLogLevel >= 3 )
 	{

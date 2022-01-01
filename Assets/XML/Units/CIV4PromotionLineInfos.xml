@@ -1192,7 +1192,7 @@
 		<PromotionLineInfo>
 			<Type>PROMOTIONLINE_HUNTER_GATHERER</Type>
 			<Description>TXT_KEY_PROMOTIONLINE_HUNTER_GATHERER</Description>
-			<Button>art/Buttons/Traits/TraitPolitician.dds</Button>
+			<Button>art/Buttons/Traits/TraitHunterGatherer.dds</Button>
 		</PromotionLineInfo>
 		<PromotionLineInfo>
 			<Type>PROMOTIONLINE_BARBARIAN</Type>
@@ -1775,10 +1775,8 @@
 				<UnitCombatPrereqType>UNITCOMBAT_SIZE_MICROSCOPIC</UnitCombatPrereqType>
 			</UnitCombatPrereqTypes>
 			<NotOnUnitCombatTypes>
-				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_CAPTIVE</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CAPTAIN</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CIVILIAN</NotOnUnitCombatType>
 			</NotOnUnitCombatTypes>
 		</PromotionLineInfo>
 		<PromotionLineInfo>
@@ -1795,10 +1793,8 @@
 				<UnitCombatPrereqType>UNITCOMBAT_SIZE_COLOSSAL</UnitCombatPrereqType>
 			</UnitCombatPrereqTypes>
 			<NotOnUnitCombatTypes>
-				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_CAPTIVE</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CAPTAIN</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CIVILIAN</NotOnUnitCombatType>
 			</NotOnUnitCombatTypes>
 		</PromotionLineInfo>
 		<PromotionLineInfo>
@@ -1813,10 +1809,8 @@
 				<UnitCombatPrereqType>UNITCOMBAT_GROUP_SOLO</UnitCombatPrereqType>
 			</UnitCombatPrereqTypes>
 			<NotOnUnitCombatTypes>
-				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_CAPTIVE</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CAPTAIN</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CIVILIAN</NotOnUnitCombatType>
 			</NotOnUnitCombatTypes>
 		</PromotionLineInfo>
 		<PromotionLineInfo>
@@ -1835,10 +1829,8 @@
 				<UnitCombatPrereqType>UNITCOMBAT_GROUP_COUNTLESS</UnitCombatPrereqType>
 			</UnitCombatPrereqTypes>
 			<NotOnUnitCombatTypes>
-				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_CAPTIVE</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CAPTAIN</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CIVILIAN</NotOnUnitCombatType>
 			</NotOnUnitCombatTypes>
 		</PromotionLineInfo>
 		<PromotionLineInfo>
@@ -2107,29 +2099,6 @@
 			<NotOnUnitCombatTypes>
 				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_CIVILIAN</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_IDEA</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_CAPTIVE</NotOnUnitCombatType>
-			</NotOnUnitCombatTypes>
-			<NotOnDomainTypes>
-				<DomainType>DOMAIN_AIR</DomainType>
-				<DomainType>DOMAIN_SEA</DomainType>
-			</NotOnDomainTypes>
-			<bBuildUp>1</bBuildUp>
-		</PromotionLineInfo>
-		<PromotionLineInfo>
-			<Type>PROMOTIONLINE_BUILD_UP_FORTIFY</Type>
-			<Description>TXT_KEY_PROMOTIONLINE_BUILD_UP_FORTIFY</Description>
-			<Help>TXT_KEY_PROMOTIONLINE_BUILD_UP_FORTIFY_HELP</Help>
-			<Button>Art/Buttons/Promotions/Fortify1BuildUp.dds</Button>
-			<UnitCombatPrereqTypes>
-				<UnitCombatPrereqType>UNITCOMBAT_COMBATANT</UnitCombatPrereqType>
-				<UnitCombatPrereqType>UNITCOMBAT_RUFFIAN</UnitCombatPrereqType>
-				<UnitCombatPrereqType>UNITCOMBAT_LAW_ENFORCEMENT</UnitCombatPrereqType>
-			</UnitCombatPrereqTypes>
-			<NotOnUnitCombatTypes>
-				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_IDEA</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
@@ -2920,10 +2889,8 @@
 				<UnitCombatPrereqType>UNITCOMBAT_MOTILITY_DRIVING</UnitCombatPrereqType>
 			</UnitCombatPrereqTypes>
 			<NotOnUnitCombatTypes>
-				<NotOnUnitCombatType>UNITCOMBAT_SPY</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_COMMANDER</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_ATTACHE</NotOnUnitCombatType>
-				<NotOnUnitCombatType>UNITCOMBAT_CAPTIVE</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CAPTAIN</NotOnUnitCombatType>
+				<NotOnUnitCombatType>UNITCOMBAT_CIVILIAN</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_CRIMINAL</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_STRIKE_TEAM</NotOnUnitCombatType>
 				<NotOnUnitCombatType>UNITCOMBAT_RUFFIAN</NotOnUnitCombatType>
@@ -3351,6 +3318,25 @@
 				<DomainType>DOMAIN_AIR</DomainType>
 			</NotOnDomainTypes>
 			<bBuildUp>1</bBuildUp>
+		</PromotionLineInfo>
+		<PromotionLineInfo>
+			<Type>PROMOTIONLINE_BUSHIDO</Type>
+			<Description>TXT_KEY_PROMOTIONLINE_BUSHIDO</Description>
+			<Button>Art/Interface/Buttons/Promotions/Bushido1.dds</Button>
+			<UnitCombatPrereqTypes>
+				<UnitCombatPrereqType>UNITCOMBAT_ARCHER</UnitCombatPrereqType>
+				<UnitCombatPrereqType>UNITCOMBAT_MELEE</UnitCombatPrereqType>
+				<UnitCombatPrereqType>UNITCOMBAT_THROWING</UnitCombatPrereqType>
+				<UnitCombatPrereqType>UNITCOMBAT_MOUNTED</UnitCombatPrereqType>
+			</UnitCombatPrereqTypes>
+		</PromotionLineInfo>
+		<PromotionLineInfo>
+			<Type>PROMOTIONLINE_WIND_HORSE</Type>
+			<Description>TXT_KEY_PROMOTIONLINE_WIND_HORSE</Description>
+			<Button>Art/Interface/Buttons/Promotions/Windhorse1.dds</Button>
+			<UnitCombatPrereqTypes>
+				<UnitCombatPrereqType>UNITCOMBAT_MOUNTED</UnitCombatPrereqType>
+			</UnitCombatPrereqTypes>
 		</PromotionLineInfo>
 	</PromotionLineInfos>
 </Civ4PromotionLineInfos>

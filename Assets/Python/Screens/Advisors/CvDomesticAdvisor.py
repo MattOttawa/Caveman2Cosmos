@@ -937,7 +937,7 @@ class CvDomesticAdvisor:
 					elif iEffect > 1 or iEffect < 0:
 						szEffects += "%d%s " % (iEffect, self.commerceIcons[eCommerce])
 
-		iEffect = city.getBonusPower(arg, False) + city.getBonusPower(arg, True)
+		iEffect = city.getBonusPower(arg)
 		if iEffect == 1:
 			szEffects += "%s " %(unichr(8872))
 		elif iEffect > 1:
@@ -1032,18 +1032,18 @@ class CvDomesticAdvisor:
 					info = GC.getBuildingInfo(iType)
 					if self.calculateNetHappiness(CyCity) < 3 and self.calculateNetHappiness(CyCity) - self.calculateNetHealth(CyCity) > 2:
 						iHealth = info.getHealth()
-						for j in xrange(GC.getNumBonusInfos()):
-							if CyCity.hasBonus(j):
-								iHealth += info.getBonusHealthChanges(j)
+						for eBonus, iNumHealth in info.getBonusHealthChanges():
+							if CyCity.hasBonus(eBonus):
+								iHealth += iNumHealth
 						value = iHealth / float(info.getProductionCost())
 						if value > bestData:
 							bestOrder = iType
 							bestData = value
 					elif self.calculateNetHealth(CyCity) < 3 and self.calculateNetHealth(CyCity) - self.calculateNetHappiness(CyCity) > 2:
 						iHappiness = info.getHappiness()
-						for j in xrange(GC.getNumBonusInfos()):
-							if CyCity.hasBonus(j):
-								iHappiness += info.getBonusHappinessChanges(j)
+						for eBonus, iNumHappiness in info.getBonusHappinessChanges():
+							if CyCity.hasBonus(eBonus):
+								iHappiness += iNumHappiness
 						value = iHappiness  / float(info.getProductionCost())
 						if value > bestData:
 							bestOrder = iType

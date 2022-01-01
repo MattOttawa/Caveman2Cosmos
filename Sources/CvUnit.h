@@ -7,11 +7,11 @@
 
 #include "CvDLLEntity.h"
 #include "CvGameObject.h"
+#include "CvProperties.h"
 #include "CvUnitComponents.h"
 
 #pragma warning( disable: 4251 )		// needs to have dll-interface to be used by clients of class
 
-class cvInternalGlobals;
 class CvArea;
 class CvCity;
 class CvPlot;
@@ -304,17 +304,14 @@ public:
 class TerrainKeyedInfo
 {
 public:
-	TerrainKeyedInfo() :	m_iTerrainProtected(0),
-							m_iTerrainDoubleMoveCount(0),
-							m_iExtraTerrainAttackPercent(0),
-							m_iExtraTerrainDefensePercent(0),
-							m_iTerrainWorkPercent(0),
-//Team Project (4)
-	//WorkRateMod
-							m_iExtraTerrainWorkPercent(0),
-							m_iExtraWithdrawOnTerrainType(0)
-	{
-	}
+	TerrainKeyedInfo() :
+		m_iTerrainProtected(0),
+		m_iTerrainDoubleMoveCount(0),
+		m_iExtraTerrainAttackPercent(0),
+		m_iExtraTerrainDefensePercent(0),
+		m_iExtraTerrainWorkPercent(0),
+		m_iExtraWithdrawOnTerrainType(0)
+	{ }
 
 	bool Empty() const
 	{
@@ -322,7 +319,6 @@ public:
 			m_iTerrainDoubleMoveCount == 0 &&
 			m_iExtraTerrainAttackPercent == 0 &&
 			m_iExtraTerrainDefensePercent == 0 &&
-			m_iTerrainWorkPercent == 0 &&
 			m_iExtraTerrainWorkPercent == 0 &&
 			m_iExtraWithdrawOnTerrainType == 0);
 	}
@@ -331,10 +327,6 @@ public:
 	int	m_iTerrainDoubleMoveCount;
 	int	m_iExtraTerrainAttackPercent;
 	int	m_iExtraTerrainDefensePercent;
-	//ls612: Terrain Work Modifiers
-	int m_iTerrainWorkPercent;
-//Team Project (4)
-	//WorkRateMod
 	int m_iExtraTerrainWorkPercent;
 	int m_iExtraWithdrawOnTerrainType;
 };
@@ -342,23 +334,19 @@ public:
 class FeatureKeyedInfo
 {
 public:
-	FeatureKeyedInfo() :	m_iFeatureDoubleMoveCount(0),
-							m_iExtraFeatureAttackPercent(0),
-							m_iExtraFeatureDefensePercent(0),
-							m_iFeatureWorkPercent(0),
-//Team Project (4)
-	//WorkRateMod
-							m_iExtraFeatureWorkPercent(0),
-							m_iExtraWithdrawOnFeatureType(0)
-	{
-	}
+	FeatureKeyedInfo() :
+		m_iFeatureDoubleMoveCount(0),
+		m_iExtraFeatureAttackPercent(0),
+		m_iExtraFeatureDefensePercent(0),
+		m_iExtraFeatureWorkPercent(0),
+		m_iExtraWithdrawOnFeatureType(0)
+	{ }
 
 	bool Empty() const
 	{
 		return (m_iFeatureDoubleMoveCount == 0 &&
 			m_iExtraFeatureAttackPercent == 0 &&
 			m_iExtraFeatureDefensePercent == 0 &&
-			m_iFeatureWorkPercent == 0 &&
 			m_iExtraFeatureWorkPercent == 0 &&
 			m_iExtraWithdrawOnFeatureType == 0);
 	}
@@ -366,10 +354,6 @@ public:
 	int	m_iFeatureDoubleMoveCount;
 	int	m_iExtraFeatureAttackPercent;
 	int	m_iExtraFeatureDefensePercent;
-	//ls612: Terrain Work Modifiers
-	int m_iFeatureWorkPercent;
-//Team Project (4)
-	//WorkRateMod
 	int m_iExtraFeatureWorkPercent;
 	int m_iExtraWithdrawOnFeatureType;
 };
@@ -467,6 +451,8 @@ public:
 	CvGameObjectUnit* getGameObject() { return &m_GameObject; }
 	const CvGameObjectUnit* getGameObject() const { return &m_GameObject; }
 
+	CvUnit& operator=(const CvUnit& other);
+
 	// Comparison operators
 	// Use address identity for now (more than one map means x/y compare wouldn't work)
 	friend bool operator==(const CvUnit& lhs, const CvUnit& rhs) { return &lhs == &rhs; }
@@ -516,7 +502,7 @@ public:
 	DllExport const CvWString getName(uint uiForm = 0) const;
 	DllExport int getSubUnitsAlive() const;
 	DllExport const CvArtInfoUnit* getArtInfo(int i, EraTypes eEra) const;
-	DllExport const TCHAR* getButton() const;
+	DllExport const char* getButton() const;
 	DllExport int getGroupSize() const;
 	DllExport int getGroupDefinitions() const;
 	DllExport int getUnitGroupRequired(int i) const;
@@ -677,8 +663,6 @@ public:
 	bool isTerrainProtected(TerrainTypes eIndex) const;
 	int getTerrainProtectedCount(TerrainTypes eIndex, bool bIgnoreCommanders = false) const;
 
-	void doCommerceAttacks(const CvUnit* pDefender, const CvPlot* pPlot);
-
 	bool isAutoPromoting() const;
 	void setAutoPromoting(bool bNewValue);
 	bool isAutoUpgrading() const;
@@ -715,8 +699,6 @@ public:
 	bool canHold(const CvPlot* pPlot) const;
 	bool canSleep(const CvPlot* pPlot) const;
 	bool canFortify(const CvPlot* pPlot) const;
-	bool canEstablish(const CvPlot* pPlot) const;
-	bool canEscape(const CvPlot* pPlot) const;
 	bool canBuildUp(const CvPlot* pPlot) const;
 	bool canAirPatrol(const CvPlot* pPlot) const;
 	void airCircle(bool bStart);
@@ -731,6 +713,9 @@ public:
 	int healTurns(const CvPlot* pPlot) const;
 	int healTurnsAsType(const CvPlot* pPlot, UnitCombatTypes eHealAsType) const;
 	void doHeal();
+#ifdef OUTBREAKS_AND_AFFLICTIONS
+	void doAffliction(const bool bHeal);
+#endif
 
 	bool canAirlift(const CvPlot* pPlot) const;
 	bool canAirliftAt(const CvPlot* pPlot, int iX, int iY) const;
@@ -971,13 +956,11 @@ public:
 
 	bool isAutomated() const;
 	bool isFortifyable() const;
-	bool isEstablishable() const;
-	bool isEscapable() const;
+
 	bool isBuildUpable() const;
 	int fortifyModifier() const;
 	//int establishModifier() const;
 	//int escapeModifier() const;
-	int buildupLevel() const;
 	//TB Combat Mods begin
 	int fortifyRepelModifier() const;
 	//TB Combat Mods End
@@ -1186,7 +1169,6 @@ public:
 
 	int getFortifyTurns() const;
 	void setFortifyTurns(int iNewValue);
-	void changeFortifyTurns(int iChange);
 
 	int getBlitzCount() const;
 	bool isBlitz() const;
@@ -1622,8 +1604,6 @@ public:
 	int getExtraFeatureDefensePercent(FeatureTypes eIndex) const;
 	void changeExtraFeatureDefensePercent(FeatureTypes eIndex, int iChange);
 
-	int getTerrainWorkPercent(TerrainTypes eIndex) const;
-	int getFeatureWorkPercent(FeatureTypes eIndex) const;
 	int getExtraTerrainWorkPercent(TerrainTypes eIndex) const;
 	void changeExtraTerrainWorkPercent (TerrainTypes eIndex, int iChange);
 	int getExtraFeatureWorkPercent(FeatureTypes eIndex) const;
@@ -1640,7 +1620,7 @@ public:
 	bool canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas = false, bool bEquip = false, bool bAfflict = false, bool bPromote = false, bool bForLeader = false, bool bForOffset = false, bool bForFree = false, bool bForBuildUp = false, bool bForStatus = false) const;
 	//TB Combat Mods end
 	bool canAcquirePromotionAny() const;
-	bool isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck = false) const;
+	bool isPromotionValid(PromotionTypes ePromotion, bool bFree = false, bool bKeepCheck = false) const;
 	bool isHealsUnitCombat(UnitCombatTypes eIndex) const;
 	bool isHasUnitCombat(UnitCombatTypes eIndex) const;
 	void processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPromo = false);
@@ -1836,6 +1816,7 @@ protected:
 	int m_iCombatFirstStrikes;
 	int m_iCombatDamage;
 	int m_iFortifyTurns;
+	int m_iBuildUpTurns;
 	int m_iBlitzCount;
 	int m_iRBombardForceAbilityCount;
 	int m_iAmphibCount;
@@ -1953,7 +1934,6 @@ protected:
 	int m_iHiddenNationalityCount;
 	bool m_bIsArmed;
 	bool m_bHasAnyInvisibility;
-	bool m_bHasAnyInvisibilityAbility;
 	bool m_bRevealed;
 #ifdef STRENGTH_IN_NUMBERS
 	IDInfo afIUnit;
@@ -2371,7 +2351,6 @@ public:
 	bool canKeepPromotion(PromotionTypes ePromotion, bool bAssertFree = false, bool bMessageOnFalse = false) const;
 	bool isPromotionFree(PromotionTypes ePromotion) const;
 	int getPromotionFreeCount(PromotionTypes ePromotion) const;
-	void changePromotionFreeCount(PromotionTypes ePromotion, int iChange);
 	void setPromotionFreeCount(PromotionTypes ePromotion, int iChange);
 	void checkFreetoCombatClass();
 	//TB Combat Mods end
@@ -2756,6 +2735,7 @@ public:
 	void changeBombardDirectCount(int iChange);
 
 	static int applySMRank(int value, int rankChange, int rankMultiplier);
+	static int64_t applySMRank64(int64_t value, int rankChange, int rankMultiplier, bool bScaleUp = true);
 
 	int getNoSelfHealCount() const;
 	bool hasNoSelfHeal() const;
@@ -2777,14 +2757,14 @@ public:
 	void setSleepType(MissionTypes eSleepType);
 	void establishBuildups();
 	PromotionLineTypes getBuildUpType() const;
-	void setBuildUpType(PromotionLineTypes ePromotionLine = NO_PROMOTIONLINE, bool bRemove = false, MissionTypes eSleepType = NO_MISSION);
+	void setBuildUpType(PromotionLineTypes ePromotionLine = NO_PROMOTIONLINE, MissionTypes eSleepType = NO_MISSION);
 	void clearBuildups();
+	void incrementBuildUp();
 	bool isInhibitMerge() const;
 	void setInhibitMerge(bool bNewValue);
 	bool isInhibitSplit() const;
 	void setInhibitSplit(bool bNewValue);
 	bool isBuildUp() const;
-	void setBuildUp(bool bNewValue);
 	void setSpecialUnit(bool bChange, SpecialUnitTypes eSpecialUnit);
 	bool isHiddenNationality() const;
 	void doHNCapture();
@@ -2813,26 +2793,24 @@ public:
 	bool isUpgradeAnywhere() const;
 	void changeUpgradeAnywhereCount(int iChange);
 
-	bool hasVisibilityType(InvisibleTypes eInvisibleType) const;
+	void updateSpotIntensity(const InvisibleTypes eInvisibleType = NO_INVISIBLE, const bool bSameTile = false);
 	int visibilityIntensityTotal(InvisibleTypes eInvisibleType) const;
 	int getExtraVisibilityIntensityType(InvisibleTypes eIndex) const;
 	void changeExtraVisibilityIntensityType(InvisibleTypes eIndex, int iChange);
 
-	bool hasAnyInvisibilityType(bool bAbilityCheck = false) const;
-	bool hasInvisibilityType(InvisibleTypes eInvisibleType, bool bAbilityCheck = false) const;
-	int invisibilityIntensityTotal(InvisibleTypes eInvisibleType, bool bAbilityCheck = false) const;
+	bool hasAnyInvisibilityType() const;
+	bool hasInvisibilityType(InvisibleTypes eInvisibleType) const;
+	int invisibilityIntensityTotal(InvisibleTypes eInvisibleType) const;
 	int getExtraInvisibilityIntensityType(InvisibleTypes eIndex) const;
 	void changeExtraInvisibilityIntensityType(InvisibleTypes eIndex, int iChange);
 	void setHasAnyInvisibility();
 
 	//These need text displays on the unit
-	bool hasVisibilityRangeType(InvisibleTypes eInvisibleType) const;
 	int visibilityIntensityRangeTotal(InvisibleTypes eInvisibleType) const;
 	int getExtraVisibilityIntensityRangeType(InvisibleTypes eIndex) const;
 	void changeExtraVisibilityIntensityRangeType(InvisibleTypes eIndex, int iChange);
 
 	int visibilityIntensitySameTileTotal(InvisibleTypes eInvisibleType) const;
-	int getExtraVisibilityIntensitySameTileType(InvisibleTypes eIndex) const;
 	void changeExtraVisibilityIntensitySameTileType(InvisibleTypes eIndex, int iChange);
 
 	int getNumExtraInvisibleTerrains() const;
@@ -2886,9 +2864,6 @@ public:
 	void changeExtraAidChange(PropertyTypes eProperty, int iChange);
 	int extraAidChange(PropertyTypes eProperty) const;
 #endif
-	void deleteVisibility();
-	void addVisibility();
-
 	bool isNegatesInvisible(InvisibleTypes eInvisible) const;
 	int getNegatesInvisibleCount(InvisibleTypes eInvisible) const;
 	void changeNegatesInvisibleCount(InvisibleTypes eInvisible, int iChange);
@@ -3203,9 +3178,5 @@ public:
 
 typedef std::vector<CvUnit*> UnitVector;
 typedef std::vector<const CvUnit*> ConstUnitVector;
-
-// Safe unit iterators (they copy the whole range before iterating, but this is just copying pointers so not a big deal in most cases
-// However it shouldn't be used in inner loops
-typedef copy_iterator<CvUnit> safe_unit_iterator;
 
 #endif

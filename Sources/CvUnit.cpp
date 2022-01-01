@@ -7,9 +7,9 @@
 #include "CvEventReporter.h"
 #include "CvGameAI.h"
 #include "CvGlobals.h"
-#include "CvPopupInfo.h"
-#include "CvMap.h"
+#include "CvImprovementInfo.h"
 #include "CvInfos.h"
+#include "CvMap.h"
 #include "CvPlayerAI.h"
 #include "CvPlot.h"
 #include "CvPopupInfo.h"
@@ -17,13 +17,19 @@
 #include "CvSelectionGroup.h"
 #include "CvTeamAI.h"
 #include "CvUnit.h"
+#include "CvUnitSelectionCriteria.h"
 #include "CvViewport.h"
-#include "CyPlot.h"
-#include "CyUnit.h"
+#include "CvDLLEngineIFaceBase.h"
+#include "CvDLLInterfaceIFaceBase.h"
 #include "CvDLLEntity.h"
 #include "CvDLLEntityIFaceBase.h"
 #include "CvDLLFAStarIFaceBase.h"
-#include "CvImprovementInfo.h"
+#include "CvDLLUtilityIFaceBase.h"
+#include "CyPlot.h"
+#include "CyUnit.h"
+#ifdef USE_OLD_PATH_GENERATOR
+#include "FAStarNode.h"
+#endif
 
 static CvEntity* g_dummyEntity = NULL;
 static CvUnit*	 g_dummyUnit = NULL;
@@ -204,6 +210,7 @@ m_Properties(this)
 	}
 }
 
+
 CvUnit::~CvUnit()
 {
 	if (!isUsingDummyEntities())
@@ -324,7 +331,7 @@ void CvUnit::changeIdentity(UnitTypes eUnit)
 
 void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOwner, int iX, int iY, DirectionTypes eFacingDirection, int iBirthmark)
 {
-	FAssert(NO_UNIT != eUnit);
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), eUnit);
 
 	//	If the current viewport is not yet initialized center it on the first unit created for the active player
 	if (GC.getGame().getActivePlayer() == eOwner
@@ -493,6 +500,8 @@ void CvUnit::init(int iID, UnitTypes eUnit, UnitAITypes eUnitAI, PlayerTypes eOw
 		{
 			setHasAnyInvisibility();
 		}
+		establishBuildups();
+
 		CvEventReporter::getInstance().unitCreated(this);
 	}
 }
@@ -532,6 +541,7 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iCombatTimer = 0;
 	m_iCombatFirstStrikes = 0;
 	m_iFortifyTurns = 0;
+	m_iBuildUpTurns = 0;
 	m_iBlitzCount = 0;
 	m_iRBombardForceAbilityCount = 0;
 	m_iAmphibCount = 0;
@@ -764,7 +774,6 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_iHiddenNationalityCount = 0;
 	m_bHasHNCapturePromotion = false;
 	m_bHasAnyInvisibility = false;
-	m_bHasAnyInvisibilityAbility = false;
 	m_bRevealed = false;
 	m_shadowUnit.reset();
 	m_eDesiredDiscoveryTech = NO_TECH;
@@ -883,6 +892,343 @@ void CvUnit::reset(int iID, UnitTypes eUnit, PlayerTypes eOwner, bool bConstruct
 	m_worker = NULL;
 }
 
+CvUnit& CvUnit::operator=(const CvUnit& other)
+{
+	//uninit();
+	//clearCityOfOrigin();
+
+	//static_cast<CvUnitAI&>(*this) = static_cast<const CvUnitAI&>(other);
+
+	m_iHealUnitCombatCount = other.m_iHealUnitCombatCount;
+	m_iDCMBombRange = other.m_iDCMBombRange;
+	m_iDCMBombAccuracy = other.m_iDCMBombAccuracy;
+	//m_iID = other.m_iID;
+	//if (!bIdentityChange)
+	//{
+	//	m_iGroupID = other.m_iGroupID;
+	//}
+	m_iHotKeyNumber = other.m_iHotKeyNumber;
+	//m_iX = other.m_iX;
+	//m_iY = other.m_iY;
+	m_iLastMoveTurn = other.m_iLastMoveTurn;
+	m_iReconX = other.m_iReconX;
+	m_iReconY = other.m_iReconY;
+	m_iGameTurnCreated = other.m_iGameTurnCreated;
+	m_iDamage = other.m_iDamage;
+	m_iMoves = other.m_iMoves;
+	m_iExperience = other.m_iExperience;
+	m_iLevel = other.m_iLevel;
+	m_iCargo = other.m_iCargo;
+	m_iSMCargo = other.m_iSMCargo;
+	m_iAttackPlotX = other.m_iAttackPlotX;
+	m_iAttackPlotY = other.m_iAttackPlotY;
+	m_iCombatTimer = other.m_iCombatTimer;
+	m_iCombatFirstStrikes = other.m_iCombatFirstStrikes;
+	m_iFortifyTurns = other.m_iFortifyTurns;
+	m_iBuildUpTurns = other.m_iBuildUpTurns;
+	m_iBlitzCount = other.m_iBlitzCount;
+	m_iRBombardForceAbilityCount = other.m_iRBombardForceAbilityCount;
+	m_iAmphibCount = other.m_iAmphibCount;
+	m_iRiverCount = other.m_iRiverCount;
+	m_iEnemyRouteCount = other.m_iEnemyRouteCount;
+	m_iAlwaysHealCount = other.m_iAlwaysHealCount;
+	m_iHillsDoubleMoveCount = other.m_iHillsDoubleMoveCount;
+	m_iImmuneToFirstStrikesCount = other.m_iImmuneToFirstStrikesCount;
+	m_iAlwaysInvisibleCount = other.m_iAlwaysInvisibleCount;
+	m_iDefensiveVictoryMoveCount = other.m_iDefensiveVictoryMoveCount;
+	m_iFreeDropCount = other.m_iFreeDropCount;
+	m_iOffensiveVictoryMoveCount = other.m_iOffensiveVictoryMoveCount;
+	m_iOneUpCount = other.m_iOneUpCount;
+	m_iPillageCultureCount = other.m_iPillageCultureCount;
+	m_iPillageEspionageCount = other.m_iPillageEspionageCount;
+	m_iPillageMarauderCount = other.m_iPillageMarauderCount;
+	m_iPillageOnMoveCount = other.m_iPillageOnMoveCount;
+	m_iPillageOnVictoryCount = other.m_iPillageOnVictoryCount;
+	m_iPillageResearchCount = other.m_iPillageResearchCount;
+	m_iAirCombatLimitChange = other.m_iAirCombatLimitChange;
+	m_iCelebrityHappy = other.m_iCelebrityHappy;
+	m_iCollateralDamageLimitChange = other.m_iCollateralDamageLimitChange;
+	m_iCollateralDamageMaxUnitsChange = other.m_iCollateralDamageMaxUnitsChange;
+	m_iCombatLimitChange = other.m_iCombatLimitChange;
+	m_iExtraDropRange = other.m_iExtraDropRange;
+	m_iSurvivorChance = other.m_iSurvivorChance;
+	m_iVictoryAdjacentHeal = other.m_iVictoryAdjacentHeal;
+	m_iVictoryHeal = other.m_iVictoryHeal;
+	m_iVictoryStackHeal = other.m_iVictoryStackHeal;
+	m_iExtraVisibilityRange = other.m_iExtraVisibilityRange;
+	m_iExtraMoves = other.m_iExtraMoves;
+	m_iExtraMoveDiscount = other.m_iExtraMoveDiscount;
+	m_iExtraAirRange = other.m_iExtraAirRange;
+	m_iExtraIntercept = other.m_iExtraIntercept;
+	m_iExtraEvasion = other.m_iExtraEvasion;
+	m_iExtraFirstStrikes = other.m_iExtraFirstStrikes;
+	m_iExtraChanceFirstStrikes = other.m_iExtraChanceFirstStrikes;
+	m_iExtraWithdrawal = other.m_iExtraWithdrawal;
+	m_iExtraAttackCombatModifier = other.m_iExtraAttackCombatModifier;
+	m_iExtraDefenseCombatModifier = other.m_iExtraDefenseCombatModifier;
+	m_iExtraPursuit = other.m_iExtraPursuit;
+	m_iExtraEarlyWithdraw = other.m_iExtraEarlyWithdraw;
+	m_iExtraVSBarbs = other.m_iExtraVSBarbs;
+	m_iExtraReligiousCombatModifier = other.m_iExtraReligiousCombatModifier;
+	m_iExtraArmor = other.m_iExtraArmor;
+	m_iExtraPuncture = other.m_iExtraPuncture;
+	m_iExtraOverrun = other.m_iExtraOverrun;
+	m_iExtraRepel = other.m_iExtraRepel;
+	m_iExtraFortRepel = other.m_iExtraFortRepel;
+	m_iExtraRepelRetries = other.m_iExtraRepelRetries;
+	m_iExtraUnyielding = other.m_iExtraUnyielding;
+	m_iExtraKnockback = other.m_iExtraKnockback;
+	m_iExtraKnockbackRetries = other.m_iExtraKnockbackRetries;
+	m_iStampedeCount = other.m_iStampedeCount;
+	m_iAttackOnlyCitiesCount = other.m_iAttackOnlyCitiesCount;
+	m_iIgnoreNoEntryLevelCount = other.m_iIgnoreNoEntryLevelCount;
+	m_iIgnoreZoneofControlCount = other.m_iIgnoreZoneofControlCount;
+	m_iFliesToMoveCount = other.m_iFliesToMoveCount;
+	m_iExtraStrAdjperRnd = other.m_iExtraStrAdjperRnd;
+	m_iExtraStrAdjperAtt = other.m_iExtraStrAdjperAtt;
+	m_iExtraStrAdjperDef = other.m_iExtraStrAdjperDef;
+	m_iExtraWithdrawAdjperAtt = other.m_iExtraWithdrawAdjperAtt;
+	m_iExtraUnnerve = other.m_iExtraUnnerve;
+	m_iExtraEnclose = other.m_iExtraEnclose;
+	m_iExtraLunge = other.m_iExtraLunge;
+	m_iExtraDynamicDefense = other.m_iExtraDynamicDefense;
+	m_iExtraStrength = other.m_iExtraStrength;
+	m_iSMStrength = other.m_iSMStrength;
+	m_iAnimalIgnoresBordersCount = other.m_iAnimalIgnoresBordersCount;
+	m_iOnslaughtCount = other.m_iOnslaughtCount;
+	m_iExtraFortitude = other.m_iExtraFortitude;
+#ifdef STRENGTH_IN_NUMBERS
+	m_iExtraFrontSupportPercent = other.m_iExtraFrontSupportPercent;
+	m_iExtraShortRangeSupportPercent = other.m_iExtraShortRangeSupportPercent;
+	m_iExtraMediumRangeSupportPercent = other.m_iExtraMediumRangeSupportPercent;
+	m_iExtraLongRangeSupportPercent = other.m_iExtraLongRangeSupportPercent;
+	m_iExtraFlankSupportPercent = other.m_iExtraFlankSupportPercent;
+	m_iSupportCount = other.m_iSupportCount;
+	m_iAttackFromPlotX = other.m_iAttackFromPlotX;
+	m_iAttackFromPlotY = other.m_iAttackFromPlotY;
+#endif // STRENGTH_IN_NUMBERS
+	m_iExtraDodgeModifier = other.m_iExtraDodgeModifier;
+	m_iExtraPrecisionModifier = other.m_iExtraPrecisionModifier;
+	m_iExtraPowerShots = other.m_iExtraPowerShots;
+	m_iExtraPowerShotCombatModifier = other.m_iExtraPowerShotCombatModifier;
+	m_iExtraPowerShotPunctureModifier = other.m_iExtraPowerShotPunctureModifier;
+	m_iExtraPowerShotPrecisionModifier = other.m_iExtraPowerShotPrecisionModifier;
+	m_iExtraPowerShotCriticalModifier = other.m_iExtraPowerShotCriticalModifier;
+	m_iExtraCriticalModifier = other.m_iExtraCriticalModifier;
+	m_iExtraEndurance = other.m_iExtraEndurance;
+	m_iColdDamage = other.m_iColdDamage;
+	m_iDealColdDamageCount = other.m_iDealColdDamageCount;
+	m_iColdImmuneCount = other.m_iColdImmuneCount;
+	m_iCombatPowerShots = other.m_iCombatPowerShots;
+	m_iCombatKnockbacks = other.m_iCombatKnockbacks;
+	m_iCombatRepels = other.m_iCombatRepels;
+	m_iExtraRoundStunProb = other.m_iExtraRoundStunProb;
+	m_iCombatStuns = other.m_iCombatStuns;
+	m_iExtraPoisonProbabilityModifier = other.m_iExtraPoisonProbabilityModifier;
+	m_iRetrainsAvailable = other.m_iRetrainsAvailable;
+	m_iQualityBaseTotal = other.m_iQualityBaseTotal;
+	m_iGroupBaseTotal = other.m_iGroupBaseTotal;
+	m_iSizeBaseTotal = other.m_iSizeBaseTotal;
+	m_iExtraQuality = other.m_iExtraQuality;
+	m_iExtraGroup = other.m_iExtraGroup;
+	m_iExtraSize = other.m_iExtraSize;
+	m_iSMCargoVolume = other.m_iSMCargoVolume;
+	m_iSMExtraCargoVolume = other.m_iSMExtraCargoVolume;
+	m_iSMCargoVolumeModifier = other.m_iSMCargoVolumeModifier;
+	m_iCannotMergeSplitCount = other.m_iCannotMergeSplitCount;
+	m_iExtraCaptureProbabilityModifier = other.m_iExtraCaptureProbabilityModifier;
+	m_iExtraCaptureResistanceModifier = other.m_iExtraCaptureResistanceModifier;
+	m_iExtraBreakdownChance = other.m_iExtraBreakdownChance;
+	m_iExtraBreakdownDamage = other.m_iExtraBreakdownDamage;
+	m_iExtraTaunt = other.m_iExtraTaunt;
+	m_iExtraCombatModifierPerSizeMore = other.m_iExtraCombatModifierPerSizeMore;
+	m_iExtraCombatModifierPerSizeLess = other.m_iExtraCombatModifierPerSizeLess;
+	m_iExtraCombatModifierPerVolumeMore = other.m_iExtraCombatModifierPerVolumeMore;
+	m_iExtraCombatModifierPerVolumeLess = other.m_iExtraCombatModifierPerVolumeLess;
+	m_iExtraMaxHP = other.m_iExtraMaxHP;
+	m_iExtraStrengthModifier = other.m_iExtraStrengthModifier;
+	m_iExtraDamageModifier = other.m_iExtraDamageModifier;
+	m_iExtraUpkeep100 = other.m_iExtraUpkeep100;
+	m_iUpkeepModifier = other.m_iUpkeepModifier;
+	m_iUpkeepMultiplierSM = other.m_iUpkeepMultiplierSM;
+	m_iUpkeep100 = other.m_iUpkeep100;
+	m_iSMAssetValue = other.m_iSMAssetValue;
+	m_iSMPowerValue = other.m_iSMPowerValue;
+	m_iSMHPValue = other.m_iSMHPValue;
+	m_iExtraRBombardDamage = other.m_iExtraRBombardDamage;
+	m_iExtraRBombardDamageLimit = other.m_iExtraRBombardDamageLimit;
+	m_iExtraRBombardDamageMaxUnits = other.m_iExtraRBombardDamageMaxUnits;
+	m_iExtraDCMBombRange = other.m_iExtraDCMBombRange;
+	m_iExtraDCMBombAccuracy = other.m_iExtraDCMBombAccuracy;
+	m_iBaseRBombardDamage = other.m_iBaseRBombardDamage;
+	m_iBaseRBombardDamageLimit = other.m_iBaseRBombardDamageLimit;
+	m_iBaseRBombardDamageMaxUnits = other.m_iBaseRBombardDamageMaxUnits;
+	m_iBaseDCMBombRange = other.m_iBaseDCMBombRange;
+	m_iBaseDCMBombAccuracy = other.m_iBaseDCMBombAccuracy;
+	m_iBombardDirectCount = other.m_iBombardDirectCount;
+	m_iExtraCollateralDamage = other.m_iExtraCollateralDamage;
+	m_iExtraBombardRate = other.m_iExtraBombardRate;
+	m_iSMBombardRate = other.m_iSMBombardRate;
+	m_iSMAirBombBaseRate = other.m_iSMAirBombBaseRate;
+	m_iSMBaseWorkRate = other.m_iSMBaseWorkRate;
+	m_iSMRevoltProtection = other.m_iSMRevoltProtection;
+	m_iExtraEnemyHeal = other.m_iExtraEnemyHeal;
+	m_iExtraNeutralHeal = other.m_iExtraNeutralHeal;
+	m_iExtraFriendlyHeal = other.m_iExtraFriendlyHeal;
+	m_iSameTileHeal = other.m_iSameTileHeal;
+	m_iAdjacentTileHeal = other.m_iAdjacentTileHeal;
+	m_iExtraCombatPercent = other.m_iExtraCombatPercent;
+	m_iExtraCityAttackPercent = other.m_iExtraCityAttackPercent;
+	m_iExtraCityDefensePercent = other.m_iExtraCityDefensePercent;
+	m_iExtraHillsAttackPercent = other.m_iExtraHillsAttackPercent;
+	m_iExtraHillsDefensePercent = other.m_iExtraHillsDefensePercent;
+	m_iRevoltProtection = other.m_iRevoltProtection;
+	m_iCollateralDamageProtection = other.m_iCollateralDamageProtection;
+	m_iPillageChange = other.m_iPillageChange;
+	m_iUpgradeDiscount = other.m_iUpgradeDiscount;
+	m_iExperiencePercent = other.m_iExperiencePercent;
+	m_iKamikazePercent = other.m_iKamikazePercent;
+	m_eFacingDirection = other.m_eFacingDirection;
+	m_iImmobileTimer = other.m_iImmobileTimer;
+	m_bCanRespawn = other.m_bCanRespawn;
+	m_bSurvivor = other.m_bSurvivor;
+	m_bMadeAttack = other.m_bMadeAttack;
+	m_iRoundCount = other.m_iRoundCount;
+	m_iAttackCount = other.m_iAttackCount;
+	m_iDefenseCount = other.m_iDefenseCount;
+	m_bMadeInterception = other.m_bMadeInterception;
+	m_bPromotionReady = other.m_bPromotionReady;
+	m_bDeathDelay = other.m_bDeathDelay;
+	m_bCombatFocus = other.m_bCombatFocus;
+	m_bInfoBarDirty = other.m_bInfoBarDirty;
+	m_bBlockading = other.m_bBlockading;
+	m_bAirCombat = other.m_bAirCombat;
+	m_bHasBuildUp = other.m_bHasBuildUp;
+	m_bInhibitMerge = other.m_bInhibitMerge;
+	m_bInhibitSplit = other.m_bInhibitSplit;
+	m_bIsBuildUp = other.m_bIsBuildUp;
+	m_bIsReligionLocked = other.m_bIsReligionLocked;
+	m_iCanMovePeaksCount = other.m_iCanMovePeaksCount;
+	m_iCanLeadThroughPeaksCount = other.m_iCanLeadThroughPeaksCount;
+	m_movementCharacteristicsHash = other.m_movementCharacteristicsHash;
+	m_iSleepTimer = other.m_iSleepTimer;
+	m_iCommanderID = other.m_iCommanderID;
+	m_iCommanderCacheTurn = other.m_iCommanderCacheTurn;
+	m_eOriginalOwner = other.m_eOriginalOwner;
+	m_eNewDomainCargo = other.m_eNewDomainCargo;
+	m_eNewSpecialCargo = other.m_eNewSpecialCargo;
+	m_eNewSMSpecialCargo = other.m_eNewSMSpecialCargo;
+	m_eNewSMNotSpecialCargo = other.m_eNewSMNotSpecialCargo;
+	m_eSpecialUnit = other.m_eSpecialUnit;
+	m_eSleepType = other.m_eSleepType;
+	m_iZoneOfControlCount = other.m_iZoneOfControlCount;
+	m_iExcileCount = other.m_iExcileCount;
+	m_iPassageCount = other.m_iPassageCount;
+	m_iNoNonOwnedCityEntryCount = other.m_iNoNonOwnedCityEntryCount;
+	m_iBarbCoExistCount = other.m_iBarbCoExistCount;
+	m_iBlendIntoCityCount = other.m_iBlendIntoCityCount;
+	m_iUpgradeAnywhereCount = other.m_iUpgradeAnywhereCount;
+	m_bAutoPromoting = other.m_bAutoPromoting;
+	m_bAutoUpgrading = other.m_bAutoUpgrading;
+	m_iHiddenNationalityCount = other.m_iHiddenNationalityCount;
+	m_bHasHNCapturePromotion = other.m_bHasHNCapturePromotion;
+	m_bHasAnyInvisibility = other.m_bHasAnyInvisibility;
+	m_bRevealed = other.m_bRevealed;
+	m_shadowUnit = other.m_shadowUnit;
+	m_eDesiredDiscoveryTech = other.m_eDesiredDiscoveryTech;
+	m_eOwner = other.m_eOwner;
+	m_eCapturingPlayer = other.m_eCapturingPlayer;
+	m_eUnitType = other.m_eUnitType;
+	m_eReligionType = other.m_eReligionType;
+	m_pUnitInfo = other.m_pUnitInfo;
+	m_iBaseCombat = other.m_iBaseCombat;
+	m_eLeaderUnitType = other.m_eLeaderUnitType;
+	m_eGGExperienceEarnedTowardsType = other.m_eGGExperienceEarnedTowardsType;
+	m_iCargoCapacity = other.m_iCargoCapacity;
+	m_iSMCargoCapacity = other.m_iSMCargoCapacity;
+	m_iExtraSelfHealModifier = other.m_iExtraSelfHealModifier;
+	m_iExtraNumHealSupport = other.m_iExtraNumHealSupport;
+	m_iHealSupportUsed = other.m_iHealSupportUsed;
+	m_iExtraInsidiousness = other.m_iExtraInsidiousness;
+	m_iExtraInvestigation = other.m_iExtraInvestigation;
+	m_iNoSelfHealCount = other.m_iNoSelfHealCount;
+	m_iDebugCount = other.m_iDebugCount;
+	m_iAssassinCount = other.m_iAssassinCount;
+	m_iExtraStealthStrikes = other.m_iExtraStealthStrikes;
+	m_iExtraStealthCombatModifier = other.m_iExtraStealthCombatModifier;
+	m_iStealthDefenseCount = other.m_iStealthDefenseCount;
+	m_iOnlyDefensiveCount = other.m_iOnlyDefensiveCount;
+	m_iNoInvisibilityCount = other.m_iNoInvisibilityCount;
+	m_iNoCaptureCount = other.m_iNoCaptureCount;
+	m_iExtraTrapDamageMax = other.m_iExtraTrapDamageMax;
+	m_iExtraTrapDamageMin = other.m_iExtraTrapDamageMin;
+	m_iExtraTrapComplexity = other.m_iExtraTrapComplexity;
+	m_iExtraNumTriggers = other.m_iExtraNumTriggers;
+	m_iNumTimesTriggered = other.m_iNumTimesTriggered;
+	m_iTriggerBeforeAttackCount = other.m_iTriggerBeforeAttackCount;
+	m_iExtraNoDefensiveBonusCount = other.m_iExtraNoDefensiveBonusCount;
+	m_iExtraGatherHerdCount = other.m_iExtraGatherHerdCount;
+	m_bIsArmed = other.m_bIsArmed;
+	m_eCurrentBuildUpType = other.m_eCurrentBuildUpType;
+	m_eCapturingUnit = other.m_eCapturingUnit;
+	m_combatUnit = other.m_combatUnit;
+	m_transportUnit = other.m_transportUnit;
+#ifdef STRENGTH_IN_NUMBERS
+	afIUnit = other.afIUnit;
+	afIIUnit = other.afIIUnit;
+	asrIUnit = other.asrIUnit;
+	asrIIUnit = other.asrIIUnit;
+	amrIUnit = other.amrIUnit;
+	amrIIUnit = other.amrIIUnit;
+	alrIUnit = other.alrIUnit;
+	alrIIUnit = other.alrIIUnit;
+	aflIUnit = other.aflIUnit;
+	aflIIUnit = other.aflIIUnit;
+	dfIUnit = other.dfIUnit;
+	dfIIUnit = other.dfIIUnit;
+	dsrIUnit = other.dsrIUnit;
+	dsrIIUnit = other.dsrIIUnit;
+	dmrIUnit = other.dmrIUnit;
+	dmrIIUnit = other.dmrIIUnit;
+	dlrIUnit = other.dlrIUnit;
+	dlrIIUnit = other.dlrIIUnit;
+	dflIUnit = other.dflIUnit;
+	dflIIUnit = other.dflIIUnit;
+#endif // STRENGTH_IN_NUMBERS
+
+	m_aExtraInvisibleTerrains = other.m_aExtraInvisibleTerrains;
+	m_aExtraInvisibleFeatures = other.m_aExtraInvisibleFeatures;
+	m_aExtraInvisibleImprovements = other.m_aExtraInvisibleImprovements;
+	m_aExtraVisibleTerrains = other.m_aExtraVisibleTerrains;
+	m_aExtraVisibleFeatures = other.m_aExtraVisibleFeatures;
+	m_aExtraVisibleImprovements = other.m_aExtraVisibleImprovements;
+	m_aExtraVisibleTerrainRanges = other.m_aExtraVisibleTerrainRanges;
+	m_aExtraVisibleFeatureRanges = other.m_aExtraVisibleFeatureRanges;
+	m_aExtraVisibleImprovementRanges = other.m_aExtraVisibleImprovementRanges;
+	m_szName = other.m_szName;
+	m_szScriptData = other.m_szScriptData;
+	m_aExtraAidChanges = other.m_aExtraAidChanges;
+
+	if (!other.m_promotionKeyedInfo.empty())
+		m_promotionKeyedInfo = other.m_promotionKeyedInfo;
+
+	if (!other.m_promotionLineKeyedInfo.empty())
+		m_promotionLineKeyedInfo = other.m_promotionLineKeyedInfo;
+
+	if (!other.m_terrainKeyedInfo.empty())
+		m_terrainKeyedInfo = other.m_terrainKeyedInfo;
+
+	if (!other.m_featureKeyedInfo.empty())
+		m_featureKeyedInfo = other.m_featureKeyedInfo;
+
+	if (!other.m_unitCombatKeyedInfo.empty())
+		m_unitCombatKeyedInfo = other.m_unitCombatKeyedInfo;
+
+	m_pPlayerInvestigated = other.m_pPlayerInvestigated;
+	m_Properties = other.m_Properties;
+
+	return *this;
+}
 
 //////////////////////////////////////
 // graphical only setup
@@ -971,23 +1317,26 @@ void CvUnit::convert(CvUnit* pUnit, const bool bKillOriginal)
 		int iTotalGroupOffset = 0;
 		int iTotalQualityOffset = 0;
 
-		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		for (int iI = GC.getNumPromotionInfos() - 1; iI > -1; iI--)
 		{
-			if (pUnit->isHasPromotion((PromotionTypes)iI) && GC.getPromotionInfo((PromotionTypes)iI).getGroupChange() != 0)
+			const PromotionTypes ePromoX = static_cast<PromotionTypes>(iI);
+
+			if (pUnit->isHasPromotion(ePromoX))
 			{
-				iTotalGroupOffset += GC.getPromotionInfo((PromotionTypes)iI).getGroupChange();
-			}
-			else if (pUnit->isHasPromotion((PromotionTypes)iI) && GC.getPromotionInfo((PromotionTypes)iI).getQualityChange() != 0)
-			{
-				iTotalQualityOffset += GC.getPromotionInfo((PromotionTypes)iI).getQualityChange();
-			}
-			else //see note below on this situation with true for bDying
-			{
-				setHasPromotion(((PromotionTypes)iI), (pUnit->isHasPromotion((PromotionTypes)iI) || m_pUnitInfo->getFreePromotions(iI)), pUnit->isPromotionFree((PromotionTypes)iI), true);
+				if (GC.getPromotionInfo(ePromoX).getGroupChange() != 0)
+				{
+					iTotalGroupOffset += GC.getPromotionInfo(ePromoX).getGroupChange();
+				}
+				else if (GC.getPromotionInfo(ePromoX).getQualityChange() != 0)
+				{
+					iTotalQualityOffset += GC.getPromotionInfo(ePromoX).getQualityChange();
+				}
+				else if (!isHasPromotion(ePromoX)) //see note below on this situation with true for bDying
+				{
+					setHasPromotion(ePromoX, true, pUnit->isPromotionFree(ePromoX), true);
+				}
 			}
 		}
-		checkPromotionObsoletion();
-		checkFreetoCombatClass();
 
 		const bool bNormalizedGroup = CvUnit::normalizeUnitPromotions(this, iTotalGroupOffset,
 			bind(&CvUnit::isGroupUpgradePromotion, this, _2),
@@ -1000,21 +1349,21 @@ void CvUnit::convert(CvUnit* pUnit, const bool bKillOriginal)
 			bind(&CvUnit::isQualityDowngradePromotion, this, _2)
 		);
 		FAssertMsg(bNormalizedQuality, "Could not apply required number of quality promotions on converted unit");
-
-		checkFreetoCombatClass();
 	}
 	else
 	{
-		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		for (int iI = GC.getNumPromotionInfos() - 1; iI > -1; iI--)
 		{
-			// TB - bDying is set to true to temporarily avoid obsoletion checks until AFTER all promos are assigned
-			// as sometimes promos would be lost because prereqs simply weren't assigned yet due to the order in which they were established.
-			setHasPromotion(((PromotionTypes)iI), (pUnit->isHasPromotion((PromotionTypes)iI) || m_pUnitInfo->getFreePromotions(iI)), pUnit->isPromotionFree((PromotionTypes)iI), true);
+			const PromotionTypes ePromoX = static_cast<PromotionTypes>(iI);
+
+			if (pUnit->isHasPromotion(ePromoX) && !isHasPromotion(ePromoX))
+			{
+				// TB - bDying is set to true to temporarily avoid obsoletion checks until AFTER all promos are assigned
+				// as sometimes promos would be lost because prereqs simply weren't assigned yet due to the order in which they were established.
+				setHasPromotion(ePromoX, true, pUnit->isPromotionFree(ePromoX), true);
+			}
 		}
-		checkPromotionObsoletion();
-		checkFreetoCombatClass();
 	}
-	doSetFreePromotions(true);
 	//TB Combat Mod end
 
 	if (pUnit->getCityOfOrigin() != NULL)
@@ -1061,7 +1410,6 @@ void CvUnit::convert(CvUnit* pUnit, const bool bKillOriginal)
 		setLeaderUnitType(pUnit->getLeaderUnitType());
 	}
 
-	setGGExperienceEarnedTowardsType();
 	if (GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 	{
 		setHasAnyInvisibility();
@@ -1077,31 +1425,31 @@ void CvUnit::convert(CvUnit* pUnit, const bool bKillOriginal)
 	std::vector<CvUnit*> aCargoUnits;
 	pUnit->getCargoUnits(aCargoUnits);
 	pUnit->validateCargoUnits();
-	for (uint i = 0; i < aCargoUnits.size(); i++)
+	foreach_(CvUnit* pCargo, aCargoUnits)
 	{
 		// Check cargo types and capacity when upgrading transports
 		if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 		{
-			if (SMcargoSpaceAvailable(aCargoUnits[i]->getSpecialUnitType(), aCargoUnits[i]->getDomainType()) > aCargoUnits[i]->getCargoVolume())
+			if (SMcargoSpaceAvailable(pCargo->getSpecialUnitType(), pCargo->getDomainType()) > pCargo->getCargoVolume())
 			{
-				aCargoUnits[i]->setTransportUnit(NULL);
-				aCargoUnits[i]->setTransportUnit(this);
+				pCargo->setTransportUnit(NULL);
+				pCargo->setTransportUnit(this);
 			}
 			else
 			{
-				aCargoUnits[i]->setTransportUnit(NULL);
-				aCargoUnits[i]->jumpToNearestValidPlot();
+				pCargo->setTransportUnit(NULL);
+				pCargo->jumpToNearestValidPlot();
 			}
 		}
-		else if (cargoSpaceAvailable(aCargoUnits[i]->getSpecialUnitType(), aCargoUnits[i]->getDomainType()) > 0)
+		else if (cargoSpaceAvailable(pCargo->getSpecialUnitType(), pCargo->getDomainType()) > 0)
 		{
-			aCargoUnits[i]->setTransportUnit(NULL);
-			aCargoUnits[i]->setTransportUnit(this);
+			pCargo->setTransportUnit(NULL);
+			pCargo->setTransportUnit(this);
 		}
 		else
 		{
-			aCargoUnits[i]->setTransportUnit(NULL);
-			aCargoUnits[i]->jumpToNearestValidPlot();
+			pCargo->setTransportUnit(NULL);
+			pCargo->jumpToNearestValidPlot();
 		}
 	}
 	validateCargoUnits();
@@ -1192,13 +1540,11 @@ void CvUnit::killUnconditional(bool bDelay, PlayerTypes ePlayer, bool bMessaged)
 					pLoopUnit->setDamage(GC.getGame().getSorenRandNum(pLoopUnit->getHP(), "Survival Damage"), NO_PLAYER);
 					pLoopUnit->move(pRescuePlot, false);
 
-
 					szBuffer = gDLL->getText("TXT_KEY_MISC_UNIT_SURVIVED_TRANSPORT_SINKING", pLoopUnit->getNameKey(), getNameKey());
 					AddDLLMessage(pLoopUnit->getOwner(), false, GC.getEVENT_MESSAGE_TIME(), szBuffer, NULL, MESSAGE_TYPE_MINOR_EVENT);
 				}
 				else
 				{
-
 					szBuffer = gDLL->getText("TXT_KEY_MISC_UNIT_DROWNED", pLoopUnit->getNameKey());
 					AddDLLMessage(eOwner, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
 					bMessaged = true;
@@ -1219,7 +1565,6 @@ void CvUnit::killUnconditional(bool bDelay, PlayerTypes ePlayer, bool bMessaged)
 				{
 					if (GET_PLAYER((PlayerTypes)iI).isAlive() && !bMessaged)
 					{
-
 						szBuffer = gDLL->getText("TXT_KEY_MISC_GENERAL_KILLED", getNameKey());
 						AddDLLMessage(eOwner, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, GC.getEraInfo(GC.getGame().getCurrentEra()).getAudioUnitDefeatScript(), MESSAGE_TYPE_MAJOR_EVENT, NULL, GC.getCOLOR_RED(), getX(), getY());
 						bMessaged = true;
@@ -1245,14 +1590,14 @@ void CvUnit::killUnconditional(bool bDelay, PlayerTypes ePlayer, bool bMessaged)
 
 		if (isCanRespawn())
 		{
-			CvCity* pCapitalCity = owner.getCapitalCity();
+			const CvCity* pCapitalCity = owner.getCapitalCity();
 			if ( pCapitalCity != NULL && pCapitalCity->plot() != plot())
 			{
 				//GC.getGame().logOOSSpecial(14, getID(), pCapitalCity->getX(), pCapitalCity->getY());
 				setXY(pCapitalCity->getX(), pCapitalCity->getY(), false, false, false);
 				setDamage(getMaxHP() * 9/10);
 				changeOneUpCount(-1);
-				CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_BATTLEFIELD_EVAC", getNameKey());
+				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_BATTLEFIELD_EVAC", getNameKey());
 				AddDLLMessage(eOwner, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_GREEN(), getX(), getY());
 				m_bDeathDelay = false;
 				return;
@@ -1452,7 +1797,8 @@ void CvUnit::doTurn()
 
 	if (isSpy() && isIntruding() && !isCargo())
 	{
-		TeamTypes eTeam = plot()->getTeam();
+		const TeamTypes eTeam = plot()->getTeam();
+
 		if (NO_TEAM != eTeam)
 		{
 			if (GET_TEAM(getTeam()).isOpenBorders(eTeam))
@@ -1485,73 +1831,29 @@ void CvUnit::doTurn()
 		}
 	}
 
-	bool bHasMoved = hasMoved();
-	bool bHeal = ((bHasMoved && isAlwaysHeal()) || !bHasMoved);
+	const bool bHasMoved = hasMoved();
+	const bool bHeal = ((bHasMoved && isAlwaysHeal()) || !bHasMoved);
 
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (GC.getGame().isOption(GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS))
 	{
-		//TB Combat Mod begin
-		PromotionTypes ePromotion;
-		PromotionLineTypes eAfflictionLine;
-		CvWString szBuffer;
-		for (int iI = 0; iI < GC.getNumPromotionLineInfos(); iI++)
-		{
-			eAfflictionLine = ((PromotionLineTypes)iI);
-			if (GC.getPromotionLineInfo(eAfflictionLine).isAffliction())
-			{
-				bool bHasAffliction = hasAfflictionLine(eAfflictionLine);
-				if (bHasAffliction)
-				{
-					changeAfflictionTurnCount((eAfflictionLine), 1);
-					for (int iJ = 0; iJ < GC.getPromotionLineInfo(eAfflictionLine).getNumPromotions(); iJ++)
-					{
-						//Update Afflictions
-						ePromotion = (PromotionTypes)GC.getPromotionLineInfo(eAfflictionLine).getPromotion(iJ);
-
-						if (isHasPromotion(ePromotion))
-						{
-							changeAfflictionHitCount((ePromotion), 1);
-							updateAfflictionHits(ePromotion);
-							if (GC.getPromotionInfo(ePromotion).isParalyze())
-							{
-								changeImmobileTimer(1);
-							}
-						}
-					}
-				}
-				//Update Afflictions
-				int iToleranceDecay = GC.getPromotionLineInfo(eAfflictionLine).getToleranceDecay();
-				if (!bHasAffliction && getUnitAfflictionTolerance(eAfflictionLine) > 0 && iToleranceDecay != 0)
-				{
-					changeUnitAfflictionTolerance(eAfflictionLine, -iToleranceDecay);
-				}
-
-				int iCommunicableExposure = getTotalCommunicableExposure(eAfflictionLine);
-				if (iCommunicableExposure > 0)//sure we have access to communicable source?  Maybe included in checkcontract huh?
-				{
-					if (checkContractDisease(eAfflictionLine, iCommunicableExposure))
-					{
-						afflict(eAfflictionLine);
-					}
-				}
-				if (bHeal && bHasAffliction)
-				{
-					doOvercomeAttempt(eAfflictionLine);
-				}
-			}
-		}
+		doAffliction(bHeal);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif
 
 	if (bHeal && isHurt())
 	{
 		doHeal();
 	}
 
-	if (!bHasMoved && !isCargo())
+	if (!bHasMoved)
 	{
-		changeFortifyTurns(1);
+		setFortifyTurns(getFortifyTurns() + 1);
+
+		if (isBuildUp())
+		{
+			incrementBuildUp();
+		}
 	}
 
 	if (isCanRespawn())
@@ -1564,23 +1866,17 @@ void CvUnit::doTurn()
 		setSurvivor(false);
 	}
 
-	if (isSpy() && m_iSleepTimer > 0)
+	if (isSpy() && m_iSleepTimer > 0 && getFortifyTurns() == GC.getMAX_FORTIFY_TURNS())
 	{
-		if (getFortifyTurns() == GC.getMAX_FORTIFY_TURNS())
-		{
-			getGroup()->setActivityType(ACTIVITY_AWAKE);
-			m_iSleepTimer = 0;
-		}
+		getGroup()->setActivityType(ACTIVITY_AWAKE);
+		m_iSleepTimer = 0;
 	}
 
-	if (getDesiredDiscoveryTech() != NO_TECH && canDiscover())
+	if (getDesiredDiscoveryTech() != NO_TECH && canDiscover() && getDesiredDiscoveryTech() == getDiscoveryTech())
 	{
-		if (getDesiredDiscoveryTech() == getDiscoveryTech())
-		{
-			getGroup()->setActivityType(ACTIVITY_AWAKE);
-			setDesiredDiscoveryTech(NO_TECH);
-			discover();
-		}
+		getGroup()->setActivityType(ACTIVITY_AWAKE);
+		setDesiredDiscoveryTech(NO_TECH);
+		discover();
 	}
 
 	changeImmobileTimer(-1);
@@ -1677,7 +1973,7 @@ void CvUnit::resolveAirCombat(CvUnit* pInterceptor, CvPlot* pPlot, CvAirMissionD
 	int iTotalStrength = iOurStrength + iTheirStrength;
 	if (0 == iTotalStrength)
 	{
-		FAssert(false);
+		FErrorMsg("error");
 		return;
 	}
 
@@ -2023,12 +2319,12 @@ namespace {
 
 	bool plotHasEnemy(const TeamTypes ourTeam, const CvPlot* ignorePlot, const CvPlot* plot)
 	{
-		return plot != ignorePlot && algo::any_of(plot->units() | filtered(bind(unitsAtWar, ourTeam, _1)));
+		return plot != ignorePlot && algo::any_of(plot->units(), bind(unitsAtWar, ourTeam, _1));
 	}
 
 	bool plotHasAdjacentEnemy(const TeamTypes ourTeam, const CvPlot* ignorePlot, const CvPlot* plot)
 	{
-		return algo::any_of(plot->adjacent() | filtered(bind(plotHasEnemy, ourTeam, ignorePlot, _1)));
+		return algo::any_of(plot->adjacent(), bind(plotHasEnemy, ourTeam, ignorePlot, _1));
 	}
 
 	bool canWithdrawToPlot(const CvUnit* withdrawingUnit, const CvPlot* toPlot)
@@ -2760,8 +3056,6 @@ void CvUnit::resolveCombat(CvUnit* pDefender, CvPlot* pPlot, CvBattleDefinition&
 	{
 		doDynamicXP(pDefender, pPlot, iAttackerInitialDamage, iWinningOdds, iDefenderInitialDamage, iInitialAttXP, iInitialDefXP, iInitialAttGGXP, iInitialDefGGXP, bPromotion, bDefPromotion);
 	}
-	doCommerceAttacks(pDefender, pPlot);
-	doCommerceAttacks(this, pPlot);
 }
 
 
@@ -4865,14 +5159,6 @@ bool CvUnit::isActionRecommended(int iAction) const
 			return true;
 		}
 	}
-	else if (GC.getActionInfo(iAction).getMissionType() == MISSION_ESTABLISH)
-	{
-		if (pPlot->isCity(true, getTeam())
-		&& (hasHealUnitCombat() || getSameTileHeal() > 0 || getAdjacentTileHeal() > 0))
-		{
-			return true;
-		}
-	}
 #ifdef _MOD_SENTRY
 	else if (GC.getActionInfo(iAction).getMissionType() == MISSION_HEAL || GC.getActionInfo(iAction).getMissionType() == MISSION_SENTRY_WHILE_HEAL)
 #else
@@ -4894,8 +5180,7 @@ bool CvUnit::isActionRecommended(int iAction) const
 		{
 			const BuildTypes eBuild = (BuildTypes) GC.getActionInfo(iAction).getMissionData();
 
-			FAssert(eBuild != NO_BUILD);
-			FAssertMsg(eBuild < GC.getNumBuildInfos(), "Invalid Build");
+			FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eBuild);
 
 			if (canBuild(pPlot, eBuild))
 			{
@@ -4916,7 +5201,7 @@ bool CvUnit::isActionRecommended(int iAction) const
 						}
 					}
 					// Recommend improvement
-					const ImprovementTypes eImprovementNew = (ImprovementTypes)GC.getBuildInfo(eBuild).getImprovement();
+					const ImprovementTypes eImprovementNew = GC.getBuildInfo(eBuild).getImprovement();
 
 					if (eImprovementNew != NO_IMPROVEMENT)
 					{
@@ -5059,13 +5344,13 @@ int CvUnit::defenderValue(const CvUnit* pAttacker) const
 		}
 	}
 
-	int iAssetValue = std::max(1, assetValueTotal()/100);
+	const int iAssetValue = std::max(1, assetValueTotal()/100);
 	int iCargoAssetValue = 0;
 	std::vector<CvUnit*> aCargoUnits;
 	getCargoUnits(aCargoUnits);
-	for (uint i = 0; i < aCargoUnits.size(); i++)
+	foreach_(const CvUnit* pCargo, aCargoUnits)
 	{
-		iCargoAssetValue += std::max(1, aCargoUnits[i]->assetValueTotal()/100);
+		iCargoAssetValue += std::max(1, pCargo->assetValueTotal()/100);
 	}
 	iValue = iValue * iAssetValue / std::max(1, iAssetValue + iCargoAssetValue);
 
@@ -5096,11 +5381,7 @@ bool CvUnit::isBetterDefenderThan(const CvUnit* pDefender, const CvUnit* pAttack
 		return true;
 	}
 
-	TeamTypes eAttackerTeam = NO_TEAM;
-	if (NULL != pAttacker)
-	{
-		eAttackerTeam = pAttacker->getTeam();
-	}
+	const TeamTypes eAttackerTeam = pAttacker ? pAttacker->getTeam() : NO_TEAM;
 
 	if (canCoexistWithTeam(eAttackerTeam))
 	{
@@ -5179,9 +5460,9 @@ bool CvUnit::isBetterDefenderThan(const CvUnit* pDefender, const CvUnit* pAttack
 	int iCargoAssetValue = 0;
 	std::vector<CvUnit*> aCargoUnits;
 	getCargoUnits(aCargoUnits);
-	for (uint i = 0; i < aCargoUnits.size(); i++)
+	foreach_(const CvUnit* pCargoUnit, aCargoUnits)
 	{
-		iCargoAssetValue += aCargoUnits[i]->assetValueTotal()/100;
+		iCargoAssetValue += pCargoUnit->assetValueTotal()/100;
 	}
 	iOurDefense = iOurDefense * iAssetValue / std::max(1, iAssetValue + iCargoAssetValue);
 
@@ -5223,9 +5504,9 @@ bool CvUnit::isBetterDefenderThan(const CvUnit* pDefender, const CvUnit* pAttack
 	iAssetValue = pDefender->assetValueTotal()/100;
 	iCargoAssetValue = 0;
 	pDefender->getCargoUnits(aCargoUnits);
-	for (uint i = 0; i < aCargoUnits.size(); i++)
+	foreach_(const CvUnit* pCargoUnit, aCargoUnits)
 	{
-		iCargoAssetValue += aCargoUnits[i]->assetValueTotal()/100;
+		iCargoAssetValue += pCargoUnit->assetValueTotal()/100;
 	}
 	iTheirDefense = iTheirDefense * iAssetValue / std::max(1, iAssetValue + iCargoAssetValue);
 
@@ -5416,7 +5697,7 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 		break;
 
 	default:
-		FAssert(false);
+		FErrorMsg("error");
 		break;
 	}
 
@@ -5427,9 +5708,8 @@ bool CvUnit::canDoCommand(CommandTypes eCommand, int iData1, int iData2, bool bT
 void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 {
 	CvUnit* pUnit;
-	bool bCycle;
 
-	bCycle = false;
+	bool bCycle = false;
 
 	FAssert(getOwner() != NO_PLAYER);
 
@@ -5540,7 +5820,7 @@ void CvUnit::doCommand(CommandTypes eCommand, int iData1, int iData2)
 			break;
 
 		default:
-			FAssert(false);
+			FErrorMsg("error");
 			break;
 		}
 	}
@@ -5730,9 +6010,6 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 		bIsVisibleEnemyDefender = false;
 	}
 
-	const int iHill = GC.getTERRAIN_HILL();
-	const int iPeak = GC.getTERRAIN_PEAK();
-
 	if (!bIgnoreLocation && atPlot(pPlot))
 	{
 		return false;
@@ -5748,17 +6025,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 		return false;
 	}
 
-	const int iCount = m_pUnitInfo->getNumMapTypes();
-	bool bFound = (iCount < 1);
-	for (int iI = 0; iI < iCount; iI++)
-	{
-		if (pPlot->isMapType((MapTypes)m_pUnitInfo->getMapType(iI)))
-		{
-			bFound = true;
-			break;
-		}
-	}
-	if (!bFound)
+	if (!isMapCategory(*pPlot, *m_pUnitInfo))
 	{
 		return false;
 	}
@@ -5769,44 +6036,30 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 		return false;
 	}
 
-	CvArea *pPlotArea = pPlot->area();
+	const CvArea* pPlotArea = pPlot->area();
 	TeamTypes ePlotTeam = pPlot->getTeam();
 	bool bCanEnterArea = canEnterArea(ePlotTeam, pPlotArea);
 	if (bCanEnterArea)
 	{
 		if (pPlot->getFeatureType() != NO_FEATURE)
 		{
-			for (int iI = 0; iI < m_pUnitInfo->getNumFeatureImpassableTypes(); iI++)
+			if (algo::any_of_equal(m_pUnitInfo->getImpassableFeatures(), pPlot->getFeatureType()))
 			{
-				if ((FeatureTypes)m_pUnitInfo->getFeatureImpassableType(iI) == pPlot->getFeatureType())
+				const TechTypes eTech = (TechTypes)m_pUnitInfo->getFeaturePassableTech(pPlot->getFeatureType());
+				if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
 				{
-					TechTypes eTech = (TechTypes)m_pUnitInfo->getFeaturePassableTech(pPlot->getFeatureType());
-					if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
+					if (DOMAIN_SEA != getDomainType() || pPlot->getTeam() != getTeam())  // sea units can enter impassable in own cultural borders
 					{
-						if (DOMAIN_SEA != getDomainType() || pPlot->getTeam() != getTeam())  // sea units can enter impassable in own cultural borders
-						{
-							return false;
-						}
+						return false;
 					}
 				}
 			}
-			//if (m_pUnitInfo->getFeatureImpassable(pPlot->getFeatureType()))
-			//{
-			//	TechTypes eTech = (TechTypes)m_pUnitInfo->getFeaturePassableTech(pPlot->getFeatureType());
-			//	if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
-			//	{
-			//		if (DOMAIN_SEA != getDomainType() || pPlot->getTeam() != getTeam())  // sea units can enter impassable in own cultural borders
-			//		{
-			//			return false;
-			//		}
-			//	}
-			//}
 		}
 
-		if (pPlot->isAsPeak() && m_pUnitInfo->isTerrainImpassableType(iPeak)
-		|| pPlot->isHills() && m_pUnitInfo->isTerrainImpassableType(iHill))
+		if (pPlot->isAsPeak() && m_pUnitInfo->isTerrainImpassableType(GC.getTERRAIN_PEAK())
+		|| pPlot->isHills() && m_pUnitInfo->isTerrainImpassableType(GC.getTERRAIN_HILL()))
 		{
-			TechTypes eTech = (TechTypes)m_pUnitInfo->getTerrainPassableTech(pPlot->getTerrainType());
+			const TechTypes eTech = (TechTypes)m_pUnitInfo->getTerrainPassableTech(pPlot->getTerrainType());
 			if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
 			{
 				if (DOMAIN_SEA != getDomainType() || pPlot->getTeam() != getTeam())  // sea units can enter impassable in own cultural borders
@@ -5818,19 +6071,16 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 				}
 			}
 		}
-		for (int iI = 0; iI < m_pUnitInfo->getNumTerrainImpassableTypes(); iI++)
+		if (algo::any_of_equal(m_pUnitInfo->getImpassableTerrains(), pPlot->getTerrainType()))
 		{
-			if ((TerrainTypes)m_pUnitInfo->getTerrainImpassableType(iI) == pPlot->getTerrainType())
+			const TechTypes eTech = (TechTypes)m_pUnitInfo->getTerrainPassableTech(pPlot->getTerrainType());
+			if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
 			{
-				TechTypes eTech = (TechTypes)m_pUnitInfo->getTerrainPassableTech(pPlot->getTerrainType());
-				if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
+				if (DOMAIN_SEA != getDomainType() || pPlot->getTeam() != getTeam())  // sea units can enter impassable in own cultural borders
 				{
-					if (DOMAIN_SEA != getDomainType() || pPlot->getTeam() != getTeam())  // sea units can enter impassable in own cultural borders
+					if (bIgnoreLoad || !canLoad(pPlot))
 					{
-						if (bIgnoreLoad || !canLoad(pPlot))
-						{
-							return false;
-						}
+						return false;
 					}
 				}
 			}
@@ -5925,7 +6175,7 @@ bool CvUnit::canMoveInto(const CvPlot* pPlot, MoveCheck::flags flags /*= MoveChe
 		break;
 
 	default:
-		FAssert(false);
+		FErrorMsg("error");
 		break;
 	}
 
@@ -6597,23 +6847,18 @@ bool CvUnit::jumpToNearestValidPlot(bool bKill)
 		}
 	}
 
-	bool bValid = true;
 	if (pBestPlot != NULL)
 	{
 		//GC.getGame().logOOSSpecial(17, getID(), pBestPlot->getX(), pBestPlot->getY());
 		setXY(pBestPlot->getX(), pBestPlot->getY());
-	}
-	else if (bKill)
-	{
-		kill(false);
-		bValid = false;
-	}
-	else
-	{
-		bValid = false;
+		return true;
 	}
 
-	return bValid;
+	if (bKill)
+	{
+		kill(false);
+	}
+	return false;
 }
 
 
@@ -6627,7 +6872,7 @@ bool CvUnit::canAutomate(AutomateTypes eAutomate) const
 	if (!isGroupHead())
 	{
 		return false;
-		}
+	}
 	/************************************************************************************************/
 	/* Afforess	                  Start		 02/14/10                                               */
 	/*                                                                                              */
@@ -6897,7 +7142,7 @@ bool CvUnit::canAutomate(AutomateTypes eAutomate) const
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
 	default:
-		FAssert(false);
+		FErrorMsg("error");
 		break;
 	}
 
@@ -7079,14 +7324,12 @@ void CvUnit::gift(bool bTestTransport)
 	}
 	std::vector<CvUnit*> aCargoUnits;
 	getCargoUnits(aCargoUnits);
-	if (aCargoUnits.size() > 0)
+	if (!aCargoUnits.empty())
 	{
 		validateCargoUnits();
 	}
-	for (uint i = 0; i < aCargoUnits.size(); i++)
-	{
-		aCargoUnits[i]->gift(false);
-	}
+	algo::for_each(aCargoUnits, bind(CvUnit::gift, _1, false));
+
 	const PlayerTypes eNewOwner = plot()->getOwner();
 
 	FAssertMsg(eNewOwner != NO_PLAYER, "plot()->getOwner() is not expected to be equal with NO_PLAYER");
@@ -7297,15 +7540,12 @@ bool CvUnit::shouldLoadOnMove(const CvPlot* pPlot) const
 		break;
 	}
 
-	for (int iI = 0; iI < m_pUnitInfo->getNumTerrainImpassableTypes(); iI++)
+	if (algo::any_of_equal(m_pUnitInfo->getImpassableTerrains(), pPlot->getTerrainType()))
 	{
-		if ((TerrainTypes)m_pUnitInfo->getTerrainImpassableType(iI) == pPlot->getTerrainType())
+		const TechTypes eTech = (TechTypes)m_pUnitInfo->getTerrainPassableTech(pPlot->getTerrainType());
+		if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
 		{
-			TechTypes eTech = (TechTypes)m_pUnitInfo->getTerrainPassableTech(pPlot->getTerrainType());
-			if (NO_TECH == eTech || !GET_TEAM(getTeam()).isHasTech(eTech))
-			{
-				return true;
-			}
+			return true;
 		}
 	}
 
@@ -7377,35 +7617,19 @@ bool CvUnit::canUnload() const
 
 	if (isTrap())
 	{
-		TerrainTypes eTerrain = kPlot.getTerrainType();
+		const TerrainTypes eTerrain = kPlot.getTerrainType();
 		if (eTerrain != NO_TERRAIN)
 		{
-			if (m_pUnitInfo->isTerrainImpassableType((int)eTerrain))
-			{
-				return false;
-			}
+			return false;
 		}
-		FeatureTypes eFeature = kPlot.getFeatureType();
+		const FeatureTypes eFeature = kPlot.getFeatureType();
 		if (eFeature != NO_FEATURE)
 		{
-			if (m_pUnitInfo->isFeatureImpassableType((int)eFeature))
-			{
-				return false;
-			}
+			return false;
 		}
 	}
 
-	const int iCount = m_pUnitInfo->getNumMapTypes();
-	bool bFound = (iCount < 1);
-	for (int iI = 0; iI < iCount; iI++)
-	{
-		if (kPlot.isMapType((MapTypes)m_pUnitInfo->getMapType(iI)))
-		{
-			bFound = true;
-			break;
-		}
-	}
-	if (!bFound)
+	if (!isMapCategory(kPlot, *m_pUnitInfo))
 	{
 		return false;
 	}
@@ -7414,13 +7638,13 @@ bool CvUnit::canUnload() const
 	{
 		if (kPlot.isFriendlyCity(*this, true))
 		{
-			int iNumAirUnits = kPlot.countNumAirUnits(getTeam());
-			int iNumAirUnitCargoVolume = kPlot.countNumAirUnitCargoVolume(getTeam());
-			CvCity* pCity = kPlot.getPlotCity();
+			const int iNumAirUnits = kPlot.countNumAirUnits(getTeam());
+			const CvCity* pCity = kPlot.getPlotCity();
 			if (NULL != pCity)
 			{
 				if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 				{
+					const int iNumAirUnitCargoVolume = kPlot.countNumAirUnitCargoVolume(getTeam());
 					if (iNumAirUnitCargoVolume >= pCity->getSMAirUnitCapacity(getTeam()))
 					{
 						return false;
@@ -7484,13 +7708,12 @@ void CvUnit::unloadAll()
 
 	std::vector<CvUnit*> aCargoUnits;
 	getCargoUnits(aCargoUnits);
-	if (aCargoUnits.size() > 0)
+	if (!aCargoUnits.empty())
 	{
 		validateCargoUnits();
 	}
-	for (uint i = 0; i < aCargoUnits.size(); i++)
+	foreach_(CvUnit* pCargo, aCargoUnits)
 	{
-		CvUnit* pCargo = aCargoUnits[i];
 		if (pCargo->canUnload())
 		{
 			pCargo->setTransportUnit(NULL);
@@ -7512,100 +7735,38 @@ bool CvUnit::canHold(const CvPlot* pPlot) const
 
 bool CvUnit::canSleep(const CvPlot* pPlot) const
 {
-	if (isFortifyable())
+	if (isFortifyable() || isWaiting())
 	{
 		return false;
 	}
-
-	if (isWaiting())
-	{
-		return false;
-	}
-
 	return true;
 }
 
 
 bool CvUnit::canFortify(const CvPlot* pPlot) const
 {
-	if (!isFortifyable())
+	if (!isFortifyable() || isWaiting())
 	{
 		return false;
 	}
-
-	if (isWaiting())
-	{
-		return false;
-	}
-
 	return true;
-}
-
-
-bool CvUnit::canEstablish(const CvPlot* pPlot) const
-{
-	//if (!isEstablishable())
-	//{
-	//	return false;
-	//}
-
-	//if (isWaiting())
-	//{
-	//	return false;
-	//}
-
-	//return true;
-	return false;
-}
-
-bool CvUnit::canEscape(const CvPlot* pPlot) const
-{
-	//if (!isEscapable())
-	//{
-	//	return false;
-	//}
-
-	//if (isWaiting())
-	//{
-	//	return false;
-	//}
-
-	//return true;
-	return false;
 }
 
 bool CvUnit::canBuildUp(const CvPlot* pPlot) const
 {
-	if (!isBuildUpable())
+	if (!isBuildUpable() || isWaiting())
 	{
 		return false;
 	}
-
-	if (isWaiting())
-	{
-		return false;
-	}
-
 	return true;
 }
 
 bool CvUnit::canAirPatrol(const CvPlot* pPlot) const
 {
-	if (getDomainType() != DOMAIN_AIR)
+	if (getDomainType() != DOMAIN_AIR || !canAirDefend(pPlot) || isWaiting())
 	{
 		return false;
 	}
-
-	if (!canAirDefend(pPlot))
-	{
-		return false;
-	}
-
-	if (isWaiting())
-	{
-		return false;
-	}
-
 	return true;
 }
 
@@ -7648,7 +7809,7 @@ void CvUnit::airCircle(bool bStart)
 		return;
 	}
 
-	if ((getDomainType() != DOMAIN_AIR) || (maxInterceptionProbability() == 0))
+	if (getDomainType() != DOMAIN_AIR || maxInterceptionProbability() == 0)
 	{
 		return;
 	}
@@ -7669,52 +7830,20 @@ void CvUnit::airCircle(bool bStart)
 
 bool CvUnit::canHeal(const CvPlot* pPlot) const
 {
-	if (!isHurt())
+	if (!isHurt() || isWaiting() || healTurns(pPlot) == 0)
 	{
 		return false;
 	}
-
-	if (isWaiting())
-	{
-		return false;
-	}
-
-/*************************************************************************************************/
-/* UNOFFICIAL_PATCH                       06/30/10                           LunarMongoose       */
-/*                                                                                               */
-/* Bugfix                                                                                        */
-/*************************************************************************************************/
-/* original bts code
-	if (healRate(pPlot) <= 0)
-	{
-		return false;
-	}
-*/
-	// Mongoose FeatureDamageFix
-	if (healTurns(pPlot) == 0)
-	{
-		return false;
-	}
-/*************************************************************************************************/
-/* UNOFFICIAL_PATCH                         END                                                  */
-/*************************************************************************************************/
-
 	return true;
 }
 
 
 bool CvUnit::canSentry(const CvPlot* pPlot) const
 {
-	if (!canDefend(pPlot))
+	if (!canDefend(pPlot) || isWaiting())
 	{
 		return false;
 	}
-
-	if (isWaiting())
-	{
-		return false;
-	}
-
 	return true;
 }
 
@@ -8159,6 +8288,63 @@ void CvUnit::doHeal()
 	//TB Combat Mod end
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
+void CvUnit::doAffliction(const bool bHeal)
+{
+	for (int iI = GC.getNumPromotionLineInfos() - 1; iI > -1; iI--)
+	{
+		const PromotionLineTypes ePromoLine = static_cast<PromotionLineTypes>(iI);
+		const CvPromotionLineInfo& promoLine = GC.getPromotionLineInfo(ePromoLine);
+
+		if (promoLine.isAffliction())
+		{
+			const bool bHasAffliction = hasAfflictionLine(ePromoLine);
+
+			if (bHasAffliction)
+			{
+				changeAfflictionTurnCount(ePromoLine, 1);
+
+				for (int iJ = 0; iJ < promoLine.getNumPromotions(); iJ++)
+				{
+					//Update Afflictions
+					const PromotionTypes ePromotion = (PromotionTypes)promoLine.getPromotion(iJ);
+
+					if (isHasPromotion(ePromotion))
+					{
+						changeAfflictionHitCount(ePromotion, 1);
+						updateAfflictionHits(ePromotion);
+
+						if (GC.getPromotionInfo(ePromotion).isParalyze())
+						{
+							changeImmobileTimer(1);
+						}
+					}
+				}
+			}
+			//Update Afflictions
+			const int iToleranceDecay = promoLine.getToleranceDecay();
+
+			if (!bHasAffliction && getUnitAfflictionTolerance(ePromoLine) > 0 && iToleranceDecay != 0)
+			{
+				changeUnitAfflictionTolerance(ePromoLine, -iToleranceDecay);
+			}
+
+			int iCommunicableExposure = getTotalCommunicableExposure(ePromoLine);
+			if (iCommunicableExposure > 0)//sure we have access to communicable source?  Maybe included in checkcontract huh?
+			{
+				if (checkContractDisease(ePromoLine, iCommunicableExposure))
+				{
+					afflict(ePromoLine);
+				}
+			}
+			if (bHeal && bHasAffliction)
+			{
+				doOvercomeAttempt(ePromoLine);
+			}
+		}
+	}
+}
+#endif
 
 bool CvUnit::canAirlift(const CvPlot* pPlot) const
 {
@@ -8671,22 +8857,12 @@ bool CvUnit::paradrop(int iX, int iY)
 	changeMoves(GC.getMOVE_DENOMINATOR() / 2);
 	setMadeAttack(true);
 
-/*****************************************************************************************************/
-/**  Author: TheLadiesOgre                                                                          **/
-/**  Date: 16.09.2009                                                                               **/
-/**  ModComp: TLOTags                                                                               **/
-/**  Reason Added: Implement bFreeDrop                                                              **/
-/**  Notes:                                                                                         **/
-/*****************************************************************************************************/
 	if (isFreeDrop() == true)
 	{
 		changeMoves(-(GC.getMOVE_DENOMINATOR() / 2));
 		setMadeAttack(false);
 	}
 
-/*****************************************************************************************************/
-/**  TheLadiesOgre; 16.09.2009; TLOTags                                                             **/
-/*****************************************************************************************************/
 	//GC.getGame().logOOSSpecial(19, getID(), pPlot->getX(), pPlot->getY());
 	setXY(pPlot->getX(), pPlot->getY());
 
@@ -8695,18 +8871,12 @@ bool CvUnit::paradrop(int iX, int iY)
 	{
 		return true;
 	}
-/************************************************************************************************/
-/* Afforess	                  Start		 09/13/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	if (GC.getGame().isModderGameOption(MODDERGAMEOPTION_IMPROVED_XP))
 	{
 		 setExperience100(getExperience100() + 5, -1);
 	}
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+
 	//play paradrop animation by itself
 	addMission(CvAirMissionDefinition(MISSION_PARADROP, pPlot, this));
 
@@ -10141,7 +10311,7 @@ bool CvUnit::found()
 		return false;
 	}
 
-	if (!canFound(plot()))
+	if (!canFound(pPlot))
 	{
 		return false;
 	}
@@ -10216,7 +10386,7 @@ bool CvUnit::canSpread(const CvPlot* pPlot, ReligionTypes eReligion, bool bTestV
 
 		if (!GC.getGame().isOption(GAMEOPTION_PICK_RELIGION))
 		{
-			const TechTypes ePreqTech = (TechTypes)GC.getReligionInfo(eReligion).getTechPrereq();
+			const TechTypes ePreqTech = GC.getReligionInfo(eReligion).getTechPrereq();
 
 			if (!GC.getGame().isTechDiscovered(ePreqTech)
 			|| !GET_TEAM(getTeam()).isHasTech(ePreqTech)
@@ -10475,7 +10645,7 @@ bool CvUnit::spreadCorporation(CorporationTypes eCorporation)
 		else
 		{
 
-			CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_CORPORATION_FAILED_TO_SPREAD", getNameKey(), GC.getCorporationInfo(eCorporation).getChar(), pCity->getNameKey());
+			const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_CORPORATION_FAILED_TO_SPREAD", getNameKey(), GC.getCorporationInfo(eCorporation).getChar(), pCity->getNameKey());
 			AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_NOSPREAD", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_RED(), pCity->getX(), pCity->getY());
 		}
 	}
@@ -10868,17 +11038,14 @@ bool CvUnit::trade()
 			finishMoves();
 			return true;
 		}
-		else
+		changeExperience100(10);
+		GET_PLAYER(getOwner()).changeGold(getTradeGold(plot()));
+		finishMoves();
+		if (pCapital != NULL)
 		{
-			changeExperience100(10);
-			GET_PLAYER(getOwner()).changeGold(getTradeGold(plot()));
-			finishMoves();
-			if (pCapital != NULL)
-			{
-				setXY(pCapital->getX(), pCapital->getY(), false, true, true, false, false);
-			}
-			return true;
+			setXY(pCapital->getX(), pCapital->getY(), false, true, true, false, false);
 		}
+		return true;
 	}
 
 	GET_PLAYER(getOwner()).changeGold(getTradeGold(plot()));
@@ -11100,7 +11267,6 @@ bool CvUnit::infiltrate()
 			}
 			else
 			{
-				finishMoves();
 				kill(true, NO_PLAYER, true);
 			}
 		}
@@ -11176,7 +11342,7 @@ bool CvUnit::awardSpyExperience(TeamTypes eTargetTeam, int iModifier)
 {
 	if (GC.isSS_ENABLED())
 	{
-		int iDifficulty = (getSpyInterceptPercent(eTargetTeam) * (100 + iModifier))/100;
+		const int iDifficulty = getSpyInterceptPercent(eTargetTeam) * (100 + iModifier) / 100;
 		if (iDifficulty < 1)
 			changeExperience(1);
 		else if (iDifficulty < 10)
@@ -11187,12 +11353,8 @@ bool CvUnit::awardSpyExperience(TeamTypes eTargetTeam, int iModifier)
 			changeExperience(4);
 		else if (iDifficulty < 75)
 			changeExperience(5);
-		else if (iDifficulty >= 75)
+		else
 			changeExperience(6);
-		//	Koshling - testing promotion readiness here is uneccessary since CvUnit::doTurn
-		//	will do it.  It is alo now dangerous to do it here (or indeed anywhere but controlled
-		//	places) becaue it is not thread-safe and needs to run strictly on the main thread
-		//testPromotionReady();
 		return true;
 	}
 	return false;
@@ -11359,12 +11521,11 @@ bool CvUnit::espionage(EspionageMissionTypes eMission, int iData)
 			return false;
 		}
 
-		bool bCaught = testSpyIntercepted(eTargetPlayer, GC.getDefineINT("ESPIONAGE_SPY_MISSION_ESCAPE_MOD"));
+		const bool bCaught = testSpyIntercepted(eTargetPlayer, GC.getDefineINT("ESPIONAGE_SPY_MISSION_ESCAPE_MOD"));
 
 		if (GET_PLAYER(getOwner()).doEspionageMission(eMission, eTargetPlayer, plot(), iData, this, (bCaught && !isAlwaysHeal())))
 		{
-			//	If it died in the mission (e.g. - nuke and blew itself up) then nothing else
-			//	needs doing
+			// If it died in the mission (e.g. - nuke and blew itself up) then nothing else needs doing
 			if (!isDelayedDeath())
 			{
 				if (plot()->isActiveVisible(false))
@@ -11449,12 +11610,8 @@ bool CvUnit::testSpyIntercepted(PlayerTypes eTargetPlayer, int iModifier)
 		szCityName = pClosestCity->getName();
 	}
 
-	CvWString szBuffer;
-	{
-
-		szBuffer = gDLL->getText(szFormatReveal.GetCString(), GET_PLAYER(getOwner()).getCivilizationAdjectiveKey(), getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString());
-		AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSED", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_RED(), getX(), getY(), true, true);
-	}
+	CvWString szBuffer = gDLL->getText(szFormatReveal.GetCString(), GET_PLAYER(getOwner()).getCivilizationAdjectiveKey(), getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString());
+	AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSED", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_RED(), getX(), getY(), true, true);
 
 	//TSHEEP Enable Loyalty Promotion
 	//if (GC.getGame().getSorenRandNum(100, "Spy Reveal identity") < GC.getDefineINT("ESPIONAGE_SPY_REVEAL_IDENTITY_PERCENT"))
@@ -11464,15 +11621,17 @@ bool CvUnit::testSpyIntercepted(PlayerTypes eTargetPlayer, int iModifier)
 		{
 			kTargetPlayer.AI_changeMemoryCount(getOwner(), MEMORY_SPY_CAUGHT, 1);
 		}
-
-
 		AddDLLMessage(eTargetPlayer, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSE", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_GREEN(), getX(), getY(), true, true);
 	}
 	else
 	{
-
-		szBuffer = gDLL->getText(szFormatNoReveal.GetCString(), getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString());
-		AddDLLMessage(eTargetPlayer, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSE", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_GREEN(), getX(), getY(), true, true);
+		AddDLLMessage(
+			eTargetPlayer, true, GC.getEVENT_MESSAGE_TIME(),
+			gDLL->getText(
+				szFormatNoReveal.GetCString(), getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString()
+			),
+			"AS2D_EXPOSE", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_GREEN(), getX(), getY(), true, true
+		);
 	}
 
 	if (plot()->isActiveVisible(false))
@@ -11481,50 +11640,51 @@ bool CvUnit::testSpyIntercepted(PlayerTypes eTargetPlayer, int iModifier)
 	}
 
 	//TSHEEP - Give xp to spy who catches spy
-	CvUnit* pCounterUnit;
-
-	pCounterUnit = plot()->plotCheck(PUF_isCounterSpy, -1, -1, NULL, NO_PLAYER, kTargetPlayer.getTeam());
-
-	if(NULL != pCounterUnit)
 	{
-		pCounterUnit->changeExperience(1);
-		//RevolutionDCM - just ensure that promotion readiness is tested
-		//	Koshling - testing promotion readiness here is uneccessary since CvUnit::doTurn
-		//	will do it.  It is alo now dangerous to do it here (or indeed anywhere but controlled
-		//	places) becaue it is not thread-safe and needs to run strictly on the main thread
-		//pCounterUnit->testPromotionReady();
+		CvUnit* pCounterUnit = plot()->plotCheck(PUF_isCounterSpy, -1, -1, NULL, NO_PLAYER, kTargetPlayer.getTeam());
+
+		if (NULL != pCounterUnit)
+		{
+			pCounterUnit->changeExperience(1);
+		}
 	}
-	//TSHEEP End
 
 	//TSHEEP Implement Escape Promotion
-	if(GC.getGame().getSorenRandNum(100, "Spy Reveal identity") < withdrawalProbability())
+	if (GC.getGame().getSorenRandNum(100, "Spy Reveal identity") < withdrawalProbability())
 	{
 		setFortifyTurns(0);
 		setMadeAttack(true);
 		finishMoves();
 
 		CvCity* pCapital = GET_PLAYER(getOwner()).getCapitalCity();
+
 		if (NULL != pCapital)
 		{
 			//GC.getGame().logOOSSpecial(21, getID(), pCapital->getX(), pCapital->getY());
 			setXY(pCapital->getX(), pCapital->getY(), false, false, false);
 		}
-
 		{
 
 			szFormatReveal = "TXT_KEY_SPY_ESCAPED_REVEAL";
 			szFormatNoReveal = "TXT_KEY_SPY_ESCAPED";
-			szBuffer = gDLL->getText(szFormatReveal.GetCString(), GET_PLAYER(getOwner()).getCivilizationAdjectiveKey(), getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString());
-			AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSED", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_GREEN(), getX(), getY(), true, true);
-			szBuffer = gDLL->getText(szFormatNoReveal.GetCString(), getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString());
-			AddDLLMessage(eTargetPlayer, true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_EXPOSE", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_RED(), getX(), getY(), true, true);
+			AddDLLMessage(
+				getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+				gDLL->getText(
+					szFormatReveal.GetCString(), GET_PLAYER(getOwner()).getCivilizationAdjectiveKey(),
+					getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString()
+				),
+				"AS2D_EXPOSED", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_GREEN(), getX(), getY(), true, true
+			);
+			AddDLLMessage(
+				eTargetPlayer, true, GC.getEVENT_MESSAGE_TIME(),
+				gDLL->getText(
+					szFormatNoReveal.GetCString(),
+					getNameKey(), kTargetPlayer.getCivilizationAdjectiveKey(), szCityName.GetCString()
+				),
+				"AS2D_EXPOSE", MESSAGE_TYPE_INFO, getButton(), GC.getCOLOR_RED(), getX(), getY(), true, true
+			);
 		}
-
 		changeExperience(1);
-		//	Koshling - testing promotion readiness here is uneccessary since CvUnit::doTurn
-		//	will do it.  It is alo now dangerous to do it here (or indeed anywhere but controlled
-		//	places) becaue it is not thread-safe and needs to run strictly on the main thread
-		//testPromotionReady();
 
 		return true;
 	}
@@ -11715,7 +11875,7 @@ bool CvUnit::build(BuildTypes eBuild)
 		const CvBuildInfo& kBuild = GC.getBuildInfo(eBuild);
 		// Super Forts begin *culture*
 		if (kBuild.getImprovement() != NO_IMPROVEMENT
-		&& GC.getImprovementInfo((ImprovementTypes)kBuild.getImprovement()).getCulture() > 0)
+		&& GC.getImprovementInfo(kBuild.getImprovement()).getCulture() > 0)
 		{
 			if (plot()->getOwner() == NO_PLAYER)
 			{
@@ -11803,7 +11963,8 @@ bool CvUnit::canPromote(PromotionTypes ePromotion, int iLeaderUnitId) const
 	{
 		if (iLeaderUnitId >= 0)
 		{
-			CvUnit* pWarlord = GET_PLAYER(getOwner()).getUnit(iLeaderUnitId);
+			const CvUnit* pWarlord = GET_PLAYER(getOwner()).getUnit(iLeaderUnitId);
+
 			if (pWarlord && NO_UNIT != pWarlord->getUnitType())
 			{
 				return (pWarlord->getUnitInfo().getLeaderPromotion() == ePromotion);
@@ -11811,12 +11972,10 @@ bool CvUnit::canPromote(PromotionTypes ePromotion, int iLeaderUnitId) const
 		}
 		return false;
 	}
-	else
+
+	if (!isPromotionReady())
 	{
-		if (!isPromotionReady())
-		{
-			return false;
-		}
+		return false;
 	}
 
 	return true;
@@ -12062,34 +12221,43 @@ int CvUnit::upgradePrice(UnitTypes eUnit) const
 	{
 		return 0;
 	}
-	int iPrice = GC.getUNIT_UPGRADE_COST_PER_PRODUCTION() * (GET_PLAYER(getOwner()).getProductionNeeded(eUnit) - GET_PLAYER(getOwner()).getProductionNeeded(getUnitType()));
-
-	if (!isHuman() && !isNPC())
+	int64_t iPrice = (
+		GC.getUNIT_UPGRADE_COST_PER_PRODUCTION()
+		* (
+			GET_PLAYER(getOwner()).getProductionNeeded(eUnit)
+			-
+			GET_PLAYER(getOwner()).getBaseUnitCost100(getUnitType()) / 100
+		)
+	);
+	if (iPrice < 1)
 	{
-		iPrice *= GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIUnitUpgradePercent();
-		iPrice /= 100;
-
-		iPrice *= std::max(0, ((GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIPerEraModifier() * GET_PLAYER(getOwner()).getCurrentEra()) + 100));
-		iPrice /= 100;
+		return 1;
 	}
-
-	iPrice = getModifiedIntValue(iPrice, GET_PLAYER(getOwner()).getUnitUpgradePriceModifier());
-	iPrice -= iPrice * getUpgradeDiscount();
-
-	iPrice /= 100;
-
-	//ls612: Upgrade price is now dependent on the level of a unit
-	//if (iPrice != 0)
-	//{
-	//	iPrice *= std::max(100, (100 + (5 * ((getLevel()) - 4))));
-	//	iPrice /= 100;
-	//}
+	{
+		int iMod = GET_PLAYER(getOwner()).getUnitUpgradePriceModifier();
+		if (!isHuman())
+		{
+			iMod += (
+				GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIUnitUpgradePercent() - 100
+				+
+				GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIPerEraModifier() * GET_PLAYER(getOwner()).getCurrentEra()
+			);
+		}
+		iPrice = getModifiedIntValue64(iPrice, iMod);
+	}
+	iPrice -= iPrice * std::min(100, getUpgradeDiscount()) / 100;
 
 	if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 	{
-		iPrice = applySMRank(iPrice, getSizeMattersOffsetValue(), GC.getSIZE_MATTERS_MOST_MULTIPLIER());
+		iPrice = applySMRank64(iPrice, getSizeMattersOffsetValue(), GC.getSIZE_MATTERS_MOST_MULTIPLIER(), false);
 	}
-	return std::max(1, iPrice);
+	iPrice /= 100;
+
+	if (iPrice >= MAX_INT)
+	{
+		return MAX_INT;
+	}
+	return std::max(1, static_cast<int>(iPrice));
 }
 
 
@@ -12363,7 +12531,7 @@ bool CvUnit::upgrade(UnitTypes eUnit)
 	}
 
 // BUG - Upgrade Unit Event - start
-	int iPrice = upgradePrice(eUnit);
+	const int iPrice = upgradePrice(eUnit);
 	GET_PLAYER(getOwner()).changeGold(-iPrice);
 	GET_PLAYER(getOwner()).changeUpgradeRoundCount(1);
 // BUG - Upgrade Unit Event - end
@@ -12403,29 +12571,16 @@ bool CvUnit::upgrade(UnitTypes eUnit)
 	{
 		pUpgradeUnit->setExperience(pUpgradeUnit->getExperience() * 3 / 5);
 	}
-	//TB Combat Mod begin
-	pUpgradeUnit->checkPromotionObsoletion();
-	//TB Combat Mod end
 
-
-// BUG - Upgrade Unit Event - start
 	CvEventReporter::getInstance().unitUpgraded(this, pUpgradeUnit, iPrice);
-// BUG - Upgrade Unit Event - end
 
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                      02/24/10                                jdog5000      */
-/*                                                                                              */
-/* AI Logging                                                                                   */
-/************************************************************************************************/
-	if( gUnitLogLevel > 2 )
+	if (gUnitLogLevel > 2)
 	{
 		CvWString szString;
 		getUnitAIString(szString, pUpgradeUnit->AI_getUnitAIType());
 		logBBAI("    %S spends %d to upgrade %S to %S, unit AI %S", GET_PLAYER(getOwner()).getCivilizationDescription(0), upgradePrice(eUnit), getName(0).GetCString(), pUpgradeUnit->getName(0).GetCString(), szString.GetCString());
 	}
-/************************************************************************************************/
-/* BETTER_BTS_AI_MOD                       END                                                  */
-/************************************************************************************************/
+
 	return true;
 }
 
@@ -12469,13 +12624,13 @@ UnitTypes CvUnit::getCaptureUnitType() const
 
 UnitCombatTypes CvUnit::getUnitCombatType() const
 {
-	return ((UnitCombatTypes)(m_pUnitInfo->getUnitCombatType()));
+	return (UnitCombatTypes) m_pUnitInfo->getUnitCombatType();
 }
 
 
 DomainTypes CvUnit::getDomainType() const
 {
-	return ((DomainTypes)(m_pUnitInfo->getDomainType()));
+	return m_pUnitInfo->getDomainType();
 }
 
 
@@ -12532,21 +12687,17 @@ bool CvUnit::isHuman() const
 
 int CvUnit::visibilityRange(const CvPlot* pPlot) const
 {
-	// Super Forts begin *vision*
-	if ( pPlot == NULL )
+	if (pPlot == NULL)
 	{
 		pPlot = plot();
 	}
 
 	int iImprovementVisibilityChange = 0;
-	if(pPlot->getImprovementType() != NO_IMPROVEMENT)
+	if (pPlot->getImprovementType() != NO_IMPROVEMENT)
 	{
 		iImprovementVisibilityChange = GC.getImprovementInfo(pPlot->getImprovementType()).getVisibilityChange();
 	}
 	return std::min(GC.getMAX_UNIT_VISIBILITY_RANGE(), GC.getUNIT_VISIBILITY_RANGE() + getExtraVisibilityRange() + iImprovementVisibilityChange);
-	// Super Forts end
-	/* Original
-	return (GC.getDefineINT("UNIT_VISIBILITY_RANGE") + getExtraVisibilityRange()); */
 }
 
 
@@ -12598,7 +12749,7 @@ bool CvUnit::canMove() const
 
 bool CvUnit::hasMoved()	const
 {
-	return (getMoves() > 0);
+	return getMoves() > 0;
 }
 
 
@@ -12629,7 +12780,7 @@ namespace CvUnitInternal
 		foreach_(const BuildTypes eBuild, aBuilds)
 		{
 			const CvBuildInfo& info = GC.getBuildInfo(eBuild);
-			if (info.getRoute() > NO_ROUTE && team.isHasTech((TechTypes)info.getTechPrereq()))
+			if (info.getRoute() > NO_ROUTE && team.isHasTech(info.getTechPrereq()))
 			{
 				const TechTypes obsoleteTech = info.getObsoleteTech();
 				if (obsoleteTech == NO_TECH || !team.isHasTech(obsoleteTech))
@@ -12676,8 +12827,6 @@ BuildTypes CvUnit::getBuildType() const
 		case MISSION_SKIP:
 		case MISSION_SLEEP:
 		case MISSION_FORTIFY:
-		//case MISSION_ESTABLISH:
-		//case MISSION_ESCAPE:
 		case MISSION_BUILDUP:
 		case MISSION_AUTO_BUILDUP:
 		case MISSION_HEAL_BUILDUP:
@@ -12746,7 +12895,7 @@ BuildTypes CvUnit::getBuildType() const
 
 		default:
 			// AIAndy: Assumed to be an outcome mission
-			// FAssert(false);
+			// FErrorMsg("error");
 			break;
 		}
 	}
@@ -12758,7 +12907,7 @@ ImprovementTypes CvUnit::getBuildTypeImprovement() const
 {
 	const BuildTypes buildType = getBuildType();
 	if (buildType == NO_BUILD) return NO_IMPROVEMENT;
-	return static_cast<ImprovementTypes>(GC.getBuildInfo(buildType).getImprovement());
+	return GC.getBuildInfo(buildType).getImprovement();
 }
 
 bool CvUnit::isAnimal() const
@@ -12918,8 +13067,6 @@ bool CvUnit::canCoexistWithAttacker(const CvUnit& attacker, bool bAssassinate) c
 		// Checks for differing domains, transport status, amnesty game setting
 		|| canUnitCoexistWithArrivingUnit(attacker)
 		;
-
-	return false;
 }
 
 bool CvUnit::canUnitCoexistWithArrivingUnit(const CvUnit& enemyUnit) const
@@ -13175,7 +13322,7 @@ int CvUnit::getExtraStrength() const
 void CvUnit::changeExtraStrength(int iChange)
 {
 	m_iExtraStrength += iChange;
-	FASSERT_NOT_NEGATIVE(m_iExtraStrength)
+	FASSERT_NOT_NEGATIVE(m_iExtraStrength);
 }
 
 int CvUnit::getSMStrength() const
@@ -13187,7 +13334,7 @@ void CvUnit::setSMStrength()
 {
 	const int iStrength = getDomainType() == DOMAIN_AIR? baseAirCombatStrPreCheck() : baseCombatStrPreCheck();
 	m_iSMStrength = applySMRank(iStrength, getSizeMattersOffsetValue(), GC.getSIZE_MATTERS_MOST_MULTIPLIER());
-	FASSERT_NOT_NEGATIVE(m_iSMStrength)
+	FASSERT_NOT_NEGATIVE(m_iSMStrength);
 }
 
 float CvUnit::fbaseCombatStr() const
@@ -14295,48 +14442,21 @@ bool CvUnit::canSiege(TeamTypes eTeam) const
 
 int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 {
-	int iModifier;
-	int iCombat;
-
 	if (airBaseCombatStr() == 0)
 	{
 		return 0;
 	}
-
-	iModifier = getExtraCombatPercent();
-
-	if (getKamikazePercent() != 0)
-	{
-		iModifier += getKamikazePercent();
-	}
-
-/********************************************************************************/
-/* 	BETTER_BTS_AI_MOD						8/16/08		DanF5771 & jdog5000	*/
-/* 																			*/
-/* 	Bugfix																	*/
-/********************************************************************************/
-/* original BTS code
-	if (getExtraCombatPercent() != 0)
-	{
-		iModifier += getExtraCombatPercent();
-	}
-*/
-	// ExtraCombatPercent already counted above
-/********************************************************************************/
-/* 	BETTER_BTS_AI_MOD						END								*/
-/********************************************************************************/
+	int iModifier = getExtraCombatPercent() + getKamikazePercent();
 
 	if (NULL != pOther)
 	{
-		//TB SubCombat Mod Begin
 		for (std::map<UnitCombatTypes, UnitCombatKeyedInfo>::const_iterator it = pOther->m_unitCombatKeyedInfo.begin(), end = pOther->m_unitCombatKeyedInfo.end(); it != end; ++it)
 		{
-			if(it->second.m_bHasUnitCombat)
+			if (it->second.m_bHasUnitCombat)
 			{
 				iModifier += unitCombatModifier(it->first);
 			}
 		}
-		//TB SubCombat Mod End
 
 		iModifier += domainModifier(pOther->getDomainType());
 
@@ -14344,24 +14464,14 @@ int CvUnit::airMaxCombatStr(const CvUnit* pOther) const
 		{
 			iModifier += animalCombatModifier();
 		}
-//TB Combat Mods Begin
+
 		if (pOther->isHominid())
 		{
 			iModifier += vsBarbsModifier();
 		}
-//TB Combat Mods End
 	}
 
-	if (iModifier > 0)
-	{
-		iCombat = (airBaseCombatStr() * (iModifier + 100));
-	}
-	else
-	{
-		iCombat = ((airBaseCombatStr() * 10000) / (100 - iModifier));
-	}
-
-	return std::max(1, iCombat);
+	return std::max(1, getModifiedIntValue(100 * airBaseCombatStr(), iModifier));
 }
 
 
@@ -14626,33 +14736,6 @@ bool CvUnit::isFortifyable() const
 	return true;
 }
 
-bool CvUnit::isEstablishable() const
-{
-	//if ((!hasHealUnitCombat() && (getSameTileHeal() < 1) && (getAdjacentTileHeal() < 1)) || ((getDomainType() != DOMAIN_LAND) && (getDomainType() != DOMAIN_IMMOBILE)))
-	//{
-	//	return false;
-	//}
-
-	//return true;
-	return false;
-}
-
-bool CvUnit::isEscapable() const
-{
-	//if (!GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT) || !GC.getGame().isModderGameOption(MODDERGAMEOPTION_DEFENDER_WITHDRAW))
-	//{
-	//	return false;
-	//}
-	//int iWithdraw = m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal();
-	//if ((iWithdraw < 1) || ((getDomainType() != DOMAIN_LAND) && (getDomainType() != DOMAIN_IMMOBILE)))
-	//{
-	//	return false;
-	//}
-
-	//return true;
-	return false;
-}
-
 bool CvUnit::isBuildUpable() const
 {
 	if (isDelayedDeath() || isDead())
@@ -14669,27 +14752,9 @@ int CvUnit::fortifyModifier() const
 	{
 		return 0;
 	}
-	if (getSleepType() != MISSION_FORTIFY)
-	{
-		return 0;
-	}
-
-	return (getFortifyTurns() * (GC.getFORTIFY_MODIFIER_PER_TURN()));
+	return range(getFortifyTurns(), 0, GC.getDefineINT("MAX_FORTIFY_TURNS")) * GC.getFORTIFY_MODIFIER_PER_TURN();
 }
 
-
-int CvUnit::buildupLevel() const
-{
-	if (!isBuildUpable())
-	{
-		return 0;
-	}
-	if (getSleepType() != MISSION_BUILDUP)
-	{
-		return 0;
-	}
-	return (getFortifyTurns());
-}
 
 int CvUnit::fortifyRepelModifier() const
 {
@@ -14697,15 +14762,13 @@ int CvUnit::fortifyRepelModifier() const
 	{
 		return 0;
 	}
-
-	return (getFortifyTurns() * fortRepelTotal());
+	return getFortifyTurns() * fortRepelTotal();
 }
 //TB Combat Mods end
 
 int CvUnit::experienceNeeded(int iLvlOffset) const
 {
-	int iLevel = getLevel() + iLvlOffset;
-	int iExperienceNeeded = calcBaseExpNeeded(iLevel, getOwner());
+	int iExperienceNeeded = calcBaseExpNeeded(getLevel() + iLvlOffset, getOwner());
 
 	if (isCommander())
 	{
@@ -14803,7 +14866,7 @@ bool CvUnit::isRanged() const
 
 bool CvUnit::alwaysInvisible() const
 {
-	return (m_pUnitInfo->isInvisible() || (getAlwaysInvisibleCount() > 0));
+	return m_pUnitInfo->isInvisible() || getAlwaysInvisibleCount() > 0;
 }
 
 
@@ -14859,27 +14922,18 @@ bool CvUnit::ignoreTerrainCost() const
 
 bool CvUnit::isNeverInvisible() const
 {
-	return (!alwaysInvisible() && ((getInvisibleType() == NO_INVISIBLE) && !hasAnyInvisibilityType()));
+	return !alwaysInvisible() && getInvisibleType() == NO_INVISIBLE && !hasAnyInvisibilityType();
 }
 
 int CvUnit::getNoInvisibilityCount() const
 {
-	if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
-	{
-		return 0;
-	}
-
-	if (!isSpy() && isFortifyable() && (getSleepType() == MISSION_FORTIFY))
-	{
-		return getFortifyTurns() + m_iNoInvisibilityCount;
-	}
-
-	return m_iNoInvisibilityCount;
+	return GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK) * m_iNoInvisibilityCount;
 }
 
 void CvUnit::changeNoInvisibilityCount(int iChange)
 {
 	m_iNoInvisibilityCount += iChange;
+	setHasAnyInvisibility();
 }
 
 
@@ -14917,45 +14971,32 @@ bool CvUnit::isInvisible(TeamTypes eTeam, bool bDebug, bool bCheckCargo) const
 
 	if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
 	{
-		if (getInvisibleType() == NO_INVISIBLE)
-		{
-			return false;
-		}
+		return getInvisibleType() != NO_INVISIBLE && !plot()->isSpotterInSight(eTeam, getInvisibleType());
 	}
 
-	bool bInvisible = false;
-	if (GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
+	if (hasAnyInvisibilityType())
 	{
-		if (!hasAnyInvisibilityType())
+		for (int iI = GC.getNumInvisibleInfos() - 1; iI > -1; iI--)
 		{
-			return false;
-		}
+			const InvisibleTypes eInvisible = static_cast<InvisibleTypes>(iI);
 
-		for (int iI = 0; iI < GC.getNumInvisibleInfos(); iI++)
-		{
-			InvisibleTypes eInvisible = ((InvisibleTypes)iI);
 			if (hasInvisibilityType(eInvisible))
 			{
-				if (plot()->isInvisibleVisible(eTeam, eInvisible))
+				if (!plot()->isSpotterInSight(eTeam, eInvisible))
 				{
-					if (plot()->getHighestPlotTeamVisibilityIntensity(eInvisible, eTeam) < invisibilityIntensityTotal(eInvisible))
-					{
-						bInvisible = true;
-					}
+					return true;
 				}
-				else
+				const int iIntensity = invisibilityIntensityTotal(eInvisible);
+
+				if ((iIntensity > 0 || GC.getInvisibleInfo(eInvisible).isIntrinsic())
+				&& plot()->getHighestPlotTeamVisibilityIntensity(eInvisible, eTeam) < iIntensity)
 				{
-					bInvisible = true;
+					return true;
 				}
 			}
 		}
 	}
-	else
-	{
-		bInvisible = !(plot()->isInvisibleVisible(eTeam, getInvisibleType()));
-	}
-
-	return bInvisible;
+	return false;
 }
 
 
@@ -14964,18 +15005,12 @@ bool CvUnit::isNukeImmune() const
 	return m_pUnitInfo->isNukeImmune();
 }
 
-/************************************************************************************************/
-/* REVDCM_OC                              02/16/10                                phungus420    */
-/*                                                                                              */
-/* Inquisitions                                                                                 */
-/************************************************************************************************/
+
 bool CvUnit::isInquisitor() const
 {
 	return m_pUnitInfo->isInquisitor();
 }
-/************************************************************************************************/
-/* REVDCM_OC                               END                                                  */
-/************************************************************************************************/
+
 
 int CvUnit::maxInterceptionProbability(bool bIgnoreCommanders) const
 {
@@ -14989,10 +15024,7 @@ int CvUnit::currInterceptionProbability() const
 	{
 		return maxInterceptionProbability();
 	}
-	else
-	{
-		return maxInterceptionProbability() * getHP() / getMaxHP();
-	}
+	return maxInterceptionProbability() * getHP() / getMaxHP();
 }
 
 
@@ -15367,27 +15399,14 @@ bool CvUnit::hasCombatType(UnitCombatTypes eCombatType) const
 	{
 		return true;
 	}
-	// AIAndy: That loop could be removed if the unit type sub combat types get added to the extra sub combat type counts
-	for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
-	{
-		if (m_pUnitInfo->getSubCombatType(iI) == ((int)eCombatType))
-		{
-			return true;
-		}
-	}
-	return false;
+	// AIAndy: This could be removed if the unit type sub combat types get added to the extra sub combat type counts
+	return algo::any_of_equal(m_pUnitInfo->getSubCombatTypes(), eCombatType);;
 }
 
 bool CvUnit::hasSubCombatType(UnitCombatTypes eCombatType) const
 {
-	bool bSubCombat = false;
-	for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
-	{
-		if (m_pUnitInfo->getSubCombatType(iI) == ((int)eCombatType))
-		{
-			bSubCombat = true;
-		}
-	}
+	const bool bSubCombat = algo::any_of_equal(m_pUnitInfo->getSubCombatTypes(), eCombatType);
+
 	if ((bSubCombat || hasExtraSubCombatType(eCombatType)) && m_pUnitInfo->getUnitCombatType() != eCombatType && !hasRemovesUnitCombatType(eCombatType))
 	{
 		return true;
@@ -15574,7 +15593,7 @@ int CvUnit::hillsDefenseModifier() const
 
 int CvUnit::terrainAttackModifier(TerrainTypes eTerrain) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eTerrain)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eTerrain);
 	return (m_pUnitInfo->getTerrainAttackModifier(eTerrain) + getExtraTerrainAttackPercent(eTerrain));
 }
 
@@ -15585,14 +15604,14 @@ int CvUnit::terrainDefenseModifier(TerrainTypes eTerrain) const
 	{
 		return 0;
 	}
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eTerrain)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eTerrain);
 	return (m_pUnitInfo->getTerrainDefenseModifier(eTerrain) + getExtraTerrainDefensePercent(eTerrain));
 }
 
 
 int CvUnit::featureAttackModifier(FeatureTypes eFeature) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eFeature)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eFeature);
 	return (m_pUnitInfo->getFeatureAttackModifier(eFeature) + getExtraFeatureAttackPercent(eFeature));
 }
 
@@ -15602,13 +15621,13 @@ int CvUnit::featureDefenseModifier(FeatureTypes eFeature) const
 	{
 		return 0;
 	}
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eFeature)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eFeature);
 	return (m_pUnitInfo->getFeatureDefenseModifier(eFeature) + getExtraFeatureDefensePercent(eFeature));
 }
 
 int CvUnit::unitAttackModifier(UnitTypes eUnit) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), eUnit)
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), eUnit);
 	return m_pUnitInfo->getUnitAttackModifier(eUnit);
 }
 
@@ -15619,21 +15638,21 @@ int CvUnit::unitDefenseModifier(UnitTypes eUnit) const
 	{
 		return 0;
 	}
-	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), eUnit)
+	FASSERT_BOUNDS(0, GC.getNumUnitInfos(), eUnit);
 	return m_pUnitInfo->getUnitDefenseModifier(eUnit);
 }
 
 
 int CvUnit::unitCombatModifier(UnitCombatTypes eUnitCombat) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 	return (m_pUnitInfo->getUnitCombatModifier(eUnitCombat) + getExtraUnitCombatModifier(eUnitCombat));
 }
 
 
 int CvUnit::domainModifier(DomainTypes eDomain) const
 {
-	FASSERT_BOUNDS(0, NUM_DOMAIN_TYPES, eDomain)
+	FASSERT_BOUNDS(0, NUM_DOMAIN_TYPES, eDomain);
 	return (m_pUnitInfo->getDomainModifier(eDomain) + getExtraDomainModifier(eDomain));
 }
 
@@ -15679,7 +15698,7 @@ void CvUnit::changeCargoSpace(int iChange)
 	if (iChange != 0)
 	{
 		m_iCargoCapacity += iChange;
-		FASSERT_NOT_NEGATIVE(m_iCargoCapacity)
+		FASSERT_NOT_NEGATIVE(m_iCargoCapacity);
 		setInfoBarDirty(true);
 	}
 }
@@ -15759,19 +15778,9 @@ bool CvUnit::canCargoEnterArea(TeamTypes eTeam, const CvArea* pArea, bool bIgnor
 
 int CvUnit::getUnitAICargo(UnitAITypes eUnitAI) const
 {
-	int iCount = 0;
-
 	std::vector<CvUnit*> aCargoUnits;
 	getCargoUnits(aCargoUnits);
-	for (uint i = 0; i < aCargoUnits.size(); i++)
-	{
-		if (aCargoUnits[i]->AI_getUnitAIType() == eUnitAI)
-		{
-			++iCount;
-		}
-	}
-
-	return iCount;
+	return algo::count_if(aCargoUnits, bind(CvUnit::AI_getUnitAIType, _1) == eUnitAI);
 }
 
 
@@ -16197,53 +16206,32 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 			}
 			///TB: This next portion is to reset the plot list of the new plot before moving on after units may (probably were) have been destroyed in combat there.
 			//This might be necessary for the trap segment below, to rerun this.
-			CLinkList<IDInfo> oldUnits;
-			oldUnits.clear();
-
-			CLLNode<IDInfo>* pUnitNode = pNewPlot->headUnitNode();
-
-			while (pUnitNode != NULL)
-			{
-				oldUnits.insertAtEnd(pUnitNode->m_data);
-				pUnitNode = pNewPlot->nextUnitNode(pUnitNode);
-			}
-
-			pUnitNode = oldUnits.head();
-
 			if (!bInit && pOldPlot != NULL)
 			{
-				while (pUnitNode != NULL)
+				foreach_(CvUnit* unitX, pNewPlot->units_safe())
 				{
-					CvUnit* pLoopUnit = ::getUnit(pUnitNode->m_data);
-					pUnitNode = oldUnits.next(pUnitNode);
-
-					if (pLoopUnit != NULL && pOldPlot != NULL
-					&& (isEnemy(pLoopUnit->getTeam(), pNewPlot) || pLoopUnit->isEnemy(getTeam()))
-					&& !pLoopUnit->canCoexistWithAttacker(*this))
+					if ((isEnemy(unitX->getTeam(), pNewPlot) || unitX->isEnemy(getTeam()))
+					&& !unitX->canCoexistWithAttacker(*this))
 					{
-						if (pLoopUnit->isArmedTrap())
+						if (unitX->isArmedTrap())
 						{
-							pLoopUnit->doTrap(this);
+							unitX->doTrap(this);
 						}
-						else if (pLoopUnit->canDefend(pNewPlot) || pLoopUnit->isInvisible(getTeam(), false) || pLoopUnit->isCargo())
-						{//TB: Testing removing this line to see if it's possible we can safely allow the enemy overlap in these cases
-							/*pLoopUnit->jumpToNearestValidPlot();*/ // can kill unit
-						}//If there's problems here then simply isolating units that are invisible from this check could work fine to uphold the intent.
-						else
+						else if (!unitX->canDefend(pNewPlot) && !unitX->isInvisible(getTeam(), false) && !unitX->isCargo())
 						{
 							//TB NOTE: This is where units that can't defend themselves are auto-captured IF the unit has a defined capture tag and cannot defend.
-							if (!isNoCapture() && NO_UNIT != pLoopUnit->getUnitInfo().getUnitCaptureType())
+							if (!isNoCapture() && NO_UNIT != unitX->getUnitInfo().getUnitCaptureType())
 							{
-								if (isHiddenNationality() || pLoopUnit->isHiddenNationality())
+								if (isHiddenNationality() || unitX->isHiddenNationality())
 								{
-									GET_TEAM(pLoopUnit->getTeam()).changeWarWeariness(getTeam(), *pNewPlot, GC.getDefineINT("WW_UNIT_CAPTURED"));
-									GET_TEAM(getTeam()).changeWarWeariness(pLoopUnit->getTeam(), *pNewPlot, GC.getDefineINT("WW_CAPTURED_UNIT"));
-									GET_TEAM(getTeam()).AI_changeWarSuccess(pLoopUnit->getTeam(), GC.getDefineINT("WAR_SUCCESS_UNIT_CAPTURING"));
+									GET_TEAM(unitX->getTeam()).changeWarWeariness(getTeam(), *pNewPlot, GC.getDefineINT("WW_UNIT_CAPTURED"));
+									GET_TEAM(getTeam()).changeWarWeariness(unitX->getTeam(), *pNewPlot, GC.getDefineINT("WW_CAPTURED_UNIT"));
+									GET_TEAM(getTeam()).AI_changeWarSuccess(unitX->getTeam(), GC.getDefineINT("WAR_SUCCESS_UNIT_CAPTURING"));
 								}
-								pLoopUnit->setCapturingPlayer(eMyPlayer);
-								pLoopUnit->setCapturingUnit(this);
+								unitX->setCapturingPlayer(eMyPlayer);
+								unitX->setCapturingUnit(this);
 							}
-							pLoopUnit->kill(false, eMyPlayer, true);
+							unitX->kill(false, eMyPlayer, true);
 						}
 					}
 				}
@@ -16262,7 +16250,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		{
 			pNewPlot->area()->changeNumAIUnits(eMyPlayer, AI_getUnitAIType(), 1);
 		}
-		//TB Combat Mods - next line adds animal ignore
+
 		if (isAnimal())
 		{
 			pNewPlot->area()->changeAnimalsPerPlayer(eMyPlayer, 1);
@@ -16292,7 +16280,7 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 		{
 			pOldPlot->area()->changeNumAIUnits(eMyPlayer, AI_getUnitAIType(), -1);
 		}
-		//TB Combat Mod next line
+
 		if (isAnimal())
 		{
 			pOldPlot->area()->changeAnimalsPerPlayer(eMyPlayer, -1);
@@ -16316,22 +16304,24 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 			pOldCity->noteUnitMoved(this);
 		}
 
-		CvCity* pWorkingCity = pOldPlot->getWorkingCity();
-
-		if (pWorkingCity != NULL && canSiege(pWorkingCity->getTeam()))
 		{
-			pWorkingCity->AI_setAssignWorkDirty(true);
-		}
+			CvCity* pWorkingCity = pOldPlot->getWorkingCity();
 
-		if (pOldPlot->isWater())
-		{
-			foreach_(const CvPlot* pLoopPlot, pOldPlot->adjacent() | filtered(CvPlot::fn::isWater()))
+			if (pWorkingCity != NULL && canSiege(pWorkingCity->getTeam()))
 			{
-				pWorkingCity = pLoopPlot->getWorkingCity();
+				pWorkingCity->AI_setAssignWorkDirty(true);
+			}
 
-				if (pWorkingCity != NULL && canSiege(pWorkingCity->getTeam()))
+			if (pOldPlot->isWater())
+			{
+				foreach_(const CvPlot* pLoopPlot, pOldPlot->adjacent() | filtered(CvPlot::fn::isWater()))
 				{
-					pWorkingCity->AI_setAssignWorkDirty(true);
+					pWorkingCity = pLoopPlot->getWorkingCity();
+
+					if (pWorkingCity != NULL && canSiege(pWorkingCity->getTeam()))
+					{
+						pWorkingCity->AI_setAssignWorkDirty(true);
+					}
 				}
 			}
 		}
@@ -16457,8 +16447,6 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 
 		pNewPlot->changeAdjacentSight(getTeam(), visibilityRange(pNewPlot), true, this, true); // needs to be here so that the square is considered visible when we move into it...
 		changeDebugCount(1);
-		// Run a test with a stealth defense scenario and see if immediately after the death of the attacker, the attacker still hits this point
-		//This would show how we're getting 'ghosts'  fixing should be as easy as adding a 'removeUnit' call to the plot when the unit is found on a tile it shouldn't be there
 		pNewPlot->addUnit(this, bUpdate && !hasCargo());
 
 		if (!bInit && shouldLoadOnMove(pNewPlot))
@@ -16479,44 +16467,45 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 			}
 		}
 
-		pNewCity = pNewPlot->getPlotCity();
-
-		if (pNewCity != NULL && isMilitaryHappiness())
 		{
-			pNewCity->changeMilitaryHappinessUnits(1);
-		}
+			CvCity* pNewCity = pNewPlot->getPlotCity();
 
-		CvCity* pWorkingCity = pNewPlot->getWorkingCity();
-
-		if (pWorkingCity != NULL)
-		{
-			PROFILE("CvUnit::setXY.NewPlot2.WorkingCity");
-
-			if (canSiege(pWorkingCity->getTeam()))
+			if (pNewCity != NULL && isMilitaryHappiness())
 			{
-				pWorkingCity->verifyWorkingPlot(pWorkingCity->getCityPlotIndex(pNewPlot));
+				pNewCity->changeMilitaryHappinessUnits(1);
 			}
 		}
-
-		if (pNewPlot->isWater())
 		{
-			PROFILE("CvUnit::setXY.NewPlot2.Water");
+			CvCity* pWorkingCity = pNewPlot->getWorkingCity();
 
-			foreach_(const CvPlot* pLoopPlot, pNewPlot->adjacent() | filtered(CvPlot::fn::isWater()))
+			if (pWorkingCity != NULL)
 			{
-				pWorkingCity = pLoopPlot->getWorkingCity();
+				PROFILE("CvUnit::setXY.NewPlot2.WorkingCity");
 
-				if (pWorkingCity != NULL && canSiege(pWorkingCity->getTeam()))
+				if (canSiege(pWorkingCity->getTeam()))
 				{
-					pWorkingCity->verifyWorkingPlot(pWorkingCity->getCityPlotIndex(pLoopPlot));
+					pWorkingCity->verifyWorkingPlot(pWorkingCity->getCityPlotIndex(pNewPlot));
+				}
+			}
+
+			if (pNewPlot->isWater())
+			{
+				PROFILE("CvUnit::setXY.NewPlot2.Water");
+
+				foreach_(const CvPlot* pLoopPlot, pNewPlot->adjacent() | filtered(CvPlot::fn::isWater()))
+				{
+					pWorkingCity = pLoopPlot->getWorkingCity();
+
+					if (pWorkingCity != NULL && canSiege(pWorkingCity->getTeam()))
+					{
+						pWorkingCity->verifyWorkingPlot(pWorkingCity->getCityPlotIndex(pLoopPlot));
+					}
 				}
 			}
 		}
 
 		if (pNewPlot->isActiveVisible(true))
 		{
-			PROFILE("CvUnit::setXY.NewPlot2.Minimap");
-
 			pNewPlot->updateMinimapColor();
 		}
 
@@ -16534,8 +16523,6 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 
 		if (pNewPlot == gDLL->getInterfaceIFace()->getSelectionPlot())
 		{
-			PROFILE("CvUnit::setXY.NewPlot2.Selection");
-
 			gDLL->getInterfaceIFace()->verifyPlotListColumn();
 			gDLL->getInterfaceIFace()->setDirty(PlotListButtons_DIRTY_BIT, true);
 		}
@@ -16701,16 +16688,13 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 
 	if (pNewPlot != NULL)
 	{
-		if ((pOldPlot != NULL && pOldPlot->isInViewport()) != pNewPlot->isInViewport())
+		setHasAnyInvisibility();
+
+		if ((pOldPlot != NULL && pOldPlot->isInViewport()) != pNewPlot->isInViewport()
+		|| g_bUseDummyEntities
+		&& (pOldPlot != NULL && pOldPlot->isActiveVisible(false)) != pNewPlot->isActiveVisible(false))
 		{
 			reloadEntity();
-		}
-		else if (g_bUseDummyEntities)
-		{
-			if ((pOldPlot != NULL && pOldPlot->isActiveVisible(false)) != (pNewPlot != NULL && pNewPlot->isActiveVisible(false)))
-			{
-				reloadEntity();
-			}
 		}
 	}
 
@@ -16718,8 +16702,6 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 
 	if (IsSelected())
 	{
-		PROFILE("CvUnit::setXY.IsSelected");
-
 		if (isFound())
 		{
 			gDLL->getInterfaceIFace()->setDirty(GlobeLayer_DIRTY_BIT, true);
@@ -16737,8 +16719,6 @@ void CvUnit::setXY(int iX, int iY, bool bGroup, bool bUpdate, bool bShow, bool b
 	{
 		gDLL->getEntityIFace()->updateEnemyGlow(getUnitEntity());
 	}
-	//TBSET
-	setHasAnyInvisibility();
 
 	/*GC.getGame().logOOSSpecial(5, getID(), iX, iY);*/
 }
@@ -16798,7 +16778,7 @@ int CvUnit::getLastMoveTurn() const
 void CvUnit::setLastMoveTurn(int iNewValue)
 {
 	m_iLastMoveTurn = iNewValue;
-	FASSERT_NOT_NEGATIVE(m_iLastMoveTurn)
+	FASSERT_NOT_NEGATIVE(m_iLastMoveTurn);
 }
 
 
@@ -16848,7 +16828,7 @@ int CvUnit::getGameTurnCreated() const
 void CvUnit::setGameTurnCreated(int iNewValue)
 {
 	m_iGameTurnCreated = iNewValue;
-	FASSERT_NOT_NEGATIVE(getGameTurnCreated())
+	FASSERT_NOT_NEGATIVE(getGameTurnCreated());
 }
 
 
@@ -16859,7 +16839,7 @@ int CvUnit::getDamage() const
 
 int CvUnit::getHealAsDamage(UnitCombatTypes eHealAsType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eHealAsType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eHealAsType);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eHealAsType);
 
@@ -16868,7 +16848,7 @@ int CvUnit::getHealAsDamage(UnitCombatTypes eHealAsType) const
 
 void CvUnit::changeHealAsDamage(UnitCombatTypes eHealAsType, int iChange, PlayerTypes ePlayer)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eHealAsType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eHealAsType);
 
 	if (iChange != 0)
 	{
@@ -16878,13 +16858,13 @@ void CvUnit::changeHealAsDamage(UnitCombatTypes eHealAsType, int iChange, Player
 
 		setHealAsDamage(eHealAsType, range(iNewValue, 0, getMaxHP()), ePlayer);
 
-		FASSERT_NOT_NEGATIVE(info->m_iHealAsDamage)
+		FASSERT_NOT_NEGATIVE(info->m_iHealAsDamage);
 	}
 }
 
 void CvUnit::setHealAsDamage(UnitCombatTypes eHealAsType, int iNewValue, PlayerTypes ePlayer, bool bNotifyEntity)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eHealAsType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eHealAsType);
 
 	UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eHealAsType);
 
@@ -16903,7 +16883,7 @@ void CvUnit::setHealAsDamage(UnitCombatTypes eHealAsType, int iNewValue, PlayerT
 	{
 		setDamage(iHighestDamage, ePlayer, bNotifyEntity, NO_UNITCOMBAT, true);
 	}
-	FASSERT_NOT_NEGATIVE(info->m_iHealAsDamage)
+	FASSERT_NOT_NEGATIVE(info->m_iHealAsDamage);
 }
 
 int CvUnit::getDamagePercent() const
@@ -16960,9 +16940,7 @@ void CvUnit::setDamage(int iNewValue, PlayerTypes ePlayer, bool bNotifyEntity, U
 			}
 		}
 	}
-
 	FAssertMsg(getHP() >= 0, "getHP() is expected to be non-negative (invalid Index)");
-
 
 	if (isDead())
 	{
@@ -16984,10 +16962,7 @@ void CvUnit::changeDamage(int iChange, PlayerTypes ePlayer, UnitCombatTypes eHea
 	{
 		changeHealAsDamage(eHealAsType, iChange, ePlayer);
 	}
-	else
-	{
-		setDamage((getDamage() + iChange), ePlayer);
-	}
+	else setDamage(getDamage() + iChange, ePlayer);
 }
 
 void CvUnit::changeDamagePercent(int iChange, PlayerTypes ePlayer)
@@ -17010,14 +16985,11 @@ void CvUnit::setMoves(int iNewValue)
 
 		m_iMoves = iNewValue;
 
-		FASSERT_NOT_NEGATIVE(m_iMoves)
+		FASSERT_NOT_NEGATIVE(m_iMoves);
 
-		if (getTeam() == GC.getGame().getActiveTeam())
+		if (pPlot != NULL && getTeam() == GC.getGame().getActiveTeam())
 		{
-			if (pPlot != NULL)
-			{
-				pPlot->setFlagDirty(true);
-			}
+			pPlot->setFlagDirty(true);
 		}
 
 		if (IsSelected())
@@ -17054,12 +17026,13 @@ int CvUnit::getExperience100() const
 
 void CvUnit::setExperience100(int iNewValue, int iMax)
 {
-	iMax = iMax < 0 ? MAX_INT : iMax;
+	if (iMax < 0) iMax = MAX_INT;
 
-	if (getExperience100() != iNewValue && getExperience100() < iMax)
+	iNewValue = range(iNewValue, 0, iMax);
+
+	if (m_iExperience != iNewValue && (m_iExperience < iMax || iNewValue < m_iExperience))
 	{
-		m_iExperience = std::min(iMax, iNewValue);
-		FASSERT_NOT_NEGATIVE(getExperience100())
+		m_iExperience = iNewValue;
 
 		if (IsSelected())
 		{
@@ -17070,42 +17043,25 @@ void CvUnit::setExperience100(int iNewValue, int iMax)
 
 void CvUnit::changeExperience100(int iChange, int iMax, bool bFromCombat, bool bInBorders, bool bUpdateGlobal)
 {
-	int iUnitExperience = iChange;
+	int iExp = iChange;
 
 	if (bFromCombat)
 	{
 		CvPlayer& kPlayer = GET_PLAYER(getOwner());
-		//TB GG Types mod
-		if (getGGExperienceEarnedTowardsType() == NO_UNIT)
-		{
-			// Toffer - This should be moved to unit initialization,
-			// and if needed later, be refreshed when unitCombat types change.
-			setGGExperienceEarnedTowardsType();
-		}
 
-		int iCombatExperienceMod = kPlayer.getGreatGeneralRateModifier();
+		int iMod = getExperiencePercent();
+		int iModGG = kPlayer.getGreatGeneralRateModifier();
 
 		if (bInBorders)
 		{
-			iCombatExperienceMod += kPlayer.getDomesticGreatGeneralRateModifier() + kPlayer.getExpInBorderModifier();
-			iUnitExperience += (iChange * kPlayer.getExpInBorderModifier()) / 100;
+			iMod += kPlayer.getExpInBorderModifier();
+			iModGG += kPlayer.getDomesticGreatGeneralRateModifier() + kPlayer.getExpInBorderModifier();
 		}
+		iExp = getModifiedIntValue(iExp, iMod);
 
 		if (bUpdateGlobal)
 		{
-			int iChangeTotal = iChange + ((iChange * iCombatExperienceMod) / 100);
-			kPlayer.changeFractionalCombatExperience(iChangeTotal, getGGExperienceEarnedTowardsType());
-		}
-
-		const int iMod = getExperiencePercent();
-		if (iMod < 0)
-		{
-			iUnitExperience = iUnitExperience * 100 / (-1 * iMod + 100);
-		}
-		else if (iMod > 0)
-		{
-			iUnitExperience *= 100 + iMod;
-			iUnitExperience /= 100;
+			kPlayer.changeFractionalCombatExperience(getModifiedIntValue(iExp, iModGG), getGGExperienceEarnedTowardsType());
 		}
 
 		CvUnit* pCommander = getUsedCommander();
@@ -17114,7 +17070,7 @@ void CvUnit::changeExperience100(int iChange, int iMax, bool bFromCombat, bool b
 			pCommander->setExperience100(pCommander->getExperience100() + 60); //0.6 xp every time, make global define?
 		}
 	}
-	setExperience100((getExperience100() + iUnitExperience), iMax);
+	setExperience100(getExperience100() + iExp, iMax);
 }
 
 int CvUnit::getExperience() const
@@ -17187,8 +17143,10 @@ void CvUnit::SMchangeCargo(int iChange)
 void CvUnit::getCargoUnits(std::vector<CvUnit*>& aUnits) const
 {
 	aUnits.clear();
-	int iCheck = 0;
 
+#if FASSERT_ENABLE
+	int iCheck = 0;
+#endif
 	if (hasCargo())
 	{
 		foreach_(CvUnit* pLoopUnit, plot()->units())
@@ -17196,6 +17154,7 @@ void CvUnit::getCargoUnits(std::vector<CvUnit*>& aUnits) const
 			if (pLoopUnit->getTransportUnit() == this)
 			{
 				aUnits.push_back(pLoopUnit);
+#if FASSERT_ENABLE
 				if (GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 				{
 					iCheck += pLoopUnit->SMCargoVolume();
@@ -17204,6 +17163,7 @@ void CvUnit::getCargoUnits(std::vector<CvUnit*>& aUnits) const
 				{
 					iCheck++;
 				}
+#endif
 			}
 		}
 	}
@@ -17277,9 +17237,8 @@ void CvUnit::validateCargoUnits()
 				FErrorMsg("Load Volume is incorrect");//If this persists, then the problem is due to having a unit that's not sharing the same plot being loaded onto the transport.
 				std::vector<CvUnit*> aCargoUnits;
 				getCargoUnits(aCargoUnits);
-				for (uint i = 0; i < aCargoUnits.size(); i++)
+				foreach_(CvUnit* pCargo, aCargoUnits)
 				{
-					CvUnit* pCargo = aCargoUnits[i];
 					pCargo->setTransportUnit(NULL);
 					if (pCargo->plot() == plot())
 					{
@@ -17288,9 +17247,8 @@ void CvUnit::validateCargoUnits()
 				}
 				m_iSMCargo = 0;
 				iCount = 0;
-				for (uint i = 0; i < aCargoUnits.size(); i++)
+				foreach_(const CvUnit* pCargo, aCargoUnits)
 				{
-					CvUnit* pCargo = aCargoUnits[i];
 					SMchangeCargo(pCargo->SMCargoVolume());
 					iCount++;
 				}
@@ -17343,7 +17301,7 @@ int CvUnit::getCombatTimer() const
 void CvUnit::setCombatTimer(int iNewValue)
 {
 	m_iCombatTimer = iNewValue;
-	FASSERT_NOT_NEGATIVE(getCombatTimer())
+	FASSERT_NOT_NEGATIVE(getCombatTimer());
 }
 
 void CvUnit::changeCombatTimer(int iChange)
@@ -17359,7 +17317,7 @@ int CvUnit::getCombatFirstStrikes() const
 void CvUnit::setCombatFirstStrikes(int iNewValue)
 {
 	m_iCombatFirstStrikes = iNewValue;
-	FASSERT_NOT_NEGATIVE(getCombatFirstStrikes())
+	FASSERT_NOT_NEGATIVE(getCombatFirstStrikes());
 }
 
 void CvUnit::changeCombatFirstStrikes(int iChange)
@@ -17374,121 +17332,20 @@ int CvUnit::getFortifyTurns() const
 
 void CvUnit::setFortifyTurns(int iNewValue)
 {
-	if (iNewValue >= GC.getDefineINT("MAX_FORTIFY_TURNS"))
-	{
-		if (getSleepType() == MISSION_BUILDUP && getBuildUpType() == NO_PROMOTIONLINE || getSleepType() != MISSION_BUILDUP && getBuildUpType() != NO_PROMOTIONLINE)
-		{
-			clearBuildups();
-			getGroup()->setActivityType(ACTIVITY_AWAKE);
-			m_iFortifyTurns = 0;
-			setInfoBarDirty(true);
-			return;
-		}
-		else if (getSleepType() == MISSION_BUILDUP && getBuildUpType() != NO_PROMOTIONLINE)
-		{
-			setBuildUp(true);
-			PromotionLineTypes ePromotionLine = getBuildUpType();
-			for (int iI = 0; iI < GC.getPromotionLineInfo(ePromotionLine).getNumPromotions(); iI++)
-			{
-				PromotionTypes ePromotion = (PromotionTypes)GC.getPromotionLineInfo(ePromotionLine).getPromotion(iI);
-				if (!isHasPromotion(ePromotion) && canAcquirePromotion(ePromotion, PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp) && GC.getPromotionInfo(ePromotion).getLinePriority() <= iNewValue)
-				{
-					setHasPromotion(ePromotion, true, true, false, false);
-					m_iFortifyTurns = iNewValue;
-				}
-			}
-			if (!isHuman())
-			{
-				if (iNewValue >= 11)
-				{
-					for (int iI = 0; iI < GC.getPromotionLineInfo(ePromotionLine).getNumPromotions(); iI++)
-					{
-						PromotionTypes ePromotion = (PromotionTypes)GC.getPromotionLineInfo(ePromotionLine).getPromotion(iI);
-						if (GC.getPromotionInfo(ePromotion).getLinePriority() == 1)
-						{
-							int iValue = GET_PLAYER(getOwner()).AI_promotionValue(ePromotion, getUnitType(), this, AI_getUnitAIType(), true);
-							if (iValue < 10)
-							{
-								clearBuildups();
-								m_iFortifyTurns = 0;
-								getGroup()->setActivityType(ACTIVITY_AWAKE);
-								setInfoBarDirty(true);
-								break;
-								return;
-							}
-						}
-					}
-					m_iFortifyTurns = 5;
-				}
-				else
-				{
-					m_iFortifyTurns = iNewValue;
-				}
-			}
-			setInfoBarDirty(true);
-			return;
-		}
-	}
+	const int iMaxFortify = GC.getDefineINT("MAX_FORTIFY_TURNS");
 
-	iNewValue = range(iNewValue, 0, GC.getDefineINT("MAX_FORTIFY_TURNS"));
-
-	if (iNewValue == 0 && isBuildUp())
-	{
-		clearBuildups();
-		m_iFortifyTurns = 0;
-		setInfoBarDirty(true);
-		return;
-	}
+	iNewValue = range(iNewValue, 0, iMaxFortify);
 
 	if (iNewValue != m_iFortifyTurns)
 	{
-		if (iNewValue > 0)
-		{
-			if (getSleepType() == MISSION_BUILDUP)
-			{
-				if (getBuildUpType() != NO_PROMOTIONLINE)
-				{
-					setBuildUp(true);
-					PromotionLineTypes ePromotionLine = getBuildUpType();
-					for (int iI = 0; iI < GC.getPromotionLineInfo(ePromotionLine).getNumPromotions(); iI++)
-					{
-						PromotionTypes ePromotion = (PromotionTypes)GC.getPromotionLineInfo(ePromotionLine).getPromotion(iI);
-						if (!isHasPromotion(ePromotion)
-						&& canAcquirePromotion(ePromotion, PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp)
-						&& GC.getPromotionInfo(ePromotion).getLinePriority() <= iNewValue)
-						{
-							setHasPromotion(ePromotion, true, true, false, false);
-						}
-					}
-				}
-				else if (getBuildUpType() == NO_PROMOTIONLINE)
-				{
-					iNewValue = 0;
-					clearBuildups();
-					getGroup()->setActivityType(ACTIVITY_AWAKE);
-					setInfoBarDirty(true);
-				}
-			}
-			else if (getSleepType() != MISSION_BUILDUP && getBuildUpType() != NO_PROMOTIONLINE)
-			{
-				clearBuildups();
-				iNewValue = 0;
-				getGroup()->setActivityType(ACTIVITY_AWAKE);
-				setInfoBarDirty(true);
-			}
-		}
-		else
-		{
-			iNewValue = 0;
-		}
 		m_iFortifyTurns = iNewValue;
 		setInfoBarDirty(true);
-	}
-}
 
-void CvUnit::changeFortifyTurns(int iChange)
-{
-	setFortifyTurns(getFortifyTurns() + iChange);
+		if (iNewValue == 0 && isBuildUp())
+		{
+			clearBuildups();
+		}
+	}
 }
 
 int CvUnit::getBlitzCount() const
@@ -17498,13 +17355,13 @@ int CvUnit::getBlitzCount() const
 
 bool CvUnit::isBlitz() const
 {
-	return (getBlitzCount() > 0);
+	return m_iBlitzCount > 0;
 }
 
 void CvUnit::changeBlitzCount(int iChange)
 {
 	m_iBlitzCount += iChange;
-	FASSERT_NOT_NEGATIVE(getBlitzCount())
+	FASSERT_NOT_NEGATIVE(m_iBlitzCount);
 }
 
 int CvUnit::getAmphibCount() const
@@ -17520,7 +17377,7 @@ bool CvUnit::isAmphib() const
 void CvUnit::changeAmphibCount(int iChange)
 {
 	m_iAmphibCount += iChange;
-	FASSERT_NOT_NEGATIVE(getAmphibCount())
+	FASSERT_NOT_NEGATIVE(getAmphibCount());
 }
 
 int CvUnit::getRiverCount() const
@@ -17536,7 +17393,7 @@ bool CvUnit::isRiver() const
 void CvUnit::changeRiverCount(int iChange)
 {
 	m_iRiverCount += iChange;
-	FASSERT_NOT_NEGATIVE(getRiverCount())
+	FASSERT_NOT_NEGATIVE(getRiverCount());
 }
 
 int CvUnit::getEnemyRouteCount() const
@@ -17552,7 +17409,7 @@ bool CvUnit::isEnemyRoute() const
 void CvUnit::changeEnemyRouteCount(int iChange)
 {
 	m_iEnemyRouteCount += iChange;
-	FASSERT_NOT_NEGATIVE(getEnemyRouteCount())
+	FASSERT_NOT_NEGATIVE(getEnemyRouteCount());
 }
 
 int CvUnit::getAlwaysHealCount() const
@@ -17568,7 +17425,7 @@ bool CvUnit::isAlwaysHeal() const
 void CvUnit::changeAlwaysHealCount(int iChange)
 {
 	m_iAlwaysHealCount += iChange;
-	FASSERT_NOT_NEGATIVE(getAlwaysHealCount())
+	FASSERT_NOT_NEGATIVE(getAlwaysHealCount());
 }
 
 int CvUnit::getHillsDoubleMoveCount() const
@@ -17584,7 +17441,7 @@ bool CvUnit::isHillsDoubleMove() const
 void CvUnit::changeHillsDoubleMoveCount(int iChange)
 {
 	m_iHillsDoubleMoveCount += iChange;
-	FASSERT_NOT_NEGATIVE(getHillsDoubleMoveCount())
+	FASSERT_NOT_NEGATIVE(getHillsDoubleMoveCount());
 }
 
 int CvUnit::getImmuneToFirstStrikesCount() const
@@ -17595,7 +17452,7 @@ int CvUnit::getImmuneToFirstStrikesCount() const
 void CvUnit::changeImmuneToFirstStrikesCount(int iChange)
 {
 	m_iImmuneToFirstStrikesCount += iChange;
-	FASSERT_NOT_NEGATIVE(getImmuneToFirstStrikesCount())
+	FASSERT_NOT_NEGATIVE(getImmuneToFirstStrikesCount());
 }
 
 
@@ -17607,7 +17464,7 @@ int CvUnit::getAlwaysInvisibleCount() const
 void CvUnit::changeAlwaysInvisibleCount(int iChange)
 {
 	m_iAlwaysInvisibleCount += iChange;
-	FASSERT_NOT_NEGATIVE(getAlwaysInvisibleCount())
+	FASSERT_NOT_NEGATIVE(getAlwaysInvisibleCount());
 }
 
 
@@ -17624,7 +17481,7 @@ bool CvUnit::isDefensiveVictoryMove() const
 void CvUnit::changeDefensiveVictoryMoveCount(int iChange)
 {
 	m_iDefensiveVictoryMoveCount += iChange;
-	FASSERT_NOT_NEGATIVE(getDefensiveVictoryMoveCount())
+	FASSERT_NOT_NEGATIVE(getDefensiveVictoryMoveCount());
 }
 
 
@@ -17641,7 +17498,7 @@ bool CvUnit::isFreeDrop() const
 void CvUnit::changeFreeDropCount(int iChange)
 {
 	m_iFreeDropCount += iChange;
-	FASSERT_NOT_NEGATIVE(getFreeDropCount())
+	FASSERT_NOT_NEGATIVE(getFreeDropCount());
 }
 
 
@@ -17658,7 +17515,7 @@ bool CvUnit::isOffensiveVictoryMove() const
 void CvUnit::changeOffensiveVictoryMoveCount(int iChange)
 {
 	m_iOffensiveVictoryMoveCount += iChange;
-	FASSERT_NOT_NEGATIVE(getOffensiveVictoryMoveCount())
+	FASSERT_NOT_NEGATIVE(getOffensiveVictoryMoveCount());
 }
 
 
@@ -17675,7 +17532,7 @@ bool CvUnit::isOneUp() const
 void CvUnit::changeOneUpCount(int iChange)
 {
 	m_iOneUpCount += iChange;
-	FASSERT_NOT_NEGATIVE(getOneUpCount())
+	FASSERT_NOT_NEGATIVE(getOneUpCount());
 }
 
 int CvUnit::getPillageEspionageCount() const
@@ -17691,7 +17548,7 @@ bool CvUnit::isPillageEspionage() const
 void CvUnit::changePillageEspionageCount(int iChange)
 {
 	m_iPillageEspionageCount += iChange;
-	FASSERT_NOT_NEGATIVE(getPillageEspionageCount())
+	FASSERT_NOT_NEGATIVE(getPillageEspionageCount());
 }
 
 
@@ -17708,7 +17565,7 @@ bool CvUnit::isPillageMarauder() const
 void CvUnit::changePillageMarauderCount(int iChange)
 {
 	m_iPillageMarauderCount += iChange;
-	FASSERT_NOT_NEGATIVE(getPillageMarauderCount())
+	FASSERT_NOT_NEGATIVE(getPillageMarauderCount());
 }
 
 
@@ -17725,7 +17582,7 @@ bool CvUnit::isPillageOnMove() const
 void CvUnit::changePillageOnMoveCount(int iChange)
 {
 	m_iPillageOnMoveCount += iChange;
-	FASSERT_NOT_NEGATIVE(getPillageOnMoveCount())
+	FASSERT_NOT_NEGATIVE(getPillageOnMoveCount());
 }
 
 
@@ -17742,7 +17599,7 @@ bool CvUnit::isPillageOnVictory() const
 void CvUnit::changePillageOnVictoryCount(int iChange)
 {
 	m_iPillageOnVictoryCount += iChange;
-	FASSERT_NOT_NEGATIVE(getPillageOnVictoryCount())
+	FASSERT_NOT_NEGATIVE(getPillageOnVictoryCount());
 }
 
 
@@ -17759,7 +17616,7 @@ bool CvUnit::isPillageResearch() const
 void CvUnit::changePillageResearchCount(int iChange)
 {
 	m_iPillageResearchCount += iChange;
-	FASSERT_NOT_NEGATIVE(getPillageResearchCount())
+	FASSERT_NOT_NEGATIVE(getPillageResearchCount());
 }
 
 
@@ -17938,7 +17795,7 @@ void CvUnit::changeExtraVisibilityRange(int iChange)
 		}
 
 		m_iExtraVisibilityRange += iChange;
-		FASSERT_NOT_NEGATIVE(getExtraVisibilityRange())
+		FASSERT_NOT_NEGATIVE(getExtraVisibilityRange());
 
 		if (plot() != NULL)
 		{
@@ -17966,7 +17823,7 @@ void CvUnit::changeExtraMoves(int iChange)
 	m_iExtraMoves += iChange;
 	m_iMaxMoveCacheTurn--;
 
-	FASSERT_NOT_NEGATIVE(getExtraMoves())
+	FASSERT_NOT_NEGATIVE(getExtraMoves());
 }
 
 int CvUnit::getExtraMoveDiscount() const
@@ -17985,7 +17842,7 @@ int CvUnit::getExtraMoveDiscount() const
 void CvUnit::changeExtraMoveDiscount(int iChange)
 {
 	m_iExtraMoveDiscount += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraMoveDiscount())
+	FASSERT_NOT_NEGATIVE(getExtraMoveDiscount());
 }
 
 
@@ -18190,7 +18047,7 @@ int CvUnit::getExtraVSBarbs(bool bIgnoreCommanders) const
 void CvUnit::changeExtraVSBarbs(int iChange)
 {
 	m_iExtraVSBarbs += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraVSBarbs())
+	FASSERT_NOT_NEGATIVE(getExtraVSBarbs());
 }
 
 int CvUnit::getExtraReligiousCombatModifier(bool bIgnoreCommanders) const
@@ -18378,7 +18235,7 @@ int CvUnit::getExtraOverrun(bool bIgnoreCommanders) const
 void CvUnit::changeExtraOverrun(int iChange)
 {
 	m_iExtraOverrun += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraOverrun())
+	FASSERT_NOT_NEGATIVE(getExtraOverrun());
 }
 
 int CvUnit::getExtraRepel(bool bIgnoreCommanders) const
@@ -18401,7 +18258,7 @@ int CvUnit::getExtraRepel(bool bIgnoreCommanders) const
 void CvUnit::changeExtraRepel(int iChange)
 {
 	m_iExtraRepel += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraRepel())
+	FASSERT_NOT_NEGATIVE(getExtraRepel());
 }
 
 int CvUnit::getExtraFortRepel(bool bIgnoreCommanders) const
@@ -18424,7 +18281,7 @@ int CvUnit::getExtraFortRepel(bool bIgnoreCommanders) const
 void CvUnit::changeExtraFortRepel(int iChange)
 {
 	m_iExtraFortRepel += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraFortRepel())
+	FASSERT_NOT_NEGATIVE(getExtraFortRepel());
 }
 
 int CvUnit::getExtraRepelRetries(bool bIgnoreCommanders) const
@@ -18447,7 +18304,7 @@ int CvUnit::getExtraRepelRetries(bool bIgnoreCommanders) const
 void CvUnit::changeExtraRepelRetries(int iChange)
 {
 	m_iExtraRepelRetries += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraRepelRetries())
+	FASSERT_NOT_NEGATIVE(getExtraRepelRetries());
 }
 
 int CvUnit::getExtraUnyielding(bool bIgnoreCommanders) const
@@ -18466,7 +18323,7 @@ int CvUnit::getExtraUnyielding(bool bIgnoreCommanders) const
 void CvUnit::changeExtraUnyielding(int iChange)
 {
 	m_iExtraUnyielding += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraUnyielding())
+	FASSERT_NOT_NEGATIVE(getExtraUnyielding());
 }
 
 int CvUnit::getExtraKnockback(bool bIgnoreCommanders) const
@@ -18485,7 +18342,7 @@ int CvUnit::getExtraKnockback(bool bIgnoreCommanders) const
 void CvUnit::changeExtraKnockback(int iChange)
 {
 	m_iExtraKnockback += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraKnockback())
+	FASSERT_NOT_NEGATIVE(getExtraKnockback());
 }
 
 int CvUnit::getExtraKnockbackRetries(bool bIgnoreCommanders) const
@@ -18504,7 +18361,7 @@ int CvUnit::getExtraKnockbackRetries(bool bIgnoreCommanders) const
 void CvUnit::changeExtraKnockbackRetries(int iChange)
 {
 	m_iExtraKnockbackRetries += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraKnockbackRetries())
+	FASSERT_NOT_NEGATIVE(getExtraKnockbackRetries());
 }
 
 int CvUnit::getStampedeCount() const
@@ -18603,7 +18460,7 @@ int CvUnit::getExtraStrAdjperRnd(bool bIgnoreCommanders) const
 void CvUnit::changeExtraStrAdjperRnd(int iChange)
 {
 	m_iExtraStrAdjperRnd += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraStrAdjperRnd())
+	FASSERT_NOT_NEGATIVE(getExtraStrAdjperRnd());
 }
 
 int CvUnit::getExtraStrAdjperAtt(bool bIgnoreCommanders) const
@@ -18622,7 +18479,7 @@ int CvUnit::getExtraStrAdjperAtt(bool bIgnoreCommanders) const
 void CvUnit::changeExtraStrAdjperAtt(int iChange)
 {
 	m_iExtraStrAdjperAtt += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraStrAdjperAtt())
+	FASSERT_NOT_NEGATIVE(getExtraStrAdjperAtt());
 }
 
 int CvUnit::getExtraStrAdjperDef(bool bIgnoreCommanders) const
@@ -18645,7 +18502,7 @@ int CvUnit::getExtraStrAdjperDef(bool bIgnoreCommanders) const
 void CvUnit::changeExtraStrAdjperDef(int iChange)
 {
 	m_iExtraStrAdjperDef += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraStrAdjperDef())
+	FASSERT_NOT_NEGATIVE(getExtraStrAdjperDef());
 }
 
 int CvUnit::getExtraWithdrawAdjperAtt(bool bIgnoreCommanders) const
@@ -18664,7 +18521,7 @@ int CvUnit::getExtraWithdrawAdjperAtt(bool bIgnoreCommanders) const
 void CvUnit::changeExtraWithdrawAdjperAtt(int iChange)
 {
 	m_iExtraWithdrawAdjperAtt += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraWithdrawAdjperAtt())
+	FASSERT_NOT_NEGATIVE(getExtraWithdrawAdjperAtt());
 }
 
 int CvUnit::getExtraUnnerve(bool bIgnoreCommanders) const
@@ -18683,7 +18540,7 @@ int CvUnit::getExtraUnnerve(bool bIgnoreCommanders) const
 void CvUnit::changeExtraUnnerve(int iChange)
 {
 	m_iExtraUnnerve += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraUnnerve())
+	FASSERT_NOT_NEGATIVE(getExtraUnnerve());
 }
 
 int CvUnit::getExtraEnclose(bool bIgnoreCommanders) const
@@ -18702,7 +18559,7 @@ int CvUnit::getExtraEnclose(bool bIgnoreCommanders) const
 void CvUnit::changeExtraEnclose(int iChange)
 {
 	m_iExtraEnclose += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraEnclose())
+	FASSERT_NOT_NEGATIVE(getExtraEnclose());
 }
 
 int CvUnit::getExtraLunge(bool bIgnoreCommanders) const
@@ -18721,7 +18578,7 @@ int CvUnit::getExtraLunge(bool bIgnoreCommanders) const
 void CvUnit::changeExtraLunge(int iChange)
 {
 	m_iExtraLunge += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraLunge())
+	FASSERT_NOT_NEGATIVE(getExtraLunge());
 }
 
 int CvUnit::getExtraDynamicDefense(bool bIgnoreCommanders) const
@@ -18740,7 +18597,7 @@ int CvUnit::getExtraDynamicDefense(bool bIgnoreCommanders) const
 void CvUnit::changeExtraDynamicDefense(int iChange)
 {
 	m_iExtraDynamicDefense += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraDynamicDefense())
+	FASSERT_NOT_NEGATIVE(getExtraDynamicDefense());
 }
 
 int CvUnit::getAnimalIgnoresBordersCount() const
@@ -18773,7 +18630,7 @@ bool CvUnit::mayOnslaught() const
 void CvUnit::changeOnslaughtCount(int iChange)
 {
 	m_iOnslaughtCount += iChange;
-	FASSERT_NOT_NEGATIVE(getOnslaughtCount())
+	FASSERT_NOT_NEGATIVE(getOnslaughtCount());
 }
 
 int CvUnit::getDealColdDamageCount() const
@@ -18819,7 +18676,7 @@ void CvUnit::changeColdImmuneCount(int iChange)
 //TB SubCombat Mod Begin
 int CvUnit::getSubCombatTypeCount(UnitCombatTypes eCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eCombatType);
 
@@ -18828,26 +18685,26 @@ int CvUnit::getSubCombatTypeCount(UnitCombatTypes eCombatType) const
 
 bool CvUnit::hasExtraSubCombatType(UnitCombatTypes eCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType);
 	return (getSubCombatTypeCount(eCombatType) > 0);
 }
 
 void CvUnit::changeSubCombatTypeCount(UnitCombatTypes eCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType);
 
 	if (iChange != 0)
 	{
 		UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eCombatType);
 
 		info->m_iSubCombatTypeCount += iChange;
-		FASSERT_NOT_NEGATIVE(info->m_iSubCombatTypeCount)
+		FASSERT_NOT_NEGATIVE(info->m_iSubCombatTypeCount);
 	}
 }
 
 int CvUnit::getRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eCombatType);
 
@@ -18856,20 +18713,20 @@ int CvUnit::getRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType) const
 
 bool CvUnit::hasRemovesUnitCombatType(UnitCombatTypes eCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType);
 	return (getRemovesUnitCombatTypeCount(eCombatType) > 0);
 }
 
 void CvUnit::changeRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eCombatType);
 
 	if (iChange != 0)
 	{
 		UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eCombatType);
 
 		info->m_iRemovesUnitCombatTypeCount += iChange;
-		FASSERT_NOT_NEGATIVE(info->m_iRemovesUnitCombatTypeCount)
+		FASSERT_NOT_NEGATIVE(info->m_iRemovesUnitCombatTypeCount);
 	}
 }
 //TB SubCombat Mod End
@@ -18877,7 +18734,7 @@ void CvUnit::changeRemovesUnitCombatTypeCount(UnitCombatTypes eCombatType, int i
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnit::getCureAfflictionCount(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -18886,13 +18743,13 @@ int CvUnit::getCureAfflictionCount(PromotionLineTypes ePromotionLineType) const
 
 bool CvUnit::hasExtraCureAffliction(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 	return (getCureAfflictionCount(ePromotionLineType) > 0);
 }
 
 void CvUnit::changeCureAfflictionCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -18919,7 +18776,7 @@ int CvUnit::getExtraFortitude(bool bIgnoreCommanders) const
 void CvUnit::changeExtraFortitude(int iChange)
 {
 	m_iExtraFortitude += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraFortitude())
+	FASSERT_NOT_NEGATIVE(getExtraFortitude());
 }
 
 int CvUnit::getExtraDodgeModifier (bool bIgnoreCommanders) const
@@ -18974,7 +18831,7 @@ int CvUnit::getExtraPowerShots(bool bIgnoreCommanders) const
 void CvUnit::changeExtraPowerShots(int iChange)
 {
 	m_iExtraPowerShots += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraPowerShots())
+	FASSERT_NOT_NEGATIVE(getExtraPowerShots());
 }
 
 int CvUnit::getExtraPowerShotCombatModifier(bool bIgnoreCommanders) const
@@ -18993,7 +18850,7 @@ int CvUnit::getExtraPowerShotCombatModifier(bool bIgnoreCommanders) const
 void CvUnit::changeExtraPowerShotCombatModifier(int iChange)
 {
 	m_iExtraPowerShotCombatModifier += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraPowerShotCombatModifier())
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotCombatModifier());
 }
 
 int CvUnit::getExtraPowerShotPunctureModifier(bool bIgnoreCommanders) const
@@ -19012,7 +18869,7 @@ int CvUnit::getExtraPowerShotPunctureModifier(bool bIgnoreCommanders) const
 void CvUnit::changeExtraPowerShotPunctureModifier(int iChange)
 {
 	m_iExtraPowerShotPunctureModifier += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraPowerShotPunctureModifier())
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotPunctureModifier());
 }
 
 int CvUnit::getExtraPowerShotPrecisionModifier(bool bIgnoreCommanders) const
@@ -19031,7 +18888,7 @@ int CvUnit::getExtraPowerShotPrecisionModifier(bool bIgnoreCommanders) const
 void CvUnit::changeExtraPowerShotPrecisionModifier(int iChange)
 {
 	m_iExtraPowerShotPrecisionModifier += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraPowerShotPrecisionModifier())
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotPrecisionModifier());
 }
 
 int CvUnit::getExtraPowerShotCriticalModifier(bool bIgnoreCommanders) const
@@ -19050,7 +18907,7 @@ int CvUnit::getExtraPowerShotCriticalModifier(bool bIgnoreCommanders) const
 void CvUnit::changeExtraPowerShotCriticalModifier(int iChange)
 {
 	m_iExtraPowerShotCriticalModifier += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraPowerShotCriticalModifier())
+	FASSERT_NOT_NEGATIVE(getExtraPowerShotCriticalModifier());
 }
 
 int CvUnit::getExtraCriticalModifier(bool bIgnoreCommanders) const
@@ -19069,7 +18926,7 @@ int CvUnit::getExtraCriticalModifier(bool bIgnoreCommanders) const
 void CvUnit::changeExtraCriticalModifier(int iChange)
 {
 	m_iExtraCriticalModifier += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraCriticalModifier())
+	FASSERT_NOT_NEGATIVE(getExtraCriticalModifier());
 }
 
 int CvUnit::getExtraEndurance(bool bIgnoreCommanders) const
@@ -19088,7 +18945,7 @@ int CvUnit::getExtraEndurance(bool bIgnoreCommanders) const
 void CvUnit::changeExtraEndurance(int iChange)
 {
 	m_iExtraEndurance += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraEndurance())
+	FASSERT_NOT_NEGATIVE(getExtraEndurance());
 }
 
 int CvUnit::getExtraPoisonProbabilityModifier(bool bIgnoreCommanders) const
@@ -19107,7 +18964,7 @@ int CvUnit::getExtraPoisonProbabilityModifier(bool bIgnoreCommanders) const
 void CvUnit::changeExtraPoisonProbabilityModifier(int iChange)
 {
 	m_iExtraPoisonProbabilityModifier += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraPoisonProbabilityModifier())
+	FASSERT_NOT_NEGATIVE(getExtraPoisonProbabilityModifier());
 }
 
 //TB Combat Mods End
@@ -19127,7 +18984,7 @@ int CvUnit::getExtraCollateralDamage() const
 void CvUnit::changeExtraCollateralDamage(int iChange)
 {
 	m_iExtraCollateralDamage += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraCollateralDamage())
+	FASSERT_NOT_NEGATIVE(getExtraCollateralDamage());
 }
 
 int CvUnit::getExtraEnemyHeal() const
@@ -19144,7 +19001,7 @@ int CvUnit::getExtraEnemyHeal() const
 void CvUnit::changeExtraEnemyHeal(int iChange)
 {
 	m_iExtraEnemyHeal += iChange;
-	//FASSERT_NOT_NEGATIVE(getExtraEnemyHeal())
+	//FASSERT_NOT_NEGATIVE(getExtraEnemyHeal());
 }
 
 int CvUnit::getExtraNeutralHeal() const
@@ -19161,7 +19018,7 @@ int CvUnit::getExtraNeutralHeal() const
 void CvUnit::changeExtraNeutralHeal(int iChange)
 {
 	m_iExtraNeutralHeal += iChange;
-	//FASSERT_NOT_NEGATIVE(getExtraNeutralHeal())
+	//FASSERT_NOT_NEGATIVE(getExtraNeutralHeal());
 }
 
 int CvUnit::getExtraFriendlyHeal() const
@@ -19190,7 +19047,7 @@ int CvUnit::getSameTileHeal() const
 void CvUnit::changeSameTileHeal(int iChange)
 {
 	m_iSameTileHeal += iChange;
-	FASSERT_NOT_NEGATIVE(getSameTileHeal())
+	FASSERT_NOT_NEGATIVE(getSameTileHeal());
 }
 
 int CvUnit::getAdjacentTileHeal() const
@@ -19201,7 +19058,7 @@ int CvUnit::getAdjacentTileHeal() const
 void CvUnit::changeAdjacentTileHeal(int iChange)
 {
 	m_iAdjacentTileHeal += iChange;
-	FASSERT_NOT_NEGATIVE(getAdjacentTileHeal())
+	FASSERT_NOT_NEGATIVE(getAdjacentTileHeal());
 }
 
 int CvUnit::getExtraCombatPercent() const
@@ -19439,27 +19296,7 @@ void CvUnit::setFacingDirection(DirectionTypes eFacingDirection)
 {
 	if (eFacingDirection != m_eFacingDirection)
 	{
-		if (m_pUnitInfo->isLineOfSight() && plot() != NULL)
-		{
-			//remove old fog
-			plot()->changeAdjacentSight(getTeam(), visibilityRange(plot()), false, this, true);
-			changeDebugCount(-1);
-
-			//change direction
-			m_eFacingDirection = eFacingDirection;
-
-			//clear new fog
-			plot()->changeAdjacentSight(getTeam(), visibilityRange(plot()), true, this, true);
-			changeDebugCount(1);
-
-			gDLL->getInterfaceIFace()->setDirty(ColoredPlots_DIRTY_BIT, true);
-		}
-		else
-		{
-			m_eFacingDirection = eFacingDirection;
-		}
-
-		//update formation
+		m_eFacingDirection = eFacingDirection;
 		NotifyEntity(NO_MISSION);
 	}
 }
@@ -20117,7 +19954,7 @@ void CvUnit::setTransportUnit(CvUnit* pTransportUnit)
 
 int CvUnit::getExtraDomainModifier(DomainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, NUM_DOMAIN_TYPES, eIndex)
+	FASSERT_BOUNDS(0, NUM_DOMAIN_TYPES, eIndex);
 
 	if (!isCommander())
 	{
@@ -20133,7 +19970,7 @@ int CvUnit::getExtraDomainModifier(DomainTypes eIndex) const
 
 void CvUnit::changeExtraDomainModifier(DomainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, NUM_DOMAIN_TYPES, eIndex)
+	FASSERT_BOUNDS(0, NUM_DOMAIN_TYPES, eIndex);
 	m_aiExtraDomainModifier[eIndex] += iChange;
 }
 
@@ -20216,7 +20053,7 @@ void CvUnit::setScriptData(std::string szNewValue)
 
 int CvUnit::getTerrainDoubleMoveCount(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
 
@@ -20226,28 +20063,28 @@ int CvUnit::getTerrainDoubleMoveCount(TerrainTypes eIndex) const
 
 bool CvUnit::isTerrainDoubleMove(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 	return getTerrainDoubleMoveCount(eIndex) > 0;
 }
 
 
 void CvUnit::changeTerrainDoubleMoveCount(TerrainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	if (iChange != 0)
 	{
 		TerrainKeyedInfo* info = findOrCreateTerrainKeyedInfo(eIndex);
 
 		info->m_iTerrainDoubleMoveCount += iChange;
-		FASSERT_NOT_NEGATIVE(info->m_iTerrainDoubleMoveCount)
+		FASSERT_NOT_NEGATIVE(info->m_iTerrainDoubleMoveCount);
 	}
 }
 
 
 int CvUnit::getFeatureDoubleMoveCount(FeatureTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	const FeatureKeyedInfo* info = findFeatureKeyedInfo(eIndex);
 
@@ -20257,49 +20094,36 @@ int CvUnit::getFeatureDoubleMoveCount(FeatureTypes eIndex) const
 
 bool CvUnit::isFeatureDoubleMove(FeatureTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 	return (getFeatureDoubleMoveCount(eIndex) > 0);
 }
 
 
 void CvUnit::changeFeatureDoubleMoveCount(FeatureTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	if (iChange != 0)
 	{
 		FeatureKeyedInfo* info = findOrCreateFeatureKeyedInfo(eIndex);
 
 		info->m_iFeatureDoubleMoveCount += iChange;
-		FASSERT_NOT_NEGATIVE(info->m_iFeatureDoubleMoveCount)
+		FASSERT_NOT_NEGATIVE(info->m_iFeatureDoubleMoveCount);
 	}
 }
 
-//Team Project (4)
-	//WorkRateMod
-//ls612: Terrain Work Modifiers
 int CvUnit::getExtraTerrainWorkPercent(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
 
-	return info == NULL ? 0 : info->m_iExtraTerrainWorkPercent + info->m_iTerrainWorkPercent;
-}
-
-//ls612: Terrain Work Modifiers
-int CvUnit::getTerrainWorkPercent(TerrainTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
-
-	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
-
-	return info == NULL ? 0 : info->m_iTerrainWorkPercent;
+	return info == NULL ? 0 : info->m_iExtraTerrainWorkPercent;
 }
 
 void CvUnit::changeExtraTerrainWorkPercent(TerrainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20314,25 +20138,16 @@ void CvUnit::changeExtraTerrainWorkPercent(TerrainTypes eIndex, int iChange)
 
 int CvUnit::getExtraFeatureWorkPercent(FeatureTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	const FeatureKeyedInfo* info = findFeatureKeyedInfo(eIndex);
 
-	return info == NULL ? 0 : info->m_iExtraFeatureWorkPercent + info->m_iFeatureWorkPercent;
-}
-
-int CvUnit::getFeatureWorkPercent(FeatureTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
-
-	const FeatureKeyedInfo* info = findFeatureKeyedInfo(eIndex);
-
-	return info == NULL ? 0 : info->m_iFeatureWorkPercent;
+	return info == NULL ? 0 : info->m_iExtraFeatureWorkPercent;
 }
 
 void CvUnit::changeExtraFeatureWorkPercent(FeatureTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20347,37 +20162,26 @@ void CvUnit::changeExtraFeatureWorkPercent(FeatureTypes eIndex, int iChange)
 //get totals
 int CvUnit::terrainWorkPercent(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
-	return
-	(
-		m_pUnitInfo->getTerrainWorkRateModifierType(eIndex)
-		+ getExtraTerrainWorkPercent(eIndex)
-		+ getTerrainWorkPercent(eIndex)
-	);
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
+	return m_pUnitInfo->getTerrainWorkRateModifierType(eIndex) + getExtraTerrainWorkPercent(eIndex);
 }
 
 int CvUnit::featureWorkPercent(FeatureTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
-	return
-	(
-		m_pUnitInfo->getFeatureWorkRateModifierType(eIndex)
-		+ getExtraFeatureWorkPercent(eIndex)
-		+ getFeatureWorkPercent(eIndex)
-	);
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
+	return m_pUnitInfo->getFeatureWorkRateModifierType(eIndex) + getExtraFeatureWorkPercent(eIndex);
 }
 
 int CvUnit::buildWorkPercent(BuildTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eIndex)
-
+	FASSERT_BOUNDS(0, GC.getNumBuildInfos(), eIndex);
 	return m_pUnitInfo->getBuildWorkRateModifierType(eIndex) + getExtraWorkModForBuild(eIndex);
 }
 
 
 int CvUnit::getExtraTerrainAttackPercent(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
 
@@ -20395,7 +20199,7 @@ int CvUnit::getExtraTerrainAttackPercent(TerrainTypes eIndex) const
 
 void CvUnit::changeExtraTerrainAttackPercent(TerrainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20413,7 +20217,7 @@ int CvUnit::getExtraTerrainDefensePercent(TerrainTypes eIndex) const
 	{
 		return 0;
 	}
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
 
@@ -20431,7 +20235,7 @@ int CvUnit::getExtraTerrainDefensePercent(TerrainTypes eIndex) const
 
 void CvUnit::changeExtraTerrainDefensePercent(TerrainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20445,7 +20249,7 @@ void CvUnit::changeExtraTerrainDefensePercent(TerrainTypes eIndex, int iChange)
 
 int CvUnit::getExtraFeatureAttackPercent(FeatureTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	const FeatureKeyedInfo* info = findFeatureKeyedInfo(eIndex);
 
@@ -20463,7 +20267,7 @@ int CvUnit::getExtraFeatureAttackPercent(FeatureTypes eIndex) const
 
 void CvUnit::changeExtraFeatureAttackPercent(FeatureTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20481,7 +20285,7 @@ int CvUnit::getExtraFeatureDefensePercent(FeatureTypes eIndex) const
 	{
 		return 0;
 	}
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	const FeatureKeyedInfo* info = findFeatureKeyedInfo(eIndex);
 
@@ -20499,7 +20303,7 @@ int CvUnit::getExtraFeatureDefensePercent(FeatureTypes eIndex) const
 
 void CvUnit::changeExtraFeatureDefensePercent(FeatureTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20513,7 +20317,7 @@ void CvUnit::changeExtraFeatureDefensePercent(FeatureTypes eIndex, int iChange)
 
 int CvUnit::getExtraUnitCombatModifier(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -20531,7 +20335,7 @@ int CvUnit::getExtraUnitCombatModifier(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraUnitCombatModifier(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -20560,59 +20364,56 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 {
 	PROFILE_FUNC();
 
-	FASSERT_BOUNDS(NO_PROMOTION, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(NO_PROMOTION, GC.getNumPromotionInfos(), ePromotion);
 
-	if (ePromotion == NO_PROMOTION)
+	if (ePromotion == NO_PROMOTION || !bIgnoreHas && isHasPromotion(ePromotion))
 	{
 		return false;
 	}
 
-	if (!bIgnoreHas && isHasPromotion(ePromotion))
+	const CvPromotionInfo& promo = GC.getPromotionInfo(ePromotion);
+
+	if (!bForStatus && promo.isStatus())
 	{
 		return false;
 	}
 
-	const CvPromotionInfo& kPromotion = GC.getPromotionInfo(ePromotion);
-
-	if (kPromotion.isStatus() && !bForStatus)
-	{
-		return false;
-	}
-	if (!bForFree && kPromotion.getStateReligionPrereq() != NO_RELIGION
-	&& GET_PLAYER(getOwner()).getStateReligion() != kPromotion.getStateReligionPrereq())
+	if (promo.getStateReligionPrereq() != NO_RELIGION && GET_PLAYER(getOwner()).getStateReligion() != promo.getStateReligionPrereq())
 	{
 		return false;
 	}
 
-	if (!isPromotionValid(ePromotion))
+	if (!isPromotionValid(ePromotion, bForFree))
 	{
 		return false;
 	}
+
 	//TB Combat Mod begin
-	if (kPromotion.isEquipment() && !bEquip)
+	if (!bEquip && promo.isEquipment())
 	{
 		return false;
 	}
 
 #ifdef OUTBREAKS_AND_AFFLICTIONS
-	if (kPromotion.isAffliction() && !bAfflict)
+	if (!bAfflict && promo.isAffliction())
 	{
 		return false;
 	}
-#endif
+#endif // OUTBREAKS_AND_AFFLICTIONS
+
 	//TB Debug Note: If the promotion being evaluated for is the sort you get from a leader as it attaches to the unit that then qualifies you for other
 	//promotions, and the check being called here is not for that specific purpose, then return false for that promotion.
-	if (!bForLeader && kPromotion.isLeader())
+	if (!bForLeader && promo.isLeader())
 	{
 		return false;
 	}
 
-	if (!bForOffset && kPromotion.isForOffset())
+	if (!bForOffset && promo.isForOffset())
 	{
 		return false;
 	}
 
-	if (kPromotion.getObsoleteTech() != NO_TECH && GET_TEAM(getTeam()).isHasTech(kPromotion.getObsoleteTech()))
+	if (promo.getObsoleteTech() != NO_TECH && GET_TEAM(getTeam()).isHasTech(promo.getObsoleteTech()))
 	{
 		return false;
 	}
@@ -20623,141 +20424,65 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 		return false;
 	}
 
-	if (kPromotion.getReplacesUnitCombat() != NO_UNITCOMBAT && !isHasUnitCombat(kPromotion.getReplacesUnitCombat()))
+	if (promo.getReplacesUnitCombat() != NO_UNITCOMBAT && !isHasUnitCombat(promo.getReplacesUnitCombat()))
 	{
 		return false;
 	}
 
-	if (getLevel() < kPromotion.getLevelPrereq() && !bForOffset)
+	if (getLevel() < promo.getLevelPrereq() && !bForOffset)
 	{
 		return false;
 	}
-	if (kPromotion.isRBombardPrereq() && !canRBombard(true))
+	if (promo.isRBombardPrereq() && !canRBombard(true))
 	{
 		return false;
 	}
-
-	CvPlot* pPlot = plot();
+	const CvPlot* pPlot = plot();
+	if (!isMapCategory(*pPlot, promo) || !isMapCategory(*m_pUnitInfo, promo))
 	{
-		const int iCount = kPromotion.getNumMapTypes();
-		bool bFound = (iCount < 1);
-		if (pPlot != NULL)
-		{
-			for (int iI = 0; iI < iCount; iI++)
-			{
-				if (pPlot->isMapType((MapTypes)kPromotion.getMapType(iI)))
-				{
-					bFound = true;
-					break;
-				}
-			}
-			if (!bFound)
-			{
-				return false;
-			}
-		}
-
-		bFound = (iCount < 1);
-		for (int iI = 0; iI < iCount; iI++)
-		{
-			if (m_pUnitInfo->isMapType((MapTypes)kPromotion.getMapType(iI)))
-			{
-				bFound = true;
-				break;
-			}
-		}
-		if (!bFound)
-		{
-			return false;
-		}
+		return false;
 	}
-
-	const PromotionLineTypes ePromotionLine = kPromotion.getPromotionLine();
 	//TB Combat Mods Begin
 	if (!bForFree || bForBuildUp)
 	{
-		const PromotionTypes ePromotionPrerequisite = (PromotionTypes)kPromotion.getPrereqPromotion();
+		const PromotionTypes ePromotionPrerequisite = (PromotionTypes)promo.getPrereqPromotion();
 
 		if (ePromotionPrerequisite != NO_PROMOTION && !isHasPromotion(ePromotionPrerequisite))
 		{
 			return false;
 		}
-		const PromotionTypes ePromotionPrerequisite1 = (PromotionTypes)kPromotion.getPrereqOrPromotion1();
-		const PromotionTypes ePromotionPrerequisite2 = (PromotionTypes)kPromotion.getPrereqOrPromotion2();
+		const PromotionTypes ePromotionPrerequisite1 = (PromotionTypes)promo.getPrereqOrPromotion1();
+		const PromotionTypes ePromotionPrerequisite2 = (PromotionTypes)promo.getPrereqOrPromotion2();
 
-		if (ePromotionPrerequisite1 != NO_PROMOTION && !isHasPromotion(ePromotionPrerequisite1)
-		&& (ePromotionPrerequisite2 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite2)))
+		if ((ePromotionPrerequisite1 != NO_PROMOTION || ePromotionPrerequisite2 != NO_PROMOTION)
+		&&  (ePromotionPrerequisite1 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite1))
+		&&  (ePromotionPrerequisite2 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite2)))
 		{
 			return false;
 		}
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-		if (!kPromotion.isAffliction())
-#endif
-		{
-			if (kPromotion.getTechPrereq() != NO_TECH && !GET_TEAM(getTeam()).isHasTech((TechTypes)kPromotion.getTechPrereq()))
-			{
-				return false;
-			}
-			if (ePromotionLine != NO_PROMOTIONLINE && GC.getPromotionLineInfo(ePromotionLine).getPrereqTech() != NO_TECH
-			&& !GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getPromotionLineInfo(ePromotionLine).getPrereqTech()))
-			{
-				return false;
-			}
-		}
 	}
 
-	if (kPromotion.isEquipment())
+	if (promo.isEquipment())
 	{
-		if (pPlot->isCity(false, getTeam()))
-		{
-			const CvCity* pCity = pPlot->getPlotCity();
-
-			for (int iI = 0; iI < kPromotion.getNumPrereqBonusTypes(); iI++)
-			{
-				const BonusTypes ePrereqBonus = ((BonusTypes)kPromotion.getPrereqBonusType(iI));
-				if (ePrereqBonus != NO_BONUS && !pCity->hasBonus(ePrereqBonus))
-				{
-					return false;
-				}
-			}
-		}
-		else
+		if (!pPlot->isCity(false, getTeam()))
 		{
 			//TB will be replacing this when units can carry and transport equipments without owning them as promos
 			return false;
 		}
-	}
+		const CvCity* pCity = pPlot->getPlotCity();
 
-	// TB SubCombat Mod Begin
-	// The two solid ways to identify a Size Matters promotion that would not normally have a CC prereq.
-	// Note: Apparently having no CC prereq is a clear way to isolate promotions to only being assigned directly by event or other special injection.
-	// Thus it was necessary to pass the Size Matters promos despite having no particular CC prereq.
-	if (!kPromotion.isForOffset() && !kPromotion.isZeroesXP())
-	{
-		bool bHasPrereq = false;
-		for (std::map<UnitCombatTypes, UnitCombatKeyedInfo>::const_iterator it = m_unitCombatKeyedInfo.begin(), end = m_unitCombatKeyedInfo.end(); it != end; ++it)
+		foreach_(const BonusTypes ePrereqBonus, promo.getPrereqBonuses())
 		{
-			if (it->second.m_bHasUnitCombat)
+			if (ePrereqBonus != NO_BONUS && !pCity->hasBonus(ePrereqBonus))
 			{
-				if (kPromotion.getUnitCombat((int)it->first)
-				||
-					ePromotionLine != NO_PROMOTIONLINE
-				&&	GC.getPromotionLineInfo(ePromotionLine).isUnitCombatPrereqType((int)it->first))
-				{
-					bHasPrereq = true;
-					break;
-				}
+				return false;
 			}
 		}
-		if (!bHasPrereq)
-		{
-			return false;
-		}
 	}
 
 	{
-		const int iMinEraInt = kPromotion.getMinEraType();
-		const int iMaxEraInt = kPromotion.getMaxEraType();
+		const int iMinEraInt = promo.getMinEraType();
+		const int iMaxEraInt = promo.getMaxEraType();
 		if (iMinEraInt > NO_ERA || iMaxEraInt > NO_ERA)
 		{
 			for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
@@ -20776,43 +20501,24 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 		}
 	}
 
-	if (ePromotionLine != NO_PROMOTIONLINE && GC.getPromotionLineInfo(ePromotionLine).getNumNotOnUnitCombatTypes() > 0)
+	for (int iI = 0; iI < promo.getNumSubCombatChangeTypes(); iI++)
 	{
-		const CvPromotionLineInfo& kPromotionLine = GC.getPromotionLineInfo(ePromotionLine);
-		for (int iI = 0; iI < kPromotionLine.getNumNotOnUnitCombatTypes(); iI++)
+		//If we have the unitcombat the promotion will give us already
+		if (isHasUnitCombat((UnitCombatTypes)promo.getSubCombatChangeType(iI)))
 		{
-			if (isHasUnitCombat((UnitCombatTypes)kPromotionLine.getNotOnUnitCombatType(iI)))
-			{
-				return false;
-			}
+			return false;
 		}
 	}
+	const PromotionLineTypes ePromotionLine = promo.getPromotionLine();
 
-	if (kPromotion.getNumNotOnUnitCombatTypes() > 0)
+	if (bForBuildUp && (ePromotionLine == NO_PROMOTIONLINE || !GC.getPromotionLineInfo(ePromotionLine).isBuildUp())
+	|| !bForBuildUp && ePromotionLine != NO_PROMOTIONLINE && GC.getPromotionLineInfo(ePromotionLine).isBuildUp())
 	{
-		for (int iI = 0; iI < kPromotion.getNumNotOnUnitCombatTypes(); iI++)
-		{
-			if (isHasUnitCombat((UnitCombatTypes)kPromotion.getNotOnUnitCombatType(iI)))
-			{
-				return false;
-			}
-		}
-	}
-
-	if (kPromotion.getNumSubCombatChangeTypes() > 0)
-	{
-		for (int iI = 0; iI < kPromotion.getNumSubCombatChangeTypes(); iI++)
-		{
-			//If we have the unitcombat the promotion will give us already
-			if (isHasUnitCombat((UnitCombatTypes)kPromotion.getSubCombatChangeType(iI)))
-			{
-				return false;
-			}
-		}
+		return false;
 	}
 
 	if (
-		kPromotion.isNotOnDomainType((int)getDomainType())
+		promo.isNotOnDomainType((int)getDomainType())
 	||
 		ePromotionLine != NO_PROMOTIONLINE
 	&&	GC.getPromotionLineInfo(ePromotionLine).isNotOnDomainType((int)getDomainType())
@@ -20824,14 +20530,14 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 	if (ePromotionLine != NO_PROMOTIONLINE
 		&& (
 #ifdef OUTBREAKS_AND_AFFLICTIONS
-			kPromotion.isAffliction() ||
-#endif
-			kPromotion.isEquipment()))
+			promo.isAffliction() ||
+#endif // OUTBREAKS_AND_AFFLICTIONS
+			promo.isEquipment()))
 	{
 		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 		{
 			if (GC.getPromotionInfo((PromotionTypes)iI).getPromotionLine() == ePromotionLine && isHasPromotion((PromotionTypes)iI)
-			&& GC.getPromotionInfo((PromotionTypes)iI).getLinePriority() > kPromotion.getLinePriority())
+			&& GC.getPromotionInfo((PromotionTypes)iI).getLinePriority() > promo.getLinePriority())
 			{
 				return false;
 			}
@@ -20840,14 +20546,14 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 	//TB SubCombat Mod End
 
 	// Must have the next less promotionline priority unless this is an affliction, equipment, or BuildUp or Status.
-	if (ePromotionLine != NO_PROMOTIONLINE && !bAfflict && !bEquip && !kPromotion.isCritical() && !bForBuildUp && !bForStatus && kPromotion.getLinePriority() > 1)
+	if (ePromotionLine != NO_PROMOTIONLINE && !bAfflict && !bEquip && !promo.isCritical() && !bForBuildUp && !bForStatus && promo.getLinePriority() > 1)
 	{
-		const CvPromotionLineInfo& kPromotionLine = GC.getPromotionLineInfo(ePromotionLine);
-		const int numPromotions = kPromotionLine.getNumPromotions();
+		const CvPromotionLineInfo& promoLine = GC.getPromotionLineInfo(ePromotionLine);
+		const int numPromotions = promoLine.getNumPromotions();
 		for (int iJ = 0; iJ < numPromotions; iJ++)
 		{
-			const PromotionTypes ePrereq = (PromotionTypes)kPromotionLine.getPromotion(iJ);
-			if (GC.getPromotionInfo(ePrereq).getLinePriority() == kPromotion.getLinePriority() - 1 && !isHasPromotion(ePrereq))
+			const PromotionTypes ePrereq = (PromotionTypes)promoLine.getPromotion(iJ);
+			if (GC.getPromotionInfo(ePrereq).getLinePriority() == promo.getLinePriority() - 1 && !isHasPromotion(ePrereq))
 			{
 				return false;
 			}
@@ -20857,24 +20563,24 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 	//	However, you can set multiple promos with the same iLinePriority that cannot be swapped out for each other.
 	if (bForStatus)
 	{
-		bool bPrereqFound = ePromotionLine == NO_PROMOTIONLINE || kPromotion.getLinePriority() != 1;
+		bool bPrereqFound = ePromotionLine == NO_PROMOTIONLINE || promo.getLinePriority() != 1;
 
 		if (!bPrereqFound)
 		{
 			const int numPromotionInfos = GC.getNumPromotionInfos();
 			for (int iI = 0; iI < numPromotionInfos; iI++)
 			{
-				PromotionTypes ePrereq = (PromotionTypes)iI;
+				const PromotionTypes ePrereq = (PromotionTypes)iI;
 				if (isHasPromotion(ePrereq))
 				{
 					const CvPromotionInfo& kPrereqPromotion = GC.getPromotionInfo(ePrereq);
 					if (kPrereqPromotion.getPromotionLine() == ePromotionLine)
 					{
-						if (kPrereqPromotion.getLinePriority() == kPromotion.getLinePriority())
+						if (kPrereqPromotion.getLinePriority() == promo.getLinePriority())
 						{
 							return false;
 						}
-						if (kPromotion.getLinePriority() == 1)
+						if (promo.getLinePriority() == 1)
 						{
 							// This establishes all Status Promos with an iLinePriority of 1 as being the status that erases any of the statuses.
 							bPrereqFound = true;
@@ -20895,185 +20601,166 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 	if (isHuman() && GC.getGame().isOption(GAMEOPTION_SIZE_MATTERS))
 	{
 		if (
-			kPromotion.getSMSpecialCargoPrereq() != NO_SPECIALUNIT
-		&&	kPromotion.getSMSpecialCargoPrereq() != getSMSpecialCargo()
+			promo.getSMSpecialCargoPrereq() != NO_SPECIALUNIT
+		&&	promo.getSMSpecialCargoPrereq() != getSMSpecialCargo()
 		||
-			kPromotion.getSMNotSpecialCargoPrereq() != NO_SPECIALUNIT
-		&&	kPromotion.getSMNotSpecialCargoPrereq() != SMnotSpecialCargo()
+			promo.getSMNotSpecialCargoPrereq() != NO_SPECIALUNIT
+		&&	promo.getSMNotSpecialCargoPrereq() != SMnotSpecialCargo()
 		||
-			kPromotion.isCargoPrereq() && SMcargoSpace() < 1
+			promo.isCargoPrereq() && SMcargoSpace() < 1
 		) return false;
 	}
 	else if (
-		kPromotion.getSpecialCargoPrereq() != NO_SPECIALUNIT
-	&&	kPromotion.getSpecialCargoPrereq() != getSpecialCargo()
-	||	kPromotion.isCargoPrereq() && cargoSpace() < 1
+		promo.getSpecialCargoPrereq() != NO_SPECIALUNIT
+	&&	promo.getSpecialCargoPrereq() != getSpecialCargo()
+	||	promo.isCargoPrereq() && cargoSpace() < 1
 	) return false;
 
-
-	if (bForBuildUp)
+	if (!bForFree)
 	{
-		if (ePromotionLine == NO_PROMOTIONLINE || !GC.getPromotionLineInfo(ePromotionLine).isBuildUp())
+		if (promo.getTechPrereq() != NO_TECH && !GET_TEAM(getTeam()).isHasTech(promo.getTechPrereq()))
 		{
 			return false;
 		}
-
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-		if (!kPromotion.isAffliction())
-#endif
+		if (ePromotionLine != NO_PROMOTIONLINE
+		&&
+			GC.getPromotionLineInfo(ePromotionLine).getPrereqTech() != NO_TECH
+		&&
+			!GET_TEAM(getTeam()).isHasTech(GC.getPromotionLineInfo(ePromotionLine).getPrereqTech()))
 		{
-			if (kPromotion.getTechPrereq() != NO_TECH
-			&& !GET_TEAM(getTeam()).isHasTech((TechTypes)kPromotion.getTechPrereq()))
+			return false;
+		}
+	}
+
+	bool bValid = true;
+
+	for (int iI = 0; iI < promo.getNumPrereqTerrainTypes(); iI++)
+	{
+		const TerrainTypes ePrereqTerrain = (TerrainTypes)promo.getPrereqTerrainType(iI);
+
+		if (ePrereqTerrain != NO_TERRAIN)
+		{
+			bValid = false;
+
+			if (ePrereqTerrain == GC.getTERRAIN_PEAK())
 			{
-				return false;
+				if (plot()->isAsPeak())
+				{
+					bValid = true;
+					break;
+				}
 			}
-			if (ePromotionLine != NO_PROMOTIONLINE
-			&&
-				GC.getPromotionLineInfo((PromotionLineTypes)ePromotionLine).getPrereqTech() != NO_TECH
-			&&
-				!GET_TEAM(getTeam()).isHasTech((TechTypes)GC.getPromotionLineInfo((PromotionLineTypes)ePromotionLine).getPrereqTech()))
+			else if (ePrereqTerrain == GC.getTERRAIN_HILL())
 			{
-				return false;
+				if (plot()->isHills())
+				{
+					bValid = true;
+					break;
+				}
+			}
+			else if (ePrereqTerrain == plot()->getTerrainType())
+			{
+				bValid = true;
+				break;
 			}
 		}
 	}
-	else if (ePromotionLine != NO_PROMOTIONLINE && GC.getPromotionLineInfo(ePromotionLine).isBuildUp())
+	if (!bValid)
 	{
 		return false;
 	}
 
-	if (plot() != NULL)
+	for (int iI = 0; iI < promo.getNumPrereqFeatureTypes(); iI++)
 	{
-		bool bValid = true;
+		const FeatureTypes ePrereqFeature = (FeatureTypes)promo.getPrereqFeatureType(iI);
 
-		for (int iI = 0; iI < kPromotion.getNumPrereqTerrainTypes(); iI++)
+		if (ePrereqFeature != NO_FEATURE)
 		{
-			const TerrainTypes ePrereqTerrain = (TerrainTypes)kPromotion.getPrereqTerrainType(iI);
-
-			if (ePrereqTerrain != NO_TERRAIN)
+			bValid = false;
+			if (plot()->getFeatureType() == ePrereqFeature)
 			{
-				bValid = false;
-
-				if (ePrereqTerrain == GC.getTERRAIN_PEAK())
-				{
-					if (plot()->isAsPeak())
-					{
-						bValid = true;
-						break;
-					}
-				}
-				else if (ePrereqTerrain == GC.getTERRAIN_HILL())
-				{
-					if (plot()->isHills())
-					{
-						bValid = true;
-						break;
-					}
-				}
-				else if (ePrereqTerrain == plot()->getTerrainType())
-				{
-					bValid = true;
-					break;
-				}
+				bValid = true;
+				break;
 			}
-		}
-		if (!bValid)
-		{
-			return false;
-		}
-
-		for (int iI = 0; iI < kPromotion.getNumPrereqFeatureTypes(); iI++)
-		{
-			const FeatureTypes ePrereqFeature = (FeatureTypes)kPromotion.getPrereqFeatureType(iI);
-
-			if (ePrereqFeature != NO_FEATURE)
-			{
-				bValid = false;
-				if (plot()->getFeatureType() == ePrereqFeature)
-				{
-					bValid = true;
-					break;
-				}
-			}
-		}
-		if (!bValid)
-		{
-			return false;
-		}
-
-		// Improvements and buildings is an OR statement between all of them.
-		{
-			bool bFirst = true;
-
-			for (int iI = 0; iI < kPromotion.getNumPrereqImprovementTypes(); iI++)
-			{
-				ImprovementTypes ePrereqImprovement = (ImprovementTypes)kPromotion.getPrereqImprovementType(iI);
-				if (ePrereqImprovement != NO_IMPROVEMENT)
-				{
-					bFirst = false;
-					bValid = false;
-					if (plot()->isCity(true) && ePrereqImprovement == GC.getIMPROVEMENT_CITY())
-					{
-						bValid = true;
-						break;
-					}
-					if (plot()->getImprovementType() == ePrereqImprovement)
-					{
-						bValid = true;
-						break;
-					}
-				}
-			}
-			if (bFirst || !bValid)
-			{
-				const int iNumPrereqLocalBuilding = kPromotion.getNumPrereqLocalBuildingTypes();
-				if (iNumPrereqLocalBuilding > 0)
-				{
-					bValid = false;
-					for (int iI = 0; iI < iNumPrereqLocalBuilding; iI++)
-					{
-						if (plot()->isCity(false)
-
-						&& pPlot->getPlotCity()->getNumActiveBuilding((BuildingTypes)kPromotion.getPrereqLocalBuildingType(iI)) > 0)
-						{
-							bValid = true;
-							break;
-						}
-					}
-				}
-			}
-		}
-		if (!bValid)
-		{
-			return false;
-		}
-
-		for (int iI = 0; iI < kPromotion.getNumPrereqPlotBonusTypes(); iI++)
-		{
-			const BonusTypes ePrereqBonus = (BonusTypes)kPromotion.getPrereqPlotBonusType(iI);
-
-			if (ePrereqBonus != NO_BONUS)
-			{
-				bValid = false;
-				if (plot()->getBonusType(getTeam()) == ePrereqBonus)
-				{
-					bValid = true;
-					break;
-				}
-			}
-		}
-		if (!bValid)
-		{
-			return false;
 		}
 	}
-
-	if (kPromotion.isPrereqNormInvisible() && !hasInvisibleAbility())
+	if (!bValid)
 	{
 		return false;
 	}
 
-	if (!bForOffset && kPromotion.getQualityChange() > 0 && getRetrainsAvailable() > 0)
+	// Improvements and buildings is an OR statement between all of them.
+	{
+		bool bFirst = true;
+
+		for (int iI = 0; iI < promo.getNumPrereqImprovementTypes(); iI++)
+		{
+			ImprovementTypes ePrereqImprovement = (ImprovementTypes)promo.getPrereqImprovementType(iI);
+			if (ePrereqImprovement != NO_IMPROVEMENT)
+			{
+				bFirst = false;
+				bValid = false;
+				if (plot()->isCity(true) && ePrereqImprovement == GC.getIMPROVEMENT_CITY())
+				{
+					bValid = true;
+					break;
+				}
+				if (plot()->getImprovementType() == ePrereqImprovement)
+				{
+					bValid = true;
+					break;
+				}
+			}
+		}
+		if (bFirst || !bValid)
+		{
+			const int iNumPrereqLocalBuilding = promo.getNumPrereqLocalBuildingTypes();
+			if (iNumPrereqLocalBuilding > 0)
+			{
+				bValid = false;
+				for (int iI = 0; iI < iNumPrereqLocalBuilding; iI++)
+				{
+					if (plot()->isCity(false)
+
+					&& pPlot->getPlotCity()->getNumActiveBuilding((BuildingTypes)promo.getPrereqLocalBuildingType(iI)) > 0)
+					{
+						bValid = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+	if (!bValid)
+	{
+		return false;
+	}
+
+	for (int iI = 0; iI < promo.getNumPrereqPlotBonusTypes(); iI++)
+	{
+		const BonusTypes ePrereqBonus = (BonusTypes)promo.getPrereqPlotBonusType(iI);
+
+		if (ePrereqBonus != NO_BONUS)
+		{
+			bValid = false;
+			if (plot()->getBonusType(getTeam()) == ePrereqBonus)
+			{
+				bValid = true;
+				break;
+			}
+		}
+	}
+	if (!bValid)
+	{
+		return false;
+	}
+
+	if (promo.isPrereqNormInvisible() && !hasInvisibleAbility())
+	{
+		return false;
+	}
+
+	if (!bForOffset && promo.getQualityChange() > 0 && getRetrainsAvailable() > 0)
 	{
 		return false;
 	}
@@ -21081,323 +20768,140 @@ bool CvUnit::canAcquirePromotion(PromotionTypes ePromotion, bool bIgnoreHas, boo
 	return true;
 }
 
-bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bKeepCheck) const
+bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bFree, bool bKeepCheck) const
 {
-	if (!bKeepCheck && !::isPromotionValid(ePromotion, getUnitType(), true))
+	const CvPromotionInfo& promo = GC.getPromotionInfo(ePromotion);
+
+	if (!bKeepCheck) // If the unit got the promo then these checks have already passed.
 	{
-		return false;
-	}
-
-	const CvPromotionInfo& promotionInfo = GC.getPromotionInfo(ePromotion);
-
-	// Disable S&D modifying promos if option is not on:
-	if	( !GC.getGame().isOption(GAMEOPTION_SAD)
-		&& (
-				promotionInfo.getUnnerveChange() != 0
-			||	promotionInfo.getEncloseChange() != 0
-			||	promotionInfo.getLungeChange() != 0
-			||	promotionInfo.getDynamicDefenseChange() != 0
-			)
-		)
-		return false;
-
-	if (!GC.getGame().isValidByGameOption(promotionInfo))
-	{
-		return false;
-	}
-
-	if (promotionInfo.getPromotionLine() != NO_PROMOTIONLINE
-	&& !GC.getGame().isValidByGameOption(GC.getPromotionLineInfo(promotionInfo.getPromotionLine())))
-	{
-		return false;
-	}
-
-	// SUPER_SPIES
-	if (isSpy())
-	{
-		if (promotionInfo.getAttackCombatModifierChange() != false ||
-			promotionInfo.getDefenseCombatModifierChange() != false ||
-			promotionInfo.getPursuitChange() != 0 ||
-			promotionInfo.getEarlyWithdrawChange() != 0 ||
-			promotionInfo.getVSBarbsChange() != 0 ||
-			promotionInfo.getReligiousCombatModifierChange() != 0 ||
-			promotionInfo.getArmorChange() != 0 ||
-			promotionInfo.getPunctureChange() != 0 ||
-			promotionInfo.getDamageModifierChange() != 0 ||
-			promotionInfo.getOverrunChange() != 0 ||
-			promotionInfo.getRepelChange() != 0 ||
-			promotionInfo.getFortRepelChange() != 0 ||
-			promotionInfo.getRepelRetriesChange() != 0 ||
-			promotionInfo.getUnyieldingChange() != 0 ||
-			promotionInfo.getKnockbackChange() != 0 ||
-			promotionInfo.getKnockbackRetriesChange() != 0 ||
-#ifdef BATTLEWORN
-			promotionInfo.getStrAdjperRndChange() != 0 ||
-			promotionInfo.getStrAdjperAttChange() != 0 ||
-			promotionInfo.getStrAdjperDefChange() != 0 ||
-			promotionInfo.getWithdrawAdjperAttChange() != 0 ||
-#endif // BATTLEWORN
-			promotionInfo.getUnnerveChange() != 0 ||
-			promotionInfo.getEncloseChange() != 0 ||
-			promotionInfo.getLungeChange() != 0 ||
-			promotionInfo.getDynamicDefenseChange() != 0 ||
-#ifdef STRENGTH_IN_NUMBERS
-			promotionInfo.getFrontSupportPercentChange() != 0 ||
-			promotionInfo.getShortRangeSupportPercentChange() != 0 ||
-			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
-			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
-			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif // STRENGTH_IN_NUMBERS
-			promotionInfo.getDodgeModifierChange() != 0 ||
-			promotionInfo.getPrecisionModifierChange() != 0 ||
-			promotionInfo.getPowerShotsChange() != 0 ||
-			promotionInfo.getPowerShotCombatModifierChange() != 0 ||
-			promotionInfo.getPowerShotPunctureModifierChange() != 0 ||
-			promotionInfo.getPowerShotPrecisionModifierChange() != 0 ||
-			promotionInfo.getPowerShotCriticalModifierChange() != 0 ||
-			promotionInfo.getCriticalModifierChange() != 0 ||
-			promotionInfo.getRoundStunProbChange() != 0 ||
-			promotionInfo.getPoisonProbabilityModifierChange() != 0 ||
-			promotionInfo.getCaptureProbabilityModifierChange() != 0 ||
-			promotionInfo.getQualityChange() != 0 ||
-			promotionInfo.isStampedeChange() != false ||
-			promotionInfo.isRemoveStampede() != false ||
-			promotionInfo.isOnslaughtChange() != false ||
-			promotionInfo.isMakesDamageCold() != false ||
-			promotionInfo.isMakesDamageNotCold() != false ||
-			promotionInfo.getNumFlankingStrikesbyUnitCombatTypesChange() != 0 ||
-			promotionInfo.getNumWithdrawVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumPursuitVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumRepelVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumKnockbackVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumPunctureVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumArmorVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumDodgeVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumPrecisionVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumCriticalVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif // OUTBREAKS_AND_AFFLICTIONS
-			promotionInfo.getNumHealUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
-			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
-			promotionInfo.getCombatModifierPerVolumeMoreChange() != 0 ||
-			promotionInfo.getCombatModifierPerVolumeLessChange() != 0)
+		if (m_pUnitInfo->isSpy() && !GC.isSS_ENABLED())
 		{
 			return false;
 		}
-#ifdef STRENGTH_IN_NUMBERS
-		if (
-			!GC.getGame().isOption(GAMEOPTION_STRENGTH_IN_NUMBERS)
-		&& (
-				promotionInfo.getFrontSupportPercentChange() != 0
-			||	promotionInfo.getShortRangeSupportPercentChange() != 0
-			||	promotionInfo.getMediumRangeSupportPercentChange() != 0
-			||	promotionInfo.getLongRangeSupportPercentChange() != 0
-			||	promotionInfo.getFlankSupportPercentChange() != 0
-			)
-		) return false;
-#endif // STRENGTH_IN_NUMBERS
+
+		//Disable via NotOnGameOption tag:
+		for (int iI = 0; iI < promo.getNumNotOnGameOptions(); iI++)
+		{
+			if (GC.getGame().isOption((GameOptionTypes)promo.getNotOnGameOption(iI)))
+			{
+				return false;
+			}
+		}
+		for (int iI = 0; iI < promo.getNumOnGameOptions(); iI++)
+		{
+			if (!GC.getGame().isOption((GameOptionTypes)promo.getOnGameOption(iI)))
+			{
+				return false;
+			}
+		}
+		if (promo.getPromotionLine() != NO_PROMOTIONLINE)
+		{
+			for (int iI = 0; iI < GC.getPromotionLineInfo(promo.getPromotionLine()).getNumNotOnGameOptions(); iI++)
+			{
+				if (GC.getGame().isOption((GameOptionTypes)GC.getPromotionLineInfo(promo.getPromotionLine()).getNotOnGameOption(iI)))
+				{
+					return false;
+				}
+			}
+			for (int iI = 0; iI < GC.getPromotionLineInfo(promo.getPromotionLine()).getNumNotOnGameOptions(); iI++)
+			{
+				if (!GC.getGame().isOption((GameOptionTypes)GC.getPromotionLineInfo(promo.getPromotionLine()).getNotOnGameOption(iI)))
+				{
+					return false;
+				}
+			}
+		}
+	}
+	// Very few reasons to deny a unit promotions that are specifically set to be a free for it.
+	if (m_pUnitInfo->getFreePromotions(ePromotion) || GET_PLAYER(getOwner()).isFreePromotion(getUnitType(), ePromotion))
+	{
 		return true;
 	}
-	// ! SUPER_SPIES
 
-	//TB Note: changing the rule that completely bans such promotions but adding to these situations an automatic msg
-//	if (noDefensiveBonus() &&
-		//(
-		//		promotionInfo.getDefenseCombatModifierChange() != 0
-		//	||	promotionInfo.getFortRepelChange() != 0
-		//	||	promotionInfo.getRepelChange() != 0
-		//	||	promotionInfo.getRepelRetriesChange() != 0
-#ifdef BATTLEWORN
-		//	||	promotionInfo.getStrAdjperDefChange() != 0
-#endif // BATTLEWORN
-		//	||	promotionInfo.getHillsDefensePercent() != 0
-		//	||	promotionInfo.isAnyTerrainDefensePercent()
-		//	||	promotionInfo.isAnyFeatureDefensePercent()
-		//	||	promotionInfo.getCityDefensePercent() != 0
-		//	)
-		//)
-		//return false;
-
-// TB Combat Mods
-	// Conditionally disabled the maximum withdrawal cap, only if pursuit is NOT in play
-	if (!bKeepCheck && !GC.getGame().isOption(GAMEOPTION_FIGHT_OR_FLIGHT)
-
-	&& promotionInfo.getWithdrawalChange() > 0
-	&& promotionInfo.getWithdrawalChange() + m_pUnitInfo->getWithdrawalProbability() + getExtraWithdrawal(true) > GC.getDefineINT("MAX_WITHDRAWAL_PROBABILITY"))
+	if (m_pUnitInfo->getUnitCombatType() == NO_UNITCOMBAT)
 	{
 		return false;
 	}
-	//Disable Looter Promos for units that cannot pillage
-	if (promotionInfo.getPillageChange() > 0 && !m_pUnitInfo->isPillage())
+	if (promo.getObsoleteTech() != NO_TECH && GET_TEAM(getTeam()).isHasTech(promo.getObsoleteTech()))
 	{
 		return false;
 	}
-
-	// Disable AnimalIgnoresBorders for non-animals
-/* Actually changed my mind on this due to wanting to allow promos that may have this ability as well.
-	if (promotionInfo.isAnimalIgnoresBordersChange() && !isAnimal())
+	if (!bFree)
 	{
-		return false;
-	}
-*/
+		if (promo.getTechPrereq() != NO_TECH && !GET_TEAM(getTeam()).isHasTech(promo.getTechPrereq()))
+		{
+			return false;
+		}
+		const PromotionLineTypes ePromotionLine = promo.getPromotionLine();
 
-#ifdef STRENGTH_IN_NUMBERS
-	// Disable Strength In Numbers modifying promos if option is not on
-	if (
-		!GC.getGame().isOption(GAMEOPTION_STRENGTH_IN_NUMBERS)
-	&& (
-			promotionInfo.getFrontSupportPercentChange() != 0
-		||	promotionInfo.getShortRangeSupportPercentChange() != 0
-		||	promotionInfo.getMediumRangeSupportPercentChange() != 0
-		||	promotionInfo.getLongRangeSupportPercentChange() != 0
-		||	promotionInfo.getFlankSupportPercentChange() != 0
-		)
-	) return false;
-#endif // STRENGTH_IN_NUMBERS
-	// Taken out of CvGameCoreUtils so that it could be looking at the final compiled max movement rather than just the unit base movement.
-/*
-	if (maxMoves() < 2 && promotionInfo.isBlitz())
-	{
-		return false;
-	}
-*/
-// ! TB Combat Mods
-
-	//Check for combat values on no strength units
-	if (getDomainType() != DOMAIN_AIR && baseCombatStr() < 1 && m_iBaseCombat < 1 && !isCommander())
-	{
-		if (promotionInfo.getInterceptChange() != 0 ||
-			promotionInfo.getEvasionChange() != 0 ||
-			promotionInfo.getWithdrawalChange() != 0 ||
-			promotionInfo.getCollateralDamageChange() != 0 ||
-			promotionInfo.getBombardRateChange() != 0 ||
-			promotionInfo.getFirstStrikesChange() != 0 ||
-			promotionInfo.getChanceFirstStrikesChange() != 0 ||
-			promotionInfo.getCombatPercent() != 0 ||
-			promotionInfo.getCityAttackPercent() != 0 ||
-			promotionInfo.getCityDefensePercent() != 0 ||
-			promotionInfo.getHillsAttackPercent() != 0 ||
-			promotionInfo.getHillsDefensePercent() != 0 ||
-			promotionInfo.getCollateralDamageProtection() != 0 ||
-			promotionInfo.getKamikazePercent() != 0 ||
-			promotionInfo.getAirCombatLimitChange() != 0 ||
-			promotionInfo.getCollateralDamageLimitChange() != 0 ||
-			promotionInfo.getCollateralDamageMaxUnitsChange() != 0 ||
-			promotionInfo.getCombatLimitChange() != 0 ||
-			promotionInfo.isDefensiveVictoryMove() != false ||
-			promotionInfo.isOffensiveVictoryMove() != false ||
-			promotionInfo.isBlitz() != false ||
-			promotionInfo.isAmphib() != false ||
-			promotionInfo.isRiver() != false ||
-			promotionInfo.isAlwaysHeal() != false ||
-			promotionInfo.isImmuneToFirstStrikes() != false ||
-			promotionInfo.isAnyTerrainAttackPercent() != false ||
-			promotionInfo.isAnyTerrainDefensePercent() != false ||
-			promotionInfo.isAnyFeatureAttackPercent() != false ||
-			promotionInfo.isAnyFeatureDefensePercent() != false ||
-			promotionInfo.isAnyUnitCombatModifierPercent() != false ||
-			promotionInfo.isAnyDomainModifierPercent() != false ||
-			promotionInfo.getAttackCombatModifierChange() != false ||
-			promotionInfo.getDefenseCombatModifierChange() != false ||
-			promotionInfo.getPursuitChange() != 0 ||
-			promotionInfo.getEarlyWithdrawChange() != 0 ||
-			promotionInfo.getVSBarbsChange() != 0 ||
-			promotionInfo.getArmorChange() != 0 ||
-			promotionInfo.getPunctureChange() != 0 ||
-			promotionInfo.getDamageModifierChange() != 0 ||
-			promotionInfo.getOverrunChange() != 0 ||
-			promotionInfo.getRepelChange() != 0 ||
-			promotionInfo.getFortRepelChange() != 0 ||
-			promotionInfo.getRepelRetriesChange() != 0 ||
-			promotionInfo.getUnyieldingChange() != 0 ||
-			promotionInfo.getKnockbackChange() != 0 ||
-			promotionInfo.getKnockbackRetriesChange() != 0 ||
-#ifdef BATTLEWORN
-			promotionInfo.getStrAdjperRndChange() != 0 ||
-			promotionInfo.getStrAdjperAttChange() != 0 ||
-			promotionInfo.getStrAdjperDefChange() != 0 ||
-			promotionInfo.getWithdrawAdjperAttChange() != 0 ||
-#endif // BATTLEWORN
-			promotionInfo.getUnnerveChange() != 0 ||
-			promotionInfo.getEncloseChange() != 0 ||
-			promotionInfo.getLungeChange() != 0 ||
-			promotionInfo.getDynamicDefenseChange() != 0 ||
-#ifdef STRENGTH_IN_NUMBERS
-			promotionInfo.getFrontSupportPercentChange() != 0 ||
-			promotionInfo.getShortRangeSupportPercentChange() != 0 ||
-			promotionInfo.getMediumRangeSupportPercentChange() != 0 ||
-			promotionInfo.getLongRangeSupportPercentChange() != 0 ||
-			promotionInfo.getFlankSupportPercentChange() != 0 ||
-#endif // STRENGTH_IN_NUMBERS
-			promotionInfo.getDodgeModifierChange() != 0 ||
-			promotionInfo.getPrecisionModifierChange() != 0 ||
-			promotionInfo.getPowerShotsChange() != 0 ||
-			promotionInfo.getPowerShotCombatModifierChange() != 0 ||
-			promotionInfo.getPowerShotPunctureModifierChange() != 0 ||
-			promotionInfo.getPowerShotPrecisionModifierChange() != 0 ||
-			promotionInfo.getPowerShotCriticalModifierChange() != 0 ||
-			promotionInfo.getCriticalModifierChange() != 0 ||
-			promotionInfo.getRoundStunProbChange() != 0 ||
-			promotionInfo.getPoisonProbabilityModifierChange() != 0 ||
-			promotionInfo.getCaptureProbabilityModifierChange() != 0 ||
-			promotionInfo.getQualityChange() != 0 ||
-			promotionInfo.isStampedeChange() != false ||
-			promotionInfo.isRemoveStampede() != false ||
-			promotionInfo.isOnslaughtChange() != false ||
-			promotionInfo.isMakesDamageCold() != false ||
-			promotionInfo.isMakesDamageNotCold() != false ||
-			promotionInfo.getNumFlankingStrikesbyUnitCombatTypesChange() != 0 ||
-			promotionInfo.getNumWithdrawVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumPursuitVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumRepelVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumKnockbackVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumPunctureVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumArmorVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumDodgeVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumPrecisionVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumCriticalVSUnitCombatChangeTypes() != 0 ||
-			promotionInfo.getNumRoundStunVSUnitCombatChangeTypes() != 0 ||
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-			promotionInfo.getNumAfflictOnAttackChangeTypes() != 0 ||
-#endif // OUTBREAKS_AND_AFFLICTIONS
-			promotionInfo.getCombatModifierPerSizeMoreChange() != 0 ||
-			promotionInfo.getCombatModifierPerSizeLessChange() != 0 ||
-			promotionInfo.getCombatModifierPerVolumeMoreChange() != 0 ||
-			promotionInfo.getCombatModifierPerVolumeLessChange() != 0)
+		if (ePromotionLine != NO_PROMOTIONLINE
+		&& GC.getPromotionLineInfo(ePromotionLine).getPrereqTech() != NO_TECH
+		&& !GET_TEAM(getTeam()).isHasTech(GC.getPromotionLineInfo(ePromotionLine).getPrereqTech()))
 		{
 			return false;
 		}
 	}
+	{
+		// Toffer - Promotionline is factored in for the (dis)qualified caches.
+		for (int iI = 0; iI < promo.getNumDisqualifiedUnitCombatTypes(); iI++)
+		{
+			if (isHasUnitCombat((UnitCombatTypes)promo.getDisqualifiedUnitCombatType(iI)))
+			{
+				return false;
+			}
+		}
+		// TB SubCombat Mod Begin
+		// The two solid ways to identify a Size Matters promotion that would not normally have a CC prereq.
+		// Note: Apparently having no CC prereq is a clear way to isolate promotions to only being assigned directly by event or other special injection.
+		// Thus it was necessary to pass the Size Matters promos despite having no particular CC prereq.
+		if (!promo.isForOffset() && !promo.isZeroesXP())
+		{
+			bool bValid = false;
 
-	if (isCommander() && (promotionInfo.getGroupChange() != 0 || promotionInfo.getQualityChange() != 0))
+			for (int iI = promo.getNumQualifiedUnitCombatTypes() - 1; iI > -1; iI--)
+			{
+				if (isHasUnitCombat((UnitCombatTypes)promo.getQualifiedUnitCombatType(iI)))
+				{
+					bValid = true;
+					break;
+				}
+			}
+			if (!bValid)
+			{
+				return false;
+			}
+		}
+	}
+
+	if (isSpy())
+	{
+		return true;
+	}
+
+	//Disable Looter Promos for units that cannot pillage
+	if (promo.getPillageChange() > 0 && !m_pUnitInfo->isPillage())
+	{
+		return false;
+	}
+
+	if (isCommander() && (promo.getGroupChange() != 0 || promo.getQualityChange() != 0))
+	{
+		return false;
+	}
+
+	if (isBlendIntoCity() && promo.getCityDefensePercent() != 0)
 	{
 		return false;
 	}
 
 	if (!bKeepCheck)
 	{
-		if (promotionInfo.getInterceptChange() + maxInterceptionProbability(true) > GC.getDefineINT("MAX_INTERCEPTION_PROBABILITY"))
+		if (promo.getInterceptChange() + maxInterceptionProbability(true) > GC.getDefineINT("MAX_INTERCEPTION_PROBABILITY")
+		||	promo.getEvasionChange() + evasionProbability(true) > GC.getDefineINT("MAX_EVASION_PROBABILITY")
+		||	promo.getQualityChange() > 0 && getExperience() >= experienceNeeded(1))
 		{
 			return false;
 		}
-
-		if (promotionInfo.getEvasionChange() + evasionProbability(true) > GC.getDefineINT("MAX_EVASION_PROBABILITY"))
-		{
-			return false;
-		}
-
-		if (promotionInfo.getQualityChange() > 0 && getExperience() >= experienceNeeded(1))
-		{
-			return false;
-		}
-	}
-
-	if (isBlendIntoCity() && promotionInfo.getCityDefensePercent() != 0)
-	{
-		return false;
 	}
 
 	return true;
@@ -21412,18 +20916,10 @@ bool CvUnit::canAcquirePromotionAny() const
 	//of this function.  A check through reveals I never utilize this function in the processing of those features anyhow and it is only used for
 	//its original purpose of making sure the unit still has something it can select when taking a skill-based promo.
 
-	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	for (int iI = GC.getNumPromotionInfos() - 1; iI > -1; iI--)
 	{
-		PromotionTypes ePromotion = (PromotionTypes)iI;
-/*
-		bool bEquip = GC.getPromotionInfo(ePromotion).isEquipment();
-		bool bAfflict = GC.getPromotionInfo(ePromotion).isAffliction();
-		bool bPromote = false;
-		if (!bEquip && !bAfflict)
-		{
-			bPromote = true;
-		}
-*/
+		const PromotionTypes ePromotion = static_cast<PromotionTypes>(iI);
+
 		PromotionRequirements::flags promoFlags = PromotionRequirements::Promote;
 
 		if (GC.getPromotionInfo(ePromotion).isLeader())
@@ -21435,7 +20931,6 @@ bool CvUnit::canAcquirePromotionAny() const
 			return true;
 		}
 	}
-
 	return false;
 }
 
@@ -21642,7 +21137,7 @@ std::map<UnitCombatTypes, UnitCombatKeyedInfo>& CvUnit::getUnitCombatKeyedInfo()
 
 bool CvUnit::isHealsUnitCombat(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(NO_UNITCOMBAT, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(NO_UNITCOMBAT, GC.getNumUnitCombatInfos(), eIndex);
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
 	return (info != NULL && (info->m_iHealUnitCombatTypeVolume > 0));
@@ -21650,7 +21145,7 @@ bool CvUnit::isHealsUnitCombat(UnitCombatTypes eIndex) const
 
 bool CvUnit::isHasUnitCombat(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(NO_UNITCOMBAT, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(NO_UNITCOMBAT, GC.getNumUnitCombatInfos(), eIndex);
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
 	return (info != NULL && info->m_bHasUnitCombat);
@@ -22144,6 +21639,11 @@ void CvUnit::processUnitCombat(UnitCombatTypes eIndex, bool bAdding, bool bByPro
 	changeUpkeepModifier(kUnitCombat.getUpkeepModifier() * iChange);
 
 	establishBuildups();
+
+	if (bByPromo)
+	{
+		setGGExperienceEarnedTowardsType();
+	}
 }
 
 void CvUnit::setHasUnitCombat(UnitCombatTypes eIndex, bool bNewValue, bool bByPromo)
@@ -22195,7 +21695,7 @@ void CvUnit::setHasUnitCombat(UnitCombatTypes eIndex, bool bNewValue, bool bByPr
 
 bool CvUnit::isHasPromotion(PromotionTypes eIndex) const
 {
-	FASSERT_BOUNDS(NO_PROMOTION, GC.getNumPromotionInfos(), eIndex)
+	FASSERT_BOUNDS(NO_PROMOTION, GC.getNumPromotionInfos(), eIndex);
 	const PromotionKeyedInfo* info = findPromotionKeyedInfo(eIndex);
 
 	return (info != NULL && info->m_bHasPromotion);
@@ -22583,7 +22083,6 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 		changeExtraTerrainDefensePercent(((TerrainTypes)iI), (kPromotion.getTerrainDefensePercent(iI) * iChange));
 
 		changeExtraTerrainWorkPercent(((TerrainTypes)iI), (kPromotion.getTerrainWorkPercent(iI) * iChange));
-		changeExtraTerrainWorkPercent(((TerrainTypes)iI), (kPromotion.getTerrainWorkRateModifierChangeType(iI) * iChange));
 
 		changeTerrainDoubleMoveCount(((TerrainTypes)iI), ((kPromotion.getTerrainDoubleMove(iI)) ? iChange : 0));
 		changeExtraWithdrawOnTerrainType(((TerrainTypes)iI), (kPromotion.getWithdrawOnTerrainTypeChange(iI) * iChange));
@@ -22595,7 +22094,6 @@ void CvUnit::processPromotion(PromotionTypes eIndex, bool bAdding, bool bInitial
 		changeExtraFeatureDefensePercent(((FeatureTypes)iI), (kPromotion.getFeatureDefensePercent(iI) * iChange));
 
 		changeExtraFeatureWorkPercent(((FeatureTypes)iI), (kPromotion.getFeatureWorkPercent(iI) * iChange));
-		changeExtraFeatureWorkPercent(((FeatureTypes)iI), (kPromotion.getFeatureWorkRateModifierChangeType(iI) * iChange));
 
 		changeFeatureDoubleMoveCount(((FeatureTypes)iI), ((kPromotion.getFeatureDoubleMove(iI)) ? iChange : 0));
 		changeExtraWithdrawOnFeatureType(((FeatureTypes)iI), (kPromotion.getWithdrawOnFeatureTypeChange(iI) * iChange));
@@ -22781,7 +22279,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue, bool bFree, 
 
 	FAssertMsg(eIndex < GC.getNumPromotionInfos(), "Invalid promotion");
 
-	if(eIndex == NO_PROMOTION)
+	if (eIndex == NO_PROMOTION)
 	{
 		FErrorMsg("Invalid promotion");
 		return;
@@ -22915,7 +22413,7 @@ void CvUnit::setHasPromotion(PromotionTypes eIndex, bool bNewValue, bool bFree, 
 			}
 
 			// When promotions are being removed as part of killing a unit we dont want to add any more or invoke obsoletion checks,
-			//	which results in lots of extra rpocessing, and can also generate retrain messages for the dying units!
+			//	which results in lots of extra processing, and can also generate retrain messages for the dying units!
 			if (!isDead() && !isDelayedDeath() && !bDying)
 			{
 				checkPromotionObsoletion();
@@ -23291,7 +22789,9 @@ void CvUnit::read(FDataStreamBase* pStream)
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iTerrainDoubleMoveCount, "TerrainDoubleMove");
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraTerrainAttackPercent, "extraAttackPercent");
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraTerrainDefensePercent, "extraDefensePercent");
-				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iTerrainWorkPercent, "terrainWorkPercent");
+				// SAVEBREAK - Toffer - Remove
+				WRAPPER_SKIP_ELEMENT(wrapper, "CvUnit", terrainWorkPercent, SAVE_VALUE_TYPE_INT);
+				// ! SAVEBREAK
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraTerrainWorkPercent, "terrainExtraWorkPercent");
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraWithdrawOnTerrainType, "extraWithdrawOnTerrainType");
 			}
@@ -23313,7 +22813,9 @@ void CvUnit::read(FDataStreamBase* pStream)
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iFeatureDoubleMoveCount, "FeatureDoubleMove");
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraFeatureAttackPercent, "extraAttackPercent");
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraFeatureDefensePercent, "extraDefensePercent");
-				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iFeatureWorkPercent, "featureWorkPercent");
+				// SAVEBREAK - Toffer - Remove
+				WRAPPER_SKIP_ELEMENT(wrapper, "CvUnit", featureWorkPercent, SAVE_VALUE_TYPE_INT);
+				// ! SAVEBREAK
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraFeatureWorkPercent, "featureExtraWorkPercent");
 				WRAPPER_READ_DECORATED(wrapper, "CvUnit", &info->m_iExtraWithdrawOnFeatureType, "extraWithdrawOnFeatureType");
 			}
@@ -24536,7 +24038,9 @@ void CvUnit::read(FDataStreamBase* pStream)
 			m_aExtraVisibleImprovementRanges[iI].iIntensity = iType3;
 		}
 	}
-	WRAPPER_READ(wrapper, "CvUnit", &m_bHasAnyInvisibilityAbility);
+	// SAVEBREAK - Toffer - Remove
+	WRAPPER_SKIP_ELEMENT(wrapper, "CvUnit", m_bHasAnyInvisibilityAbility, SAVE_VALUE_TYPE_INT);
+	// ! SAVEBREAK
 	WRAPPER_READ(wrapper, "CvUnit", &m_iExtraInsidiousness);
 	WRAPPER_READ(wrapper, "CvUnit", &m_iExtraInvestigation);
 	WRAPPER_READ(wrapper, "CvUnit", (int*)&m_pPlayerInvestigated);
@@ -24591,6 +24095,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 	WRAPPER_READ(wrapper, "CvUnit", &m_iUpkeepModifier);
 	WRAPPER_READ(wrapper, "CvUnit", &m_iUpkeepMultiplierSM);
 	WRAPPER_READ(wrapper, "CvUnit", &m_iUpkeep100);
+	WRAPPER_READ(wrapper, "CvUnit", &m_iBuildUpTurns);
 
 	//bool bWorker = false;
 	//WRAPPER_READ_DECORATED(wrapper, "CvUnit", &bWorker, "bWorker");
@@ -24666,6 +24171,7 @@ void CvUnit::read(FDataStreamBase* pStream)
 			m_movementCharacteristicsHash ^= GC.getUnitCombatInfo((UnitCombatTypes)iI).getZobristValue();
 		}
 	}
+	establishBuildups();
 }
 
 
@@ -24812,7 +24318,6 @@ void CvUnit::write(FDataStreamBase* pStream)
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iTerrainDoubleMoveCount, "TerrainDoubleMove");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraTerrainAttackPercent, "extraAttackPercent");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraTerrainDefensePercent, "extraDefensePercent");
-			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iTerrainWorkPercent, "terrainWorkPercent");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraTerrainWorkPercent, "terrainExtraWorkPercent");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraWithdrawOnTerrainType, "extraWithdrawOnTerrainType");
 		}
@@ -24826,7 +24331,6 @@ void CvUnit::write(FDataStreamBase* pStream)
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iFeatureDoubleMoveCount, "FeatureDoubleMove");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraFeatureAttackPercent, "extraAttackPercent");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraFeatureDefensePercent, "extraDefensePercent");
-			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iFeatureWorkPercent, "featureWorkPercent");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraFeatureWorkPercent, "featureExtraWorkPercent");
 			WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", info.m_iExtraWithdrawOnFeatureType, "extraWithdrawOnFeatureType");
 		}
@@ -25442,7 +24946,6 @@ void CvUnit::write(FDataStreamBase* pStream)
 		}
 	}
 
-	WRAPPER_WRITE(wrapper, "CvUnit", m_bHasAnyInvisibilityAbility);
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iExtraInsidiousness);
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iExtraInvestigation);
 	WRAPPER_WRITE(wrapper, "CvUnit", (int)m_pPlayerInvestigated);
@@ -25487,6 +24990,7 @@ void CvUnit::write(FDataStreamBase* pStream)
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iUpkeepModifier);
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iUpkeepMultiplierSM);
 	WRAPPER_WRITE(wrapper, "CvUnit", m_iUpkeep100);
+	WRAPPER_WRITE(wrapper, "CvUnit", m_iBuildUpTurns);
 
 	//WRAPPER_WRITE_DECORATED(wrapper, "CvUnit", isWorker(), "bWorker");
 
@@ -26943,7 +26447,7 @@ const CvArtInfoUnit* CvUnit::getArtInfo(int i, EraTypes eEra) const
 	return m_pUnitInfo->getArtInfo(i, eEra, (UnitArtStyleTypes) GC.getCivilizationInfo(getCivilizationType()).getUnitArtStyleType());
 }
 
-const TCHAR* CvUnit::getButton() const
+const char* CvUnit::getButton() const
 {
 	const CvArtInfoUnit* pArtInfo = getArtInfo(0, GET_PLAYER(getOwner()).getCurrentEra());
 
@@ -27873,27 +27377,23 @@ bool CvUnit::canAirBomb4At(const CvPlot* pPlot, int iX, int iY) const
 
 bool CvUnit::airBomb4(int iX, int iY)
 {
-	CvCity* pCity;
 	CvUnit* pUnit;
-	CvPlot* pPlot;
 	CvWString szBuffer;
-	bool bSuccess = false;
-	int iDamage, iCount;
-	int iUnitDamage;
-	bool bNoTarget = true;
+	bool bSuccess = false, bNoTarget = true;
+	int iDamage, iUnitDamage;
 
 	if (!canAirBomb4At(plot(), iX, iY))
 	{
 		return false;
 	}
-	pPlot = GC.getMap().plot(iX, iY);
+	CvPlot* pPlot = GC.getMap().plot(iX, iY);
 	if (interceptTest(pPlot))
 	{
 		return true;
 	}
 
-	pCity = pPlot->getPlotCity();
-	iCount = algo::count_if(pPlot->units(), CvUnit::fn::getDomainType() == DOMAIN_SEA);
+	CvCity* pCity = pPlot->getPlotCity();
+	int iCount = algo::count_if(pPlot->units(), CvUnit::fn::getDomainType() == DOMAIN_SEA);
 	iCount = (GC.getGame().getSorenRandNum(iCount, "Choose ship") + 1);
 	CLLNode<IDInfo>* pUnitNode = pPlot->headUnitNode();
 	while (iCount > 0)
@@ -29737,7 +29237,7 @@ bool CvUnit::isCanMovePeaks() const
 void CvUnit::changeCanMovePeaksCount(int iChange)
 {
 	m_iCanMovePeaksCount += iChange;
-	FASSERT_NOT_NEGATIVE(m_iCanMovePeaksCount)
+	FASSERT_NOT_NEGATIVE(m_iCanMovePeaksCount);
 }
 
 // Koshling - enhanced mountaineering mode to differentiate between ability to move through
@@ -29750,7 +29250,7 @@ bool CvUnit::isCanLeadThroughPeaks() const
 void CvUnit::changeCanLeadThroughPeaksCount(int iChange)
 {
 	m_iCanLeadThroughPeaksCount += iChange;
-	FASSERT_NOT_NEGATIVE(m_iCanLeadThroughPeaksCount)
+	FASSERT_NOT_NEGATIVE(m_iCanLeadThroughPeaksCount);
 }
 
 
@@ -29959,13 +29459,11 @@ void CvUnit::setCommander(bool bNewVal)
 
 		GET_PLAYER(getOwner()).Commanders.push_back(this);
 
-		for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
+		foreach_(const UnitCombatTypes eSubCombat, m_pUnitInfo->getSubCombatTypes())
 		{
-			const UnitCombatTypes eUnitCombat = (UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI);
-
-			if (GC.getUnitCombatInfo(eUnitCombat).getQualityBase() > -10)
+			if (GC.getUnitCombatInfo(eSubCombat).getQualityBase() > -10)
 			{
-				setHasUnitCombat(eUnitCombat, false);
+				setHasUnitCombat(eSubCombat, false);
 			}
 		}
 	}
@@ -30368,16 +29866,9 @@ void CvUnit::doBattleFieldPromotions(CvUnit* pDefender, const CombatDetails& cdD
 			//TB Combat Mod next line
 			setHasPromotion(ptPromotion, true, false);
 			bAttackerPromoted = true;
-			//Reset XP
-			//TB GG Types mod
-			if (getGGExperienceEarnedTowardsType() == NO_UNIT)
-			{
-				setGGExperienceEarnedTowardsType();
-			}
 
-			UnitTypes eGGType = getGGExperienceEarnedTowardsType();
 			setExperience100(iInitialAttXP);
-			GET_PLAYER(getOwner()).setCombatExperience(iInitialAttGGXP, eGGType);
+			GET_PLAYER(getOwner()).setCombatExperience(iInitialAttGGXP, getGGExperienceEarnedTowardsType());
 
 			// Great Commander XP
 			if (getUsedCommander() != NULL)
@@ -30418,16 +29909,9 @@ void CvUnit::doBattleFieldPromotions(CvUnit* pDefender, const CombatDetails& cdD
 			//promote
 			//TB Combat Mod next line
 			pDefender->setHasPromotion(ptPromotion, true, false);
-			//Reset XP
-			//TB GG Types mod
-			if (pDefender->getGGExperienceEarnedTowardsType() == NO_UNIT)
-			{
-				pDefender->setGGExperienceEarnedTowardsType();
-			}
 
-			UnitTypes eGGType = pDefender->getGGExperienceEarnedTowardsType();
 			pDefender->setExperience100(iInitialDefXP);
-			GET_PLAYER(pDefender->getOwner()).setCombatExperience(iInitialDefGGXP, eGGType);
+			GET_PLAYER(pDefender->getOwner()).setCombatExperience(iInitialDefGGXP, pDefender->getGGExperienceEarnedTowardsType());
 			bDefenderPromoted = true;
 
 			// Great Commander XP
@@ -30497,13 +29981,13 @@ int CvUnit::getRandomMinExperienceTimes100() const
 
 bool CvUnit::isTerrainProtected(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 	return getTerrainProtectedCount(eIndex) > 0;
 }
 
 int CvUnit::getTerrainProtectedCount(TerrainTypes eIndex, bool bIgnoreCommanders) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
 
@@ -30524,7 +30008,7 @@ int CvUnit::getTerrainProtectedCount(TerrainTypes eIndex, bool bIgnoreCommanders
 
 void CvUnit::changeTerrainProtected(TerrainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -30534,23 +30018,6 @@ void CvUnit::changeTerrainProtected(TerrainTypes eIndex, int iChange)
 	}
 }
 
-void CvUnit::doCommerceAttacks(const CvUnit* pDefender, const CvPlot* pPlot)
-{
-	if (pDefender->isDead())
-	{
-		CvCity* city = pPlot->getPlotCity();
-		if (city != NULL)
-		{
-			for (int iI = 0; iI < NUM_COMMERCE_TYPES; iI++)
-			{
-				if (city->getMaxCommerceAttacks((CommerceTypes)iI) > 0)
-				{
-					city->changeCommerceAttacks((CommerceTypes)iI, 1);
-				}
-			}
-		}
-	}
-}
 
 int CvUnit::getZoneOfControlCount() const
 {
@@ -30570,7 +30037,7 @@ void CvUnit::changeZoneOfControlCount(int iChange)
 		GC.getGame().toggleAnyoneHasUnitZoneOfControl();
 	}
 	//TB Combat Mod Debug
-	FASSERT_NOT_NEGATIVE(getZoneOfControlCount())
+	FASSERT_NOT_NEGATIVE(getZoneOfControlCount());
 }
 
 bool CvUnit::isAutoPromoting() const
@@ -30805,8 +30272,6 @@ bool CvUnit::CureAffliction(PromotionLineTypes eAfflictionLine)
 					NotifyEntity(MISSION_CURE);
 				}
 				break;
-
-				return true;
 			}
 		}
 	}
@@ -30930,7 +30395,7 @@ int CvUnit::currentOvercome(PromotionLineTypes eAfflictionLine) const
 
 int CvUnit::getAfflictionTurnCount(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -30939,7 +30404,7 @@ int CvUnit::getAfflictionTurnCount(PromotionLineTypes ePromotionLineType) const
 
 void CvUnit::changeAfflictionTurnCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -30951,7 +30416,7 @@ void CvUnit::changeAfflictionTurnCount(PromotionLineTypes ePromotionLineType, in
 
 void CvUnit::setAfflictionTurnCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -30999,7 +30464,7 @@ int CvUnit::aidVolume(const CvPlot* pPlot, PropertyTypes eProperty) const
 
 int CvUnit::getAfflictionHitCount(PromotionTypes ePromotionType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotionType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotionType);
 
 	const PromotionKeyedInfo* info = findPromotionKeyedInfo(ePromotionType);
 
@@ -31008,7 +30473,7 @@ int CvUnit::getAfflictionHitCount(PromotionTypes ePromotionType) const
 
 void CvUnit::changeAfflictionHitCount(PromotionTypes ePromotionType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotionType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotionType);
 
 	if (iChange != 0)
 	{
@@ -31020,7 +30485,7 @@ void CvUnit::changeAfflictionHitCount(PromotionTypes ePromotionType, int iChange
 
 void CvUnit::setAfflictionHitCount(PromotionTypes ePromotionType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotionType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotionType);
 
 	PromotionKeyedInfo* info = findOrCreatePromotionKeyedInfo(ePromotionType, iChange != 0);
 
@@ -31122,7 +30587,7 @@ int CvUnit::getChancetoContract(PromotionLineTypes eAfflictionLine, int iCommuni
 
 int CvUnit::getUnitAfflictionTolerance(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -31131,7 +30596,7 @@ int CvUnit::getUnitAfflictionTolerance(PromotionLineTypes ePromotionLineType) co
 
 void CvUnit::changeUnitAfflictionTolerance(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -31143,7 +30608,7 @@ void CvUnit::changeUnitAfflictionTolerance(PromotionLineTypes ePromotionLineType
 
 void CvUnit::setUnitAfflictionTolerance(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -31207,7 +30672,7 @@ int CvUnit::getOvercomeChange(PromotionLineTypes eAfflictionLine) const
 
 int CvUnit::getFortitudeModifierTypeAmount(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -31227,7 +30692,7 @@ int CvUnit::getFortitudeModifierTypeAmount(PromotionLineTypes ePromotionLineType
 
 void CvUnit::changeFortitudeModifierTypeAmount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -31239,7 +30704,7 @@ void CvUnit::changeFortitudeModifierTypeAmount(PromotionLineTypes ePromotionLine
 
 void CvUnit::setFortitudeModifierTypeAmount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -31386,7 +30851,7 @@ int CvUnit::getExtraFrontSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraFrontSupportPercent(int iChange)
 {
 	m_iExtraFrontSupportPercent +=iChange;
-	FASSERT_NOT_NEGATIVE(getExtraFrontSupportPercent())
+	FASSERT_NOT_NEGATIVE(getExtraFrontSupportPercent());
 }
 
 int CvUnit::getExtraShortRangeSupportPercent(bool bIgnoreCommanders) const
@@ -31405,7 +30870,7 @@ int CvUnit::getExtraShortRangeSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraShortRangeSupportPercent(int iChange)
 {
 	m_iExtraShortRangeSupportPercent +=iChange;
-	FASSERT_NOT_NEGATIVE(getExtraShortRangeSupportPercent())
+	FASSERT_NOT_NEGATIVE(getExtraShortRangeSupportPercent());
 }
 
 int CvUnit::getExtraMediumRangeSupportPercent(bool bIgnoreCommanders) const
@@ -31424,7 +30889,7 @@ int CvUnit::getExtraMediumRangeSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraMediumRangeSupportPercent(int iChange)
 {
 	m_iExtraMediumRangeSupportPercent +=iChange;
-	FASSERT_NOT_NEGATIVE(getExtraMediumRangeSupportPercent())
+	FASSERT_NOT_NEGATIVE(getExtraMediumRangeSupportPercent());
 }
 
 int CvUnit::getExtraLongRangeSupportPercent(bool bIgnoreCommanders) const
@@ -31443,7 +30908,7 @@ int CvUnit::getExtraLongRangeSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraLongRangeSupportPercent(int iChange)
 {
 	m_iExtraLongRangeSupportPercent +=iChange;
-	FASSERT_NOT_NEGATIVE(getExtraLongRangeSupportPercent())
+	FASSERT_NOT_NEGATIVE(getExtraLongRangeSupportPercent());
 }
 
 int CvUnit::getExtraFlankSupportPercent(bool bIgnoreCommanders) const
@@ -31462,7 +30927,7 @@ int CvUnit::getExtraFlankSupportPercent(bool bIgnoreCommanders) const
 void CvUnit::changeExtraFlankSupportPercent(int iChange)
 {
 	m_iExtraFlankSupportPercent +=iChange;
-	FASSERT_NOT_NEGATIVE(getExtraFlankSupportPercent())
+	FASSERT_NOT_NEGATIVE(getExtraFlankSupportPercent());
 }
 
 int CvUnit::frontSupportPercentTotal() const
@@ -32955,7 +32420,7 @@ void CvUnit::ClearSupports()
 
 int CvUnit::getOngoingTrainingCount(UnitCombatTypes eUnitCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombatType);
 
@@ -32964,7 +32429,7 @@ int CvUnit::getOngoingTrainingCount(UnitCombatTypes eUnitCombatType) const
 
 void CvUnit::changeOngoingTrainingCount(UnitCombatTypes eUnitCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	if (iChange != 0)
 	{
@@ -32976,7 +32441,7 @@ void CvUnit::changeOngoingTrainingCount(UnitCombatTypes eUnitCombatType, int iCh
 
 void CvUnit::setOngoingTrainingCount(UnitCombatTypes eUnitCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eUnitCombatType, iChange != 0);
 
@@ -32992,60 +32457,62 @@ void CvUnit::checkPromotionObsoletion()
 
 	if (isCommander())
 	{
-		for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+		for (int iI = GC.getNumUnitCombatInfos() - 1; iI > -1; iI--)
 		{
-			if (isHasUnitCombat((UnitCombatTypes)iI) &&
-				(GC.getUnitCombatInfo((UnitCombatTypes)iI).getGroupBase() > -10 ||
-				GC.getUnitCombatInfo((UnitCombatTypes)iI).getQualityBase() > -10))
+			const UnitCombatTypes eUnitCombatX = static_cast<UnitCombatTypes>(iI);
+			if (
+				isHasUnitCombat(eUnitCombatX)
+			&&	(
+					GC.getUnitCombatInfo(eUnitCombatX).getGroupBase() > -10
+					||
+					GC.getUnitCombatInfo(eUnitCombatX).getQualityBase() > -10
+				)
+			)
 			{
-				setHasUnitCombat((UnitCombatTypes)iI, false);
+				setHasUnitCombat(eUnitCombatX, false);
 			}
 		}
 	}
-	bool bContinue = true;
-	while (bContinue)
+
+	while (true)
 	{
 		bool bRemovalMade = false;
-		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		for (int iI = GC.getNumPromotionInfos() - 1; iI > -1; iI--)
 		{
-			PromotionTypes ePromotion = static_cast<PromotionTypes>(iI);
+			const PromotionTypes ePromotion = static_cast<PromotionTypes>(iI);
 			const CvPromotionInfo& promotionInfo = GC.getPromotionInfo(ePromotion);
-			bool bPromo = !promotionInfo.isEquipment()
+			bool bPromo =
+			(
+				!promotionInfo.isEquipment()
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 				&& !promotionInfo.isAffliction()
 #endif
-			;
+			);
 			bool bPromotionFree = isPromotionFree(ePromotion);
-			if (isHasPromotion(ePromotion))
-			{
-				if (!canKeepPromotion(ePromotion, bPromotionFree, true))
-				{
-					if (bPromo && !bPromotionFree)
-					{
-						//	The retrain mechanism relies on knowing if a promotion was free or not, but in
-						//	saves from older versions we don't have that information, and many promotions that
-						//	actually were free will not be flagged as such.  In such cases you'll get to retrain
-						//	things you really shouldn't, but we don't allow more total retrains than your level
 
-						changeRetrainsAvailable(1);
-						setHasPromotion(ePromotion, false, false);
-						bRemovalMade = true;
-					}
-					if (bPromotionFree)
-					{
-						setHasPromotion(ePromotion, false, true);
-						bRemovalMade = true;
-					}
+			if (isHasPromotion(ePromotion) && !canKeepPromotion(ePromotion, bPromotionFree, true))
+			{
+				if (bPromotionFree)
+				{
+					setHasPromotion(ePromotion, false, true);
+					bRemovalMade = true;
+				}
+				else if (bPromo)
+				{
+					//	The retrain mechanism relies on knowing if a promotion was free or not, but in
+					//	saves from older versions we don't have that information, and many promotions that
+					//	actually were free will not be flagged as such.  In such cases you'll get to retrain
+					//	things you really shouldn't, but we don't allow more total retrains than your level
+
+					changeRetrainsAvailable(1);
+					setHasPromotion(ePromotion, false, false);
+					bRemovalMade = true;
 				}
 			}
-			//	Koshling - testing promotion readiness here is uneccessary since CvUnit::doTurn
-			//	will do it.  It is alo now dangerous to do it here (or indeed anywhere but controlled
-			//	places) becaue it is not thread-safe and needs to run strictly on the main thread
-			//testPromotionReady();
 		}
 		if (!bRemovalMade)
 		{
-			bContinue = false;
+			break;
 		}
 	}
 }
@@ -33063,7 +32530,7 @@ void CvUnit::changeColdDamage(int iChange)
 	}
 	else
 	{
-		m_iColdDamage = (m_iColdDamage + iChange);
+		m_iColdDamage += iChange;
 	}
 }
 
@@ -33087,7 +32554,7 @@ int CvUnit::getCombatPowerShots() const
 void CvUnit::setCombatPowerShots(int iNewValue)
 {
 	m_iCombatPowerShots = iNewValue;
-	FASSERT_NOT_NEGATIVE(getCombatPowerShots())
+	FASSERT_NOT_NEGATIVE(getCombatPowerShots());
 }
 
 void CvUnit::changeCombatPowerShots(int iChange)
@@ -33103,7 +32570,7 @@ int CvUnit::getCombatKnockbacks() const
 void CvUnit::setCombatKnockbacks(int iNewValue)
 {
 	m_iCombatKnockbacks = iNewValue;
-	FASSERT_NOT_NEGATIVE(getCombatKnockbacks())
+	FASSERT_NOT_NEGATIVE(getCombatKnockbacks());
 }
 
 void CvUnit::changeCombatKnockbacks(int iChange)
@@ -33123,7 +32590,7 @@ int CvUnit::getCombatRepels() const
 void CvUnit::setCombatRepels(int iNewValue)
 {
 	m_iCombatRepels = iNewValue;
-	FASSERT_NOT_NEGATIVE(getCombatRepels())
+	FASSERT_NOT_NEGATIVE(getCombatRepels());
 }
 
 void CvUnit::changeCombatRepels(int iChange)
@@ -33200,7 +32667,6 @@ void CvUnit::assignCritical(CvUnit* pOpponent)
 			GET_PLAYER(getOwner()).changePlayerWideAfflictionCount(eAfflictionLine, 1);
 		}
 
-
 		const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_CRITICAL_SUFFERED", pOpponent->getNameKey(), getNameKey(), GC.getPromotionInfo(eCritical).getDescription());
 		AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
 		const CvWString szBuffer2 = gDLL->getText("TXT_KEY_MISC_CRITICAL_INFLICTED", pOpponent->getNameKey(), getNameKey(), GC.getPromotionInfo(eCritical).getDescription());
@@ -33214,14 +32680,19 @@ bool CvUnit::canKeepPromotion(PromotionTypes ePromotion, bool bAssertFree, bool 
 {
 	PROFILE_FUNC();
 
-	int iI;
+	if (ePromotion == NO_PROMOTION)
+	{
+		FErrorMsg("Invalid promotion");
+		return false;
+	}
 	bool bPromo = false;
 
-	bool bEquip = GC.getPromotionInfo(ePromotion).isEquipment();
+	const CvPromotionInfo& promo = GC.getPromotionInfo(ePromotion);
+
 #ifdef OUTBREAKS_AND_AFFLICTIONS
-	bool bAfflict = GC.getPromotionInfo(ePromotion).isAffliction();
+	const bool bAfflict = promo.isAffliction();
 #endif
-	if (bEquip
+	if (promo.isEquipment()
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 		|| bAfflict
 #endif
@@ -33234,478 +32705,415 @@ bool CvUnit::canKeepPromotion(PromotionTypes ePromotion, bool bAssertFree, bool 
 		bPromo = true;
 	}
 
-	bool bIsFreePromotion = (isPromotionFree(ePromotion));
+	const bool bIsFreePromotion = (
+		bAssertFree
+		||
+		isPromotionFree(ePromotion)
+		||
+		GET_PLAYER(getOwner()).isFreePromotion(getUnitCombatType(), ePromotion)
+		||
+		promo.isZeroesXP()
+		||
+		promo.isForOffset()
+	);
 
-	if (GET_PLAYER(getOwner()).isFreePromotion(getUnitCombatType(), ePromotion))
+	if (promo.isRBombardPrereq() && !canRBombard(true))
 	{
-		bIsFreePromotion = true;
-	}
-	if (bAssertFree || GC.getPromotionInfo(ePromotion).isZeroesXP() || GC.getPromotionInfo(ePromotion).isForOffset())
-	{
-		bIsFreePromotion = true;
-	}
-
-	if ( ePromotion == NO_PROMOTION )
-	{
-		if (bPromo && !bIsFreePromotion)
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_NOPROMO_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-			}
-		}
-		else
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_NOPROMO_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-			}
-		}
-		return false;
-	}
-
-	if (!isPromotionValid(ePromotion, true))
-	{
-		if (bPromo && !bIsFreePromotion)
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_INVALIDATE_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-			}
-		}
-		else
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_INVALIDATE_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-			}
-		}
-		return false;
-	}
-
-	if (GC.getPromotionInfo(ePromotion).isRBombardPrereq() && !canRBombard(true))
-	{
-		if (bPromo && !bIsFreePromotion)
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_RBOMBARD_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-			}
-		}
-		else
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_RBOMBARD_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-			}
-		}
-		return false;
-	}
-
-	if (GC.getPromotionInfo(ePromotion).isCargoPrereq() && !isCarrier())
-	{
-		if (bPromo && !bIsFreePromotion)
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_CARRIER_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-			}
-		}
-		else
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_CARRIER_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-			}
-		}
-		return false;
-	}
-
-	PromotionTypes eQualifyPromo;
-	bool bbypass = true;
-	const CvPromotionInfo& kPromotion = GC.getPromotionInfo(ePromotion);
-	PromotionTypes ePromotionPrerequisite = (PromotionTypes)kPromotion.getPrereqPromotion();
-	PromotionTypes ePromotionPrerequisite1 = (PromotionTypes)kPromotion.getPrereqOrPromotion1();
-	PromotionTypes ePromotionPrerequisite2 = (PromotionTypes)kPromotion.getPrereqOrPromotion2();
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-	bool bAfflictk = kPromotion.isAffliction();
-#endif
-	//bool bEquipk = kPromotion.isEquipment();
-
-	if (!bIsFreePromotion)
-	{
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-		if (!bAfflictk)
-#endif
-		{
-			if (ePromotionPrerequisite != NO_PROMOTION)
-			{
-				const CvPromotionInfo& kPrereq = GC.getPromotionInfo(ePromotionPrerequisite);
-				bbypass = false;
-				if (m_pUnitInfo->getFreePromotions((int)ePromotion))
-				{
-					bbypass = true;
-				}
-				if (!bbypass)
-				{
-					if (isHasPromotion(ePromotionPrerequisite))
-					{
-						bbypass = true;
-					}
-					//	No need to check other line promotions if we have this one of for non-equip/afflication lines
-					//	where having a larger one would anyway imply having this one
-					else if (kPrereq.getPromotionLine() != NO_PROMOTIONLINE && !kPrereq.isEquipment()
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-						&& !kPrereq.isAffliction()
-#endif
-						)
-					{
-						for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-						{
-							eQualifyPromo = ((PromotionTypes)iI);
-							const CvPromotionInfo& kQualifier = GC.getPromotionInfo(eQualifyPromo);
-							if (isHasPromotion(eQualifyPromo) && kQualifier.getPromotionLine() != NO_PROMOTIONLINE)
-							{
-								if (kQualifier.getPromotionLine() == kPrereq.getPromotionLine())
-								{
-									if (kQualifier.getLinePriority() > kPrereq.getLinePriority())
-									{
-										bbypass = true;
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if (!bbypass)//then we DON'T have a prereq that's been removed thanks to the override mechanism.
-			{
-				if (bPromo && !isPromotionFree(ePromotion))
-				{
-					if (bMessageOnFalse)
-					{
-
-						const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_PROMOPREREQ_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-						AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-					}
-				}
-				else
-				{
-					if (bMessageOnFalse)
-					{
-
-						const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_PROMOPREREQ_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-						AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-					}
-				}
-				return false;
-			}
-			if (ePromotionPrerequisite1 != NO_PROMOTION)
-			{
-				const CvPromotionInfo& kPrereq1 = GC.getPromotionInfo(ePromotionPrerequisite1);
-				bbypass = false;
-				if (m_pUnitInfo->getFreePromotions((int)ePromotion))
-				{
-					bbypass = true;
-				}
-				if (!bbypass)
-				{
-					if (isHasPromotion(ePromotionPrerequisite1))
-					{
-						bbypass = true;
-					}
-					else if (kPrereq1.getPromotionLine() != NO_PROMOTIONLINE && !kPrereq1.isEquipment()
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-						&& !kPrereq1.isAffliction()
-#endif
-						)
-					{
-						for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-						{
-							eQualifyPromo = ((PromotionTypes)iI);
-							const CvPromotionInfo& kQualifier = GC.getPromotionInfo(eQualifyPromo);
-							if (isHasPromotion(eQualifyPromo) && kQualifier.getPromotionLine() != NO_PROMOTIONLINE)
-							{
-								if (kQualifier.getPromotionLine() == kPrereq1.getPromotionLine())
-								{
-									if (kQualifier.getLinePriority() > kPrereq1.getLinePriority())
-									{
-										bbypass = true;
-									}
-								}
-							}
-						}
-					}
-					if (!bbypass && ePromotionPrerequisite2 != NO_PROMOTION)
-					{
-						const CvPromotionInfo& kPrereq2 = GC.getPromotionInfo(ePromotionPrerequisite2);
-						if (isHasPromotion(ePromotionPrerequisite2))
-						{
-							bbypass = true;
-						}
-						else if (kPrereq2.getPromotionLine() != NO_PROMOTIONLINE && !kPrereq2.isEquipment()
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-							&& !kPrereq2.isAffliction()
-#endif
-							)
-						{
-							for (iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-							{
-								eQualifyPromo = ((PromotionTypes)iI);
-								const CvPromotionInfo& kQualifier = GC.getPromotionInfo(eQualifyPromo);
-								if (isHasPromotion(eQualifyPromo) && kQualifier.getPromotionLine() != NO_PROMOTIONLINE)
-								{
-									if (kQualifier.getPromotionLine() == kPrereq2.getPromotionLine())
-									{
-										if (kQualifier.getLinePriority() > kPrereq2.getLinePriority())
-										{
-											bbypass = true;
-										}
-									}
-								}
-							}
-						}
-					}
-					if (!bbypass)//then we DON'T have a prereq that's been removed thanks to the override mechanism.
-					{
-						if (bPromo && !isPromotionFree(ePromotion))
-						{
-							if (bMessageOnFalse)
-							{
-
-								const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_PROMOPREREQ_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-								AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-							}
-						}
-						else
-						{
-							if (bMessageOnFalse)
-							{
-
-								const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_PROMOPREREQ_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-								AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-							}
-						}
-						return false;
-					}
-				}
-			}
-		}
-	}
-
-	//int iMinEraInt = kPromotion.getMinEraType();
-	int iMaxEraInt = kPromotion.getMaxEraType();
-	int iEra = -1;
-	bool bFail = false;
-	if (/*iMinEraInt > NO_ERA || */iMaxEraInt > NO_ERA)
-	{
-		for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-		{
-			if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getEra() != NO_ERA && isHasUnitCombat((UnitCombatTypes)iI))
-			{
-				iEra = (int)GC.getUnitCombatInfo((UnitCombatTypes)iI).getEra();
-			}
-		}
-		//if (iEra > -1 && iMinEraInt > NO_ERA && iMinEraInt > iEra)
-		//{
-		//	bFail = true;
-		//}
-		if (iEra > -1 && iMaxEraInt > NO_ERA && iMaxEraInt < iEra)
-		{
-			bFail = true;
-		}
-		if (bFail)
-		{
-			if (bPromo && !isPromotionFree(ePromotion))
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_ERA_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
-			}
-			else
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_ERA_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-		}
-	}
-
-	if (GC.getPromotionInfo(ePromotion).getObsoleteTech() != NO_TECH)
-	{// TB Debug: was
-		//if ((GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getPromotionInfo(ePromotion).getTechPrereq()))))
-		if (GET_TEAM(getTeam()).isHasTech(GC.getPromotionInfo(ePromotion).getObsoleteTech()))
+		if (bMessageOnFalse)
 		{
 			if (bPromo && !bIsFreePromotion)
 			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_TECH_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_RBOMBARD_CAN_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+				);
 			}
 			else
 			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_TECH_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-	}
-
-
-	if (getUnitCombatType() == NO_UNITCOMBAT)
-	{
-		if (bPromo && !bIsFreePromotion)
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_NOUNITCOMBAT_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-			}
-		}
-		else
-		{
-			if (bMessageOnFalse)
-			{
-
-				const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_NOUNITCOMBAT_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-				AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_RBOMBARD_NO_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+				);
 			}
 		}
 		return false;
 	}
 
-	// TB SubCombat Mod Begin - Original code:
-//	if (!GC.getPromotionInfo(ePromotion).getUnitCombat(getUnitCombatType()))
-//	{
-//		return false;
-//	}
-// New Code:
-	//if (!bIsFreePromotion)
-	//{
-	bool bIsUnitSpecific = false;
-	if (m_pUnitInfo->getFreePromotions((int)ePromotion))
+	if (promo.isCargoPrereq() && !isCarrier())
 	{
-		bIsUnitSpecific = true;
-	}
-	if (NO_UNIT != getUnitType())
-	{
-		if (GET_PLAYER(getOwner()).isFreePromotion(getUnitType(), ePromotion))
+		if (bMessageOnFalse)
 		{
-			bIsUnitSpecific = true;
+			if (bPromo && !bIsFreePromotion)
+			{
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_CARRIER_CAN_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+				);
+			}
+			else
+			{
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_CARRIER_NO_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+				);
+			}
 		}
+		return false;
 	}
-	if (!bIsUnitSpecific)
-	{
-		bbypass = false;
-		bool bHasPrereq = false;
 
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+	if (promo.getObsoleteTech() != NO_TECH && GET_TEAM(getTeam()).isHasTech(promo.getObsoleteTech()))
+	{
+		if (bMessageOnFalse)
 		{
-			if (GC.getPromotionInfo(ePromotion).getUnitCombat(iI))
+			if (bPromo && !bIsFreePromotion)
 			{
-				bHasPrereq = true;
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_TECH_CAN_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+				);
 			}
-			if (GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE)
+			else
 			{
-				if (GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isUnitCombatPrereqType(iI))
-				{
-					bHasPrereq = true;
-				}
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_TECH_NO_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+				);
 			}
-			if (isHasUnitCombat((UnitCombatTypes)iI))
+		}
+		return false;
+	}
+
+	if (promo.isNotOnDomainType(getDomainType())
+	||  promo.getPromotionLine() != NO_PROMOTIONLINE
+	&&  GC.getPromotionLineInfo(promo.getPromotionLine()).isNotOnDomainType(getDomainType()))
+	{
+		if (bMessageOnFalse)
+		{
+			if (bPromo && !bIsFreePromotion)
 			{
-				if (GC.getPromotionInfo(ePromotion).getUnitCombat(iI))
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_DOMAIN_CAN_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+				);
+			}
+			else
+			{
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_DOMAIN_NO_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+				);
+			}
+		}
+		return false;
+	}
+
+	if (!promo.isPlotPrereqsKeepAfter())
+	{
+		bool bValid = true;
+		{
+			const TerrainTypes eTerrain = plot()->getTerrainType();
+
+			for (int iI = 0; iI < promo.getNumPrereqTerrainTypes(); iI++)
+			{
+				const TerrainTypes ePrereqTerrain = (TerrainTypes)promo.getPrereqTerrainType(iI);
+				if (ePrereqTerrain != NO_TERRAIN)
 				{
-					bbypass = true;
-					break;
-				}
-				if (GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE)
-				{
-					if (GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isUnitCombatPrereqType(iI))
+					bValid = false;
+					if (ePrereqTerrain == GC.getTERRAIN_PEAK())
 					{
-						bbypass = true;
+						if (plot()->isAsPeak())
+						{
+							bValid = true;
+							break;
+						}
+					}
+					else if (ePrereqTerrain == GC.getTERRAIN_HILL())
+					{
+						if (plot()->isHills())
+						{
+							bValid = true;
+							break;
+						}
+					}
+					else if (ePrereqTerrain == eTerrain)
+					{
+						bValid = true;
 						break;
 					}
 				}
 			}
-		}
-
-		if (!bbypass && bHasPrereq)
-		{
-			if (bPromo && !isPromotionFree(ePromotion))
+			if (!bValid)
 			{
 				if (bMessageOnFalse)
 				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_UNITCOMBAT_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
-			}
-			else
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_UNITCOMBAT_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-		{
-			if (isHasUnitCombat((UnitCombatTypes)iI) &&
-				((GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE &&
-				GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isNotOnUnitCombatType(iI))
-				|| GC.getPromotionInfo(ePromotion).isNotOnUnitCombatType(iI)))
-			{
-				if (bPromo && !bIsFreePromotion)
-				{
-					if (bMessageOnFalse)
+					if (bPromo && !bIsFreePromotion)
 					{
-
-						const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_UNITCOMBAT_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-						AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_TERRAIN_CAN_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+						);
+					}
+					else
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_TERRAIN_NO_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+						);
 					}
 				}
-				else
-				{
-					if (bMessageOnFalse)
-					{
+				return false;
+			}
+		}
+		{
+			const FeatureTypes eFeature = plot()->getFeatureType();
 
-						const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_UNITCOMBAT_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-						AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
+			for (int iI = 0; iI < promo.getNumPrereqFeatureTypes(); iI++)
+			{
+				const FeatureTypes ePrereqFeature = (FeatureTypes)promo.getPrereqFeatureType(iI);
+
+				if (ePrereqFeature != NO_FEATURE)
+				{
+					if (eFeature == ePrereqFeature)
+					{
+						bValid = true;
+						break;
+					}
+					else bValid = false;
+				}
+			}
+			if (!bValid)
+			{
+				if (bMessageOnFalse)
+				{
+					if (bPromo && !bIsFreePromotion)
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_FEATURE_CAN_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+						);
+					}
+					else
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_FEATURE_NO_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+						);
+					}
+				}
+				return false;
+			}
+		}
+		{
+			const BonusTypes eBonus = plot()->getBonusType(getTeam());
+
+			for (int iI = 0; iI < promo.getNumPrereqPlotBonusTypes(); iI++)
+			{
+				const BonusTypes ePrereqBonus = (BonusTypes)promo.getPrereqPlotBonusType(iI);
+				if (ePrereqBonus != NO_BONUS)
+				{
+					bValid = false;
+					if (eBonus == ePrereqBonus)
+					{
+						bValid = true;
+						break;
+					}
+				}
+			}
+			if (!bValid)
+			{
+				if (bMessageOnFalse)
+				{
+					if (bPromo && !bIsFreePromotion)
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_PLOT_BONUS_CAN_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+						);
+					}
+					else
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_PLOT_BONUS_NO_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+						);
+					}
+				}
+				return false;
+			}
+		}
+		{
+			//Improvements and buildings are OR statements between all of them.
+			bValid = false;
+			bool bRequire = false;
+			const ImprovementTypes eImprovement = plot()->getImprovementType();
+
+			for (int iI = 0; iI < promo.getNumPrereqImprovementTypes(); iI++)
+			{
+				const ImprovementTypes ePrereqImprovement = (ImprovementTypes)promo.getPrereqImprovementType(iI);
+
+				if (ePrereqImprovement != NO_IMPROVEMENT)
+				{
+					bRequire = true;
+					if (ePrereqImprovement == GC.getIMPROVEMENT_CITY())
+					{
+						if (plot()->isCity(true))
+						{
+							bValid = true;
+							break;
+						}
+					}
+					if (eImprovement == ePrereqImprovement)
+					{
+						bValid = true;
+						break;
+					}
+				}
+			}
+			const int iNumPrereqLocalBuilding = promo.getNumPrereqLocalBuildingTypes();
+
+			if (!bValid && iNumPrereqLocalBuilding > 0)
+			{
+				bRequire = true;
+				for (int iI = 0; iI < iNumPrereqLocalBuilding; iI++)
+				{
+					if (plot()->isCity(false))
+					{
+						const CvCity* pCity = plot()->getPlotCity();
+						if (pCity->getNumActiveBuilding((BuildingTypes)promo.getPrereqLocalBuildingType(iI)) > 0)
+						{
+							bValid = true;
+							break;
+						}
+					}
+				}
+			}
+			if (bRequire && !bValid)
+			{
+				if (bMessageOnFalse)
+				{
+					if (bPromo && !bIsFreePromotion)
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_IMP_CITY_CAN_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+						);
+					}
+					else
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_IMP_CITY_NO_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+						);
+					}
+				}
+				return false;
+			}
+			//Improvements and buildings are OR statements between all of them.
+		}
+	}
+
+	if (!bIsFreePromotion)
+	{
+#ifdef OUTBREAKS_AND_AFFLICTIONS
+		if (!bAfflict)
+#endif
+		{
+			const PromotionTypes ePromotionPrerequisite = (PromotionTypes)promo.getPrereqPromotion();
+			const PromotionTypes ePromotionPrerequisite1 = (PromotionTypes)promo.getPrereqOrPromotion1();
+			const PromotionTypes ePromotionPrerequisite2 = (PromotionTypes)promo.getPrereqOrPromotion2();
+
+			if (ePromotionPrerequisite != NO_PROMOTION && !isHasPromotion(ePromotionPrerequisite)
+			|| (ePromotionPrerequisite1 != NO_PROMOTION || ePromotionPrerequisite2 != NO_PROMOTION)
+			&& (ePromotionPrerequisite1 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite1))
+			&& (ePromotionPrerequisite2 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite2)))
+			{
+				if (bMessageOnFalse)
+				{
+					if (bPromo && !isPromotionFree(ePromotion))
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_PROMOPREREQ_CAN_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+						);
+					}
+					else
+					{
+						AddDLLMessage(
+							getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+							gDLL->getText(
+								"TXT_KEY_MISC_OBSOLETED_PROMOTION_PROMOPREREQ_NO_RETRAIN",
+								getNameKey(), promo.getDescription()
+							),
+							"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+						);
 					}
 				}
 				return false;
@@ -33713,257 +33121,41 @@ bool CvUnit::canKeepPromotion(PromotionTypes ePromotion, bool bAssertFree, bool 
 		}
 	}
 
-	for (iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
+	if (!isPromotionValid(ePromotion, bIsFreePromotion, true))
 	{
-		if (getDomainType() == ((DomainTypes)iI) &&
-			(((GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE &&
-			GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isNotOnDomainType(iI))
-			|| GC.getPromotionInfo(ePromotion).isNotOnDomainType(iI))))
+		if (bMessageOnFalse)
 		{
 			if (bPromo && !bIsFreePromotion)
 			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_DOMAIN_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_INVALIDATE_CAN_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY()
+				);
 			}
 			else
 			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_DOMAIN_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-	}
-	//}
-	//TB SubCombat Mod End
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
-	//Note: Commented out for now as its causing some issues.  This may be optionalized at a later date.
-	//if (GC.getPromotionInfo(ePromotion).getStateReligionPrereq() != NO_RELIGION)
-	//{
-	//	if (GET_PLAYER(getOwner()).getStateReligion() != GC.getPromotionInfo(ePromotion).getStateReligionPrereq())
-	//	{
-	//		return false;
-	//	}
-	//}
-
-	bool bNeedForBypass = false;
-	bool bBypass = false;
-	if (plot() != NULL && !kPromotion.isPlotPrereqsKeepAfter())
-	{
-		const TerrainTypes eTerrain = plot()->getTerrainType();
-		for (iI = 0; iI < kPromotion.getNumPrereqTerrainTypes(); iI++)
-		{
-			const TerrainTypes ePrereqTerrain = (TerrainTypes)kPromotion.getPrereqTerrainType(iI);
-			if (ePrereqTerrain != NO_TERRAIN)
-			{
-				bNeedForBypass = true;
-				if (ePrereqTerrain == GC.getTERRAIN_PEAK())
-				{
-					if (plot()->isAsPeak())
-					{
-						bBypass = true;
-					}
-				}
-				else if (ePrereqTerrain == GC.getTERRAIN_HILL())
-				{
-					if (plot()->isHills())
-					{
-						bBypass = true;
-					}
-				}
-				else if (ePrereqTerrain == eTerrain)
-				{
-					bBypass = true;
-				}
+				AddDLLMessage(
+					getOwner(), true, GC.getEVENT_MESSAGE_TIME(),
+					gDLL->getText(
+						"TXT_KEY_MISC_OBSOLETED_PROMOTION_INVALIDATE_NO_RETRAIN",
+						getNameKey(), promo.getDescription()
+					),
+					"AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY()
+				);
 			}
 		}
-		if (bNeedForBypass && !bBypass)
-		{
-			if (bPromo && !bIsFreePromotion)
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_TERRAIN_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
-			}
-			else
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_TERRAIN_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-
-		bNeedForBypass = false;
-		bBypass = false;
-		const FeatureTypes eFeature = plot()->getFeatureType();
-		for (iI = 0; iI < kPromotion.getNumPrereqFeatureTypes(); iI++)
-		{
-			const FeatureTypes ePrereqFeature = (FeatureTypes)kPromotion.getPrereqFeatureType(iI);
-			if (ePrereqFeature != NO_FEATURE)
-			{
-				bNeedForBypass = true;
-				if (eFeature == ePrereqFeature)
-				{
-					bBypass = true;
-				}
-			}
-		}
-		if (bNeedForBypass && !bBypass)
-		{
-			if (bPromo && !bIsFreePromotion)
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_FEATURE_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
-			}
-			else
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_FEATURE_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-
-		bNeedForBypass = false;
-		bBypass = false;
-		const ImprovementTypes eImprovement = plot()->getImprovementType();
-		for (iI = 0; iI < kPromotion.getNumPrereqImprovementTypes(); iI++)
-		{
-			const ImprovementTypes ePrereqImprovement = (ImprovementTypes)kPromotion.getPrereqImprovementType(iI);
-			if (ePrereqImprovement != NO_IMPROVEMENT)
-			{
-				bNeedForBypass = true;
-				if (ePrereqImprovement == GC.getIMPROVEMENT_CITY())
-				{
-					if (plot()->isCity(true))
-					{
-						bBypass = true;
-					}
-				}
-				if (eImprovement == ePrereqImprovement)
-				{
-					bBypass = true;
-				}
-			}
-		}
-		const int iNumPrereqLocalBuilding = kPromotion.getNumPrereqLocalBuildingTypes();
-		if (iNumPrereqLocalBuilding > 0)
-		{
-			bNeedForBypass = true;
-			for (iI = 0; iI < iNumPrereqLocalBuilding; iI++)
-			{
-				if (plot()->isCity(false))
-				{
-					const CvCity* pCity = plot()->getPlotCity();
-					if (pCity->getNumActiveBuilding((BuildingTypes)kPromotion.getPrereqLocalBuildingType(iI)) > 0)
-					{
-						bBypass = true;
-					}
-				}
-			}
-		}
-		if (bNeedForBypass && !bBypass)
-		{
-			if (bPromo && !bIsFreePromotion)
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_IMP_CITY_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
-			}
-			else
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_IMP_CITY_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-		//Improvements and buildings is an OR statement between all of them.
-
-		bNeedForBypass = false;
-		bBypass = false;
-		const BonusTypes eBonus = plot()->getBonusType(getTeam());
-		for (iI = 0; iI < kPromotion.getNumPrereqPlotBonusTypes(); iI++)
-		{
-			const BonusTypes ePrereqBonus = (BonusTypes)kPromotion.getPrereqPlotBonusType(iI);
-			if (ePrereqBonus != NO_BONUS)
-			{
-				bNeedForBypass = true;
-				if (eBonus == ePrereqBonus)
-				{
-					bBypass = true;
-				}
-			}
-		}
-		if (bNeedForBypass && !bBypass)
-		{
-			if (bPromo && !bIsFreePromotion)
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_PLOT_BONUS_CAN_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_GREEN(), getX(), getY());
-				}
-			}
-			else
-			{
-				if (bMessageOnFalse)
-				{
-
-					const CvWString szBuffer = gDLL->getText("TXT_KEY_MISC_OBSOLETED_PROMOTION_PLOT_BONUS_NO_RETRAIN", getNameKey(), GC.getPromotionInfo(ePromotion).getDescription());
-					AddDLLMessage(getOwner(), true, GC.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_POSITIVE_DINK", MESSAGE_TYPE_INFO, NULL, GC.getCOLOR_RED(), getX(), getY());
-				}
-			}
-			return false;
-		}
-	}
-
-	if (GC.getPromotionInfo(ePromotion).isEquipment() && !bEquip)
-	{
 		return false;
 	}
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-	if (GC.getPromotionInfo(ePromotion).isAffliction() && !bAfflict)
-	{
-		return false;
-	}
-#endif
 	return true;
 }
 
 int CvUnit::getPromotionFreeCount(PromotionTypes ePromotion) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 
 	const PromotionKeyedInfo* info = findPromotionKeyedInfo(ePromotion);
 
@@ -33972,24 +33164,12 @@ int CvUnit::getPromotionFreeCount(PromotionTypes ePromotion) const
 
 bool CvUnit::isPromotionFree(PromotionTypes ePromotion) const
 {
-	return (getPromotionFreeCount(ePromotion) > 0);
-}
-
-void CvUnit::changePromotionFreeCount(PromotionTypes ePromotion, int iChange)
-{
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
-
-	if (iChange != 0)
-	{
-		PromotionKeyedInfo* info = findOrCreatePromotionKeyedInfo(ePromotion);
-
-		info->m_iPromotionFreeCount += iChange;
-	}
+	return getPromotionFreeCount(ePromotion) > 0;
 }
 
 void CvUnit::setPromotionFreeCount(PromotionTypes ePromotion, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 
 	PromotionKeyedInfo* info = findOrCreatePromotionKeyedInfo(ePromotion, iChange != 0);
 
@@ -34001,29 +33181,28 @@ void CvUnit::setPromotionFreeCount(PromotionTypes ePromotion, int iChange)
 
 void CvUnit::checkFreetoCombatClass()
 {
-	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+	for (int iI = GC.getNumUnitCombatInfos() -1; iI > -1; iI--)
 	{
-		UnitCombatTypes eUnitCombat = ((UnitCombatTypes)iI);
-		if (isHasUnitCombat(eUnitCombat))
+		if (isHasUnitCombat(static_cast<UnitCombatTypes>(iI)))
 		{
-			for (int iK = 0; iK < GC.getNumPromotionInfos(); iK++)
+			for (int iK = GC.getNumPromotionInfos() - 1; iK > -1; iK--)
 			{
-				PromotionTypes ePromotion = ((PromotionTypes)iK);
-				const CvPromotionInfo& promoInfo = GC.getPromotionInfo(ePromotion);
+				const PromotionTypes ePromo = static_cast<PromotionTypes>(iK);
+				const CvPromotionInfo& promoInfo = GC.getPromotionInfo(ePromo);
+
 				if (promoInfo.isFreetoUnitCombat(iI))
 				{
-					// Todo: surely canAcquirePromotion can work out these flags if it knows what promotion you are
-					// asking about? Smells fishy that we have to set them here.
 					PromotionRequirements::flags promoFlags = PromotionRequirements::None;
+
 					if (promoInfo.isEquipment()) promoFlags |= PromotionRequirements::Equip;
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 					if (promoInfo.isAffliction()) promoFlags |= PromotionRequirements::Afflict;
 #endif
 					if (promoFlags == PromotionRequirements::None) promoFlags = PromotionRequirements::Promote;
 
-					if (canAcquirePromotion(ePromotion, promoFlags))
+					if (canAcquirePromotion(ePromo, promoFlags))
 					{
-						setHasPromotion(ePromotion, true, true);
+						setHasPromotion(ePromo, true, true);
 					}
 				}
 			}
@@ -34034,64 +33213,55 @@ void CvUnit::checkFreetoCombatClass()
 
 bool CvUnit::meetsUnitSelectionCriteria(const CvUnitSelectionCriteria* criteria) const
 {
-	if ( criteria != NULL )
+	if (criteria != NULL)
 	{
-		if ( criteria->m_eUnitAI != NO_UNITAI && AI_getUnitAIType() != criteria->m_eUnitAI )
+		if (criteria->m_eUnitAI != NO_UNITAI && AI_getUnitAIType() != criteria->m_eUnitAI)
 		{
 			return false;
 		}
 
-		if (criteria->m_bNoNegativeProperties || criteria->m_bPropertyBeneficial)
+		if ((criteria->m_bNoNegativeProperties || criteria->m_bPropertyBeneficial)
+		&& AI_beneficialPropertyValueToCity(NULL, NO_PROPERTY) < 0)
 		{
-			int iPropertyDelta = AI_beneficialPropertyValueToCity(NULL, NO_PROPERTY);
-
-			if (iPropertyDelta < 0)
-			{
-				return false;
-			}
+			return false;
 		}
+
 		if (criteria->m_eProperty != NO_PROPERTY)
 		{
-			int iPropertyDelta = AI_beneficialPropertyValueToCity(NULL, criteria->m_eProperty);
+			const int iPropertyDelta = AI_beneficialPropertyValueToCity(NULL, criteria->m_eProperty);
 
-			if ( iPropertyDelta == 0 )
+			if (iPropertyDelta == 0)
 			{
 				return false;
 			}
-			else if ( iPropertyDelta > 0 )
+			if (iPropertyDelta > 0)
 			{
-				if ( !criteria->m_bPropertyBeneficial )
+				if (!criteria->m_bPropertyBeneficial)
 				{
 					return false;
 				}
 			}
-			else
+			else if (criteria->m_bPropertyBeneficial)
 			{
-				if ( criteria->m_bPropertyBeneficial )
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 
-		if ( criteria->m_bIsHealer )
+		if (criteria->m_bIsHealer)
 		{
 			if (criteria->m_eHealUnitCombat == NO_UNITCOMBAT && ( getSameTileHeal() == 0 && getAdjacentTileHeal() == 0 ))
 			{
 				return false;
 			}
-			else if ((getBestHealingTypeConst() != criteria->m_eHealUnitCombat) || getNumHealSupportTotal() < 1)
+			if (getBestHealingTypeConst() != criteria->m_eHealUnitCombat || getNumHealSupportTotal() < 1)
 			{
 				return false;
 			}
 		}
 
-		if ( criteria->m_bIsCommander )
+		if (criteria->m_bIsCommander && !isCommander())
 		{
-			if ( !isCommander() )
-			{
-				return false;
-			}
+			return false;
 		}
 	}
 
@@ -34143,191 +33313,92 @@ bool CvUnit::canSwitchEquipment(PromotionTypes eEquipment) const
 {
 	PROFILE_FUNC();
 
-	FASSERT_BOUNDS(NO_PROMOTION, GC.getNumPromotionInfos(), eEquipment)
+	FASSERT_BOUNDS(NO_PROMOTION, GC.getNumPromotionInfos(), eEquipment);
 
-	int iI;
-	CvPlot* pPlot = plot();
-	CvCity* pCity = pPlot->getPlotCity();
-
-	if (eEquipment == NO_PROMOTION)
+	if (eEquipment == NO_PROMOTION
+	|| getUnitCombatType() == NO_UNITCOMBAT
+	|| isHasPromotion(eEquipment))
 	{
 		return false;
 	}
 
-	if (!GC.getPromotionInfo(eEquipment).isEquipment())
+	if (!isPromotionValid(eEquipment))
 	{
 		return false;
 	}
+	const CvPromotionInfo& equipment = GC.getPromotionInfo(eEquipment);
 
-	if (isHasPromotion(eEquipment))
+	if (!equipment.isEquipment())
 	{
 		return false;
 	}
-
-	if (getUnitCombatType() == NO_UNITCOMBAT)
-	{
-		return false;
-	}
+	CvCity* pCity = plot()->getPlotCity();
 
 	if (!pCity->isFreePromotion(eEquipment))
 	{
 		return false;
 	}
 
-	bool bbypass = false;
-	for (iI = 0; iI < GC.getNumPromotionInfos() && !bbypass; iI++)
+	if (equipment.getPromotionLine() != NO_PROMOTIONLINE)
 	{
-		if (GC.getPromotionInfo((PromotionTypes)iI).isEquipment())
+		bool bValid = false;
+		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
 		{
-			const PromotionTypes ePromoToReplace = ((PromotionTypes)iI);
-			if (GC.getPromotionInfo(ePromoToReplace).getPromotionLine() != NO_PROMOTIONLINE && GC.getPromotionInfo(eEquipment).getPromotionLine() != NO_PROMOTIONLINE)
+			const PromotionTypes ePromoToReplace = static_cast<PromotionTypes>(iI);
+			const CvPromotionInfo& promoX = GC.getPromotionInfo(ePromoToReplace);
+
+			if (promoX.isEquipment()
+			&&  promoX.getPromotionLine() == equipment.getPromotionLine()
+			&&  isHasPromotion(ePromoToReplace)
+			&&  equipment.getLinePriority() >= promoX.getLinePriority())
 			{
-				if (isHasPromotion(ePromoToReplace) && (GC.getPromotionInfo(ePromoToReplace).getPromotionLine() == GC.getPromotionInfo(eEquipment).getPromotionLine()))
-				{
-					if (GC.getPromotionInfo(eEquipment).getLinePriority() >= GC.getPromotionInfo(ePromoToReplace).getLinePriority())
-					{
-						bbypass = true;
-					}
-				}
+				bValid = true;
+				break;
 			}
 		}
-	}
-	if (!bbypass)
-	{
-		return false;
-	}
-
-	bbypass = true;
-	const CvPromotionInfo& kPromotion = GC.getPromotionInfo(eEquipment);
-	const PromotionTypes ePromotionPrerequisite = (PromotionTypes)kPromotion.getPrereqPromotion();
-	const PromotionTypes ePromotionPrerequisite1 = (PromotionTypes)kPromotion.getPrereqOrPromotion1();
-	const PromotionTypes ePromotionPrerequisite2 = (PromotionTypes)kPromotion.getPrereqOrPromotion2();
-
-	if (ePromotionPrerequisite != NO_PROMOTION)
-	{
-		//const CvPromotionInfo& kPrereq = GC.getPromotionInfo(ePromotionPrerequisite);
-		bbypass = false;
-		if (isHasPromotion(ePromotionPrerequisite))
-		{
-			bbypass = true;
-		}
-	}
-	if (!bbypass)//then we DON'T have a prereq that's been removed thanks to the override mechanism.
-	{
-		return false;
-	}
-	if (ePromotionPrerequisite1 != NO_PROMOTION)
-	{
-		//const CvPromotionInfo& kPrereq1 = GC.getPromotionInfo(ePromotionPrerequisite1);
-		bbypass = false;
-		if (isHasPromotion(ePromotionPrerequisite1))
-		{
-			bbypass = true;
-		}
-
-		if (!bbypass && ePromotionPrerequisite2 != NO_PROMOTION)
-		{
-			//const CvPromotionInfo& kPrereq2 = GC.getPromotionInfo(ePromotionPrerequisite2);
-			if (isHasPromotion(ePromotionPrerequisite2))
-			{
-				bbypass = true;
-			}
-		}
-
-		if (!bbypass)//then we DON'T have a prereq that's been removed thanks to the override mechanism.
+		if (!bValid)
 		{
 			return false;
 		}
 	}
 
-	for (iI = 0; iI < GC.getPromotionInfo(eEquipment).getNumPrereqBonusTypes(); iI++)
 	{
-		const BonusTypes ePrereqBonus = (BonusTypes)GC.getPromotionInfo(eEquipment).getPrereqBonusType(iI);
+		const PromotionTypes ePromotionPrerequisite = (PromotionTypes)equipment.getPrereqPromotion();
+
+		if (ePromotionPrerequisite != NO_PROMOTION && !isHasPromotion(ePromotionPrerequisite))
+		{
+			return false;
+		}
+	}
+	{
+		const PromotionTypes ePromotionPrerequisite1 = (PromotionTypes)equipment.getPrereqOrPromotion1();
+		const PromotionTypes ePromotionPrerequisite2 = (PromotionTypes)equipment.getPrereqOrPromotion2();
+
+		if ((ePromotionPrerequisite1 != NO_PROMOTION || ePromotionPrerequisite2 != NO_PROMOTION)
+		&&  (ePromotionPrerequisite1 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite1))
+		&&  (ePromotionPrerequisite2 == NO_PROMOTION || !isHasPromotion(ePromotionPrerequisite2)))
+		{
+			return false;
+		}
+	}
+
+	foreach_(const BonusTypes ePrereqBonus, equipment.getPrereqBonuses())
+	{
 		if (ePrereqBonus != NO_BONUS && !pCity->hasBonus(ePrereqBonus))
 		{
 			return false;
 		}
 	}
 
-	if (GC.getPromotionInfo(eEquipment).getTechPrereq() != NO_TECH)
-	{
-		if (!GET_TEAM(getTeam()).isHasTech((TechTypes)(GC.getPromotionInfo(eEquipment).getTechPrereq())))
-		{
-			return false;
-		}
-	}
-
-	if (GC.getPromotionInfo(eEquipment).getObsoleteTech() != NO_TECH)
-	{
-		if (GET_TEAM(getTeam()).isHasTech(GC.getPromotionInfo(eEquipment).getObsoleteTech()))
-		{
-			return false;
-		}
-	}
-
-	bbypass = false;
-
-	for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-	{
-		if (isHasUnitCombat((UnitCombatTypes)iI))
-		{
-			const UnitCombatTypes ePrereq = (UnitCombatTypes)iI;
-			if (GC.getPromotionInfo(eEquipment).getUnitCombat(ePrereq))
-			{
-				bbypass = true;
-				break;
-			}
-			if (GC.getPromotionInfo(eEquipment).getPromotionLine() != NO_PROMOTIONLINE)
-			{
-				if (GC.getPromotionLineInfo(GC.getPromotionInfo(eEquipment).getPromotionLine()).isUnitCombatPrereqType(ePrereq))
-				{
-					bbypass = true;
-					break;
-				}
-			}
-		}
-	}
-
-	if (!bbypass)
+	if (equipment.isNotOnDomainType(getDomainType())
+	||  equipment.getPromotionLine() != NO_PROMOTIONLINE
+	&&  GC.getPromotionLineInfo(equipment.getPromotionLine()).isNotOnDomainType(getDomainType()))
 	{
 		return false;
 	}
 
-	for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-	{
-		if (isHasUnitCombat((UnitCombatTypes)iI) &&
-			((GC.getPromotionInfo(eEquipment).getPromotionLine() != NO_PROMOTIONLINE &&
-			GC.getPromotionLineInfo(GC.getPromotionInfo(eEquipment).getPromotionLine()).isNotOnUnitCombatType(iI))
-			|| GC.getPromotionInfo(eEquipment).isNotOnUnitCombatType(iI)))
-		{
-			return false;
-		}
-	}
-
-	for (iI = 0; iI < NUM_DOMAIN_TYPES; iI++)
-	{
-		if (getDomainType() == ((DomainTypes)iI) &&
-			(GC.getPromotionInfo(eEquipment).getPromotionLine() != NO_PROMOTIONLINE &&
-			GC.getPromotionLineInfo(GC.getPromotionInfo(eEquipment).getPromotionLine()).isNotOnDomainType(iI)))
-		{
-			return false;
-		}
-		if (getDomainType() == ((DomainTypes)iI) &&
-			(GC.getPromotionInfo(eEquipment).isNotOnDomainType(iI)))
-		{
-			return false;
-		}
-	}
-
-	if (GC.getPromotionInfo(eEquipment).getStateReligionPrereq() != NO_RELIGION)
-	{
-		if (GET_PLAYER(getOwner()).getStateReligion() != GC.getPromotionInfo(eEquipment).getStateReligionPrereq())
-		{
-			return false;
-		}
-	}
-
-	if (!isPromotionValid(eEquipment))
+	if (equipment.getStateReligionPrereq() != NO_RELIGION
+	&& GET_PLAYER(getOwner()).getStateReligion() != equipment.getStateReligionPrereq())
 	{
 		return false;
 	}
@@ -34337,15 +33408,14 @@ bool CvUnit::canSwitchEquipment(PromotionTypes eEquipment) const
 
 void CvUnit::reEquip(PromotionTypes eEquipment)
 {
-	int iI;
 	bool bReplaced = false;
 
-	for (iI = 0; iI < GC.getNumPromotionInfos() && !bReplaced; iI++)
+	for (int iI = 0; iI < GC.getNumPromotionInfos() && !bReplaced; iI++)
 	{
 		if (GC.getPromotionInfo((PromotionTypes)iI).isEquipment())
 		{
 			const PromotionTypes ePromoToReplace = ((PromotionTypes)iI);
-			if ((isHasPromotion(ePromoToReplace) && (GC.getPromotionInfo(ePromoToReplace).getPromotionLine() == GC.getPromotionInfo(eEquipment).getPromotionLine())))
+			if (isHasPromotion(ePromoToReplace) && GC.getPromotionInfo(ePromoToReplace).getPromotionLine() == GC.getPromotionInfo(eEquipment).getPromotionLine())
 			{
 				if (GC.getPromotionInfo(ePromoToReplace).getLinePriority() == GC.getPromotionInfo(eEquipment).getLinePriority())
 				{
@@ -34381,15 +33451,14 @@ void CvUnit::reEquip(PromotionTypes eEquipment)
 
 void CvUnit::statusUpdate(PromotionTypes eStatus)
 {
-	int iI;
 	bool bReplaced = false;
 
-	for (iI = 0; iI < GC.getNumPromotionInfos() && !bReplaced; iI++)
+	for (int iI = 0; iI < GC.getNumPromotionInfos() && !bReplaced; iI++)
 	{
 		if (GC.getPromotionInfo((PromotionTypes)iI).isStatus())
 		{
 			const PromotionTypes ePromoToReplace = ((PromotionTypes)iI);
-			if ((isHasPromotion(ePromoToReplace) && (GC.getPromotionInfo(ePromoToReplace).getPromotionLine() == GC.getPromotionInfo(eStatus).getPromotionLine())))
+			if (isHasPromotion(ePromoToReplace) && GC.getPromotionInfo(ePromoToReplace).getPromotionLine() == GC.getPromotionInfo(eStatus).getPromotionLine())
 			{
 				if (GC.getPromotionInfo(ePromoToReplace).getLinePriority() != GC.getPromotionInfo(eStatus).getLinePriority())
 				{
@@ -34434,7 +33503,7 @@ int CvUnit::flankingStrengthbyUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraFlankingStrengthbyUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34452,7 +33521,7 @@ int CvUnit::getExtraFlankingStrengthbyUnitCombatType(UnitCombatTypes eIndex) con
 
 void CvUnit::changeExtraFlankingStrengthbyUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34473,13 +33542,13 @@ int CvUnit::withdrawOnTerrainTotal(TerrainTypes eTerrainType) const
 
 	iAmount += getExtraWithdrawOnTerrainType(eTerrainType);
 
-	int iTotalAmount = std::max(0,iAmount);
+	int iTotalAmount = std::max(0, iAmount);
 	return iTotalAmount;
 }
 
 int CvUnit::getExtraWithdrawOnTerrainType(TerrainTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	const TerrainKeyedInfo* info = findTerrainKeyedInfo(eIndex);
 
@@ -34497,7 +33566,7 @@ int CvUnit::getExtraWithdrawOnTerrainType(TerrainTypes eIndex) const
 
 void CvUnit::changeExtraWithdrawOnTerrainType(TerrainTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumTerrainInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34518,13 +33587,13 @@ int CvUnit::withdrawOnFeatureTotal(FeatureTypes eFeatureType) const
 
 	iAmount += getExtraWithdrawOnFeatureType(eFeatureType);
 
-	const int iTotalAmount = std::max(0,iAmount);
+	const int iTotalAmount = std::max(0, iAmount);
 	return iTotalAmount;
 }
 
 int CvUnit::getExtraWithdrawOnFeatureType(FeatureTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	const FeatureKeyedInfo* info = findFeatureKeyedInfo(eIndex);
 
@@ -34542,7 +33611,7 @@ int CvUnit::getExtraWithdrawOnFeatureType(FeatureTypes eIndex) const
 
 void CvUnit::changeExtraWithdrawOnFeatureType(FeatureTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumFeatureInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34568,7 +33637,7 @@ int CvUnit::withdrawVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraWithdrawVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34586,7 +33655,7 @@ int CvUnit::getExtraWithdrawVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraWithdrawVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34612,7 +33681,7 @@ int CvUnit::pursuitVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraPursuitVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34630,7 +33699,7 @@ int CvUnit::getExtraPursuitVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraPursuitVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34664,7 +33733,7 @@ int CvUnit::getExtraRepelVSUnitCombatType(UnitCombatTypes eIndex) const
 	{
 		return 0;
 	}
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34682,7 +33751,7 @@ int CvUnit::getExtraRepelVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraRepelVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34707,12 +33776,12 @@ int CvUnit::knockbackVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 	iAmount += getExtraKnockbackVSUnitCombatType(eCombatType);
 
-	return std::max(0,iAmount);
+	return std::max(0, iAmount);
 }
 
 int CvUnit::getExtraKnockbackVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34730,7 +33799,7 @@ int CvUnit::getExtraKnockbackVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraKnockbackVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34756,7 +33825,7 @@ int CvUnit::punctureVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraPunctureVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34774,7 +33843,7 @@ int CvUnit::getExtraPunctureVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraPunctureVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34800,7 +33869,7 @@ int CvUnit::armorVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraArmorVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34818,7 +33887,7 @@ int CvUnit::getExtraArmorVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraArmorVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34839,12 +33908,12 @@ int CvUnit::dodgeVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 	iAmount += getExtraDodgeVSUnitCombatType(eCombatType);
 
-	return std::max(0,iAmount);
+	return std::max(0, iAmount);
 }
 
 int CvUnit::getExtraDodgeVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34862,7 +33931,7 @@ int CvUnit::getExtraDodgeVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraDodgeVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34883,12 +33952,12 @@ int CvUnit::precisionVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 	iAmount += getExtraPrecisionVSUnitCombatType(eCombatType);
 
-	return std::max(0,iAmount);
+	return std::max(0, iAmount);
 }
 
 int CvUnit::getExtraPrecisionVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34905,7 +33974,7 @@ int CvUnit::getExtraPrecisionVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraPrecisionVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34931,7 +34000,7 @@ int CvUnit::criticalVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraCriticalVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34948,7 +34017,7 @@ int CvUnit::getExtraCriticalVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraCriticalVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -34969,12 +34038,12 @@ int CvUnit::roundStunVSUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 	iAmount += getExtraRoundStunVSUnitCombatType(eCombatType);
 
-	return std::max(0,iAmount);
+	return std::max(0, iAmount);
 }
 
 int CvUnit::getExtraRoundStunVSUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -34991,7 +34060,7 @@ int CvUnit::getExtraRoundStunVSUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraRoundStunVSUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -35022,7 +34091,7 @@ int CvUnit::getExtraRoundStunProb(bool bIgnoreCommanders) const
 void CvUnit::changeExtraRoundStunProb(int iChange)
 {
 	m_iExtraRoundStunProb +=iChange;
-	FASSERT_NOT_NEGATIVE(getExtraRoundStunProb())
+	FASSERT_NOT_NEGATIVE(getExtraRoundStunProb());
 }
 
 int CvUnit::roundStunProbTotal() const
@@ -35058,7 +34127,7 @@ int CvUnit::getCombatStuns() const
 void CvUnit::setCombatStuns(int iNewValue)
 {
 	m_iCombatStuns = iNewValue;
-	FASSERT_NOT_NEGATIVE(getCombatStuns())
+	FASSERT_NOT_NEGATIVE(getCombatStuns());
 }
 
 void CvUnit::changeCombatStuns(int iChange)
@@ -35311,10 +34380,9 @@ int CvUnit::criticalVSOpponentProbTotal(const CvUnit* pOpponent) const
 
 bool CvUnit::canInflictCritical(PromotionTypes eCritical) const
 {
-	int iI;
 	if (GC.getPromotionLineInfo((PromotionLineTypes)GC.getPromotionInfo(eCritical).getPromotionLine()).getNumCriticalOriginCombatClassTypes() > 0)
 	{
-		for (iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
+		for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 		{
 			if (isHasUnitCombat((UnitCombatTypes)iI) && GC.getPromotionLineInfo((PromotionLineTypes)GC.getPromotionInfo(eCritical).getPromotionLine()).isCriticalOriginCombatClassType(iI))
 			{
@@ -35332,7 +34400,7 @@ bool CvUnit::canInflictCritical(PromotionTypes eCritical) const
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnit::getAfflictionLineCount(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35341,13 +34409,13 @@ int CvUnit::getAfflictionLineCount(PromotionLineTypes ePromotionLineType) const
 
 bool CvUnit::hasAfflictionLine(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 	return (getAfflictionLineCount(ePromotionLineType) > 0);
 }
 
 void CvUnit::changeAfflictionLineCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35519,7 +34587,7 @@ void CvUnit::recover(PromotionLineTypes eAfflictionLine)
 
 int CvUnit::getAfflictOnAttackTypeProbability(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35543,7 +34611,7 @@ int CvUnit::getAfflictOnAttackTypeProbability(PromotionLineTypes ePromotionLineT
 
 void CvUnit::changeAfflictOnAttackTypeProbability(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35555,7 +34623,7 @@ void CvUnit::changeAfflictOnAttackTypeProbability(PromotionLineTypes ePromotionL
 
 void CvUnit::setAfflictOnAttackTypeProbability(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -35567,7 +34635,7 @@ void CvUnit::setAfflictOnAttackTypeProbability(PromotionLineTypes ePromotionLine
 
 bool CvUnit::hasAfflictOnAttackType(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35587,7 +34655,7 @@ bool CvUnit::hasAfflictOnAttackType(PromotionLineTypes ePromotionLineType) const
 
 int CvUnit::getAfflictOnAttackTypeCount(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35596,7 +34664,7 @@ int CvUnit::getAfflictOnAttackTypeCount(PromotionLineTypes ePromotionLineType) c
 
 void CvUnit::changeAfflictOnAttackTypeCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35609,7 +34677,7 @@ void CvUnit::changeAfflictOnAttackTypeCount(PromotionLineTypes ePromotionLineTyp
 
 void CvUnit::setAfflictOnAttackTypeCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -35621,7 +34689,7 @@ void CvUnit::setAfflictOnAttackTypeCount(PromotionLineTypes ePromotionLineType, 
 
 int CvUnit::getAfflictOnAttackTypeImmediateCount(PromotionLineTypes ePromotionLineType) const//
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35630,7 +34698,7 @@ int CvUnit::getAfflictOnAttackTypeImmediateCount(PromotionLineTypes ePromotionLi
 
 bool CvUnit::isAfflictOnAttackTypeImmediate(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35651,7 +34719,7 @@ bool CvUnit::isAfflictOnAttackTypeImmediate(PromotionLineTypes ePromotionLineTyp
 
 void CvUnit::changeAfflictOnAttackTypeImmediateCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35663,7 +34731,7 @@ void CvUnit::changeAfflictOnAttackTypeImmediateCount(PromotionLineTypes ePromoti
 
 void CvUnit::setAfflictOnAttackTypeImmediateCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -35675,7 +34743,7 @@ void CvUnit::setAfflictOnAttackTypeImmediateCount(PromotionLineTypes ePromotionL
 
 int CvUnit::getAfflictOnAttackTypeMeleeCount(PromotionLineTypes ePromotionLineType) const//
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35684,7 +34752,7 @@ int CvUnit::getAfflictOnAttackTypeMeleeCount(PromotionLineTypes ePromotionLineTy
 
 bool CvUnit::isAfflictOnAttackTypeMelee(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35705,7 +34773,7 @@ bool CvUnit::isAfflictOnAttackTypeMelee(PromotionLineTypes ePromotionLineType) c
 
 void CvUnit::changeAfflictOnAttackTypeMeleeCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35717,7 +34785,7 @@ void CvUnit::changeAfflictOnAttackTypeMeleeCount(PromotionLineTypes ePromotionLi
 
 void CvUnit::setAfflictOnAttackTypeMeleeCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -35729,7 +34797,7 @@ void CvUnit::setAfflictOnAttackTypeMeleeCount(PromotionLineTypes ePromotionLineT
 
 int CvUnit::getAfflictOnAttackTypeDistanceCount(PromotionLineTypes ePromotionLineType) const//
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35738,7 +34806,7 @@ int CvUnit::getAfflictOnAttackTypeDistanceCount(PromotionLineTypes ePromotionLin
 
 bool CvUnit::isAfflictOnAttackTypeDistance(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35759,7 +34827,7 @@ bool CvUnit::isAfflictOnAttackTypeDistance(PromotionLineTypes ePromotionLineType
 
 void CvUnit::changeAfflictOnAttackTypeDistanceCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35771,7 +34839,7 @@ void CvUnit::changeAfflictOnAttackTypeDistanceCount(PromotionLineTypes ePromotio
 
 void CvUnit::setAfflictOnAttackTypeDistanceCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange!= 0);
 
@@ -35783,7 +34851,7 @@ void CvUnit::setAfflictOnAttackTypeDistanceCount(PromotionLineTypes ePromotionLi
 //
 int CvUnit::getAfflictOnAttackTypeAttemptedCount(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
@@ -35792,7 +34860,7 @@ int CvUnit::getAfflictOnAttackTypeAttemptedCount(PromotionLineTypes ePromotionLi
 
 bool CvUnit::isAfflictOnAttackTypeAttempted(PromotionLineTypes ePromotionLineType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(ePromotionLineType);
 
 	return info ? info->m_iAfflictOnAttackTypeAttemptedCount > 0 : false;
@@ -35800,7 +34868,7 @@ bool CvUnit::isAfflictOnAttackTypeAttempted(PromotionLineTypes ePromotionLineTyp
 
 void CvUnit::changeAfflictOnAttackTypeAttemptedCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	if (iChange != 0)
 	{
@@ -35812,7 +34880,7 @@ void CvUnit::changeAfflictOnAttackTypeAttemptedCount(PromotionLineTypes ePromoti
 
 void CvUnit::setAfflictOnAttackTypeAttemptedCount(PromotionLineTypes ePromotionLineType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), ePromotionLineType);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLineType, iChange != 0);
 
@@ -35857,7 +34925,7 @@ void CvUnit::setHealUnitCombatCount()
 
 int CvUnit::getHealUnitCombatTypeTotal(UnitCombatTypes eUnitCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombatType);
 
@@ -35878,7 +34946,7 @@ int CvUnit::getHealUnitCombatTypeTotal(UnitCombatTypes eUnitCombatType) const
 
 void CvUnit::changeHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	if (iChange != 0)
 	{
@@ -35892,7 +34960,7 @@ void CvUnit::changeHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombatType, int
 
 void CvUnit::setHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eUnitCombatType, iChange != 0);
 
@@ -35906,7 +34974,7 @@ void CvUnit::setHealUnitCombatTypeVolume(UnitCombatTypes eUnitCombatType, int iC
 
 int CvUnit::getHealUnitCombatTypeAdjacentTotal(UnitCombatTypes eUnitCombatType) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombatType);
 
@@ -35927,7 +34995,7 @@ int CvUnit::getHealUnitCombatTypeAdjacentTotal(UnitCombatTypes eUnitCombatType) 
 
 void CvUnit::changeHealUnitCombatTypeAdjacentVolume(UnitCombatTypes eUnitCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	if (iChange != 0)
 	{
@@ -35941,7 +35009,7 @@ void CvUnit::changeHealUnitCombatTypeAdjacentVolume(UnitCombatTypes eUnitCombatT
 
 void CvUnit::setHealUnitCombatTypeAdjacentVolume(UnitCombatTypes eUnitCombatType, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombatType);
 
 	UnitCombatKeyedInfo* info = findOrCreateUnitCombatKeyedInfo(eUnitCombatType, iChange != 0);
 
@@ -35958,10 +35026,11 @@ void CvUnit::doSetUnitCombats()
 	bool bUpdated = false;
 	if (getUnitCombatType() != NO_UNITCOMBAT)
 	{
-		setHasUnitCombat(getUnitCombatType(),true);
-		for (int iI = 0; iI < m_pUnitInfo->getNumSubCombatTypes(); iI++)
+		setHasUnitCombat(getUnitCombatType(), true);
+
+		foreach_(const UnitCombatTypes eSubCombat, m_pUnitInfo->getSubCombatTypes())
 		{
-			setHasUnitCombat((UnitCombatTypes)m_pUnitInfo->getSubCombatType(iI),true);
+			setHasUnitCombat(eSubCombat, true);
 			bUpdated = true;
 		}
 	}
@@ -35983,7 +35052,7 @@ void CvUnit::doSetUnitCombats()
 	{
 		if (GC.getUnitCombatInfo((UnitCombatTypes)iI).getEra() == eEra)
 		{
-			setHasUnitCombat((UnitCombatTypes)iI,true,false);
+			setHasUnitCombat((UnitCombatTypes)iI, true, false);
 			break;
 		}
 	}
@@ -35995,25 +35064,17 @@ void CvUnit::doSetUnitCombats()
 
 void CvUnit::setFreePromotion(PromotionTypes ePromotion, bool bAdding, TraitTypes eTrait)
 {
-	const int numTraitInfos = GC.getNumTraitInfos();
 	const CvPlayer& pPlayer = GET_PLAYER(getOwner());
 
 	if (bAdding && !isHasPromotion(ePromotion))
 	{
-		if (m_pUnitInfo->getFreePromotions((int)ePromotion))
+		if (m_pUnitInfo->getFreePromotions((int)ePromotion)
+		|| (NO_UNIT != getUnitType() && pPlayer.isFreePromotion(getUnitType(), ePromotion)))
 		{
 			setHasPromotion(ePromotion, true, true);
 			return;
 		}
 
-		if (NO_UNIT != getUnitType())
-		{
-			if (pPlayer.isFreePromotion(getUnitType(), ePromotion))
-			{
-				setHasPromotion(ePromotion, true, true);
-				return;
-			}
-		}
 		for (std::map<UnitCombatTypes, UnitCombatKeyedInfo>::const_iterator it = m_unitCombatKeyedInfo.begin(), end = m_unitCombatKeyedInfo.end(); it != end; ++it)
 		{
 			if (it->second.m_bHasUnitCombat)
@@ -36024,26 +35085,21 @@ void CvUnit::setFreePromotion(PromotionTypes ePromotion, bool bAdding, TraitType
 					return;
 				}
 
-				if (eTrait != NO_TRAIT)
+				if (eTrait == NO_TRAIT)
 				{
-					if (GC.getTraitInfo(eTrait).isFreePromotionUnitCombats(ePromotion, it->first))
+					for (int iK = GC.getNumTraitInfos() - 1; iK > -1; iK--)
 					{
-						setHasPromotion(ePromotion, true, true, false, false, true);
-					}
-				}
-				else
-				{
-					for (int iK = 0; iK < numTraitInfos; iK++)
-					{
-						if (pPlayer.hasTrait((TraitTypes)iK))
+						if (pPlayer.hasTrait((TraitTypes)iK) && GC.getTraitInfo((TraitTypes)iK).isFreePromotionUnitCombats(ePromotion, it->first))
 						{
-							if (GC.getTraitInfo((TraitTypes)iK).isFreePromotionUnitCombats(ePromotion, it->first))
-							{
-								setHasPromotion(ePromotion, true, true, false, false, true);
-								return;
-							}
+							setHasPromotion(ePromotion, true, true, false, false, true);
+							return;
 						}
 					}
+				}
+				else if (GC.getTraitInfo(eTrait).isFreePromotionUnitCombats(ePromotion, it->first))
+				{
+					setHasPromotion(ePromotion, true, true, false, false, true);
+					return;
 				}
 			}
 		}
@@ -36055,26 +35111,21 @@ void CvUnit::setFreePromotion(PromotionTypes ePromotion, bool bAdding, TraitType
 		{
 			if (it->second.m_bHasUnitCombat)
 			{
-				if (eTrait != NO_TRAIT)
+				if (eTrait == NO_TRAIT)
 				{
-					if (GC.getTraitInfo(eTrait).isFreePromotionUnitCombats((int)ePromotion, it->first))
+					for (int iK = GC.getNumTraitInfos() - 1; iK > -1; iK--)
 					{
-						setHasPromotion(ePromotion, false, true, false, false, true);
-					}
-				}
-				else
-				{
-					for (int iK = 0; iK < numTraitInfos; iK++)
-					{
-						if (!pPlayer.hasTrait((TraitTypes)iK))
+						if (!pPlayer.hasTrait((TraitTypes)iK) && GC.getTraitInfo((TraitTypes)iK).isFreePromotionUnitCombats((int)ePromotion, it->first))
 						{
-							if (GC.getTraitInfo((TraitTypes)iK).isFreePromotionUnitCombats((int)ePromotion, it->first))
-							{
-								setHasPromotion(ePromotion, false, true, false, false, true);
-								return;
-							}
+							setHasPromotion(ePromotion, false, true, false, false, true);
+							return;
 						}
 					}
+				}
+				else if (GC.getTraitInfo(eTrait).isFreePromotionUnitCombats((int)ePromotion, it->first))
+				{
+					setHasPromotion(ePromotion, false, true, false, false, true);
+					return;
 				}
 			}
 		}
@@ -36083,12 +35134,10 @@ void CvUnit::setFreePromotion(PromotionTypes ePromotion, bool bAdding, TraitType
 
 void CvUnit::doSetFreePromotions(bool bAdding, TraitTypes eTrait)
 {
-	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+	for (int iI = GC.getNumPromotionInfos() - 1; iI > -1; iI--)
 	{
-		const PromotionTypes ePromotion = ((PromotionTypes)iI);
-		setFreePromotion(ePromotion, bAdding, eTrait);
+		setFreePromotion(static_cast<PromotionTypes>(iI), bAdding, eTrait);
 	}
-
 	if (bAdding)
 	{
 		checkFreetoCombatClass();
@@ -36103,7 +35152,7 @@ int CvUnit::getRetrainsAvailable() const
 void CvUnit::setRetrainsAvailable(int iNewValue)
 {
 	m_iRetrainsAvailable = iNewValue;
-	FASSERT_NOT_NEGATIVE(getRetrainsAvailable())
+	FASSERT_NOT_NEGATIVE(getRetrainsAvailable());
 }
 
 void CvUnit::changeRetrainsAvailable(int iChange)
@@ -36639,19 +35688,19 @@ void CvUnit::changeExtraSize(int iChange)
 
 int CvUnit::qualityRank() const
 {
-	FASSERT_NOT_NEGATIVE(getQualityBaseTotal())
+	FASSERT_NOT_NEGATIVE(getQualityBaseTotal());
 	return (getQualityBaseTotal() + getExtraQuality());
 }
 
 int CvUnit::groupRank() const
 {
-	FASSERT_NOT_NEGATIVE(getGroupBaseTotal())
+	FASSERT_NOT_NEGATIVE(getGroupBaseTotal());
 	return (getGroupBaseTotal() + getExtraGroup());
 }
 
 int CvUnit::sizeRank() const
 {
-	FASSERT_NOT_NEGATIVE(getSizeBaseTotal())
+	FASSERT_NOT_NEGATIVE(getSizeBaseTotal());
 	return (getSizeBaseTotal() + getExtraSize());
 }
 
@@ -37020,70 +36069,69 @@ void CvUnit::doSplit()
 	else
 	{
 		CvUnit* pUnit0 = GET_PLAYER(getOwner()).getUnit(GET_PLAYER(getOwner()).getSplittingUnit());
-		UnitTypes eUnitType = pUnit0->getUnitType();
+		const UnitTypes eUnitType = pUnit0->getUnitType();
 		CvUnit* pUnit1 = GET_PLAYER(getOwner()).initUnit(eUnitType, pUnit0->getX(), pUnit0->getY(), NO_UNITAI, NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
 		CvUnit* pUnit2 = GET_PLAYER(getOwner()).initUnit(eUnitType, pUnit0->getX(), pUnit0->getY(), NO_UNITAI, NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
 		CvUnit* pUnit3 = GET_PLAYER(getOwner()).initUnit(eUnitType, pUnit0->getX(), pUnit0->getY(), NO_UNITAI, NO_DIRECTION, GC.getGame().getSorenRandNum(10000, "AI Unit Birthmark"));
+
 		PROFILE_FUNC();
-		CvSelectionGroup* pSplittingGroup = pUnit0->getGroup();
+
+		// Toffer - Remove any potential buildup promotions
+		pUnit0->setFortifyTurns(0);
 
 		int iTotalGroupOffset = -1;
 		int iTotalQualityOffset = 0;
-		pUnit0->setFortifyTurns(0);
 
-		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		for (int iI = GC.getNumPromotionInfos() -1; iI > -1; iI--)
 		{
-			const PromotionTypes ePromotion = ((PromotionTypes)iI);
-			if (GC.getPromotionInfo(ePromotion).getGroupChange() == 0 && GC.getPromotionInfo(ePromotion).getQualityChange() == 0)
+			const PromotionTypes ePromoX = static_cast<PromotionTypes>(iI);
+
+			if (!pUnit0->isHasPromotion(ePromoX) || pUnit1->isHasPromotion(ePromoX))
 			{
-				if (pUnit0->isHasPromotion(ePromotion))
-				{
-					if (GC.getPromotionInfo(ePromotion).isLeader())
-					{
-						pUnit1->setHasPromotion(ePromotion, true, true);
-					}
+				// Toffer - If pUnit1 has it then pUnit2 and 3 should also have it at this point.
+				continue;
+			}
+
+			if (GC.getPromotionInfo(ePromoX).getQualityChange() != 0)
+			{
+				iTotalQualityOffset += GC.getPromotionInfo((PromotionTypes)iI).getQualityChange();
+			}
+			else if (GC.getPromotionInfo(ePromoX).getGroupChange() != 0)
+			{
+				iTotalGroupOffset += GC.getPromotionInfo((PromotionTypes)iI).getGroupChange();
+			}
+			else if (GC.getPromotionInfo(ePromoX).isLeader())
+			{
+				pUnit1->setHasPromotion(ePromoX, true, true);
+			}
 #ifdef OUTBREAKS_AND_AFFLICTIONS
-					else if (GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE && GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isAffliction())
-					{
-						if (GC.getGame().isOption(GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS))
-						{
-							pUnit1->afflict(GC.getPromotionInfo(ePromotion).getPromotionLine());
-							pUnit2->afflict(GC.getPromotionInfo(ePromotion).getPromotionLine());
-							pUnit3->afflict(GC.getPromotionInfo(ePromotion).getPromotionLine());
-						}
-					}
+			else if (GC.getGame().isOption(GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS))
+			{
+				const PromotionLineTypes ePromoLine = GC.getPromotionInfo(ePromoX).getPromotionLine();
+
+				if (ePromoLine != NO_PROMOTIONLINE && GC.getPromotionLineInfo(ePromoLine).isAffliction())
+				{
+					pUnit1->afflict(ePromoLine);
+					pUnit2->afflict(ePromoLine);
+					pUnit3->afflict(ePromoLine);
+				}
+			}
 #endif
-					else if (pUnit0->isPromotionFree(ePromotion) || GC.getPromotionInfo(ePromotion).isEquipment())
-					{
-						pUnit1->setHasPromotion(ePromotion, true, true);
-						if (GC.getPromotionInfo(ePromotion).isEquipment())
-						{
-							pUnit2->setHasPromotion(ePromotion, true, true);
-							pUnit3->setHasPromotion(ePromotion, true, true);
-						}
-					}
-					else
-					{
-						pUnit1->setHasPromotion(ePromotion, true, false);
-						pUnit2->setHasPromotion(ePromotion, true, false);
-						pUnit3->setHasPromotion(ePromotion, true, false);
-					}
-				}
-				// Must include an adjustment here when equipments are able to be inventoried - Shouldn't just lose the 2nd and 3rd unit's equipment.
-			}
-			else if (GC.getPromotionInfo(ePromotion).getQualityChange() != 0)
+			else if (GC.getPromotionInfo(ePromoX).isEquipment())
 			{
-				if (pUnit0->isHasPromotion(ePromotion))
-				{
-					iTotalQualityOffset += GC.getPromotionInfo((PromotionTypes)iI).getQualityChange();
-				}
+				pUnit1->setHasPromotion(ePromoX, true, true);
+				pUnit2->setHasPromotion(ePromoX, true, true);
+				pUnit3->setHasPromotion(ePromoX, true, true);
 			}
-			else if (GC.getPromotionInfo(ePromotion).getGroupChange() != 0)
+			else if (pUnit0->isPromotionFree(ePromoX))
 			{
-				if (pUnit0->isHasPromotion(ePromotion))
-				{
-					iTotalGroupOffset += GC.getPromotionInfo((PromotionTypes)iI).getGroupChange();
-				}
+				pUnit1->setHasPromotion(ePromoX, true, true);
+			}
+			else
+			{
+				pUnit1->setHasPromotion(ePromoX, true, false);
+				pUnit2->setHasPromotion(ePromoX, true, false);
+				pUnit3->setHasPromotion(ePromoX, true, false);
 			}
 		}
 
@@ -37108,6 +36156,7 @@ void CvUnit::doSplit()
 		{
 			pUnit1->setLeaderUnitType(pUnit0->getLeaderUnitType());
 		}
+		CvSelectionGroup* pSplittingGroup = pUnit0->getGroup();
 
 		foreach_(CvUnit* unit, newUnits)
 		{
@@ -37123,38 +36172,13 @@ void CvUnit::doSplit()
 		}
 
 		GET_PLAYER(getOwner()).setSplittingUnit(FFreeList::INVALID_INDEX);
-		//GET_PLAYER(getOwner()).setFirstMergeSelectionUnit(NO_UNIT);
-		//GET_PLAYER(getOwner()).setSecondMergeSelectionUnit(NO_UNIT);
 
-		/*pUnit0->joinGroup(NULL);*/
-
-		//CvSelectionGroup* dGroup = getGroup();
-
-		/*pUnit0->getGroup()->AI_setMissionAI(MISSIONAI_DELIBERATE_KILL, NULL, NULL);*/
 		pUnit0->kill(true, NO_PLAYER, true);
-		//if ( dGroup->getNumUnits() == 0 )
-		//{
-		//	dGroup->kill();
-		//}
 	}
 }
 
 void CvUnit::setGGExperienceEarnedTowardsType()
 {
-	bool bIsSet = false;
-	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
-	{
-		if (isHasUnitCombat((UnitCombatTypes)iI) && GC.getUnitCombatInfo((UnitCombatTypes)iI).getNumGGptsforUnitTypes() > 0)
-		{
-			m_eGGExperienceEarnedTowardsType = (UnitTypes)GC.getUnitCombatInfo((UnitCombatTypes)iI).getGGptsforUnitType(0);
-			bIsSet = true;
-			return;
-		}
-	}
-	if (!bIsSet)
-	{
-		m_eGGExperienceEarnedTowardsType = GC.getUNIT_GREAT_GENERAL();
-	}
 	//TB notes: This has been setup to allow the UnitCombat tag to take multiple entries but has not been setup to manage this in CvUnit.
 	//It paves the way for future potential but leaves the design where it is for now where only the first definition the unit finds will be established.
 	//(No examples of setting up a singular text reference on a delayed resolution was part of the motivation here)
@@ -37162,7 +36186,26 @@ void CvUnit::setGGExperienceEarnedTowardsType()
 	//ONLY the Primary Category UnitCombats should define what type of general pts are generated by that unit.
 	//OR Alternatively, subselections of a given Primary Category (for example: UNITCOMBAT_CIVILIAN) could give its sub-selections designations instead (like UNITCOMBAT_LAW_ENFORCEMENT and UNITCOMBAT_HEALER)
 	//In this case, we'd probably want a Great Citizen to give pts to UNITCOMBAT_CIVILIAN when settled in the city BUT such a unit would come more from the GP mechanism instead.
+
+	for (int iI = GC.getNumUnitCombatInfos() - 1; iI > -1; iI--)
+	{
+		const UnitCombatTypes eType = static_cast<UnitCombatTypes>(iI);
+
+		if (isHasUnitCombat(eType))
+		{
+			for (int iJ = GC.getUnitCombatInfo(eType).getNumGGptsforUnitTypes() - 1; iJ > -1; iJ--)
+			{
+				if (GC.getUnitCombatInfo(eType).getGGptsforUnitType(iJ) > -1)
+				{
+					m_eGGExperienceEarnedTowardsType = static_cast<UnitTypes>(GC.getUnitCombatInfo(eType).getGGptsforUnitType(iJ));
+					return;
+				}
+			}
+		}
+	}
+	m_eGGExperienceEarnedTowardsType = GC.getUNIT_GREAT_GENERAL();
 }
+
 UnitTypes CvUnit::getGGExperienceEarnedTowardsType() const
 {
 	return m_eGGExperienceEarnedTowardsType;
@@ -37170,18 +36213,12 @@ UnitTypes CvUnit::getGGExperienceEarnedTowardsType() const
 
 int CvUnit::eraGroupMergeLimit() const
 {
-	int iLimit = m_pUnitInfo->getBaseGroupRank();
-	const int iEra = ((int)GET_PLAYER(getOwner()).getCurrentEra());
-	iLimit += iEra + 1;
-	return iLimit;
+	return m_pUnitInfo->getBaseGroupRank() + GET_PLAYER(getOwner()).getCurrentEra() + 1;
 }
 
 int CvUnit::eraGroupSplitLimit() const
 {
-	int iLimit = m_pUnitInfo->getBaseGroupRank();
-	const int iEra = ((int)GET_PLAYER(getOwner()).getCurrentEra());
-	iLimit -= (iEra + 1);
-	return std::max(1, iLimit);
+	return std::max(1, m_pUnitInfo->getBaseGroupRank() - GET_PLAYER(getOwner()).getCurrentEra() - 1);
 }
 
 DomainTypes CvUnit::getDomainCargo() const
@@ -37248,7 +36285,7 @@ void CvUnit::changeSMCargoSpace(int iChange)
 	if (iChange != 0)
 	{
 		m_iSMCargoCapacity += iChange;
-		FASSERT_NOT_NEGATIVE(m_iSMCargoCapacity)
+		FASSERT_NOT_NEGATIVE(m_iSMCargoCapacity);
 		setInfoBarDirty(true);
 	}
 }
@@ -37320,7 +36357,7 @@ void CvUnit::setSMCargoCapacity()
 	m_iSMCargoCapacity = applySMRank(
 		SMcargoCapacityPreCheck(), getSizeMattersSpacialOffsetValue(), GC.getSIZE_MATTERS_MOST_VOLUMETRIC_MULTIPLIER()
 		);
-	FASSERT_NOT_NEGATIVE(m_iSMCargoCapacity)
+	FASSERT_NOT_NEGATIVE(m_iSMCargoCapacity);
 }
 
 int CvUnit::getExtraMaxHP() const
@@ -37376,7 +36413,7 @@ void CvUnit::setSMHPValue()
 			GC.getSIZE_MATTERS_MOST_MULTIPLIER()
 		)
 	);
-	FASSERT_NOT_NEGATIVE(m_iSMHPValue)
+	FASSERT_NOT_NEGATIVE(m_iSMHPValue);
 }
 
 int CvUnit::getPowerValueTotal() const
@@ -37388,7 +36425,7 @@ void CvUnit::setSMPowerValue(bool bForLoad)
 {
 	const int oldSMPowerValue = m_iSMPowerValue;
 	const int m_iSMPowerValue = applySMRank(m_pUnitInfo->getPowerValue(), getSizeMattersOffsetValue(), GC.getSIZE_MATTERS_MOST_MULTIPLIER());
-	FASSERT_NOT_NEGATIVE(m_iSMPowerValue)
+	FASSERT_NOT_NEGATIVE(m_iSMPowerValue);
 	if (!bForLoad)
 	{
 		const int iChange = m_iSMPowerValue - oldSMPowerValue;
@@ -37575,7 +36612,7 @@ void CvUnit::changeExtraBombardRate(int iChange)
 	{
 		setSMBombardRate();
 	}
-	FASSERT_NOT_NEGATIVE(getExtraBombardRate())
+	FASSERT_NOT_NEGATIVE(getExtraBombardRate());
 }
 
 void CvUnit::setExtraBombardRate(int iChange)
@@ -37626,7 +36663,7 @@ void CvUnit::setSMBombardRate()
 		GC.getSIZE_MATTERS_MOST_MULTIPLIER());
 
 	// optional but most of these should be above or equal to 0.
-	FASSERT_NOT_NEGATIVE(m_iSMBombardRate)
+	FASSERT_NOT_NEGATIVE(m_iSMBombardRate);
 	m_iSMBombardRate = std::max(0, m_iSMBombardRate);
 }
 
@@ -37673,7 +36710,7 @@ void CvUnit::setSMAirBombBaseRate()
 		)
 	);
 	//optional but most of these should be above or equal to 0.
-	FASSERT_NOT_NEGATIVE(m_iSMAirBombBaseRate)
+	FASSERT_NOT_NEGATIVE(m_iSMAirBombBaseRate);
 	m_iSMAirBombBaseRate = std::max(0, m_iSMAirBombBaseRate);
 }
 
@@ -37692,40 +36729,41 @@ int CvUnit::workRate(bool bMax) const
 	int iWorkMod = getWorkModifier() + GET_PLAYER(getOwner()).getWorkerSpeedModifier();
 
 	const CvPlot* pPlot = plot();
-	if (pPlot != NULL)
+	for (int iI = 0; iI < GC.getNumFeatureInfos(); iI++)
 	{
-		for (int iI = 0; iI < GC.getNumFeatureInfos(); iI++)
+		if (pPlot->getFeatureType() == (FeatureTypes)iI)
 		{
-			if (pPlot->getFeatureType() == (FeatureTypes)iI)
-			{
-				iWorkMod += featureWorkPercent((FeatureTypes)iI);
-			}
+			iWorkMod += featureWorkPercent((FeatureTypes)iI);
 		}
-		iWorkMod += terrainWorkPercent(pPlot->getTerrainType());
-		{
-			const BuildTypes eBuild = getBuildType();
-
-			if (eBuild != NO_BUILD)
-			{
-				iWorkMod += buildWorkPercent(eBuild);
-			}
-		}
-
-		if (pPlot->isHills())
-		{
-			iWorkMod += hillsWorkModifier();
-		}
-		else if (pPlot->isAsPeak())
-		{
-			iWorkMod += peaksWorkModifier();
-		}
-		iRate = getModifiedIntValue(iRate, iWorkMod);
 	}
-	if (!isHuman() && !isNPC())
+	iWorkMod += terrainWorkPercent(pPlot->getTerrainType());
 	{
-		iRate = getModifiedIntValue(iRate, GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIWorkRateModifier());
+		const BuildTypes eBuild = getBuildType();
+
+		if (eBuild != NO_BUILD)
+		{
+			iWorkMod += buildWorkPercent(eBuild);
+		}
 	}
-	return iRate;
+
+	if (pPlot->isHills())
+	{
+		iWorkMod += hillsWorkModifier();
+	}
+	else if (pPlot->isAsPeak())
+	{
+		iWorkMod += peaksWorkModifier();
+	}
+
+	if (GET_PLAYER(getOwner()).isNormalAI())
+	{
+		iWorkMod += (
+			GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIWorkRateModifier()
+			-
+			GC.getHandicapInfo(GC.getGame().getHandicapType()).getAIPerEraModifier() * GET_PLAYER(getOwner()).getCurrentEra()
+		);
+	}
+	return getModifiedIntValue(iRate, iWorkMod);
 }
 
 // The call that plugs into the rest of the code (final value)
@@ -37767,7 +36805,7 @@ void CvUnit::setSMBaseWorkRate()
 		)
 	);
 	//optional but most of these should be above or equal to 0.
-	FASSERT_NOT_NEGATIVE(m_iSMBaseWorkRate)
+	FASSERT_NOT_NEGATIVE(m_iSMBaseWorkRate);
 	m_iSMBaseWorkRate = std::max(0, m_iSMBaseWorkRate);
 }
 
@@ -37833,7 +36871,7 @@ void CvUnit::setSMRevoltProtection()
 		)
 	);
 	// optional but most of these should be above or equal to 0.
-	FASSERT_NOT_NEGATIVE(m_iSMRevoltProtection)
+	FASSERT_NOT_NEGATIVE(m_iSMRevoltProtection);
 	m_iSMRevoltProtection = std::max(0, m_iSMRevoltProtection);
 }
 
@@ -37894,7 +36932,7 @@ int CvUnit::getExtraRBombardDamage() const
 void CvUnit::changeExtraRBombardDamage(int iChange)
 {
 	m_iExtraRBombardDamage += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraRBombardDamage())
+	FASSERT_NOT_NEGATIVE(getExtraRBombardDamage());
 }
 
 int CvUnit::getBaseRBombardDamage() const
@@ -37925,7 +36963,7 @@ void CvUnit::changeBaseRBombardDamage(int iChange, bool bAdding, UnitCombatTypes
 		}
 		m_iBaseRBombardDamage = iBestValue;
 	}
-	FASSERT_NOT_NEGATIVE(getBaseRBombardDamage())
+	FASSERT_NOT_NEGATIVE(getBaseRBombardDamage());
 }
 
 int CvUnit::rBombardDamageLimit() const
@@ -37961,7 +36999,7 @@ int CvUnit::getExtraRBombardDamageLimit() const
 void CvUnit::changeExtraRBombardDamageLimit(int iChange)
 {
 	m_iExtraRBombardDamageLimit += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraRBombardDamageLimit())
+	FASSERT_NOT_NEGATIVE(getExtraRBombardDamageLimit());
 }
 
 int CvUnit::getBaseRBombardDamageLimit() const
@@ -37992,7 +37030,7 @@ void CvUnit::changeBaseRBombardDamageLimit(int iChange, bool bAdding, UnitCombat
 		}
 		m_iBaseRBombardDamageLimit = iBestValue;
 	}
-	FASSERT_NOT_NEGATIVE(getBaseRBombardDamageLimit())
+	FASSERT_NOT_NEGATIVE(getBaseRBombardDamageLimit());
 }
 
 int CvUnit::rBombardDamageMaxUnits() const
@@ -38025,7 +37063,7 @@ int CvUnit::getExtraRBombardDamageMaxUnits() const
 void CvUnit::changeExtraRBombardDamageMaxUnits(int iChange)
 {
 	m_iExtraRBombardDamageMaxUnits += iChange;
-	FASSERT_NOT_NEGATIVE(getExtraRBombardDamageMaxUnits())
+	FASSERT_NOT_NEGATIVE(getExtraRBombardDamageMaxUnits());
 }
 
 int CvUnit::getBaseRBombardDamageMaxUnits() const
@@ -38056,7 +37094,7 @@ void CvUnit::changeBaseRBombardDamageMaxUnits(int iChange, bool bAdding, UnitCom
 		}
 		m_iBaseRBombardDamageMaxUnits = iBestValue;
 	}
-	FASSERT_NOT_NEGATIVE(getBaseRBombardDamageMaxUnits())
+	FASSERT_NOT_NEGATIVE(getBaseRBombardDamageMaxUnits());
 }
 
 int CvUnit::getDCMBombRange() const
@@ -38110,7 +37148,7 @@ void CvUnit::changeBaseDCMBombRange(int iChange, bool bAdding, UnitCombatTypes e
 		}
 		m_iBaseDCMBombRange = iBestValue;
 	}
-	FASSERT_NOT_NEGATIVE(getBaseDCMBombRange())
+	FASSERT_NOT_NEGATIVE(getBaseDCMBombRange());
 }
 
 int CvUnit::getDCMBombAccuracy() const
@@ -38164,7 +37202,7 @@ void CvUnit::changeBaseDCMBombAccuracy(int iChange, bool bAdding, UnitCombatType
 		}
 		m_iBaseDCMBombAccuracy = iBestValue;
 	}
-	FASSERT_NOT_NEGATIVE(getBaseDCMBombAccuracy())
+	FASSERT_NOT_NEGATIVE(getBaseDCMBombAccuracy());
 }
 
 bool CvUnit::isRBombardDirect() const
@@ -38204,6 +37242,35 @@ int CvUnit::applySMRank(int value, int rankChange, int rankMultiplier)
 	return static_cast<int>(std::min<int64_t>(MAX_INT, lvalue / 100));
 }
 
+int64_t CvUnit::applySMRank64(int64_t value, int rankChange, int rankMultiplier, bool bScaleUp)
+{
+	FAssertMsg(rankMultiplier > 0, "rankMultiplier must be greater than 0");
+	if (bScaleUp) value *= 100;
+
+	if (rankChange > 0)
+	{
+		for (int iI = 0; iI < rankChange; iI++)
+		{
+			value *= rankMultiplier;
+			value /= 100;
+		}
+	}
+	else
+	{
+		for (int iI = 0; iI < -rankChange; iI++)
+		{
+			value *= 100;
+			value /= rankMultiplier;
+		}
+	}
+	if (bScaleUp)
+	{
+		return value / 100;
+	}
+	return value;
+}
+
+
 int CvUnit::getNoSelfHealCount() const
 {
 	return m_iNoSelfHealCount;
@@ -38217,7 +37284,7 @@ bool CvUnit::hasNoSelfHeal() const
 void CvUnit::changeNoSelfHealCount(int iChange)
 {
 	m_iNoSelfHealCount += iChange;
-	FASSERT_NOT_NEGATIVE(getNoSelfHealCount())
+	FASSERT_NOT_NEGATIVE(getNoSelfHealCount());
 }
 
 int CvUnit::getSelfHealModifierTotal() const
@@ -38284,9 +37351,9 @@ void CvUnit::establishBuildups()
 		it->second.m_bValidBuildUp = false;
 	}
 
-	for (int iI = 0; iI < GC.getNumPromotionLineInfos(); iI++)
+	for (int iI = GC.getNumPromotionLineInfos() - 1; iI > -1; iI--)
 	{
-		const PromotionLineTypes ePromotionLine = (PromotionLineTypes)iI;
+		const PromotionLineTypes ePromotionLine = static_cast<PromotionLineTypes>(iI);
 		const CvPromotionLineInfo& kPromotionLine = GC.getPromotionLineInfo(ePromotionLine);
 		if (kPromotionLine.isBuildUp())
 		{
@@ -38294,7 +37361,7 @@ void CvUnit::establishBuildups()
 			{
 				const PromotionTypes ePromotion = (PromotionTypes)kPromotionLine.getPromotion(iJ);
 				if (GC.getPromotionInfo(ePromotion).getLinePriority() == 1
-					&& canAcquirePromotion(ePromotion, PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
+				&& canAcquirePromotion(ePromotion, PromotionRequirements::IgnoreHas | PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
 				{
 					PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(ePromotionLine);
 
@@ -38312,29 +37379,35 @@ PromotionLineTypes CvUnit::getBuildUpType() const
 	return m_eCurrentBuildUpType;
 }
 
-void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, bool bRemove, MissionTypes eSleepType)
+void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, MissionTypes eSleepType)
 {
-	if (ePromotionLine != NO_PROMOTIONLINE || bRemove)
+	if (isHuman())
 	{
-		m_eCurrentBuildUpType = ePromotionLine;
-
-		if (m_eCurrentBuildUpType != NO_PROMOTIONLINE)
+		// Buildup chosen
+		if (ePromotionLine != NO_PROMOTIONLINE)
 		{
-			setBuildUp(true);
+			if (m_eCurrentBuildUpType != ePromotionLine)
+			{
+				if (m_iBuildUpTurns > 0)
+				{
+					clearBuildups();
+				}
+				m_bIsBuildUp = true;
+				m_eCurrentBuildUpType = ePromotionLine;
+			}
+			return;
 		}
-		return;
+		// Choose buildup popup
+		if (eSleepType != MISSION_AUTO_BUILDUP && eSleepType != MISSION_HEAL_BUILDUP)
+		{
+			CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_CHOOSE_BUILDUP);
+			pInfo->setData1(getID());
+			gDLL->getInterfaceIFace()->addPopup(pInfo, getOwner());
+			return;
+		}
 	}
 
-	if (isHuman() && eSleepType != MISSION_AUTO_BUILDUP && eSleepType != MISSION_HEAL_BUILDUP)
-	{
-		setFortifyTurns(0);
-		CvPopupInfo* pInfo = new CvPopupInfo(BUTTONPOPUP_CHOOSE_BUILDUP);
-		pInfo->setData1(getID());
-		gDLL->getInterfaceIFace()->addPopup(pInfo, getOwner());
-		return;
-	}
-
-	const PromotionLineTypes eOldBuildUpType = getBuildUpType();
+	// AI buildup evaluation
 	const bool bCanHeal = hasHealUnitCombat() || getSameTileHeal() > 0 || getAdjacentTileHeal() > 0;
 	const bool bMustHeal = getDamage() > 0;
 	int iBestValue = 0;
@@ -38356,7 +37429,7 @@ void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, bool bRemove, Mis
 					const CvPromotionInfo& kPromotion = GC.getPromotionInfo(ePromotion);
 
 					if (kPromotion.getLinePriority() == 1
-						&& canAcquirePromotion(ePromotion, PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
+					&& canAcquirePromotion(ePromotion, PromotionRequirements::IgnoreHas | PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
 					{
 						int iValue = 0;
 						if (bCanHeal)
@@ -38384,26 +37457,29 @@ void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, bool bRemove, Mis
 		}
 		if (eAssignPromotionLine == NO_PROMOTIONLINE && isBuildUpable())
 		{
+			FErrorMsg("This shouldn't happen");
+			// Try again
 			establishBuildups();
-			(
-				isBuildUpable()
-				?
-				setBuildUpType(NO_PROMOTIONLINE, false, MISSION_AUTO_BUILDUP)
-				:
-				setBuildUpType(NO_PROMOTIONLINE, true)
-			);
+
+			if (isBuildUpable())
+			{
+				setBuildUpType(NO_PROMOTIONLINE, MISSION_AUTO_BUILDUP);
+			}
 			return;
 		}
 
-		if (eOldBuildUpType != eAssignPromotionLine)
+		if (eAssignPromotionLine != m_eCurrentBuildUpType)
 		{
-			setFortifyTurns(0);
-		}
-		m_eCurrentBuildUpType = eAssignPromotionLine;
+			if (m_iBuildUpTurns > 0)
+			{
+				clearBuildups();
+			}
+			m_eCurrentBuildUpType = eAssignPromotionLine;
 
-		if (m_eCurrentBuildUpType != NO_PROMOTIONLINE)
-		{
-			setBuildUp(true);
+			if (m_eCurrentBuildUpType != NO_PROMOTIONLINE)
+			{
+				m_bIsBuildUp = true;
+			}
 		}
 		return;
 	}
@@ -38420,7 +37496,7 @@ void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, bool bRemove, Mis
 			{
 				const PromotionTypes ePromotion = (PromotionTypes)kPotentialPromotionLine.getPromotion(iI);
 				if (GC.getPromotionInfo(ePromotion).getLinePriority() == 1
-				&& canAcquirePromotion(ePromotion, PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
+				&& canAcquirePromotion(ePromotion, PromotionRequirements::IgnoreHas | PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
 				{
 					const int iValue = std::max(1, GET_PLAYER(getOwner()).AI_promotionValue(ePromotion, getUnitType(), this, AI_getUnitAIType(), true));
 
@@ -38435,25 +37511,29 @@ void CvUnit::setBuildUpType(PromotionLineTypes ePromotionLine, bool bRemove, Mis
 	}
 	if (eAssignPromotionLine == NO_PROMOTIONLINE && isBuildUpable())
 	{
+		FErrorMsg("This shouldn't happen");
+		// Try again
 		establishBuildups();
-		(
-			isBuildUpable()
-			?
-			setBuildUpType(NO_PROMOTIONLINE, false, MISSION_AUTO_BUILDUP)
-			:
-			setBuildUpType(NO_PROMOTIONLINE, true)
-		);
+
+		if (isBuildUpable())
+		{
+			setBuildUpType(NO_PROMOTIONLINE, MISSION_AUTO_BUILDUP);
+		}
 		return;
 	}
-	if (eOldBuildUpType != eAssignPromotionLine)
-	{
-		setFortifyTurns(0);
-	}
-	m_eCurrentBuildUpType = eAssignPromotionLine;
 
-	if (m_eCurrentBuildUpType != NO_PROMOTIONLINE)
+	if (eAssignPromotionLine != m_eCurrentBuildUpType)
 	{
-		setBuildUp(true);
+		if (m_iBuildUpTurns > 0)
+		{
+			clearBuildups();
+		}
+		m_eCurrentBuildUpType = eAssignPromotionLine;
+
+		if (m_eCurrentBuildUpType != NO_PROMOTIONLINE)
+		{
+			m_bIsBuildUp = true;
+		}
 	}
 }
 
@@ -38474,9 +37554,54 @@ void CvUnit::clearBuildups()
 			}
 		}
 	}
-	setBuildUpType(NO_PROMOTIONLINE, true);
+	m_iBuildUpTurns = 0;
+	m_eCurrentBuildUpType = NO_PROMOTIONLINE;
 	setSleepType(NO_MISSION);
-	setBuildUp(false);
+	m_bIsBuildUp = false;
+	setInfoBarDirty(true);
+}
+
+void CvUnit::incrementBuildUp()
+{
+	if (getBuildUpType() == NO_PROMOTIONLINE)
+	{
+		FErrorMsg("Units build up status corrupted")
+		clearBuildups();
+		getGroup()->setActivityType(ACTIVITY_AWAKE);
+		return;
+	}
+	m_iBuildUpTurns++;
+
+	const PromotionLineTypes ePromotionLine = getBuildUpType();
+
+	// AI units will reconsider its buildup on regular intervals.
+	if (!isHuman() && 0 == (m_iBuildUpTurns % 11))
+	{
+		for (int iI = 0; iI < GC.getPromotionLineInfo(ePromotionLine).getNumPromotions(); iI++)
+		{
+			const PromotionTypes ePromotion = (PromotionTypes)GC.getPromotionLineInfo(ePromotionLine).getPromotion(iI);
+
+			if (GC.getPromotionInfo(ePromotion).getLinePriority() == 1
+			&& GET_PLAYER(getOwner()).AI_promotionValue(ePromotion, getUnitType(), this, AI_getUnitAIType(), true) < 10)
+			{
+				clearBuildups();
+				getGroup()->setActivityType(ACTIVITY_AWAKE);
+				return;
+			}
+		}
+	}
+
+	for (int iI = 0; iI < GC.getPromotionLineInfo(ePromotionLine).getNumPromotions(); iI++)
+	{
+		const PromotionTypes ePromotion = (PromotionTypes)GC.getPromotionLineInfo(ePromotionLine).getPromotion(iI);
+
+		if (!isHasPromotion(ePromotion)
+		&& GC.getPromotionInfo(ePromotion).getLinePriority() <= m_iBuildUpTurns
+		&& canAcquirePromotion(ePromotion, PromotionRequirements::ForFree | PromotionRequirements::ForBuildUp))
+		{
+			setHasPromotion(ePromotion, true, true, false, false);
+		}
+	}
 }
 
 bool CvUnit::isInhibitMerge() const
@@ -38502,11 +37627,6 @@ void CvUnit::setInhibitSplit(bool bNewValue)
 bool CvUnit::isBuildUp() const
 {
 	return m_bIsBuildUp;
-}
-
-void CvUnit::setBuildUp(bool bNewValue)
-{
-	m_bIsBuildUp = bNewValue;
 }
 
 void CvUnit::setSpecialUnit(bool bChange, SpecialUnitTypes eSpecialUnit)
@@ -38676,53 +37796,101 @@ void CvUnit::changeUpgradeAnywhereCount(int iChange)
 	m_iUpgradeAnywhereCount += iChange;
 }
 
-bool CvUnit::hasVisibilityType(InvisibleTypes eInvisibleType) const
+// Only used when unit spot stats change, not when the sight area of this unit change.
+void CvUnit::updateSpotIntensity(const InvisibleTypes eInvisibleType, const bool bSameTile)
 {
-	return (visibilityIntensityTotal(eInvisibleType) > 0);
+	if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
+	{
+		return;
+	}
+	std::vector<InvisibleTypes> aSeeInvisibleTypes;
+
+	if (eInvisibleType == NO_INVISIBLE)
+	{
+		for (int iI = GC.getNumInvisibleInfos() - 1; iI > -1; iI--)
+		{
+			aSeeInvisibleTypes.push_back(static_cast<InvisibleTypes>(iI));
+		}
+	}
+	else aSeeInvisibleTypes.push_back(eInvisibleType);
+
+	const bool bAerial = getDomainType() == DOMAIN_AIR;
+
+	const int iRange = bSameTile ? 0 : visibilityRange(plot());
+
+	for (int i = aSeeInvisibleTypes.size() - 1; i > -1; i--)
+	{
+		const InvisibleTypes eInvisible = aSeeInvisibleTypes[i];
+
+		for (int dx = -iRange; dx <= iRange; dx++)
+		{
+			for (int dy = -iRange; dy <= iRange; dy++)
+			{
+				if (bAerial || plot()->canSeeDisplacementPlot(getTeam(), dx, dy, dx, dy, true, abs(dx) == iRange || abs(dy) == iRange))
+				{
+					CvPlot* pPlot = plotXY(getX(), getY(), dx, dy);
+
+					if (NULL != pPlot)
+					{
+						const int iDistance = std::max(abs(dx), abs(dy));
+
+						if (iDistance > 0)
+						{
+							pPlot->setSpotIntensity(
+								getTeam(), eInvisible, getID(),
+								visibilityIntensityTotal(eInvisible) - std::max(0, iDistance - visibilityIntensityRangeTotal(eInvisible))
+							);
+						}
+						else
+						{
+							pPlot->setSpotIntensity(
+								getTeam(), eInvisible, getID(),
+								visibilityIntensityTotal(eInvisible) + visibilityIntensitySameTileTotal(eInvisible)
+							);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 int CvUnit::visibilityIntensityTotal(InvisibleTypes eInvisibleType) const
 {
-	int iAmount = m_pUnitInfo->getVisibilityIntensityType(eInvisibleType);
+	int iAmount = (
+		m_pUnitInfo->getVisibilityIntensityType(eInvisibleType)
+		+ getExtraVisibilityIntensityType(eInvisibleType)
+		+ extraVisibleTerrain(eInvisibleType, plot()->getTerrainType())
+	);
 
-	iAmount += getExtraVisibilityIntensityType(eInvisibleType);
-
-	if (plot() != NULL)
+	if (plot()->isAsPeak())
 	{
-		const TerrainTypes eTerrain = plot()->getTerrainType();
-		if (eTerrain != NO_TERRAIN)
-		{
-			iAmount += extraVisibleTerrain(eInvisibleType, eTerrain);
-		}
-		if (plot()->isAsPeak())
-		{
-			iAmount += extraVisibleTerrain(eInvisibleType, GC.getTERRAIN_PEAK());
-		}
-		else if (plot()->isHills())
-		{
-			iAmount += extraVisibleTerrain(eInvisibleType, GC.getTERRAIN_HILL());
-		}
-		const FeatureTypes eFeature = plot()->getFeatureType();
-		if (eFeature != NO_FEATURE)
-		{
-			iAmount += extraVisibleFeature(eInvisibleType, eFeature);
-		}
-		const ImprovementTypes eImprovement = plot()->getImprovementType();
-		if (eImprovement != NO_IMPROVEMENT)
-		{
-			iAmount += extraVisibleImprovement(eInvisibleType, eImprovement);
-		}
-		if (plot()->isCity(true))
-		{
-			iAmount += extraVisibleImprovement(eInvisibleType, GC.getIMPROVEMENT_CITY());
-		}
+		iAmount += extraVisibleTerrain(eInvisibleType, GC.getTERRAIN_PEAK());
 	}
-	return std::max(0, iAmount);
+	else if (plot()->isHills())
+	{
+		iAmount += extraVisibleTerrain(eInvisibleType, GC.getTERRAIN_HILL());
+	}
+	const FeatureTypes eFeature = plot()->getFeatureType();
+	if (eFeature != NO_FEATURE)
+	{
+		iAmount += extraVisibleFeature(eInvisibleType, eFeature);
+	}
+	const ImprovementTypes eImprovement = plot()->getImprovementType();
+	if (eImprovement != NO_IMPROVEMENT)
+	{
+		iAmount += extraVisibleImprovement(eInvisibleType, eImprovement);
+	}
+	if (plot()->isCity(true))
+	{
+		iAmount += extraVisibleImprovement(eInvisibleType, GC.getIMPROVEMENT_CITY());
+	}
+	return iAmount;
 }
 
 int CvUnit::getExtraVisibilityIntensityType(InvisibleTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 
 	if (!isCommander())
 	{
@@ -38738,87 +37906,55 @@ int CvUnit::getExtraVisibilityIntensityType(InvisibleTypes eIndex) const
 
 void CvUnit::changeExtraVisibilityIntensityType(InvisibleTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 	if (iChange != 0)
 	{
-		deleteVisibility();
 		m_aiExtraVisibilityIntensity[eIndex] += iChange;
-		addVisibility();
+		updateSpotIntensity(eIndex);
 	}
 }
 
-bool CvUnit::hasAnyInvisibilityType(bool bAbilityCheck) const
+bool CvUnit::hasInvisibilityType(InvisibleTypes eInvisibleType) const
 {
-	if (GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
-	{
-		if (m_pUnitInfo->isNoInvisibility() || getNoInvisibilityCount() > 0)
-		{
-			return false;
-		}
-	}
-	if (bAbilityCheck)
-	{
-		return m_bHasAnyInvisibilityAbility;
-	}
-	return m_bHasAnyInvisibility;
+	return !isNegatesInvisible(eInvisibleType) && !m_pUnitInfo->isNoInvisibility() && getNoInvisibilityCount() < 1;
 }
 
-bool CvUnit::hasInvisibilityType(InvisibleTypes eInvisibleType, bool bAbilityCheck) const
+int CvUnit::invisibilityIntensityTotal(InvisibleTypes eType) const
 {
-	return (invisibilityIntensityTotal(eInvisibleType, bAbilityCheck) > 0);
-}
+	int iAmount = (
+		m_pUnitInfo->getInvisibilityIntensityType(eType)
+		+ getExtraInvisibilityIntensityType(eType)
+		+ extraInvisibleTerrain(eType, plot()->getTerrainType())
+	);
 
-int CvUnit::invisibilityIntensityTotal(InvisibleTypes eInvisibleType, bool bAbilityCheck) const
-{
-	if (isNegatesInvisible(eInvisibleType) && !bAbilityCheck)
+	if (plot()->isAsPeak())
 	{
-		return 0;
+		iAmount += extraInvisibleTerrain(eType, GC.getTERRAIN_PEAK());
 	}
-	if (m_pUnitInfo->isNoInvisibility() || getNoInvisibilityCount() > 0)
+	else if (plot()->isHills())
 	{
-		return 0;
+		iAmount += extraInvisibleTerrain(eType, GC.getTERRAIN_HILL());
 	}
-
-	int iAmount = m_pUnitInfo->getInvisibilityIntensityType(eInvisibleType);
-
-	iAmount += getExtraInvisibilityIntensityType(eInvisibleType);
-
-	if (plot() != NULL)
+	const FeatureTypes eFeature = plot()->getFeatureType();
+	if (eFeature != NO_FEATURE)
 	{
-		const TerrainTypes eTerrain = plot()->getTerrainType();
-		if (eTerrain != NO_TERRAIN)
-		{
-			iAmount += extraInvisibleTerrain(eInvisibleType, eTerrain);
-		}
-		if (plot()->isAsPeak())
-		{
-			iAmount += extraInvisibleTerrain(eInvisibleType, GC.getTERRAIN_PEAK());
-		}
-		else if (plot()->isHills())
-		{
-			iAmount += extraInvisibleTerrain(eInvisibleType, GC.getTERRAIN_HILL());
-		}
-		const FeatureTypes eFeature = plot()->getFeatureType();
-		if (eFeature != NO_FEATURE)
-		{
-			iAmount += extraInvisibleFeature(eInvisibleType, eFeature);
-		}
-		const ImprovementTypes eImprovement = plot()->getImprovementType();
-		if (eImprovement != NO_IMPROVEMENT)
-		{
-			iAmount += extraInvisibleImprovement(eInvisibleType, eImprovement);
-		}
-		if (plot()->isCity(true))
-		{
-			iAmount += extraInvisibleImprovement(eInvisibleType, GC.getIMPROVEMENT_CITY());
-		}
+		iAmount += extraInvisibleFeature(eType, eFeature);
 	}
-	return std::max(0,iAmount);
+	const ImprovementTypes eImprovement = plot()->getImprovementType();
+	if (eImprovement != NO_IMPROVEMENT)
+	{
+		iAmount += extraInvisibleImprovement(eType, eImprovement);
+	}
+	if (plot()->isCity(true))
+	{
+		iAmount += extraInvisibleImprovement(eType, GC.getIMPROVEMENT_CITY());
+	}
+	return iAmount;
 }
 
 int CvUnit::getExtraInvisibilityIntensityType(InvisibleTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 
 	if (!isCommander())
 	{
@@ -38834,112 +37970,97 @@ int CvUnit::getExtraInvisibilityIntensityType(InvisibleTypes eIndex) const
 
 void CvUnit::changeExtraInvisibilityIntensityType(InvisibleTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 	m_aiExtraInvisibilityIntensity[eIndex] += iChange;
-	setHasAnyInvisibility();
+}
+
+bool CvUnit::hasAnyInvisibilityType() const
+{
+	return m_bHasAnyInvisibility;
 }
 
 void CvUnit::setHasAnyInvisibility()
 {
-	bool bResult = false;
-	bool bResultAbility = false;
-	for (int iI = 0; iI < GC.getNumInvisibleInfos(); iI++)
+	if (m_pUnitInfo->isNoInvisibility() || getNoInvisibilityCount() > 0)
 	{
-		if (hasInvisibilityType((InvisibleTypes)iI))
+		m_bHasAnyInvisibility = false;
+		return;
+	}
+	for (int iI = GC.getNumInvisibleInfos() - 1; iI > -1; iI--)
+	{
+		if (!isNegatesInvisible((InvisibleTypes)iI))
 		{
-			bResult = true;
-		}
-		if (hasInvisibilityType((InvisibleTypes)iI, true))
-		{
-			bResultAbility = true;
+			m_bHasAnyInvisibility = true;
+			return;
 		}
 	}
-	m_bHasAnyInvisibility = bResult;
-	m_bHasAnyInvisibilityAbility = bResultAbility;
-}
-
-bool CvUnit::hasVisibilityRangeType(InvisibleTypes eInvisibleType) const
-{
-	return (visibilityIntensityRangeTotal(eInvisibleType) > 0);
+	m_bHasAnyInvisibility = false;
 }
 
 int CvUnit::visibilityIntensityRangeTotal(InvisibleTypes eInvisibleType) const
 {
-	int iAmount = m_pUnitInfo->getVisibilityIntensityRangeType(eInvisibleType);
+	int iAmount = (
+		m_pUnitInfo->getVisibilityIntensityRangeType(eInvisibleType)
+		+ getExtraVisibilityIntensityRangeType(eInvisibleType)
+		+ extraVisibleTerrainRange(eInvisibleType, plot()->getTerrainType())
+	);
 
-	iAmount += getExtraVisibilityIntensityRangeType(eInvisibleType);
-
-	if (plot() != NULL)
+	if (plot()->isAsPeak())
 	{
-		const TerrainTypes eTerrain = plot()->getTerrainType();
-		if (eTerrain != NO_TERRAIN)
-		{
-			iAmount += extraVisibleTerrainRange(eInvisibleType, eTerrain);
-		}
-		if (plot()->isAsPeak())
-		{
-			iAmount += extraVisibleTerrainRange(eInvisibleType, GC.getTERRAIN_PEAK());
-		}
-		else if (plot()->isHills())
-		{
-			iAmount += extraVisibleTerrainRange(eInvisibleType, GC.getTERRAIN_HILL());
-		}
-		const FeatureTypes eFeature = plot()->getFeatureType();
-		if (eFeature != NO_FEATURE)
-		{
-			iAmount += extraVisibleFeatureRange(eInvisibleType, eFeature);
-		}
-		const ImprovementTypes eImprovement = plot()->getImprovementType();
-		if (eImprovement != NO_IMPROVEMENT)
-		{
-			iAmount += extraVisibleImprovementRange(eInvisibleType, eImprovement);
-		}
-		if (plot()->isCity(true))
-		{
-			iAmount += extraVisibleImprovementRange(eInvisibleType, GC.getIMPROVEMENT_CITY());
-		}
+		iAmount += extraVisibleTerrainRange(eInvisibleType, GC.getTERRAIN_PEAK());
 	}
-	return iAmount;
+	else if (plot()->isHills())
+	{
+		iAmount += extraVisibleTerrainRange(eInvisibleType, GC.getTERRAIN_HILL());
+	}
+	const FeatureTypes eFeature = plot()->getFeatureType();
+	if (eFeature != NO_FEATURE)
+	{
+		iAmount += extraVisibleFeatureRange(eInvisibleType, eFeature);
+	}
+	const ImprovementTypes eImprovement = plot()->getImprovementType();
+	if (eImprovement != NO_IMPROVEMENT)
+	{
+		iAmount += extraVisibleImprovementRange(eInvisibleType, eImprovement);
+	}
+	if (plot()->isCity(true))
+	{
+		iAmount += extraVisibleImprovementRange(eInvisibleType, GC.getIMPROVEMENT_CITY());
+	}
+	return std::max(0, iAmount);
 }
 
 int CvUnit::getExtraVisibilityIntensityRangeType(InvisibleTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 	return m_aiExtraVisibilityIntensityRange[eIndex];
 }
 
 
 void CvUnit::changeExtraVisibilityIntensityRangeType(InvisibleTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 	if (iChange != 0)
 	{
-		deleteVisibility();
 		m_aiExtraVisibilityIntensityRange[eIndex] += iChange;
-		addVisibility();
+		updateSpotIntensity(eIndex);
 	}
 }
 
-int CvUnit::visibilityIntensitySameTileTotal(InvisibleTypes eInvisibleType) const
+int CvUnit::visibilityIntensitySameTileTotal(InvisibleTypes eType) const
 {
-	return getExtraVisibilityIntensitySameTileType(eInvisibleType);
-}
-
-int CvUnit::getExtraVisibilityIntensitySameTileType(InvisibleTypes eIndex) const
-{
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
-	return m_aiExtraVisibilityIntensitySameTile[eIndex];
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eType);
+	return m_aiExtraVisibilityIntensitySameTile[eType];
 }
 
 
 void CvUnit::changeExtraVisibilityIntensitySameTileType(InvisibleTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eIndex);
 	if (iChange != 0)
 	{
-		deleteVisibility();
 		m_aiExtraVisibilityIntensitySameTile[eIndex] += iChange;
-		addVisibility();
+		updateSpotIntensity(eIndex, true);
 	}
 }
 
@@ -39109,12 +38230,8 @@ void CvUnit::changeExtraVisibleTerrain(InvisibleTypes eInvisible, TerrainTypes e
 	{
 		return;
 	}
-	else
-	{
-		deleteVisibility();
-	}
 	bool bFound = false;
-	int iSize = getNumExtraVisibleTerrains();
+	const int iSize = getNumExtraVisibleTerrains();
 	for (int iI = 0; iI < iSize; iI++)
 	{
 		if (m_aExtraVisibleTerrains[iI].eInvisible == eInvisible && m_aExtraVisibleTerrains[iI].eTerrain == eTerrain)
@@ -39130,17 +38247,12 @@ void CvUnit::changeExtraVisibleTerrain(InvisibleTypes eInvisible, TerrainTypes e
 	}
 	if (!bFound)
 	{
-		const int iISize = iSize;
-		iSize++;
-		m_aExtraVisibleTerrains.resize(iSize);
-		m_aExtraVisibleTerrains[iISize].eInvisible = eInvisible;
-		m_aExtraVisibleTerrains[iISize].eTerrain = eTerrain;
-		m_aExtraVisibleTerrains[iISize].iIntensity = iChange;
+		m_aExtraVisibleTerrains.resize(iSize + 1);
+		m_aExtraVisibleTerrains[iSize].eInvisible = eInvisible;
+		m_aExtraVisibleTerrains[iSize].eTerrain = eTerrain;
+		m_aExtraVisibleTerrains[iSize].iIntensity = iChange;
 	}
-	if (iChange != 0)
-	{
-		addVisibility();
-	}
+	updateSpotIntensity(eInvisible);
 }
 
 int CvUnit::extraVisibleTerrain(InvisibleTypes eInvisible, TerrainTypes eTerrain) const
@@ -39171,12 +38283,8 @@ void CvUnit::changeExtraVisibleFeature(InvisibleTypes eInvisible, FeatureTypes e
 	{
 		return;
 	}
-	else
-	{
-		deleteVisibility();
-	}
+	const int iSize = getNumExtraVisibleFeatures();
 	bool bFound = false;
-	int iSize = getNumExtraVisibleFeatures();
 	for (int iI = 0; iI < iSize; iI++)
 	{
 		if (m_aExtraVisibleFeatures[iI].eInvisible == eInvisible && m_aExtraVisibleFeatures[iI].eFeature == eFeature)
@@ -39192,17 +38300,12 @@ void CvUnit::changeExtraVisibleFeature(InvisibleTypes eInvisible, FeatureTypes e
 	}
 	if (!bFound)
 	{
-		const int iISize = iSize;
-		iSize++;
-		m_aExtraVisibleFeatures.resize(iSize);
-		m_aExtraVisibleFeatures[iISize].eInvisible = eInvisible;
-		m_aExtraVisibleFeatures[iISize].eFeature = eFeature;
-		m_aExtraVisibleFeatures[iISize].iIntensity = iChange;
+		m_aExtraVisibleFeatures.resize(iSize + 1);
+		m_aExtraVisibleFeatures[iSize].eInvisible = eInvisible;
+		m_aExtraVisibleFeatures[iSize].eFeature = eFeature;
+		m_aExtraVisibleFeatures[iSize].iIntensity = iChange;
 	}
-	if (iChange != 0)
-	{
-		addVisibility();
-	}
+	updateSpotIntensity(eInvisible);
 }
 
 int CvUnit::extraVisibleFeature(InvisibleTypes eInvisible, FeatureTypes eFeature) const
@@ -39233,12 +38336,8 @@ void CvUnit::changeExtraVisibleImprovement(InvisibleTypes eInvisible, Improvemen
 	{
 		return;
 	}
-	else
-	{
-		deleteVisibility();
-	}
+	const int iSize = getNumExtraVisibleImprovements();
 	bool bFound = false;
-	int iSize = getNumExtraVisibleImprovements();
 	for (int iI = 0; iI < iSize; iI++)
 	{
 		if (m_aExtraVisibleImprovements[iI].eInvisible == eInvisible && m_aExtraVisibleImprovements[iI].eImprovement == eImprovement)
@@ -39254,17 +38353,12 @@ void CvUnit::changeExtraVisibleImprovement(InvisibleTypes eInvisible, Improvemen
 	}
 	if (!bFound)
 	{
-		const int iISize = iSize;
-		iSize++;
-		m_aExtraVisibleImprovements.resize(iSize);
-		m_aExtraVisibleImprovements[iISize].eInvisible = eInvisible;
-		m_aExtraVisibleImprovements[iISize].eImprovement = eImprovement;
-		m_aExtraVisibleImprovements[iISize].iIntensity = iChange;
+		m_aExtraVisibleImprovements.resize(iSize + 1);
+		m_aExtraVisibleImprovements[iSize].eInvisible = eInvisible;
+		m_aExtraVisibleImprovements[iSize].eImprovement = eImprovement;
+		m_aExtraVisibleImprovements[iSize].iIntensity = iChange;
 	}
-	if (iChange != 0)
-	{
-		addVisibility();
-	}
+	updateSpotIntensity(eInvisible);
 }
 
 int CvUnit::extraVisibleImprovement(InvisibleTypes eInvisible, ImprovementTypes eImprovement) const
@@ -39295,12 +38389,8 @@ void CvUnit::changeExtraVisibleTerrainRange(InvisibleTypes eInvisible, TerrainTy
 	{
 		return;
 	}
-	else
-	{
-		deleteVisibility();
-	}
+	const int iSize = getNumExtraVisibleTerrainRanges();
 	bool bFound = false;
-	int iSize = getNumExtraVisibleTerrainRanges();
 	for (int iI = 0; iI < iSize; iI++)
 	{
 		if (m_aExtraVisibleTerrainRanges[iI].eInvisible == eInvisible && m_aExtraVisibleTerrainRanges[iI].eTerrain == eTerrain)
@@ -39316,17 +38406,12 @@ void CvUnit::changeExtraVisibleTerrainRange(InvisibleTypes eInvisible, TerrainTy
 	}
 	if (!bFound)
 	{
-		const int iISize = iSize;
-		iSize++;
-		m_aExtraVisibleTerrainRanges.resize(iSize);
-		m_aExtraVisibleTerrainRanges[iISize].eInvisible = eInvisible;
-		m_aExtraVisibleTerrainRanges[iISize].eTerrain = eTerrain;
-		m_aExtraVisibleTerrainRanges[iISize].iIntensity = iChange;
+		m_aExtraVisibleTerrainRanges.resize(iSize + 1);
+		m_aExtraVisibleTerrainRanges[iSize].eInvisible = eInvisible;
+		m_aExtraVisibleTerrainRanges[iSize].eTerrain = eTerrain;
+		m_aExtraVisibleTerrainRanges[iSize].iIntensity = iChange;
 	}
-	if (iChange != 0)
-	{
-		addVisibility();
-	}
+	updateSpotIntensity(eInvisible);
 }
 
 int CvUnit::extraVisibleTerrainRange(InvisibleTypes eInvisible, TerrainTypes eTerrain) const
@@ -39357,12 +38442,8 @@ void CvUnit::changeExtraVisibleFeatureRange(InvisibleTypes eInvisible, FeatureTy
 	{
 		return;
 	}
-	else
-	{
-		deleteVisibility();
-	}
+	const int iSize = getNumExtraVisibleFeatureRanges();
 	bool bFound = false;
-	int iSize = getNumExtraVisibleFeatureRanges();
 	for (int iI = 0; iI < iSize; iI++)
 	{
 		if (m_aExtraVisibleFeatureRanges[iI].eInvisible == eInvisible && m_aExtraVisibleFeatureRanges[iI].eFeature == eFeature)
@@ -39378,17 +38459,12 @@ void CvUnit::changeExtraVisibleFeatureRange(InvisibleTypes eInvisible, FeatureTy
 	}
 	if (!bFound)
 	{
-		const int iISize = iSize;
-		iSize++;
-		m_aExtraVisibleFeatureRanges.resize(iSize);
-		m_aExtraVisibleFeatureRanges[iISize].eInvisible = eInvisible;
-		m_aExtraVisibleFeatureRanges[iISize].eFeature = eFeature;
-		m_aExtraVisibleFeatureRanges[iISize].iIntensity = iChange;
+		m_aExtraVisibleFeatureRanges.resize(iSize + 1);
+		m_aExtraVisibleFeatureRanges[iSize].eInvisible = eInvisible;
+		m_aExtraVisibleFeatureRanges[iSize].eFeature = eFeature;
+		m_aExtraVisibleFeatureRanges[iSize].iIntensity = iChange;
 	}
-	if (iChange != 0)
-	{
-		addVisibility();
-	}
+	updateSpotIntensity(eInvisible);
 }
 
 int CvUnit::extraVisibleFeatureRange(InvisibleTypes eInvisible, FeatureTypes eFeature) const
@@ -39419,12 +38495,8 @@ void CvUnit::changeExtraVisibleImprovementRange(InvisibleTypes eInvisible, Impro
 	{
 		return;
 	}
-	else
-	{
-		deleteVisibility();
-	}
+	const int iSize = getNumExtraVisibleImprovementRanges();
 	bool bFound = false;
-	int iSize = getNumExtraVisibleImprovementRanges();
 	for (int iI = 0; iI < iSize; iI++)
 	{
 		if (m_aExtraVisibleImprovementRanges[iI].eInvisible == eInvisible && m_aExtraVisibleImprovementRanges[iI].eImprovement == eImprovement)
@@ -39440,17 +38512,12 @@ void CvUnit::changeExtraVisibleImprovementRange(InvisibleTypes eInvisible, Impro
 	}
 	if (!bFound)
 	{
-		const int iISize = iSize;
-		iSize++;
-		m_aExtraVisibleImprovementRanges.resize(iSize);
-		m_aExtraVisibleImprovementRanges[iISize].eInvisible = eInvisible;
-		m_aExtraVisibleImprovementRanges[iISize].eImprovement = eImprovement;
-		m_aExtraVisibleImprovementRanges[iISize].iIntensity = iChange;
+		m_aExtraVisibleImprovementRanges.resize(iSize + 1);
+		m_aExtraVisibleImprovementRanges[iSize].eInvisible = eInvisible;
+		m_aExtraVisibleImprovementRanges[iSize].eImprovement = eImprovement;
+		m_aExtraVisibleImprovementRanges[iSize].iIntensity = iChange;
 	}
-	if (iChange != 0)
-	{
-		addVisibility();
-	}
+	updateSpotIntensity(eInvisible);
 }
 
 int CvUnit::extraVisibleImprovementRange(InvisibleTypes eInvisible, ImprovementTypes eImprovement) const
@@ -39519,65 +38586,41 @@ int CvUnit::extraAidChange(PropertyTypes eProperty) const
 }
 #endif
 
-void CvUnit::deleteVisibility()
-{
-	if (plot() != NULL)
-	{
-		plot()->changeAdjacentSight(getTeam(), visibilityRange(plot()), false, this, true);
-		changeDebugCount(-1);
-	}
-}
-
-void CvUnit::addVisibility()
-{
-	if (plot() != NULL)
-	{
-		plot()->changeAdjacentSight(getTeam(), visibilityRange(plot()), true, this, true);
-		changeDebugCount(1);
-	}
-}
 bool CvUnit::isNegatesInvisible(InvisibleTypes eInvisible) const
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eInvisible)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eInvisible);
 	return (getNegatesInvisibleCount(eInvisible) > 0 || isRevealed());
 }
 int CvUnit::getNegatesInvisibleCount(InvisibleTypes eInvisible) const
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eInvisible)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eInvisible);
 	return m_aiNegatesInvisibleCount[eInvisible];
 }
 void CvUnit::changeNegatesInvisibleCount(InvisibleTypes eInvisible, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eInvisible)
+	FASSERT_BOUNDS(0, GC.getNumInvisibleInfos(), eInvisible);
 	m_aiNegatesInvisibleCount[eInvisible] += iChange;
 	setHasAnyInvisibility();
 }
 
 bool CvUnit::hasInvisibleAbility() const
 {
-	bool bAnswer = false;
+	if (GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
+	{
+		return hasAnyInvisibilityType();
+	}
 
-	if (!GC.getGame().isOption(GAMEOPTION_HIDE_AND_SEEK))
+	if ((InvisibleTypes)m_pUnitInfo->getInvisibleType() != NO_INVISIBLE)
 	{
-		if ((InvisibleTypes)m_pUnitInfo->getInvisibleType() != NO_INVISIBLE)
-		{
-			bAnswer = true;
-		}
+		return true;
 	}
-	else if (hasAnyInvisibilityType(true))
-	{
-		bAnswer = true;
-	}
-	return bAnswer;
+
+	return false;
 }
 
 bool CvUnit::isCriminal() const
 {
-	if (getInsidiousnessTotal(true) > 0)
-	{
-		return true;
-	}
-	return false;
+	return getInsidiousnessTotal(true) > 0;
 }
 
 int CvUnit::getInsidiousnessTotal(bool bCriminalCheck) const
@@ -40207,7 +39250,7 @@ void CvUnit::changeTriggerBeforeAttackCount(int iChange)
 
 int CvUnit::getTrapSetWithPromotionCount(PromotionTypes ePromotion) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 
 	const PromotionKeyedInfo* info = findPromotionKeyedInfo(ePromotion);
 
@@ -40216,13 +39259,13 @@ int CvUnit::getTrapSetWithPromotionCount(PromotionTypes ePromotion) const
 
 bool CvUnit::hasTrapSetWithPromotion(PromotionTypes ePromotion) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 	return (getTrapSetWithPromotionCount(ePromotion) > 0);
 }
 
 void CvUnit::changeTrapSetWithPromotionCount(PromotionTypes ePromotion, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 
 	if (iChange != 0)
 	{
@@ -40235,7 +39278,7 @@ void CvUnit::changeTrapSetWithPromotionCount(PromotionTypes ePromotion, int iCha
 
 int CvUnit::getTrapImmunityUnitCombatCount(UnitCombatTypes eUnitCombat) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombat);
 
@@ -40244,13 +39287,13 @@ int CvUnit::getTrapImmunityUnitCombatCount(UnitCombatTypes eUnitCombat) const
 
 bool CvUnit::hasTrapImmunityUnitCombat(UnitCombatTypes eUnitCombat) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 	return (getTrapImmunityUnitCombatCount(eUnitCombat) > 0);
 }
 
 void CvUnit::changeTrapImmunityUnitCombatCount(UnitCombatTypes eUnitCombat, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 
 	if (iChange != 0)
 	{
@@ -40262,7 +39305,7 @@ void CvUnit::changeTrapImmunityUnitCombatCount(UnitCombatTypes eUnitCombat, int 
 
 int CvUnit::getTargetUnitCombatCount(UnitCombatTypes eUnitCombat) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eUnitCombat);
 
@@ -40271,13 +39314,13 @@ int CvUnit::getTargetUnitCombatCount(UnitCombatTypes eUnitCombat) const
 
 bool CvUnit::hasTargetUnitCombat(UnitCombatTypes eUnitCombat) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 	return (getTargetUnitCombatCount(eUnitCombat) > 0);
 }
 
 void CvUnit::changeTargetUnitCombatCount(UnitCombatTypes eUnitCombat, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eUnitCombat);
 
 	if (iChange != 0)
 	{
@@ -40298,7 +39341,7 @@ int CvUnit::trapDisableUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraTrapDisableUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -40307,7 +39350,7 @@ int CvUnit::getExtraTrapDisableUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraTrapDisableUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -40334,7 +39377,7 @@ int CvUnit::trapAvoidanceUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraTrapAvoidanceUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -40343,7 +39386,7 @@ int CvUnit::getExtraTrapAvoidanceUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraTrapAvoidanceUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -40369,7 +39412,7 @@ int CvUnit::trapTriggerUnitCombatTotal(UnitCombatTypes eCombatType) const
 
 int CvUnit::getExtraTrapTriggerUnitCombatType(UnitCombatTypes eIndex) const
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	const UnitCombatKeyedInfo* info = findUnitCombatKeyedInfo(eIndex);
 
@@ -40378,7 +39421,7 @@ int CvUnit::getExtraTrapTriggerUnitCombatType(UnitCombatTypes eIndex) const
 
 void CvUnit::changeExtraTrapTriggerUnitCombatType(UnitCombatTypes eIndex, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex)
+	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), eIndex);
 
 	if (iChange != 0)
 	{
@@ -40633,7 +39676,7 @@ void CvUnit::makeWanted(const CvCity* pCity)
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnit::getDistanceAttackCommunicability(PromotionLineTypes eAfflictionLine) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), eAfflictionLine)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), eAfflictionLine);
 
 	const PromotionLineKeyedInfo* info = findPromotionLineKeyedInfo(eAfflictionLine);
 
@@ -40652,7 +39695,7 @@ int CvUnit::getDistanceAttackCommunicability(PromotionLineTypes eAfflictionLine)
 
 void CvUnit::changeDistanceAttackCommunicability(PromotionLineTypes eAfflictionLine, int iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), eAfflictionLine)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), eAfflictionLine);
 
 	if (iChange != 0)
 	{
@@ -40664,7 +39707,7 @@ void CvUnit::changeDistanceAttackCommunicability(PromotionLineTypes eAfflictionL
 
 void CvUnit::setDistanceAttackCommunicability(PromotionLineTypes eAfflictionLine, int iValue)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), eAfflictionLine)
+	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), eAfflictionLine);
 
 	PromotionLineKeyedInfo* info = findOrCreatePromotionLineKeyedInfo(eAfflictionLine, iValue != 0);
 
@@ -40705,7 +39748,7 @@ CvCity* CvUnit::getCityOfOrigin() const
 
 bool CvUnit::isPromotionFromTrait(PromotionTypes ePromotion) const
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 
 	const PromotionKeyedInfo* info = findPromotionKeyedInfo(ePromotion);
 
@@ -40714,7 +39757,7 @@ bool CvUnit::isPromotionFromTrait(PromotionTypes ePromotion) const
 
 void CvUnit::setPromotionFromTrait(PromotionTypes ePromotion, bool iChange)
 {
-	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion)
+	FASSERT_BOUNDS(0, GC.getNumPromotionInfos(), ePromotion);
 
 	PromotionKeyedInfo* info = findOrCreatePromotionKeyedInfo(ePromotion, iChange != 0);
 

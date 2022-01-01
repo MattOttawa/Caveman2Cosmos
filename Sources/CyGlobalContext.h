@@ -10,7 +10,6 @@
 
 #include "CvGlobals.h"
 
-class CvArtFileMgr;
 class CyGame;
 class CyMap;
 class CyPlayer;
@@ -20,28 +19,23 @@ class CyTeam;
 class CyGlobalContext
 {
 public:
-	CyGlobalContext();
-	virtual ~CyGlobalContext();
-
 	static CyGlobalContext& getInstance();		// singleton accessor
+	static void initStatics();
 
 	bool isDebugBuild() const;
 	CyGame* getCyGame() const;
 	CyMap* getCyMap() const;
-
-	void switchMap(int iMap);
-	CyMap* getMapByIndex(int iIndex);
-
-	CyPlayer* getCyPlayer(int idx) const;
+	void switchMap(MapTypes eMap);
+	CyMap* getMapByIndex(MapTypes eMap) const;
+	CyPlayer* getCyPlayer(PlayerTypes ePlayer) const;
 	CyPlayer* getCyActivePlayer() const;
 	CvRandom& getCyASyncRand() const;
-	CyTeam* getCyTeam(int i) const;
+	CyTeam* getCyTeam(TeamTypes eTeam) const;
 
 	int getInfoTypeForString(const char* szInfoType) const;
 	int getInfoTypeForStringWithHiddenAssert(const char* szInfoType) const;
-	int getTypesEnum(const char* szType) const;
 
-	const CvMapInfo& getMapInfo(int i) const;
+	const CvMapInfo& getMapInfo(MapTypes eMap) const;
 	const CvEffectInfo* getEffectInfo(int i) const;
 	const CvTerrainInfo* getTerrainInfo(int i) const;
 	const CvBonusClassInfo* getBonusClassInfo(int i) const;
@@ -112,19 +106,7 @@ public:
 	const CvPlayerOptionInfo& getPlayerOptionInfo(int i) const;
 	const CvGraphicOptionInfo& getGraphicOptionInfo(int i) const;
 
-	// ArtInfos
-	const CvArtInfoInterface* getInterfaceArtInfo(int i) const;
-	const CvArtInfoMovie* getMovieArtInfo(int i) const;
-	const CvArtInfoMisc* getMiscArtInfo(int i) const;
-	const CvArtInfoUnit* getUnitArtInfo(int i) const;
-	const CvArtInfoBuilding* getBuildingArtInfo(int i) const;
-	const CvArtInfoCivilization* getCivilizationArtInfo(int i) const;
-	const CvArtInfoBonus* getBonusArtInfo(int i) const;
-	const CvArtInfoImprovement* getImprovementArtInfo(int i) const;
-
 	const char* getArtStyleTypes(int i) const { return GC.getArtStyleTypes((ArtStyleTypes) i); }
-	const char* getFlavorTypes(int i) const { return GC.getFlavorTypes((FlavorTypes) i); }
-	const char* getDiplomacyPowerTypes(int i) const { return GC.getDiplomacyPowerTypes((DiplomacyPowerTypes) i); }
 
 	int getNumEffectInfos() const { return GC.getNumEffectInfos(); }
 	int getNumTerrainInfos() const { return GC.getNumTerrainInfos(); }
@@ -185,11 +167,6 @@ public:
 	int getNumVoteSourceInfos() const { return GC.getNumVoteSourceInfos(); }
 	int getNumPropertyInfos() const { return GC.getNumPropertyInfos(); }
 	int getNumPlayerColorInfos() const { return GC.getNumPlayerColorInfos(); }
-
-	int getNumAnimationOperatorTypes() const { return GC.getNumAnimationOperatorTypes(); }
-	int getNumArtStyleTypes() const { return GC.getNumArtStyleTypes(); }
-	int getNumFlavorTypes() const { return GC.getNumFlavorTypes(); }
-	int getNumFootstepAudioTypes() const { return GC.getNumFootstepAudioTypes(); }
 
 	//////////////////////
 	// Globals Defines

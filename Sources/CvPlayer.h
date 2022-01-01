@@ -5,28 +5,26 @@
 #ifndef CIV4_PLAYER_H
 #define CIV4_PLAYER_H
 
+#include "copy_iterator.h"
+#include "CvBuildLists.h"
 #include "CvCityAI.h"
-#include "CvPlotGroup.h"
-#include "LinkedList.h"
 #include "CvContractBroker.h"
 #include "CvGameObject.h"
 #include "CvBuildLists.h"
+#include "CvPlotGroup.h"
+#include "CvProperties.h"
+#include "CvSelectionGroupAI.h"
+#include "CvTalkingHeadMessage.h"
 #include "CvUnitList.h"
 #include "CvUnitAI.h"
+#include "index_iterator_base.h"
+#include "LinkedList.h"
 
 class CvArea;
-class CvBuildLists;
-class CvCity;
-class CvCityAI;
-//class CvContractBroker;
 class CvDiploParameters;
 class CvEventTriggerInfo;
 class CvPlot;
-class CvPlotGroup;
 class CvPopupInfo;
-class CvSelectionGroupAI;
-class CvTalkingHeadMessage;
-class CvUnitAI;
 class CvUnitSelectionCriteria;
 class CvUpgradeCache;
 
@@ -129,6 +127,7 @@ public:
 
 	void setHumanDisabled(bool newVal);
 	bool isHumanDisabled() const;
+	bool isNormalAI() const;
 
 	DllExport bool isHuman() const;
 	DllExport void updateHuman();
@@ -158,7 +157,7 @@ public:
 	const CvWString getWorstEnemyName() const;
 	const wchar_t* getBestAttackUnitKey() const;
 	DllExport ArtStyleTypes getArtStyleType() const;
-	const TCHAR* getUnitButton(UnitTypes eUnit) const;
+	const char* getUnitButton(UnitTypes eUnit) const;
 
 	void doTurn();
 	void doTurnUnits();
@@ -179,7 +178,6 @@ public:
 	void updateYield();
 	void updateMaintenance() const;
 	inline void setMaintenanceDirty(bool bDirty) const { m_bMaintenanceDirty = bDirty; }
-	void updatePowerHealth();
 
 	void updateFeatureHappiness(bool bLimited = false);
 	void updateReligionHappiness(bool bLimited = false);
@@ -265,7 +263,7 @@ public:
 	bool canConstruct(BuildingTypes eBuilding, bool bContinue = false, bool bTestVisible = false, bool bIgnoreCost = false, TechTypes eIgnoreTechReq = NO_TECH, int* probabilityEverConstructable = NULL, bool bAffliction = false, bool bExposed = false) const;
 	bool canConstructInternal(BuildingTypes eBuilding, bool bContinue = false, bool bTestVisible = false, bool bIgnoreCost = false, TechTypes eIgnoreTechReq = NO_TECH, int* probabilityEverConstructable = NULL, bool bAffliction = false, bool bExposed = false) const;
 	bool canCreate(ProjectTypes eProject, bool bContinue = false, bool bTestVisible = false) const;
-	bool canMaintain(ProcessTypes eProcess, bool bContinue = false) const;
+	bool canMaintain(ProcessTypes eProcess) const;
 	bool isProductionMaxedBuilding(BuildingTypes building, bool bAcquireCity = false) const;
 	bool isProductionMaxedUnit(UnitTypes eUnit) const;
 	bool isProductionMaxedProject(ProjectTypes eProject) const;
@@ -275,6 +273,8 @@ public:
 	int getProductionModifier(UnitTypes eUnit) const;
 	int getProductionModifier(BuildingTypes eBuilding) const;
 	int getProductionModifier(ProjectTypes eProject) const;
+
+	int64_t getBaseUnitCost100(const UnitTypes eUnit) const;
 
 	int getBuildingPrereqBuilding(BuildingTypes eBuilding, BuildingTypes ePrereqBuilding, int iExtra = 0) const;
 	void removeBuilding(BuildingTypes building);
@@ -605,7 +605,6 @@ public:
 	void changeMaxConscript(int iChange);
 
 	int getOverflowResearch() const;
-	void setOverflowResearch(int iNewValue);
 	void changeOverflowResearch(int iChange);
 
 	int getNoUnhealthyPopulationCount() const;
@@ -1251,9 +1250,6 @@ public:
 	int getForceAllTradeRoutes() const;
 	void changeForceAllTradeRoutes(int iChange);
 
-	int getWorldTradeRoutes() const;
-	void changeWorldTradeRoutes(int iChange);
-
 	int getProjectHealth() const;
 	void changeProjectHealth(int iChange);
 
@@ -1268,7 +1264,6 @@ public:
 	int calculateTaxRateUnhappiness() const;
 
 	int getReligionSpreadRate() const;
-	void setReligionSpreadRate(int iNewValue);
 	void changeReligionSpreadRate(int iChange);
 
 	int getDistantUnitSupportCostModifier() const;
@@ -1520,7 +1515,6 @@ protected:
 	int m_iCivilizationHealth;
 	int m_iNoCapitalUnhappiness;
 	int m_iProjectHealth;
-	int m_iWorldTradeRoutes;
 	int m_iForceAllTradeRoutes;
 	int m_iProjectHappiness;
 	int m_iWorldHealth;
@@ -1702,10 +1696,9 @@ public:
 	virtual void AI_setExtraGoldTarget(int iNewValue) = 0;
 	virtual int AI_maxGoldPerTurnTrade(PlayerTypes ePlayer) const = 0;
 	virtual int AI_maxGoldTrade(PlayerTypes ePlayer) const = 0;
-protected:
 
-	int m_iStartingX;
-	int m_iStartingY;
+protected:
+	bst::array<XYCoords, NUM_MAPS> m_startingCoords;
 	int m_iTotalPopulation;
 	int m_iTotalLand;
 	int m_iTotalLandScored;
@@ -2004,9 +1997,9 @@ protected:
 	bool isValidEventTech(TechTypes eTech, EventTypes eEvent, PlayerTypes eOtherPlayer) const;
 	void recalculatePopulationgrowthratepercentage();
 
-	int CvPlayer::calculatePlotRouteYieldDifference(const CvPlot* pPlot, const RouteTypes eRoute, YieldTypes eYield) const;
+	int calculatePlotRouteYieldDifference(const CvPlot* pPlot, const RouteTypes eRoute, YieldTypes eYield) const;
 	RouteTypes getBestRouteInternal(const CvPlot* pPlot, bool bConnect, const CvUnit* pBuilder, BuildTypes* eBestRouteBuild = NULL) const;
-	bool CvPlayer::canBuildPlotTechPrereq(const CvPlot* pPlot, BuildTypes eRouteBuild, bool bTestEra = false, bool bTestVisible = false) const;
+	bool canBuildPlotTechPrereq(const CvPlot* pPlot, BuildTypes eRouteBuild, bool bTestEra = false, bool bTestVisible = false) const;
 	bool isRouteValid(RouteTypes eRoute, BuildTypes eRouteBuild, const CvPlot* pPlot, const CvUnit* pBuilder) const;
 
 	void verifyGoldCommercePercent();
@@ -2094,7 +2087,6 @@ public:
 	void changeNationalGreatPeopleUnitRate(const UnitTypes eIndex, const int iChange);
 
 	int getMaxTradeRoutesAdjustment() const;
-	void setMaxTradeRoutesAdjustment(int iNewValue);
 	void changeMaxTradeRoutesAdjustment(int iChange);
 
 	int getNationalHurryAngerModifier() const;
@@ -2349,18 +2341,7 @@ private:
 
 	std::vector<civcSwitchInstance> m_civicSwitchHistory;
 
-	static CRITICAL_SECTION	c_canConstructCacheSection;
-	static CRITICAL_SECTION	c_allCitiesPropertySection;
-	static CRITICAL_SECTION	c_buildingProcessingSection;
-	static CRITICAL_SECTION	c_GroupCycleSection;
 	static bool m_staticsInitialized;
-
-	bool m_bUpdatesDeferred;
-	bool m_bGoldenAgeStarted; // Used to defer reporting in update-deferred sections
-
-	void reportGoldenAgeStart();
-	void deferUpdates();
-	void resumeUpdates();
 
 protected:
 	void constructTechPathSet(TechTypes eTech, std::vector<techPath*>& pathSet, techPath& rootPath) const;

@@ -87,6 +87,7 @@ public:
 	int countOwnedBonuses(int /*BonusTypes*/ eBonus) const;
 	int countNumBuildings(int /*BuildingTypes*/ eBuilding) const;
 	bool hasBuilding(int /*BuildingTypes*/ eBuilding) const;
+	int getBuildingPrereqBuilding(BuildingTypes eBuilding, BuildingTypes ePrereqBuilding, int iExtra) const;
 	int countNumCitiesConnectedToCapital() const;
 
 	bool canContact(int /*PlayerTypes*/ ePlayer) const;
@@ -108,7 +109,6 @@ public:
 	bool canTrain(int /*UnitTypes*/ eUnit, bool bContinue, bool bTestVisible) const;
 	bool canConstruct(int /*BuildingTypes*/eBuilding, bool bContinue, bool bTestVisible, bool bIgnoreCost) const;
 	bool canCreate(int /*ProjectTypes*/ eProject, bool bContinue, bool bTestVisible) const;
-	bool canMaintain(int /*ProcessTypes*/ eProcess, bool bContinue) const;
 	int getUnitProductionNeeded(int /*UnitTypes*/ iIndex) const;
 	int getBuildingProductionNeeded(int /*BuildingTypes*/ iIndex) const;
 	int getProjectProductionNeeded(int /*ProjectTypes*/ iIndex) const;
@@ -153,7 +153,7 @@ public:
 	bool hasHolyCity(int /*ReligionTypes*/ eReligion) const;
 	int countHolyCities() const;
 
-	int getCivicAnarchyLength(boost::python::list& /*CivicTypes**/ paeNewCivics) const;
+	int getCivicAnarchyLength(const python::list& /*CivicTypes*/ lNewCivics) const;
 	int getReligionAnarchyLength() const;
 
 	bool hasHeadquarters(int /*CorporationTypes*/ eCorporation) const;
@@ -297,7 +297,6 @@ public:
 	int getPlayerTextColorB() const;
 	int getPlayerTextColorA() const;
 
-	int getSeaPlotYield(YieldTypes eIndex) const;
 	int getYieldRateModifier(YieldTypes eIndex) const;
 	int getCommercePercent(int /*CommerceTypes*/ eIndex) const;
 	void changeCommercePercent(CommerceTypes eIndex, int iChange);
@@ -430,7 +429,7 @@ public:
 
 	void setModderOption(int /*ModderOptionTypes*/ eIndex, int iNewValue);
 
-	void doRevolution(boost::python::list& /*CivicTypes**/ paeNewCivics, bool bForce);
+	void doRevolution(const python::list& /*CivicTypes*/ lNewCivics, bool bForce);
 
 	bool isAutomatedCanBuild(int /*BuildTypes*/ eIndex) const;
 	void setAutomatedCanBuild(int /*BuildTypes*/ eIndex, bool bNewValue);
