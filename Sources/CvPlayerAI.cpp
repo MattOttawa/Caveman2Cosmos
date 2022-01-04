@@ -35,7 +35,7 @@ void CvPlayerAI::initStatics()
 {
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		m_aPlayers[iI.m_eID = ((PlayerTypes)iI);
+		m_aPlayers[iI].m_eID = ((PlayerTypes)iI);
 	}
 }
 

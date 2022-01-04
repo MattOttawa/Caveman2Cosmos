@@ -81,7 +81,7 @@ public:
 
 	DllExport static CvPlayerAI& getPlayerNonInl(PlayerTypes ePlayer);
 
-	static const bst::array<CvPlayerAI, MAX_PLAYERS>& players() const { return m_aPlayers; }
+	static const bst::array<CvPlayerAI, MAX_PLAYERS>& players() { return m_aPlayers; }
 
 	static void initStatics();
 	static void freeStatics();
