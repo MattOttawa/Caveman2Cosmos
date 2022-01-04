@@ -80,12 +80,12 @@ public:
 	static CvPlayerAI& getPlayer(PlayerTypes ePlayer)
 	{
 		FASSERT_BOUNDS(0, MAX_PLAYERS, ePlayer);
-		return m_aPlayers[ePlayer];
+		return (*m_aPlayers)[ePlayer];
 	}
 
 	DllExport static CvPlayerAI& getPlayerNonInl(PlayerTypes ePlayer);
 
-	static const bst::array<CvPlayerAI, MAX_PLAYERS>& players() { return m_aPlayers; }
+	static const bst::array<CvPlayerAI, MAX_PLAYERS>& players() { return *m_aPlayers; }
 
 	static void initStatics();
 	static void freeStatics();
@@ -532,7 +532,7 @@ public:
 
 protected:
 
-	static bst::array<CvPlayerAI, MAX_PLAYERS> m_aPlayers;
+	static bst::array<CvPlayerAI, MAX_PLAYERS>* m_aPlayers;
 
 	int m_iPeaceWeight;
 	int m_iEspionageWeight;

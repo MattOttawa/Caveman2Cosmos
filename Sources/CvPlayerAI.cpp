@@ -52,25 +52,27 @@
 
 // statics
 
-bst::array<CvPlayerAI, MAX_PLAYERS> CvPlayerAI::m_aPlayers;
+bst::array<CvPlayerAI, MAX_PLAYERS>* CvPlayerAI::m_aPlayers = NULL;
 
 void CvPlayerAI::initStatics()
 {
+	m_aPlayers = new bst::array<CvPlayerAI, MAX_PLAYERS>();
+
 	for (int iI = 0; iI < MAX_PLAYERS; iI++)
 	{
-		m_aPlayers[iI].m_eID = ((PlayerTypes)iI);
+		(*m_aPlayers)[iI].m_eID = ((PlayerTypes)iI);
 	}
 }
 
 void CvPlayerAI::freeStatics()
 {
 	//SAFE_DELETE_ARRAY(m_aPlayers);
+	SAFE_DELETE(m_aPlayers);
 }
 
 bool CvPlayerAI::areStaticsInitialized()
 {
-	//return m_aPlayers != NULL;
-	return false;
+	return m_aPlayers != NULL;
 }
 
 DllExport CvPlayerAI& CvPlayerAI::getPlayerNonInl(PlayerTypes ePlayer)
@@ -3343,7 +3345,7 @@ CvCity* CvPlayerAI::AI_findTargetCity(const CvArea* pArea) const
 	int iBestValue = 0;
 	CvCity* pBestCity = NULL;
 
-	foreach_(const CvPlayer& loopPlayer, m_aPlayers)
+	foreach_(const CvPlayer& loopPlayer, players())
 	{
 		if (loopPlayer.isAlive())
 		{
