@@ -662,7 +662,7 @@ class voronoiMap:
 					self.heightMap[i] = self.heightMap[i] - 1
 
 
-	def min( height, left, right, top, bottom ):
+	def min(self, height, left, right, top, bottom):
 		minHeight = height
 		if ( minHeight > left ):
 			minHeight = left
@@ -1163,7 +1163,7 @@ class ClimateGenerator:
 		self.Lush = 11
 		self.Muddy = 12
 		self.Marsh = 13
-		
+
 		self.terrains[self.Desert] = gc.getInfoTypeForString("TERRAIN_DESERT")
 		self.terrains[self.SaltFlats] = gc.getInfoTypeForString("TERRAIN_SALT_FLATS")
 		self.terrains[self.Dunes] = gc.getInfoTypeForString("TERRAIN_DUNES")
@@ -1287,14 +1287,14 @@ class ClimateGenerator:
 		self.getTemperateTerrain(climate, latitude, moisture)
 		self.getTropicalTerrain(climate, latitude, moisture)
 		self.getEquatorialTerrain(climate, latitude, moisture)
-		
+
 		maxC = 0
 		maxCId = 0
 		for i in range(14):
 			if climate[i] > maxC:
 				maxC = climate[i]
 				maxCId = i
-		
+
 		if maxCId == self.Plains:
 			#print "Plains moisture: %f" % moisture
 			if moisture < 0.5:
@@ -1321,8 +1321,8 @@ class ClimateGenerator:
 					maxCId = self.Dunes
 				elif roll > 5:
 					maxCId = self.Scrub
-				
-				
+
+
 		return self.terrains[maxCId]
 
 	def blowWinds(self):
@@ -1443,8 +1443,8 @@ def generatePlotTypes():
 #Rivers map second try...
 class riversMap:
 	def __init__(self):
-		self.gc = CyGlobalContext()
-		self.dice = self.gc.getGame().getMapRand()
+		self.GC = CyGlobalContext()
+		self.dice = self.GC.getGame().getMapRand()
 		self.map = CyMap()
 		self.mapWidth = self.map.getGridWidth()
 		self.mapHeight = self.map.getGridHeight()
@@ -1543,7 +1543,7 @@ class riversMap:
 					if self.dice.get(1000,"Start river in flatland") < probability + self.heightMap[x + y*self.mapWidth]:
 						seeds.append( plot )
 		for plot in seeds:
-			riverID = self.gc.getMap().getNextRiverID()
+			riverID = self.GC.getMap().getNextRiverID()
 			self.startRiver(riverID, plot)
 		self.file.close()
 
@@ -1683,8 +1683,8 @@ class riversMap:
 # of the surrounding squares. This would simplify this a lot but I'm too lazy for now to rewrite all.
 class riversFromSea:
 	def __init__(self):
-		self.gc = CyGlobalContext()
-		self.dice = self.gc.getGame().getMapRand()
+		self.GC = CyGlobalContext()
+		self.dice = self.GC.getGame().getMapRand()
 		self.map = CyMap()
 		self.width = self.map.getGridWidth()
 		self.height = self.map.getGridHeight()
@@ -1722,7 +1722,7 @@ class riversFromSea:
 				tries = tries + 1
 				(x,y,flow) = self.generateRiver(i,coastShare)
 			if flow != CardinalDirectionTypes.NO_CARDINALDIRECTION:
-				riverID = self.gc.getMap().getNextRiverID()
+				riverID = self.GC.getMap().getNextRiverID()
 				self.riverLength[riverID] = 0
 				self.riverTurns[riverID] = 0
 				self.addRiverFrom(x,y,flow,riverID)
@@ -2067,7 +2067,7 @@ def findStartingPlot(argsList):
 	allOnBest = userInputLandmass == 7 # "Terra"
 	isolatedStarts = userInputLandmass == 4 # "Islands"
 
-	areas = CvMapGeneratorUtil.getAreas()
+	areas = MAP.areas()
 	areaValue = {}
 	for area in areas:
 		if area.isWater(): continue
@@ -2112,7 +2112,7 @@ def findStartingPlot(argsList):
 						players = 2
 				value = areaValue[area.getID()] / (1 + 2*players)
 				if value > bestAreaValue:
-					bestAreaValue = value;
+					bestAreaValue = value
 					bestArea = area.getID()
 
 			#-----

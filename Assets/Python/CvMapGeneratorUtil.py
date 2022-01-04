@@ -1097,7 +1097,7 @@ class TerrainGenerator:
 		self.terrainRockyCold = self.GC.getInfoTypeForString("TERRAIN_JAGGED")
 		self.terrainRocky = self.GC.getInfoTypeForString("TERRAIN_ROCKY")
 		self.terrainRockyArid = self.GC.getInfoTypeForString("TERRAIN_BADLAND")
-		self.terrainDesert = self.GC.getInfoTypeForString("TERRAIN_DESERT")
+		self.terrainDesert = self.GC.getTERRAIN_DESERT()
 		self.terrainPlains = self.GC.getInfoTypeForString("TERRAIN_PLAINS")
 		self.terrainGrass = self.GC.getInfoTypeForString("TERRAIN_GRASSLAND")
 		self.terrainMarsh = self.GC.getInfoTypeForString("TERRAIN_MARSH")
@@ -1230,31 +1230,28 @@ class TerrainGenerator:
 		return terrainVal
 
 class FeatureGenerator:
-	def __init__(self, iJunglePercent=80, iForestPercent=60,
-	             jungle_grain=5, forest_grain=6,
-	             fracXExp=-1, fracYExp=-1):
+	def __init__(self, iJunglePercent=80, iForestPercent=60, jungle_grain=5, forest_grain=6,  fracXExp=-1, fracYExp=-1):
 
-		self.GC = CyGlobalContext()
-		self.map = CyMap()
-		self.mapRand = self.GC.getGame().getMapRand()
+		self.GC = GC = CyGlobalContext()
+		self.map = MAP = GC.getMap()
+		self.mapRand = GC.getGame().getMapRand()
 		self.jungles = CyFractal()
 		self.forests = CyFractal()
 
 		self.iFlags = 0  # Disallow FRAC_POLAR flag, to prevent "zero row" problems.
-		if self.map.isWrapX(): self.iFlags += CyFractal.FracVals.FRAC_WRAP_X
-		if self.map.isWrapY(): self.iFlags += CyFractal.FracVals.FRAC_WRAP_Y
+		if MAP.isWrapX(): self.iFlags += CyFractal.FracVals.FRAC_WRAP_X
+		if MAP.isWrapY(): self.iFlags += CyFractal.FracVals.FRAC_WRAP_Y
 
-		self.iGridW = self.map.getGridWidth()
-		self.iGridH = self.map.getGridHeight()
+		self.iGridW = MAP.getGridWidth()
+		self.iGridH = MAP.getGridHeight()
 
 		self.iJunglePercent = iJunglePercent
 		self.iForestPercent = iForestPercent
 
-		jungle_grain += self.GC.getWorldInfo(self.map.getWorldSize()).getFeatureGrainChange()
-		forest_grain += self.GC.getWorldInfo(self.map.getWorldSize()).getFeatureGrainChange()
+		iFeatureGrain = GC.getWorldInfo(MAP.getWorldSize()).getFeatureGrainChange()
 
-		self.jungle_grain = jungle_grain
-		self.forest_grain = forest_grain
+		self.jungle_grain = jungle_grain + iFeatureGrain
+		self.forest_grain = forest_grain + iFeatureGrain
 
 		self.fracXExp = fracXExp
 		self.fracYExp = fracYExp
@@ -1272,8 +1269,8 @@ class FeatureGenerator:
 
 	def __initFeatureTypes(self):
 		self.featureIce = self.GC.getInfoTypeForString("FEATURE_ICE")
-		self.featureJungle = self.GC.getInfoTypeForString("FEATURE_JUNGLE")
-		self.featureForest = self.GC.getInfoTypeForString("FEATURE_FOREST")
+		self.featureJungle = self.GC.getFEATURE_JUNGLE()
+		self.featureForest = self.GC.getFEATURE_FOREST()
 
 	def addFeatures(self):
 		"adds features to all plots as appropriate"
@@ -1290,18 +1287,15 @@ class FeatureGenerator:
 		lat = self.getLatitudeAtPlot(iX, iY)
 		pPlot = self.map.sPlot(iX, iY)
 
-		for iI in range(self.GC.getNumFeatureInfos()):
-#			print self.GC.getFeatureInfo(iI).getDescription()
-			if pPlot.canHaveFeature(iI):
-#				print "Can have feature with probability: %d" % self.GC.getFeatureInfo(iI).getAppearanceProbability()
-				if self.mapRand.get(10000, "Add Feature PYTHON") < self.GC.getFeatureInfo(iI).getAppearanceProbability():
-#					print "Setting feature"
-					variety = -1
-					varietynum = self.GC.getFeatureInfo(iI).getNumVarieties()
-					if varietynum > 1:
-						variety = self.mapRand.get(varietynum, "Add Feature PYTHON")
-						#print "Variety choice: %d" % varietynum
-					pPlot.setFeatureType(iI, variety)
+		for iI in xrange(self.GC.getNumFeatureInfos()):
+			if (self.GC.getFeatureInfo(iI).getAppearanceProbability() > -1
+			and pPlot.canHaveFeature(iI)
+			and self.mapRand.get(10000, "Add Feature PYTHON") < self.GC.getFeatureInfo(iI).getAppearanceProbability()):
+				variety = -1
+				varietynum = self.GC.getFeatureInfo(iI).getNumVarieties()
+				if varietynum > 1:
+					variety = self.mapRand.get(varietynum, "Add Feature PYTHON")
+				pPlot.setFeatureType(iI, variety)
 
 		if (pPlot.getFeatureType() == FeatureTypes.NO_FEATURE):
 			self.addIceAtPlot(pPlot, iX, iY, lat)
@@ -1335,18 +1329,6 @@ class FeatureGenerator:
 		if pPlot.canHaveFeature(self.featureForest):
 			if self.forests.getHeight(iX, iY) >= self.iForestLevel:
 				pPlot.setFeatureType(self.featureForest, -1)
-
-def getAreas():
-	"Returns a list of CyArea objects representing all the areas in the map (land and water)"
-	MAP = CyMap()
-
-	areas = []
-	for i in range(MAP.getIndexAfterLastArea()):
-		area = MAP.getArea(i)
-		if not area.isNone():
-			areas.append(area)
-
-	return areas
 
 def findStartingPlot(playerID, validFn = None):
 	GC = CyGlobalContext()
@@ -1607,7 +1589,7 @@ def c2CMapReport(sWhen):
 	# Display actual Mod-Resources
 	# countResource.sort()
 	boni = 0
-	dontReportBonusClass = [GC.getInfoTypeForString("BONUSCLASS_CULTURE"), GC.getInfoTypeForString("BONUSCLASS_MANUFACTURED")]
+	dontReportBonusClass = [GC.getInfoTypeForString("BONUSCLASS_CULTURE"), GC.getInfoTypeForString("BONUSCLASS_MANUFACTURED"), GC.getInfoTypeForString("BONUSCLASS_GENMODS"), GC.getInfoTypeForString("BONUSCLASS_WONDER")]
 	while boni < GC.getNumBonusInfos():
 		type_string = GC.getBonusInfo(boni).getType()
 		class_int = GC.getBonusInfo(boni).getBonusClassType()
@@ -1745,7 +1727,7 @@ def placeC2CBonuses():
 		if plot.isLake():
 			if iTerrain == terrainCoast:
 				plot.setTerrainType(terrainShore, False, False)
-			elif iTerrain == terrainOcean:
+			elif iTerrain in (terrainSea, terrainOcean):
 				plot.setTerrainType(terrainLake, False, False)
 		elif plot.isWater():
 			## Figure out if it is Sea ie if it is ocean next to coast

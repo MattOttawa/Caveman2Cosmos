@@ -1,10 +1,15 @@
 #include "CvGameCoreDLL.h"
 #include "CvGameAI.h"
 #include "CvGameTextMgr.h"
+#include "CvGlobals.h"
+#include "CvInfos.h"
 #include "CvInitCore.h"
+#include "CvMap.h"
 #include "CvPlayerAI.h"
 #include "CvReplayInfo.h"
 #include "CvReplayMessage.h"
+#include "CvDLLInterfaceIFaceBase.h"
+#include "CvDLLUtilityIFaceBase.h"
 
 int CvReplayInfo::REPLAY_VERSION = 4;
 
@@ -27,7 +32,7 @@ CvReplayInfo::CvReplayInfo()
 	, m_iStartYear(0)
 	, m_eCalendar(NO_CALENDAR)
 {
-	m_nMinimapSize = ((GC.getDefineINT("MINIMAP_RENDER_SIZE") * GC.getDefineINT("MINIMAP_RENDER_SIZE")) / 2); 
+	m_nMinimapSize = ((GC.getDefineINT("MINIMAP_RENDER_SIZE") * GC.getDefineINT("MINIMAP_RENDER_SIZE")) / 2);
 }
 
 CvReplayInfo::~CvReplayInfo()
@@ -48,7 +53,7 @@ void CvReplayInfo::createInfo(PlayerTypes ePlayer)
 		return;
 
 	const CvMap& map = GC.getMap();
-	
+
 	if (ePlayer == NO_PLAYER)
 	{
 		ePlayer = game.getActivePlayer();
@@ -156,7 +161,7 @@ void CvReplayInfo::createInfo(PlayerTypes ePlayer)
 				pMsg->setText(game.getReplayMessageText(i));
 				pMsg->setPlot(game.getReplayMessagePlotX(i), game.getReplayMessagePlotY(i));
 				m_listReplayMessages.push_back(pMsg);
-			}	
+			}
 		}
 		else
 		{
@@ -167,16 +172,16 @@ void CvReplayInfo::createInfo(PlayerTypes ePlayer)
 				pMsg->setText(game.getReplayMessageText(i));
 				pMsg->setPlot(game.getReplayMessagePlotX(i), game.getReplayMessagePlotY(i));
 				m_listReplayMessages.push_back(pMsg);
-			}	
+			}
 		}
 	}
 
 	m_iMapWidth = GC.getMap().getGridWidth();
 	m_iMapHeight = GC.getMap().getGridHeight();
-	
-	SAFE_DELETE(m_pcMinimapPixels);	
-	m_pcMinimapPixels = new unsigned char[m_nMinimapSize];
-	
+
+	SAFE_DELETE(m_pcMinimapPixels);
+	m_pcMinimapPixels = new uint8_t[m_nMinimapSize];
+
 	void *ptexture = (void*)gDLL->getInterfaceIFace()->getMinimapBaseTexture();
 	if (ptexture)
 		memcpy((void*)m_pcMinimapPixels, ptexture, m_nMinimapSize);
@@ -328,9 +333,8 @@ void CvReplayInfo::addReplayMessage(CvReplayMessage* pMessage)
 
 void CvReplayInfo::clearReplayMessageMap()
 {
-	for (ReplayMessageList::const_iterator itList = m_listReplayMessages.begin(); itList != m_listReplayMessages.end(); ++itList)
+	foreach_(const CvReplayMessage* pMessage, m_listReplayMessages)
 	{
-		const CvReplayMessage* pMessage = *itList;
 		if (NULL != pMessage)
 		{
 			delete pMessage;
@@ -459,7 +463,7 @@ int CvReplayInfo::getFinalTurn() const
 	return m_iFinalTurn;
 }
 
-const wchar* CvReplayInfo::getFinalDate() const
+const wchar_t* CvReplayInfo::getFinalDate() const
 {
 	return m_szFinalDate;
 }
@@ -541,7 +545,7 @@ int CvReplayInfo::getMapWidth() const
 	return m_iMapWidth;
 }
 
-const unsigned char* CvReplayInfo::getMinimapPixels() const
+const uint8_t* CvReplayInfo::getMinimapPixels() const
 {
 	return m_pcMinimapPixels;
 }
@@ -581,7 +585,7 @@ bool CvReplayInfo::read(FDataStreamBase& stream)
 		}
 		else
 		{
-			m_szMapScriptName = gDLL->getText("TXT_KEY_TRAIT_PLAYER_UNKNOWN");
+			m_szMapScriptName = gDLL->getText("TXT_KEY_TRAITHELP_PLAYER_UNKNOWN");
 		}
 		stream.Read(&iType);
 		m_eWorldSize = (WorldSizeTypes)iType;
@@ -661,7 +665,7 @@ bool CvReplayInfo::read(FDataStreamBase& stream)
 		stream.Read(&m_iMapWidth);
 		stream.Read(&m_iMapHeight);
 		SAFE_DELETE(m_pcMinimapPixels);
-		m_pcMinimapPixels = new unsigned char[m_nMinimapSize];
+		m_pcMinimapPixels = new uint8_t[m_nMinimapSize];
 		stream.Read(m_nMinimapSize, m_pcMinimapPixels);
 		stream.Read(&m_bMultiplayer);
 		if (iVersion > 2)

@@ -42,7 +42,7 @@ class WBGameDataScreen:
 		self.szColorNay = "<color=255,64,64>"
 		self.szColorYay = "<color=64,255,64>"
 		self.szHidden = "</color>" + TRNSLTR.getText("TXT_KEY_WB_HIDDEN", ())
-		self.szDefault = TRNSLTR.getText("TXT_KEY_WB_DEFAULT", ())
+		self.szDefault = TRNSLTR.getText("TXT_WORD_DEFAULT", ())
 		self.szOk = TRNSLTR.getText("TXT_KEY_MAIN_MENU_OK", ())
 		self.szCancel = TRNSLTR.getText("TXT_KEY_POPUP_CANCEL", ())
 		self.bInEditBox = False
@@ -61,7 +61,7 @@ class WBGameDataScreen:
 		self.aWidgetBucket.append("topBar")
 		self.aWidgetBucket.append(botBar)
 
-		screen.setText("ExitSubScreen", "", font4b + TRNSLTR.getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()), 1<<1, xRes - 16, 0, 0, eFontGame, eWidGen, 1, 2)
+		screen.setText("ExitSubScreen", "", font4b + TRNSLTR.getText("TXT_WORD_EXIT", ()), 1<<1, xRes - 16, 0, 0, eFontGame, eWidGen, 1, 2)
 		self.aWidgetBucket.append("ExitSubScreen")
 
 		wDDB = 256
@@ -350,11 +350,9 @@ class WBGameDataScreen:
 			for iPlayerX in xrange(self.GC.getMAX_PC_PLAYERS()):
 				pPlayerX = self.GC.getPlayer(iPlayerX)
 				if pPlayerX.isHuman():
-					cityX, i = pPlayerX.firstCity(False)
-					while cityX:
+					for cityX in pPlayerX.cities():
 						if not cityX.isCapital():
 							cityX.kill()
-						cityX, i = pPlayerX.nextCity(i, False)
 		elif iGameOption == GameOptionTypes.GAMEOPTION_NO_BARBARIANS and self.GAME.isOption(iGameOption):
 			pPlayerBarb = self.GC.getPlayer(self.GC.getBARBARIAN_PLAYER())
 			pPlayerBarb.killCities()
@@ -424,15 +422,15 @@ class WBGameDataScreen:
 
 				if iMaxTurns:
 					iEstimateEndTurn = iGameTurn + iMaxTurns
-					self.GAME.setEstimateEndTurn(iGameTurn + iMaxTurns);
+					self.GAME.setEstimateEndTurn(iGameTurn + iMaxTurns)
 				else:
-					iEstimateEndTurn = 0;
+					iEstimateEndTurn = 0
 					gameSpeed = self.GC.getGameSpeedInfo(self.GAME.getGameSpeedType())
 
 					for i in xrange(gameSpeed.getNumTurnIncrements()):
-						iEstimateEndTurn += gameSpeed.getGameTurnInfo(i).iNumGameTurnsPerIncrement;
+						iEstimateEndTurn += gameSpeed.getGameTurnInfo(i).iNumGameTurnsPerIncrement
 
-					self.GAME.setEstimateEndTurn(iEstimateEndTurn);
+					self.GAME.setEstimateEndTurn(iEstimateEndTurn)
 
 				screen.hide("EstimateEndTurn")
 				screen.modifyLabel("EstimateEndTurn", self.szEstimateEndTurn % iEstimateEndTurn, 1<<0)
@@ -543,8 +541,8 @@ class WBGameDataScreen:
 	def closeEditBox(self, screen, bOk):
 		if bOk:
 			self.szScriptData = screen.getEditBoxString("ScriptEditBox")
-			import CvUtil
-			self.GAME.setScriptData(CvUtil.convertToStr(self.szScriptData))
+			import TextUtil
+			self.GAME.setScriptData(TextUtil.convertToStr(self.szScriptData))
 		screen.hide("ScriptEditBG")
 		screen.hide("ScriptEditBox")
 		screen.hide("ScriptEditHeader")
@@ -589,7 +587,7 @@ class WBGameDataScreen:
 		if iCode == 4: # Mouse Enter
 
 			if NAME == "GameOption":
-				self.WB.updateTooltip(screen, self.GC.getGameOptionInfo(ID).getHelp())
+				self.WB.tooltip.handle(screen, self.GC.getGameOptionInfo(ID).getHelp())
 
 		elif not iCode: # click
 

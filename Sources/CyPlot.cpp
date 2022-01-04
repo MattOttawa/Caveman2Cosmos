@@ -1,11 +1,16 @@
 #include "CvGameCoreDLL.h"
+#include "CvCity.h"
+#include "CvGlobals.h"
+#include "CvInfos.h"
+#include "CvMap.h"
+#include "CvPlot.h"
 #include "CyArea.h"
 #include "CyCity.h"
 #include "CyPlot.h"
 #include "CyUnit.h"
 
 //
-// Python wrapper class for CvPlot 
+// Python wrapper class for CvPlot
 //
 
 CyPlot::CyPlot(CvPlot* pPlot, bool bInViewportSpace) : m_pPlot(pPlot), m_bIsInViewportSpace(bInViewportSpace) {}
@@ -52,7 +57,7 @@ bool CyPlot::isAdjacentToArea(const CyArea& kArea) const
 
 bool CyPlot::isCoastal() const
 {
-	return m_pPlot ? m_pPlot->isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN()) : false;
+	return m_pPlot ? m_pPlot->isCoastal(GC.getWorldInfo(GC.getMap().getWorldSize()).getOceanMinAreaSize()) : false;
 }
 
 bool CyPlot::isLake() const
@@ -258,7 +263,8 @@ CyArea* CyPlot::area() const
 
 CyArea* CyPlot::waterArea() const
 {
-	return m_pPlot ? new CyArea(m_pPlot->waterArea()) : NULL;
+	CvArea* area = m_pPlot ? m_pPlot->waterArea() : NULL;
+	return area ? new CyArea(area) : NULL;
 }
 
 int CyPlot::getArea() const
@@ -271,9 +277,9 @@ int CyPlot::getUpgradeTimeLeft(int /*ImprovementTypes*/ eImprovement, int /*Play
 	return m_pPlot ? m_pPlot->getUpgradeTimeLeft((ImprovementTypes) eImprovement, (PlayerTypes) ePlayer) : -1;
 }
 
-void CyPlot::changeUpgradeProgress(int iChange)
+void CyPlot::changeImprovementUpgradeProgress(int iChange)
 {
-	if (m_pPlot) m_pPlot->changeUpgradeProgressHundredths(iChange*100);
+	if (m_pPlot) m_pPlot->changeImprovementUpgradeProgress(iChange*100);
 }
 
 bool CyPlot::isStartingPlot() const
@@ -358,7 +364,7 @@ bool CyPlot::isHills() const
 
 bool CyPlot::isPeak() const
 {
-	return m_pPlot ? m_pPlot->isPeak2(true) : false;
+	return m_pPlot ? m_pPlot->isAsPeak() : false;
 }
 
 void CyPlot::setPlotType(PlotTypes eNewValue, bool bRecalculate, bool bRebuildGraphics)
@@ -458,12 +464,14 @@ void CyPlot::setRouteType(int /*RouteTypes*/ eNewValue)
 
 CyCity* CyPlot::getPlotCity() const
 {
-	return m_pPlot ? new CyCity(m_pPlot->getPlotCity()) : NULL;
+	CvCity* city = m_pPlot ? m_pPlot->getPlotCity() : NULL;
+	return city ? new CyCity(city) : NULL;
 }
 
 CyCity* CyPlot::getWorkingCity() const
 {
-	return m_pPlot ? new CyCity(m_pPlot->getWorkingCity()) : NULL;
+	CvCity* city = m_pPlot ? m_pPlot->getWorkingCity() : NULL;
+	return city ? new CyCity(city) : NULL;
 }
 
 int CyPlot::getRiverID() const
@@ -561,14 +569,28 @@ int CyPlot::getInvisibleVisibilityCount(int /*TeamTypes*/ eTeam, int /*Invisible
 	return m_pPlot ? m_pPlot->getInvisibleVisibilityCount((TeamTypes) eTeam, (InvisibleTypes) eInvisible) : -1;
 }
 
-bool CyPlot::isInvisibleVisible(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible) const
+bool CyPlot::isSpotterInSight(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible) const
 {
-	return m_pPlot ? m_pPlot->isInvisibleVisible((TeamTypes) eTeam, (InvisibleTypes) eInvisible) : -1;
+	return m_pPlot ? m_pPlot->isSpotterInSight((TeamTypes) eTeam, (InvisibleTypes) eInvisible) : false;
 }
 
-void CyPlot::changeInvisibleVisibilityCount(int /*TeamTypes*/ eTeam, int /*InvisibleTypes*/ eInvisible, int iChange, int iIntensity)
+void CyPlot::changeInvisibleVisibilityCount(int iTeam, int iInvisible, int iChange)
 {
-	if (m_pPlot) m_pPlot->changeInvisibleVisibilityCount((TeamTypes) eTeam, (InvisibleTypes) eInvisible, iChange, iIntensity);
+	if (m_pPlot) m_pPlot->changeInvisibleVisibilityCount((TeamTypes) iTeam, (InvisibleTypes) iInvisible, iChange);
+}
+
+python::list CyPlot::units() const
+{
+	python::list list = python::list();
+
+	if (m_pPlot)
+	{
+		foreach_(CvUnit* unit, m_pPlot->units())
+		{
+			list.append(CyUnit(unit));
+		}
+	}
+	return list;
 }
 
 int CyPlot::getNumUnits() const
@@ -604,4 +626,18 @@ bool CyPlot::isInViewport() const
 CyPlot* CyPlot::cloneToViewport() const
 {
 	return new CyPlot(m_pPlot, true);
+}
+
+python::list CyPlot::rect(int halfWid, int halfHgt) const
+{
+	python::list list = python::list();
+
+	if (m_pPlot)
+	{
+		foreach_(CvPlot* plot, m_pPlot->rect(halfWid, halfHgt))
+		{
+			list.append(CyPlot(plot));
+		}
+	}
+	return list;
 }
