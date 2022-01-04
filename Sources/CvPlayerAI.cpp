@@ -75,7 +75,7 @@ bool CvPlayerAI::areStaticsInitialized()
 	return m_aPlayers != NULL;
 }
 
-DllExport CvPlayerAI& CvPlayerAI::getPlayerNonInl(PlayerTypes ePlayer)
+CvPlayerAI& CvPlayerAI::getPlayerNonInl(PlayerTypes ePlayer)
 {
 	if (ePlayer <= NO_PLAYER || ePlayer >= MAX_PLAYERS)
 	{
@@ -3345,7 +3345,7 @@ CvCity* CvPlayerAI::AI_findTargetCity(const CvArea* pArea) const
 	int iBestValue = 0;
 	CvCity* pBestCity = NULL;
 
-	foreach_(const CvPlayer& loopPlayer, players())
+	foreach_(const CvPlayer& loopPlayer, getPlayers())
 	{
 		if (loopPlayer.isAlive())
 		{

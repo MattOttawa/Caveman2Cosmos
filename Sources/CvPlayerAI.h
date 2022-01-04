@@ -76,7 +76,6 @@ public:
 	CvPlayerAI();
 	virtual ~CvPlayerAI();
 
-	// inlined for performance reasons
 	static CvPlayerAI& getPlayer(PlayerTypes ePlayer)
 	{
 		FASSERT_BOUNDS(0, MAX_PLAYERS, ePlayer);
@@ -85,7 +84,7 @@ public:
 
 	DllExport static CvPlayerAI& getPlayerNonInl(PlayerTypes ePlayer);
 
-	static const bst::array<CvPlayerAI, MAX_PLAYERS>& players() { return *m_aPlayers; }
+	static const bst::array<CvPlayerAI, MAX_PLAYERS>& getPlayers() { return *m_aPlayers; }
 
 	static void initStatics();
 	static void freeStatics();
@@ -660,7 +659,8 @@ private:
 	mutable MissionPlotTargetMap m_missionTargetCache;
 };
 
-// helper for accessing static functions
-#define GET_PLAYER CvPlayerAI::getPlayer
+// helpers for accessing static functions
+#define GET_PLAYER  CvPlayerAI::getPlayer
+#define GET_PLAYERS CvPlayerAI::getPlayers
 
 #endif
