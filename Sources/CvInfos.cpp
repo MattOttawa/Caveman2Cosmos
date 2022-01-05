@@ -8597,15 +8597,6 @@ CvCivicInfo::CvCivicInfo()
 	, m_bNoForeignCorporations(false)
 	, m_bStateReligion(false)
 	, m_bNoNonStateReligionSpread(false)
-	, m_piYieldModifier(NULL)
-	, m_piCapitalYieldModifier(NULL)
-	, m_piTradeYieldModifier(NULL)
-	, m_piCommerceModifier(NULL)
-	, m_piCapitalCommerceModifier(NULL)
-	, m_piSpecialistExtraCommerce(NULL)
-	, m_paiBuildingHappinessChanges(NULL)
-	, m_paiBuildingHealthChanges(NULL)
-	, m_paiFeatureHappinessChanges(NULL)
 	, m_pabHurry(NULL)
 	, m_pabSpecialBuildingNotRequired(NULL)
 	, m_pabSpecialistValid(NULL)
@@ -8635,17 +8626,9 @@ CvCivicInfo::CvCivicInfo()
 	, m_bNoCapitalUnhappiness(false)
 	, m_bNoLandmarkAnger(false)
 	, m_piBonusMintedPercent(NULL)
-	, m_piImprovementHappinessChanges(NULL)
-	, m_piImprovementHealthPercentChanges(NULL)
 	, m_ppiSpecialistYieldPercentChanges(NULL)
 	, m_ppiSpecialistCommercePercentChanges(NULL)
-	, m_piLandmarkYieldChanges(NULL)
-	, m_piFreeSpecialistCount(NULL)
-	, m_paiUnitCombatProductionModifier(NULL)
-	, m_piUnitProductionModifier(NULL)
 	, m_ppiTerrainYieldChanges(NULL)
-	, m_piFlavorValue(NULL)
-	, m_piCivicAttitudeChanges(NULL)
 	, m_pszCivicAttitudeReason(NULL)
 	, m_ppiBuildingCommerceModifier(NULL)
 	, m_ppiBuildingCommerceChange(NULL)
@@ -8669,29 +8652,11 @@ CvCivicInfo::CvCivicInfo()
 //------------------------------------------------------------------------------------------------------
 CvCivicInfo::~CvCivicInfo()
 {
-	SAFE_DELETE_ARRAY(m_piYieldModifier);
-	SAFE_DELETE_ARRAY(m_piCapitalYieldModifier);
-	SAFE_DELETE_ARRAY(m_piTradeYieldModifier);
-	SAFE_DELETE_ARRAY(m_piCommerceModifier);
-	SAFE_DELETE_ARRAY(m_piCapitalCommerceModifier);
-	SAFE_DELETE_ARRAY(m_piSpecialistExtraCommerce);
-	SAFE_DELETE_ARRAY(m_paiBuildingHappinessChanges);
-	SAFE_DELETE_ARRAY(m_paiBuildingHealthChanges);
-	SAFE_DELETE_ARRAY(m_paiFeatureHappinessChanges);
 	SAFE_DELETE_ARRAY(m_pabHurry);
 	SAFE_DELETE_ARRAY(m_pabSpecialBuildingNotRequired);
 	SAFE_DELETE_ARRAY(m_pabSpecialistValid);
 	SAFE_DELETE_ARRAY2(m_ppiImprovementYieldChanges, GC.getNumImprovementInfos());
-	SAFE_DELETE_ARRAY(m_piFlavorValue);
-	SAFE_DELETE_ARRAY(m_piBonusMintedPercent);
-	SAFE_DELETE_ARRAY(m_piCivicAttitudeChanges);
 	SAFE_DELETE_ARRAY(m_pszCivicAttitudeReason);
-	SAFE_DELETE_ARRAY(m_paiUnitCombatProductionModifier);
-	SAFE_DELETE_ARRAY(m_piUnitProductionModifier);
-	SAFE_DELETE_ARRAY(m_piLandmarkYieldChanges);
-	SAFE_DELETE_ARRAY(m_piFreeSpecialistCount);
-	SAFE_DELETE_ARRAY(m_piImprovementHappinessChanges);
-	SAFE_DELETE_ARRAY(m_piImprovementHealthPercentChanges);
 	SAFE_DELETE_ARRAY2(m_ppiBuildingCommerceModifier, GC.getNumBuildingInfos());
 	SAFE_DELETE_ARRAY2(m_ppiBuildingCommerceChange, GC.getNumBuildingInfos());
 	SAFE_DELETE_ARRAY2(m_ppiBonusCommerceModifier, GC.getNumBonusInfos());
@@ -9521,12 +9486,10 @@ void CvCivicInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_iNationalCaptureProbabilityModifier);
 	CheckSum(iSum, m_iNationalCaptureResistanceModifier);
 	CheckSum(iSum, m_iFreedomFighterChange);
-
 	CheckSum(iSum, m_fRevIdxNationalityMod);
 	CheckSum(iSum, m_fRevIdxBadReligionMod);
 	CheckSum(iSum, m_fRevIdxGoodReligionMod);
 	CheckSum(iSum, m_fRevViolentMod);
-
 	CheckSum(iSum, m_bUpgradeAnywhere);
 	CheckSum(iSum, m_bAllowInquisitions);
 	CheckSum(iSum, m_bDisallowInquisitions);
@@ -9549,20 +9512,29 @@ void CvCivicInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_bFreedomFighter);
 	CheckSum(iSum, m_bPolicy);
 
-	// Arrays
-
-	CheckSumI(iSum, NUM_YIELD_TYPES, m_piYieldModifier);
-	CheckSumI(iSum, NUM_YIELD_TYPES, m_piCapitalYieldModifier);
-	CheckSumI(iSum, NUM_YIELD_TYPES, m_piTradeYieldModifier);
-	CheckSumI(iSum, NUM_COMMERCE_TYPES, m_piCommerceModifier);
-	CheckSumI(iSum, NUM_COMMERCE_TYPES, m_piCapitalCommerceModifier);
-	CheckSumI(iSum, NUM_COMMERCE_TYPES, m_piSpecialistExtraCommerce);
-	CheckSumI(iSum, GC.getNumBuildingInfos(), m_paiBuildingHappinessChanges);
-	CheckSumI(iSum, GC.getNumBuildingInfos(), m_paiBuildingHealthChanges);
-	CheckSumI(iSum, GC.getNumFeatureInfos(), m_paiFeatureHappinessChanges);
 	CheckSumI(iSum, GC.getNumHurryInfos(), m_pabHurry);
 	CheckSumI(iSum, GC.getNumSpecialBuildingInfos(), m_pabSpecialBuildingNotRequired);
 	CheckSumI(iSum, GC.getNumSpecialistInfos(), m_pabSpecialistValid);
+
+	CheckSumC(iSum, m_aYieldModifier);
+	CheckSumC(iSum, m_aCapitalYield);
+	CheckSumC(iSum, m_aTradeYieldModifier);
+	CheckSumC(iSum, m_aCommerceModifier);
+	CheckSumC(iSum, m_aCapitalCommerceModifier);
+	CheckSumC(iSum, m_aSpecialistExtraCommerce);
+	CheckSumC(iSum, m_aBuildingHappinessChanges);
+	CheckSumC(iSum, m_aBuildingHealthChanges);
+	CheckSumC(iSum, m_aFeatureHappinessChanges);
+	CheckSumC(iSum, m_aBonusMintedPercent);
+	CheckSumC(iSum, m_aUnitCombatProductionModifier);
+	CheckSumC(iSum, m_aBuildingProductionModifier);
+	CheckSumC(iSum, m_aUnitProductionModifier);
+	CheckSumC(iSum, m_aFlavorValue);
+	CheckSumC(iSum, m_aCivicAttitudeChanges);
+	CheckSumC(iSum, m_aLandmarkYieldChanges);
+	CheckSumC(iSum, m_aFreeSpecialistCount);
+	CheckSumC(iSum, m_aImprovementHappinessChanges);
+	CheckSumC(iSum, m_aImprovementHealthPercentChanges);
 
 	int i;
 	if (m_ppiImprovementYieldChanges)
@@ -9570,17 +9542,6 @@ void CvCivicInfo::getCheckSum(uint32_t& iSum) const
 		{
 			CheckSumI(iSum, NUM_YIELD_TYPES, m_ppiImprovementYieldChanges[i]);
 		}
-
-	CheckSumI(iSum, GC.getNumBonusInfos(), m_piBonusMintedPercent);
-	CheckSumI(iSum, GC.getNumUnitCombatInfos(), m_paiUnitCombatProductionModifier);
-	CheckSumC(iSum, m_aBuildingProductionModifier);
-	CheckSumI(iSum, GC.getNumUnitInfos(), m_piUnitProductionModifier);
-	CheckSumI(iSum, GC.getNumFlavorTypes(), m_piFlavorValue);
-	CheckSumI(iSum, GC.getNumCivicInfos(), m_piCivicAttitudeChanges);
-	CheckSumI(iSum, NUM_YIELD_TYPES, m_piLandmarkYieldChanges);
-	CheckSumI(iSum, GC.getNumSpecialistInfos(), m_piFreeSpecialistCount);
-	CheckSumI(iSum, GC.getNumImprovementInfos(), m_piImprovementHappinessChanges);
-	CheckSumI(iSum, GC.getNumImprovementInfos(), m_piImprovementHealthPercentChanges);
 
 	if (m_ppiSpecialistYieldPercentChanges)
 	{
@@ -9635,7 +9596,6 @@ void CvCivicInfo::getCheckSum(uint32_t& iSum) const
 
 bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 {
-
 	CvString szTextVal;
 	if (!CvInfoBase::read(pXML))
 	{
@@ -9728,12 +9688,10 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_iNationalCaptureProbabilityModifier, L"iNationalCaptureProbabilityModifier");
 	pXML->GetOptionalChildXmlValByName(&m_iNationalCaptureResistanceModifier, L"iNationalCaptureResistanceModifier");
 	pXML->GetOptionalChildXmlValByName(&m_iFreedomFighterChange, L"iFreedomFighterChange");
-
 	pXML->GetOptionalChildXmlValByName(&m_fRevIdxNationalityMod, L"fRevIdxNationalityMod");
 	pXML->GetOptionalChildXmlValByName(&m_fRevIdxBadReligionMod, L"fRevIdxBadReligionMod");
 	pXML->GetOptionalChildXmlValByName(&m_fRevIdxGoodReligionMod, L"fRevIdxGoodReligionMod");
 	pXML->GetOptionalChildXmlValByName(&m_fRevViolentMod, L"fRevViolentMod");
-
 	pXML->GetOptionalChildXmlValByName(&m_bUpgradeAnywhere, L"bUpgradeAnywhere");
 	pXML->GetOptionalChildXmlValByName(&m_bAllowInquisitions, L"bAllowInquisitions");
 	pXML->GetOptionalChildXmlValByName(&m_bDisallowInquisitions, L"bDisallowInquisitions");
@@ -9748,79 +9706,9 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bFreedomFighter, L"bFreedomFighter");
 	pXML->GetOptionalChildXmlValByName(&m_bPolicy, L"bPolicy");
 
-
-	if (pXML->TryMoveToXmlFirstChild(L"YieldModifiers"))
-	{
-		pXML->SetYields(&m_piYieldModifier);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piYieldModifier);
-	}
-
-	if (pXML->TryMoveToXmlFirstChild(L"CapitalYieldModifiers"))
-	{
-		pXML->SetYields(&m_piCapitalYieldModifier);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piCapitalYieldModifier);
-	}
-
-	if (pXML->TryMoveToXmlFirstChild(L"TradeYieldModifiers"))
-	{
-		pXML->SetYields(&m_piTradeYieldModifier);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piTradeYieldModifier);
-	}
-
-	if (pXML->TryMoveToXmlFirstChild(L"CommerceModifiers"))
-	{
-		pXML->SetCommerce(&m_piCommerceModifier);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piCommerceModifier);
-	}
-
-	if (pXML->TryMoveToXmlFirstChild(L"CapitalCommerceModifiers"))
-	{
-		pXML->SetCommerce(&m_piCapitalCommerceModifier);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piCapitalCommerceModifier);
-	}
-
-	if (pXML->TryMoveToXmlFirstChild(L"SpecialistExtraCommerces"))
-	{
-		pXML->SetCommerce(&m_piSpecialistExtraCommerce);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piSpecialistExtraCommerce);
-	}
-
 	pXML->SetVariableListTagPair(&m_pabHurry, L"Hurrys", GC.getNumHurryInfos());
 	pXML->SetVariableListTagPair(&m_pabSpecialBuildingNotRequired, L"SpecialBuildingNotRequireds",  GC.getNumSpecialBuildingInfos());
-
-/********************************************************************************/
-/* 	New Civic AI						02.08.2010				Fuyu			*/
-/********************************************************************************/
 	pXML->SetVariableListTagPair(&m_pabSpecialistValid, L"SpecialistValids", GC.getNumSpecialistInfos());
-
-	pXML->SetVariableListTagPair(&m_paiBuildingHappinessChanges, L"BuildingHappinessChanges", GC.getNumBuildingInfos());
-	pXML->SetVariableListTagPair(&m_paiBuildingHealthChanges, L"BuildingHealthChanges", GC.getNumBuildingInfos());
-
-	pXML->SetVariableListTagPair(&m_paiFeatureHappinessChanges, L"FeatureHappinessChanges", GC.getNumFeatureInfos());
 
 	// initialize the boolean list to the correct size and all the booleans to false
 	FAssertMsg((GC.getNumImprovementInfos() > 0) && (NUM_YIELD_TYPES) > 0,"either the number of improvement infos is zero or less or the number of yield types is zero or less");
@@ -9882,54 +9770,28 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->GetOptionalChildXmlValByName(m_szWeLoveTheKingKey, L"WeLoveTheKing");
 
-	pXML->SetVariableListTagPair(&m_piBonusMintedPercent, L"BonusMintedPercents", GC.getNumBonusInfos());
-	pXML->SetVariableListTagPair(&m_piImprovementHappinessChanges, L"ImprovementHappinessChanges", GC.getNumImprovementInfos());
-	pXML->SetVariableListTagPair(&m_piImprovementHealthPercentChanges, L"ImprovementHealthPercentChanges", GC.getNumImprovementInfos());
-	pXML->SetVariableListTagPair(&m_paiUnitCombatProductionModifier, L"UnitCombatProductionModifiers", GC.getNumUnitCombatInfos());
+	pXML->set(m_aYieldModifier, L"YieldModifiers");
+	pXML->set(m_aCapitalYieldModifier, L"CapitalYieldModifiers");
+	pXML->set(m_aTradeYieldModifier, L"TradeYieldModifiers");
+	pXML->set(m_aCommerceModifier, L"CommerceModifiers");
+	pXML->set(m_aCapitalCommerceModifier, L"CapitalCommerceModifiers");
+	pXML->set(m_aSpecialistExtraCommerce, L"SpecialistExtraCommerces");
+	pXML->set(m_aBuildingHappinessChanges, L"BuildingHappinessChanges");
+	pXML->set(m_aBuildingHealthChanges, L"BuildingHealthChanges");
+	pXML->set(m_aFeatureHappinessChanges, L"FeatureHappinessChanges");
+	pXML->set(m_aBonusMintedPercent, L"BonusMintedPercents");
+	pXML->set(m_aImprovementHappinessChanges, L"ImprovementHappinessChanges");
+	pXML->set(m_aImprovementHealthPercentChanges, L"ImprovementHealthPercentChanges");
+	pXML->set(m_aUnitCombatProductionModifier, L"UnitCombatProductionModifiers");
+	pXML->set(m_aBuildingProductionModifier, L"BuildingProductionModifiers");
 
-	m_aBuildingProductionModifier.read(pXML, L"BuildingProductionModifiers");
+	m_aUnitProductionModifiers.readWithDelayedResolution(pXML, L"UnitProductionModifiers");
 
-	if (pXML->TryMoveToXmlFirstChild(L"UnitProductionModifiers"))
-	{
-		const int iNumSibs = pXML->GetXmlChildrenNumber();
-		int iTemp = false;
-		if (iNumSibs > 0)
-		{
-			if (pXML->TryMoveToXmlFirstChild())
-			{
-				for (int i = 0; i < iNumSibs; i++)
-				{
-					if (pXML->GetChildXmlVal(szTextVal))
-					{
-						m_aszUnitProdModforPass3.push_back(szTextVal);
-						pXML->GetNextXmlVal(&iTemp);
-						m_aiUnitProdModforPass3.push_back(iTemp);
-						pXML->MoveToXmlParent();
-					}
-					if (!pXML->TryMoveToXmlNextSibling())
-					{
-						break;
-					}
-				}
-				pXML->MoveToXmlParent();
-			}
-		}
-		pXML->MoveToXmlParent();
-	}
+	pXML->set(m_aFlavorValue, L"Flavors");
+	pXML->set(m_aFreeSpecialistCount, L"FreeSpecialistCounts");
+	pXML->set(m_aLandmarkYieldChanges, L"LandmarkYieldChanges");
 
-	pXML->SetVariableListTagPair(&m_piFlavorValue, L"Flavors", GC.getFlavorTypes(), GC.getNumFlavorTypes());
-	pXML->SetVariableListTagPair(&m_piFreeSpecialistCount, L"FreeSpecialistCounts", GC.getNumSpecialistInfos());
 	pXML->GetOptionalChildXmlValByName(&m_iEnslavementChance, L"iEnslavementChance");
-
-	if (pXML->TryMoveToXmlFirstChild(L"LandmarkYieldChanges"))
-	{
-		pXML->SetYields(&m_piLandmarkYieldChanges);
-		pXML->MoveToXmlParent();
-	}
-	else
-	{
-		SAFE_DELETE_ARRAY(m_piLandmarkYieldChanges);
-	}
 
 	FAssertMsg((GC.getNumSpecialistInfos() > 0) && (NUM_YIELD_TYPES) > 0,"either the number of terrain infos is zero or less or the number of yield types is zero or less");
 	if (pXML->TryMoveToXmlFirstChild(L"SpecialistYieldPercentChanges"))
@@ -10171,6 +10033,8 @@ bool CvCivicInfo::read(CvXMLLoadUtility* pXML)
 
 		pXML->MoveToXmlParent();
 	}
+
+	pXML->set(m_aCivicAttitudeChanges, L"CivicAttitudeChanges");
 
 	if (pXML->TryMoveToXmlFirstChild(L"CivicAttitudeChanges"))
 	{

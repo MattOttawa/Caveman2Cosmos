@@ -664,7 +664,6 @@ public:
 							aInfos->push_back(std::make_pair(eType, iModifier));
 
 							MoveToXmlParent();
-
 						}
 
 						if (!TryMoveToXmlNextSibling())
@@ -692,7 +691,7 @@ public:
 			}
 		}
 
-		std::sort(target.begin(), target.end());
+		algo::sort(target);
 	}
 
 	template<class T>
@@ -720,7 +719,7 @@ public:
 						}
 					}
 
-					std::sort(aInfos->begin(), aInfos->end());
+					algo::sort(aInfos);
 
 					MoveToXmlParent();
 				}
@@ -746,6 +745,12 @@ public:
 	static void RemoveTGAFiller();
 
 	static void showXMLError(const char* const format, ...);
+
+	template <typename ID_, typename Value_>
+	void set(IDValueMap<ID_, Value_>& map, const wchar_t* szTag)
+	{
+		map.read(this, szTag);
+	}
 
 	//---------------------------------------PRIVATE MEMBER VARIABLES---------------------------------
 private:

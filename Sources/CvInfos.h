@@ -2993,41 +2993,73 @@ public:
 	bool isFreedomFighter() const;
 	bool isPolicy() const;
 
-	// Arrays
-
 	int getYieldModifier(int i) const;
 	int* getYieldModifierArray() const;
+	const IDValueMap<YieldTypes, int>& getYield() const { return m_aYieldModifier; }
+
 	int getCapitalYieldModifier(int i) const;
 	int* getCapitalYieldModifierArray() const;
+	const IDValueMap<YieldTypes, int>& getCapitalYield() const { return m_aCapitalYieldModifier; }
+
 	int getTradeYieldModifier(int i) const;
 	int* getTradeYieldModifierArray() const;
+	const IDValueMap<YieldTypes, int>& getTradeYield() const { return m_aTradeYieldModifier; }
+
 	int getCommerceModifier(int i) const;
 	int* getCommerceModifierArray() const;
+	const IDValueMap<CommerceTypes, int>& getCommerce() const { return m_aCommerceModifier; }
+
 	int getCapitalCommerceModifier(int i) const;
 	int* getCapitalCommerceModifierArray() const;
+	const IDValueMap<CommerceTypes, int>& getCapitalCommerce() const { return m_aCapitalCommerceModifier; }
+
 	int getSpecialistExtraCommerce(int i) const;
 	int* getSpecialistExtraCommerceArray() const;
+	const IDValueMap<CommerceTypes, int>& getSpecialistCommerce() const { return m_aSpecialistExtraCommerce; }
+
 	int getCivicAttitudeChange(int i) const;
 	int* getCivicAttitudeChanges() const;
+	const IDValueMap<CivicTypes, int>& getAttitudeChanges() const { return m_aCivicAttitudeChanges; }
+
 	int getLandmarkYieldChanges(int i) const;
 	int* getLandmarkYieldChangesArray() const;
-
-	int getBonusCommerceModifier(int i, int j) const;
-	int* getBonusCommerceModifierArray(int i) const;
+	const IDValueMap<YieldTypes, int>& getLandmarkYield() const { return m_aLandmarkYieldChanges; }
 
 	const IDValueMap<BuildingTypes, int>& getBuildingProductionModifiers() const { return m_aBuildingProductionModifier; }
 	const python::list cyGetBuildingProductionModifiers() const { return m_aBuildingProductionModifier.makeList(); }
 
 	int getBuildingHappinessChanges(int i) const;
+	const IDValueMap<BuildingTypes, int>& getBuildingHappiness() const { return m_aBuildingHappinessChanges; }
+
 	int getBuildingHealthChanges(int i) const;
+	const IDValueMap<BuildingTypes, int>& getBuildingHealth() const { return m_aBuildingHealthChanges; }
+
 	int getFeatureHappinessChanges(int i) const;
+	const IDValueMap<FeatureTypes, int>& getFeatureHappiness() const { return m_aFeatureHappinessChanges; }
+
 	int getBonusMintedPercent(int i) const;
+	const IDValueMap<BonusTypes, int>& getBonusMintedPercent() const { return m_aBonusMintedPercent; }
+
 	int getFreeSpecialistCount(int i) const;
+	const IDValueMap<SpecialistTypes, int>& getFreeSpecialistCount() const { return m_aFreeSpecialistCount; }
+
 	int getFlavorValue(int i) const;
+	const IDValueMap<FlavorTypes, int>& getFlavorValue() const { return m_aFlavorValue; }
+
 	int getUnitCombatProductionModifier(int i) const;
+	const IDValueMap<UnitCombatTypes, int>& getUnitCombatProduction() const { return m_aUnitCombatProductionModifier; }
+
 	int getUnitProductionModifier(int i) const;
+	const IDValueMap<UnitTypes, int>& getUnitProduction() const { return m_aUnitProductionModifier; }
+
 	int getImprovementHappinessChanges(int i) const;
+	const IDValueMap<ImprovementTypes, int>& getImprovementHappiness() const { return m_aImprovementHappinessChanges; }
+
 	int getImprovementHealthPercentChanges(int i) const;
+	const IDValueMap<ImprovementTypes, int>& getImprovementHealthPercent() const { return m_aImprovementHealthPercentChanges; }
+
+	int getBonusCommerceModifier(int i, int j) const;
+	int* getBonusCommerceModifierArray(int i) const;
 
 	bool isHurry(int i) const;
 	bool isSpecialBuildingNotRequired(int i) const;
@@ -3068,7 +3100,6 @@ public:
 private:
 	CvPropertyManipulators m_PropertyManipulators;
 
-protected:
 	CvString m_szGlobalDefine;
 	CvString* m_pszCivicAttitudeReason;
 	CvWString m_szWeLoveTheKingKey;
@@ -3171,27 +3202,6 @@ protected:
 	bool m_bFreedomFighter;
 	bool m_bPolicy;
 
-	int* m_piBonusMintedPercent;
-	int* m_piImprovementHappinessChanges;
-	int* m_piImprovementHealthPercentChanges;
-	int* m_piLandmarkYieldChanges;
-	int* m_piFreeSpecialistCount;
-	int* m_piUnitProductionModifier;
-	int* m_piFlavorValue;
-	int* m_piCivicAttitudeChanges;
-	int* m_piYieldModifier;
-	int* m_piCapitalYieldModifier;
-	int* m_piTradeYieldModifier;
-	int* m_piCommerceModifier;
-	int* m_piCapitalCommerceModifier;
-	int* m_piSpecialistExtraCommerce;
-
-	int* m_paiUnitCombatProductionModifier;
-	int* m_paiBuildingProductionModifier;
-	int* m_paiBuildingHappinessChanges;
-	int* m_paiBuildingHealthChanges;
-	int* m_paiFeatureHappinessChanges;
-
 	bool* m_pabHurry;
 	bool* m_pabSpecialBuildingNotRequired;
 	bool* m_pabSpecialistValid;
@@ -3205,6 +3215,24 @@ protected:
 	int** m_ppiImprovementYieldChanges;
 
 	IDValueMap<BuildingTypes, int> m_aBuildingProductionModifier;
+	IDValueMap<BonusTypes, int> m_aBonusMintedPercent;
+	IDValueMap<ImprovementTypes, int> m_aImprovementHappinessChanges;
+	IDValueMap<ImprovementTypes, int> m_aImprovementHealthPercentChanges;
+	IDValueMap<YieldTypes, int> m_aLandmarkYieldChanges;
+	IDValueMap<SpecialistTypes, int> m_aFreeSpecialistCount;
+	IDValueMap<FlavorTypes, int> m_aFlavorValue;
+	IDValueMap<CivicTypes, int> m_aCivicAttitudeChanges;
+	IDValueMap<YieldTypes, int> m_aYieldModifier;
+	IDValueMap<YieldTypes, int> m_aCapitalYieldModifier;
+	IDValueMap<YieldTypes, int> m_aTradeYieldModifier;
+	IDValueMap<CommerceTypes, int> m_aCommerceModifier;
+	IDValueMap<CommerceTypes, int> m_aCapitalCommerceModifier;
+	IDValueMap<CommerceTypes, int> m_aSpecialistExtraCommerce;
+	IDValueMap<UnitCombatTypes, int> m_aUnitCombatProductionModifier;
+	IDValueMap<BuildingTypes, int> m_aBuildingHealthChanges;
+	IDValueMap<FeatureTypes, int> m_aFeatureHappinessChanges;
+	IDValueMap<BuildingTypes, int> m_aBuildingHappinessChanges;
+	IDValueMap<UnitTypes, int> m_aUnitProductionModifier;
 
 	std::vector<CvString> m_aszUnitProdModforPass3;
 	std::vector<int> m_aiUnitProdModforPass3;

@@ -17,7 +17,7 @@
 
 // The maps are assumed to be small, so a vector of pairs is used
 
-template <class ID_, class Value_, Value_ defaultValue = static_cast<Value_>(0)>
+template <typename ID_, typename Value_ = int, Value_ defaultValue = 0>//, Value_ defaultValue = static_cast<Value_>(0)>
 struct IDValueMap
 {
 	typedef std::pair<ID_, Value_> pair_t;
