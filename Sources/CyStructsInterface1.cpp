@@ -198,4 +198,13 @@ void CyStructsPythonInterface1()
 		.def_readwrite("eCommerce", &BuildingCommerceChange::eCommerce)
 		.def_readwrite("iChange", &BuildingCommerceChange::iChange)
 	;
+
+	python::class_<CvMapInitData>("CyMapInitData")
+		.def_readwrite("iGridW", &CvMapInitData::m_iGridW)
+		.def_readwrite("iGridH", &CvMapInitData::m_iGridH)
+		.def_readwrite("iTopLatitude", &CvMapInitData::m_iTopLatitude)
+		.def_readwrite("iBottomLatitude", &CvMapInitData::m_iBottomLatitude)
+		.def_readwrite("bWrapX", &CvMapInitData::m_bWrapX)
+		.def_readwrite("bWrapY", &CvMapInitData::m_bWrapY)
+	;
 }

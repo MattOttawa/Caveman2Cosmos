@@ -44,6 +44,24 @@ def readDesc(argsList):
 	print "--- CvWBInterface.readDesc(argsList) ---", argsList
 	return WBDesc.read(argsList[0])
 
+def readMapDesc(fileName):
+	fileName, ext = os.path.splitext(os.path.normpath(fileName))
+	if not ext:
+		ext = getWBSaveExtension()
+	fileName += ext
+	f = file(fileName, "r")
+
+	mapDesc = CvWBDesc.CvMapDesc()
+	mapDesc.read(f)
+
+	data = CyMapInitData()
+	data.iGridW = mapDesc.iGridW
+	data.iGridH = mapDesc.iGridH
+	data.iTopLatitude = mapDesc.iTopLatitude
+	data.iBottomLatitude = mapDesc.iBottomLatitude
+	data.bWrapX = mapDesc.bWrapX
+	data.bWrapY = mapDesc.bWrapY
+	return data
 
 def getModPath():
 	''' Called from exe
