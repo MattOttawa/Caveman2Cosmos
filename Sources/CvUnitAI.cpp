@@ -12821,7 +12821,7 @@ bool CvUnitAI::AI_guardFort(bool bSearch)
 
 	CvReachablePlotSet plotSet(getGroup(), 0, MAX_INT);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		const CvPlot* pLoopPlot = itr.plot();
 		//	Koshling - AI_plotValid() call not needed when using a CvReachablePlotSet
@@ -13712,7 +13712,7 @@ bool CvUnitAI::AI_spreadReligion()
 	CvPlot* pBestSpreadPlot = NULL;
 
 	std::multimap<int, CvCity*> targetValues;
-	CvReachablePlotSet::const_iterator itr = m_cachedMissionaryPlotset->begin();
+	CvReachablePlotSet::iterator itr = m_cachedMissionaryPlotset->begin();
 
 	// If we already has a chosen spread city targeted then start with a presumption we'll stick to it
 	if (getGroup()->AI_getMissionAIType() == MISSIONAI_SPREAD)
@@ -13974,7 +13974,7 @@ bool CvUnitAI::AI_spreadCorporation()
 
 	//CvReachablePlotSet plotSet(getGroup(), MOVE_NO_ENEMY_TERRITORY, MAX_INT);
 	std::multimap<int,CvCity*>	targetValues;
-	CvReachablePlotSet::const_iterator itr = m_cachedMissionaryPlotset->begin();
+	CvReachablePlotSet::iterator itr = m_cachedMissionaryPlotset->begin();
 
 	//	If we already has a chosen spread city targeted then start with a presumption
 	//	we'll stick to it
@@ -16086,7 +16086,7 @@ bool CvUnitAI::AI_protect(int iOddsThreshold, int iMaxPathTurns)
 
 	CvReachablePlotSet plotSet(getGroup(), 0, AI_searchRange(iMaxPathTurns));
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 		if (pLoopPlot->getOwner() == getOwner())
@@ -16162,7 +16162,7 @@ bool CvUnitAI::AI_seaAreaAttack()
 		PROFILE("CvUnitAI::AI_seaAreaAttack.Populate");
 		plotSet.Populate(15);
 	}
-	for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		CvPlot* pLoopPlot = itr.plot();
 		if (pLoopPlot->area() == area() && pLoopPlot->isVisible(getTeam(), false) && pLoopPlot->getOwner() == getOwner())
@@ -16366,7 +16366,7 @@ bool CvUnitAI::AI_safety(int iRange)
 		{
 			CvReachablePlotSet plotSet(getGroup(), (iPass > 0) ? MOVE_IGNORE_DANGER : 0, iSearchRange);
 
-			for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+			foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 			{
 				const CvPlot* pLoopPlot = itr.plot();
 				if (pLoopPlot == NULL)
@@ -16688,7 +16688,7 @@ bool CvUnitAI::AI_goody(int iRange)
 
 	CvReachablePlotSet plotSet(getGroup(), 0, iSearchRange);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 		if (pLoopPlot->isRevealedGoody(getTeam()))
@@ -16811,7 +16811,7 @@ bool CvUnitAI::AI_explore()
 
 	CvReachablePlotSet plotSet(getGroup(), MOVE_NO_ENEMY_TERRITORY, MAX_INT);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 		PROFILE("AI_explore 1");
@@ -16993,7 +16993,7 @@ bool CvUnitAI::AI_exploreRange(int iRange)
 	const int iSearchRange = AI_searchRange(iRange);
 	CvReachablePlotSet plotSet(getGroup(), MOVE_NO_ENEMY_TERRITORY, iSearchRange);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 
@@ -17146,7 +17146,7 @@ bool CvUnitAI::AI_exploreRange(int iRange)
 		}
 
 		//	Avoid the cost of path generation if this cannot possibly be the best result
-		CvReachablePlotSet::const_iterator itr = plotSet.find(pLoopPlot);
+		CvReachablePlotSet::iterator itr = plotSet.find(pLoopPlot);
 		if (itr != plotSet.end() && generatePath(pLoopPlot, MOVE_NO_ENEMY_TERRITORY, true, &iPathTurns, iRange))
 		{
 			//	Don't limit by iPathTurns since the range param passedin is really advisory
@@ -17258,7 +17258,7 @@ bool CvUnitAI::AI_refreshExploreRange(int iRange, bool bIncludeVisibilityRefresh
 
 	CvReachablePlotSet plotSet(getGroup(), MOVE_NO_ENEMY_TERRITORY, iSearchRange);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 		PROFILE("AI_exploreRange 1");
@@ -18490,7 +18490,7 @@ bool CvUnitAI::AI_anyAttack(int iRange, int iOddsThreshold, int iMinStack, bool 
 	iBestValue = 0;
 	pBestPlot = NULL;
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator itr, plotSet)
 	{
 		FAssert(itr.stepDistance() <= iSearchRange);
 		//	Have we already considered this plot in a previous invocation?
@@ -18688,8 +18688,7 @@ bool CvUnitAI::AI_attackTargets(int iRange, int iOddsThreshold, int iMinStack, b
 	iBestValue = 0;
 	pBestPlot = NULL;
 
-
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator& itr, plotSet)
 	{
 		FAssert(itr.stepDistance() <= iSearchRange);
 		//	Have we already considered this plot in a previous invocation?
@@ -19398,7 +19397,7 @@ bool CvUnitAI::AI_seaBombardRange(int iMaxRange)
 
 	CvReachablePlotSet plotSet(getGroup(), 0, iMaxRange);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		const CvPlot* pLoopPlot = itr.plot();
 		if (pLoopPlot != NULL /*&& AI_plotValid(pLoopPlot)*/)
@@ -19620,7 +19619,7 @@ bool CvUnitAI::AI_pillage(int iBonusValueThreshold)
 
 	CvReachablePlotSet plotSet(getGroup(), 0, MAX_INT);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 
@@ -19774,7 +19773,7 @@ bool CvUnitAI::AI_pillageRange(int iRange, int iBonusValueThreshold)
 
 	CvReachablePlotSet plotSet(getGroup(), 0, iSearchRange);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator& itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 
@@ -20132,7 +20131,7 @@ bool CvUnitAI::AI_assaultSeaTransport(bool bBarbarian)
 	CvPlot* endTurnPlot = NULL;
 	CvReachablePlotSet plotSet(getGroup(), MOVE_AVOID_ENEMY_WEIGHT_3 | MOVE_ALLOW_ADJACENT_COASTAL, MAX_INT);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		CvPlot* pLoopPlot = itr.plot();
 		if (pLoopPlot->isCoastalLand())
@@ -21240,7 +21239,7 @@ bool CvUnitAI::AI_specialSeaTransportMissionary()
 	// XXX what about non-coastal cities?
 	CvReachablePlotSet plotSet(getGroup(), MOVE_ALLOW_ADJACENT_COASTAL, MAX_INT);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		pLoopPlot = itr.plot();
 
@@ -21440,7 +21439,7 @@ bool CvUnitAI::AI_specialSeaTransportSpy()
 
 	CvReachablePlotSet plotSet(getGroup(), MOVE_ALLOW_ADJACENT_COASTAL, MAX_INT);
 
-	for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		CvPlot* pLoopPlot = itr.plot();
 		if (pLoopPlot->isCoastalLand() && pLoopPlot->getOwner() == eBestPlayer)
@@ -21522,7 +21521,7 @@ bool CvUnitAI::AI_carrierSeaTransport()
 /************************************************************************************************/
 	CvReachablePlotSet plotSet(getGroup(), 0, MAX_INT);
 
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		const CvPlot* pLoopPlot = itr.plot();
 
@@ -22293,7 +22292,7 @@ bool CvUnitAI::AI_fortTerritory(bool bCanal, bool bAirbase)
 
 	CvReachablePlotSet plotSet(getGroup(), isHuman() ? 0 : MOVE_IGNORE_DANGER, MAX_INT);
 
-	for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator itr, plotSet)
 	{
 		CvPlot* pLoopPlot = itr.plot();
 
@@ -25950,7 +25949,7 @@ bool CvUnitAI::AI_espionageSpy()
 	PlayerTypes eTargetPlayer = NO_PLAYER;
 	int iExtraData = -1;
 
-	EspionageMissionTypes eBestMission = GET_PLAYER(getOwner()).AI_bestPlotEspionage(plot(), eTargetPlayer, pTargetPlot, iExtraData);
+	const EspionageMissionTypes eBestMission = GET_PLAYER(getOwner()).AI_bestPlotEspionage(plot(), eTargetPlayer, pTargetPlot, iExtraData);
 	if (NO_ESPIONAGEMISSION == eBestMission)
 	{
 		return false;
@@ -27816,17 +27815,15 @@ bool CvUnitAI::AI_FEngage()
 
 /**** Dexy - Fixed Borders START ****/
 // Returns true if a mission was pushed...
-bool CvUnitAI::AI_claimForts(CvReachablePlotSet* pReachablePlots, int iMinValue, int iMaxPath)
+bool CvUnitAI::AI_claimForts(const CvReachablePlotSet* pReachablePlots, int iMinValue, int iMaxPath)
 {
 	PROFILE_FUNC();
 
 	int iBestValue = iMinValue;
-	const CvPlot* endTurnPlot = NULL;
 	const CvPlot* pBestPlot = NULL;
 	const CvPlot* pFortPlot = NULL;
 
-
-	for(CvReachablePlotSet::const_iterator itr = pReachablePlots->begin(); itr != pReachablePlots->end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator& itr, bst::iterator_range<CvReachablePlotSet::iterator>(*pReachablePlots))
 	{
 		const CvPlot* pLoopPlot = itr.plot();
 		if (pLoopPlot->getImprovementType() != NO_IMPROVEMENT && GC.getImprovementInfo(pLoopPlot->getImprovementType()).getCulture() > 0)
@@ -27856,7 +27853,7 @@ bool CvUnitAI::AI_claimForts(CvReachablePlotSet* pReachablePlots, int iMinValue,
 
 									if (iValue > iBestValue)
 									{
-										endTurnPlot = getPathEndTurnPlot();
+										const CvPlot* endTurnPlot = getPathEndTurnPlot();
 
 										if ( endTurnPlot == pLoopPlot || !exposedToDanger(endTurnPlot, 60) )
 										{
@@ -27957,11 +27954,10 @@ bool CvUnitAI::AI_StrategicForts()
 	const TeamTypes eTeam = getTeam();
 	const bool bWarPlan = GET_TEAM(eTeam).getAnyWarPlanCount(true) > 0;
 
-	CvReachablePlotSet plotSet(getGroup(), 0, MAX_INT);
 	BuildTypes eBestBuild = NO_BUILD;
-	CvPlot* pBestPlot = NULL;
+	const CvPlot* pBestPlot = NULL;
 	int iBestValue = 0;
-	for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator& itr, getGroup()->getReachablePlots(0, MAX_INT))
 	{
 		CvPlot* pLoopPlot = itr.plot();
 
@@ -28775,13 +28771,8 @@ bool CvUnitAI::AI_returnToBorders()
 {
 	PROFILE_FUNC();
 
-	CvPlot* pLoopPlot;
-	CvPlot* endTurnPlot = NULL;
-	int iPathTurns;
-	int iValue;
-
 	int iBestValue = 0;
-	CvPlot* pBestPlot = NULL;
+	const CvPlot* pBestPlot = NULL;
 
 	//Allows the unit to be a maximum of 2 tiles from our borders before ordering him back
 	if (plot()->getOwner() == getOwner())
@@ -28800,25 +28791,23 @@ bool CvUnitAI::AI_returnToBorders()
 		}
 	}
 
-	CvReachablePlotSet plotSet(getGroup(), 0, MAX_INT);
-
-	for(CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(const CvReachablePlotSet::iterator& itr, getGroup()->getReachablePlots(0, MAX_INT))
 	{
-		pLoopPlot = itr.plot();
+		const CvPlot* pLoopPlot = itr.plot();
 		if (/*AI_plotValid(pLoopPlot) &&*/ pLoopPlot->area() == area())
 		{
 			if (pLoopPlot->getOwner() == getOwner())
 			{
 				if (!pLoopPlot->isVisible(getTeam(),false) || !pLoopPlot->isVisibleEnemyUnit(this))
 				{
+					int iPathTurns;
 					if (generatePath(pLoopPlot, 0, true, &iPathTurns))
 					{
-						iValue = 1000;
-						iValue /= (iPathTurns + 1);
+						const int iValue = 1000 / (iPathTurns + 1);
 
 						if (iValue > iBestValue)
 						{
-							endTurnPlot = getPathEndTurnPlot();
+							const CvPlot* endTurnPlot = getPathEndTurnPlot();
 
 							if ( endTurnPlot == pLoopPlot || !exposedToDanger(endTurnPlot, 65) )
 							{

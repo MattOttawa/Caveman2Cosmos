@@ -332,6 +332,12 @@ namespace algo {
 	// Other
 	using bst::push_back;
 
+	template <class _Seq>
+	bst::iterator_range<typename _Seq::const_iterator> range(const _Seq& seq)
+	{
+		return bst::iterator_range<typename _Seq::const_iterator>(seq.begin(), seq.end());
+	}
+
 	// Custom
 	// FUNCTION TEMPLATE contains
 	// test if an element exists in a range

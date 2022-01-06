@@ -7249,9 +7249,7 @@ int CvCityAI::evaluateDanger()
 		return 100;
 	}
 
-	CvUnit* pTempUnit = GET_PLAYER(getOwner()).getTempUnit(eDummyUnit, getX(), getY());
-
-	CvReachablePlotSet plotSet(pTempUnit->getGroup(), 0, MAX_DANGER_EVALUATION_RANGE, false, 1);
+	const CvUnit* pTempUnit = GET_PLAYER(getOwner()).getTempUnit(eDummyUnit, getX(), getY());
 
 	int iBorderDanger = 0;
 	int iDistanceModifier[MAX_DANGER_EVALUATION_RANGE];
@@ -7262,7 +7260,7 @@ int CvCityAI::evaluateDanger()
 		iDistanceModifier[iI] = DISTANCE_ATTENUATION_FACTOR(iDistanceModifier[iI - 1]);
 	}
 
-	for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+	foreach_(CvReachablePlotSet::iterator& itr, pTempUnit->getGroup()->getReachablePlots(0, MAX_DANGER_EVALUATION_RANGE, false, 1))
 	{
 		CvPlot* pLoopPlot = itr.plot();
 		TeamTypes ePlotTeam = pLoopPlot->getTeam();

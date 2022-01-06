@@ -14878,10 +14878,9 @@ bool CvCity::processGreatWall(bool bIn, bool bForce, bool bSeeded)
 
 				FAssert(eDummyUnit != NO_UNIT);
 			}
-			CvUnit* pTempUnit = GET_PLAYER(getOwner()).getTempUnit(eDummyUnit, getX(), getY());
-			CvReachablePlotSet	plotSet(pTempUnit->getGroup(), MOVE_OUR_TERRITORY, MAX_INT);
+			const CvUnit* pTempUnit = GET_PLAYER(getOwner()).getTempUnit(eDummyUnit, getX(), getY());
 
-			for (CvReachablePlotSet::const_iterator itr = plotSet.begin(); itr != plotSet.end(); ++itr)
+			foreach_(const CvReachablePlotSet::iterator itr, CvReachablePlotSet(pTempUnit->getGroup(), MOVE_OUR_TERRITORY, MAX_INT))
 			{
 				const CvCity* pCity = itr.plot()->getPlotCity();
 

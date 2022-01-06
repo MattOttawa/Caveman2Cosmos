@@ -5,6 +5,7 @@
 
 #include "LinkedList.h"
 #include "CvPathGenerator.h"
+#include "CvReachablePlotSet.h"
 #include "CvUnit.h"
 #include "idinfo_iterator_base.h"
 
@@ -272,6 +273,11 @@ public:
 	safe_unit_iterator endUnitsSafe() const { return safe_unit_iterator(); }
 	typedef bst::iterator_range<safe_unit_iterator> safe_unit_range;
 	safe_unit_range units_safe() const { return safe_unit_range(beginUnitsSafe(), endUnitsSafe()); }
+
+	bst::iterator_range<CvReachablePlotSet::iterator> getReachablePlots(int iFlags, int iRange = -1, bool bCachable = true, int iOutsideOwnedRange = -1) const
+	{
+		return bst::iterator_range<CvReachablePlotSet::iterator>(CvReachablePlotSet(this, iFlags, iRange, bCachable, iOutsideOwnedRange));
+	}
 
 	void clearMissionQueue();
 	void setMissionPaneDirty();

@@ -430,7 +430,7 @@ protected:
 
 public:
 	bool AI_hurryFood();
-	bool AI_claimForts(CvReachablePlotSet* pReachablePlots, int iMinValue = 0, int iMaxPath = -1);
+	bool AI_claimForts(const CvReachablePlotSet* pReachablePlots, int iMinValue = 0, int iMaxPath = -1);
 	BuildTypes AI_findBestFort(const CvPlot* pPlot) const;
 	bool AI_StrategicForts();
 	bool AI_caravan(bool bAnyCity = false);

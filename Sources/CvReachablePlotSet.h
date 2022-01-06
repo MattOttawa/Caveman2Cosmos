@@ -24,20 +24,20 @@ class CvSelectionGroup;
 class CvReachablePlotSet
 {
 public:
-	class const_iterator
+	class iterator : public bst::iterator_facade<iterator, iterator, bst::forward_traversal_tag, iterator&>
 	{
-	friend CvReachablePlotSet;
+		friend CvReachablePlotSet;
 	protected:
-		const_iterator(const CvReachablePlotSet* parent, stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator& itr);
+		iterator(const CvReachablePlotSet* parent, stdext::hash_map<CvPlot*, CvReachablePlotInfo>::const_iterator& itr);
 
 	public:
-		const_iterator& operator++();
+		iterator& operator++();
 
-		bool operator==(const const_iterator& other) const;
+		bool operator==(const iterator& other) const;
 
-		bool operator!=(const const_iterator& other) const;
+		bool operator!=(const iterator& other) const;
 
-		const_iterator& operator=(const const_iterator& other);
+		iterator& operator=(const iterator& other);
 
 		CvPlot*	plot() const;
 
@@ -47,25 +47,40 @@ public:
 		void setOpaqueInfo(int iActivityId, int iValue);
 
 	private:
-		stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator m_itr;
+		friend class bst::iterator_core_access;
+
+		void increment();
+
+		bool equal(const iterator& other) const;
+
+		iterator& dereference();
+		//const iterator& dereference() const;
+
+		stdext::hash_map<CvPlot*, CvReachablePlotInfo>::const_iterator m_itr;
 		const CvReachablePlotSet* m_parent;
 	};
+
+	typedef const iterator const_iterator;
 
 	CvReachablePlotSet(const CvSelectionGroup * group, int iFlags, int iRange = -1, bool bCachable = true, int iOutsideOwnedRange = -1);
 
 	~CvReachablePlotSet();
 
-	const_iterator begin() const;
+	iterator begin();
+	iterator end();
 
+	const_iterator begin() const;
 	const_iterator end() const;
 
+	iterator find(CvPlot* plot);
 	const_iterator find(CvPlot* plot) const;
 
 	void Populate(int iRange);
 
 	static void ClearCache();
+
 private:
-	
+
 	static bool canMoveBetweenWithFlags(const CvSelectionGroup* group, const CvPlot* pFromPlot, const CvPlot* pToPlot, int iFlags);
 
 	void enumerateReachablePlotsInternal(int iRange, int iDepth, std::vector< std::pair<CvPlot*, int> >& prevRing);

@@ -8,12 +8,12 @@
 #include "CvReachablePlotSet.h"
 #include "CvSelectionGroup.h"
 
-CvReachablePlotSet::const_iterator::const_iterator(const CvReachablePlotSet* parent, stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator& itr) : m_parent(parent)
+CvReachablePlotSet::iterator::iterator(const CvReachablePlotSet* parent, stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator& itr) : m_parent(parent)
 {
 	m_itr = itr;
 }
 
-CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::operator++()
+CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::operator++()
 {
 	do
 	{
@@ -23,17 +23,29 @@ CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::operator
 	return (*this);
 }
 
-bool CvReachablePlotSet::const_iterator::operator==(const const_iterator& other) const
+void CvReachablePlotSet::iterator::increment()
+{
+	do {
+		++m_itr;
+	} while(m_itr != m_parent->end().m_itr && m_itr->second.iStepDistance > m_parent->m_iRange);
+}
+
+bool CvReachablePlotSet::iterator::operator==(const iterator& other) const
 {
 	return other.m_itr == m_itr;
 }
 
-bool CvReachablePlotSet::const_iterator::operator!=(const const_iterator& other) const
+bool CvReachablePlotSet::iterator::equal(const iterator& other) const
+{
+	return other.m_itr == m_itr;
+}
+
+bool CvReachablePlotSet::iterator::operator!=(const iterator& other) const
 {
 	return other.m_itr != m_itr;
 }
 
-CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::operator=(const const_iterator& other)
+CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::operator=(const iterator& other)
 {
 	m_itr = other.m_itr;
 	m_parent = other.m_parent;
@@ -41,7 +53,17 @@ CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::operator
 	return (*this);
 }
 
-CvPlot*	CvReachablePlotSet::const_iterator::plot() const
+CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::dereference()
+{
+	return *static_cast<CvReachablePlotSet::iterator*>(this);
+}
+
+//const CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::dereference() const
+//{
+//	return *static_cast<const CvReachablePlotSet::iterator*>(this);
+//}
+
+CvPlot*	CvReachablePlotSet::iterator::plot() const
 {
 	if ( m_itr == m_parent->end().m_itr )
 	{
@@ -53,7 +75,7 @@ CvPlot*	CvReachablePlotSet::const_iterator::plot() const
 	}
 }
 
-int CvReachablePlotSet::const_iterator::stepDistance() const
+int CvReachablePlotSet::iterator::stepDistance() const
 {
 	if ( m_itr == m_parent->end().m_itr )
 	{
@@ -65,7 +87,7 @@ int CvReachablePlotSet::const_iterator::stepDistance() const
 	}
 }
 
-int CvReachablePlotSet::const_iterator::outsideBorderDistance() const
+int CvReachablePlotSet::iterator::outsideBorderDistance() const
 {
 	if ( m_itr == m_parent->end().m_itr )
 	{
@@ -77,7 +99,7 @@ int CvReachablePlotSet::const_iterator::outsideBorderDistance() const
 	}
 }
 
-int CvReachablePlotSet::const_iterator::getOpaqueInfo(int iActivityId) const
+int CvReachablePlotSet::iterator::getOpaqueInfo(int iActivityId) const
 {
 	if ( m_itr == m_parent->end().m_itr )
 	{
@@ -89,7 +111,7 @@ int CvReachablePlotSet::const_iterator::getOpaqueInfo(int iActivityId) const
 	}
 }
 
-void CvReachablePlotSet::const_iterator::setOpaqueInfo(int iActivityId, int iValue)
+void CvReachablePlotSet::iterator::setOpaqueInfo(int iActivityId, int iValue)
 {
 	if ( m_itr != m_parent->end().m_itr )
 	{
@@ -122,9 +144,9 @@ CvReachablePlotSet::~CvReachablePlotSet()
 	SAFE_DELETE(m_reachablePlots);
 }
 
-CvReachablePlotSet::const_iterator CvReachablePlotSet::begin() const
+CvReachablePlotSet::iterator CvReachablePlotSet::begin()
 {
-	CvReachablePlotSet::const_iterator result = CvReachablePlotSet::const_iterator(this, (m_proxyTo == NULL ? m_reachablePlots->begin() : m_proxyTo->m_reachablePlots->begin()));
+	CvReachablePlotSet::iterator result = CvReachablePlotSet::iterator(this, (m_proxyTo == NULL ? m_reachablePlots->begin() : m_proxyTo->m_reachablePlots->begin()));
 
 	while( result != end() && result.stepDistance() > m_iRange )
 	{
@@ -134,20 +156,58 @@ CvReachablePlotSet::const_iterator CvReachablePlotSet::begin() const
 	return result;
 }
 
-CvReachablePlotSet::const_iterator CvReachablePlotSet::end() const
+const CvReachablePlotSet::iterator CvReachablePlotSet::begin() const
 {
-	return CvReachablePlotSet::const_iterator(this, (m_proxyTo == NULL ? m_reachablePlots->end() : m_proxyTo->m_reachablePlots->end()));
+	CvReachablePlotSet::iterator result = CvReachablePlotSet::iterator(this, (m_proxyTo == NULL ? m_reachablePlots->begin() : m_proxyTo->m_reachablePlots->begin()));
+
+	while( result != end() && result.stepDistance() > m_iRange )
+	{
+		++result;
+	};
+
+	return result;
 }
 
-CvReachablePlotSet::const_iterator CvReachablePlotSet::find(CvPlot* plot) const
+CvReachablePlotSet::iterator CvReachablePlotSet::end()
+{
+	return CvReachablePlotSet::iterator(this, (m_proxyTo == NULL ? m_reachablePlots->end() : m_proxyTo->m_reachablePlots->end()));
+}
+
+const CvReachablePlotSet::iterator CvReachablePlotSet::end() const
+{
+	return CvReachablePlotSet::iterator(this, (m_proxyTo == NULL ? m_reachablePlots->end() : m_proxyTo->m_reachablePlots->end()));
+}
+
+CvReachablePlotSet::iterator CvReachablePlotSet::find(CvPlot* plot)
 {
 	if ( m_proxyTo == NULL )
 	{
-		return CvReachablePlotSet::const_iterator(this, m_reachablePlots->find(plot));
+		return CvReachablePlotSet::iterator(this, m_reachablePlots->find(plot));
 	}
 	else
 	{
-		CvReachablePlotSet::const_iterator result = m_proxyTo->find(plot);
+		CvReachablePlotSet::iterator result = m_proxyTo->find(plot);
+
+		if ( result.stepDistance() <= m_iRange )
+		{
+			return result;
+		}
+		else
+		{
+			return end();
+		}
+	}
+}
+
+const CvReachablePlotSet::iterator CvReachablePlotSet::find(CvPlot* plot) const
+{
+	if ( m_proxyTo == NULL )
+	{
+		return CvReachablePlotSet::iterator(this, m_reachablePlots->find(plot));
+	}
+	else
+	{
+		CvReachablePlotSet::iterator result = m_proxyTo->find(plot);
 
 		if ( result.stepDistance() <= m_iRange )
 		{
@@ -301,7 +361,7 @@ void CvReachablePlotSet::Populate(int iRange)
 		}
 		else
 		{
-			for(CvReachablePlotSet::const_iterator itr = begin(), itrend = end(); itr != itrend; ++itr)
+			for(CvReachablePlotSet::iterator itr = begin(), itrend = end(); itr != itrend; ++itr)
 			{
 				if ( itr.stepDistance() == m_iRange )
 				{
