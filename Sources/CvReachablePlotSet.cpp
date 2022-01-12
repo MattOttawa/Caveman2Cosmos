@@ -86,9 +86,9 @@ bool CvReachablePlotSet::const_iterator::equal(const const_iterator& other) cons
 	return other.m_itr == m_itr;
 }
 
-CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::dereference()
+CvReachablePlotSet::const_iterator& CvReachablePlotSet::const_iterator::dereference() const
 {
-	return *this;
+	return const_cast<CvReachablePlotSet::const_iterator&>(*this);
 }
 
 CvReachablePlotSet::CvReachablePlotSet(const CvSelectionGroup * group, int iFlags, int iRange, bool bCachable, int iOutsideOwnedRange)
@@ -116,7 +116,7 @@ CvReachablePlotSet::~CvReachablePlotSet()
 	SAFE_DELETE(m_reachablePlots);
 }
 
-CvReachablePlotSet::const_iterator CvReachablePlotSet::begin() const
+CvReachablePlotSet::const_iterator CvReachablePlotSet::begin()
 {
 	CvReachablePlotSet::const_iterator result = CvReachablePlotSet::const_iterator(this, (m_proxyTo == NULL ? m_reachablePlots->begin() : m_proxyTo->m_reachablePlots->begin()));
 
@@ -127,7 +127,23 @@ CvReachablePlotSet::const_iterator CvReachablePlotSet::begin() const
 	return result;
 }
 
-CvReachablePlotSet::const_iterator CvReachablePlotSet::end() const
+CvReachablePlotSet::const_iterator CvReachablePlotSet::end()
+{
+	return CvReachablePlotSet::const_iterator(this, (m_proxyTo == NULL ? m_reachablePlots->end() : m_proxyTo->m_reachablePlots->end()));
+}
+
+const CvReachablePlotSet::const_iterator CvReachablePlotSet::begin() const
+{
+	CvReachablePlotSet::const_iterator result = CvReachablePlotSet::const_iterator(this, (m_proxyTo == NULL ? m_reachablePlots->begin() : m_proxyTo->m_reachablePlots->begin()));
+
+	while (result != end() && result.stepDistance() > m_iRange)
+	{
+		++result;
+	}
+	return result;
+}
+
+const CvReachablePlotSet::const_iterator CvReachablePlotSet::end() const
 {
 	return CvReachablePlotSet::const_iterator(this, (m_proxyTo == NULL ? m_reachablePlots->end() : m_proxyTo->m_reachablePlots->end()));
 }
@@ -146,6 +162,11 @@ CvReachablePlotSet::const_iterator CvReachablePlotSet::find(CvPlot* plot) const
 	}
 	return end();
 }
+
+//const bst::transformed_range< bst::function<CvPlot*(const CvReachablePlotSet::const_iterator&)>, const CvReachablePlotSet > CvReachablePlotSet::plots() const
+//{
+//	return bst::adaptors::transform(*this, bind(CvReachablePlotSet::const_iterator::plot, _1));
+//}
 
 int CvReachablePlotSet::getRange() const
 {

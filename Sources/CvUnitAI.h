@@ -341,7 +341,7 @@ protected:
 
 	bool AI_followBombard();
 
-	bool AI_potentialEnemy(TeamTypes eTeam, const CvPlot* pPlot = NULL);
+	bool AI_potentialEnemy(TeamTypes eTeam, const CvPlot* pPlot = NULL) const;
 
 	bool AI_defendPlot(const CvPlot* pPlot) const;
 	int AI_pillageValue(const CvPlot* pPlot, int iBonusValueThreshold = 0) const;
@@ -387,7 +387,7 @@ protected:
 
 public:
 	bool AI_hurryFood();
-	bool AI_claimForts(CvReachablePlotSet* pReachablePlots, int iMinValue = 0, int iMaxPath = -1);
+	bool AI_claimForts(const CvReachablePlotSet& kReachablePlots, int iMaxPath);
 	BuildTypes AI_findBestFort(const CvPlot* pPlot) const;
 	bool AI_StrategicForts();
 	bool AI_caravan(bool bAnyCity = false);

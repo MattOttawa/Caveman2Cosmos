@@ -881,8 +881,6 @@ bool CvSelectionGroupAI::AI_isControlled() const
 
 bool CvSelectionGroupAI::AI_isDeclareWar(const CvPlot* pPlot) const
 {
-	FAssert(getHeadUnit() != NULL);
-
 	if (isHuman())
 	{
 		return false;
@@ -891,14 +889,16 @@ bool CvSelectionGroupAI::AI_isDeclareWar(const CvPlot* pPlot) const
 	bool bLimitedWar = false;
 	if (pPlot != NULL)
 	{
-		TeamTypes ePlotTeam = pPlot->getTeam();
+		const TeamTypes ePlotTeam = pPlot->getTeam();
 		if (ePlotTeam != NO_TEAM && GET_TEAM(getTeam()).AI_getWarPlan(ePlotTeam) == WARPLAN_LIMITED)
 		{
 			bLimitedWar = true;
 		}
 	}
 
-	CvUnit* pHeadUnit = getHeadUnit();
+	const CvUnit* pHeadUnit = getHeadUnit();
+
+	FAssert(pHeadUnit != NULL);
 
 	switch (pHeadUnit->AI_getUnitAIType())
 	{
@@ -922,7 +922,6 @@ bool CvSelectionGroupAI::AI_isDeclareWar(const CvPlot* pPlot) const
 	case UNITAI_ATTACK_CITY:
 	case UNITAI_ATTACK_CITY_LEMMING:
 		return true;
-		break;
 
 	case UNITAI_ATTACK:
 	case UNITAI_COLLATERAL:

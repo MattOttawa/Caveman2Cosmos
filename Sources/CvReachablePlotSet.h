@@ -48,7 +48,7 @@ public:
 	private:
 		void increment();
 		bool equal(const const_iterator& other) const;
-		const_iterator& dereference();
+		const_iterator& dereference() const;
 
 		stdext::hash_map<CvPlot*,CvReachablePlotInfo>::const_iterator m_itr;
 		const CvReachablePlotSet* m_parent;
@@ -58,10 +58,20 @@ public:
 	CvReachablePlotSet(const CvSelectionGroup * group, int iFlags, int iRange = -1, bool bCachable = true, int iOutsideOwnedRange = -1);
 	~CvReachablePlotSet();
 
-	const_iterator begin() const;
-	const_iterator end() const;
+	friend bool operator==(const CvPlot* plot, const CvReachablePlotSet::const_iterator& itr)
+	{
+		return itr.plot() == plot;
+	}
+
+	const_iterator begin();
+	const_iterator end();
+
+	const const_iterator begin() const;
+	const const_iterator end() const;
 
 	const_iterator find(CvPlot* plot) const;
+
+	//const bst::transformed_range< bst::function<CvPlot*(const CvReachablePlotSet::const_iterator&)>, const CvReachablePlotSet > plots() const;
 
 	void Populate(int iRange);
 
