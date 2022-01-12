@@ -105,6 +105,34 @@ CvGame::~CvGame()
 }
 
 
+namespace CvGameInternal
+{
+/*
+	void initNPC(PlayerTypes ePlayer, TeamTypes eTeam, CivilizationTypes eCivilization, LeaderHeadTypes eLeader)
+	{
+		FAssertMsg(!GET_PLAYER(ePlayer).isAlive(), "NPC is not expected to be alive at this point of the game initialization.");
+
+		GC.getGame().addPlayer(ePlayer, eLeader, eCivilization, false);
+		GET_PLAYER(ePlayer).setNewPlayerAlive(true);
+		GET_TEAM(eTeam).init(eTeam);
+		GC.getInitCore().setTeam(ePlayer, eTeam);
+		GC.getInitCore().setHandicap(ePlayer, (HandicapTypes)GC.getDefineINT("BARBARIAN_HANDICAP"));
+	}
+*/
+	void setStatusPromotions(std::vector<PromotionTypes>& statusPromotions)
+	{
+		statusPromotions.clear();
+		for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
+		{
+			if (GC.getPromotionInfo((PromotionTypes)iI).isStatus())
+			{
+				statusPromotions.push_back((PromotionTypes)iI);
+			}
+		}
+	}
+}
+
+
 void CvGame::init(HandicapTypes eHandicap)
 {
 	//--------------------------------
@@ -223,7 +251,7 @@ void CvGame::init(HandicapTypes eHandicap)
 	GC.updateReplacements();
 
 	//TB: Set Statuses
-	setStatusPromotions();
+	CvGameInternal::setStatusPromotions(m_aeStatusPromotions);
 
 	//establish improvement costs
 	//for (int iI = 0; iI < GC.getNumImprovementInfos(); iI++)
@@ -2273,7 +2301,7 @@ void CvGame::update()
 		}
 
 		//TB: Set Statuses
-		setStatusPromotions();
+		CvGameInternal::setStatusPromotions(m_aeStatusPromotions);
 
 		//	Super forts adaptation to C2C - make sure this map has had
 		//	its choke points calculated - note we check this every turn
@@ -3721,26 +3749,19 @@ int CvGame::getNumCivCities() const
 }
 
 
-int CvGame::getStatusPromotion(int i) const
-{
-	return m_aiStatusPromotions[i];
-}
+//int CvGame::getStatusPromotion(int i) const
+//{
+//	return m_aeStatusPromotions[i];
+//}
 
-int CvGame::getNumStatusPromotions() const
-{
-	return (int)m_aiStatusPromotions.size();
-}
+//int CvGame::getNumStatusPromotions() const
+//{
+//	return (int)m_aeStatusPromotions.size();
+//}
 
-void CvGame::setStatusPromotions()
+const std::vector<PromotionTypes>& CvGame::getStatusPromotions() const
 {
-	m_aiStatusPromotions.clear();
-	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-	{
-		if (GC.getPromotionInfo((PromotionTypes)iI).isStatus())
-		{
-			m_aiStatusPromotions.push_back(iI);
-		}
-	}
+	return m_aeStatusPromotions;
 }
 
 
@@ -5974,7 +5995,6 @@ void CvGame::doTurn()
 
 void CvGame::doDeals()
 {
-
 	verifyDeals();
 
 	int iLoop;
@@ -5984,12 +6004,10 @@ void CvGame::doDeals()
 	}
 }
 
-//Enumerates all currently possible spawn plots for a spawning rule, for use in a thread, local density is not checked
-void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
-{
-	const CvSpawnInfo& spawnInfo = GC.getSpawnInfo((SpawnTypes)iSpawnInfo);
-	//logging::logMsg("C2C.log", "Spawn thread start for %s\n", spawnInfo.getType());
 
+// Enumerates all currently possible spawn plots for a spawning rule, local density is not checked
+void enumSpawnPlots(const CvSpawnInfo& spawnInfo, std::vector<CvPlot*>* plots)
+{
 	if (spawnInfo.getRateOverride() == 0)
 	{
 		return;
@@ -6192,7 +6210,8 @@ void enumSpawnPlots(int iSpawnInfo, std::vector<CvPlot*>* plots)
 }
 
 // Helpers
-namespace Game {
+namespace CvGameInternal
+{
 	bool isGroupUpgradePromotion(const CvUnit* unit, PromotionTypes promotion)
 	{
 		return GC.getPromotionInfo(promotion).getGroupChange() > 0 && unit->canAcquirePromotion(promotion, PromotionRequirements::ForStatus);
@@ -6242,7 +6261,7 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 
 		std::vector<CvPlot*> validPlots;
 
-		enumSpawnPlots(j, &validPlots);
+		enumSpawnPlots(spawnInfo, &validPlots);
 
 		const int iPlotNum = validPlots.size();
 		logging::logMsg("C2C.log", "Spawn thread finished and joined for %s, found %d valid plots.", spawnInfo.getType(), iPlotNum);
@@ -6427,8 +6446,8 @@ void CvGame::doSpawns(PlayerTypes ePlayer)
 										CvUnit::normalizeUnitPromotions(
 											pUnit,
 											GC.getUnitCombatInfo(eGroupVolume).getGroupBase() - GC.getUnitCombatInfo(eUnitCombat).getGroupBase(),
-											bst::bind(Game::isGroupUpgradePromotion, pUnit, _2),
-											bst::bind(Game::isGroupDowngradePromotion, pUnit, _2)
+											bst::bind(CvGameInternal::isGroupUpgradePromotion, pUnit, _2),
+											bst::bind(CvGameInternal::isGroupDowngradePromotion, pUnit, _2)
 										);
 									}
 								}
@@ -6833,7 +6852,6 @@ void CvGame::doHeadquarters()
 
 void CvGame::doDiploVote()
 {
-
 	doVoteResults();
 	doVoteSelection();
 }
@@ -6841,7 +6859,6 @@ void CvGame::doDiploVote()
 
 void CvGame::createBarbarianCities(bool bNeanderthal)
 {
-
 	if (
 		getMaxCityElimination() > 0
 	||
@@ -7015,7 +7032,8 @@ void CvGame::createBarbarianCities(bool bNeanderthal)
 	}
 }
 
-namespace {
+namespace CvGameInternal
+{
 	bool isValidBarbarianSpawnUnit(const CvArea* area, const CvUnitInfo& unitInfo, const UnitTypes unitType)
 	{
 		return unitInfo.getCombat() > 0 && !unitInfo.isOnlyDefensive()
@@ -7028,7 +7046,7 @@ namespace {
 			&& GET_PLAYER(BARBARIAN_PLAYER).canTrain(unitType, false, false, false, true);
 	}
 
-	bool barbarianCityShouldSpawnWorker(CvGame* game, CvCity* city)
+	bool barbarianCityShouldSpawnWorker(CvGame* game, const CvCity* city)
 	{
 		return ((city->getPopulation() > 1) || (game->getGameTurn() - city->getGameTurnAcquired()) > (10 * GC.getGameSpeedInfo(game->getGameSpeedType()).getTrainPercent()) / 100)
 			&& city->AI_getWorkersHave() == 0
@@ -7036,7 +7054,7 @@ namespace {
 			&& (7 * city->getPopulation()) > game->getSorenRandNum(100, "Barb - workers");
 	}
 
-	int countPlayerShipsInArea(CvArea* area)
+	int countPlayerShipsInArea(const CvArea* area)
 	{
 		int iPlayerSeaUnits = 0;
 		for (int iI = 0; iI < MAX_PC_PLAYERS; iI++)
@@ -7053,7 +7071,7 @@ namespace {
 		return iPlayerSeaUnits;
 	}
 
-	int getNeededBarbsInArea(CvGame* game, CvArea* area)
+	int getNeededBarbsInArea(const CvGame* game, const CvArea* area)
 	{
 		// Spawn barbarian ships only
 		if (!area->isWater())
@@ -7079,7 +7097,7 @@ namespace {
 
 		// Limit construction of barb ships based on player navies
 		// Keeps barb ship count in check in early game since generation is greatly increased for BTS 3.17
-		const int iPlayerSeaUnits = countPlayerShipsInArea(area);
+		const int iPlayerSeaUnits = CvGameInternal::countPlayerShipsInArea(area);
 
 		if (area->getUnitsPerPlayer(BARBARIAN_PLAYER) > (iPlayerSeaUnits / 3 + 1))
 		{
@@ -7091,7 +7109,6 @@ namespace {
 
 void CvGame::createBarbarianUnits()
 {
-
 	if (Cy::call<bool>(PYGameModule, "createBarbarianUnits"))
 	{
 		return;
@@ -7102,11 +7119,11 @@ void CvGame::createBarbarianUnits()
 		return;
 	}
 
-	foreach_(CvArea * pLoopArea, GC.getMap().areas())
+	foreach_(const CvArea* pLoopArea, GC.getMap().areas())
 	{
 		const UnitAITypes eBarbUnitAI = pLoopArea->isWater()? UNITAI_ATTACK_SEA : UNITAI_ATTACK;
 
-		const int iNeededBarbs = getNeededBarbsInArea(this, pLoopArea);
+		const int iNeededBarbs = CvGameInternal::getNeededBarbsInArea(this, pLoopArea);
 
 		// Spawn barbarians
 		for (int iI = 0; iI < iNeededBarbs; iI++)
@@ -7123,7 +7140,7 @@ void CvGame::createBarbarianUnits()
 			{
 				const CvUnitInfo& kUnit = GC.getUnitInfo((UnitTypes) iJ);
 
-				if (isValidBarbarianSpawnUnit(pLoopArea, kUnit, (UnitTypes) iJ))
+				if (CvGameInternal::isValidBarbarianSpawnUnit(pLoopArea, kUnit, (UnitTypes) iJ))
 				{
 					int iValue = 500 + getSorenRandNum(500, "Barb Unit Selection");
 
@@ -7163,11 +7180,11 @@ void CvGame::createBarbarianUnits()
 				{
 					if(pLoopCity->area() == pLoopArea
 						&& pLoopCity->getOriginalOwner() == BARBARIAN_PLAYER
-						&& barbarianCityShouldSpawnWorker(this, pLoopCity))
+						&& CvGameInternal::barbarianCityShouldSpawnWorker(this, pLoopCity))
 					{
 						int iUnitValue;
 
-						UnitTypes eBestUnit = pLoopCity->AI_bestUnitAI(UNITAI_WORKER, iUnitValue);
+						const UnitTypes eBestUnit = pLoopCity->AI_bestUnitAI(UNITAI_WORKER, iUnitValue);
 						if (eBestUnit != NO_UNIT)
 						{
 							GET_PLAYER(BARBARIAN_PLAYER).initUnit(eBestUnit, pLoopCity->getX(), pLoopCity->getY(), UNITAI_WORKER, NO_DIRECTION, getSorenRandNum(10000, "AI Unit Birthmark"));
@@ -9434,7 +9451,6 @@ int CvGame::getCultureThreshold(CultureLevelTypes eLevel) const
 
 void CvGame::doUpdateCacheOnTurn()
 {
-
 	// reset shrine count
 	m_iShrineBuildingCount = 0;
 
@@ -10165,7 +10181,6 @@ void CvGame::changeIncreasingDifficultyCounter(int iChange)
 
 void CvGame::doFinalFive()
 {
-
 	if (!isGameMultiPlayer() && isOption(GAMEOPTION_CHALLENGE_CUT_LOSERS) && countCivPlayersAlive() > 5)
 	{
 		changeCutLosersCounter(1);
@@ -10191,7 +10206,6 @@ void CvGame::doFinalFive()
 
 void CvGame::doHightoLow()
 {
-
 	if (!isGameMultiPlayer() && isOption(GAMEOPTION_CHALLENGE_HIGH_TO_LOW)
 	&& getGameTurn() >= GC.getDefineINT("HIGH_TO_LOW_FIRST_TURN_CHECK")
 	&& getHighToLowCounter() < 2)
@@ -10215,7 +10229,6 @@ void CvGame::doHightoLow()
 
 void CvGame::doIncreasingDifficulty()
 {
-
 	if (isOption(GAMEOPTION_CHALLENGE_INCREASING_DIFFICULTY))
 	{
 		changeIncreasingDifficultyCounter(1);

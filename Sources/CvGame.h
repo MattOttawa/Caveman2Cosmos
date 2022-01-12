@@ -236,9 +236,10 @@ public:
 	int getNumCivCities() const;
 	void changeNumCities(int iChange);
 
-	int getStatusPromotion(int i) const;
-	int getNumStatusPromotions() const;
-	void setStatusPromotions();
+	//int getStatusPromotion(int i) const;
+	//int getNumStatusPromotions() const;
+	//void setStatusPromotions();
+	const std::vector<PromotionTypes>& getStatusPromotions() const;
 
 	int getTotalPopulation() const;
 	void changeTotalPopulation(int iChange);
@@ -774,7 +775,7 @@ protected:
 	//bool m_bNukesValid;
 	TeamTypes m_circumnavigatingTeam;
 
-	std::vector<int> m_aiStatusPromotions;
+	std::vector<PromotionTypes> m_aeStatusPromotions;
 
 	HandicapTypes m_eHandicap;
 	PlayerTypes m_ePausePlayer;

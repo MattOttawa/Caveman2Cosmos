@@ -30821,21 +30821,20 @@ bool CvUnitAI::AI_activateStatus(bool bChange, bool bStack, PromotionTypes eStat
 
 bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 {
-	int iValue = 0;
+	FAssert(!bStack && pUnit == NULL);
+	//if (!bStack && pUnit == NULL)
+	//{
+	//	return false;
+	//}
+
 	int iBestValue = 0;
 	int iWorstValue = 0;
 	int iTemp = 0;
-	int iStatus = 0;
-	PromotionTypes eStatus = NO_PROMOTION;
 	PromotionTypes eBestStatus = NO_PROMOTION;
 	PromotionTypes eWorstStatus = NO_PROMOTION;
 	PromotionTypes eRemoveStatus = NO_PROMOTION;
 	MissionAITypes eMissionAI = NO_MISSIONAI;
-	UnitAITypes eUnitAI = AI_getUnitAIType();
-	if (!bStack)
-	{
-		eUnitAI = pUnit->AI_getUnitAIType();
-	}
+	const UnitAITypes eUnitAI = bStack ? AI_getUnitAIType() : pUnit->AI_getUnitAIType();
 
 	if (getGroup() != NULL)
 	{
@@ -30846,34 +30845,26 @@ bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 		return false;
 	}
 
-	if (!bStack && pUnit == NULL)
-	{
-		return false;
-	}
-
 	const PromotionLineTypes promotionLineStandout = GC.getPROMOTIONLINE_STANDOUT();
 
-	for (int iI = 0; iI < GC.getGame().getNumStatusPromotions(); iI++)
+	foreach_(const PromotionTypes eStatus, GC.getGame().getStatusPromotions())
 	{
-		iValue = 0;
-		iStatus = GC.getGame().getStatusPromotion(iI);
-		eStatus = (PromotionTypes)iStatus;
 		const CvPromotionInfo& kPromotion = GC.getPromotionInfo(eStatus);
-		for (int iJ = 0; iJ < GC.getGame().getNumStatusPromotions(); iJ++)
+
+		foreach_(const PromotionTypes eOtherStatus, GC.getGame().getStatusPromotions())
 		{
-			if (kPromotion.getPromotionLine() == GC.getPromotionInfo((PromotionTypes)GC.getGame().getStatusPromotion(iJ)).getPromotionLine())
+			const CvPromotionInfo& kOtherPromotion = GC.getPromotionInfo(eOtherStatus);
+			if (kPromotion.getPromotionLine() == kOtherPromotion.getPromotionLine() && kOtherPromotion.getLinePriority() == 1)
 			{
-				if (GC.getPromotionInfo((PromotionTypes)GC.getGame().getStatusPromotion(iJ)).getLinePriority() == 1)
-				{
-					eRemoveStatus = (PromotionTypes)GC.getGame().getStatusPromotion(iJ);
-				}
+				eRemoveStatus = eOtherStatus;
 			}
 		}
+		int iValue = 0;
 		if (kPromotion.getLinePriority() != 1)
 		{
 			if (bStack)
 			{
-				if (getGroup()->canDoCommand(COMMAND_STATUS, iStatus, 0, false, false, true) || isHasPromotion(eStatus))
+				if (getGroup()->canDoCommand(COMMAND_STATUS, (int)eStatus, 0, false, false, true) || isHasPromotion(eStatus))
 				{
 					//Keep things as thin as possible here - program in as new statuses are introduced
 					//Stay the Hand
@@ -31066,7 +31057,7 @@ bool CvUnitAI::AI_selectStatus(bool bStack, CvUnit* pUnit)
 			}
 			else
 			{
-				if (pUnit->canDoCommand(COMMAND_STATUS, iStatus, 0) || pUnit->isHasPromotion(eStatus))
+				if (pUnit->canDoCommand(COMMAND_STATUS, (int)eStatus, 0) || pUnit->isHasPromotion(eStatus))
 				{
 					//conditions to add to ivalue and subtract from iValue
 

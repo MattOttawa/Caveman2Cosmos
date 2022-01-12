@@ -481,7 +481,9 @@ public:
 	bool AI_ambush(int iOddsThreshold, bool bAssassinationOnly = false);
 
 	bool AI_activateStatus(bool bChange, bool bStack, PromotionTypes eStatus, CvUnit* pUnit = NULL);
+protected:
 	bool AI_selectStatus(bool bStack, CvUnit* pUnit = NULL);
+public:
 	bool AI_groupSelectStatus();
 
 	bool AI_InvestigatorFulfillment();

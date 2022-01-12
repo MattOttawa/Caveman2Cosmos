@@ -937,7 +937,7 @@ void CvCityAI::AI_chooseProduction()
 	}
 
 	const CvArea* pArea = area();
-	CvArea* pWaterArea = waterArea(true);
+	const CvArea* pWaterArea = waterArea(true);
 	bool bMaybeWaterArea = false;
 	bool bWaterDanger = false;
 
@@ -999,7 +999,7 @@ void CvCityAI::AI_chooseProduction()
 	int iNumAreaCitySites = player.AI_getNumAreaCitySites(getArea(), iAreaBestFoundValue);
 
 	int iWaterAreaBestFoundValue = 0;
-	CvArea* pWaterSettlerArea = pWaterArea;
+	const CvArea* pWaterSettlerArea = pWaterArea;
 	if (pWaterSettlerArea == NULL)
 	{
 		pWaterSettlerArea = GC.getMap().findBiggestArea(true);
@@ -3025,7 +3025,7 @@ void CvCityAI::AI_chooseProduction()
 	if (!bInhibitUnits && iUnitCostPercentage < (iMaxUnitSpending + 10))
 	{
 		bool bBuildAssault = bAssault;
-		CvArea* pAssaultWaterArea = NULL;
+		const CvArea* pAssaultWaterArea = NULL;
 		if (NULL != pWaterArea)
 		{
 			// Coastal city extra logic
@@ -3871,7 +3871,7 @@ UnitTypes CvCityAI::AI_bestUnit(int& iBestUnitValue, int iNumSelectableTypes, Un
 	int iMilitaryWeight = 0;
 	if (!bNoWeighting)
 	{
-		CvArea* pWaterArea = waterArea(true);
+		const CvArea* pWaterArea = waterArea(true);
 
 		bool bWarPlan = (GET_TEAM(getTeam()).getAnyWarPlanCount(true) > 0);
 		bool bDefense = (area()->getAreaAIType(getTeam()) == AREAAI_DEFENSIVE);
@@ -6838,12 +6838,7 @@ bool CvCityAI::AI_finalProcessSelection()
 
 int CvCityAI::AI_neededSeaWorkers() const
 {
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD                      01/01/09                                jdog5000      */
-	/*                                                                                              */
-	/* Worker AI                                                                                    */
-	/************************************************************************************************/
-	CvArea* pWaterArea = waterArea(true);
+	const CvArea* pWaterArea = waterArea(true);
 
 	if (pWaterArea == NULL)
 	{
@@ -6853,14 +6848,11 @@ int CvCityAI::AI_neededSeaWorkers() const
 	int iNeededSeaWorkers = GET_PLAYER(getOwner()).countUnimprovedBonuses(pWaterArea);
 
 	// Check if second water area city can reach was any unimproved bonuses
-	pWaterArea = secondWaterArea();
-	if (pWaterArea != NULL)
+	const CvArea* pSecondWaterArea = secondWaterArea();
+	if (pSecondWaterArea != NULL)
 	{
-		iNeededSeaWorkers += GET_PLAYER(getOwner()).countUnimprovedBonuses(pWaterArea);
+		iNeededSeaWorkers += GET_PLAYER(getOwner()).countUnimprovedBonuses(pSecondWaterArea);
 	}
-	/************************************************************************************************/
-	/* BETTER_BTS_AI_MOD                       END                                                  */
-	/************************************************************************************************/
 
 	return iNeededSeaWorkers;
 }
@@ -9131,7 +9123,7 @@ void CvCityAI::AI_doHurry(bool bForce)
 	{
 		return;
 	}
-	CvArea* pWaterArea = waterArea();
+	const CvArea* pWaterArea = waterArea();
 	const CvPlayerAI& player = GET_PLAYER(getOwner());
 
 	const UnitTypes eProductionUnit = getProductionUnit();
@@ -12619,8 +12611,6 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 	// only clear the dirty bit if we actually do a check, multiple items might be queued
 	AI_setChooseProductionDirty(false);
 
-	CvArea* pWaterArea = waterArea();
-
 	const bool bWasFoodProduction = isFoodProduction();
 	clearOrderQueue();
 
@@ -12634,6 +12624,7 @@ void CvCityAI::AI_buildGovernorChooseProduction()
 #endif
 	{
 		//workboat
+		const CvArea* pWaterArea = waterArea();
 		if (pWaterArea != NULL
 			&& GET_PLAYER(getOwner()).AI_totalWaterAreaUnitAIs(pWaterArea, UNITAI_WORKER_SEA) == 0
 			&& AI_neededSeaWorkers() > 0
