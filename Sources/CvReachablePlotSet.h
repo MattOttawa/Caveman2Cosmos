@@ -47,14 +47,11 @@ public:
 		void setOpaqueInfo(int iActivityId, int iValue);
 
 	private:
-		friend class bst::iterator_core_access;
+		friend bst::iterator_core_access;
 
 		void increment();
-
 		bool equal(const iterator& other) const;
-
-		iterator& dereference();
-		//const iterator& dereference() const;
+		iterator& dereference() const;
 
 		stdext::hash_map<CvPlot*, CvReachablePlotInfo>::const_iterator m_itr;
 		const CvReachablePlotSet* m_parent;

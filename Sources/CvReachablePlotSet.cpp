@@ -15,10 +15,7 @@ CvReachablePlotSet::iterator::iterator(const CvReachablePlotSet* parent, stdext:
 
 CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::operator++()
 {
-	do
-	{
-		++m_itr;
-	} while( m_itr != m_parent->end().m_itr && m_itr->second.iStepDistance > m_parent->m_iRange );
+	increment();
 
 	return (*this);
 }
@@ -53,15 +50,10 @@ CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::operator=(const iter
 	return (*this);
 }
 
-CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::dereference()
+CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::dereference() const
 {
-	return *static_cast<CvReachablePlotSet::iterator*>(this);
+	return *const_cast<CvReachablePlotSet::iterator*>(this);
 }
-
-//const CvReachablePlotSet::iterator& CvReachablePlotSet::iterator::dereference() const
-//{
-//	return *static_cast<const CvReachablePlotSet::iterator*>(this);
-//}
 
 CvPlot*	CvReachablePlotSet::iterator::plot() const
 {
