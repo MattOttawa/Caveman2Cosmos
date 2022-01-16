@@ -33,10 +33,16 @@ enum BoolExprTypes
 
 struct GOMOverride
 {
+	GOMOverride(const CvGameObject* otherObject, GOMTypes otherGOM, int otherId, bool otherHas = true)
+		: pObject(otherObject)
+		, GOM(otherGOM)
+		, id(otherId)
+		, bHas(otherHas)
+	{}
 	const CvGameObject* pObject;
-	GOMTypes GOM;
-	int id;
-	bool bHas;
+	const GOMTypes GOM;
+	const int id;
+	const bool bHas;
 };
 
 enum BoolExprChange
@@ -49,8 +55,12 @@ enum BoolExprChange
 
 struct GOMQuery
 {
-	GOMTypes GOM;
-	int id;
+	GOMQuery(GOMTypes otherGOM, int otherId)
+		: GOM(otherGOM)
+		, id(otherId)
+	{}
+	const GOMTypes GOM;
+	const int id;
 };
 
 class BoolExpr

@@ -1836,16 +1836,8 @@ bool CvBuildingInfo::EnablesUnits() const
 			const CvUnitInfo& kUnit = GC.getUnitInfo((UnitTypes)iI);
 
 			const BoolExpr* condition = kUnit.getTrainCondition();
-			if (condition != NULL)
-			{
-				if (condition->getInvolvesGOM(queries))
-				{
-					m_bEnablesUnits = true;
-					return m_bEnablesUnits;
-				}
-			}
-
-			if (kUnit.isPrereqAndBuilding(eBuilding))
+			if ((condition != NULL && condition->getInvolvesGOM(queries))
+			|| kUnit.isPrereqAndBuilding(eBuilding))
 			{
 				m_bEnablesUnits = true;
 				return m_bEnablesUnits;
@@ -5470,7 +5462,7 @@ BonusTypes CvBuildingInfo::getPrereqOrBonuses(int i) const
 
 bool CvBuildingInfo::isPrereqOrBuilding(const int i) const
 {
-	return find(m_vPrereqOrBuilding.begin(), m_vPrereqOrBuilding.end(), i) != m_vPrereqOrBuilding.end();
+	return algo::contains(m_vPrereqOrBuilding, i);
 }
 
 int CvBuildingInfo::getPrereqOrBuilding(const int i) const
@@ -5493,7 +5485,7 @@ short CvBuildingInfo::getNumReplacementBuilding() const
 
 void CvBuildingInfo::setReplacedBuilding(const int i)
 {
-	if (find(m_vReplacedBuilding.begin(), m_vReplacedBuilding.end(), i) == m_vReplacedBuilding.end())
+	if (!algo::contains(m_vReplacedBuilding, i))
 	{
 		m_vReplacedBuilding.push_back(i);
 	}
@@ -5505,4 +5497,42 @@ int CvBuildingInfo::getReplacedBuilding(const int i) const
 short CvBuildingInfo::getNumReplacedBuilding() const
 {
 	return m_vReplacedBuilding.size();
+}
+
+const std::vector<GOMOverride>& CvBuildingInfo::getGOMOverrides(BuildingTypes eBuilding, const CvGameObject* pObject) const
+{
+	FASSERT_BOUNDS(0, GC.getNumBuildingInfos(), eBuilding)
+	FAssert(eBuilding == GC.getInfoTypeFromString(getType()))
+
+	std::vector<GOMOverride> queries;
+	queries.push_back(GOMOverride(pObject, GOM_BUILDING, eBuilding));
+	const BonusTypes eFreeBonus = getFreeBonus();
+	if (eFreeBonus > NO_BONUS)
+	{
+		queries.push_back(GOMOverride(pObject, GOM_BONUS, eFreeBonus));
+	}
+	foreach_(const BonusModifir2& modifier, getExtraFreeBonuses())
+	{
+		queries.push_back(GOMOverride(pObject, GOM_BONUS, modifier.first));
+	}
+	return queries
+}
+
+const std::vector<GOMQueries>& CvBuildingInfo::getGOMQueries(BuildingTypes eBuilding) const
+{
+	FASSERT_BOUNDS(0, GC.getNumBuildingInfos(), eBuilding)
+	FAssert(eBuilding == GC.getInfoTypeFromString(getType()))
+
+	std::vector<GOMQuery> queries;
+	queries.push_back(GOMQuery(GOM_BUILDING, eBuilding));
+	const BonusTypes eFreeBonus = getFreeBonus();
+	if (eFreeBonus > NO_BONUS)
+	{
+		queries.push_back(GOMOverride(GOM_BONUS, eFreeBonus));
+	}
+	foreach_(const BonusModifir2& modifier, getExtraFreeBonuses())
+	{
+		queries.push_back(GOMOverride(GOM_BONUS, modifier.first));
+	}
+	return queries
 }

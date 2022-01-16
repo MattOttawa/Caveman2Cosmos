@@ -145,6 +145,7 @@ protected:
 	std::vector<pair_t> m_map;
 };
 
+typedef std::pair<BonusTypes, int> BonusModifier2;
 typedef std::pair<TechTypes, int> TechModifier;
 
 typedef IDValueMap<int, int, 100> IDValueMapPercent;

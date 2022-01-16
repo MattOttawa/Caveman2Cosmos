@@ -3238,7 +3238,7 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 		}
 		bool bHasAnyRawVicinityBonus = false;
 		bool bRequiresAnyRawVicinityBonus = false;
-		foreach_(BonusTypes bonus, kBuilding.getPrereqOrRawVicinityBonuses())
+		foreach_(const BonusTypes bonus, kBuilding.getPrereqOrRawVicinityBonuses())
 		{
 			bRequiresAnyRawVicinityBonus = true;
 			if (hasRawVicinityBonus(bonus))
@@ -3259,27 +3259,11 @@ bool CvCity::canConstructInternal(BuildingTypes eBuilding, bool bContinue, bool 
 
 	if (!bTestVisible && kBuilding.getConstructCondition() && !bExposed)
 	{
-		CvGameObjectCity* pObject = const_cast<CvGameObjectCity*>(getGameObject());
+		const CvGameObjectCity* pObject = getGameObject();
 		if (withExtraBuilding != NO_BUILDING)
 		{
 			// add the extra building and its bonuses to the override to see if they influence the construct condition of this building
-			std::vector<GOMOverride> queries;
-			GOMOverride query = { pObject, GOM_BUILDING, withExtraBuilding, true };
-			queries.push_back(query);
-
-			const CvBuildingInfo& extraBuilding = GC.getBuildingInfo(withExtraBuilding);
-			query.GOM = GOM_BONUS;
-			query.id = extraBuilding.getFreeBonus();
-			if (query.id != NO_BONUS)
-			{
-				queries.push_back(query);
-			}
-			for (int iJ = 0; iJ < extraBuilding.getNumExtraFreeBonuses(); iJ++)
-			{
-				query.id = extraBuilding.getExtraFreeBonus(iJ);
-				queries.push_back(query);
-			}
-
+			const std::vector<GOMOverride>& queries = GC.getBuildingInfo(withExtraBuilding).getGOMOverrides(withExtraBuilding, pObject);
 			const BoolExprChange result = kBuilding.getConstructCondition()->evaluateChange(pObject, queries);
 			if ((result == BOOLEXPR_CHANGE_REMAINS_FALSE) || (result == BOOLEXPR_CHANGE_BECOMES_FALSE))
 			{
@@ -3393,15 +3377,12 @@ bool CvCity::isProductionLimited() const
 		{
 		case ORDER_TRAIN:
 			return isLimitedUnit((UnitTypes)EXTERNAL_ORDER_IDATA(order->iData1));
-			break;
 
 		case ORDER_CONSTRUCT:
 			return isLimitedWonder(static_cast<BuildingTypes>(order->iData1));
-			break;
 
 		case ORDER_CREATE:
 			return isLimitedProject((ProjectTypes)(order->iData1));
-			break;
 
 		case ORDER_MAINTAIN:
 		case ORDER_LIST:

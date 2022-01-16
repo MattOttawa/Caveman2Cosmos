@@ -4412,7 +4412,7 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 	}
 
 	// A couple of shortcuts to make the code more legible (probably the optimier inlines them all but better safe than sorry)
-	CvPlayerAI& player = GET_PLAYER(getOwner());
+	const CvPlayerAI& player = GET_PLAYER(getOwner());
 
 	const bool bAreaAlone = player.AI_isAreaAlone(area());
 	const int iProductionRank = findYieldRateRank(YIELD_PRODUCTION);
@@ -4500,39 +4500,19 @@ bool CvCityAI::AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& s
 
 				const CvGameObjectCity* pObject = getGameObject();
 				// add the extra building and its bonuses to the override to see if they influence the construct condition of this building
-				std::vector<GOMOverride> queries;
-				GOMOverride query = { pObject, GOM_BUILDING, eBuilding, true };
-				queries.push_back(query);
-				query.GOM = GOM_BONUS;
-				query.id = buildingInfo.getFreeBonus();
-				if (query.id != NO_BONUS)
-				{
-					queries.push_back(query);
-				}
-				for (int iJ = 0; iJ < buildingInfo.getNumExtraFreeBonuses(); iJ++)
-				{
-					query.id = buildingInfo.getExtraFreeBonus(iJ);
-					queries.push_back(query);
-				}
+				const std::vector<GOMOverride>& queries = buildingInfo.getGOMOverrides(eBuilding, pObject);
 
 				// TODO OPT: convert the masks to vectors so this look is faster
 				for (int iI = 0; iI < GC.getNumBuildingInfos(); iI++)
 				{
+					const CvBuildingInfo& kLoopBuilding = GC.getBuildingInfo(eType);
+					const BoolExpr* condition;
 					// check if this building enables the construct condition of another building
-					bool bEnablesCondition = false;
-					const BoolExpr* condition = GC.getBuildingInfo((BuildingTypes)iI).getConstructCondition();
-					if (condition != NULL)
+					if ((kLoopBuilding.isPrereqInCityBuilding(eBuilding)
+					|| kLoopBuilding.isPrereqOrBuilding(eBuilding)
+					|| (condition = kLoopBuilding.getConstructCondition() != NULL && condition->evaluateChange(pObject, queries) == BOOLEXPR_CHANGE_BECOMES_TRUE))
+					&& getNumRealBuilding((BuildingTypes)iI) == 0 && canConstructInternal((BuildingTypes)iI, false, false, false, true, eBuilding))
 					{
-						if (condition->evaluateChange(pObject, queries) == BOOLEXPR_CHANGE_BECOMES_TRUE)
-						{
-							bEnablesCondition = true;
-						}
-					}
-					if ((bEnablesCondition || GC.getBuildingInfo((BuildingTypes)iI).isPrereqInCityBuilding(eBuilding) || GC.getBuildingInfo((BuildingTypes)iI).isPrereqOrBuilding(eBuilding))
-						&& getNumRealBuilding((BuildingTypes)iI) == 0 && canConstructInternal((BuildingTypes)iI, false, false, false, true, eBuilding))
-					{
-						PROFILE("AI_bestBuildingThreshold.Enablement");
-
 						// We only value the unlocked building at 1/2 rate
 						iValue += AI_buildingValueThreshold((BuildingTypes)iI, iFocusFlags, 0, false, true) / 2;
 
@@ -15081,36 +15061,21 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 			if (building.EnablesOtherBuildings())
 			{
 				const CvGameObjectCity* pObject = getGameObject();
-
 				// add the extra building and its bonuses to the override to see if they influence the construct condition of this building
-				std::vector<GOMOverride> queries;
-				GOMOverride query = { pObject, GOM_BUILDING, eBuilding, true };
-				queries.push_back(query);
-				query.GOM = GOM_BONUS;
-				query.id = GC.getBuildingInfo(eBuilding).getFreeBonus();
-				if (query.id != NO_BONUS)
-				{
-					queries.push_back(query);
-				}
-				for (int iJ = 0; iJ < GC.getBuildingInfo(eBuilding).getNumExtraFreeBonuses(); iJ++)
-				{
-					query.id = GC.getBuildingInfo(eBuilding).getExtraFreeBonus(iJ);
-					queries.push_back(query);
-				}
+				const std::vector<GOMOverride>& queries = building.getGOMOverrides(eBuilding, pObject);
 
 				for (int iJ = 0; iJ < iNumBuildings; iJ++)
 				{
 					const BuildingTypes eType = static_cast<BuildingTypes>(iJ);
 					if (!algo::contains(buildingsToCalculate, eType) && getNumRealBuilding(eType) == 0)
 					{
+						const CvBuildingInfo& kLoopBuilding = GC.getBuildingInfo(eType);
+						const BoolExpr* condition;
 						// check if this building enables the construct condition of another building
-						bool bEnablesCondition = GC.getBuildingInfo(eType).isPrereqInCityBuilding(iBuilding) || GC.getBuildingInfo(eType).isPrereqOrBuilding(iBuilding);
-						if (!bEnablesCondition)
-						{
-							const BoolExpr* condition = GC.getBuildingInfo(eType).getConstructCondition();
-							bEnablesCondition = condition != NULL && condition->evaluateChange(pObject, queries) == BOOLEXPR_CHANGE_BECOMES_TRUE;
-						}
-						if (bEnablesCondition && canConstructInternal(eType, false, false, false, true, eBuilding))
+						if ((kLoopBuilding.isPrereqInCityBuilding(iBuilding)
+						|| kLoopBuilding.isPrereqOrBuilding(iBuilding)
+						|| (condition = kLoopBuilding.getConstructCondition() != NULL && condition->evaluateChange(pObject, queries) == BOOLEXPR_CHANGE_BECOMES_TRUE))
+						&& canConstructInternal(eType, false, false, false, true, eBuilding))
 						{
 							buildingsToCalculate.insert(eType);
 						}
@@ -15613,20 +15578,7 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 
 					const CvGameObjectCity* pObject = getGameObject();
 					// add the extra building and its bonuses to the override to see if they influence the train condition of a unit
-					std::vector<GOMOverride> queries;
-					GOMOverride query = { pObject, GOM_BUILDING, eBuilding, true };
-					queries.push_back(query);
-					query.GOM = GOM_BONUS;
-					query.id = kBuilding.getFreeBonus();
-					if (query.id != NO_BONUS)
-					{
-						queries.push_back(query);
-					}
-					for (int iJ = 0; iJ < kBuilding.getNumExtraFreeBonuses(); iJ++)
-					{
-						query.id = kBuilding.getExtraFreeBonus(iJ);
-						queries.push_back(query);
-					}
+					const std::vector<GOMOverride>& queries = kBuilding.getGOMOverrides(eBuilding, pObject);
 
 					for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
 					{
@@ -15655,12 +15607,9 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 						{
 							// check if this building enables the train condition of this unit
 							const BoolExpr* condition = kUnit.getTrainCondition();
-							if (condition != NULL)
+							if (condition != NULL && condition->evaluateChange(pObject, queries) == BOOLEXPR_CHANGE_BECOMES_TRUE)
 							{
-								if (condition->evaluateChange(pObject, queries) == BOOLEXPR_CHANGE_BECOMES_TRUE)
-								{
-									bUnitIsEnabler = true;
-								}
+								bUnitIsEnabler = true;
 							}
 
 							bool bUnitIsBonusEnabled = true;
@@ -15716,7 +15665,7 @@ void CvCityAI::CalculateAllBuildingValues(int iFocusFlags)
 								}
 								//This forces the AI to build necessary buildings for units.
 
-								UnitAITypes eUnitAI = (UnitAITypes)(kUnit.getDefaultUnitAIType());
+								const UnitAITypes eUnitAI = (UnitAITypes)kUnit.getDefaultUnitAIType();
 
 								int unitsEnabledValue = 0;
 

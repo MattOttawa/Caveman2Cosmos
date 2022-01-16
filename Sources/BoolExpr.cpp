@@ -926,12 +926,12 @@ bool BoolExprIf::evaluate(const CvGameObject* pObject) const
 
 BoolExprChange BoolExprIf::evaluateChange(const CvGameObject* pObject, const std::vector<GOMOverride>& overrides) const
 {
-	BoolExprChange resultif = m_pExprIf->evaluateChange(pObject, overrides);
-	BoolExprChange resultthen = m_pExprThen->evaluateChange(pObject, overrides);
-	BoolExprChange resultelse = m_pExprElse->evaluateChange(pObject, overrides);
+	const BoolExprChange resultif = m_pExprIf->evaluateChange(pObject, overrides);
+	const BoolExprChange resultthen = m_pExprThen->evaluateChange(pObject, overrides);
+	const BoolExprChange resultelse = m_pExprElse->evaluateChange(pObject, overrides);
 
-	bool before = getBefore(resultif) ? getBefore(resultthen) : getBefore(resultelse);
-	bool after = getAfter(resultif) ? getAfter(resultthen) : getAfter(resultelse);
+	const bool before = getBefore(resultif) ? getBefore(resultthen) : getBefore(resultelse);
+	const bool after = getAfter(resultif) ? getAfter(resultthen) : getAfter(resultelse);
 	return getChange(before, after);
 }
 

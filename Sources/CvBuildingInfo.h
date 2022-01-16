@@ -47,6 +47,7 @@ public:
 	BonusTypes getExtraFreeBonus(int i) const;
 	int getExtraFreeBonusNum(int i) const;
 	bool hasExtraFreeBonus(BonusTypes eBonus) const;
+	//const std::vector<BonusModifier2>& getExtraFreeBonuses() const { return m_aExtraFreeBonuses; }
 	int getFreeBuilding() const						{ return m_iFreeBuilding; }
 	int getFreeAreaBuilding() const					{ return m_iFreeAreaBuilding; }
 	int getFreePromotion() const					{ return m_iFreePromotion; }
@@ -546,6 +547,9 @@ public:
 	bool isAnyBonusYieldChanges() const				{ return m_ppaiBonusYieldChanges != NULL; }
 	bool isAnyVicinityBonusYieldChanges() const		{ return m_ppaiVicinityBonusYieldChanges != NULL; }
 	bool isAnyBonusCommercePercentChanges() const	{ return m_ppaiBonusCommercePercentChanges != NULL; }
+
+	const std::vector<GOMOverride>& getGOMOverrides(BuildingTypes eBuilding, const CvGameObject* pObject) const;
+	const std::vector<GOMQueries>& getGOMQueries(BuildingTypes eBuilding) const;
 
 protected:
 	void setNotShowInCity();
