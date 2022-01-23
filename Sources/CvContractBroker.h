@@ -3,7 +3,10 @@
 #ifndef CvContractBroker_h__
 #define CvContractBroker_h__
 
-#include "CvUnit.h"
+#include "CvUnitSelectionCriteria.h"
+
+class CvCity;
+class CvUnit;
 
 //	Define this to have cities advertise units needs and tender for the business of building them
 #define	USE_UNIT_TENDERING
@@ -132,7 +135,7 @@ struct WorkParams
 	CvArea* pArea;
 };
 
-class CvContractBroker
+class CvContractBroker : bst::noncopyable
 {
 public:
 	CvContractBroker();
@@ -145,10 +148,10 @@ public:
 	void reset();
 
 	//	Note a unit looking for work
-	void lookingForWork(CvUnit* pUnit, int iMinPriority = 0);
+	void lookingForWork(const CvUnit* pUnit, int iMinPriority = 0);
 
 	//	Unit fulfilled its work and is no longer advertising as available
-	void removeUnit(CvUnit* pUnit);
+	void removeUnit(const CvUnit* pUnit);
 
 	//	Make a work request
 	//		iPriority should be in the range 0-1000 ideally
@@ -159,7 +162,7 @@ public:
 
 	//	Advertise a tender to build units
 	//		iMinPriority indicates the lowest priority request this tender is appropriate for
-	void advertiseTender(CvCity* pCity, int iMinPriority);
+	void advertiseTender(const CvCity* pCity, int iMinPriority);
 
 	//	Find out how many requests have already been made for units of a specified AI type
 	//	This is used by cities requesting globally needed units like settlers to avoid multiple
@@ -171,7 +174,7 @@ public:
 
 	//	Make a contract
 	//	This will attempt to make the best contracts between currently
-	//	advertising units and work, then search the resulting set for the work 
+	//	advertising units and work, then search the resulting set for the work
 	//	of the requested unit
 	//	returns true if a contract is made along with the details of what to do
 	bool makeContract(CvUnit* pUnit, int& iAtX, int& iAtY, CvUnit*& pJoinUnit, bool bThisPlotOnly);
@@ -180,10 +183,10 @@ public:
 
 private:
 	const workRequest*	findWorkRequest(int iWorkRequestId) const;
-	advertisingUnit*	findBestUnit(workRequest& request, bool bThisPlotOnly);
+	advertisingUnit*	findBestUnit(const workRequest& request, bool bThisPlotOnly);
 	CvUnit*				findUnit(int iUnitId) const;
-	int					lowerPartiallyFulfilledRequestPriority(int iPreviousPriority, int iPreviousRequestStrength, int iStrengthProvided);
-	UnitValueFlags		unitCapabilities2UnitValueFlags(unitCapabilities eCapabilities);
+	int					lowerPartiallyFulfilledRequestPriority(int iPreviousPriority, int iPreviousRequestStrength, int iStrengthProvided) const;
+	UnitValueFlags		unitCapabilities2UnitValueFlags(unitCapabilities eCapabilities) const;
 
 	std::vector<workRequest>		m_workRequests;
 	std::vector<advertisingUnit>	m_advertisingUnits;

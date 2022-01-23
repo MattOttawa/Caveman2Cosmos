@@ -4,18 +4,18 @@ namespace range_detail
 {
 	template<typename EnumType, typename UnderlyingType>
 	class enum_iterator
-		: public boost155::iterator_facade<
-		enum_iterator<EnumType, UnderlyingType>,
-		EnumType,
-		boost155::random_access_traversal_tag,
-		EnumType,
-		std::ptrdiff_t
-		>
-	{
-		typedef boost155::iterator_facade<
+		: public bst::iterator_facade<
 			enum_iterator<EnumType, UnderlyingType>,
 			EnumType,
-			boost155::random_access_traversal_tag,
+			bst::random_access_traversal_tag,
+			EnumType,
+			std::ptrdiff_t
+		>
+	{
+		typedef bst::iterator_facade<
+			enum_iterator<EnumType, UnderlyingType>,
+			EnumType,
+			bst::random_access_traversal_tag,
 			EnumType,
 			std::ptrdiff_t
 		> base_t;
@@ -58,7 +58,7 @@ namespace range_detail
 			return static_cast<value_type>(m_value);
 		}
 
-		friend class ::boost155::iterator_core_access;
+		friend bst::iterator_core_access;
 		UnderlyingType m_value;
 	};
 } // namespace range_detail

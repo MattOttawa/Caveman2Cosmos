@@ -8,14 +8,14 @@
 #include "CvDefines.h"
 
 
-enum GameStateTypes					// Exposed to Python
+enum GameStateTypes
 {
 	GAMESTATE_ON,
 	GAMESTATE_OVER,
 	GAMESTATE_EXTENDED,
 };
 
-enum PopupStates						// Exposed to Python
+enum PopupStates
 {
 	POPUPSTATE_IMMEDIATE,
 	POPUPSTATE_QUEUED,
@@ -32,7 +32,7 @@ enum PopupEventTypes
 	POPUPEVENT_CIVIC,
 };
 
-enum CameraLookAtTypes			// Exposed to Python
+enum CameraLookAtTypes
 {
 	CAMERALOOKAT_NORMAL,
 	CAMERALOOKAT_CITY_ZOOM_IN,
@@ -43,7 +43,7 @@ enum CameraLookAtTypes			// Exposed to Python
 	CAMERALOOKAT_HOTSEAT,
 };
 
-enum CameraMovementSpeeds		// Exposed to Python
+enum CameraMovementSpeeds
 {
 	CAMERAMOVEMENTSPEED_NORMAL,
 	CAMERAMOVEMENTSPEED_SLOW,
@@ -55,7 +55,7 @@ enum CameraAnimationTypes
 	NO_CAMERA_ANIMATION = -1,
 };
 
-enum ZoomLevelTypes					// Exposed to Python
+enum ZoomLevelTypes
 {
 	ZOOM_UNKNOWN							= 0x00000000,
 	ZOOM_DETAIL								= 0x00000001,
@@ -64,7 +64,7 @@ enum ZoomLevelTypes					// Exposed to Python
 	ZOOM_GLOBEVIEW						= 0x00000008
 };
 
-enum DirectionTypes					// Exposed to Python
+enum DirectionTypes
 {
 	NO_DIRECTION = -1,
 
@@ -77,9 +77,7 @@ enum DirectionTypes					// Exposed to Python
 	DIRECTION_WEST,
 	DIRECTION_NORTHWEST,
 
-#ifdef _USRDLL
 	NUM_DIRECTION_TYPES,
-#endif
 
 	DIRECTION_NORTH_MASK = 1 << DIRECTION_NORTH,
 	DIRECTION_NORTHEAST_MASK = 1 << DIRECTION_NORTHEAST,
@@ -90,10 +88,9 @@ enum DirectionTypes					// Exposed to Python
 	DIRECTION_WEST_MASK = 1 << DIRECTION_WEST,
 	DIRECTION_NORTHWEST_MASK = 1 << DIRECTION_NORTHWEST,
 };
-
 typedef fixed_enum_range<DirectionTypes, int, DIRECTION_NORTH, NUM_DIRECTION_TYPES> DirectionTypesRange;
 
-enum CardinalDirectionTypes			// Exposed to Python
+enum CardinalDirectionTypes
 {
 	NO_CARDINALDIRECTION = -1,
 
@@ -102,10 +99,10 @@ enum CardinalDirectionTypes			// Exposed to Python
 	CARDINALDIRECTION_SOUTH,
 	CARDINALDIRECTION_WEST,
 
-#ifdef _USRDLL
 	NUM_CARDINALDIRECTION_TYPES
-#endif
 };
+typedef fixed_enum_range<CardinalDirectionTypes, int, CARDINALDIRECTION_NORTH, NUM_CARDINALDIRECTION_TYPES> CardinalDirectionTypesRange;
+
 
 typedef fixed_enum_range<CardinalDirectionTypes, int, CARDINALDIRECTION_NORTH, NUM_CARDINALDIRECTION_TYPES> CardinalDirectionTypesRange;
 
@@ -123,6 +120,8 @@ enum RotationTypes
 	ROTATE_180CW_MASK	= 1 << ROTATE_180CW,
 	ROTATE_270CW_MASK	= 1 << ROTATE_270CW,
 };
+typedef fixed_enum_range<RotationTypes, int, ROTATE_NONE, NUM_ROTATION_TYPES> RotationTypesRange;
+
 
 typedef fixed_enum_range<RotationTypes, int, ROTATE_NONE, NUM_ROTATION_TYPES> RotationTypesRange;
 
@@ -138,9 +137,7 @@ enum WrapDirection
 	WRAP_UP,
 	WRAP_DOWN,
 
-#ifdef _USRDLL
 	NUM_WRAP_DIRECTIONS,
-#endif
 
 	WRAP_LEFT_MASK = 1 << WRAP_LEFT,
 	WRAP_RIGHT_MASK = 1 << WRAP_RIGHT,
@@ -148,18 +145,18 @@ enum WrapDirection
 	WRAP_DOWN_MASK = 1 << WRAP_DOWN,
 };
 
-enum ColorTypes						// Exposed to Python
+enum ColorTypes
 {
 	NO_COLOR = -1,
 };
 
-enum PlayerColorTypes			// Exposed to Python
+enum PlayerColorTypes
 {
 	NO_PLAYERCOLOR = -1,
 };
 
 //Warning: these values correspond to locations in the plot texture [JW]
-enum PlotStyles						// Exposed to Python
+enum PlotStyles
 {
 	PLOT_STYLE_NONE = -1,
 
@@ -200,7 +197,7 @@ enum PlotStyles						// Exposed to Python
 };
 
 //Warning: these values are used as an index into a fixed array
-enum PlotLandscapeLayers		// Exposed to Python
+enum PlotLandscapeLayers
 {
 	PLOT_LANDSCAPE_LAYER_ALL = -1,
 	PLOT_LANDSCAPE_LAYER_BASE = 0,
@@ -236,7 +233,7 @@ enum AttachableTypes
 // Dale - RB: Field Bombard new interface added at end of list
 // Dale - AB: Bombing new interfaces added at end of list
 // Dale - FE: Fighter new interfaces added at end of list
-enum InterfaceModeTypes			// Exposed to Python
+enum InterfaceModeTypes
 {
 	NO_INTERFACEMODE = -1,
 
@@ -257,46 +254,26 @@ enum InterfaceModeTypes			// Exposed to Python
 	INTERFACEMODE_RANGE_ATTACK,
 	INTERFACEMODE_AIRSTRIKE,
 	INTERFACEMODE_REBASE,
-	INTERFACEMODE_PYTHON_PICK_PLOT,
+	INTERFACEMODE_DOTMAP,
 	INTERFACEMODE_SAVE_PLOT_NIFS,
-/************************************************************************************************/
-/* DCM                                     04/19/09                                Johny Smith  */
-/************************************************************************************************/
+
 	INTERFACEMODE_AIRBOMB1,
 	INTERFACEMODE_AIRBOMB2,
 	INTERFACEMODE_AIRBOMB3,
 	INTERFACEMODE_AIRBOMB4,
 	INTERFACEMODE_AIRBOMB5,
 	INTERFACEMODE_BOMBARD,
-	INTERFACEMODE_ABOMBARD,
 	INTERFACEMODE_FENGAGE,
-/************************************************************************************************/
-/* DCM                                     END                                                  */
-/************************************************************************************************/
-// BUG - Sentry Actions - start
+
 #ifdef _MOD_SENTRY
 	INTERFACEMODE_GO_TO_SENTRY,
 #endif
-// BUG - Sentry Actions - end
-	// < M.A.D. Nukes Start >
-	INTERFACEMODE_PRETARGET_NUKE,
-	// < M.A.D. Nukes End   >
-/************************************************************************************************/
-/* Afforess	                  Start		 09/16/10                                               */
-/*                                                                                              */
-/* Advanced Automations                                                                         */
-/************************************************************************************************/
 	INTERFACEMODE_SHADOW_UNIT,
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
-#ifdef _USRDLL
 	NUM_INTERFACEMODE_TYPES
-#endif
 };
 
-enum InterfaceMessageTypes	// Exposed to Python
+enum InterfaceMessageTypes
 {
 	NO_MESSAGE_TYPE = -1,
 
@@ -308,9 +285,7 @@ enum InterfaceMessageTypes	// Exposed to Python
 	MESSAGE_TYPE_COMBAT_MESSAGE,
 	MESSAGE_TYPE_QUEST,
 
-#ifdef _USRDLL
 	NUM_INTERFACE_MESSAGE_TYPES
-#endif
 };
 
 enum FlyoutTypes
@@ -331,7 +306,7 @@ enum FlyoutTypes
 	FLYOUR_SLEEP_ALL,
 };
 
-enum MinimapModeTypes		// Exposed to Python
+enum MinimapModeTypes
 {
 	NO_MINIMAPMODE = -1,
 
@@ -340,24 +315,20 @@ enum MinimapModeTypes		// Exposed to Python
 	MINIMAPMODE_REPLAY,
 	MINIMAPMODE_MILITARY,
 
-#ifdef _USRDLL
 	NUM_MINIMAPMODE_TYPES
-#endif
 };
 
-enum EngineDirtyBits		// Exposed to Python
+enum EngineDirtyBits
 {
 	GlobeTexture_DIRTY_BIT,
 	GlobePartialTexture_DIRTY_BIT,
 	MinimapTexture_DIRTY_BIT,
 	CultureBorders_DIRTY_BIT,
 
-#ifdef _USRDLL
 	NUM_ENGINE_DIRTY_BITS
-#endif
 };
 
-enum InterfaceDirtyBits // Exposed to Python
+enum InterfaceDirtyBits
 {
 	SelectionCamera_DIRTY_BIT,
 	Fog_DIRTY_BIT,
@@ -395,12 +366,10 @@ enum InterfaceDirtyBits // Exposed to Python
 	Espionage_Advisor_DIRTY_BIT,
 	Advanced_Start_DIRTY_BIT,
 
-#ifdef _USRDLL
 	NUM_INTERFACE_DIRTY_BITS
-#endif
 };
 
-enum CityTabTypes			// Exposed to Python
+enum CityTabTypes
 {
 	NO_CITYTAB = -1,
 
@@ -408,12 +377,10 @@ enum CityTabTypes			// Exposed to Python
 	CITYTAB_BUILDINGS,
 	CITYTAB_WONDERS,
 
-#ifdef _USRDLL
 	NUM_CITYTAB_TYPES
-#endif
 };
 
-enum WidgetTypes					// Exposed to Python
+enum WidgetTypes
 {
 	WIDGET_PLOT_LIST,
 	WIDGET_PLOT_LIST_SHIFT,
@@ -472,7 +439,7 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_WB_REGENERATE_MAP,
 	WIDGET_TRADE_ITEM,
 	WIDGET_UNIT_MODEL,
-	WIDGET_FLAG,
+	WIDGET_UNUSED_57, // Toffer - Rename/reuse as needed, cannot be deleted as the exe has hardcoded enum values for important widgets with higher values.
 	WIDGET_POPUP_QUEUE,
 
 	//	This is meant for python buttons, it will call python functions for display and execution
@@ -484,7 +451,7 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_HELP_RELIGION_CITY,
 	WIDGET_HELP_CORPORATION_CITY,
 	WIDGET_HELP_NATIONALITY,
-	WIDGET_HELP_DEFENSE,
+	WIDGET_UNUSED_65, // Toffer - Rename/reuse as needed, cannot be deleted as the exe has hardcoded enum values for important widgets with higher values.
 	WIDGET_HELP_HEALTH,
 	WIDGET_HELP_HAPPINESS,
 	WIDGET_HELP_POPULATION,
@@ -535,7 +502,7 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_HELP_FOUND_RELIGION,
 	WIDGET_HELP_FOUND_CORPORATION,
 	WIDGET_HELP_FINANCE_NUM_UNITS,
-	WIDGET_HELP_FINANCE_UNIT_COST,
+	WIDGET_HELP_IMPROVEMENT_ACTUAL,
 	WIDGET_HELP_FINANCE_AWAY_SUPPLY,
 	WIDGET_HELP_FINANCE_CITY_MAINT,
 	WIDGET_HELP_FINANCE_CIVIC_UPKEEP,
@@ -557,7 +524,7 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_PEDIA_JUMP_TO_BONUS,
 	WIDGET_PEDIA_MAIN,
 	WIDGET_PEDIA_JUMP_TO_PROMOTION,
-	WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT,
+	WIDGET_UNUSED_111, // Toffer - Rename/reuse as needed, cannot be deleted as the exe has hardcoded enum values for important widgets with higher values.
 	WIDGET_PEDIA_JUMP_TO_IMPROVEMENT,
 	WIDGET_PEDIA_JUMP_TO_CIVIC,
 	WIDGET_PEDIA_JUMP_TO_CIV,
@@ -568,68 +535,47 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_PEDIA_JUMP_TO_FEATURE,
 	WIDGET_TURN_EVENT,
 	WIDGET_FOREIGN_ADVISOR,
-	WIDGET_REVOLUTION,
+	WIDGET_HELP_BUILDUP,
 	WIDGET_PEDIA_DESCRIPTION,
 	WIDGET_PEDIA_DESCRIPTION_NO_HELP,
 	WIDGET_DEAL_KILL,
 	WIDGET_MINIMAP_HIGHLIGHT,
-	WIDGET_PRODUCTION_MOD_HELP,
+	WIDGET_PEDIA_JUMP_TO_ROUTE,
 	WIDGET_LEADERHEAD,
 	WIDGET_LEADER_LINE,
 	WIDGET_COMMERCE_MOD_HELP,
-	WIDGET_CLOSE_SCREEN,
+	WIDGET_CLOSE_SCREEN, // Toffer - This widget enum seems to be hardcoded in exe, do not mess with this enum value.
 	WIDGET_PEDIA_JUMP_TO_RELIGION,
 	WIDGET_PEDIA_JUMP_TO_CORPORATION,
 	WIDGET_GLOBELAYER,
 	WIDGET_GLOBELAYER_OPTION,
 	WIDGET_GLOBELAYER_TOGGLE,
 
-// BUG - Min/Max Commerce Rate - start
 	WIDGET_SET_PERCENT,
-// BUG - Min/Max Commerce Rate - end
 
-// BUG - Finance Advisor - start
 	WIDGET_HELP_FINANCE_DOMESTIC_TRADE,
 	WIDGET_HELP_FINANCE_FOREIGN_TRADE,
 	WIDGET_HELP_FINANCE_SPECIALISTS,
-// BUG - Finance Advisor - end
 
-// BUG - Trade Denial - start
 	WIDGET_PEDIA_JUMP_TO_BONUS_TRADE,
 	WIDGET_PEDIA_JUMP_TO_TECH_TRADE,
-// BUG - Trade Denial - end
 
-// BUG - Foreign Advisor INFO Trade - start
 	WIDGET_TRADE_ROUTES,
-// BUG - Foreign Advisor INFO Trade - end
 
-// BUG - Food Rate Hover - start
 	WIDGET_FOOD_MOD_HELP,
-// BUG - Food Rate Hover - end
 
-// BUG - Leaderhead Relations - start
 	WIDGET_LEADERHEAD_RELATIONS,
-// BUG - Leaderhead Relations - end
-/************************************************************************************************/
-/* Afforess	                  Start		 01/18/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-	WIDGET_OBSOLETE_PROMOTION,
-	WIDGET_OBSOLETE_CORPORATION,
+
 	WIDGET_HELP_EMPLOYMENT,
 	WIDGET_HELP_IMPROVEMENT_CAN_UPGRADE,
-	WIDGET_EXTRA_TECH_STRENGTH,
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
+
 	WIDGET_BUILDING_FILTER,
 	WIDGET_BUILDING_GROUPING,
 	WIDGET_BUILDING_SORT,
 	WIDGET_UNIT_FILTER,
 	WIDGET_UNIT_GROUPING,
 	WIDGET_UNIT_SORT,
-	
+
 	WIDGET_PROPERTY,
 
 	WIDGET_BUILD_LIST_TRAIN,
@@ -642,16 +588,11 @@ enum WidgetTypes					// Exposed to Python
 	WIDGET_PEDIA_JUMP_TO_TRAIT,
 	//ls612: Viewport Goto Helper Widget
 	WIDGET_CITY_GOTO,
-	WIDGET_PEDIA_JUMP_TO_ROUTE,
-	WIDGET_HELP_IMPROVEMENT_ACTUAL,
-	WIDGET_HELP_BUILDUP,
 
-#ifdef _USRDLL
 	NUM_WIDGET_TYPES
-#endif
 };
 
-enum ButtonPopupTypes			// Exposed to Python
+enum ButtonPopupTypes
 {
 	BUTTONPOPUP_TEXT,
 	BUTTONPOPUP_MAIN_MENU,
@@ -703,7 +644,6 @@ enum ButtonPopupTypes			// Exposed to Python
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
 	BUTTONPOPUP_GET_SAVE_FORMAT,	//	Koshling - user choose save format dialog
-	BUTTONPOPUP_SAVE_INFO_LOST,		//	Non-fatal warning that some entities could not be instantiated
 
 	BUTTONPOPUP_MODIFIER_RECALCULATION,  // Ask user if he wants to recalculated modifiers when DLL or assets have changed
 	BUTTONPOPUP_NAME_LIST,
@@ -717,27 +657,25 @@ enum ButtonPopupTypes			// Exposed to Python
 	BUTTONPOPUP_CHOOSE_ARREST_UNIT,
 	BUTTONPOPUP_CONFIRM_AMBUSH,
 
-#ifdef _USRDLL
 	NUM_BUTTONPOPUP_TYPES
-#endif
 };
 
-enum ClimateTypes					// Exposed to Python
+enum ClimateTypes
 {
 	NO_CLIMATE = -1,
 };
 
-enum SeaLevelTypes				// Exposed to Python
+enum SeaLevelTypes
 {
 	NO_SEALEVEL = -1,
 };
 
-enum CustomMapOptionTypes	// Exposed to Python
+enum CustomMapOptionTypes
 {
 	NO_CUSTOM_MAPOPTION = -1,
 };
 
-enum WorldSizeTypes				// Exposed to Python
+enum WorldSizeTypes
 {
 	NO_WORLDSIZE = -1,
 
@@ -748,32 +686,40 @@ enum WorldSizeTypes				// Exposed to Python
 	WORLDSIZE_LARGE,
 	WORLDSIZE_HUGE,
 
-#ifdef _USRDLL
 	NUM_WORLDSIZE_TYPES
-#endif
 };
-
-/*********************************/
-/***** Parallel Maps - Begin *****/
-/*********************************/
 
 enum MapTypes
 {
 	NO_MAP = -1,
-	MAP_INITIAL,
-	MAX_MAPS = 10,
+
+	MAP_EARTH,
+	MAP_SUBTERRAIN,
+	MAP_CISLUNAR,
+	MAP_MOON,
+	MAP_MARS,
+	MAP_VENUS,
+	MAP_INNER_SOLAR_SYSTEM,
+	MAP_OUTER_SOLAR_SYSTEM,
+	MAP_TITAN,
+	MAP_TRANSNEPTUNIAN,
+	MAP_NEARBY_STARS,
+	MAP_ORION_ARM,
+	MAP_MILKY_WAY,
+	MAP_LOCAL_GROUP,
+	MAP_VIRGO_SUPERCLUSTER,
+	MAP_UNIVERSE,
+	MAP_DISTANT_COSMOS,
+
+	NUM_MAPS
 };
 
-enum MapSwitchTypes
+enum MapCategoryTypes
 {
-	NO_MAPSWITCH = -1,
+	NO_MAPCATEGORY = -1,
 };
 
-/*******************************/
-/***** Parallel Maps - End *****/
-/*******************************/	
-
-// This is our current relationship with each 
+// This is our current relationship with each
 // one of our connected network peers
 enum InitStates
 {
@@ -791,12 +737,12 @@ enum InitStates
 	INIT_GAME_STARTED,
 };
 
-enum TerrainTypes						// Exposed to Python
+enum TerrainTypes
 {
 	NO_TERRAIN = -1,
 };
 
-enum PlotTypes							// Exposed to Python
+enum PlotTypes
 {
 	NO_PLOT = -1,
 
@@ -805,12 +751,10 @@ enum PlotTypes							// Exposed to Python
 	PLOT_LAND,
 	PLOT_OCEAN,
 
-#ifdef _USRDLL
 	NUM_PLOT_TYPES
-#endif
 };
 
-enum YieldTypes							// Exposed to Python
+enum YieldTypes
 {
 	NO_YIELD = -1,
 
@@ -818,12 +762,10 @@ enum YieldTypes							// Exposed to Python
 	YIELD_PRODUCTION,
 	YIELD_COMMERCE,
 
-#ifdef _USRDLL
 	NUM_YIELD_TYPES
-#endif
 };
 
-enum CommerceTypes					// Exposed to Python
+enum CommerceTypes
 {
 	NO_COMMERCE = -1,
 
@@ -832,158 +774,126 @@ enum CommerceTypes					// Exposed to Python
 	COMMERCE_CULTURE,
 	COMMERCE_ESPIONAGE,
 
-#ifdef _USRDLL
 	NUM_COMMERCE_TYPES
-#endif
 };
 
-enum AdvisorTypes						// Exposed to Python
+enum AdvisorTypes
 {
 	NO_ADVISOR = -1
 };
 
-enum FlavorTypes						// Exposed to Python
+enum FlavorTypes
 {
 	NO_FLAVOR = -1
 };
 
-enum EmphasizeTypes					// Exposed to Python
+enum EmphasizeTypes
 {
 	NO_EMPHASIZE = -1,
 };
 
-enum GameOptionTypes				// Exposed to Python
+enum GameOptionTypes
 {
 	NO_GAMEOPTION = -1,
 
 	GAMEOPTION_ADVANCED_START,
+	GAMEOPTION_NEW_RANDOM_SEED,
+	GAMEOPTION_LOCK_MODS,
+	GAMEOPTION_NO_GOODY_HUTS,
+	GAMEOPTION_NO_FUTURE,
+	GAMEOPTION_COMPLETE_KILLS,
+	GAMEOPTION_NO_EVENTS,
+	GAMEOPTION_LEAD_ANY_CIV, // This must always be the eight option as the exe has hardcoded it as such.
+	GAMEOPTION_UNITED_NATIONS,
+	GAMEOPTION_ADVANCED_DIPLOMACY,
+	GAMEOPTION_ADVANCED_ECONOMY, // @SAVEBREAK DELETE
+	GAMEOPTION_REALISTIC_CORPORATIONS,
+	GAMEOPTION_ADVANCED_ESPIONAGE,
 	GAMEOPTION_NO_CITY_RAZING,
 	GAMEOPTION_NO_CITY_FLIPPING,
 	GAMEOPTION_FLIPPING_AFTER_CONQUEST,
+	GAMEOPTION_REALISTIC_CULTURE_SPREAD,
+	GAMEOPTION_1_CITY_TILE_FOUNDING,
+	GAMEOPTION_MIN_CITY_BORDER,
+	GAMEOPTION_LARGER_CITIES,
+	GAMEOPTION_OVEREXPANSION_PENALTIES,
+	GAMEOPTION_UNLIMITED_WONDERS,
+	GAMEOPTION_UNLIMITED_NATIONAL_UNITS,
+	GAMEOPTION_MAXIMUM_POPULATION,
+	GAMEOPTION_MORE_RIVERS,
+	GAMEOPTION_MORE_RESOURCES,
+	GAMEOPTION_PERSONALIZED_MAP,
 	GAMEOPTION_NO_BARBARIANS,
 	GAMEOPTION_RAGING_BARBARIANS,
-	GAMEOPTION_AGGRESSIVE_AI,
-	GAMEOPTION_LEAD_ANY_CIV,
-	GAMEOPTION_RANDOM_PERSONALITIES,
+	GAMEOPTION_BARBARIAN_WORLD,
+	GAMEOPTION_BARBARIAN_CIV,
+	GAMEOPTION_BARBARIANS_ALWAYS_RAZE,
+	GAMEOPTION_NEANDERTHAL_CITIES,
+	GAMEOPTION_TELEPORT_HUNTING_AWARDS,
+	GAMEOPTION_PEACE_AMONG_NPCS,
+	GAMEOPTION_ANIMALS_STAY_OUT,
+	GAMEOPTION_RECKLESS_ANIMALS,
+	GAMEOPTION_DANGEROUS_WILDLIFE,
 	GAMEOPTION_PICK_RELIGION,
+	GAMEOPTION_LIMITED_RELIGIONS,
+	GAMEOPTION_INQUISITIONS,
+	GAMEOPTION_RELIGION_DECAY, // @SAVEBREAK DELETE - Deprecated
+	GAMEOPTION_DIVINE_PROPHETS,
+	GAMEOPTION_RELIGIOUS_DISABLING,
+	GAMEOPTION_RANDOM_PERSONALITIES,
+	GAMEOPTION_PERMANENT_ALLIANCES,
+	GAMEOPTION_START_AS_MINORS,
+	GAMEOPTION_CULTURALLY_LINKED_STARTS,
+	GAMEOPTION_NO_VASSAL_STATES,
+	GAMEOPTION_REVOLUTION,
+	GAMEOPTION_AGGRESSIVE_AI,
+	GAMEOPTION_RUTHLESS_AI,
 	GAMEOPTION_NO_TECH_TRADING,
 	GAMEOPTION_NO_TECH_BROKERING,
-	GAMEOPTION_PERMANENT_ALLIANCES,
-	GAMEOPTION_ONE_CITY_CHALLENGE,
-	GAMEOPTION_NEW_RANDOM_SEED,
-	GAMEOPTION_LOCK_MODS,
-	GAMEOPTION_COMPLETE_KILLS,
-	GAMEOPTION_NO_VASSAL_STATES,
-	GAMEOPTION_NO_GOODY_HUTS,
-	GAMEOPTION_NO_EVENTS,
-	GAMEOPTION_NO_ESPIONAGE,
-
-/********************************************************************************/
-/**		REVOLUTION_MOD							5/27/08				jdog5000	*/
-/**																				*/
-/**																				*/
-/********************************************************************************/
-	GAMEOPTION_BARBARIAN_WORLD,
-	GAMEOPTION_NO_REVOLUTION,
-	GAMEOPTION_LIMITED_RELIGIONS,
-	GAMEOPTION_NO_INQUISITIONS,
-	GAMEOPTION_NO_BARBARIAN_CIV,
-	GAMEOPTION_NO_TECH_DIFFUSION,
-	GAMEOPTION_START_AS_MINORS,
-	/********************************************************************************/
-	/*		REVOLUTION_MOD							END								*/
-	/********************************************************************************/
-	
-/************************************************************************************************/
-/* Afforess			 		Last Update: 6/12/11                                                */
-/*                              New Gameoptions                                                 */
-/*                                                                                              */
-/************************************************************************************************/
-	GAMEOPTION_MOUNTAINS,
-	GAMEOPTION_SAD,
-	GAMEOPTION_ADVANCED_DIPLOMACY,
-	GAMEOPTION_UNLIMITED_WONDERS,
-	GAMEOPTION_BARBARIAN_GENERALS,
-	GAMEOPTION_NO_ZOC,
-	GAMEOPTION_ASSIMILATION,
-	GAMEOPTION_CHALLENGE_CUT_LOSERS,
-	GAMEOPTION_CHALLENGE_HIGH_TO_LOW,
-	GAMEOPTION_CHALLENGE_INCREASING_DIFFICULTY,
-	GAMEOPTION_RUTHLESS_AI,
-	GAMEOPTION_GREAT_COMMANDERS,
-	GAMEOPTION_CULTURALLY_LINKED_STARTS,
-	GAMEOPTION_PERSONALIZED_MAP,
-	GAMEOPTION_ADVANCED_ECONOMY,
-	GAMEOPTION_REALISTIC_CULTURE_SPREAD,
-	GAMEOPTION_LARGER_CITIES,
-	GAMEOPTION_REALISTIC_CORPORATIONS,
-	GAMEOPTION_RELIGION_DECAY,
-	GAMEOPTION_NO_FUTURE,
-	GAMEOPTION_BARBARIANS_ALWAYS_RAZE,
-	GAMEOPTION_UNITED_NATIONS,
-	GAMEOPTION_ADVANCED_ESPIONAGE,
-	GAMEOPTION_ADVANCED_NUKES,
-/************************************************************************************************/
-/* Afforess						          END                                                   */
-/************************************************************************************************/
-#ifdef C2C_BUILD
-	GAMEOPTION_DIVINE_PROPHETS,
-	GAMEOPTION_NO_CITY_LIMITS,
-	GAMEOPTION_NO_FIXED_BORDERS,
-	GAMEOPTION_INFINITE_XP,
-	GAMEOPTION_UNLIMITED_NATIONAL_UNITS,
-	GAMEOPTION_STRENGTH_IN_NUMBERS,
+	GAMEOPTION_TECH_DIFFUSION,
+	GAMEOPTION_WIN_FOR_LOSING,
+	GAMEOPTION_BEELINE_STINGS,
+	GAMEOPTION_NO_TECH_HANDICAPS_FOR_HUMANS,
+	GAMEOPTION_UPSCALED_RESEARCH_COSTS,
+	GAMEOPTION_UPSCALED_BUILDING_AND_UNIT_COSTS,
 	GAMEOPTION_NO_NEGATIVE_TRAITS,
 	GAMEOPTION_PURE_TRAITS,
-	GAMEOPTION_LEADERHEAD_LEVELUPS,
 	GAMEOPTION_START_NO_POSITIVE_TRAITS,
-	GAMEOPTION_NO_NUKES,
-	GAMEOPTION_SCALE_CITY_LIMITS,
+	GAMEOPTION_LEADERHEAD_LEVELUPS,
 	GAMEOPTION_COMPLEX_TRAITS,
 	GAMEOPTION_LS612_TRAITS,
-	GAMEOPTION_RELIGIOUS_DISABLING,
-	GAMEOPTION_UPSCALED_BUILDING_AND_UNIT_COSTS,
-	GAMEOPTION_FIGHT_OR_FLIGHT,
+	GAMEOPTION_VANILLA_COMBAT_ENGINE,
 	GAMEOPTION_SIZE_MATTERS,
+	GAMEOPTION_FIGHT_OR_FLIGHT,
+	GAMEOPTION_HIDE_AND_SEEK,
+	GAMEOPTION_WITHOUT_WARNING,
+	GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS,
+	GAMEOPTION_STRENGTH_IN_NUMBERS,
 	GAMEOPTION_HEART_OF_WAR,
 	GAMEOPTION_BATTLEWORN,
 	GAMEOPTION_UPRANGE,
 	GAMEOPTION_EQUIPMENT,
-	GAMEOPTION_MAXIMUM_POPULATION,
-	GAMEOPTION_MIN_CITY_BORDER,
-	GAMEOPTION_MORE_RIVERS,
-	GAMEOPTION_MORE_RESOURCES,
+	GAMEOPTION_ONGOING_TRAINING,
+	GAMEOPTION_SAD,
+	GAMEOPTION_REALISTIC_SIEGE,
+	GAMEOPTION_ZONE_OF_CONTROL,
+	GAMEOPTION_AMNESTY,
+	GAMEOPTION_FIXED_BORDERS,
+	GAMEOPTION_GREAT_COMMANDERS,
+	GAMEOPTION_INFINITE_XP,
 	GAMEOPTION_XP_FROM_ASSIGNED_SPECIALISTS,
 	GAMEOPTION_MORE_XP_TO_LEVEL,
-	GAMEOPTION_ONGOING_TRAINING,
-	GAMEOPTION_NIGHTMARE_MODE,
-	GAMEOPTION_SIZE_MATTERS_UNCUT,
-	GAMEOPTION_ECOLOGICAL_ANIMALS,
-	GAMEOPTION_TELEPORT_HUNTING_AWARDS,
-	GAMEOPTION_AMNESTY,
-	GAMEOPTION_HIDE_AND_SEEK,
-	GAMEOPTION_PEACE_AMONG_NPCS,
-	GAMEOPTION_ANIMALS_STAY_OUT,
-	GAMEOPTION_RECKLESS_ANIMALS,
-	GAMEOPTION_NEANDERTHAL_CITIES,
-	GAMEOPTION_1_CITY_TILE_FOUNDING,
-	GAMEOPTION_REALISTIC_SIEGE,
-	GAMEOPTION_VANILLA_COMBAT_ENGINE,
-	GAMEOPTION_WITHOUT_WARNING,
-	GAMEOPTION_WIN_FOR_LOSING,
-	GAMEOPTION_BEELINE_STINGS,
-	GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS,
-	GAMEOPTION_NO_TECH_HANDICAPS_FOR_HUMANS,
 	GAMEOPTION_DOWNSIZING_IS_PROFITABLE,
-	GAMEOPTION_UPSCALED_RESEARCH_COSTS,
-	GAMEOPTION_DANGEROUS_WILDLIFE,
-	GAMEOPTION_HISTORICAL_WONDERS
-#endif
+	GAMEOPTION_ADVANCED_NUKES,
+	GAMEOPTION_NO_NUKES,
+	GAMEOPTION_ONE_CITY_CHALLENGE,
+	GAMEOPTION_CHALLENGE_CUT_LOSERS,
+	GAMEOPTION_CHALLENGE_HIGH_TO_LOW,
+	GAMEOPTION_CHALLENGE_INCREASING_DIFFICULTY,
+	GAMEOPTION_ADVANCED_ROUTES
 };
 
-#define NUM_GAMEOPTION_TYPES GC.getNumGameOptionInfos()
-
-enum MultiplayerOptionTypes		// Exposed to Python
+enum MultiplayerOptionTypes
 {
 	NO_MPOPTION = -1,
 
@@ -993,23 +903,19 @@ enum MultiplayerOptionTypes		// Exposed to Python
 	MPOPTION_ANONYMOUS,
 	MPOPTION_TURN_TIMER,
 
-#ifdef _USRDLL
 	NUM_MPOPTION_TYPES
-#endif
 };
 
-enum SpecialOptionTypes			// Exposed to Python
+enum SpecialOptionTypes
 {
 	NO_SPECIALOPTION = -1,
 
 	SPECIALOPTION_REPORT_STATS,
 
-#ifdef _USRDLL
 	NUM_SPECIALOPTION_TYPES
-#endif
 };
 
-enum PlayerOptionTypes			// Exposed to Python
+enum PlayerOptionTypes
 {
 	NO_PLAYEROPTION = -1,
 
@@ -1036,12 +942,10 @@ enum PlayerOptionTypes			// Exposed to Python
 	PLAYEROPTION_MODDER_2,
 	PLAYEROPTION_MODDER_3,
 
-#ifdef _USRDLL
 	NUM_PLAYEROPTION_TYPES
-#endif
 };
 
-enum GraphicOptionTypes			// Exposed to Python
+enum GraphicOptionTypes
 {
 	NO_GRAPHICOPTION = -1,
 
@@ -1059,12 +963,10 @@ enum GraphicOptionTypes			// Exposed to Python
 	GRAPHICOPTION_NO_MOVIES,
 	GRAPHICOPTION_CITY_RADIUS,
 
-#ifdef _USRDLL
 	NUM_GRAPHICOPTION_TYPES
-#endif
 };
 
-enum ForceControlTypes			// Exposed to Python
+enum ForceControlTypes
 {
 	NO_FORCECONTROL = -1,
 
@@ -1076,9 +978,7 @@ enum ForceControlTypes			// Exposed to Python
 	FORCECONTROL_MAX_CITY_ELIMINATION,
 	FORCECONTROL_ADVANCED_START,
 
-#ifdef _USRDLL
 	NUM_FORCECONTROL_TYPES
-#endif
 };
 
 enum TileArtTypes
@@ -1099,57 +999,57 @@ enum LightTypes
 	NUM_LIGHT_TYPES
 };
 
-enum VictoryTypes					// Exposed to Python
+enum VictoryTypes
 {
 	NO_VICTORY = -1,
 };
 
-enum FeatureTypes					// Exposed to Python
+enum FeatureTypes
 {
 	NO_FEATURE = -1,
 };
 
-enum BonusTypes						// Exposed to Python
+enum BonusTypes
 {
 	NO_BONUS = -1,
 };
 
-enum BonusClassTypes			// Exposed to Python
+enum BonusClassTypes
 {
 	NO_BONUSCLASS = -1,
 };
 
-enum ImprovementTypes			// Exposed to Python
+enum ImprovementTypes
 {
 	NO_IMPROVEMENT = -1,
 };
 
-enum RouteTypes						// Exposed to Python
+enum RouteTypes
 {
 	NO_ROUTE = -1,
 };
 
-enum RiverTypes						// Exposed to Python
+enum RiverTypes
 {
 	NO_RIVER = -1,
 };
 
-enum GoodyTypes						// Exposed to Python
+enum GoodyTypes
 {
 	NO_GOODY = -1,
 };
 
-enum BuildTypes						// Exposed to Python
+enum BuildTypes
 {
 	NO_BUILD = -1,
 };
 
-enum SymbolTypes					// Exposed to Python
+enum SymbolTypes
 {
 	NO_SYMBOL = -1,
 };
 
-enum FontSymbols					// Exposed to Python
+enum FontSymbols
 {
 	// 'OTHER' symbols
 	HAPPY_CHAR = 0,
@@ -1188,27 +1088,25 @@ enum FontSymbols					// Exposed to Python
 	CROSSED_CHAR,
 	RANDOM_CHAR,
 
-#ifdef _USRDLL
 	MAX_NUM_SYMBOLS
-#endif
 };
 
-enum HandicapTypes				// Exposed to Python
+enum HandicapTypes
 {
 	NO_HANDICAP = -1,
 };
 
-enum GameSpeedTypes				// Exposed to Python
+enum GameSpeedTypes
 {
 	NO_GAMESPEED = -1,
 };
 
-enum TurnTimerTypes				// Exposed to Python
+enum TurnTimerTypes
 {
 	NO_TURNTIMER = -1,
 };
 
-enum EraTypes							// Exposed to Python
+enum EraTypes
 {
 	NO_ERA = -1,
 };
@@ -1223,18 +1121,18 @@ enum OutcomeTypes
 	NO_OUTCOME = -1,
 };
 
-enum CivilizationTypes		// Exposed to Python
+enum CivilizationTypes
 {
 	NO_CIVILIZATION = -1,
 };
 
-enum LeaderHeadTypes			// Exposed to Python
+enum LeaderHeadTypes
 {
 	NO_LEADER = -1,
 };
 
 // Used for managing Art Differences based on nationality
-enum ArtStyleTypes				// Exposed to Python
+enum ArtStyleTypes
 {
 	NO_ARTSTYLE = -1,
 };
@@ -1244,7 +1142,7 @@ enum UnitArtStyleTypes
 	NO_UNIT_ARTSTYLE = -1,
 };
 
-enum CitySizeTypes				// Exposed to Python
+enum CitySizeTypes
 {
 	NO_CITYSIZE = -1,
 
@@ -1252,29 +1150,27 @@ enum CitySizeTypes				// Exposed to Python
 	CITYSIZE_MEDIUM,
 	CITYSIZE_LARGE,
 
-#ifdef _USRDLL
 	NUM_CITYSIZE_TYPES
-#endif
 };
 
-enum FootstepAudioTypes		// Exposed to Python
+enum FootstepAudioTypes
 {
 	NO_FOOTSTEPAUDIO = -1,
 };
 
-enum FootstepAudioTags		// Exposed to Python
+enum FootstepAudioTags
 {
 	NO_FOOTSTEPAUDIO_TAG = -1,
 };
 
-enum ChatTargetTypes			// Exposed to Python
+enum ChatTargetTypes
 {
 	NO_CHATTARGET = -1,
 	CHATTARGET_ALL = -2,
 	CHATTARGET_TEAM = -3,
 };
 
-enum VoiceTargetTypes			// Exposed to Python
+enum VoiceTargetTypes
 {
 	NO_VOICETARGET = -1,
 
@@ -1282,33 +1178,31 @@ enum VoiceTargetTypes			// Exposed to Python
 	VOICETARGET_TEAM,
 	VOICETARGET_ALL,
 
-#ifdef _USRDLL
 	NUM_VOICETARGETS
-#endif
 };
 
-enum TeamTypes					// Exposed to Python
+enum TeamTypes
 {
 	NO_TEAM = -1,
 };
-typedef fixed_enum_range<RotationTypes, int, 0, MAX_TEAMS> TeamTypesRange;
-typedef fixed_enum_range<RotationTypes, int, 0, MAX_PC_TEAMS> TeamTypesPCRange;
-typedef fixed_enum_range<RotationTypes, int, NPC1_TEAM, MAX_TEAMS> TeamTypesNPCRange;
+typedef fixed_enum_range<TeamTypes, int, 0, MAX_TEAMS> TeamTypesRange;
+typedef fixed_enum_range<TeamTypes, int, 0, MAX_PC_TEAMS> TeamTypesPCRange;
+typedef fixed_enum_range<TeamTypes, int, NPC1_TEAM, MAX_TEAMS> TeamTypesNPCRange;
 
-enum PlayerTypes				// Exposed to Python
+enum PlayerTypes
 {
 	NO_PLAYER = -1,
 };
 typedef fixed_enum_range<PlayerTypes, int, 0, MAX_PLAYERS> PlayerTypesRange;
 typedef fixed_enum_range<PlayerTypes, int, 0, MAX_PC_PLAYERS> PlayerTypesPCRange;
-typedef fixed_enum_range<PlayerTypes, int, FIRST_NPC_PLAYER, MAX_PLAYERS> PlayerTypesNPCRange;
+typedef fixed_enum_range<PlayerTypes, int, NPC1_PLAYER, MAX_PLAYERS> PlayerTypesNPCRange;
 
-enum TraitTypes					// Exposed to Python
+enum TraitTypes
 {
 	NO_TRAIT = -1,
 };
 
-enum OrderTypes					// Exposed to Python
+enum OrderTypes
 {
 	NO_ORDER = -1,
 
@@ -1318,12 +1212,10 @@ enum OrderTypes					// Exposed to Python
 	ORDER_MAINTAIN,
 	ORDER_LIST,
 
-#ifdef _USRDLL
 	NUM_ORDER_TYPES
-#endif
 };
 
-enum TaskTypes				// Exposed to Python
+enum TaskTypes
 {
 	NO_TASK = -1,
 
@@ -1345,27 +1237,20 @@ enum TaskTypes				// Exposed to Python
 	TASK_EMPHASIZE_SPECIALIST,
 	TASK_KEEP, // keep conquered city
 
-#ifdef _USRDLL
 	NUM_TASK_TYPES
-#endif
 };
 
-enum BuildingClassTypes				// Exposed to Python 
-{
-	NO_BUILDINGCLASS = -1,
-};
-
-enum BuildingTypes						// Exposed to Python
+enum BuildingTypes
 {
 	NO_BUILDING = -1,
 };
 
-enum SpecialBuildingTypes			// Exposed to Python
+enum SpecialBuildingTypes
 {
 	NO_SPECIALBUILDING = -1,
 };
 
-enum ProjectTypes				// Exposed to Python
+enum ProjectTypes
 {
 	NO_PROJECT = -1,
 };
@@ -1398,17 +1283,17 @@ enum SpaceShipInfoTypes
 	NUM_SPACE_SHIP_INFO_TYPES
 };
 
-enum ProcessTypes				// Exposed to Python
+enum ProcessTypes
 {
 	NO_PROCESS = -1,
 };
 
-enum VoteTypes					// Exposed to Python
+enum VoteTypes
 {
 	NO_VOTE = -1,
 };
 
-enum PlayerVoteTypes			// Exposed to Python
+enum PlayerVoteTypes
 {
 	NO_PLAYER_VOTE_CHECKED = -6,
 	PLAYER_VOTE_NEVER = -5,
@@ -1418,42 +1303,38 @@ enum PlayerVoteTypes			// Exposed to Python
 	NO_PLAYER_VOTE = -1
 };
 
-enum InfoBarTypes				// Exposed to Python
+enum InfoBarTypes
 {
 	INFOBAR_STORED,
 	INFOBAR_RATE,
 	INFOBAR_RATE_EXTRA,
 	INFOBAR_EMPTY,
 
-#ifdef _USRDLL
 	NUM_INFOBAR_TYPES
-#endif
 };
 
-enum HealthBarTypes			// Exposed to Python
+enum HealthBarTypes
 {
 	HEALTHBAR_ALIVE_ATTACK,
 	HEALTHBAR_ALIVE_DEFEND,
 	HEALTHBAR_DEAD,
 
-#ifdef _USRDLL
 	NUM_HEALTHBAR_TYPES
-#endif
 };
 
-enum ConceptTypes				// Exposed to Python
+enum ConceptTypes
 {
 	NO_CONCEPT = -1,
 };
 
-enum NewConceptTypes				// Exposed to Python
+enum NewConceptTypes
 {
 	NO_NEW_CONCEPT = -1,
 };
 
-enum CalendarTypes			// Exposed to Python
+enum CalendarTypes
 {
-	NO_CALENDAR = -1, 
+	NO_CALENDAR = -1,
 
 	CALENDAR_DEFAULT,
 	CALENDAR_BI_YEARLY,
@@ -1465,7 +1346,7 @@ enum CalendarTypes			// Exposed to Python
 	CALENDAR_NO_SEASONS
 };
 
-enum SeasonTypes				// Exposed to Python
+enum SeasonTypes
 {
 	NO_SEASON = -1,
 	SEASON_WINTER,
@@ -1474,12 +1355,12 @@ enum SeasonTypes				// Exposed to Python
 	SEASON_AUTUMN
 };
 
-enum MonthTypes					// Exposed to Python
+enum MonthTypes
 {
 	NO_MONTH = -1,
 };
 
-enum DenialTypes				// Exposed to Python
+enum DenialTypes
 {
 	NO_DENIAL = -1,
 
@@ -1514,7 +1395,7 @@ enum DenialTypes				// Exposed to Python
 	DENIAL_PEACE_NOT_POSSIBLE_YOU
 };
 
-enum DomainTypes			// Exposed to Python
+enum DomainTypes
 {
 	NO_DOMAIN = -1,
 
@@ -1523,65 +1404,53 @@ enum DomainTypes			// Exposed to Python
 	DOMAIN_LAND,
 	DOMAIN_IMMOBILE,
 
-#ifdef _USRDLL
 	NUM_DOMAIN_TYPES
-#endif
 };
 
-enum UnitClassTypes		// Exposed to Python
-{
-	NO_UNITCLASS = -1,
-};
-
-enum UnitTypes				// Exposed to Python
+enum UnitTypes
 {
 	NO_UNIT = -1,
 };
 
-enum SpawnTypes				// Exposed to Python
+enum SpawnTypes
 {
 	NO_SPAWN = -1,
 };
 
-enum SpecialUnitTypes	// Exposed to Python
+enum SpecialUnitTypes
 {
 	NO_SPECIALUNIT = -1,
 };
 
-enum UnitCombatTypes	// Exposed to Python
+enum UnitCombatTypes
 {
 	NO_UNITCOMBAT = -1,
 };
-//TB Promotion Line Mod begin
-enum PromotionLineTypes	
+
+enum PromotionLineTypes
 {
 	NO_PROMOTIONLINE = -1,
 };
 
-enum MapCategoryTypes	
-{
-	NO_MAPCATEGORY = -1,
-};
-
-enum IdeaClassTypes	
+enum IdeaClassTypes
 {
 	NO_IDEACLASS = -1,
 };
 
-enum IdeaTypes	
+enum IdeaTypes
 {
 	NO_IDEA = -1,
 };
 
-enum TraitOptionEditsTypes	
+enum TraitOptionEditsTypes
 {
 	NO_TRAITOPTIONEDIT = -1,
 };
 //	Koshling - UNITAIs are NOT registered based on the XML any more, but entirely done in code
-//	This means that UNITAIs can be freely added provided you update here and also in 
+//	This means that UNITAIs can be freely added provided you update here and also in
 //	cvInternalGlobals::registerUnitAIs().  The order of the enum no longer matters and the XML
 //	is not read, so serves at most a documentary function
-enum UnitAITypes			// Exposed to Python
+enum UnitAITypes
 {
 	NO_UNITAI = -1,
 
@@ -1678,17 +1547,17 @@ enum AIScaleTypes
 };
 
 
-enum InvisibleTypes			// Exposed to Python
+enum InvisibleTypes
 {
 	NO_INVISIBLE = -1,
 };
 
-enum VoteSourceTypes			// Exposed to Python
+enum VoteSourceTypes
 {
 	NO_VOTESOURCE = -1,
 };
 
-enum ProbabilityTypes		// Exposed to Python
+enum ProbabilityTypes
 {
 	NO_PROBABILITY = -1,
 
@@ -1697,7 +1566,7 @@ enum ProbabilityTypes		// Exposed to Python
 	PROBABILITY_HIGH,
 };
 
-enum ActivityTypes			// Exposed to Python
+enum ActivityTypes
 {
 	NO_ACTIVITY = -1,
 
@@ -1718,12 +1587,10 @@ enum ActivityTypes			// Exposed to Python
 #endif
 // BUG - Sentry Actions - end
 
-#ifdef _USRDLL
 	NUM_ACTIVITY_TYPES
-#endif
 };
 
-enum AutomateTypes			// Exposed to Python
+enum AutomateTypes
 {
 	NO_AUTOMATE = -1,
 
@@ -1754,9 +1621,7 @@ enum AutomateTypes			// Exposed to Python
 /************************************************************************************************/
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
-#ifdef _USRDLL
 	NUM_AUTOMATE_TYPES
-#endif
 };
 
 
@@ -1764,7 +1629,7 @@ enum AutomateTypes			// Exposed to Python
 // Dale - AB: Bombing new missions at end of list
 // Dale - FE: Fighters new missions at end of list
 // any additions need to be reflected in GlobalTypes.xml
-enum MissionTypes				// Exposed to Python
+enum MissionTypes
 {
 	NO_MISSION = -1,
 
@@ -1816,20 +1681,14 @@ enum MissionTypes				// Exposed to Python
 	MISSION_DAMAGE,
 	MISSION_MULTI_SELECT,
 	MISSION_MULTI_DESELECT,
-/************************************************************************************************/
-/* DCM                                     04/19/09                                Johny Smith  */
-/************************************************************************************************/
+
 	MISSION_AIRBOMB1,
 	MISSION_AIRBOMB2,
 	MISSION_AIRBOMB3,
 	MISSION_AIRBOMB4,
 	MISSION_AIRBOMB5,
 	MISSION_RBOMBARD,
-	MISSION_ABOMBARD,
 	MISSION_FENGAGE,
-/************************************************************************************************/
-/* DCM                                     END                                                  */
-/************************************************************************************************/
 	//TSHEEP Assassin Mission
 	//MISSION_ASSASSIN,
 	//TSHEEP End
@@ -1842,12 +1701,7 @@ enum MissionTypes				// Exposed to Python
 	MISSION_SENTRY_LAND_UNITS,
 #endif
 // BUG - Sentry Actions - end
-	
-/************************************************************************************************/
-/* Afforess                                     6/05/10                                         */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
+
 	MISSION_INQUISITION,
 	MISSION_CLAIM_TERRITORY,
 	MISSION_HURRY_FOOD,
@@ -1855,15 +1709,10 @@ enum MissionTypes				// Exposed to Python
 	MISSION_GREAT_COMMANDER,
 	MISSION_SHADOW,
 	MISSION_WAIT_FOR_TECH,
-/************************************************************************************************/
-/* Afforess	                         END                                                        */
-/************************************************************************************************/	
 
 	//ls612: City Goto in Viewports
 	MISSION_GOTO,
-	// < M.A.D. Nukes Start >
-	MISSION_PRETARGET_NUKE,
-	// < M.A.D. Nukes End   >
+
 	//TB Combat Mod and Mission fix begin
 	MISSION_BUTCHER,
 	MISSION_DIPLOMAT_ASSIMULATE_IND_PEOPLE,
@@ -1873,8 +1722,6 @@ enum MissionTypes				// Exposed to Python
 	MISSION_LAWYER_REMOVE_CORPORATIONS,
 	MISSION_JOIN_CITY_POPULATION,
 	MISSION_CURE,
-	MISSION_ESTABLISH,
-	MISSION_ESCAPE,
 	MISSION_BUILDUP,
 	MISSION_AUTO_BUILDUP,
 	MISSION_HEAL_BUILDUP,
@@ -1904,12 +1751,9 @@ enum MissionTypes				// Exposed to Python
 	MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_GATHERER,
 	MISSION_CAPTIVE_UPGRADE_TO_NEANDERTHAL_TRACKER,
 	//TB Combat Mod and Mission fix end
-#ifdef FIXED_MISSION_NUMBER
-	NUM_MISSION_TYPES
-#endif
 };
 
-enum MissionAITypes		// Exposed to Python
+enum MissionAITypes
 {
 	NO_MISSIONAI = -1,
 
@@ -1936,7 +1780,7 @@ enum MissionAITypes		// Exposed to Python
 	MISSIONAI_ASSAULT,
 	MISSIONAI_CARRIER,
 	MISSIONAI_PICKUP
-	
+
 /************************************************************************************************/
 /* Afforess                                     12/7/09                                         */
 /*                                                                                              */
@@ -1947,7 +1791,7 @@ enum MissionAITypes		// Exposed to Python
 	, MISSIONAI_HURRY_FOOD
 /************************************************************************************************/
 /* Afforess	                         END                                                        */
-/************************************************************************************************/	
+/************************************************************************************************/
 	, MISSIONAI_CONTRACT
 	, MISSIONAI_CONTRACT_UNIT
 	, MISSIONAI_DELIBERATE_KILL
@@ -1965,7 +1809,7 @@ enum MissionAITypes		// Exposed to Python
 };
 
 // any additions need to be reflected in GlobalTypes.xml
-enum CommandTypes					// Exposed to Python
+enum CommandTypes
 {
 	NO_COMMAND = -1,
 
@@ -1990,12 +1834,10 @@ enum CommandTypes					// Exposed to Python
 	COMMAND_ARREST,
 	COMMAND_AMBUSH,
 
-#ifdef _USRDLL
 	NUM_COMMAND_TYPES
-#endif
 };
 
-enum ControlTypes					// Exposed to Python
+enum ControlTypes
 {
 	NO_CONTROL = -1,
 
@@ -2019,12 +1861,10 @@ enum ControlTypes					// Exposed to Python
 	CONTROL_PING,
 	CONTROL_SIGN,
 	CONTROL_GRID,
-	CONTROL_BARE_MAP,
 	CONTROL_YIELDS,
 	CONTROL_RESOURCE_ALL,
 	CONTROL_UNIT_ICONS,
 	CONTROL_GLOBELAYER,
-	CONTROL_SCORES,
 	CONTROL_LOAD_GAME,
 	CONTROL_OPTIONS_SCREEN,
 	CONTROL_RETIRE,
@@ -2063,62 +1903,60 @@ enum ControlTypes					// Exposed to Python
 	CONTROL_ESPIONAGE_SCREEN,
 	CONTROL_FREE_COLONY,
 
-#ifdef _USRDLL
 	NUM_CONTROL_TYPES
-#endif
 };
 
-enum PromotionTypes				// Exposed to Python
+enum PromotionTypes
 {
 	NO_PROMOTION = -1,
 };
 
-enum TechTypes						// Exposed to Python
+enum TechTypes
 {
 	NO_TECH = -1,
 };
 
-enum SpecialistTypes			// Exposed to Python
+enum SpecialistTypes
 {
 	NO_SPECIALIST = -1,
 };
 
-enum ReligionTypes				// Exposed to Python
+enum ReligionTypes
 {
 	NO_RELIGION = -1,
 };
 
-enum CorporationTypes				// Exposed to Python
+enum CorporationTypes
 {
 	NO_CORPORATION = -1,
 };
 
-enum HurryTypes						// Exposed to Python
+enum HurryTypes
 {
 	NO_HURRY = -1,
 };
 
-enum UpkeepTypes					// Exposed to Python
+enum UpkeepTypes
 {
 	NO_UPKEEP = -1,
 };
 
-enum CultureLevelTypes		// Exposed to Python
+enum CultureLevelTypes
 {
 	NO_CULTURELEVEL = -1,
 };
 
-enum CivicOptionTypes			// Exposed to Python
+enum CivicOptionTypes
 {
 	NO_CIVICOPTION = -1,
 };
 
-enum CivicTypes						// Exposed to Python
+enum CivicTypes
 {
 	NO_CIVIC = -1,
 };
 
-enum WarPlanTypes					// Exposed to Python
+enum WarPlanTypes
 {
 	NO_WARPLAN = -1,
 
@@ -2131,7 +1969,7 @@ enum WarPlanTypes					// Exposed to Python
 	WARPLAN_DOGPILE
 };
 
-enum AreaAITypes					// Exposed to Python
+enum AreaAITypes
 {
 	NO_AREAAI = -1,
 
@@ -2144,26 +1982,22 @@ enum AreaAITypes					// Exposed to Python
 	AREAAI_NEUTRAL
 };
 
-enum EndTurnButtonStates	// Exposed to Python
+enum EndTurnButtonStates
 {
 	END_TURN_GO,
 	END_TURN_OVER_HIGHLIGHT,
 	END_TURN_OVER_DARK,
 
-#ifdef _USRDLL
 	NUM_END_TURN_STATES
-#endif
 };
 
-enum FogOfWarModeTypes		// Exposed to Python
+enum FogOfWarModeTypes
 {
 	FOGOFWARMODE_OFF,
 	FOGOFWARMODE_UNEXPLORED,
 	FOGOFWARMODE_NOVIS,
 
-#ifdef _USRDLL
 	NUM_FOGOFWARMODE_TYPES
-#endif
 };
 
 enum FogTypes
@@ -2193,7 +2027,7 @@ enum FOWUpdateTypes
 // AnimationTypes is depreciated, and will be eventually removed.
 // BONUSANIMATION_* and IMPROVEMENTANIMATION_* are still used, and will be left.
 
-enum AnimationTypes			// Exposed to Python
+enum AnimationTypes
 {
 	NONE_ANIMATION = -1,	// NO_ANIMATION is used by FirePlace
 
@@ -2210,12 +2044,12 @@ enum AnimationTypes			// Exposed to Python
 	IMPROVEMENTANIMATION_ON_EXTRA_4,
 };
 
-enum EntityEventTypes		// Exposed to Python
+enum EntityEventTypes
 {
 	ENTITY_EVENT_NONE = -1,			//!< Invalid event
 };
 
-enum AnimationPathTypes	// Exposed to Python
+enum AnimationPathTypes
 {
 	ANIMATIONPATH_NONE = -1,
 
@@ -2233,7 +2067,7 @@ enum AnimationPathTypes	// Exposed to Python
 	ANIMATIONPATH_MELEE_FORTIFIED,
 	ANIMATIONPATH_MELEE_DIE_FADE,		//!< Used only in combat. The colateral damage die should have a fade integrated.
 	ANIMATIONPATH_MELEE_FLEE,			//!< Used only by settler children, so they don't die in combat
-	
+
 	// Ranged combat related animation paths
 	ANIMATIONPATH_RANGED_STRIKE,
 	ANIMATIONPATH_RANGED_DIE,
@@ -2242,7 +2076,7 @@ enum AnimationPathTypes	// Exposed to Python
 	ANIMATIONPATH_RANGED_RUNDIE,
 	ANIMATIONPATH_RANGED_DIE_FADE,		//!< Used only in combat. The colateral damage die should have a fade integrated.
 	ANIMATIONPATH_LEADER_COMMAND,
-	
+
 	// Air Units animation paths
 	ANIMATIONPATH_AIRFADEIN,
 	ANIMATIONPATH_AIRFADEOUT,
@@ -2272,7 +2106,7 @@ enum AnimationPathTypes	// Exposed to Python
 };
 
 //!<  Enumeration for the animation category types.
-enum AnimationCategoryTypes			// Exposed to Python
+enum AnimationCategoryTypes
 {
 	ANIMCAT_NONE = -1,
 };
@@ -2297,7 +2131,7 @@ enum AnimationOperatorTypes
 	ANIMOP_LAST
 };
 
-enum CursorTypes							// Exposed to Python
+enum CursorTypes
 {
 	NO_CURSOR = -1,
 };
@@ -2311,12 +2145,10 @@ enum FunctionTypes
 	FUNC_EULERKEY,	// = NiAnimationKey::EULERKEY,
 	FUNC_STEPKEY,	// = NiAnimationKey::STEPKEY,
 
-#ifdef _USRDLL
 	NUM_FUNC_TYPES	// = NiAnimationKey::NUMKEYTYPES
-#endif
 };
 
-enum TradeableItems						// Exposed to Python
+enum TradeableItems
 {
 	TRADE_ITEM_NONE = -1,
 
@@ -2340,13 +2172,9 @@ enum TradeableItems						// Exposed to Python
 	TRADE_PERMANENT_ALLIANCE,
 	TRADE_PEACE_TREATY,
 
-#ifdef _USRDLL
 	NUM_BASIC_ITEMS,
 
 	TRADE_TECHNOLOGIES = NUM_BASIC_ITEMS,
-#else
-	TRADE_TECHNOLOGIES,
-#endif
 
 	TRADE_RESOURCES,
 	TRADE_CITIES,
@@ -2370,14 +2198,12 @@ enum TradeableItems						// Exposed to Python
 /************************************************************************************************/
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
-#ifdef _USRDLL
 	NUM_TRADEABLE_HEADINGS,
 
 	NUM_TRADEABLE_ITEMS = NUM_TRADEABLE_HEADINGS,
-#endif
 };
 
-enum DiploEventTypes					// Exposed to Python
+enum DiploEventTypes
 {
 	NO_DIPLOEVENT = -1,
 
@@ -2411,23 +2237,21 @@ enum DiploEventTypes					// Exposed to Python
 	DIPLOEVENT_NO_MAKE_PEACE_WITH,
 /************************************************************************************************/
 /* Afforess	                         END                                                        */
-/************************************************************************************************/	
+/************************************************************************************************/
 	// RevolutionDCM start - new diplomacy option
 	DIPLOEVENT_DO_NOT_BOTHER,
 	DIPLOEVENT_RESUME_BOTHER,
 	// RevolutionDCM end
 
-#ifdef _USRDLL
 	NUM_DIPLOEVENT_TYPES
-#endif
 };
 
-enum DiploCommentTypes				// Exposed to Python 
+enum DiploCommentTypes
 {
 	NO_DIPLOCOMMENT = -1
 };
 
-enum NetContactTypes					// Exposed to Python 
+enum NetContactTypes
 {
 	NO_NETCONTACT = -1,
 	NETCONTACT_INITIAL,
@@ -2435,12 +2259,10 @@ enum NetContactTypes					// Exposed to Python
 	NETCONTACT_ESTABLISHED,
 	NETCONTACT_BUSY,
 
-#ifdef _USRDLL
 	NUM_NETCONTACT_TYPES
-#endif
 };
 
-enum ContactTypes							// Exposed to Python 
+enum ContactTypes
 {
 	CONTACT_RELIGION_PRESSURE,
 	CONTACT_CIVIC_PRESSURE,
@@ -2473,12 +2295,12 @@ enum ContactTypes							// Exposed to Python
 	CONTACT_TRADE_BUY_WAR,
 /************************************************************************************************/
 /* Afforess	                         END                                                        */
-/************************************************************************************************/	
+/************************************************************************************************/
 
 	NUM_CONTACT_TYPES
 };
 
-enum MemoryTypes							// Exposed to Python 
+enum MemoryTypes
 {
 	MEMORY_DECLARED_WAR,
 	MEMORY_DECLARED_WAR_ON_FRIEND,
@@ -2529,12 +2351,12 @@ enum MemoryTypes							// Exposed to Python
 	MEMORY_BACKSTAB_FRIEND,
 /************************************************************************************************/
 /* Afforess	                         END                                                        */
-/************************************************************************************************/	
+/************************************************************************************************/
 
 	NUM_MEMORY_TYPES
 };
 
-enum AttitudeTypes				// Exposed to Python 
+enum AttitudeTypes
 {
 	NO_ATTITUDE = -1,
 
@@ -2548,7 +2370,7 @@ enum AttitudeTypes				// Exposed to Python
 };
 
 //! Enumeration for playing events with CvLeaderheadWidget
-enum LeaderheadAction			// Exposed to Python
+enum LeaderheadAction
 {
 	NO_LEADERANIM = -1,		//!< If used with CvLeaderheadWidget::PerformAction, plays the idle animation
 
@@ -2561,12 +2383,10 @@ enum LeaderheadAction			// Exposed to Python
 	LEADERANIM_DISAGREE,		//!< The leaderhead makes a disagree gesture
 	LEADERANIM_AGREE,				//!< The leaderhead makes an agree gesture
 
-#ifdef _USRDLL
 	NUM_LEADERANIM_TYPES			//!< The number of leaderhead event types
-#endif
 };
 
-enum DiplomacyPowerTypes	// Exposed to Python
+enum DiplomacyPowerTypes
 {
 	NO_DIPLOMACYPOWER		= -1,
 	DIPLOMACYPOWER_WEAKER,
@@ -2576,14 +2396,13 @@ enum DiplomacyPowerTypes	// Exposed to Python
 	NUM_DIPLOMACYPOWER_TYPES
 };
 
-enum FeatTypes						// Exposed to Python
+enum FeatTypes
 {
 	FEAT_UNITCOMBAT_ARCHER,
 	FEAT_UNITCOMBAT_MOUNTED,
 	FEAT_UNITCOMBAT_MELEE,
 	FEAT_UNITCOMBAT_SIEGE,
 	FEAT_UNITCOMBAT_GUN,
-	FEAT_UNITCOMBAT_ARMOR,
 	FEAT_UNITCOMBAT_HELICOPTER,
 	FEAT_UNITCOMBAT_NAVAL,
 	FEAT_UNIT_PRIVATEER,
@@ -2613,10 +2432,10 @@ enum FeatTypes						// Exposed to Python
 	NUM_FEAT_TYPES
 };
 
-enum SaveGameTypes			// Exposed to Python
+enum SaveGameTypes
 {
 	SAVEGAME_NONE = -1,
-	
+
 	SAVEGAME_AUTO,
 	SAVEGAME_RECOVERY,
 	SAVEGAME_QUICK,
@@ -2627,9 +2446,7 @@ enum SaveGameTypes			// Exposed to Python
 	SAVEGAME_PBEM,
 	SAVEGAME_REPLAY,
 
-#ifdef _USRDLL
 	NUM_SAVEGAME_TYPES
-#endif
 };
 
 enum InitializationStates
@@ -2637,12 +2454,10 @@ enum InitializationStates
 	INIT_OK,
 	INIT_FAILED,
 
-#ifdef _USRDLL
 	NUM_INIT_STATES
-#endif
 };
 
-enum GameType				// Exposed to Python
+enum GameType
 {
 	GAME_NONE = -1,
 
@@ -2660,21 +2475,17 @@ enum GameType				// Exposed to Python
 	GAME_PBEM_LOAD,
 	GAME_REPLAY,
 
-#ifdef _USRDLL
 	NUM_GAMETYPES
-#endif
 };
 
-enum GameMode				// Exposed to Python
+enum GameMode
 {
 	NO_GAMEMODE = -1,
 
 	GAMEMODE_NORMAL,
 	GAMEMODE_PITBOSS,
 
-#ifdef _USRDLL
 	NUM_GAMEMODES
-#endif
 };
 
 enum GamePwdTypes
@@ -2685,9 +2496,7 @@ enum GamePwdTypes
 	PWD_SCENARIO,
 	PWD_JOINGAME,
 
-#ifdef _USRDLL
 	NUM_PWDTYPES
-#endif
 };
 
 enum SlotClaim
@@ -2696,9 +2505,7 @@ enum SlotClaim
 	SLOTCLAIM_RESERVED,
 	SLOTCLAIM_ASSIGNED,
 
-#ifdef _USRDLL
 	NUM_SLOTCLAIMS
-#endif
 };
 
 enum SlotStatus
@@ -2711,7 +2518,7 @@ enum SlotStatus
 	SS_MAX_SLOT_STATUS,
 };
 
-enum InterfaceVisibility				// Exposed to Python
+enum InterfaceVisibility
 {
 	INTERFACE_SHOW,
 	INTERFACE_HIDE,
@@ -2720,7 +2527,7 @@ enum InterfaceVisibility				// Exposed to Python
 	INTERFACE_ADVANCED_START,
 };
 
-enum GenericButtonSizes					// Exposed to Python
+enum GenericButtonSizes
 {
 	BUTTON_SIZE_46,
 	BUTTON_SIZE_32,
@@ -2743,7 +2550,7 @@ enum MenuScreenType
 	MENU_SCREEN_OPENING_MENU,
 	MENU_SCREEN_MOD_MENU,
 
-	MENU_SCREEN_GS_BUDDYLIST, 
+	MENU_SCREEN_GS_BUDDYLIST,
 	MENU_SCREEN_GS_CHATROOM,
 	MENU_SCREEN_GS_CHANNEL,
 	MENU_SCREEN_GS_CHOOSE_SCENARIO,
@@ -2778,7 +2585,7 @@ enum MenuScreenType
 	MENU_SCREEN_SP_DIFFICULTY,
 };
 
-enum WorldBuilderPopupTypes			// Exposed to Python
+enum WorldBuilderPopupTypes
 {
 	WBPOPUP_NONE = -1,
 
@@ -2792,12 +2599,10 @@ enum WorldBuilderPopupTypes			// Exposed to Python
 	WBPOPUP_IMPROVEMENT,
 	WBPOPUP_GAME,
 
-#ifdef _USRDLL
 	NUM_WBPOPUP
-#endif
 };
 
-enum EventType									// Exposed to Python
+enum EventType
 {
 	// mouseEvent
 	EVT_LBUTTONDOWN = 1,
@@ -2812,7 +2617,7 @@ enum EventType									// Exposed to Python
 };
 
 // Different types of load
-enum LoadType										// Exposed to Python
+enum LoadType
 {
 	LOAD_NORMAL,
 	LOAD_INIT,
@@ -2823,7 +2628,7 @@ enum LoadType										// Exposed to Python
 };
 
 //	Available Fonts
-enum FontTypes									// Exposed to Python
+enum FontTypes
 {
 	TITLE_FONT,
 	GAME_FONT,
@@ -2832,7 +2637,7 @@ enum FontTypes									// Exposed to Python
 	MENU_HIGHLIGHT_FONT,
 };
 
-enum PanelStyles								// Exposed to Python
+enum PanelStyles
 {
 	// Built in styles
 	PANEL_STYLE_STANDARD,
@@ -2894,7 +2699,7 @@ enum PanelStyles								// Exposed to Python
 	PANEL_STYLE_MAIN_SELECT,
 };
 
-enum ButtonStyles								// Exposed to Python
+enum ButtonStyles
 {
 	BUTTON_STYLE_STANDARD,
 	BUTTON_STYLE_ETCHED,
@@ -2927,7 +2732,7 @@ enum ButtonStyles								// Exposed to Python
 	BUTTON_STYLE_ARROW_RIGHT
 };
 
-enum TableStyles								// Exposed to Python
+enum TableStyles
 {
 	TABLE_STYLE_STANDARD,
 	TABLE_STYLE_EMPTY,
@@ -2938,7 +2743,7 @@ enum TableStyles								// Exposed to Python
 	TABLE_STYLE_STAGINGROOM
 };
 
-enum EventContextTypes					// Exposed to Python
+enum EventContextTypes
 {
 	NO_EVENTCONTEXT = -1,
 
@@ -2955,7 +2760,7 @@ enum CivLoginStates
 	LOGIN_CIV_TAKEN,
 	LOGIN_CIV_HAS_ID,
 };
- 
+
 enum VersionTypes
 {
 	NO_VERSIONTYPE = -1,
@@ -2975,7 +2780,7 @@ enum VoteResultTypes
 
 enum VoteStatusTypes
 {
-	NO_VOTESTATUS = -1, 
+	NO_VOTESTATUS = -1,
 
 	VOTESTATUS_TIED = -2,
 	VOTESTATUS_UNDECIDED = -3,
@@ -2983,7 +2788,7 @@ enum VoteStatusTypes
 };
 
 // Tab Group in Options Menu
-enum TabGroupTypes				// Exposed to Python
+enum TabGroupTypes
 {
 	NO_TABGROUP = -1,
 
@@ -2993,12 +2798,10 @@ enum TabGroupTypes				// Exposed to Python
 	TABGROUP_AUDIO,
 	TABGROUP_CLOCK,
 
-#ifdef _USRDLL
 	NUM_TABGROUPS
-#endif
 };
 
-enum ReplayMessageTypes		// Exposed to Python
+enum ReplayMessageTypes
 {
 	NO_REPLAY_MESSAGE = -1,
 
@@ -3006,16 +2809,14 @@ enum ReplayMessageTypes		// Exposed to Python
 	REPLAY_MESSAGE_CITY_FOUNDED,
 	REPLAY_MESSAGE_PLOT_OWNER_CHANGE,
 
-#ifdef _USRDLL
 	NUM_REPLAY_MESSAGE_TYPES
-#endif
 };
 
 /*------------------------------------------------------------------------------------
 Enum:		EAudioTag
 Purpose:	To enumerate all of the tag strings loaded from the csv or xml files
 ------------------------------------------------------------------------------------*/
-enum AudioTag							// Exposed to Python
+enum AudioTag
 {
 	AUDIOTAG_NONE = -1,
 	AUDIOTAG_SOUNDID,
@@ -3030,7 +2831,7 @@ enum AudioTag							// Exposed to Python
 	AUDIOTAG_COUNT,
 };
 
-enum CivilopediaPageTypes		// Exposed to Python
+enum CivilopediaPageTypes
 {
 	NO_CIVILOPEDIA_PAGE = -1,
 
@@ -3058,7 +2859,7 @@ enum CivilopediaPageTypes		// Exposed to Python
 	NUM_CIVILOPEDIA_PAGE_TYPES
 };
 
-enum ActionSubTypes					// Exposed to Python
+enum ActionSubTypes
 {
 	NO_ACTIONSUBTYPE = -1,
 
@@ -3075,12 +2876,10 @@ enum ActionSubTypes					// Exposed to Python
 	ACTIONSUBTYPE_AUTOMATE,
 	ACTIONSUBTYPE_MISSION,
 
-#ifdef _USRDLL
 	NUM_ACTIONSUBTYPES
-#endif
 };
 
-enum GameMessageTypes				// Exposed to Python
+enum GameMessageTypes
 {
 	GAMEMESSAGE_NETWORK_READY,
 	GAMEMESSAGE_SAVE_GAME_FLAG,
@@ -3093,7 +2892,7 @@ enum GameMessageTypes				// Exposed to Python
 	GAMEMESSAGE_FILE_INFO,
 	GAMEMESSAGE_PICK_YOUR_CIV,
 	GAMEMESSAGE_CIV_CHOICE,
-	GAMEMESSAGE_CONFIRM_CIV_CLAIM, 
+	GAMEMESSAGE_CONFIRM_CIV_CLAIM,
 	GAMEMESSAGE_CLAIM_INFO,
 	GAMEMESSAGE_CIV_CHOICE_ACK,
 	GAMEMESSAGE_CIV_CHOICE_NACK,
@@ -3203,7 +3002,7 @@ enum GameMessageTypes				// Exposed to Python
 	GAMEMESSAGE_CONFIRM_AMBUSH
 };
 
-enum PopupControlLayout		// Exposed to Python
+enum PopupControlLayout
 {
 	POPUP_LAYOUT_LEFT,
 	POPUP_LAYOUT_CENTER,
@@ -3213,7 +3012,7 @@ enum PopupControlLayout		// Exposed to Python
 	POPUP_LAYOUT_NUMLAYOUTS
 };
 
-enum JustificationTypes		// Exposed to Python
+enum JustificationTypes
 {
 	DLL_FONT_LEFT_JUSTIFY = 1<<0,
 	DLL_FONT_RIGHT_JUSTIFY = 1<<1,
@@ -3222,7 +3021,7 @@ enum JustificationTypes		// Exposed to Python
 	DLL_FONT_ADDITIVE = 1<<4,
 };
 
-enum ToolTipAlignTypes		// Exposed to Python
+enum ToolTipAlignTypes
 {
 	TOOLTIP_TOP_LEFT,
 	TOOLTIP_TOP_INLEFT,
@@ -3245,7 +3044,7 @@ enum ToolTipAlignTypes		// Exposed to Python
 	TOOLTIP_INTOP_LEFT,
 };
 
-enum ActivationTypes			// Exposed to Python
+enum ActivationTypes
 {
 	ACTIVATE_NORMAL,
 	ACTIVATE_CHILDFOCUS,
@@ -3253,7 +3052,7 @@ enum ActivationTypes			// Exposed to Python
 	ACTIVATE_MIMICPARENTFOCUS,
 };
 
-enum HitTestTypes					// Exposed to Python
+enum HitTestTypes
 {
 	HITTEST_DEFAULT,
 	HITTEST_ON,
@@ -3262,34 +3061,32 @@ enum HitTestTypes					// Exposed to Python
 	HITTEST_NOHIT,
 };
 
-enum GraphicLevelTypes		// Exposed to Python
+enum GraphicLevelTypes
 {
 	GRAPHICLEVEL_HIGH,
 	GRAPHICLEVEL_MEDIUM,
 	GRAPHICLEVEL_LOW,
 	GRAPHICLEVEL_CURRENT,
 
-#ifdef _USRDLL
 	NUM_GRAPHICLEVELS
-#endif
 };
 
-enum EventTypes		// Exposed to Python
+enum EventTypes
 {
 	NO_EVENT = -1,
 };
 
-enum EventTriggerTypes		// Exposed to Python
+enum EventTriggerTypes
 {
 	NO_EVENTTRIGGER = -1,
 };
 
-enum EspionageMissionTypes				// Exposed to Python
+enum EspionageMissionTypes
 {
 	NO_ESPIONAGEMISSION = -1,
 };
 
-enum AdvancedStartActionTypes				// Exposed to Python
+enum AdvancedStartActionTypes
 {
 	NO_ADVANCEDSTARTACTION = -1,
 
@@ -3314,11 +3111,8 @@ enum GlobeLayerTypes
 	GLOBE_LAYER_RESOURCE,
 	GLOBE_LAYER_RELIGION,
 	GLOBE_LAYER_CULTURE,
-	GLOBE_LAYER_DEBUG,
 
-#ifdef _USRDLL
 	NUM_GLOBE_LAYER_TYPES
-#endif
 };
 
 enum GlobeLayerUnitOptionTypes
@@ -3329,21 +3123,20 @@ enum GlobeLayerUnitOptionTypes
 	SHOW_ENEMIES,
 	SHOW_PLAYER_DOMESTICS,
 
-#ifdef _USRDLL
 	NUM_UNIT_OPTION_TYPES
-#endif
 };
 
 enum GlobeLayerResourceOptionTypes
 {
-	SHOW_ALL_RESOURCES,
-	SHOW_STRATEGIC_RESOURCES,
-	SHOW_HAPPY_RESOURCES,
-	SHOW_HEALTH_RESOURCES,
+	SHOW_RESOURCES_ALL,
+	SHOW_RESOURCES_STRATEGIC,
+	SHOW_RESOURCES_LUXURY,
+	SHOW_RESOURCES_GROWTH,
+	SHOW_RESOURCES_PRODUCTION,
+	SHOW_RESOURCES_MISC,
+	SHOW_RESOURCES_UNCLAIMED,
 
-#ifdef _USRDLL
 	NUM_RESOURCE_OPTION_TYPES
-#endif
 };
 
 enum PlotIndicatorVisibilityFlags
@@ -3370,51 +3163,28 @@ enum CivilopediaWidgetShowTypes
 	CIVILOPEDIA_WIDGET_SHOW_WATER,
 };
 
-/************************************************************************************************/
-/* Afforess	                  Start		 06/01/10                                               */
-/*                                                                                              */
-/*                                                                                              */
-/************************************************************************************************/
-enum RankingTypes
-{
-	RANKING_POWER,
-	RANKING_POPULATION,
-	RANKING_LAND,
-	RANKING_CULTURE,
-	RANKING_ESPIONAGE,
-	RANKING_WONDERS,
-	RANKING_TECH,
-	NUM_RANKINGS
-};
-
 enum LandmarkTypes
 {
 	NO_LANDMARK = -1,
 	LANDMARK_BAY,
-	LANDMARK_ISLAND,
 	LANDMARK_FOREST,
 	LANDMARK_JUNGLE,
 	LANDMARK_PEAK,
 	LANDMARK_MOUNTAIN_RANGE,
-	LANDMARK_PLAINS,
 	LANDMARK_DESERT,
-	LANDMARK_OCEAN,
 	LANDMARK_LAKE,
 	NUM_LANDMARK_TYPES
 };
 
 //Used for each player
-enum ModderOptionTypes			// Exposed to Python
+enum ModderOptionTypes
 {
 	NO_MODDEROPTION = -1,
 
 	MODDEROPTION_FLEXIBLE_DIFFICULTY,
-	MODDEROPTION_SHOW_COASTAL_BUILDINGS,
-	MODDEROPTION_HIDE_OBSOLETE_BUILDINGS,
 	MODDEROPTION_HIDE_REPLACED_BUILDINGS,
 	MODDEROPTION_NO_FRIENDLY_PILLAGING,
 	MODDEROPTION_HIDE_UNAVAILBLE_BUILDS,
-	MODDEROPTION_HIDE_OBSOLETE_BUILDS,
 	MODDEROPTION_SHOW_REV_EFFECTS,
 	MODDEROPTION_USE_LANDMARK_NAMES,
 	MODDEROPTION_FLEXIBLE_DIFFICULTY_TURN_INCREMENTS,
@@ -3465,7 +3235,7 @@ enum ModderOptionTypes			// Exposed to Python
 enum ModderGameOptionTypes
 {
 	NO_MODDERGAMEOPTION = -1,
-	
+
 	MODDERGAMEOPTION_DEFENDER_WITHDRAW,
 	MODDERGAMEOPTION_MAX_UNITS_PER_TILES,
 	MODDERGAMEOPTION_MAX_BOMBARD_DEFENSE,
@@ -3478,17 +3248,15 @@ enum ModderGameOptionTypes
 	MODDERGAMEOPTION_BATTLEFIELD_PROMOTIONS,
 	MODDERGAMEOPTION_NO_STORMS,
 	MODDERGAMEOPTION_IMPROVED_XP,
+	MODDERGAMEOPTION_RELIGION_DECAY,
 	MODDERGAMEOPTION_MULTIPLE_RELIGION_SPREAD,
 	MODDERGAMEOPTION_TERRAIN_DAMAGE,
 	MODDERGAMEOPTION_STRATEGIC_EVENTS,
 	MODDERGAMEOPTION_NO_AUTO_CORPORATION_FOUNDING,
 	MODDERGAMEOPTION_AI_USE_FLEXIBLE_DIFFICULTY,
-	
+
 	NUM_MODDERGAMEOPTION_TYPES
 };
-/************************************************************************************************/
-/* Afforess	                     END                                                            */
-/************************************************************************************************/
 
 // AIAndy: Game object types
 enum GameObjectTypes
@@ -3614,5 +3382,35 @@ enum PropertyPropagatorTypes
 
 	NUM_PROPERTYPROPAGATORS
 };
+
+enum RiverModelTypes { };
+enum WaterPlaneTypes { };
+enum TerrainPlaneTypes { };
+enum UnitFormationTypes { };
+enum LandscapeTypes { };
+enum ThroneRoomTypes { };
+enum ThroneRoomStyleTypes { };
+enum SlideShowTypes { };
+enum SlideShowRandomTypes { };
+enum WorldPickerTypes { };
+enum SpaceShipTypes { };
+enum RouteModelTypes { };
+enum ActionTypes { };
+enum DiplomacyTypes { };
+enum MainMenuTypes { };
+enum ModLoadControlTypes { };
+enum HintTypes { };
+enum AssetArtTypes { };
+enum MiscArtTypes { };
+enum UnitArtTypes { };
+enum BuildingArtTypes { };
+enum CivilizationArtTypes { };
+enum LeaderHeadArtTypes { };
+enum BonusArtTypes { };
+enum ImprovementArtTypes { };
+enum TerrainArtTypes { };
+enum FeatureArtTypes { };
+enum MovieArtTypes { };
+enum InterfaceArtTypes { };
 
 #endif	// CVENUMS_h
