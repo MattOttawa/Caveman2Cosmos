@@ -924,7 +924,7 @@ void CvCityAI::AI_chooseProduction()
 	}
 	int iNumWaterAreaCitySites = (pWaterSettlerArea == NULL) ? 0 : player.AI_getNumAdjacentAreaCitySites(pWaterSettlerArea->getID(), getArea(), iWaterAreaBestFoundValue);
 	int iNumSettlers = player.AI_totalUnitAIs(UNITAI_SETTLE) + player.getContractBroker().numRequestsOutstandingAtCity(UNITAI_SETTLE);
-	
+
 	bool bIsCapitalArea = false;
 	int iNumCapitalAreaCities = 0;
 	if (player.getCapitalCity() != NULL)

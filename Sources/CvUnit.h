@@ -3137,7 +3137,6 @@ public:
 		DECLARE_MAP_FUNCTOR_CONST(CvUnit, int, revoltProtectionTotal);
 
 		DECLARE_MAP_FUNCTOR_CONST_1(CvUnit, bool, canClaimTerritory, const CvPlot*);
-		DECLARE_MAP_FUNCTOR_CONST_1(CvUnit, bool, meetsUnitSelectionCriteria, const CvUnitSelectionCriteria*);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvUnit, bool, canPillage, const CvPlot*);
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 		DECLARE_MAP_FUNCTOR_CONST_1(CvUnit, bool, hasAfflictionLine, PromotionLineTypes);
