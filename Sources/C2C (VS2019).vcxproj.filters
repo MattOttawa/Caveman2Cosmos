@@ -1069,6 +1069,7 @@
     <None Include="cpp.hint" />
     <None Include="CvGameCoreDLL.def" />
     <None Include=".editorconfig" />
+    <None Include=".clang-format" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\Notes for the next breaking of save game compatability cycle.txt" />

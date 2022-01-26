@@ -524,6 +524,7 @@
     <ClInclude Include="Win32.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".clang-format" />
     <None Include=".editorconfig" />
     <None Include="cpp.hint" />
     <None Include="CvGameCoreDLL.def" />
