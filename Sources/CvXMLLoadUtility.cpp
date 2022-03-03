@@ -107,7 +107,7 @@ bool CvXMLLoadUtility::CreateFXml()
 	//catch (const xercesc::SAXParseException& toCatch)
 	//{
 	//	char* message = xercesc::XMLString::transcode(toCatch.getMessage());
-	//	sprintf(szLog, "XML parsing SAX error:\n%s :\n%s at line %llu", szPath.c_str(), message, toCatch.getLineNumber());
+	//	sprintf(szLog, "XML parsing SAX error:\n%s :\n%s at line %I64u", szPath.c_str(), message, toCatch.getLineNumber());
 	//	logMsg(szLog);
 	//	gDLL->MessageBox(szLog, "Error");
 	//	xercesc::XMLString::release(&message);
@@ -245,14 +245,14 @@ int CvXMLLoadUtility::GetInfoClass(const char* pszVal)
 
 //------------------------------------------------------------------------------------------------------
 //
-//  FUNCTION:   LoadCivXml(FXml* pFXml, char* szFilename)
+//  FUNCTION:   LoadCivXml(const char* szFilename)
 //
 //  PURPOSE :   Gets the full pathname for the xml file from the FileManager .
 //				If it is succesful we return true
 //				from the function and a valid FXml pointer to the pFXml parameter.
 //
 //------------------------------------------------------------------------------------------------------
-bool CvXMLLoadUtility::LoadCivXml(FXml* pFXml, const char* szFilename)
+bool CvXMLLoadUtility::LoadCivXml(const char* szFilename)
 {
 	char szLog[8192];
 	sprintf(szLog, "LoadCivXml (%s)", szFilename);
@@ -315,7 +315,7 @@ bool CvXMLLoadUtility::LoadCivXml(FXml* pFXml, const char* szFilename)
 	catch (const xercesc::XMLException & toCatch)
 	{
 		char* message = xercesc::XMLString::transcode(toCatch.getMessage());
-		sprintf(szLog, "XML error: %s(%llu) : (%s)\n",
+		sprintf(szLog, "XML error: %s(%I64u) : (%s)\n",
 			toCatch.getSrcFile(), toCatch.getSrcLine(), message);
 		logging::logMsg("xml.log", szLog);
 		gDLL->MessageBox(szLog, "Error");
@@ -334,7 +334,7 @@ bool CvXMLLoadUtility::LoadCivXml(FXml* pFXml, const char* szFilename)
 	catch (const xercesc::SAXParseException & toCatch)
 	{
 		char* message = xercesc::XMLString::transcode(toCatch.getMessage());
-		sprintf(szLog, "XML parsing SAX error:\n%s :\n%s at line %llu", szPath.c_str(), message, toCatch.getLineNumber());
+		sprintf(szLog, "XML parsing SAX error:\n%s :\n%s at line %I64u", szPath.c_str(), message, toCatch.getLineNumber());
 		logging::logMsg("xml.log", szLog);
 		gDLL->MessageBox(szLog, "Error");
 		xercesc::XMLString::release(&message);
