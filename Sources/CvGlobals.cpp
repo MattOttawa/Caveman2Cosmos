@@ -3085,6 +3085,7 @@ namespace CvGlobalsInternal
 	void reloadInfos(cvInternalGlobals::InfosMap& infoTypes, std::vector<InfoClass_t*>& infos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bTwoPass = false, CvInfoReplacements<InfoClass_t>* pReplacements = NULL)
 	{
 		foreach_(const InfoClass_t* info, infos)
+		{
 			infoTypes.erase(info->getType());
 			delete info;
 		}
