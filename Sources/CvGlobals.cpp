@@ -3086,7 +3086,9 @@ namespace CvGlobalsInternal
 	{
 		foreach_(const InfoClass_t* info, infos)
 			infoTypes.erase(info->getType());
-		deleteInfoArray(infos);
+			delete info;
+		}
+		infos.clear();
 
 		CvXMLLoadUtility pXml;
 		pXml.CreateFXml();
@@ -3155,8 +3157,6 @@ void cvInternalGlobals::reloadInfos(InfoClassTypes infoClass)
 		case ROUTE_MODEL_INFO:
 			CvGlobalsInternal::reloadInfos(m_infosMap, m_paRouteModelInfo, "CIV4RouteModelInfos", "Art", L"/Civ4RouteModelInfos/RouteModelInfos/RouteModelInfo", false);
 			return;
-		case RIVER_INFO:
-			return;
 		case RIVER_MODEL_INFO:
 			CvGlobalsInternal::reloadInfos(m_infosMap, m_paRiverModelInfo, "CIV4RiverModelInfos", "Art", L"/Civ4RiverModelInfos/RiverModelInfos/RiverModelInfo", false);
 			return;
@@ -3183,8 +3183,6 @@ void cvInternalGlobals::reloadInfos(InfoClassTypes infoClass)
 			return;
 		case ATTACHABLE_INFO:
 			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAttachableInfo, "CIV4AttachableInfos", "Misc", L"/Civ4AttachableInfos/AttachableInfos/AttachableInfo", false);
-			return;
-		case CAMERA_INFO:
 			return;
 		case UNIT_FORMATION_INFO:
 			CvGlobalsInternal::reloadInfos(m_infosMap, m_paUnitFormationInfo, "CIV4FormationInfos", "Units", L"/UnitFormations/UnitFormation", false);
