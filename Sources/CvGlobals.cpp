@@ -2,8 +2,10 @@
 // globals.cpp
 //
 #include "CvGameCoreDLL.h"
+#include "CvArtFileMgr.h"
 #include "CvGameAI.h"
 #include "CvGlobals.h"
+#include "CvInfoClassTraits.h"
 #include "CvInfos.h"
 #include "CvInfoWater.h"
 #include "CvInitCore.h"
@@ -3081,6 +3083,7 @@ void cvInternalGlobals::setIsBug()
 			}
 		}
 	}
+	reloadInfos(BUILDING_INFO);
 }
 
 
@@ -3131,5 +3134,375 @@ void cvInternalGlobals::doPostLoadCaching()
 	for (int i = 0, num = getNumBuildingInfos(); i < num; i++)
 	{
 		m_paBuildingInfo[i]->doPostLoadCaching(static_cast<BuildingTypes>(i));
+	}
+}
+
+namespace CvGlobalsInternal
+{
+	template <class InfoClass_t>
+	void reloadInfos(cvInternalGlobals::InfosMap& infoTypes, std::vector<InfoClass_t*>& infos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bTwoPass = false, CvInfoReplacements<InfoClass_t>* pReplacements = NULL)
+	{
+		foreach_(const InfoClass_t* info, infos)
+			infoTypes.erase(info->getType());
+		deleteInfoArray(infos);
+
+		CvXMLLoadUtility pXml;
+		pXml.CreateFXml();
+		pXml.LoadGlobalClassInfo(infos, szFileRoot, szFileDirectory, szXmlPath, bTwoPass, pReplacements);
+		pXml.DestroyFXml();
+
+		if (pReplacements)
+			GC.resolveDelayedResolution();
+	}
+}
+
+void cvInternalGlobals::reloadInfos(InfoClassTypes infoClass)
+{
+	FASSERT_BOUNDS(0, NUM_INFO_CLASSES, infoClass);
+
+	switch (infoClass)
+	{
+		case CONCEPT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paConceptInfo, "CIV4BasicInfos", "BasicInfos", L"/Civ4BasicInfos/ConceptInfos/ConceptInfo", false);
+			return;
+		case NEW_CONCEPT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paNewConceptInfo, "CIV4NewConceptInfos", "BasicInfos", L"/Civ4NewConceptInfos/NewConceptInfos/NewConceptInfo", false);
+			return;
+		case CITY_TAB_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCityTabInfo, "CIV4CityTabInfos", "BasicInfos", L"/Civ4CityTabInfos/CityTabInfos/CityTabInfo", false);
+			return;
+		case CALENDAR_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCalendarInfo, "CIV4CalendarInfos", "BasicInfos", L"/Civ4CalendarInfos/CalendarInfos/CalendarInfo", false);
+			return;
+		case SEASON_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSeasonInfo, "CIV4SeasonInfos", "BasicInfos", L"/Civ4SeasonInfos/SeasonInfos/SeasonInfo", false);
+			return;
+		case MONTH_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMonthInfo, "CIV4MonthInfos", "BasicInfos", L"/Civ4MonthInfos/MonthInfos/MonthInfo", false);
+			return;
+		case DENIAL_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paDenialInfo, "CIV4DenialInfos", "BasicInfos", L"/Civ4DenialInfos/DenialInfos/DenialInfo", false);
+			return;
+		case DOMAIN_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paDomainInfo, "CIV4DomainInfos", "BasicInfos", L"/Civ4DomainInfos/DomainInfos/DomainInfo", false);
+			return;
+		case ATTITUDE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAttitudeInfos, "CIV4AttitudeInfos", "BasicInfos", L"/Civ4AttitudeInfos/AttitudeInfos/AttitudeInfo", false);
+			return;
+		case MEMORY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMemoryInfos, "CIV4MemoryInfos", "BasicInfos", L"/Civ4MemoryInfos/MemoryInfos/MemoryInfo", false);
+			return;
+		case WORLD_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paWorldInfo, "CIV4WorldInfo", "GameInfo", L"/Civ4WorldInfo/WorldInfos/WorldInfo", false, &GC.m_WorldInfoReplacements);
+			return;
+		case CLIMATE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paClimateInfo, "CIV4ClimateInfo", "GameInfo", L"/Civ4ClimateInfo/ClimateInfos/ClimateInfo", false);
+			return;
+		case SEA_LEVEL_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSeaLevelInfo, "CIV4SeaLevelInfo", "GameInfo", L"/Civ4SeaLevelInfo/SeaLevelInfos/SeaLevelInfo", false);
+			return;
+		case COLOR_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paColorInfo, "CIV4ColorVals", "Interface", L"/Civ4ColorVals/ColorVals/ColorVal", false);
+			return;
+		case PLAYER_COLOR_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paPlayerColorInfo, "CIV4PlayerColorInfos", "Interface", L"/Civ4PlayerColorInfos/PlayerColorInfos/PlayerColorInfo", false);
+			return;
+		case ADVISOR_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAdvisorInfo, "CIV4AdvisorInfos", "Interface", L"/Civ4AdvisorInfos/AdvisorInfos/AdvisorInfo", false);
+			return;
+		case ROUTE_MODEL_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paRouteModelInfo, "CIV4RouteModelInfos", "Art", L"/Civ4RouteModelInfos/RouteModelInfos/RouteModelInfo", false);
+			return;
+		case RIVER_INFO:
+			return;
+		case RIVER_MODEL_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paRiverModelInfo, "CIV4RiverModelInfos", "Art", L"/Civ4RiverModelInfos/RiverModelInfos/RiverModelInfo", false);
+			return;
+		case WATER_PLANE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paWaterPlaneInfo, "CIV4WaterPlaneInfos", "Misc", L"/Civ4WaterPlaneInfos/WaterPlaneInfos/WaterPlaneInfo", false);
+			return;
+		case TERRAIN_PLANE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paTerrainPlaneInfo, "CIV4TerrainPlaneInfos", "Misc", L"/Civ4TerrainPlaneInfos/TerrainPlaneInfos/TerrainPlaneInfo", false);
+			return;
+		case CAMERA_OVERLAY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCameraOverlayInfo, "CIV4CameraOverlayInfos", "Misc", L"/Civ4CameraOverlayInfos/CameraOverlayInfos/CameraOverlayInfo", false);
+			return;
+		case ANIMATION_PATH_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAnimationPathInfo, "CIV4AnimationPathInfos", "Units", L"/Civ4AnimationPathInfos/AnimationPaths/AnimationPath", false);
+			return;
+		case ANIMATION_CATEGORY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAnimationCategoryInfo, "CIV4AnimationInfos", "Units", L"/Civ4AnimationInfos/AnimationCategories/AnimationCategory", false);
+			return;
+		case ENTITY_EVENT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paEntityEventInfo, "CIV4EntityEventInfos", "Units", L"/Civ4EntityEventInfos/EntityEventInfos/EntityEventInfo", false);
+			return;
+		case EFFECT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paEffectInfo, "CIV4EffectInfos", "Misc", L"/Civ4EffectInfos/EffectInfos/EffectInfo", false);
+			return;
+		case ATTACHABLE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAttachableInfo, "CIV4AttachableInfos", "Misc", L"/Civ4AttachableInfos/AttachableInfos/AttachableInfo", false);
+			return;
+		case CAMERA_INFO:
+			return;
+		case UNIT_FORMATION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paUnitFormationInfo, "CIV4FormationInfos", "Units", L"/UnitFormations/UnitFormation", false);
+			return;
+		case LANDSCAPE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paLandscapeInfo, "CIV4TerrainSettings", "Terrain", L"/Civ4TerrainSettings/LandscapeInfos/LandscapeInfo", false);
+			return;
+		case TERRAIN_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paTerrainInfo, "CIV4TerrainInfos", "Terrain", L"/Civ4TerrainInfos/TerrainInfos/TerrainInfo", false, &GC.m_TerrainInfoReplacements);
+			return;
+		case BONUS_CLASS_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paBonusClassInfo, "CIV4BonusClassInfos", "Terrain", L"/Civ4BonusClassInfos/BonusClassInfos/BonusClassInfo", false, &GC.m_BonusClassInfoReplacements);
+			return;
+		case BONUS_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paBonusInfo, "CIV4BonusInfos", "Terrain", L"/Civ4BonusInfos/BonusInfos/BonusInfo", false, &m_BonusInfoReplacements);
+			return;
+		case FEATURE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paFeatureInfo, "CIV4FeatureInfos", "Terrain", L"/Civ4FeatureInfos/FeatureInfos/FeatureInfo", false, &GC.m_FeatureInfoReplacements);
+			return;
+		case CIVILIZATION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCivilizationInfo, "CIV4CivilizationInfos", "Civilizations", L"/Civ4CivilizationInfos/CivilizationInfos/CivilizationInfo", true, &GC.m_CivilizationInfoReplacements);
+			return;
+		case LEADERHEAD_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paLeaderHeadInfo, "CIV4LeaderHeadInfos", "Civilizations", L"/Civ4LeaderHeadInfos/LeaderHeadInfos/LeaderHeadInfo", false, &GC.m_LeaderHeadInfoReplacements);
+			return;
+		case TRAIT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paTraitInfo, "CIV4TraitInfos", "Civilizations", L"/Civ4TraitInfos/TraitInfos/TraitInfo", true, &GC.m_TraitInfoReplacements);
+			return;
+		case CURSOR_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCursorInfo, "CIV4CursorInfo", "GameInfo", L"/Civ4CursorInfo/CursorInfos/CursorInfo", false);
+			return;
+		case THRONE_ROOM_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paThroneRoomInfo, "CIV4ThroneRoomInfos", "Interface", L"/Civ4ThroneRoomInfos/ThroneRoomInfos/ThroneRoomInfo", false);
+			return;
+		case THRONE_ROOM_STYLE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paThroneRoomStyleInfo, "CIV4ThroneRoomStyleInfos", "Interface", L"/Civ4ThroneRoomStyleInfos/ThroneRoomStyleInfos/ThroneRoomStyleInfo", false);
+			return;
+		case THRONE_ROOM_CAMERA_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paThroneRoomCamera, "CIV4ThroneRoomCameraInfos", "Interface", L"/Civ4ThroneRoomCameraInfos/ThroneRoomCameraInfos/ThroneRoomCamera", false);
+			return;
+		case SLIDE_SHOW_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSlideShowInfo, "CIV4SlideShowInfos", "Interface", L"/Civ4SlideShowInfos/SlideShowInfos/SlideShowInfo", false);
+			return;
+		case SLIDE_SHOW_RANDOM_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSlideShowRandomInfo, "CIV4SlideShowRandomInfos", "Interface", L"/Civ4SlideShowRandomInfos/SlideShowRandomInfos/SlideShowRandomInfo", false);
+			return;
+		case WORLD_PICKER_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paWorldPickerInfo, "CIV4WorldPickerInfos", "Interface", L"/Civ4WorldPickerInfos/WorldPickerInfos/WorldPickerInfo", false);
+			return;
+		case SPACE_SHIP_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSpaceShipInfo, "CIV4SpaceShipInfos", "Interface", L"/Civ4SpaceShipInfos/SpaceShipInfos/SpaceShipInfo", false);
+			return;
+		case UNIT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paUnitInfo, "CIV4UnitInfos", "Units", L"/Civ4UnitInfos/UnitInfos/UnitInfo", true, &GC.m_UnitInfoReplacements);
+			return;
+		case SPAWN_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSpawnInfo, "CIV4SpawnInfos", "Units", L"/Civ4SpawnInfos/SpawnInfos/SpawnInfo", false, &GC.m_SpawnInfoReplacements);
+			return;
+		case SPECIAL_UNIT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSpecialUnitInfo, "CIV4SpecialUnitInfos", "Units", L"/Civ4SpecialUnitInfos/SpecialUnitInfos/SpecialUnitInfo", false);
+			return;
+		case YIELD_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paYieldInfo, "CIV4YieldInfos", "Terrain", L"/Civ4YieldInfos/YieldInfos/YieldInfo", false);
+			return;
+		case COMMERCE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCommerceInfo, "CIV4CommerceInfo", "GameInfo", L"/Civ4CommerceInfo/CommerceInfos/CommerceInfo", false);
+			return;
+		case ROUTE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paRouteInfo, "CIV4RouteInfos", "Misc", L"/Civ4RouteInfos/RouteInfos/RouteInfo", false, &GC.m_RouteInfoReplacements);
+			return;
+		case IMPROVEMENT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paImprovementInfo, "CIV4ImprovementInfos", "Terrain", L"/Civ4ImprovementInfos/ImprovementInfos/ImprovementInfo", true, &GC.m_ImprovementInfoReplacements);
+			return;
+		case GOODY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paGoodyInfo, "CIV4GoodyInfo", "GameInfo", L"/Civ4GoodyInfo/GoodyInfos/GoodyInfo", false);
+			return;
+		case BUILD_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paBuildInfo, "CIV4BuildInfos", "Units", L"/Civ4BuildInfos/BuildInfos/BuildInfo", false, &GC.m_BuildInfoReplacements);
+			return;
+		case HANDICAP_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paHandicapInfo, "CIV4HandicapInfo", "GameInfo", L"/Civ4HandicapInfo/HandicapInfos/HandicapInfo", false, &GC.m_HandicapInfoReplacements);
+			return;
+		case GAME_SPEED_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paGameSpeedInfo, "CIV4GameSpeedInfo", "GameInfo", L"/Civ4GameSpeedInfo/GameSpeedInfos/GameSpeedInfo", false, &GC.m_GameSpeedInfoReplacements);
+			return;
+		case TURN_TIMER_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paTurnTimerInfo, "CIV4TurnTimerInfo", "GameInfo", L"/Civ4TurnTimerInfo/TurnTimerInfos/TurnTimerInfo", false);
+			return;
+		case PROCESS_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paProcessInfo, "CIV4ProcessInfo", "GameInfo", L"/Civ4ProcessInfo/ProcessInfos/ProcessInfo", false, &GC.m_ProcessInfoReplacements);
+			return;
+		case VOTE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paVoteInfo, "CIV4VoteInfo", "GameInfo", L"/Civ4VoteInfo/VoteInfos/VoteInfo", false);
+			return;
+		case PROJECT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paProjectInfo, "CIV4ProjectInfo", "GameInfo", L"/Civ4ProjectInfo/ProjectInfos/ProjectInfo", false, &GC.m_ProjectInfoReplacements);
+			return;
+		case BUILDING_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paBuildingInfo, "CIV4BuildingInfos", "Buildings", L"/Civ4BuildingInfos/BuildingInfos/BuildingInfo", true, &GC.m_BuildingInfoReplacements);
+			return;
+		case SPECIAL_BUILDING_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSpecialBuildingInfo, "CIV4SpecialBuildingInfos", "Buildings", L"/Civ4SpecialBuildingInfos/SpecialBuildingInfos/SpecialBuildingInfo", false, &GC.m_SpecialBuildingInfoReplacements);
+			return;
+		case ACTION_INFO:
+			return;
+		case MISSION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMissionInfo, "CIV4MissionInfos", "Units", L"/Civ4MissionInfos/MissionInfos/MissionInfo", false);
+			return;
+		case CONTROL_INFOS:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paControlInfo, "CIV4ControlInfos", "Units", L"/Civ4ControlInfos/ControlInfos/ControlInfo", false);
+			return;
+		case COMMAND_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCommandInfo, "CIV4CommandInfos", "Units", L"/Civ4CommandInfos/CommandInfos/CommandInfo", false);
+			return;
+		case AUTOMATE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paAutomateInfo, "CIV4AutomateInfos", "Units", L"/Civ4AutomateInfos/AutomateInfos/AutomateInfo", false);
+			return;
+		case PROMOTION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paPromotionInfo, "CIV4PromotionInfos", "Units", L"/Civ4PromotionInfos/PromotionInfos/PromotionInfo", true, &GC.m_PromotionInfoReplacements);
+			return;
+		case TECH_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paTechInfo, "CIV4TechInfos", "Technologies", L"/Civ4TechInfos/TechInfos/TechInfo", true, &GC.m_TechInfoReplacements);
+			return;
+		case RELIGION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paReligionInfo, "CIV4ReligionInfo", "GameInfo", L"/Civ4ReligionInfo/ReligionInfos/ReligionInfo", false, &GC.m_ReligionInfoReplacements);
+			return;
+		case CORPORATION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCorporationInfo, "CIV4CorporationInfo", "GameInfo", L"/Civ4CorporationInfo/CorporationInfos/CorporationInfo", false, &GC.m_CorporationInfoReplacements);
+			return;
+		case SPECIALIST_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSpecialistInfo, "CIV4SpecialistInfos", "GameInfo", L"/Civ4SpecialistInfos/SpecialistInfos/SpecialistInfo", false, &GC.m_SpecialistInfoReplacements);
+			return;
+		case CIVIC_OPTION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCivicOptionInfo, "CIV4CivicOptionInfos", "GameInfo", L"/Civ4CivicOptionInfos/CivicOptionInfos/CivicOptionInfo", false);
+			return;
+		case CIVIC_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCivicInfo, "CIV4CivicInfos", "GameInfo", L"/Civ4CivicInfos/CivicInfos/CivicInfo", false, &GC.m_CivicInfoReplacements);
+			return;
+		case DIPLOMACY_INFO:
+			return;
+		case ERA_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_aEraInfo, "CIV4EraInfos", "GameInfo", L"/Civ4EraInfos/EraInfos/EraInfo", false, &GC.m_EraInfoReplacements);
+			return;
+		case HURRY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paHurryInfo, "CIV4HurryInfo", "GameInfo", L"/Civ4HurryInfo/HurryInfos/HurryInfo", false);
+			return;
+		case EMPHASIZE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paEmphasizeInfo, "CIV4EmphasizeInfo", "GameInfo", L"/Civ4EmphasizeInfo/EmphasizeInfos/EmphasizeInfo", false);
+			return;
+		case UPKEEP_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paUpkeepInfo, "CIV4UpkeepInfo", "GameInfo", L"/Civ4UpkeepInfo/UpkeepInfos/UpkeepInfo", false);
+			return;
+		case CULTURE_LEVEL_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paCultureLevelInfo, "CIV4CultureLevelInfo", "GameInfo", L"/Civ4CultureLevelInfo/CultureLevelInfos/CultureLevelInfo", false, &GC.m_CultureLevelInfoReplacements);
+			return;
+		case VICTORY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paVictoryInfo, "CIV4VictoryInfo", "GameInfo", L"/Civ4VictoryInfo/VictoryInfos/VictoryInfo", false);
+			return;
+		case GAME_OPTION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paGameOptionInfos, "CIV4GameOptionInfos", "GameInfo", L"/Civ4GameOptionInfos/GameOptionInfos/GameOptionInfo", false);
+			return;
+		case MP_OPTION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMPOptionInfos, "CIV4MPOptionInfos", "GameInfo", L"/Civ4MPOptionInfos/MPOptionInfos/MPOptionInfo", false);
+			return;
+		case FORCE_CONTROL_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paForceControlInfos, "CIV4ForceControlInfos", "GameInfo", L"/Civ4ForceControlInfos/ForceControlInfos/ForceControlInfo", false);
+			return;
+		case PLAYER_OPTION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paPlayerOptionInfos, "CIV4PlayerOptionInfos", "GameInfo", L"/Civ4PlayerOptionInfos/PlayerOptionInfos/PlayerOptionInfo", false);
+			return;
+		case GRAPHIC_OPTION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paGraphicOptionInfos, "CIV4GraphicOptionInfos", "GameInfo", L"/Civ4GraphicOptionInfos/GraphicOptionInfos/GraphicOptionInfo", false);
+			return;
+		case EVENT_TRIGGER_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paEventTriggerInfo, "CIV4EventTriggerInfos", "Events", L"/Civ4EventTriggerInfos/EventTriggerInfos/EventTriggerInfo", false, &GC.m_EventTriggerInfoReplacements);
+			return;
+		case EVENT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paEventInfo, "CIV4EventInfos", "Events", L"/Civ4EventInfos/EventInfos/EventInfo", false, &GC.m_EventInfoReplacements);
+			return;
+		case ESPIONAGE_MISSION_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paEspionageMissionInfo, "CIV4EspionageMissionInfo", "GameInfo", L"/Civ4EspionageMissionInfo/EspionageMissionInfos/EspionageMissionInfo", false);
+			return;
+		case UNIT_ART_STYLE_TYPE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paUnitArtStyleTypeInfo, "CIV4UnitArtStyleTypeInfos", "Civilizations", L"/Civ4UnitArtStyleTypeInfos/UnitArtStyleTypeInfos/UnitArtStyleTypeInfo", false);
+			return;
+		case VOTE_SOURCE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paVoteSourceInfo, "CIV4VoteSourceInfos", "GameInfo", L"/Civ4VoteSourceInfos/VoteSourceInfos/VoteSourceInfo", false);
+			return;
+		case MAIN_MENU_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMainMenus, "CIV4MainMenus", "Art", L"/Civ4MainMenus/MainMenus/MainMenu", false);
+			return;
+		case PROPERTY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paPropertyInfo, "CIV4PropertyInfos", "GameInfo", L"/Civ4PropertyInfos/PropertyInfos/PropertyInfo", false);
+			return;
+		case OUTCOME_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paOutcomeInfo, "CIV4OutcomeInfos", "GameInfo", L"/Civ4OutcomeInfos/OutcomeInfos/OutcomeInfo", true);
+			return;
+		case UNIT_COMBAT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paUnitCombatInfo, "CIV4UnitCombatInfos", "Units", L"/Civ4UnitCombatInfos/UnitCombatInfos/UnitCombatInfo", false);
+			return;
+		case PROMOTION_LINE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paPromotionLineInfo, "CIV4PromotionLineInfos", "Units", L"/Civ4PromotionLineInfos/PromotionLineInfos/PromotionLineInfo", false);
+			return;
+		case MAP_CATEGORY_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMapCategoryInfo, "CIV4MapCategoryInfos", "Terrain", L"/Civ4MapCategoryInfos/MapCategoryInfos/MapCategoryInfo", false);
+			return;
+		case IDEA_CLASS_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paIdeaClassInfo, "CIV4IdeaClassInfos", "GameInfo", L"/Civ4IdeaClassInfos/IdeaClassInfos/IdeaClassInfo", false);
+			return;
+		case IDEA_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paIdeaInfo, "CIV4IdeaInfos", "GameInfo", L"/Civ4IdeaInfos/IdeaInfos/IdeaInfo", false);
+			return;
+		case INVISIBLE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paInvisibleInfo, "CIV4InvisibleInfos", "Units", L"/Civ4InvisibleInfos/InvisibleInfos/InvisibleInfo", false);
+			return;
+		case MOD_LOAD_CONTROL_INFO:
+			return;
+		case MAP_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paMapInfo, "CIV4MapInfo", "GameInfo", L"/Civ4MapInfos/MapInfos/MapInfo", true);
+			return;
+		case HINT_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paHints, "CIV4Hints", "GameInfo", L"/Civ4Hints/HintInfos/HintInfo", false);
+			return;
+		case INTERFACE_MODE_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paInterfaceModeInfo, "CIV4InterfaceModeInfos", "Interface", L"/Civ4InterfaceModeInfos/InterfaceModeInfos/InterfaceModeInfo", false);
+			return;
+/*
+		case INTERFACE_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getInterfaceArtInfo(), "CIV4ArtDefines_Interface", "Art", L"/Civ4ArtDefines/InterfaceArtInfos/InterfaceArtInfo", false);
+			return;
+		case MOVIE_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getMovieArtInfo(), "CIV4ArtDefines_Movie", "Art", L"/Civ4ArtDefines/MovieArtInfos/MovieArtInfo", false);
+			return;
+		case MISC_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getMiscArtInfo(), "CIV4ArtDefines_Misc", "Art", L"/Civ4ArtDefines/MiscArtInfos/MiscArtInfo", false);
+			return;
+		case UNIT_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getUnitArtInfo(), "CIV4ArtDefines_Unit", "Art", L"/Civ4ArtDefines/UnitArtInfos/UnitArtInfo", false);
+			return;
+		case BUILDING_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getBuildingArtInfo(), "CIV4ArtDefines_Building", "Art", L"/Civ4ArtDefines/BuildingArtInfos/BuildingArtInfo", false);
+			return;
+		case CIVILIZATION_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getCivilizationArtInfo(), "CIV4ArtDefines_Civilization", "Art", L"/Civ4ArtDefines/CivilizationArtInfos/CivilizationArtInfo", false);
+			return;
+		case LEADER_HEAD_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getLeaderheadArtInfo(), "CIV4ArtDefines_Leaderhead", "Art", L"/Civ4ArtDefines/LeaderheadArtInfos/LeaderheadArtInfo", false);
+			return;
+		case BONUS_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getBonusArtInfo(), "CIV4ArtDefines_Bonus", "Art", L"/Civ4ArtDefines/BonusArtInfos/BonusArtInfo", false);
+			return;
+		case IMPROVEMENT_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getImprovementArtInfo(), "CIV4ArtDefines_Improvement", "Art", L"/Civ4ArtDefines/ImprovementArtInfos/ImprovementArtInfo", false);
+			return;
+		case TERRAIN_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getTerrainArtInfo(), "CIV4ArtDefines_Terrain", "Art", L"/Civ4ArtDefines/TerrainArtInfos/TerrainArtInfo", false);
+			return;
+		case FEATURE_ART_INFO:
+			CvGlobalsInternal::reloadInfos(m_infosMap, ARTFILEMGR.getFeatureArtInfo(), "CIV4ArtDefines_Feature", "Art", L"/Civ4ArtDefines/FeatureArtInfos/FeatureArtInfo", false);
+			return;
+*/
 	}
 }

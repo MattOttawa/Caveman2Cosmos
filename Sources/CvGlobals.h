@@ -252,6 +252,7 @@ public:
 	void infosReset();
 	void cacheInfoTypes();
 	int getOrCreateInfoTypeForString(const char* szType);
+	void reloadInfos(InfoClassTypes infoClass);
 
 	void addDelayedResolution(int* pType, CvString szString);
 	CvString* getDelayedResolution(int* pType);
@@ -901,7 +902,9 @@ protected:
 	};
 
 	// all type strings are upper case and are kept in this hash map for fast lookup, Moose
+public:
 	typedef stdext::hash_map<const char* /* type */, int /* info index */, SZStringHash> InfosMap;
+private:
 	InfosMap m_infosMap;
 	std::vector<std::vector<CvInfoBase *> *> m_aInfoVectors;
 

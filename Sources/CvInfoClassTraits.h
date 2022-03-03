@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef CvInfoArray_h__
-#define CvInfoArray_h__
+#ifndef CvInfoClassTraits_h__
+#define CvInfoClassTraits_h__
 
 
 #define EXPAND_FOR_EACH_INFO_CLASS(MACRO_FUNC)	\
@@ -36,12 +36,12 @@
 	MACRO_FUNC(CvEventInfo, EVENT_INFO, EventTypes) \
 	MACRO_FUNC(CvEventTriggerInfo, EVENT_TRIGGER_INFO, EventTriggerTypes) \
 	MACRO_FUNC(CvGameSpeedInfo, GAME_SPEED_INFO, GameSpeedTypes) \
-	MACRO_FUNC(CvPropertyInfo, PROPERTy_INFO, PropertyTypes) \
+	MACRO_FUNC(CvPropertyInfo, PROPERTY_INFO, PropertyTypes) \
 	MACRO_FUNC(CvPromotionLineInfo, PROMOTION_LINE_INFO, PromotionLineTypes) \
 	MACRO_FUNC(CvTraitInfo, TRAIT_INFO, TraitTypes) \
 	MACRO_FUNC(CvInvisibleInfo, INVISIBLE_INFO, InvisibleTypes) \
-	MACRO_FUNC(CvMapCategoryInfo, MAPCATEGORy_INFO, MapCategoryTypes) \
-	MACRO_FUNC(CvIdeaClassInfo, IDEACLASS_INFO, IdeaClassTypes) \
+	MACRO_FUNC(CvMapCategoryInfo, MAP_CATEGORY_INFO, MapCategoryTypes) \
+	MACRO_FUNC(CvIdeaClassInfo, IDEA_CLASS_INFO, IdeaClassTypes) \
 	MACRO_FUNC(CvIdeaInfo, IDEA_INFO, IdeaTypes) \
 	MACRO_FUNC(CvMissionInfo, MISSION_INFO, MissionTypes) \
 	MACRO_FUNC(CvYieldInfo, YIELD_INFO, YieldTypes) \
