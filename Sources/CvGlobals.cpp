@@ -2,11 +2,10 @@
 // globals.cpp
 //
 #include "CvGameCoreDLL.h"
-#include "CvArtFileMgr.h"
-#include "CvBonusInfo.h"
 #include "CvBuildingInfo.h"
 #include "CvGameAI.h"
 #include "CvGlobals.h"
+#include "CvBonusInfo.h"
 #include "CvImprovementInfo.h"
 #include "CvInfoClassTraits.h"
 #include "CvInfos.h"
@@ -3282,7 +3281,7 @@ void cvInternalGlobals::reloadInfos(InfoClassTypes infoClass)
 			CvGlobalsInternal::reloadInfos(m_infosMap, m_paProjectInfo, "CIV4ProjectInfo", "GameInfo", L"/Civ4ProjectInfo/ProjectInfos/ProjectInfo", false, &GC.m_ProjectInfoReplacements);
 			return;
 		case BUILDING_INFO:
-			CvGlobalsInternal::reloadInfos(m_infosMap, m_paBuildingInfo, "CIV4BuildingInfos", "Buildings", L"/Civ4BuildingInfos/BuildingInfos/BuildingInfo", true, &GC.m_BuildingInfoReplacements);
+			CvGlobalsInternal::reloadInfos(m_infosMap, m_paBuildingInfo, "CIV4BuildingInfos", "Buildings", L"/Civ4BuildingInfos/BuildingInfos/BuildingInfo", false, &GC.m_BuildingInfoReplacements);
 			return;
 		case SPECIAL_BUILDING_INFO:
 			CvGlobalsInternal::reloadInfos(m_infosMap, m_paSpecialBuildingInfo, "CIV4SpecialBuildingInfos", "Buildings", L"/Civ4SpecialBuildingInfos/SpecialBuildingInfos/SpecialBuildingInfo", false, &GC.m_SpecialBuildingInfoReplacements);
