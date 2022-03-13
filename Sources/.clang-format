@@ -1,15 +1,15 @@
+AlignConsecutiveMacros: true
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Left
 AlignTrailingComments: false
-AlignConsecutiveMacros: true
-AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: true
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortIfStatementsOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterDefinitionReturnType: None
@@ -27,3 +27,4 @@ Standard: Cpp03
 SortIncludes: false
 TabWidth: 4
 UseTab: Always
+#ForEachMacros: ['foreach_', 'reverse_foreach_']
