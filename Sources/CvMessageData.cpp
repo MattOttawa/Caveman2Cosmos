@@ -1741,7 +1741,7 @@ void CvNetChooseMergeUnit::Execute()
 						{
 							pkMergedUnit->setHasPromotion(ePromotion, true, true);
 						}
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 						else if (GC.getPromotionInfo(ePromotion).getPromotionLine() != NO_PROMOTIONLINE && GC.getPromotionLineInfo(GC.getPromotionInfo(ePromotion).getPromotionLine()).isAffliction())
 						{
 							if (GC.getGame().isOption(GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS))
@@ -1749,7 +1749,7 @@ void CvNetChooseMergeUnit::Execute()
 								pkMergedUnit->afflict(GC.getPromotionInfo(ePromotion).getPromotionLine());
 							}
 						}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 						else if (pUnit1->isPromotionFree(ePromotion) || pUnit2->isPromotionFree(ePromotion) || pUnit3->isPromotionFree(ePromotion))
 						{
 							pkMergedUnit->setHasPromotion(ePromotion, true, true);

@@ -195,11 +195,11 @@ public:
 	int getHappinessPercentPerPopulation() const	{ return m_iHappinessPercentPerPopulation; }
 	int getHealthPercentPerPopulation() const		{ return m_iHealthPercentPerPopulation; }
 	int getLinePriority() const						{ return m_iLinePriority; }
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getOutbreakBase() const							{ return m_iOutbreakBase; }
 	int getOvercomeBase() const							{ return m_iOvercomeBase; }
 	int getTradeCommunicability() const					{ return m_iTradeCommunicability; }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	int getFrontSupportPercentModifier() const			{ return m_iFrontSupportPercentModifier; }
 	int getShortRangeSupportPercentModifier() const		{ return m_iShortRangeSupportPercentModifier; }
@@ -423,7 +423,7 @@ public:
 	int getNumUnitCombatOngoingTrainingDurations() const;
 	int getUnitCombatOngoingTrainingDuration(int iUnitCombat, bool bForLoad = false) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictionOutbreakLevelChanges() const;
 	int getAfflictionOutbreakLevelChange(int iAfflictionLine) const;
 
@@ -432,7 +432,7 @@ public:
 
 	int getNumAidRateChanges() const;
 	const AidRateChanges& getAidRateChange(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getLocalSpecialistYieldChange(int i, int j) const;
 	int* getLocalSpecialistYieldChangeArray(int i) const;
@@ -452,10 +452,10 @@ public:
 	int getNumHealUnitCombatTypes() const;
 	const HealUnitCombat& getHealUnitCombatType(int iUnitCombat) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumBonusAidModifiers() const;
 	const BonusAidModifiers& getBonusAidModifier(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getNumEnabledCivilizationTypes() const;
 	const EnabledCivilizations& getEnabledCivilizationType(int iIndex) const;
@@ -671,11 +671,11 @@ private:
 	int m_iMaxPlayerInstances;
 	int m_iExtraPlayerInstances;
 	int m_iLinePriority;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int m_iOutbreakBase;
 	int m_iOvercomeBase;
 	int m_iTradeCommunicability;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	int m_iFrontSupportPercentModifier;
 	int m_iShortRangeSupportPercentModifier;
@@ -782,12 +782,12 @@ private:
 	UnitCombatModifierArray m_aUnitCombatDefenseAgainstModifiers;
 	UnitCombatModifierArray m_aUnitCombatProdModifiers;
 	UnitCombatModifierArray m_aUnitCombatOngoingTrainingDurations;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	std::vector<BonusAidModifiers> m_aBonusAidModifiers;
 	std::vector<AidRateChanges> m_aAidRateChanges;
 	PromotionLineModifierArray m_aAfflictionOutbreakLevelChanges;
 	TechModifierArray m_aTechOutbreakLevelChanges;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	IDValueMap<BonusTypes, int> m_piBonusHealthChanges;
 	IDValueMap<BonusTypes, int> m_piBonusHappinessChanges;
 	IDValueMap<BuildingTypes, int> m_aBuildingProductionModifier;

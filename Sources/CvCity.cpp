@@ -1438,7 +1438,7 @@ void CvCity::doTurn()
 
 	doPropertyUnitSpawn();
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	//TB Combat Mod (Buildings) begin
 	if (GC.getGame().isOption(GAMEOPTION_OUTBREAKS_AND_AFFLICTIONS))
 	{
@@ -1468,7 +1468,7 @@ void CvCity::doTurn()
 			}
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	for (int iI = 0; iI < GC.getNumUnitCombatInfos(); iI++)
 	{
@@ -5035,7 +5035,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 		changeTotalFlankSupportPercentModifier(kBuilding.getFlankSupportPercentModifier() * iChange);
 #endif // STRENGTH_IN_NUMBERS
 	}
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (kBuilding.getPromotionLineType() != NO_PROMOTIONLINE && GC.getPromotionLineInfo(kBuilding.getPromotionLineType()).isAffliction())
 	{
 		changeAfflictionTypeCount(kBuilding.getPromotionLineType(), iChange);
@@ -5063,7 +5063,7 @@ void CvCity::processBuilding(const BuildingTypes eBuilding, const int iChange, c
 			}
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	//int iNum = kBuilding.getNumFreePromoTypes();
 	//for (iI=0; iI<iNum; iI++)

@@ -812,9 +812,9 @@ public:
 	bool isRemoveStampede() const;
 	bool isOnslaughtChange() const;
 	bool isEquipment() const;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	bool isAffliction() const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	bool isParalyze() const;
 	bool isMakesDamageCold() const;
 	bool isMakesDamageNotCold() const;
@@ -987,7 +987,7 @@ public:
 	int getTrapTriggerUnitCombatType(int iUnitCombat) const;
 	bool isTrapTriggerUnitCombatType(int iUnitCombat) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
 	bool isAidChange(int iProperty) const;
@@ -1012,13 +1012,13 @@ public:
 	int getNumAIWeightbyUnitCombatTypes() const;
 	const UnitCombatModifier& getAIWeightbyUnitCombatType(int iUnitCombat) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictionFortitudeChangeModifiers() const;
 	const PromotionLineModifier& getAfflictionFortitudeChangeModifier(int iAfflictionLine) const;
 
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getNumHealUnitCombatChangeTypes() const;
 	const HealUnitCombat& getHealUnitCombatChangeType(int iUnitCombat) const;
@@ -1050,10 +1050,10 @@ public:
 	int getNumVisibleImprovementRangeChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumDistanceAttackCommunicabilityTypeChanges() const;
 	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	// TB Combat Mods End  TB SubCombat Mod end
 
@@ -1297,9 +1297,9 @@ protected:
 	bool m_bRemoveStampede;
 	bool m_bOnslaughtChange;
 	bool m_bEquipment;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	bool m_bAffliction;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	bool m_bParalyze;
 	bool m_bMakesDamageCold;
 	bool m_bMakesDamageNotCold;
@@ -1911,11 +1911,11 @@ public:
 	bool isSubCombatType(UnitCombatTypes e) const;
 	const std::vector<UnitCombatTypes>& getSubCombatTypes() const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getCureAfflictionType(int i) const;
 	int getNumCureAfflictionTypes() const;
 	bool isCureAfflictionType(int i) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getHealAsType(int i) const;
 	int getNumHealAsTypes() const;
@@ -1938,7 +1938,7 @@ public:
 	int getNumTrapImmunityUnitCombatTypes() const;
 	bool isTrapImmunityUnitCombatType(int i) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAfflictionFortitudeModifiers() const;
 	const PromotionLineModifier& getAfflictionFortitudeModifier(int iAffliction) const;
 
@@ -1948,7 +1948,7 @@ public:
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
 	bool isAidChange(int iProperty) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getNumHealUnitCombatTypes() const;
 	const HealUnitCombat& getHealUnitCombatType(int iUnitCombat) const;
@@ -1983,10 +1983,10 @@ public:
 	int getNumDistanceAttackCommunicabilityTypeChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumVisibleImprovementRangeChanges() const;
 	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getNumEnabledCivilizationTypes() const;
 	const EnabledCivilizations& getEnabledCivilizationType(int iIndex) const;
@@ -2581,13 +2581,13 @@ private:
 	std::vector<MapCategoryTypes> m_aeMapCategoryTypes;
 	std::vector<int> m_aiTrapSetWithPromotionTypes;
 	std::vector<int> m_aiTrapImmunityUnitCombatTypes;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	std::vector<int> m_aiCureAfflictionTypes;
 	std::vector<PromotionLineModifier> m_aAfflictionFortitudeModifiers;
 	std::vector<AfflictOnAttack> m_aAfflictOnAttackTypes;
 	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
 	AidArray m_aAidChanges;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	std::vector<HealUnitCombat> m_aHealUnitCombatTypes;
 	std::vector<GroupSpawnUnitCombat> m_aGroupSpawnUnitCombatTypes;
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
@@ -4273,9 +4273,9 @@ private:
 private:
 	CvString m_szArtDefineTag;
 	int m_zobristValue;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	std::vector<PromotionLineAfflictionModifier> m_aAfflictionCommunicabilityTypes;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 };
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -8288,7 +8288,7 @@ public:
 	TechTypes getPrereqTech() const	{ return m_ePrereqTech; }
 	TechTypes getObsoleteTech() const;
 	PropertyTypes getPropertyType() const;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getToleranceBuildup() const;
 	int getToleranceDecay() const;
 	int getCommunicability() const;
@@ -8300,7 +8300,7 @@ public:
 	int getOutbreakModifier() const;
 	int getOvercomeModifier() const;
 	bool isAffliction() const { return m_bAffliction; }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	bool isEquipment() const;
 	bool isCritical() const;
 	bool isNoSpreadonBattle() const;
@@ -8367,7 +8367,7 @@ protected:
 	TechTypes m_eObsoleteTech;
 	PropertyTypes m_ePropertyType;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int m_iToleranceBuildup;
 	int m_iToleranceDecay;
 	int m_iCommunicability;
@@ -8380,7 +8380,7 @@ protected:
 	int m_iOvercomeModifier;
 
 	bool m_bAffliction;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	bool m_bEquipment;
 	bool m_bCritical;
 	bool m_bNoSpreadonBattle;
@@ -8678,7 +8678,7 @@ public:
 	int getVisibilityIntensitySameTileChangeType(int iInvisibility) const;
 	bool isVisibilityIntensitySameTileChangeType(int iInvisibility) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumAidChanges() const;
 	int getAidChange(int iProperty) const;
 	bool isAidChange(int iProperty) const;
@@ -8692,7 +8692,7 @@ public:
 
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	int getNumTerrainAttackChangeModifiers() const;
 	const TerrainModifier& getTerrainAttackChangeModifier(int iTerrain) const;
@@ -8784,10 +8784,10 @@ public:
 	int getNumVisibleImprovementRangeChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumDistanceAttackCommunicabilityTypeChanges() const;
 	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	const CvPropertyManipulators* getPropertyManipulators() const { return &m_PropertyManipulators; }
 
@@ -9019,13 +9019,13 @@ protected:
 	std::vector<UnitCombatModifier> m_aCriticalVSUnitCombatTypeChange;
 	std::vector<UnitCombatModifier> m_aRoundStunVSUnitCombatTypeChange;
 	std::vector<UnitCombatModifier> m_aTrapAvoidanceUnitCombatTypes;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	std::vector<int> m_aiCureAfflictionChangeTypes;
 	std::vector<PromotionLineModifier> m_aAfflictionFortitudeChangeModifiers;
 	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
 	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
 	AidArray m_aAidChanges;
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
 	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;
 	std::vector<InvisibleImprovementChanges> m_aInvisibleImprovementChanges;

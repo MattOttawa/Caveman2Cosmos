@@ -29232,7 +29232,6 @@ int CvPlayer::countAfflictedUnits (PromotionLineTypes eAfflictionLine)
 
 void CvPlayer::recalculateAfflictedUnitCount()
 {
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
 	for (int iI = 0; iI < GC.getNumPromotionLineInfos(); iI++)
 	{
 		if (GC.getPromotionLineInfo((PromotionLineTypes)iI).isAffliction())
@@ -29242,7 +29241,6 @@ void CvPlayer::recalculateAfflictedUnitCount()
 			setPlayerWideAfflictionCount(eAfflictionLine, iRecalc);
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
 }
 #endif // OUTBREAKS_AND_AFFLICTIONS
 

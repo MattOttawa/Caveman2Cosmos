@@ -29886,7 +29886,7 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 	}
 #endif // BATTLEWORN
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	for (iI = 0; iI < kPromotion.getNumAfflictOnAttackChangeTypes(); ++iI)
 	{
 		if (kPromotion.getAfflictOnAttackChangeType(iI).eAfflictionLine > 0)
@@ -29976,7 +29976,7 @@ int CvPlayerAI::AI_promotionValue(PromotionTypes ePromotion, UnitTypes eUnit, co
 			}
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 #ifdef STRENGTH_IN_NUMBERS
 	if (GC.getGame().isOption(GAMEOPTION_STRENGTH_IN_NUMBERS))

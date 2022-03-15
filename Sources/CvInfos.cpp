@@ -2183,9 +2183,9 @@ m_bStampedeChange(false),
 m_bRemoveStampede(false),
 m_bOnslaughtChange(false),
 m_bEquipment(false),
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 m_bAffliction(false),
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 m_bParalyze(false),
 m_bMakesDamageCold(false),
 m_bMakesDamageNotCold(false),
@@ -3427,7 +3427,7 @@ bool CvPromotionInfo::isEquipment() const
 	return GC.getPromotionLineInfo(getPromotionLine()).isEquipment();
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 bool CvPromotionInfo::isAffliction() const
 {
 	if ( getPromotionLine() == NO_PROMOTIONLINE)
@@ -3438,7 +3438,7 @@ bool CvPromotionInfo::isAffliction() const
 	// return the value from the line
 	return GC.getPromotionLineInfo(getPromotionLine()).isAffliction();
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 bool CvPromotionInfo::isParalyze() const
 {
@@ -4301,7 +4301,7 @@ bool CvPromotionInfo::isTrapTriggerUnitCombatType(int iUnitCombat) const
 	return false;
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvPromotionInfo::getNumAidChanges() const
 {
 	return m_aAidChanges.size();
@@ -4330,7 +4330,7 @@ bool CvPromotionInfo::isAidChange(int iProperty) const
 	}
 	return false;
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvPromotionInfo::getNumBuildWorkRateModifierChangeTypes() const
 {
@@ -4459,7 +4459,7 @@ const UnitCombatModifier& CvPromotionInfo::getAIWeightbyUnitCombatType(int iUnit
 	return m_aAIWeightbyUnitCombatTypes[iUnitCombat];
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvPromotionInfo::getNumAfflictionFortitudeChangeModifiers() const
 {
 	return (int)m_aAfflictionFortitudeChangeModifiers.size();
@@ -4481,7 +4481,7 @@ const AfflictOnAttackChange& CvPromotionInfo::getAfflictOnAttackChangeType(int i
 	FASSERT_BOUNDS(0, getNumAfflictOnAttackChangeTypes(), iAfflictionLine);
 	return m_aAfflictOnAttackChangeTypes[iAfflictionLine];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvPromotionInfo::getNumInvisibleTerrainChanges() const
 {
@@ -4573,7 +4573,7 @@ const InvisibleImprovementChanges& CvPromotionInfo::getVisibleImprovementRangeCh
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvPromotionInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
 {
 	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
@@ -4583,7 +4583,7 @@ const AfflictionLineChanges& CvPromotionInfo::getDistanceAttackCommunicabilityTy
 {
 	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvPromotionInfo::getNumHealUnitCombatChangeTypes() const
 {
@@ -4982,9 +4982,9 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bRemoveStampede, L"bRemoveStampede");
 	pXML->GetOptionalChildXmlValByName(&m_bOnslaughtChange, L"bOnslaughtChange");
 	pXML->GetOptionalChildXmlValByName(&m_bEquipment, L"bEquipment");
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->GetOptionalChildXmlValByName(&m_bAffliction, L"bAffliction");
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	pXML->GetOptionalChildXmlValByName(&m_bParalyze, L"bParalyze");
 	pXML->GetOptionalChildXmlValByName(&m_bMakesDamageCold, L"bMakesDamageCold");
 	pXML->GetOptionalChildXmlValByName(&m_bMakesDamageNotCold, L"bMakesDamageNotCold");
@@ -5085,7 +5085,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionFortitudeChangeModifiers"))
 	{
 		int i = 0;
@@ -5132,7 +5132,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if(pXML->TryMoveToXmlFirstChild(L"HealUnitCombatChangeTypes"))
 	{
@@ -5373,7 +5373,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"DistanceAttackCommunicabilityTypeChanges"))
 	{
 		int i = 0;
@@ -5395,7 +5395,7 @@ bool CvPromotionInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 		//TB Combat Mod End
 	//pXML->SetOptionalVectorWithDelayedResolution(PromotionOverwrites, L"PromotionOverwrites");
 
@@ -5756,9 +5756,9 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 	if (isRemoveStampede() == bDefault) m_bRemoveStampede = pClassInfo->isRemoveStampede();
 	if (isOnslaughtChange() == bDefault) m_bOnslaughtChange = pClassInfo->isOnslaughtChange();
 	if (isEquipment() == bDefault) m_bEquipment = pClassInfo->isEquipment();
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (isAffliction() == bDefault) m_bAffliction = pClassInfo->isAffliction();
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	if (isParalyze() == bDefault) m_bParalyze = pClassInfo->isParalyze();
 	if (isMakesDamageCold() == bDefault) m_bMakesDamageCold = pClassInfo->isMakesDamageCold();
 	if (isMakesDamageNotCold() == bDefault) m_bMakesDamageNotCold = pClassInfo->isMakesDamageNotCold();
@@ -5904,7 +5904,7 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aiTrapImmunityUnitCombatTypes, pClassInfo->m_aiTrapImmunityUnitCombatTypes);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getNumAidChanges()==0)
 	{
 		for (int i=0; i < pClassInfo->getNumAidChanges(); i++)
@@ -5914,7 +5914,7 @@ void CvPromotionInfo::copyNonDefaults(const CvPromotionInfo* pClassInfo)
 			m_aAidChanges.push_back(std::make_pair(eProperty, iChange));
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if (getNumTargetUnitCombatTypes() == 0)
 	{
@@ -6438,9 +6438,9 @@ void CvPromotionInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_bRemoveStampede);
 	CheckSum(iSum, m_bOnslaughtChange);
 	CheckSum(iSum, m_bEquipment);
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	CheckSum(iSum, m_bAffliction);
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	CheckSum(iSum, m_bParalyze);
 	CheckSum(iSum, m_bMakesDamageCold);
 	CheckSum(iSum, m_bMakesDamageNotCold);
@@ -6527,7 +6527,7 @@ void CvPromotionInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aAIWeightbyUnitCombatTypes[i].iModifier);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aAfflictionFortitudeChangeModifiers.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
@@ -6544,7 +6544,7 @@ void CvPromotionInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aAfflictOnAttackChangeTypes[i].iDistance);
 		CheckSum(iSum, m_aAfflictOnAttackChangeTypes[i].iImmediate);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	iNumElements = m_aHealUnitCombatChangeTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -6626,14 +6626,14 @@ void CvPromotionInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aVisibleImprovementRangeChanges[i].iIntensity);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aDistanceAttackCommunicabilityTypeChanges.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
 		CheckSum(iSum, m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine);
 		CheckSum(iSum, m_aDistanceAttackCommunicabilityTypeChanges[i].iChange);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	//TB Combat Mods End  TB SubCombat Mod end
 }
 
@@ -13836,7 +13836,7 @@ bool CvFeatureInfo::canBeSecondary() const
 	return !(getArtInfo()->isRiverArt() || (getArtInfo()->getTileArtType() != TILE_ART_TYPE_NONE));
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvFeatureInfo::getNumAfflictionCommunicabilityTypes() const
 {
 	return (int)m_aAfflictionCommunicabilityTypes.size();
@@ -13856,7 +13856,7 @@ PromotionLineAfflictionModifier CvFeatureInfo::getAfflictionCommunicabilityType(
 	}
 	return m_aAfflictionCommunicabilityTypes[iPromotionLine];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 bool CvFeatureInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -13930,7 +13930,7 @@ bool CvFeatureInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(m_szGrowthSound, L"GrowthSound");
 	pXML->SetOptionalVector(&m_aeMapCategoryTypes, L"MapCategoryTypes");
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionCommunicabilityTypes"))
 	{
 		int i = 0;
@@ -13956,7 +13956,7 @@ bool CvFeatureInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	m_PropertyManipulators.read(pXML);
 	return true;
@@ -14054,7 +14054,7 @@ void CvFeatureInfo::copyNonDefaults(const CvFeatureInfo* pClassInfo)
 
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aeMapCategoryTypes, pClassInfo->getMapCategories());
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getNumAfflictionCommunicabilityTypes() == 0)
 	{
 		const int iNum = pClassInfo->getNumAfflictionCommunicabilityTypes();
@@ -14068,7 +14068,7 @@ void CvFeatureInfo::copyNonDefaults(const CvFeatureInfo* pClassInfo)
 			m_aAfflictionCommunicabilityTypes[i].bWorkedTile = pClassInfo->m_aAfflictionCommunicabilityTypes[i].bWorkedTile;
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	m_PropertyManipulators.copyNonDefaults(&pClassInfo->m_PropertyManipulators);
 }
@@ -14114,14 +14114,14 @@ void CvFeatureInfo::getCheckSum(uint32_t &iSum) const
 
 	CheckSum(iSum, m_pbTerrain, GC.getNumTerrainInfos());
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	const int iNumElements = m_aAfflictionCommunicabilityTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
 		CheckSum(iSum, m_aAfflictionCommunicabilityTypes[i].ePromotionLine);
 		CheckSum(iSum, m_aAfflictionCommunicabilityTypes[i].iModifier);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	m_PropertyManipulators.getCheckSum(iSum);
 }
@@ -14645,7 +14645,7 @@ bool CvTerrainInfo::read(CvXMLLoadUtility* pXML)
 	//TB Combat Mods begin
 	pXML->GetOptionalChildXmlValByName(&m_bColdDamage, L"bColdDamage");
 	//TB Combat Mods end
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionCommunicabilityTypes"))
 	{
 		int i = 0;
@@ -14671,7 +14671,7 @@ bool CvTerrainInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	return true;
 }
@@ -31018,7 +31018,7 @@ CvPromotionLineInfo::CvPromotionLineInfo() :
 									m_ePrereqTech(NO_TECH),
 									m_eObsoleteTech(NO_TECH),
 									m_ePropertyType(NO_PROPERTY),
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 									m_iToleranceBuildup(0),
 									m_iToleranceDecay(0),
 									m_iCommunicability(0),
@@ -31030,7 +31030,7 @@ CvPromotionLineInfo::CvPromotionLineInfo() :
 									m_iOutbreakModifier(100),
 									m_iOvercomeModifier(100),
 									m_bAffliction(false),
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 									m_bEquipment(false),
 									m_bCritical(false),
 									m_bNoSpreadonBattle(false),
@@ -31063,7 +31063,7 @@ bool CvPromotionLineInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(szTextVal, L"PropertyType");
 	m_ePropertyType = (PropertyTypes) pXML->GetInfoClass(szTextVal);
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->GetOptionalChildXmlValByName(&m_iToleranceBuildup, L"iToleranceBuildup");
 	pXML->GetOptionalChildXmlValByName(&m_iToleranceDecay, L"iToleranceDecay");
 	pXML->GetOptionalChildXmlValByName(&m_iCommunicability, L"iCommunicability");
@@ -31075,7 +31075,7 @@ bool CvPromotionLineInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_iOutbreakModifier, L"iOutbreakModifier", 100);
 	pXML->GetOptionalChildXmlValByName(&m_iOvercomeModifier, L"iOvercomeModifier", 100);
 	pXML->GetOptionalChildXmlValByName(&m_bAffliction, L"bAffliction");
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	pXML->GetOptionalChildXmlValByName(&m_bEquipment, L"bEquipment");
 	pXML->GetOptionalChildXmlValByName(&m_bCritical, L"bCritical");
 	pXML->GetOptionalChildXmlValByName(&m_bNoSpreadonBattle, L"bNoSpreadonBattle");
@@ -31115,7 +31115,7 @@ void CvPromotionLineInfo::copyNonDefaults(const CvPromotionLineInfo* pClassInfo)
 
 	if (getPrereqTech() == NO_TECH) m_ePrereqTech = pClassInfo->getPrereqTech();
 	if (getObsoleteTech() == NO_TECH) m_eObsoleteTech = pClassInfo->getObsoleteTech();
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getToleranceBuildup() == iDefault) m_iToleranceBuildup = pClassInfo->getToleranceBuildup();
 	if (getToleranceDecay() == iDefault) m_iToleranceDecay = pClassInfo->getToleranceDecay();
 	if (getCommunicability() == iDefault) m_iCommunicability = pClassInfo->getCommunicability();
@@ -31127,7 +31127,7 @@ void CvPromotionLineInfo::copyNonDefaults(const CvPromotionLineInfo* pClassInfo)
 	if (getOutbreakModifier() == iDefault) m_iOutbreakModifier = pClassInfo->getOutbreakModifier();
 	if (getOvercomeModifier() == iDefault) m_iOvercomeModifier = pClassInfo->getOvercomeModifier();
 	if (isAffliction() == bDefault) m_bAffliction = pClassInfo->isAffliction();
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	if (isEquipment() == bDefault) m_bEquipment = pClassInfo->isEquipment();
 	if (isCritical() == bDefault) m_bCritical = pClassInfo->isCritical();
 	if (isNoSpreadonBattle() == bDefault) m_bNoSpreadonBattle = pClassInfo->isNoSpreadonBattle();
@@ -31267,7 +31267,7 @@ TechTypes CvPromotionLineInfo::getObsoleteTech() const
 	return m_eObsoleteTech;
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvPromotionLineInfo::getToleranceBuildup() const
 {
 	return m_iToleranceBuildup;
@@ -31317,7 +31317,7 @@ int CvPromotionLineInfo::getOvercomeModifier() const
 {
 	return m_iOvercomeModifier;
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 bool CvPromotionLineInfo::isEquipment() const
 {
@@ -31797,7 +31797,7 @@ CvUnitCombatInfo::~CvUnitCombatInfo()
 		SAFE_DELETE(outcomeMission);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	for (int i=0; i<(int)m_aiCureAfflictionChangeTypes.size(); i++)
 	{
 		GC.removeDelayedResolution((int*)&(m_aiCureAfflictionChangeTypes[i]));
@@ -31807,7 +31807,7 @@ CvUnitCombatInfo::~CvUnitCombatInfo()
 	{
 		GC.removeDelayedResolution((int*)&(m_aAfflictionFortitudeChangeModifiers[i]));
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	for (int i=0; i<(int)m_aBuildWorkChangeModifiers.size(); i++)
 	{
@@ -33143,7 +33143,7 @@ bool CvUnitCombatInfo::isVisibilityIntensitySameTileChangeType(int iInvisibility
 	return false;
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitCombatInfo::getNumAidChanges() const
 {
 	return m_aAidChanges.size();
@@ -33183,7 +33183,7 @@ const PromotionLineModifier& CvUnitCombatInfo::getAfflictionFortitudeChangeModif
 	FASSERT_BOUNDS(0, getNumAfflictionFortitudeChangeModifiers(), iAfflictionLine);
 	return m_aAfflictionFortitudeChangeModifiers[iAfflictionLine];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvUnitCombatInfo::getNumTerrainAttackChangeModifiers() const
 {
@@ -33405,7 +33405,7 @@ const UnitCombatModifier& CvUnitCombatInfo::getTrapAvoidanceUnitCombatType(int i
 	return m_aTrapAvoidanceUnitCombatTypes[iIndex];
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitCombatInfo::getNumAfflictOnAttackChangeTypes() const
 {
 	return (int)m_aAfflictOnAttackChangeTypes.size();
@@ -33416,7 +33416,7 @@ const AfflictOnAttackChange& CvUnitCombatInfo::getAfflictOnAttackChangeType(int 
 	FASSERT_BOUNDS(0, getNumAfflictOnAttackChangeTypes(), iAfflictionLine);
 	return m_aAfflictOnAttackChangeTypes[iAfflictionLine];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvUnitCombatInfo::getNumInvisibleTerrainChanges() const
 {
@@ -33508,7 +33508,7 @@ const InvisibleImprovementChanges& CvUnitCombatInfo::getVisibleImprovementRangeC
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitCombatInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
 {
 	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
@@ -33518,7 +33518,7 @@ const AfflictionLineChanges& CvUnitCombatInfo::getDistanceAttackCommunicabilityT
 {
 	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 {
@@ -33748,9 +33748,9 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 	//Arrays
 	pXML->SetVariableListTagPair(&m_piDomainModifierPercent, L"DomainMods", NUM_DOMAIN_TYPES);
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiCureAfflictionChangeTypes, L"CureAfflictionChangeTypes");
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	pXML->SetOptionalVector(&m_aiTerrainIgnoreDamageChangeTypes, L"TerrainIgnoreDamageChangeTypes");
 	pXML->SetOptionalVector(&m_aiTerrainDoubleMoveChangeTypes, L"TerrainDoubleMoveChangeTypes");
 	pXML->SetOptionalVector(&m_aiFeatureDoubleMoveChangeTypes, L"FeatureDoubleMoveChangeTypes");
@@ -33967,7 +33967,7 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->SetOptionalPairVector<AidArray, PropertyTypes, int>(&m_aAidChanges, L"AidChanges");
 
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionFortitudeChangeModifiers"))
@@ -33993,7 +33993,7 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if(pXML->TryMoveToXmlFirstChild(L"TerrainAttackChangeModifiers"))
 	{
@@ -34469,7 +34469,7 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictOnAttackChangeTypes"))
 	{
 		int i = 0;
@@ -34496,7 +34496,7 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if(pXML->TryMoveToXmlFirstChild(L"InvisibleTerrainChanges"))
 	{
@@ -34723,7 +34723,7 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"DistanceAttackCommunicabilityTypeChanges"))
 	{
 		int i = 0;
@@ -34746,7 +34746,7 @@ bool CvUnitCombatInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	m_PropertyManipulators.read(pXML);
 
@@ -34968,7 +34968,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 		}
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getNumCureAfflictionChangeTypes() == 0)
 	{
 		const int iNum = pClassInfo->getNumCureAfflictionChangeTypes();
@@ -34978,7 +34978,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 			GC.copyNonDefaultDelayedResolution((int*)&(m_aiCureAfflictionChangeTypes[i]), (int*)&(pClassInfo->m_aiCureAfflictionChangeTypes[i]));
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if (getNumTerrainIgnoreDamageChangeTypes() == 0)
 	{
@@ -35090,7 +35090,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 		}
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getNumAidChanges()==0)
 	{
 		for (int i=0; i < pClassInfo->getNumAidChanges(); i++)
@@ -35111,7 +35111,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 			GC.copyNonDefaultDelayedResolution((int*)&(m_aAfflictionFortitudeChangeModifiers[i].ePromotionLine), (int*)&(pClassInfo->m_aAfflictionFortitudeChangeModifiers[i].ePromotionLine));
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if (getNumTerrainAttackChangeModifiers() == 0)
 	{
@@ -35297,7 +35297,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 		}
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getNumAfflictOnAttackChangeTypes() == 0)
 	{
 		const int iNum = pClassInfo->getNumAfflictOnAttackChangeTypes();
@@ -35311,7 +35311,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 			GC.copyNonDefaultDelayedResolution((int*)&(m_aAfflictOnAttackChangeTypes[i].eAfflictionLine), (int*)&(pClassInfo->m_aAfflictOnAttackChangeTypes[i].eAfflictionLine));
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if (getNumInvisibleTerrainChanges() == 0)
 	{
@@ -35358,7 +35358,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 		CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aVisibleImprovementRangeChanges, pClassInfo->m_aVisibleImprovementRangeChanges);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getNumDistanceAttackCommunicabilityTypeChanges() == 0)
 	{
 		const int iNum = pClassInfo->getNumDistanceAttackCommunicabilityTypeChanges();
@@ -35369,7 +35369,7 @@ void CvUnitCombatInfo::copyNonDefaults(CvUnitCombatInfo* pClassInfo)
 			GC.copyNonDefaultDelayedResolution((int*)&(m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine), (int*)&(pClassInfo->m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine));
 		}
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	m_PropertyManipulators.copyNonDefaults(&pClassInfo->m_PropertyManipulators);
 }
@@ -35573,10 +35573,10 @@ void CvUnitCombatInfo::getCheckSum(uint32_t& iSum) const
 	CheckSumC(iSum, m_aInvisibilityIntensityChangeTypes);
 	CheckSumC(iSum, m_aVisibilityIntensityRangeChangeTypes);
 	CheckSumC(iSum, m_aVisibilityIntensitySameTileChangeTypes);
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	CheckSumC(iSum, m_aAidChanges);
 	CheckSumC(iSum, m_aiCureAfflictionChangeTypes);
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 	CheckSumC(iSum, m_aiTerrainIgnoreDamageChangeTypes);
 	CheckSumC(iSum, m_aiTerrainDoubleMoveChangeTypes);
 	CheckSumC(iSum, m_aiFeatureDoubleMoveChangeTypes);
@@ -35587,14 +35587,14 @@ void CvUnitCombatInfo::getCheckSum(uint32_t& iSum) const
 	CheckSumC(iSum, m_aiTrapImmunityUnitCombatTypes);
 
 	int iNumElements;
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aAfflictionFortitudeChangeModifiers.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
 		CheckSum(iSum, m_aAfflictionFortitudeChangeModifiers[i].ePromotionLine);
 		CheckSum(iSum, m_aAfflictionFortitudeChangeModifiers[i].iModifier);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	iNumElements = m_aTerrainAttackChangeModifiers.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -35736,7 +35736,7 @@ void CvUnitCombatInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aTrapAvoidanceUnitCombatTypes[i].iModifier);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aAfflictOnAttackChangeTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
@@ -35746,7 +35746,7 @@ void CvUnitCombatInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aAfflictOnAttackChangeTypes[i].iDistance);
 		CheckSum(iSum, m_aAfflictOnAttackChangeTypes[i].iImmediate);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	iNumElements = m_aInvisibleTerrainChanges.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -35820,14 +35820,14 @@ void CvUnitCombatInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aVisibleImprovementRangeChanges[i].iIntensity);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aDistanceAttackCommunicabilityTypeChanges.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
 		CheckSum(iSum, m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine);
 		CheckSum(iSum, m_aDistanceAttackCommunicabilityTypeChanges[i].iChange);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	m_PropertyManipulators.getCheckSum(iSum);
 }

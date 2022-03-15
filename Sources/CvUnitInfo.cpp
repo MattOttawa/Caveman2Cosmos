@@ -2586,7 +2586,7 @@ const std::vector<UnitCombatTypes>& CvUnitInfo::getSubCombatTypes() const
 	return m_aiSubCombatTypes;
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitInfo::getCureAfflictionType(int i) const
 {
 	return m_aiCureAfflictionTypes[i];
@@ -2602,7 +2602,7 @@ bool CvUnitInfo::isCureAfflictionType(int i) const
 	FASSERT_BOUNDS(0, GC.getNumPromotionLineInfos(), i);
 	return algo::any_of_equal(m_aiCureAfflictionTypes, i);
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvUnitInfo::getHealAsType(int i) const
 {
@@ -3549,7 +3549,7 @@ bool CvUnitInfo::isBuildWorkRateModifierType(int iBuild) const
 	return false;
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitInfo::getNumAidChanges() const
 {
 	return m_aAidChanges.size();
@@ -3578,7 +3578,7 @@ bool CvUnitInfo::isAidChange(int iProperty) const
 	}
 	return false;
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 //TB Combat Mods End  TB SubCombat Mod end
 
 void CvUnitInfo::getDataMembers(CvInfoUtil& util)
@@ -3926,7 +3926,7 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	// int vectors utilizing struct with delayed resolution
 	int iNumElements;
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aAfflictionFortitudeModifiers.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
@@ -3943,7 +3943,7 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aAfflictOnAttackTypes[i].iDistance);
 		CheckSum(iSum, m_aAfflictOnAttackTypes[i].iImmediate);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	iNumElements = m_aHealUnitCombatTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -4031,14 +4031,14 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aVisibleImprovementRangeChanges[i].iIntensity);
 	}
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aDistanceAttackCommunicabilityTypeChanges.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
 		CheckSum(iSum, m_aDistanceAttackCommunicabilityTypeChanges[i].eAfflictionLine);
 		CheckSum(iSum, m_aDistanceAttackCommunicabilityTypeChanges[i].iChange);
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	iNumElements = m_aEnabledCivilizationTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -4598,7 +4598,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->SetOptionalVector(&m_aiTrapSetWithPromotionTypes, L"TrapSetWithPromotionTypes");
 	pXML->SetOptionalVector(&m_aiTrapImmunityUnitCombatTypes, L"TrapImmunityUnitCombatTypes");
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"AfflictionFortitudeModifiers"))
 	{
 		int i = 0;
@@ -4645,7 +4645,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 	if(pXML->TryMoveToXmlFirstChild(L"HealUnitCombatTypes"))
 	{

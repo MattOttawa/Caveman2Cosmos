@@ -1213,7 +1213,7 @@ const HealUnitCombat& CvBuildingInfo::getHealUnitCombatType(int iUnitCombat) con
 	return m_aHealUnitCombatTypes[iUnitCombat];
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvBuildingInfo::getNumBonusAidModifiers() const
 {
 	return (int)m_aBonusAidModifiers.size();
@@ -1233,7 +1233,7 @@ const AidRateChanges& CvBuildingInfo::getAidRateChange(int iIndex) const
 {
 	return m_aAidRateChanges[iIndex];
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvBuildingInfo::getNumEnabledCivilizationTypes() const
 {
@@ -1380,7 +1380,7 @@ int CvBuildingInfo::getUnitCombatOngoingTrainingDuration(int iUnitCombat, bool b
 	return 0;
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS_XML
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvBuildingInfo::getNumAfflictionOutbreakLevelChanges() const
 {
 	return m_aAfflictionOutbreakLevelChanges.size();
@@ -1415,7 +1415,7 @@ int CvBuildingInfo::getTechOutbreakLevelChange(int iTech) const
 	}
 	return 0;
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS_XML
+#endif // OUTBREAKS_AND_AFFLICTIONS
 
 int CvBuildingInfo::getTechHappiness(TechTypes eTech) const
 {
