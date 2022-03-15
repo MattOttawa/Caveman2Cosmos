@@ -1337,8 +1337,8 @@ protected:
 	std::vector<int> m_aiNotOnUnitCombatTypes;
 	std::vector<int> m_aiNotOnDomainTypes;
 	std::vector<int> m_aiNoAutoEquiptoCombatClassTypes;
-	std::vector<int> m_aiMapTypes;
-	std::vector<int> m_aiPrereqBonusTypes;
+	std::vector<MapCategoryTypes> m_aeMapCategoryTypes;
+	std::vector<BonusTypes> m_aiPrereqBonusTypes;
 	std::vector<int> m_aiAddsBuildTypes;
 	std::vector<int> m_aiNegatesInvisibilityTypes;
 	std::vector<int> m_aiPrereqTerrainTypes;
