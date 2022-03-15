@@ -131,7 +131,8 @@ struct ECvPlotGraphics
 };
 DECLARE_FLAGS(ECvPlotGraphics::type);
 
-class CvPlot : bst::noncopyable
+class CvPlot
+	: private bst::noncopyable
 {
 friend CvPathPlotInfoStore;
 public:
@@ -179,7 +180,8 @@ public:
 
 	void doTurn();
 
-	void doImprovement();
+	bool doBonusDiscovery();
+	void doBonusDepletion();
 
 	void updateCulture(bool bBumpUnits, bool bUpdatePlotGroups);
 
@@ -207,6 +209,7 @@ public:
 	bool isPlotGroupConnectedBonus(PlayerTypes ePlayer, BonusTypes eBonus) const;
 	bool isAdjacentPlotGroupConnectedBonus(PlayerTypes ePlayer, BonusTypes eBonus) const;
 	void updatePlotGroupBonus(bool bAdd);
+	bool isBonusExtracted(const TeamTypes eTeamPerspective = NO_TEAM) const;
 
 	bool isAdjacentToArea(int iAreaID) const;
 	bool isAdjacentToArea(const CvArea* pArea) const;
@@ -334,11 +337,7 @@ public:
 	void setClaimingOwner(PlayerTypes eNewValue);
 
 	bool isActsAsCity() const;
-	bool isCanMoveLandUnits() const;
 	bool isCanMoveSeaUnits() const;
-	bool isCanMoveAllUnits() const;
-	bool isCanUseRouteLandUnits() const;
-	bool isCanUseRouteSeaUnits() const;
 	bool isSeaTunnel() const;
 	int getRevoltProtection() const;
 	int getAverageEnemyStrength(TeamTypes eTeam) const;
@@ -391,6 +390,7 @@ protected:
 
 public:
 	PlayerTypes calculateCulturalOwner() const;
+	PlayerTypes getPlayerWithTerritorySurroundingThisPlotCardinally() const;
 
 	void plotAction(PlotUnitFunc func, int iData1 = -1, int iData2 = -1, PlayerTypes eOwner = NO_PLAYER, TeamTypes eTeam = NO_TEAM);
 	int plotCount(ConstPlotUnitFunc funcA, int iData1A = -1, int iData2A = -1, const CvUnit* pUnit = NULL, PlayerTypes eOwner = NO_PLAYER, TeamTypes eTeam = NO_TEAM, ConstPlotUnitFunc funcB = NULL, int iData1B = -1, int iData2B = -1, int iRange = 0) const;
@@ -399,7 +399,6 @@ public:
 	int plotStrengthTimes100(UnitValueFlags eFlags, ConstPlotUnitFunc funcA, int iData1A = -1, int iData2A = -1, PlayerTypes eOwner = NO_PLAYER, TeamTypes eTeam = NO_TEAM, ConstPlotUnitFunc funcB = NULL, int iData1B = -1, int iData2B = -1, int iRange = 0) const;
 
 	bool isOwned() const;
-	bool isBarbarian() const;
 	bool isNPC() const;
 	bool isHominid() const;
 	bool isRevealedBarbarian() const;
@@ -471,49 +470,35 @@ public:
 	bool isInViewport(int comfortBorderSize = 0) const;
 
 	// Base iterator type for iterating over adjacent valid plots
-	template < class Value_ >
-	struct adjacent_iterator_base :
-		public bst::iterator_facade<adjacent_iterator_base<Value_>, Value_*, bst::forward_traversal_tag, Value_*>
+	struct adjacent_iterator :
+		public bst::iterator_facade<adjacent_iterator, CvPlot*, bst::forward_traversal_tag, CvPlot*>
 	{
-		adjacent_iterator_base() : m_centerX(-1), m_centerY(-1), m_curr(nullptr), m_idx(0) {}
-		explicit adjacent_iterator_base(int centerX, int centerY) : m_centerX(centerX), m_centerY(centerY), m_curr(nullptr), m_idx(0)
-		{
-			increment();
-		}
+		adjacent_iterator();
+		adjacent_iterator(int centerX, int centerY, int numPlots, const int* plotDirectionX, const int* plotDirectionY);
 
 	private:
 		friend class bst::iterator_core_access;
-		void increment()
-		{
-			m_curr = nullptr;
-			while (m_curr == nullptr && m_idx < NUM_DIRECTION_TYPES)
-			{
-				m_curr = plotDirection(m_centerX, m_centerY, ((DirectionTypes)m_idx));
-				++m_idx;
-			}
-		}
-		bool equal(adjacent_iterator_base const& other) const
-		{
-			return (this->m_centerX == other.m_centerX
-				&& this->m_centerY == other.m_centerY
-				&& this->m_idx == other.m_idx)
-				|| (this->m_curr == NULL && other.m_curr == NULL);
-		}
+		void increment();
+		bool equal(adjacent_iterator const& other) const;
+		CvPlot* dereference() const { return m_curr; }
 
-		Value_* dereference() const { return m_curr; }
-
-		int m_centerX;
-		int m_centerY;
-		Value_* m_curr;
+		const int m_centerX;
+		const int m_centerY;
+		const int m_numPlots;
+		const int* m_plotDirectionX;
+		const int* m_plotDirectionY;
+		const CvMap* m_map;
+		CvPlot* m_curr;
 		int m_idx;
 	};
-	typedef adjacent_iterator_base<CvPlot> adjacent_iterator;
 
-	adjacent_iterator beginAdjacent() const { return adjacent_iterator(getX(), getY()); }
-	adjacent_iterator endAdjacent() const { return adjacent_iterator(); }
+	adjacent_iterator beginAdjacent(int numPlots, const int* plotDirectionX, const int* plotDirectionY) const;
+	adjacent_iterator endAdjacent() const;
 
 	typedef bst::iterator_range<adjacent_iterator> adjacent_range;
-	adjacent_range adjacent() const { return adjacent_range(beginAdjacent(), endAdjacent()); }
+
+	adjacent_range adjacent() const;
+	adjacent_range cardinalDirectionAdjacent() const;
 
 	// Base iterator type for iterating over a rectangle of plots
 	template < class Value_ >
@@ -521,7 +506,7 @@ public:
 		public bst::iterator_facade<rect_iterator_base<Value_>, Value_*, bst::forward_traversal_tag, Value_*>
 	{
 		rect_iterator_base() : m_centerX(-1), m_centerY(-1), m_wid(-1), m_hgt(-1), m_curr(nullptr), m_x(0), m_y(0){}
-		explicit rect_iterator_base(int centerX, int centerY, int halfwid, int halfhgt) : m_centerX(centerX), m_centerY(centerY), m_wid(halfwid), m_hgt(halfhgt), m_curr(nullptr), m_x(-halfwid), m_y(-halfhgt)
+		rect_iterator_base(int centerX, int centerY, int halfwid, int halfhgt) : m_centerX(centerX), m_centerY(centerY), m_wid(halfwid), m_hgt(halfhgt), m_curr(nullptr), m_x(-halfwid), m_y(-halfhgt)
 		{
 			increment();
 		}
@@ -555,10 +540,10 @@ public:
 
 		Value_* dereference() const { return m_curr; }
 
-		int m_centerX;
-		int m_centerY;
-		int m_wid;
-		int m_hgt;
+		const int m_centerX;
+		const int m_centerY;
+		const int m_wid;
+		const int m_hgt;
 		Value_* m_curr;
 		int m_x;
 		int m_y;
@@ -619,11 +604,6 @@ public:
 	int getOwnershipDuration() const;
 	bool isOwnershipScore() const;
 	void setOwnershipDuration(int iNewValue);
-	void changeOwnershipDuration(int iChange);
-
-	int getImprovementDuration() const;
-	void setImprovementDuration(int iNewValue);
-	void changeImprovementDuration(int iChange);
 
 	int getImprovementUpgradeProgress() const;
 	int getUpgradeTimeLeft(ImprovementTypes eImprovement, PlayerTypes ePlayer) const;
@@ -909,7 +889,7 @@ public:
 	bool canApplyEvent(EventTypes eEvent) const;
 	void applyEvent(EventTypes eEvent);
 
-	bool canTrain(UnitTypes eUnit, bool bContinue, bool bTestVisible) const;
+	bool canTrain(UnitTypes eUnit, bool bTestVisible) const;
 
 	bool isEspionageCounterSpy(TeamTypes eTeam) const;
 
@@ -937,7 +917,6 @@ protected:
 	mutable CvArea *m_pPlotArea;
 	short m_iFeatureVariety;
 	short m_iOwnershipDuration;
-	short m_iImprovementDuration;
 	short m_iUpgradeProgress;
 	short m_iForceUnownedTimer;
 	short m_iCityRadiusCount;

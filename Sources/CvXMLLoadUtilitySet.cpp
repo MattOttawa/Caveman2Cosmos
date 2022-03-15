@@ -8,6 +8,8 @@
 #include "CvGameTextMgr.h"
 #include "CvGlobals.h"
 #include "CvImprovementInfo.h"
+#include "CvBonusInfo.h"
+#include "CvInfoClassTraits.h"
 #include "CvInfos.h"
 #include "CvInfoWater.h"
 #include "CvInitCore.h"
@@ -777,6 +779,8 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 {
 	OutputDebugString("Loading PreMenu Infos: Start\n");
 
+	GC.registerNPCPlayers();
+
 	//ReplacementStep: search down here for 'InfoReplacements()'
 	if (!CreateFXml())
 	{
@@ -847,7 +851,7 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 	}
 
 	LoadGlobalClassInfo(GC.m_paSpecialBuildingInfo, "CIV4SpecialBuildingInfos", "Buildings", L"/Civ4SpecialBuildingInfos/SpecialBuildingInfos/SpecialBuildingInfo", false, &GC.m_SpecialBuildingInfoReplacements);
-	LoadGlobalClassInfo(GC.m_paBuildingInfo, "CIV4BuildingInfos", "Buildings", L"/Civ4BuildingInfos/BuildingInfos/BuildingInfo", true, &GC.m_BuildingInfoReplacements);
+	LoadGlobalClassInfo(GC.m_paBuildingInfo, "CIV4BuildingInfos", "Buildings", L"/Civ4BuildingInfos/BuildingInfos/BuildingInfo", false, &GC.m_BuildingInfoReplacements);
 	LoadGlobalClassInfo(GC.m_paCivicInfo, "CIV4CivicInfos", "GameInfo", L"/Civ4CivicInfos/CivicInfos/CivicInfo", false, &GC.m_CivicInfoReplacements);
 	LoadGlobalClassInfo(GC.m_paPlayerColorInfo, "CIV4PlayerColorInfos", "Interface", L"/Civ4PlayerColorInfos/PlayerColorInfos/PlayerColorInfo", false);
 	LoadGlobalClassInfo(GC.m_paBuildInfo, "CIV4BuildInfos", "Units", L"/Civ4BuildInfos/BuildInfos/BuildInfo", false, &GC.m_BuildInfoReplacements);
@@ -986,23 +990,6 @@ bool CvXMLLoadUtility::LoadPreMenuGlobals()
 		{
 			GC.getNumAIPlayableCivilizationInfos() += 1;
 		}
-	}
-
-	GC.getInitCore().checkInitialCivics();
-
-
-	//Establish Promotion Pedia Help info
-	for (int iI = 0; iI < GC.getNumPromotionInfos(); iI++)
-	{
-		const PromotionTypes ePromotion = static_cast<PromotionTypes>(iI);
-		GC.getPromotionInfo(ePromotion).setQualifiedUnitCombatTypes();
-		GC.getPromotionInfo(ePromotion).setDisqualifiedUnitCombatTypes();
-	}
-	for (int iI = 0; iI < GC.getNumUnitInfos(); iI++)
-	{
-		UnitTypes eUnit = static_cast<UnitTypes>(iI);
-		GC.getUnitInfo(eUnit).setQualifiedPromotionTypes();
-		GC.getUnitInfo(eUnit).setCanAnimalIgnores();
 	}
 
 	GC.doPostLoadCaching();
@@ -1582,7 +1569,7 @@ void CvXMLLoadUtility::SetGameText(const wchar_t* szTextGroup, const wchar_t* sz
 //
 //------------------------------------------------------------------------------------------------------
 template <class T>
-void CvXMLLoadUtility::SetGlobalClassInfo(std::vector<T*>& aInfos, const wchar_t* szTagName, bool bTwoPass, CvInfoReplacements<T>* pReplacements)
+void CvXMLLoadUtility::SetGlobalClassInfo(std::vector<T*>& aInfos, const wchar_t* szTagName, CvInfoReplacements<T>* pReplacements)
 {
 	char szLog[256];
 	char* tmp = xercesc::XMLString::transcode(szTagName);
@@ -1855,21 +1842,21 @@ void CvXMLLoadUtility::SetDiplomacyInfo(std::vector<CvDiplomacyInfo*>& DiploInfo
 template <class T>
 void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* szFileRoot, const char* szFileDirectory, const wchar_t* szXmlPath, bool bTwoPass, CvInfoReplacements<T>* pReplacements)
 {
-	GC.addToInfosVectors(&aInfos);
+	GC.addToInfosVectors(&aInfos, InfoClassTraits<T>::InfoClassEnum);
 
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: %s\n", szFileRoot);
 
 	std::vector<CvString> aszFiles;
-	CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+	const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
 	CvXMLLoadUtilitySetMod::MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
-	if(aszFiles.size() == 0)
+	if (aszFiles.empty())
 		aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
 	foreach_(const CvString& szFile, aszFiles)
 	{
 		if (LoadCivXml(szFile))
 		{
-			SetGlobalClassInfo(aInfos, szXmlPath, false, pReplacements);
+			SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 		}
 	}
 
@@ -1882,7 +1869,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			if (LoadCivXml(szFile))
 			{
-				SetGlobalClassInfo(aInfos, szXmlPath, false, pReplacements);
+				SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 			}
 		}
 
@@ -1890,9 +1877,9 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		if (bTwoPass)
 		{
 			std::vector<CvString> aszFiles;
-			CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+			const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
 			CvXMLLoadUtilitySetMod::MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
-			if(aszFiles.size() == 0)
+			if (aszFiles.empty())
 				aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
 
 			foreach_(const CvString& szFile, aszFiles)
@@ -1939,7 +1926,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		{
 			if (LoadCivXml(szFile))
 			{
-				SetGlobalClassInfo(aInfos, szXmlPath, false, pReplacements);
+				SetGlobalClassInfo(aInfos, szXmlPath, pReplacements);
 			}
 		}
 
@@ -1947,7 +1934,7 @@ void CvXMLLoadUtility::LoadGlobalClassInfo(std::vector<T*>& aInfos, const char* 
 		if (bTwoPass)
 		{
 			std::vector<CvString> aszFiles;
-			CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
+			const CvString szModDirectory = GC.getInitCore().getDLLPath() + "\\xml\\";
 			CvXMLLoadUtilitySetMod::MLFEnumerateFiles(aszFiles, (szModDirectory + szFileDirectory).c_str(), CvString::format("xml\\%s", szFileDirectory).c_str(), CvString::format("%s.xml", szFileRoot).c_str(), false);
 			if (aszFiles.empty())
 				aszFiles.push_back(CvString::format("xml\\%s/%s.xml", szFileDirectory, szFileRoot));
@@ -2215,12 +2202,12 @@ int CvXMLLoadUtility::SetYields(int** ppiYield)
 
 //------------------------------------------------------------------------------------------------------
 //
-//  FUNCTION:   SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTime, int** ppiFeatureProduction, bool** ppbFeatureRemove, bool** ppbNoTechCanRemoveWithNoProductionGain)
+//  FUNCTION:   SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTime, int** ppiFeatureProduction, bool** ppbFeatureRemove)
 //
 //  PURPOSE :   allocate and set the feature struct variables for the CvBuildInfo class
 //	Last Modified: Afforess, 5/25/10
 //------------------------------------------------------------------------------------------------------
-void CvXMLLoadUtility::SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTime, int** ppiFeatureProduction, bool** ppbFeatureRemove, bool** ppbNoTechCanRemoveWithNoProductionGain)
+void CvXMLLoadUtility::SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTime, int** ppiFeatureProduction, bool** ppbFeatureRemove)
 {
 	int i=0;				//loop counter
 	int iNumChildren;		// the number of siblings the current xml node has
@@ -2230,7 +2217,6 @@ void CvXMLLoadUtility::SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTi
 	int* paiFeatureTime = NULL;
 	int* paiFeatureProduction = NULL;
 	bool* pabFeatureRemove = NULL;
-	bool* pabNoTechCanRemoveWithNoProductionGain = NULL;
 
 	if(GC.getNumFeatureInfos() < 1)
 	{
@@ -2242,13 +2228,11 @@ void CvXMLLoadUtility::SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTi
 	InitList(ppiFeatureTime, GC.getNumFeatureInfos());
 	InitList(ppiFeatureProduction, GC.getNumFeatureInfos());
 	InitList(ppbFeatureRemove, GC.getNumFeatureInfos());
-	InitList(ppbNoTechCanRemoveWithNoProductionGain, GC.getNumFeatureInfos());
 
 	paiFeatureTech = *ppiFeatureTech;
 	paiFeatureTime = *ppiFeatureTime;
 	paiFeatureProduction = *ppiFeatureProduction;
 	pabFeatureRemove = *ppbFeatureRemove;
-	pabNoTechCanRemoveWithNoProductionGain = *ppbNoTechCanRemoveWithNoProductionGain;
 
 	if (TryMoveToXmlFirstChild(L"FeatureStructs"))
 	{
@@ -2279,7 +2263,6 @@ void CvXMLLoadUtility::SetFeatureStruct(int** ppiFeatureTech, int** ppiFeatureTi
 					GetChildXmlValByName(&paiFeatureTime[iFeatureIndex], L"iTime");
 					GetChildXmlValByName(&paiFeatureProduction[iFeatureIndex], L"iProduction");
 					GetOptionalChildXmlValByName(&pabFeatureRemove[iFeatureIndex], L"bRemove");
-					GetOptionalChildXmlValByName(&pabNoTechCanRemoveWithNoProductionGain[iFeatureIndex], L"bCanRemoveWithNoProductionGain");
 
 					if (!TryMoveToXmlNextSibling())
 					{
@@ -2880,7 +2863,7 @@ void CvXMLLoadUtility::ModularLoadingControlXML()
 template <class T>
 bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<T*>& aInfos, const char* szFileRoot, const wchar_t* szXmlPath)
 {
-	GC.addToInfosVectors(&aInfos);
+	GC.addToInfosVectors(&aInfos, InfoClassTraits<T>::InfoClassEnum);
 	DEBUG_LOG("MLF.log", "Entering MLF");
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: MLF_CIV4ModularLoadingControls\n");
 

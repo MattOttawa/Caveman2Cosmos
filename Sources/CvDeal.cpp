@@ -2,6 +2,7 @@
 
 #include "CvGameCoreDLL.h"
 #include "CvBuildingInfo.h"
+#include "CvBonusInfo.h"
 #include "CvDeal.h"
 #include "CvEventReporter.h"
 #include "CvGameAI.h"
@@ -1444,7 +1445,7 @@ bool CvDeal::isCancelable(PlayerTypes eByPlayer, CvWString* pszReason)
 		return false;
 	}
 
-	int iTurns = turnsToCancel(eByPlayer);
+	const int iTurns = turnsToCancel();
 	if (pszReason)
 	{
 		if (iTurns > 0)
@@ -1456,7 +1457,7 @@ bool CvDeal::isCancelable(PlayerTypes eByPlayer, CvWString* pszReason)
 	return (iTurns <= 0);
 }
 
-int CvDeal::turnsToCancel(PlayerTypes eByPlayer)
+int CvDeal::turnsToCancel() const
 {
 	return (getInitialGameTurn() + getTreatyLength() - GC.getGame().getGameTurn());
 }

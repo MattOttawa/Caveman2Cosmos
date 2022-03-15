@@ -37,13 +37,13 @@ struct ProductionCalc
 DECLARE_FLAGS(ProductionCalc::flags);
 
 
-class CvCity : public CvDLLEntity
-	, bst::noncopyable // disable copy: we have owned pointers so we can't use the default copy implementation
+class CvCity
+	: public CvDLLEntity
+	, private bst::noncopyable // disable copy: we have owned pointers so we can't use the default copy implementation
 {
 public:
 	CvCity();
 	virtual ~CvCity();
-
 
 	void init(int iID, PlayerTypes eOwner, int iX, int iY, bool bBumpUnits, bool bUpdatePlotGroups);
 	void uninit();
@@ -54,9 +54,6 @@ public:
 	const CvGameObjectCity* getGameObject() const { return &m_GameObject; }
 
 private:
-	// disable copy: we have owned pointers so we can't use the default copy implementation
-	//CvCity(const CvCity&);
-	//CvCity& operator=(const CvCity&);
 	bool canHurryInternal(const HurryTypes eHurry) const;
 
 protected:
@@ -74,6 +71,9 @@ public:
 	int getRevIndexAverage() const;
 	void setRevIndexAverage( int iNewValue );
 	void updateRevIndexAverage( );
+
+	int getRevIndexDistanceMod() const { return m_iRevIndexDistanceMod; }
+	void changeRevIndexDistanceMod(const int iChange);
 
 	int getRevolutionCounter() const;
 	void setRevolutionCounter( int iNewValue );
@@ -172,7 +172,6 @@ public:
 	int findCommerceRateRank(CommerceTypes eCommerce) const;
 
 	bool isSupersedingUnitAvailable(UnitTypes eUnit) const;
-	bool isPlotTrainable(UnitTypes eUnit, bool bContinue, bool bTestVisible) const;
 
 	UnitTypes allUpgradesAvailable(UnitTypes eUnit, int iUpgradeCount = 0) const;
 	bool isWorldWondersMaxed() const;
@@ -292,7 +291,6 @@ public:
 	DllExport float getBuildingVisibilityPriority(BuildingTypes eBuilding) const;
 
 	bool hasTrait(TraitTypes eTrait) const;
-	bool isBarbarian() const;
 	bool isNPC() const;
 	bool isHominid() const;
 	bool isHuman() const;
@@ -318,7 +316,7 @@ public:
 	int getAngerPercent(const int iExtra = 0) const;
 
 	int getRevRequestPercentAnger(int iExtra = 0) const;
-	int getRevIndexPercentAnger(int iExtra = 0) const;
+	int getRevIndexPercentAnger() const;
 	int getRevSuccessHappiness() const;
 
 	int getLargestCityHappiness() const;
@@ -504,7 +502,7 @@ public:
 	void setGameTurnAcquired(int iNewValue);
 
 	int getPopulation() const;
-	void setPopulation(int iNewValue);
+	void setPopulation(int iNewValue, bool bNormal = true);
 	void changePopulation(int iChange);
 
 	int getRealPopulation() const;
@@ -829,7 +827,7 @@ public:
 	void setCitizensAutomated(bool bNewValue);
 
 	bool isProductionAutomated() const;
-	void setProductionAutomated(bool bNewValue, bool bClear);
+	void setProductionAutomated(bool bNewValue);
 
 	/* allows you to programatically specify a cities walls rather than having them be generated automagically */
 	DllExport bool isWallOverride() const;
@@ -939,9 +937,11 @@ public:
 
 	int getCommerceRate(CommerceTypes eIndex) const;
 	int getCommerceRateTimes100(CommerceTypes eIndex) const;
-	int getCommerceFromPercent(CommerceTypes eIndex, int iYieldRate) const;
+	int getCommerceFromPercent(CommerceTypes eIndex) const;
 	int getBaseCommerceRate(CommerceTypes eIndex) const;
 	int getBaseCommerceRateTimes100(CommerceTypes eIndex) const;
+	int getBaseCommerceRateExtra(CommerceTypes eIndex) const;
+	int getCommerceRateAtSliderPercent(CommerceTypes eIndex, int iSliderPercent) const;
 	int getTotalCommerceRateModifier(CommerceTypes eIndex) const;
 	void setCommerceModifierDirty(CommerceTypes eCommerce);
 	void setCommerceDirty(CommerceTypes eCommerce = NO_COMMERCE);
@@ -1233,8 +1233,6 @@ public:
 	int getNoBonusCount(BonusTypes eBonus) const;
 	bool isNoBonus(BonusTypes eBonus) const;
 
-	bool isAutoRaze() const;
-
 	DllExport int getMusicScriptId() const;
 	DllExport int getSoundscapeScriptId() const;
 	DllExport void cheat(bool bCtrl, bool bAlt, bool bShift);
@@ -1471,8 +1469,8 @@ public:
 	};
 
 	// Evaluate a predefined list of buildings based on the specified criteria, returning a sorted list of the buildings and their scores
-	virtual bool AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& scoredBuildings, const std::vector<BuildingTypes>& possibleBuildings, int iFocusFlags = 0, int iMaxTurns = MAX_INT, int iMinThreshold = 0, bool bAsync = false, AdvisorTypes eIgnoreAdvisor = NO_ADVISOR, bool bMaximizeFlaggedValue = false, PropertyTypes eProperty = NO_PROPERTY) = 0;
-	virtual int AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags = 0, bool bForTech = false) = 0;
+	virtual bool AI_scoreBuildingsFromListThreshold(std::vector<ScoredBuilding>& scoredBuildings, const std::vector<BuildingTypes>& possibleBuildings, int iFocusFlags, int iMaxTurns, int iMinThreshold, bool bAsync, AdvisorTypes eIgnoreAdvisor = NO_ADVISOR, bool bMaximizeFlaggedValue = false, PropertyTypes eProperty = NO_PROPERTY) = 0;
+	virtual int AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags = 0, bool bForTech = false, bool bDebug = false) = 0;
 	virtual int AI_projectValue(ProjectTypes eProject) const = 0;
 	virtual int AI_neededSeaWorkers() const = 0;
 	virtual bool AI_isDefended(int iExtra = 0, bool bAllowAnyDefenders = true) = 0;
@@ -1767,6 +1765,7 @@ protected:
 	int m_iRevolutionIndex;
 	int m_iLocalRevIndex;
 	int m_iRevIndexAverage;
+	int m_iRevIndexDistanceMod;
 	int m_iRevolutionCounter;
 	int m_iReinforcementCounter;
 
@@ -1949,6 +1948,8 @@ protected:
 	virtual bool AI_addBestCitizen(bool bWorkers, bool bSpecialists, int* piBestPlot = NULL, SpecialistTypes* peBestSpecialist = NULL) = 0;
 	virtual bool AI_removeWorstCitizen(SpecialistTypes eIgnoreSpecialist = NO_SPECIALIST) = 0;
 
+	bool isPlotTrainable(UnitTypes eUnit, bool bTestVisible) const;
+
 	//TB Building tags
 	void setExtraLocalCaptureProbabilityModifier(int iValue);
 	void changeExtraLocalCaptureProbabilityModifier(int iChange);
@@ -2017,15 +2018,10 @@ public:
 #endif
 #endif
 
-	//	Koshling - add cache of trainability of units which will be
-	//	populated prior to calculating the city's build choices and
-	//	then invalidated so it is only used within that scope
-#ifdef CAN_TRAIN_CACHING
 public:
-//Team Project (3)
 	int getExtraLocalCaptureProbabilityModifier() const;
 	int getExtraLocalCaptureResistanceModifier() const;
-//Team Project (1)
+
 	void updateTechHappinessandHealth();
 
 	int getExtraLocalDynamicDefense() const;
@@ -2109,6 +2105,10 @@ private:
 	mutable std::map<int,bool>*	m_bCanConstruct;
 
 
+	//	Koshling - add cache of trainability of units which will be
+	//	populated prior to calculating the city's build choices and
+	//	then invalidated so it is only used within that scope
+#ifdef CAN_TRAIN_CACHING
 public:
 	void populateCanTrainCache(bool bUnconditional = true) const;
 	void clearCanTrainCache() const;
@@ -2204,7 +2204,6 @@ public:
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getCommerceRateTimes100, CommerceTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getBaseCommerceRateTimes100, CommerceTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getCultureTimes100, PlayerTypes);
-		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getYieldRate, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getYieldRate100, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, int, getBaseYieldRate, YieldTypes);
 		DECLARE_MAP_FUNCTOR_CONST_1(CvCity, const CvPlotGroup*, plotGroup, PlayerTypes);
