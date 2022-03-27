@@ -2872,10 +2872,9 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 	int iDirDepth = 0;
 
 	std::string szDirDepth = "modules\\";
-	std::string szModDirectory = "modules";
 	std::string szConfigString;
 
-	if (!LoadCivXml(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", szModDirectory.c_str())))
+	if (!LoadCivXml("modules\\MLF_CIV4ModularLoadingControls.xml"))
 	{
 		return false;
 	}
@@ -2885,13 +2884,13 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 
 		if (szConfigString == "NONE")
 		{
-			DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" was set to \"NONE\", you will continue loading the regular Firaxian method", szModDirectory.c_str());
+			DEBUG_LOG("MLF.log", "The default configuration in \"modules\\MLF_CIV4ModularLoadingControls.xml\" was set to \"NONE\", you will continue loading the regular Firaxian method");
 			return false;   // abort without enumerating anything
 		}
 	}
 	else
 	{
-		DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" couldn't be found, you will continue loading using the regular Firaxian method", szModDirectory.c_str());
+		DEBUG_LOG("MLF.log", "The default configuration in \"modules\\MLF_CIV4ModularLoadingControls.xml\" couldn't be found, you will continue loading using the regular Firaxian method");
 		return false;
 	}
 
@@ -2919,11 +2918,10 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 					if (module.bLoad)
 					{
 						// each new loop we load the previous dir, and check if a MLF file exist on a lower level
-						szModDirectory = module.folder;
 
 						// Check if this Modulefolder is parent to a child MLF
-						if (CvXMLLoadUtilityModTools::isModularArt(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", szModDirectory.c_str()))
-						&& LoadCivXml(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", szModDirectory.c_str())))
+						if (CvXMLLoadUtilityModTools::isModularArt(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", module.folder.c_str()))
+						&& LoadCivXml(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", module.folder.c_str())))
 						{
 							if (TryMoveToXmlFirstMatchingElement(L"/Civ4ModularLoadControls/DefaultConfiguration"))
 							{
@@ -2931,11 +2929,11 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 
 								if (szConfigString == "NONE")
 								{
-									DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" was set to \"NONE\", settings in this file will be disregarded", szModDirectory.c_str());
+									DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" was set to \"NONE\", settings in this file will be disregarded", module.folder.c_str());
 								}
 								else
 								{
-									szDirDepth = CvString::format("%s\\", szModDirectory.c_str());
+									szDirDepth = CvString::format("%s\\", module.folder.c_str());
 									SetModLoadControlInfo(aInfos, szConfigString.c_str(), szDirDepth.c_str(), iDirDepth);
 									bContinue = true; //found a new MLF in a subdir, continue the loop
 								}
