@@ -2869,7 +2869,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 	GC.addToInfosVectors(&aInfos, InfoClassTraits<CvModLoadControlInfo>::InfoClassEnum);
 
 	bool bContinue = true;
-	int m_iDirDepth = 0;
+	int iDirDepth = 0;
 
 	std::string szDirDepth = "modules\\";
 	std::string szModDirectory = "modules";
@@ -2895,7 +2895,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 		return false;
 	}
 
-	if (!SetModLoadControlInfo(aInfos, szConfigString, szDirDepth, m_iDirDepth))
+	if (!SetModLoadControlInfo(aInfos, szConfigString, szDirDepth, iDirDepth))
 	{
 		DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" set by you could not be found, please check your XML settings!", szModDirectory.c_str());
 		return false;
@@ -2905,13 +2905,13 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 	// new MLF we don't want to loop further downwards into the directory hyrarchy
 	while (bContinue)
 	{
-		m_iDirDepth++;
+		iDirDepth++;
 		bContinue = false;	// we want to stop the while loop, unless a new MLF will be found
 		// loop through all MLF's so far loaded
 		for (int iInfos = 0; iInfos < GC.getNumModLoadControlInfos(); iInfos++)
 		{
 			// only loop through files in the actual depth
-			if (GC.getModLoadControlInfos(iInfos).getDirDepth() + 1 == m_iDirDepth)
+			if (GC.getModLoadControlInfos(iInfos).getDirDepth() + 1 == iDirDepth)
 			{
 				// loop through the modules of each MLF
 				for (int i = 0; i < GC.getModLoadControlInfos(iInfos).getNumModules(); i++)
@@ -2936,7 +2936,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 								else
 								{
 									szDirDepth = CvString::format("%s\\", szModDirectory.c_str());
-									SetModLoadControlInfo(aInfos, szConfigString.c_str(), szDirDepth.c_str(), m_iDirDepth);
+									SetModLoadControlInfo(aInfos, szConfigString.c_str(), szDirDepth.c_str(), iDirDepth);
 									bContinue = true; //found a new MLF in a subdir, continue the loop
 								}
 							}
