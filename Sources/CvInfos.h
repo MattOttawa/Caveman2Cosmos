@@ -8124,6 +8124,12 @@ protected:
 /*																							  */
 /*																							  */
 /************************************************************************************************/
+struct ModularXML
+{
+	std::string folder;
+	bool bLoad;
+};
+
 // MLF loading
 class CvModLoadControlInfo
 	: public CvInfoBase
@@ -8143,11 +8149,10 @@ public:
 	bool read(CvXMLLoadUtility* pXML, CvString szDirDepth, int iDirDepth);
 
 protected:
-	bool* m_bLoad;
-	int m_iNumModules;
 	int m_iDirDepth;
-	std::string* m_paszModuleFolder;
 	std::string m_paszParentFolder;
+
+	std::vector<ModularXML> m_modules;
 };
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL				 END												  */

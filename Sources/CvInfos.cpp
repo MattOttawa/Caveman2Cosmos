@@ -30440,35 +30440,30 @@ void CvMainMenuInfo::copyNonDefaults(const CvMainMenuInfo* pClassInfo)
 /*																							  */
 /************************************************************************************************/
 // MLF loading
-CvModLoadControlInfo::CvModLoadControlInfo():
-m_bLoad(NULL),
-m_iDirDepth(0),
-m_iNumModules(0),
-m_paszModuleFolder(NULL)
+CvModLoadControlInfo::CvModLoadControlInfo()
+	: m_iDirDepth(0)
 {
 }
 
 CvModLoadControlInfo::~CvModLoadControlInfo()
 {
-	SAFE_DELETE_ARRAY(m_bLoad);
-	SAFE_DELETE_ARRAY(m_paszModuleFolder);
 }
 
 bool CvModLoadControlInfo::isLoad(int i) const
 {
 	FASSERT_BOUNDS(0, getNumModules(), i);
-	return m_bLoad[i];
+	return m_modules[i].bLoad;
 }
 
 void CvModLoadControlInfo::setLoad(int i, bool bLoad)
 {
 	FASSERT_BOUNDS(0, getNumModules(), i);
-	m_bLoad[i] = bLoad;
+	m_modules[i].bLoad = bLoad;
 }
 
 int CvModLoadControlInfo::getNumModules() const
 {
-	return m_iNumModules;
+	return (int)m_modules.size();
 }
 
 int CvModLoadControlInfo::getDirDepth() const
@@ -30479,7 +30474,7 @@ int CvModLoadControlInfo::getDirDepth() const
 const std::string CvModLoadControlInfo::getModuleFolder(int i) const
 {
 	FASSERT_BOUNDS(0, getNumModules(), i);
-	return m_paszModuleFolder[i];
+	return m_modules[i].folder;
 }
 
 const std::string CvModLoadControlInfo::getParentFolder() const
@@ -30499,29 +30494,25 @@ bool CvModLoadControlInfo::read(CvXMLLoadUtility* pXML, CvString szDirDepth, int
 	//method variables
 	CvString szTextVal;
 	std::string m_szDirDepth;
-	bool bLoad;
 
 	if (pXML->TryMoveToXmlFirstChild(L"Modules"))
 	{
-		m_iNumModules = pXML->GetXmlChildrenNumber();
-		if (0 < m_iNumModules)
+		const int iNumModules = pXML->GetXmlChildrenNumber();
+		if (iNumModules > 0)
 		{
-			m_paszModuleFolder = new std::string[m_iNumModules];
-			m_bLoad = new bool[m_iNumModules];
+			m_modules.resize(iNumModules);
 			if (pXML->TryMoveToXmlFirstChild())
 			{
-				for (int iIndex = 0; iIndex < m_iNumModules; iIndex++)
+				foreach_(ModularXML& module, m_modules)
 				{
-					m_bLoad[iIndex] = false;	// by default bLoad is false
 					if (pXML->GetChildXmlVal(szTextVal))
 					{
-						pXML->GetNextXmlVal(&bLoad, true);
-						if (bLoad)
+						pXML->GetNextXmlVal(&module.bLoad, true);
+						if (module.bLoad)
 						{
-							m_bLoad[iIndex] = bLoad;	//this Module needs to be loaded
 							m_szDirDepth = szDirDepth;
 							m_szDirDepth.append(szTextVal);
-							m_paszModuleFolder[iIndex] = m_szDirDepth;
+							module.folder = m_szDirDepth;
 							GC.setTotalNumModules();  //we need this for looping in the XMLLoad class
 						}
 
