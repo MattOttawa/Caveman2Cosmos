@@ -752,7 +752,7 @@ private:
 	void ModularLoadingControlXML();
 	// In the next 2 methods we load the MLF classes
 	bool LoadModLoadControlInfo(std::vector<CvModLoadControlInfo*>& aInfos);
-	bool SetModLoadControlInfo(std::vector<CvModLoadControlInfo*>& aInfos, const wchar_t* szTagName, CvString szConfigString, CvString szDirDepth = "Modules\\", int iDirDepth = 0);
+	bool SetModLoadControlInfo(std::vector<CvModLoadControlInfo*>& aInfos, CvString szConfigString, CvString szDirDepth, int iDirDepth);
 /************************************************************************************************/
 /* MODULAR_LOADING_CONTROL                 END                                                  */
 /************************************************************************************************/

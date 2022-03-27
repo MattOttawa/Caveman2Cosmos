@@ -2893,7 +2893,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<CvModLoadControlInfo*>
 		return false;
 	}
 
-	if (!SetModLoadControlInfo(aInfos, L"Type", szConfigString, szDirDepth, m_iDirDepth))
+	if (!SetModLoadControlInfo(aInfos, szConfigString, szDirDepth, m_iDirDepth))
 	{
 		DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" set by you could not be found, please check your XML settings!", szModDirectory.c_str());
 		return false;
@@ -2934,7 +2934,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<CvModLoadControlInfo*>
 								else
 								{
 									szDirDepth = CvString::format("%s\\", szModDirectory.c_str());
-									SetModLoadControlInfo(aInfos, L"Type", szConfigString.c_str(), szDirDepth.c_str(), m_iDirDepth);
+									SetModLoadControlInfo(aInfos, szConfigString.c_str(), szDirDepth.c_str(), m_iDirDepth);
 									bContinue = true; //found a new MLF in a subdir, continue the loop
 								}
 							}
@@ -2947,7 +2947,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<CvModLoadControlInfo*>
 	return true;
 }
 
-bool CvXMLLoadUtility::SetModLoadControlInfo(std::vector<CvModLoadControlInfo*>& aInfos, const wchar_t* szTagName, CvString szConfigString, CvString szDirDepth, int iDirDepth)
+bool CvXMLLoadUtility::SetModLoadControlInfo(std::vector<CvModLoadControlInfo*>& aInfos, CvString szConfigString, CvString szDirDepth, int iDirDepth)
 {
 	OutputDebugString("Setting Mod Control Infos\n");
 
@@ -2957,7 +2957,7 @@ bool CvXMLLoadUtility::SetModLoadControlInfo(std::vector<CvModLoadControlInfo*>&
 		do
 		{
 			std::string szCandidateConfig = "NONE";
-			GetChildXmlValByName(szCandidateConfig, szTagName);
+			GetChildXmlValByName(szCandidateConfig, L"Type");
 			if (szCandidateConfig == szConfigString)
 			{
 				std::auto_ptr<CvModLoadControlInfo> pClassInfo(new CvModLoadControlInfo);
