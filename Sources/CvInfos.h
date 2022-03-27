@@ -8130,28 +8130,26 @@ struct ModularXML
 	bool bLoad;
 };
 
-// MLF loading
 class CvModLoadControlInfo
 	: public CvInfoBase
 	, private bst::noncopyable
 {
 public:
-
 	CvModLoadControlInfo();
 	virtual ~CvModLoadControlInfo();
 
 	bool isLoad(int i) const;
-	void setLoad(int i, bool bLoad = true);
 	const std::string getModuleFolder(int i) const;
 	const std::string getParentFolder() const;
+	const std::vector<ModularXML>& getModules() const { return m_modules; }
 	int getNumModules() const;
 	int getDirDepth() const;
+
 	bool read(CvXMLLoadUtility* pXML, CvString szDirDepth, int iDirDepth);
 
-protected:
+private:
 	int m_iDirDepth;
 	std::string m_paszParentFolder;
-
 	std::vector<ModularXML> m_modules;
 };
 /************************************************************************************************/

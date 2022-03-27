@@ -30455,12 +30455,6 @@ bool CvModLoadControlInfo::isLoad(int i) const
 	return m_modules[i].bLoad;
 }
 
-void CvModLoadControlInfo::setLoad(int i, bool bLoad)
-{
-	FASSERT_BOUNDS(0, getNumModules(), i);
-	m_modules[i].bLoad = bLoad;
-}
-
 int CvModLoadControlInfo::getNumModules() const
 {
 	return (int)m_modules.size();

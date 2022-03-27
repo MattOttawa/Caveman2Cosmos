@@ -2914,12 +2914,12 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 			if (GC.getModLoadControlInfos(iInfos).getDirDepth() + 1 == iDirDepth)
 			{
 				// loop through the modules of each MLF
-				for (int i = 0; i < GC.getModLoadControlInfos(iInfos).getNumModules(); i++)
+				foreach_(const ModularXML& module, GC.getModLoadControlInfos(iInfos).getModules())
 				{
-					if (GC.getModLoadControlInfos(iInfos).isLoad(i))
+					if (module.bLoad)
 					{
 						// each new loop we load the previous dir, and check if a MLF file exist on a lower level
-						szModDirectory = GC.getModLoadControlInfos(iInfos).getModuleFolder(i);
+						szModDirectory = module.folder;
 
 						// Check if this Modulefolder is parent to a child MLF
 						if (CvXMLLoadUtilityModTools::isModularArt(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", szModDirectory.c_str()))
