@@ -2856,15 +2856,17 @@ bool CvXMLLoadUtility::LoadGraphicOptions()
 // Main control of the MLF feature
 void CvXMLLoadUtility::ModularLoadingControlXML()
 {
-	CvXMLLoadUtilitySetMod::setModLoadControlDirArray(LoadModLoadControlInfo(GC.m_paModLoadControls));
+	CvXMLLoadUtilitySetMod::setModLoadControlDirArray(LoadModLoadControlInfo());
 }
 
 // In the next 2 methods we load the MLF classes
-bool CvXMLLoadUtility::LoadModLoadControlInfo(std::vector<CvModLoadControlInfo*>& aInfos)
+bool CvXMLLoadUtility::LoadModLoadControlInfo()
 {
-	GC.addToInfosVectors(&aInfos, InfoClassTraits<CvModLoadControlInfo>::InfoClassEnum);
 	DEBUG_LOG("MLF.log", "Entering MLF");
 	DEBUG_LOG("XmlCheckDoubleTypes.log", "\nEntering: MLF_CIV4ModularLoadingControls\n");
+
+	std::vector<CvModLoadControlInfo*>& aInfos = GC.m_paModLoadControls;
+	GC.addToInfosVectors(&aInfos, InfoClassTraits<CvModLoadControlInfo>::InfoClassEnum);
 
 	bool bContinue = true;
 	int m_iDirDepth = 0;
