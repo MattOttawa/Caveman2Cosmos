@@ -581,7 +581,7 @@ CvWString CvXMLLoadUtility::CreateKeyStringFromKBCode(const char* pszHotKey)
 //
 void CvXMLLoadUtility::UpdateProgressCB(const char* szMessage)
 {
-	OutputDebugString("Updating ProgressCB: Start");
+	OutputDebugString("Updating ProgressCB: Start\n");
 	if (m_iCurProgressStep > GetNumProgressSteps())
 	{
 		m_iCurProgressStep = 1;	// wrap
@@ -592,7 +592,7 @@ void CvXMLLoadUtility::UpdateProgressCB(const char* szMessage)
 		m_pCBFxn(++m_iCurProgressStep, GetNumProgressSteps(), CvString::format("Reading XML %s",
 			szMessage ? szMessage : "").c_str());
 	}
-	OutputDebugString("Updating ProgressCB: End");
+	OutputDebugString("Updating ProgressCB: End\n");
 }
 
 //
