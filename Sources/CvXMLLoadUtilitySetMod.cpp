@@ -426,7 +426,7 @@ namespace CvXMLLoadUtilitySetMod
 
 		for (int iI = 0; iI < GC.getModLoadControlVectorSize(); iI++)
 		{
-			MLFEnumerateFiles(aszFiles, (szModDirectory + GC.getModLoadControlVector(iI).c_str()).c_str(), GC.getModLoadControlVector(iI).c_str(), CvString::format("%s.xml", szFileRoot).c_str());
+			MLFEnumerateFiles(aszFiles, (szModDirectory + GC.getModLoadControlVector(iI)).c_str(), GC.getModLoadControlVector(iI).c_str(), CvString::format("%s.xml", szFileRoot).c_str());
 		}
 	}
 }
