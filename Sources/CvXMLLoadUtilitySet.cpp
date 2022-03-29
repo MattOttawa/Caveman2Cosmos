@@ -2896,7 +2896,7 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 
 	if (!SetModLoadControlInfo(aInfos, szConfigString, szDirDepth, iDirDepth))
 	{
-		DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" set by you could not be found, please check your XML settings!", szModDirectory.c_str());
+		DEBUG_LOG("MLF.log", "The default configuration in \"modules\\MLF_CIV4ModularLoadingControls.xml\" set by you could not be found, please check your XML settings!");
 		return false;
 	}
 
@@ -2915,13 +2915,13 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 				// loop through the modules of each MLF
 				foreach_(const ModularXML& module, GC.getModLoadControlInfos(iInfos).getModules())
 				{
-					if (module.bLoad)
+					if (module.isLoad())
 					{
 						// each new loop we load the previous dir, and check if a MLF file exist on a lower level
 
 						// Check if this Modulefolder is parent to a child MLF
-						if (CvXMLLoadUtilityModTools::isModularArt(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", module.folder.c_str()))
-						&& LoadCivXml(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", module.folder.c_str())))
+						if (CvXMLLoadUtilityModTools::isModularArt(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", module.getFolder().c_str()))
+						&& LoadCivXml(CvString::format("%s\\MLF_CIV4ModularLoadingControls.xml", module.getFolder().c_str())))
 						{
 							if (TryMoveToXmlFirstMatchingElement(L"/Civ4ModularLoadControls/DefaultConfiguration"))
 							{
@@ -2929,11 +2929,11 @@ bool CvXMLLoadUtility::LoadModLoadControlInfo()
 
 								if (szConfigString == "NONE")
 								{
-									DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" was set to \"NONE\", settings in this file will be disregarded", module.folder.c_str());
+									DEBUG_LOG("MLF.log", "The default configuration in \"%s\\MLF_CIV4ModularLoadingControls.xml\" was set to \"NONE\", settings in this file will be disregarded", module.getFolder().c_str());
 								}
 								else
 								{
-									szDirDepth = CvString::format("%s\\", module.folder.c_str());
+									szDirDepth = CvString::format("%s\\", module.getFolder().c_str());
 									SetModLoadControlInfo(aInfos, szConfigString.c_str(), szDirDepth.c_str(), iDirDepth);
 									bContinue = true; //found a new MLF in a subdir, continue the loop
 								}

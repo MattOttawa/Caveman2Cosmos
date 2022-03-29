@@ -8126,8 +8126,17 @@ protected:
 /************************************************************************************************/
 struct ModularXML
 {
-	std::string folder;
-	bool bLoad;
+	ModularXML(const std::string& folder, bool bLoad)
+		: m_folder(folder)
+		, m_bLoad(bLoad)
+	{}
+
+	const std::string& getFolder() const { return m_folder; }
+	bool isLoad() const { return m_bLoad; }
+
+private:
+	std::string m_folder;
+	bool m_bLoad;
 };
 
 class CvModLoadControlInfo

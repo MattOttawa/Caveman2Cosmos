@@ -355,16 +355,7 @@ namespace CvXMLLoadUtilitySetMod
 			CvString szType = GC.getModLoadControlInfos(iInfosSet).getParentFolder();
 			if (CvString::format("%s\\", refcstrModularDirectory.c_str()) == szType)
 			{
-				bool bLoadAny = false;
-				for (int iSet = 0; iSet < GC.getModLoadControlInfos(iInfosSet).getNumModules(); iSet++)
-				{
-					if (GC.getModLoadControlInfos(iInfosSet).isLoad(iSet))
-					{
-						bLoadAny = true;
-						break;
-					}
-				}
-				if (!bLoadAny)
+				if (algo::none_of(GC.getModLoadControlInfos(iInfosSet).getModules(), bind(ModularXML::isLoad, _1)))
 				{
 					return false;
 				}

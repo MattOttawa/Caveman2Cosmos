@@ -30452,7 +30452,7 @@ CvModLoadControlInfo::~CvModLoadControlInfo()
 bool CvModLoadControlInfo::isLoad(int i) const
 {
 	FASSERT_BOUNDS(0, getNumModules(), i);
-	return m_modules[i].bLoad;
+	return m_modules[i].isLoad();
 }
 
 int CvModLoadControlInfo::getNumModules() const
@@ -30468,7 +30468,7 @@ int CvModLoadControlInfo::getDirDepth() const
 const std::string CvModLoadControlInfo::getModuleFolder(int i) const
 {
 	FASSERT_BOUNDS(0, getNumModules(), i);
-	return m_modules[i].folder;
+	return m_modules[i].getFolder();
 }
 
 const std::string CvModLoadControlInfo::getParentFolder() const
@@ -30494,21 +30494,22 @@ bool CvModLoadControlInfo::read(CvXMLLoadUtility* pXML, CvString szDirDepth, int
 		const int iNumModules = pXML->GetXmlChildrenNumber();
 		if (iNumModules > 0)
 		{
-			m_modules.resize(iNumModules);
 			if (pXML->TryMoveToXmlFirstChild())
 			{
-				foreach_(ModularXML& module, m_modules)
+				for (int i = 0; i < iNumModules; i++)
 				{
 					if (pXML->GetChildXmlVal(szTextVal))
 					{
-						pXML->GetNextXmlVal(&module.bLoad, true);
-						if (module.bLoad)
+						bool bLoad;
+						pXML->GetNextXmlVal(&bLoad, true);
+						if (bLoad)
 						{
-							m_szDirDepth = szDirDepth;
-							m_szDirDepth.append(szTextVal);
-							module.folder = m_szDirDepth;
 							GC.setTotalNumModules();  //we need this for looping in the XMLLoad class
 						}
+						m_szDirDepth = szDirDepth;
+						m_szDirDepth.append(szTextVal);
+
+						m_modules.push_back(ModularXML(m_szDirDepth, bLoad));
 
 						pXML->MoveToXmlParent();
 					}
