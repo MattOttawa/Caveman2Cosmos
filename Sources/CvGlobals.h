@@ -135,15 +135,23 @@ class CvModLoadControlInfo;
 /************************************************************************************************/
 class CvMapInfo;
 
+#include "CvInfoClassTraits.h"
 #include "CvInfoReplacements.h"
 #include "GlobalDefines.h"
 #include <stack>
+#include <vector>
+
+enum DelayedResolutionTypes
+{
+	NO_DELAYED_RESOLUTION,
+	USE_DELAYED_RESOLUTION
+};
 
 extern CvDLLUtilityIFaceBase* gDLL;
 
-class cvInternalGlobals : bst::noncopyable
+class cvInternalGlobals
+	: private bst::noncopyable
 {
-//	friend class CvDLLUtilityIFace;
 	friend class CvXMLLoadUtility;
 public:
 
@@ -247,11 +255,12 @@ public:
 	void setInfoTypeFromString(const char* szType, int idx);
 	void logInfoTypeMap(const char* tagMsg = "");
 	void infoTypeFromStringReset();
-	void addToInfosVectors(void *infoVector);
+	void addToInfosVectors(void* infoVector, InfoClassTypes eInfoClass);
 	void infosReset();
 	void cacheInfoTypes();
 	int getOrCreateInfoTypeForString(const char* szType);
 
+	bool isDelayedResolutionRequired(InfoClassTypes eLoadingClass, InfoClassTypes eRefClass) const;
 	void addDelayedResolution(int* pType, CvString szString);
 	CvString* getDelayedResolution(int* pType);
 	void removeDelayedResolution(int* pType);
@@ -376,6 +385,9 @@ public:
 	int getNumBonusInfos() const;
 	const std::vector<CvBonusInfo*>& getBonusInfos() const;
 	CvBonusInfo& getBonusInfo(BonusTypes eBonusNum) const;
+
+	int getNumMapBonuses() const;
+	BonusTypes getMapBonus(const int i) const;
 
 	int getNumFeatureInfos() const;
 	CvFeatureInfo& getFeatureInfo(FeatureTypes eFeatureNum) const;
@@ -504,6 +516,7 @@ public:
 	void registerPropertyInteractions();
 	void registerPropertyPropagators();
 	void registerMissions();
+	void registerNPCPlayers();
 
 	CvInfoBase& getAttitudeInfo(AttitudeTypes eAttitudeNum) const;
 
@@ -719,33 +732,6 @@ public:
 
 	float getPLOT_SIZE() const;
 
-	int getMAX_PC_PLAYERS() const		{ return MAX_PC_PLAYERS; }
-	int getMAX_PLAYERS() const			{ return MAX_PLAYERS; }
-	int getMAX_PC_TEAMS() const			{ return MAX_PC_TEAMS; }
-	int getMAX_TEAMS() const			{ return MAX_TEAMS; }
-	int getBARBARIAN_PLAYER() const		{ return BARBARIAN_PLAYER; }
-	int getBARBARIAN_TEAM() const		{ return BARBARIAN_TEAM; }
-	int getNEANDERTHAL_PLAYER() const	{ return NEANDERTHAL_PLAYER; }
-	int getNEANDERTHAL_TEAM() const		{ return NEANDERTHAL_TEAM; }
-	int getBEAST_PLAYER() const			{ return BEAST_PLAYER; }
-	int getBEAST_TEAM() const			{ return BEAST_TEAM; }
-	int getPREDATOR_PLAYER() const		{ return PREDATOR_PLAYER; }
-	int getPREDATOR_TEAM() const		{ return PREDATOR_TEAM; }
-	int getPREY_PLAYER() const			{ return PREY_PLAYER; }
-	int getPREY_TEAM() const			{ return PREY_TEAM; }
-	int getINSECT_PLAYER() const		{ return INSECT_PLAYER; }
-	int getINSECT_TEAM() const			{ return INSECT_TEAM; }
-	int getNPC4_PLAYER() const			{ return NPC4_PLAYER; }
-	int getNPC4_TEAM() const			{ return NPC4_TEAM; }
-	int getNPC3_PLAYER() const			{ return NPC3_PLAYER; }
-	int getNPC3_TEAM() const			{ return NPC3_TEAM; }
-	int getNPC2_PLAYER() const			{ return NPC2_PLAYER; }
-	int getNPC2_TEAM() const			{ return NPC2_TEAM; }
-	int getNPC1_PLAYER() const			{ return NPC1_PLAYER; }
-	int getNPC1_TEAM() const			{ return NPC1_TEAM; }
-	int getNPC0_PLAYER() const			{ return NPC0_PLAYER; }
-	int getNPC0_TEAM() const			{ return NPC0_TEAM; }
-
 	// ***** END EXPOSED TO PYTHON *****
 
 	////////////// END DEFINES //////////////////
@@ -785,6 +771,8 @@ public:
 	uint32_t getAssetCheckSum() const;
 
 	void deleteInfoArrays();
+
+	void checkInitialCivics();
 
 protected:
 	void doPostLoadCaching();
@@ -896,6 +884,7 @@ protected:
 	typedef stdext::hash_map<const char* /* type */, int /* info index */, SZStringHash> InfosMap;
 	InfosMap m_infosMap;
 	std::vector<std::vector<CvInfoBase *> *> m_aInfoVectors;
+	bst::array<uint16_t, NUM_INFO_CLASSES> m_infoClassXmlLoadOrder;
 
 	int m_iLastTypeID; // last generic type ID assigned (for type strings that do not have an assigned info class)
 
@@ -1106,6 +1095,8 @@ protected:
 	const char* m_szAlternateProfilSampleName;
 	FProfiler* m_Profiler;
 	CvString m_szDllProfileText;
+
+	std::vector<BonusTypes> m_mapBonuses;
 
 // BBAI Options
 public:

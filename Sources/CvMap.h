@@ -105,7 +105,7 @@ public:
 
 	void verifyUnitValidPlot();
 
-	void combinePlotGroups(CvPlotGroup* pPlotGroup1, CvPlotGroup* pPlotGroup2, bool bRecalculateBonuses);
+	static void combinePlotGroups(CvPlotGroup* pPlotGroup1, CvPlotGroup* pPlotGroup2, bool bRecalculateBonuses);
 
 	CvPlot* syncRandPlot(int iFlags = 0, int iArea = -1, int iMinUnitDistance = -1, int iTimeout = 100);
 
@@ -230,6 +230,8 @@ public:
 	// Plot danger cache
 	void invalidateIsActivePlayerNoDangerCache();
 	void invalidateIsTeamBorderCache(TeamTypes eTeam);
+
+	const std::pair<CvPlot*, CvPlot*> plots() const;
 
 	// Serialization:
 	 virtual void read(FDataStreamBase* pStream);
