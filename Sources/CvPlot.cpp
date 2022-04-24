@@ -8464,7 +8464,7 @@ void CvPlot::clearVisibilityCounts()
 		m_aiVisibilityCount[iI] = 0;
 	}
 	SAFE_DELETE(m_aiStolenVisibilityCount);
-	SAFE_DELETE_ARRAY2(m_apaiInvisibleVisibilityCount);
+	SAFE_DELETE_ARRAY2(m_apaiInvisibleVisibilityCount, MAX_TEAMS);
 
 	m_resultHashMap->clear();
 	g_bestDefenderCache->clear();
@@ -10686,7 +10686,7 @@ void CvPlot::read(FDataStreamBase* pStream)
 		//	it may or may not actually be present
 		if ( m_paiBuildProgress == NULL )
 		{
-			CvXMLLoadUtility::InitList<int16_t>(&m_paiBuildProgress, GC.getNumBuildInfos(), 0);
+			CvXMLLoadUtility::InitList(&m_paiBuildProgress, GC.getNumBuildInfos(), 0);
 		}
 
 		WRAPPER_READ_CLASS_ARRAY_ALLOW_MISSING(wrapper, "CvPlot", REMAPPED_CLASS_TYPE_BUILDS, GC.getNumBuildInfos(), m_paiBuildProgress);
@@ -12299,7 +12299,7 @@ void CvPlot::changeOccupationCultureRangeCities(PlayerTypes eOwnerIndex, int iCh
 	{
 		if (NULL == m_aiOccupationCultureRangeCities)
 		{
-			CvXMLLoadUtility::InitList<int16_t>(&m_aiOccupationCultureRangeCities, MAX_PLAYERS, 0);
+			CvXMLLoadUtility::InitList<int8_t>(&m_aiOccupationCultureRangeCities, MAX_PLAYERS, 0);
 		}
 
 		m_aiOccupationCultureRangeCities[eOwnerIndex] += iChange;
