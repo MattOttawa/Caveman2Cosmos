@@ -74,16 +74,10 @@ public:
 	DllExport const wchar_t* getHelp() const;
 	const wchar_t* getStrategy() const;
 
-	virtual void read(FDataStreamBase*) {}
-	virtual void write(FDataStreamBase*) {}
-
 	virtual void getDataMembers(CvInfoUtil&) { FErrorMsg("Override this"); }
 	virtual bool read(CvXMLLoadUtility* pXML);
-	virtual bool readPass2(CvXMLLoadUtility*) { FErrorMsg("Override this"); return false; }
 	virtual bool readPass3() { FErrorMsg("Override this"); return false; }
 	virtual void copyNonDefaults(const CvInfoBase* pClassInfo);
-	virtual void copyNonDefaultsReadPass2(CvInfoBase*, CvXMLLoadUtility*, bool = false)
-	{ /* AIAndy: Default implementation for full copy of info without knowledge of one/twopass */ }
 	virtual void getCheckSum(uint32_t&) const { }
 	virtual void doPostLoadCaching(uint32_t) { }
 	virtual const wchar_t* getExtraHoverText() const { return L""; }
