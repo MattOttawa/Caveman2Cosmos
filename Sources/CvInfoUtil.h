@@ -29,6 +29,7 @@ struct CvInfoUtil
 	{
 		foreach_(const WrappedVar* wrapper, m_wrappedVars)
 			delete wrapper;
+		m_wrappedVars.clear();
 	}
 
 	void initDataMembers()
@@ -159,7 +160,7 @@ struct CvInfoUtil
 	/// Enum wrapper
 	///==============
 
-	template <typename Enum_t>
+	template <typename Enum_t, DelayedResolutionTypes delayedResolutionOption>
 	struct EnumWrapper : WrappedVar
 	{
 		friend struct CvInfoUtil;
@@ -179,14 +180,17 @@ struct CvInfoUtil
 			CheckSum(iSum, ref());
 		}
 
-		virtual void readXml(CvXMLLoadUtility* pXML)
+		void readXml(CvXMLLoadUtility* pXML)
 		{
-			CvXMLLoadUtility::SetOptionalInfoType<NO_DELAYED_RESOLUTION>(pXML, ref(), m_tag.c_str());
+			CvXMLLoadUtility::SetOptionalInfoType<delayedResolutionOption>(pXML, ref(), m_tag.c_str());
 		}
 
-		virtual void copyNonDefaults(const WrappedVar* source)
+		void copyNonDefaults(const WrappedVar* source)
 		{
-			if (ref() == -1)
+			if (delayedResolutionOption == USE_DELAYED_RESOLUTION)
+				GC.copyNonDefaultDelayedResolution(reinterpret_cast<int*>(&ref()), reinterpret_cast<int*>(&(static_cast<const EnumWrapper*>(source)->ref())));
+
+			else if (ref() == -1)
 				ref() = static_cast<const EnumWrapper*>(source)->ref();
 		}
 
@@ -200,43 +204,13 @@ struct CvInfoUtil
 		Enum_t& ref() const { return *static_cast<Enum_t*>(m_ptr); }
 	};
 
-	///======================================
-	/// Enum with delayed resolution wrapper
-	///======================================
-
-	template <typename Enum_t>
-	struct EnumWithDelayedResolutionWrapper : EnumWrapper<Enum_t>
-	{
-		friend struct CvInfoUtil;
-
-	protected:
-		EnumWithDelayedResolutionWrapper(Enum_t& var, const wchar_t* tag)
-			: EnumWrapper<Enum_t>(var, tag)
-		{}
-
-		void uninitVar()
-		{
-			GC.removeDelayedResolution(reinterpret_cast<int*>(&ref()));
-		}
-
-		void readXml(CvXMLLoadUtility* pXML)
-		{
-			CvXMLLoadUtility::SetOptionalInfoType<USE_DELAYED_RESOLUTION>(pXML, ref(), m_tag.c_str());
-		}
-
-		void copyNonDefaults(const WrappedVar* source)
-		{
-			GC.copyNonDefaultDelayedResolution(reinterpret_cast<int*>(&ref()), reinterpret_cast<int*>(&(static_cast<const EnumWithDelayedResolutionWrapper*>(source)->ref())));
-		}
-	};
-
 	template <typename Enum_t>
 	CvInfoUtil& addEnum(Enum_t& var, const wchar_t* tag)
 	{
 		if (GC.isDelayedResolutionRequired(m_eInfoClass, InfoClassTraits<Enum_t>::InfoClassEnum))
-			m_wrappedVars.push_back(new EnumWithDelayedResolutionWrapper<Enum_t>(var, tag));
+			m_wrappedVars.push_back(new EnumWrapper<Enum_t, USE_DELAYED_RESOLUTION>(var, tag));
 		else
-			m_wrappedVars.push_back(new EnumWrapper<Enum_t>(var, tag));
+			m_wrappedVars.push_back(new EnumWrapper<Enum_t, NO_DELAYED_RESOLUTION>(var, tag));
 		return *this;
 	}
 
@@ -387,6 +361,13 @@ struct CvInfoUtil
 		{
 			ref().copyNonDefaultDelayedResolution(static_cast<const IDValueMapWithDelayedResolutionWrapper*>(source)->ref());
 		}
+
+		void checkSum(uint32_t& iSum) const
+		{
+			CheckSumC(iSum, ref());
+		}
+
+		IDValueMap_T& ref() const { return *static_cast<IDValueMap_T*>(m_ptr); }
 	};
 
 	template <typename T1, int default_>
