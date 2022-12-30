@@ -834,25 +834,6 @@ def AngleDifference(a1,a2):
 		while(diff > 180.0):
 				diff -= 360.0
 		return diff
-def AppendUnique(theList,newItem):
-		if IsInList(theList,newItem) == False:
-				theList.append(newItem)
-		return
-
-def IsInList(theList,newItem):
-		itemFound = False
-		for item in theList:
-				if item == newItem:
-						itemFound = True
-						break
-		return itemFound
-
-def DeleteFromList(theList,oldItem):
-		for n in range(len(theList)):
-				if theList[n] == oldItem:
-						del theList[n]
-						break
-		return
 
 def ShuffleList(theList):
 	shufflePyList(theList, CyGame().getMapRand())
@@ -5113,6 +5094,9 @@ def getWrapX():
 def getWrapY():
 		print "mc.WrapY == %d at getWrapY" % mc.WrapY
 		return mc.WrapY
+
+def getNumHiddenCustomMapOptions():
+	return 0
 
 def getNumCustomMapOptions():
 		"""

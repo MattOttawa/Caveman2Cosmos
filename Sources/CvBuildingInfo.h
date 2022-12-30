@@ -485,6 +485,10 @@ public:
 
 	const BoolExpr* getConstructCondition() const;
 
+	int getCategory(int i) const;
+	int getNumCategories() const;
+	bool isCategory(int i) const;
+
 	const CvPropertyManipulators* getPropertyManipulators() const { return &m_PropertyManipulators; }
 
 	const CvProperties* getProperties() const { return &m_Properties; }
@@ -766,6 +770,7 @@ private:
 	std::vector<int> m_aiUnitCombatRetrainTypes;
 	std::vector<int> m_aiMayDamageAttackingUnitCombatTypes;
 	std::vector<MapCategoryTypes> m_aeMapCategoryTypes;
+	std::vector<int> m_aiCategories;
 	std::vector<int> m_aiPrereqInCityBuildings;
 	std::vector<int> m_vPrereqNotInCityBuildings;
 	std::vector<BonusTypes> m_aePrereqOrBonuses;
@@ -810,6 +815,7 @@ private:
 	IDValueMap<TechTypes, CommerceArray> m_techCommerceModifiers;
 	IDValueMap<TerrainTypes, YieldArray> m_aTerrainYieldChanges;
 	IDValueMap<PlotTypes, YieldArray> m_aPlotYieldChanges;
+
 
 	CvPropertyManipulators m_PropertyManipulators;
 

@@ -434,14 +434,12 @@ void CvMap::updateFlagSymbolsInternal(bool bForce)
 {
 	PROFILE_FUNC();
 
-	for (int iI = 0; iI < numPlots(); iI++)
+	foreach_(CvPlot& plotX, plots())
 	{
-		CvPlot* pLoopPlot = plotByIndex(iI);
-
-		if (bForce || pLoopPlot->isFlagDirty())
+		if (bForce || plotX.isFlagDirty())
 		{
-			pLoopPlot->updateFlagSymbol();
-			pLoopPlot->setFlagDirty(false);
+			plotX.updateFlagSymbol();
+			plotX.setFlagDirty(false);
 		}
 	}
 }
@@ -1197,6 +1195,12 @@ void CvMap::invalidateIsTeamBorderCache(TeamTypes eTeam)
 /************************************************************************************************/
 
 
+const std::pair<CvPlot*, CvPlot*> CvMap::plots() const
+{
+	return std::make_pair(&m_pMapPlots[0], &m_pMapPlots[numPlots()]);
+}
+
+
 //
 // read object from a stream
 // used during load
@@ -1432,7 +1436,6 @@ void CvMap::afterSwitch()
 #endif // THE_GREAT_WALL
 
 	gDLL->getEngineIFace()->setResourceLayer(GC.getResourceLayer());
-	gDLL->getInterfaceIFace()->setCycleSelectionCounter(1);
 
 	m_bSwitchInProgress = false;
 }

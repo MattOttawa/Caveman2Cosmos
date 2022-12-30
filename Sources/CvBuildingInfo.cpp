@@ -357,49 +357,20 @@ CvBuildingInfo::~CvBuildingInfo()
 	SAFE_DELETE_ARRAY(m_pabHurry);
 	//SAFE_DELETE(m_pExprFreePromotionCondition);
 
-	for (int i = 0; i < (int)m_aEnabledCivilizationTypes.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_aEnabledCivilizationTypes[i]));
-	}
-
-#ifdef OUTBREAKS_AND_AFFLICTIONS
-	for (int i = 0; i < (int)m_aAidRateChanges.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_aAidRateChanges[i]));
-	}
-#endif OUTBREAKS_AND_AFFLICTIONS
-
-	for (int i = 0; i < (int)m_aiFreeTraitTypes.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_aiFreeTraitTypes[i]));
-	}
-
-	for (int i = 0; i < (int)m_aiPrereqInCityBuildings.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_aiPrereqInCityBuildings[i]));
-	}
-
-	for (int i = 0; i < (int)m_vPrereqNotInCityBuildings.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_vPrereqNotInCityBuildings[i]));
-	}
-
-	for (int i=0; i<(int)m_vPrereqOrBuilding.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_vPrereqOrBuilding[i]));
-	}
-
-	for (int i=0; i<(int)m_vReplacementBuilding.size(); i++)
-	{
-		GC.removeDelayedResolution((int*)&(m_vReplacementBuilding[i]));
-	}
-
 	GC.removeDelayedResolution((int*)&m_iFreeBuilding);
 	GC.removeDelayedResolution((int*)&m_iFreeAreaBuilding);
 	GC.removeDelayedResolution((int*)&m_iProductionContinueBuilding);
 	GC.removeDelayedResolution((int*)&m_iPrereqAnyoneBuilding);
 	GC.removeDelayedResolution((int*)&m_iExtendsBuilding);
 	GC.removeDelayedResolution((int*)&m_iObsoletesToBuilding);
+
+	GC.removeDelayedResolutionVector(m_aEnabledCivilizationTypes);
+	GC.removeDelayedResolutionVector(m_aiFreeTraitTypes);
+	GC.removeDelayedResolutionVector(m_aiPrereqInCityBuildings);
+	GC.removeDelayedResolutionVector(m_vPrereqNotInCityBuildings);
+	GC.removeDelayedResolutionVector(m_vPrereqOrBuilding);
+	GC.removeDelayedResolutionVector(m_vReplacementBuilding);
+	GC.removeDelayedResolutionVector(m_aiCategories);
 
 	m_aBuildingHappinessChanges.removeDelayedResolution();
 	m_aUnitProductionModifier.removeDelayedResolution();
@@ -654,6 +625,21 @@ bool CvBuildingInfo::isCommerceFlexible(int i) const
 {
 	FASSERT_BOUNDS(0, NUM_COMMERCE_TYPES, i);
 	return m_pbCommerceFlexible ? m_pbCommerceFlexible[i] : false;
+}
+
+int CvBuildingInfo::getCategory(int i) const
+{
+	return m_aiCategories[i];
+}
+
+int CvBuildingInfo::getNumCategories() const
+{
+	return (int)m_aiCategories.size();
+}
+
+bool CvBuildingInfo::isCategory(int i) const
+{
+	return algo::any_of_equal(m_aiCategories, i);
 }
 
 int CvBuildingInfo::getPrereqInCityBuilding(const int i) const
@@ -1549,6 +1535,28 @@ namespace CvBuildingInternal
 
 void CvBuildingInfo::doPostLoadCaching(uint32_t eThis)
 {
+	int iCount = getNumReplacementBuilding();
+	if (iCount > 0)
+	{
+		// Toffer - Prune self reference, to make the code XML idiot proof.
+		//	A building was once set to replace itself, it caused an infinite loop in the canBuild logic used for MODDEROPTION_HIDE_REPLACED_BUILDINGS.
+		//	Instead of doing a self reference check in all loops for this vector I thought it more clean to just prune it here.
+		const int iId = GC.getInfoTypeForString(getType());
+
+		std::vector<int>::iterator itr = find(m_vReplacementBuilding.begin(), m_vReplacementBuilding.end(), iId);
+		while (itr != m_vReplacementBuilding.end())
+		{
+			FErrorMsg(CvString::format("%s is set to replace itself!!", getType()).c_str())
+			m_vReplacementBuilding.erase(itr);
+			iCount--;
+			itr = find(m_vReplacementBuilding.begin(), m_vReplacementBuilding.end(), iId);
+		}
+
+		for (int i = 0; i < iCount; i++)
+		{
+			GC.getBuildingInfo((BuildingTypes)getReplacementBuilding(i)).setReplacedBuilding(iId);
+		}
+	}
 	m_bEnablesOtherBuildings = CvBuildingInternal::calculateEnablesOtherBuildings(*this, (BuildingTypes)eThis);
 	m_bEnablesUnits = CvBuildingInternal::calculateEnablesUnits(*this, (BuildingTypes)eThis);
 
@@ -1940,6 +1948,7 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 	CheckSumC(iSum, m_freeBonuses);
 	CheckSumC(iSum, m_aePrereqOrRawVicinityBonuses);
 	CheckSumC(iSum, m_aePrereqOrBonuses);
+	CheckSumC(iSum, m_aiCategories);
 	CheckSumC(iSum, m_aiPrereqInCityBuildings);
 	CheckSumC(iSum, m_vPrereqNotInCityBuildings);
 	CheckSumC(iSum, m_vPrereqOrBuilding);
@@ -3029,7 +3038,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	if(pXML->TryMoveToXmlFirstChild(L"FreePromoTypes"))
 	{
 		const int iNum = pXML->GetXmlChildrenNumber(L"FreePromoType" );
-		m_aFreePromoTypes.resize(iNum); // Important to keep the delayed resolution pointers correct
+		m_aFreePromoTypes.resize(iNum);
 
 		if(pXML->TryMoveToXmlFirstChild())
 		{
@@ -3055,6 +3064,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	}
 
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiFreeTraitTypes, L"FreeTraitTypes");
+	pXML->SetOptionalVectorWithDelayedResolution(m_aiCategories, L"Categories");
 	pXML->SetOptionalVectorWithDelayedResolution(m_aiPrereqInCityBuildings, L"PrereqInCityBuildings");
 	pXML->SetOptionalVectorWithDelayedResolution(m_vPrereqNotInCityBuildings, L"PrereqNotInCityBuildings");
 	pXML->SetOptionalVectorWithDelayedResolution(m_vPrereqOrBuilding, L"PrereqOrBuildings");
@@ -3063,7 +3073,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	if(pXML->TryMoveToXmlFirstChild(L"HealUnitCombatTypes"))
 	{
 		const int iNum = pXML->GetXmlChildrenNumber(L"HealUnitCombatType" );
-		m_aHealUnitCombatTypes.resize(iNum); // Important to keep the delayed resolution pointers correct
+		m_aHealUnitCombatTypes.resize(iNum);
 
 		if(pXML->TryMoveToXmlFirstChild())
 		{
@@ -3087,7 +3097,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	if(pXML->TryMoveToXmlFirstChild(L"BonusAidModifiers"))
 	{
 		const int iNum = pXML->GetXmlChildrenNumber(L"BonusAidModifier" );
-		m_aBonusAidModifiers.resize(iNum); // Important to keep the delayed resolution pointers correct
+		m_aBonusAidModifiers.resize(iNum);
 
 		if(pXML->TryMoveToXmlFirstChild())
 		{
@@ -3112,7 +3122,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	if(pXML->TryMoveToXmlFirstChild(L"AidRateChanges"))
 	{
 		const int iNum = pXML->GetXmlChildrenNumber(L"AidRateChange" );
-		m_aAidRateChanges.resize(iNum); // Important to keep the delayed resolution pointers correct
+		m_aAidRateChanges.resize(iNum);
 
 		if(pXML->TryMoveToXmlFirstChild())
 		{
@@ -3184,7 +3194,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_iMaxPlayerInstances, L"iMaxPlayerInstances", -1);
 	pXML->GetOptionalChildXmlValByName(&m_iExtraPlayerInstances, L"iExtraPlayerInstances", 0);
 
-	pXML->SetVariableListTagPair(&m_piVictoryThreshold, L"VictoryThresholds",  GC.getNumVictoryInfos());
+	pXML->SetVariableListTagPair(&m_piVictoryThreshold, L"VictoryThresholds", GC.getNumVictoryInfos());
 
 	pXML->GetOptionalTypeEnumWithDelayedResolution(m_iFreeBuilding, L"FreeBuilding");
 	pXML->GetOptionalTypeEnumWithDelayedResolution(m_iFreeAreaBuilding, L"FreeAreaBuilding");
@@ -3261,29 +3271,6 @@ bool CvBuildingInfo::readPass3()
 
 	m_aszExtraXMLforPass3.clear();
 
-	int iCount = getNumReplacementBuilding();
-	if (iCount > 0)
-	{
-		// Toffer - Prune self reference, to make the code XML idiot proof.
-		//	A building was once set to replace itself, it caused an infinite loop in the canBuild logic used for MODDEROPTION_HIDE_REPLACED_BUILDINGS.
-		//	Instead of doing a self reference check in all loops for this vector I thought it more clean to just prune it here.
-		const int iId = GC.getInfoTypeForString(getType());
-
-		std::vector<int>::iterator itr = find(m_vReplacementBuilding.begin(), m_vReplacementBuilding.end(), iId);
-		while (itr != m_vReplacementBuilding.end())
-		{
-			FErrorMsg(CvString::format("%s is set to replace itself!!", getType()).c_str())
-			m_vReplacementBuilding.erase(itr);
-			iCount--;
-			itr = find(m_vReplacementBuilding.begin(), m_vReplacementBuilding.end(), iId);
-		}
-
-		// Toffer - As good a place as any to make this derived cache
-		for (int i = 0; i < iCount; i++)
-		{
-			GC.getBuildingInfo((BuildingTypes)getReplacementBuilding(i)).setReplacedBuilding(iId);
-		}
-	}
 	return true;
 }
 
@@ -4118,6 +4105,7 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo)
 	}
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aFreePromoTypes, pClassInfo->getFreePromoTypes());
 	GC.copyNonDefaultDelayedResolutionVector(m_aiFreeTraitTypes, pClassInfo->m_aiFreeTraitTypes);
+	GC.copyNonDefaultDelayedResolutionVector(m_aiCategories, pClassInfo->m_aiCategories);
 	GC.copyNonDefaultDelayedResolutionVector(m_aiPrereqInCityBuildings, pClassInfo->m_aiPrereqInCityBuildings);
 	GC.copyNonDefaultDelayedResolutionVector(m_vPrereqNotInCityBuildings, pClassInfo->m_vPrereqNotInCityBuildings);
 	GC.copyNonDefaultDelayedResolutionVector(m_vPrereqOrBuilding, pClassInfo->m_vPrereqOrBuilding);

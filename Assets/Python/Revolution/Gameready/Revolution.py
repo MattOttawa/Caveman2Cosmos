@@ -1132,7 +1132,7 @@ class Revolution:
 				if eRouteType != -1:
 					for i in xrange(GC.getNumTechInfos()):
 						tech = GC.getTechInfo(i)
-						if(GC.getRouteInfo(eRouteType).getTechMovementChange(i) != 0 and pTeam.isHasTech(i)):
+						if GC.getRouteInfo(eRouteType).getTechMovementChange(i) != 0 and pTeam.isHasTech(i):
 							bTechRouteModifier = True
 							break
 				if bTechRouteModifier:
@@ -2415,10 +2415,10 @@ class Revolution:
 							if handoverCities:
 
 								if self.LOG_DEBUG:
-									str = "[REV] Revolt: Offering peace in exchange for handover of: "
+									txt = "[REV] Revolt: Offering peace in exchange for handover of: "
 									for pCity in handoverCities:
-										str += "%s, "%pCity.getName()
-									print str
+										txt += pCity.getName() + ", "
+									print txt
 
 								# Determine strength of rebellion
 								bIsJoinWar = False
@@ -3212,15 +3212,15 @@ class Revolution:
 							return
 
 					# Sufferage or representation
-					[demoLevel,optionType] = RevUtils.getDemocracyLevel(pPlayer)
-					[newDemoLevel,newCivic] = RevUtils.getBestDemocracyLevel(pPlayer, optionType )
-					if( demoLevel < 0 and newDemoLevel > 0 and not newCivic == None ) :
+					[demoLevel, optionType] = RevUtils.getDemocracyLevel(pPlayer)
+					[newDemoLevel, newCivic] = RevUtils.getBestDemocracyLevel(pPlayer, optionType)
+					if demoLevel < 0 and newDemoLevel > 0 and not newCivic is None:
 
 							bodStr += ' ' + TRNSLTR.getText("TXT_KEY_REV_CAP_VOTE_REQUEST",())
-							if( newDemoLevel > 9 ) :
+							if newDemoLevel > 9:
 								if self.LOG_DEBUG: print "[REV] Revolt: Asking change to universal sufferage, " + str(newCivic)
 								bodStr += "  " + TRNSLTR.getText("TXT_KEY_REV_CAP_VOTE_US",()) + " %s!"%(GC.getCivicInfo(newCivic).getDescription())
-							else :
+							else:
 								if self.LOG_DEBUG: print "[REV] Revolt: Asking change to representation, " + str(newCivic)
 								bodStr += "  " + TRNSLTR.getText("TXT_KEY_REV_CAP_VOTE_CRIES",()) + " %s!' "%(GC.getCivicInfo(newCivic).getDescription()) +TRNSLTR.getText("TXT_KEY_REV_CAP_VOTE_MARCH",())
 
@@ -5221,7 +5221,6 @@ class Revolution:
 
 #***********************************
 						# Acquire city
-						#joinPlayer.acquireCity( pCity, False, True )
 
 						if self.LOG_DEBUG: print "[REV] Revolt: Population of %s before is %d"%(pCity.getName(),pCity.getPopulation())
 						if self.LOG_DEBUG: print "[REV] Revolt: Check city culture is %d, at %d, %d"%(pCity.getCulture(pPlayer.getID()), pCity.getX(),pCity.getY())
@@ -5404,7 +5403,6 @@ class Revolution:
 
 #***********************************
 							# Acquire city
-							#joinPlayer.acquireCity( pCity, False, True )
 
 							if self.LOG_DEBUG: print "[REV] Revolt: Population of %s before is %d"%(pCity.getName(),pCity.getPopulation())
 							if self.LOG_DEBUG: print "[REV] Revolt: Check city culture is %d, at %d, %d"%(pCity.getCulture(pPlayer.getID()), pCity.getX(),pCity.getY())
