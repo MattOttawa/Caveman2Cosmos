@@ -244,9 +244,11 @@ m_ppaiBonusYieldModifier(NULL)
 ,m_pExprConstructCondition(NULL)
 //TB Combat Mods (Buildings) begin
 ,m_iLinePriority(0)
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 ,m_iOutbreakBase(0)
 ,m_iOvercomeBase(0)
 ,m_iTradeCommunicability(0)
+#endif OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 ,m_iFrontSupportPercentModifier(0)
 ,m_iShortRangeSupportPercentModifier(0)
@@ -360,10 +362,12 @@ CvBuildingInfo::~CvBuildingInfo()
 		GC.removeDelayedResolution((int*)&(m_aEnabledCivilizationTypes[i]));
 	}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	for (int i = 0; i < (int)m_aAidRateChanges.size(); i++)
 	{
 		GC.removeDelayedResolution((int*)&(m_aAidRateChanges[i]));
 	}
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	for (int i = 0; i < (int)m_aiFreeTraitTypes.size(); i++)
 	{
@@ -1846,9 +1850,11 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, (int)m_ePromotionLineType);
 	//integers
 	CheckSum(iSum, m_iLinePriority);
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	CheckSum(iSum, m_iOutbreakBase);
 	CheckSum(iSum, m_iOvercomeBase);
 	CheckSum(iSum, m_iTradeCommunicability);
+#endif OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	CheckSum(iSum, m_iFrontSupportPercentModifier);
 	CheckSum(iSum, m_iShortRangeSupportPercentModifier);
@@ -1895,6 +1901,7 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aHealUnitCombatTypes[i].iHeal);
 	}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	iNumElements = m_aBonusAidModifiers.size();
 	for (int i = 0; i < iNumElements; ++i)
 	{
@@ -1909,6 +1916,7 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 		CheckSum(iSum, m_aAidRateChanges[i].ePropertyType);
 		CheckSum(iSum, m_aAidRateChanges[i].iChange);
 	}
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	iNumElements = m_aEnabledCivilizationTypes.size();
 	for (int i = 0; i < iNumElements; ++i)
@@ -1924,8 +1932,10 @@ void CvBuildingInfo::getCheckSum(uint32_t& iSum) const
 	CheckSumC(iSum, m_aUnitCombatDefenseAgainstModifiers);
 	CheckSumC(iSum, m_aUnitCombatProdModifiers);
 	CheckSumC(iSum, m_aUnitCombatOngoingTrainingDurations);
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	CheckSumC(iSum, m_aAfflictionOutbreakLevelChanges);
 	CheckSumC(iSum, m_aTechOutbreakLevelChanges);
+#endif OUTBREAKS_AND_AFFLICTIONS
 	CheckSumC(iSum, m_aiFreeTraitTypes);
 	CheckSumC(iSum, m_freeBonuses);
 	CheckSumC(iSum, m_aePrereqOrRawVicinityBonuses);
@@ -2976,9 +2986,11 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 	m_ePromotionLineType = (PromotionLineTypes) pXML->GetInfoClass(szTextVal);
 	//integers
 	pXML->GetOptionalChildXmlValByName(&m_iLinePriority, L"iLinePriority");
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->GetOptionalChildXmlValByName(&m_iOutbreakBase, L"iOutbreakBase");
 	pXML->GetOptionalChildXmlValByName(&m_iOvercomeBase, L"iOvercomeBase");
 	pXML->GetOptionalChildXmlValByName(&m_iTradeCommunicability, L"iTradeCommunicability");
+#endif OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	pXML->GetOptionalChildXmlValByName(&m_iFrontSupportPercentModifier, L"iFrontSupportPercentModifier");
 	pXML->GetOptionalChildXmlValByName(&m_iShortRangeSupportPercentModifier, L"iShortRangeSupportPercentModifier");
@@ -3071,6 +3083,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"BonusAidModifiers"))
 	{
 		const int iNum = pXML->GetXmlChildrenNumber(L"BonusAidModifier" );
@@ -3118,6 +3131,7 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	if(pXML->TryMoveToXmlFirstChild(L"EnabledCivilizationTypes"))
 	{
@@ -3156,9 +3170,10 @@ bool CvBuildingInfo::read(CvXMLLoadUtility* pXML)
 
 	pXML->SetOptionalPairVector<UnitCombatModifierArray, UnitCombatTypes, int>(&m_aUnitCombatOngoingTrainingDurations, L"UnitCombatOngoingTrainingDurations");
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->SetOptionalPairVector<PromotionLineModifierArray, PromotionLineTypes, int>(&m_aAfflictionOutbreakLevelChanges, L"AfflictionOutbreakLevelChanges");
-
 	pXML->SetOptionalPairVector<TechModifierArray, TechTypes, int>(&m_aTechOutbreakLevelChanges, L"TechOutbreakLevelChanges");
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	//Arrays
 	pXML->SetVariableListTagPair(&m_pabHurry, L"Hurrys", GC.getNumHurryInfos());
@@ -4063,9 +4078,11 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo)
 	if (getPromotionLineType() == NO_PROMOTIONLINE) m_ePromotionLineType = pClassInfo->getPromotionLineType();
 	//integers
 	if (getLinePriority() == iDefault) m_iLinePriority = pClassInfo->getLinePriority();
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if (getOutbreakBase() == iDefault) m_iOutbreakBase = pClassInfo->getOutbreakBase();
 	if (getOvercomeBase() == iDefault) m_iOvercomeBase = pClassInfo->getOvercomeBase();
 	if (getTradeCommunicability() == iDefault) m_iTradeCommunicability = pClassInfo->getTradeCommunicability();
+#endif OUTBREAKS_AND_AFFLICTIONS
 #ifdef STRENGTH_IN_NUMBERS
 	if (getFrontSupportPercentModifier() == iDefault) m_iFrontSupportPercentModifier = pClassInfo->getFrontSupportPercentModifier();
 	if (getShortRangeSupportPercentModifier() == iDefault) m_iShortRangeSupportPercentModifier = pClassInfo->getShortRangeSupportPercentModifier();
@@ -4106,8 +4123,10 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo)
 	GC.copyNonDefaultDelayedResolutionVector(m_vPrereqOrBuilding, pClassInfo->m_vPrereqOrBuilding);
 	GC.copyNonDefaultDelayedResolutionVector(m_vReplacementBuilding, pClassInfo->m_vReplacementBuilding);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aHealUnitCombatTypes, pClassInfo->m_aHealUnitCombatTypes);
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aBonusAidModifiers, pClassInfo->m_aBonusAidModifiers);
 	CvXMLLoadUtility::CopyNonDefaultsFromVector(m_aAidRateChanges, pClassInfo->m_aAidRateChanges);
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	if (getNumEnabledCivilizationTypes() == 0)
 	{
@@ -4186,6 +4205,7 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo)
 		}
 	}
 
+#if OUTBREAKS_AND_AFFLICTIONS
 	if (getNumAfflictionOutbreakLevelChanges()==0)
 	{
 		for (int i=0; i < pClassInfo->getNumAfflictionOutbreakLevelChanges(); i++)
@@ -4205,6 +4225,7 @@ void CvBuildingInfo::copyNonDefaults(CvBuildingInfo* pClassInfo)
 			m_aTechOutbreakLevelChanges.push_back(std::make_pair(eTech, iChange));
 		}
 	}
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	//Arrays
 	for ( int i = 0; i < GC.getNumHurryInfos(); i++ )

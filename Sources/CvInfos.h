@@ -812,9 +812,9 @@ public:
 	bool isRemoveStampede() const;
 	bool isOnslaughtChange() const;
 	bool isEquipment() const;
-#ifdef OUTBREAKS_AND_AFFLICTIONS
+//#ifdef OUTBREAKS_AND_AFFLICTIONS
 	bool isAffliction() const;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+//#endif
 	bool isParalyze() const;
 	bool isMakesDamageCold() const;
 	bool isMakesDamageNotCold() const;
@@ -1018,7 +1018,7 @@ public:
 
 	int getNumAfflictOnAttackChangeTypes() const;
 	const AfflictOnAttackChange& getAfflictOnAttackChangeType(int iAfflictionLine) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif
 
 	int getNumHealUnitCombatChangeTypes() const;
 	const HealUnitCombat& getHealUnitCombatChangeType(int iUnitCombat) const;
@@ -1053,7 +1053,7 @@ public:
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	int getNumDistanceAttackCommunicabilityTypeChanges() const;
 	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	// TB Combat Mods End  TB SubCombat Mod end
 
@@ -1137,26 +1137,29 @@ protected:
 	int m_iUpgradeDiscount;
 	int m_iExperiencePercent;
 	int m_iKamikazePercent;
+
 	int m_iAirCombatLimitChange;
 	int m_iCelebrityHappy;
 	int m_iCollateralDamageLimitChange;
 	int m_iCollateralDamageMaxUnitsChange;
 	int m_iCombatLimitChange;
 	int m_iExtraDropRange;
+
 	int m_iSurvivorChance;
 	int m_iVictoryAdjacentHeal;
 	int m_iVictoryHeal;
 	int m_iVictoryStackHeal;
-
 	bool m_bDefensiveVictoryMove;
 	bool m_bFreeDrop;
 	bool m_bOffensiveVictoryMove;
 	bool m_bOneUp;
+
 	bool m_bPillageEspionage;
 	bool m_bPillageMarauder;
 	bool m_bPillageOnMove;
 	bool m_bPillageOnVictory;
 	bool m_bPillageResearch;
+
 	bool m_bLeader;
 	bool m_bBlitz;
 	bool m_bAmphib;
@@ -1231,7 +1234,7 @@ protected:
 	int m_iMediumRangeSupportPercentChange;
 	int m_iLongRangeSupportPercentChange;
 	int m_iFlankSupportPercentChange;
-#endif // STRENGTH_IN_NUMBERS
+#endif
 	int m_iDodgeModifierChange;
 	int m_iPrecisionModifierChange;
 	int m_iPowerShotsChange;
@@ -1243,9 +1246,12 @@ protected:
 	int m_iEnduranceChange;
 	int m_iRoundStunProbChange;
 	int m_iPoisonProbabilityModifierChange;
+
 	int m_iCaptureProbabilityModifierChange;
 	int m_iCaptureResistanceModifierChange;
+
 	int m_iPeaksWorkPercent;
+
 	int m_iBreakdownChanceChange;
 	int m_iBreakdownDamageChange;
 	int m_iTauntChange;
@@ -1255,8 +1261,10 @@ protected:
 	int m_iGroupChange;
 	int m_iLevelPrereq;
 	int m_iDamageModifierChange;
+
 	int m_iUpkeepModifier;
 	int m_iExtraUpkeep100;
+
 	int m_iRBombardDamageChange;
 	int m_iRBombardDamageLimitChange;
 	int m_iRBombardDamageMaxUnitsChange;
@@ -1299,7 +1307,7 @@ protected:
 	bool m_bEquipment;
 #ifdef OUTBREAKS_AND_AFFLICTIONS
 	bool m_bAffliction;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif
 	bool m_bParalyze;
 	bool m_bMakesDamageCold;
 	bool m_bMakesDamageNotCold;
@@ -1378,7 +1386,7 @@ protected:
 	std::vector<PromotionLineModifier> m_aAfflictionFortitudeChangeModifiers;
 	std::vector<AfflictOnAttackChange> m_aAfflictOnAttackChangeTypes;
 	std::vector<AfflictionLineChanges> m_aDistanceAttackCommunicabilityTypeChanges;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif
 	std::vector<HealUnitCombat> m_aHealUnitCombatChangeTypes;
 	std::vector<InvisibleTerrainChanges> m_aInvisibleTerrainChanges;
 	std::vector<InvisibleFeatureChanges> m_aInvisibleFeatureChanges;
@@ -1392,6 +1400,7 @@ protected:
 	//TB Combat Mods End  TB SubCombat Mod end
 
 	//Pediahelp
+	std::vector<int> m_aiQualifiedUnitCombatTypes;
 	std::vector<int> m_disqualifiedUnitCombatTypes;
 };
 
@@ -1915,7 +1924,7 @@ public:
 	int getCureAfflictionType(int i) const;
 	int getNumCureAfflictionTypes() const;
 	bool isCureAfflictionType(int i) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	int getHealAsType(int i) const;
 	int getNumHealAsTypes() const;
@@ -1980,13 +1989,13 @@ public:
 	int getNumVisibleFeatureRangeChanges() const;
 	const InvisibleFeatureChanges& getVisibleFeatureRangeChange(int iIndex) const;
 
-	int getNumDistanceAttackCommunicabilityTypeChanges() const;
+	int getNumVisibleImprovementRangeChanges() const;
 	const InvisibleImprovementChanges& getVisibleImprovementRangeChange(int iIndex) const;
 
 #ifdef OUTBREAKS_AND_AFFLICTIONS
-	int getNumVisibleImprovementRangeChanges() const;
+	int getNumDistanceAttackCommunicabilityTypeChanges() const;
 	const AfflictionLineChanges& getDistanceAttackCommunicabilityTypeChange(int iIndex) const;
-#endif // OUTBREAKS_AND_AFFLICTIONS
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	int getNumEnabledCivilizationTypes() const;
 	const EnabledCivilizations& getEnabledCivilizationType(int iIndex) const;

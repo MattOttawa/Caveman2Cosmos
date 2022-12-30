@@ -2675,7 +2675,9 @@ bool CvUnitInfo::isTrapImmunityUnitCombatType(int i) const
 	FASSERT_BOUNDS(0, GC.getNumUnitCombatInfos(), i);
 	return algo::any_of_equal(m_aiTrapImmunityUnitCombatTypes, i);
 }
-//struct vectors
+
+
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitInfo::getNumAfflictionFortitudeModifiers() const
 {
 	return (int)m_aAfflictionFortitudeModifiers.size();
@@ -2697,6 +2699,7 @@ const AfflictOnAttack& CvUnitInfo::getAfflictOnAttackType(int iAfflictionLine) c
 	FASSERT_BOUNDS(0, getNumAfflictOnAttackTypes(), iAfflictionLine);
 	return m_aAfflictOnAttackTypes[iAfflictionLine];
 }
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 int CvUnitInfo::getNumHealUnitCombatTypes() const
 {
@@ -2809,6 +2812,7 @@ const InvisibleImprovementChanges& CvUnitInfo::getVisibleImprovementRangeChange(
 	return m_aVisibleImprovementRangeChanges[iIndex];
 }
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 int CvUnitInfo::getNumDistanceAttackCommunicabilityTypeChanges() const
 {
 	return (int)m_aDistanceAttackCommunicabilityTypeChanges.size();
@@ -2818,6 +2822,7 @@ const AfflictionLineChanges& CvUnitInfo::getDistanceAttackCommunicabilityTypeCha
 {
 	return m_aDistanceAttackCommunicabilityTypeChanges[iIndex];
 }
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 // bool vector utilizing delayed resolution
 int CvUnitInfo::getNumEnabledCivilizationTypes() const
@@ -3916,7 +3921,9 @@ void CvUnitInfo::getCheckSum(uint32_t& iSum) const
 	CheckSum(iSum, m_bGatherHerd);
 	//boolean vectors without delayed resolution
 	CheckSumC(iSum, m_aiSubCombatTypes);
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	CheckSumC(iSum, m_aiCureAfflictionTypes);
+#endif OUTBREAKS_AND_AFFLICTIONS
 	CheckSumC(iSum, m_aiHealAsTypes);
 	CheckSumC(iSum, m_vTerrainImpassableTypes);
 	CheckSumC(iSum, m_vFeatureImpassableTypes);
@@ -4591,7 +4598,9 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 	pXML->GetOptionalChildXmlValByName(&m_bGatherHerd, L"bGatherHerd");
 
 	pXML->SetOptionalVector(&m_aiSubCombatTypes, L"SubCombatTypes");
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	pXML->SetOptionalVector(&m_aiCureAfflictionTypes, L"CureAfflictionTypes");
+#endif OUTBREAKS_AND_AFFLICTIONS
 	pXML->SetOptionalVector(&m_vTerrainImpassableTypes, L"TerrainImpassableTypes");
 	pXML->SetOptionalVector(&m_vFeatureImpassableTypes, L"FeatureImpassableTypes");
 	pXML->SetOptionalVector(&m_aeMapCategoryTypes, L"MapCategoryTypes");
@@ -4909,6 +4918,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		pXML->MoveToXmlParent();
 	}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if(pXML->TryMoveToXmlFirstChild(L"DistanceAttackCommunicabilityTypeChanges"))
 	{
 		int i = 0;
@@ -4930,6 +4940,7 @@ bool CvUnitInfo::read(CvXMLLoadUtility* pXML)
 		}
 		pXML->MoveToXmlParent();
 	}
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 	if(pXML->TryMoveToXmlFirstChild(L"EnabledCivilizationTypes"))
 	{

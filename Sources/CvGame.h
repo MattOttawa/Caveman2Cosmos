@@ -894,21 +894,8 @@ public:
 	template <class T>
 	bool isValidByGameOption(const T& info) const
 	{
-		foreach_(const GameOptionTypes eOption, info.getNotOnGameOptions())
-		{
-			if (isOption(eOption))
-			{
-				return false;
-			}
-		}
-		foreach_(const GameOptionTypes eOption, info.getOnGameOptions())
-		{
-			if (!isOption(eOption))
-			{
-				return false;
-			}
-		}
-		return true;
+		return algo::none_of(info.getNotOnGameOptions(), bind(CvGame::isOption, this, _1))
+			&& algo::all_of(info.getOnGameOptions(), bind(CvGame::isOption, this, _1));
 	}
 
 	bool isAutoRaze(const CvCity* city, const PlayerTypes eNewOwner) const;

@@ -5791,6 +5791,8 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 						iValue += kBuilding.getHealUnitCombatType(iI).iHeal / 4;
 					}
 					iValue += kBuilding.getHealRateChange() / 2;
+
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 					for (int iI = 0; iI < kBuilding.getNumAidRateChanges(); iI++)
 					{
 						iValue += kBuilding.getAidRateChange(iI).iChange / 3;//Update
@@ -5802,6 +5804,7 @@ int CvCityAI::AI_buildingValueThresholdOriginalUncached(BuildingTypes eBuilding,
 							iValue += kBuilding.getBonusAidModifier(iI).iModifier / 3;
 						}
 					}
+#endif OUTBREAKS_AND_AFFLICTIONS
 				}
 
 				if (kBuilding.getGlobalPopulationChange() != 0)

@@ -18504,6 +18504,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 			szBuffer.append(gDLL->getText("TXT_KEY_UNITHELP_TRAP_COMPLEXITY", iComplexity));
 		}
 
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 		//Afflict on Attack
 		for (int iI = 0; iI < kUnit.getNumAfflictOnAttackTypes(); ++iI)
 		{
@@ -18520,6 +18521,7 @@ void CvGameTextMgr::setBasicUnitHelpWithCity(CvWStringBuffer &szBuffer, UnitType
 				szBuffer.append(gDLL->getText("TXT_KEY_AFFLICT_ON_ATTACK", iProbability, GC.getPromotionLineInfo(eAfflictionLine).getDescription()));
 			}
 		}
+#endif OUTBREAKS_AND_AFFLICTIONS
 
 		if (kUnit.getPoisonProbabilityModifier() > 0)
 		{

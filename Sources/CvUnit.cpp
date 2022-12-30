@@ -20319,36 +20319,13 @@ bool CvUnit::isPromotionValid(PromotionTypes ePromotion, bool bFree, bool bKeepC
 		}
 
 		//Disable via NotOnGameOption tag:
-		for (int iI = 0; iI < promo.getNumNotOnGameOptions(); iI++)
+		if (!GC.getGame().isValidByGameOption(promo))
 		{
-			if (GC.getGame().isOption((GameOptionTypes)promo.getNotOnGameOption(iI)))
-			{
-				return false;
-			}
+			return false;
 		}
-		for (int iI = 0; iI < promo.getNumOnGameOptions(); iI++)
+		if (promo.getPromotionLine() != NO_PROMOTIONLINE && !GC.getGame().isValidByGameOption(GC.getPromotionLineInfo(promo.getPromotionLine())))
 		{
-			if (!GC.getGame().isOption((GameOptionTypes)promo.getOnGameOption(iI)))
-			{
-				return false;
-			}
-		}
-		if (promo.getPromotionLine() != NO_PROMOTIONLINE)
-		{
-			for (int iI = 0; iI < GC.getPromotionLineInfo(promo.getPromotionLine()).getNumNotOnGameOptions(); iI++)
-			{
-				if (GC.getGame().isOption((GameOptionTypes)GC.getPromotionLineInfo(promo.getPromotionLine()).getNotOnGameOption(iI)))
-				{
-					return false;
-				}
-			}
-			for (int iI = 0; iI < GC.getPromotionLineInfo(promo.getPromotionLine()).getNumNotOnGameOptions(); iI++)
-			{
-				if (!GC.getGame().isOption((GameOptionTypes)GC.getPromotionLineInfo(promo.getPromotionLine()).getNotOnGameOption(iI)))
-				{
-					return false;
-				}
-			}
+			return false;
 		}
 	}
 	// Very few reasons to deny a unit promotions that are specifically set to be a free for it.

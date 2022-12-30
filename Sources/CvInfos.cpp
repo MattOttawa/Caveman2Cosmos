@@ -3427,9 +3427,9 @@ bool CvPromotionInfo::isEquipment() const
 	return GC.getPromotionLineInfo(getPromotionLine()).isEquipment();
 }
 
-#ifdef OUTBREAKS_AND_AFFLICTIONS
 bool CvPromotionInfo::isAffliction() const
 {
+#ifdef OUTBREAKS_AND_AFFLICTIONS
 	if ( getPromotionLine() == NO_PROMOTIONLINE)
 	{
 		return false; // require afflictions to always be parts of lines
@@ -3437,8 +3437,10 @@ bool CvPromotionInfo::isAffliction() const
 
 	// return the value from the line
 	return GC.getPromotionLineInfo(getPromotionLine()).isAffliction();
+#else
+	return false;
+#endif OUTBREAKS_AND_AFFLICTIONS
 }
-#endif // OUTBREAKS_AND_AFFLICTIONS
 
 bool CvPromotionInfo::isParalyze() const
 {
