@@ -201,6 +201,12 @@ public:
 	void		Write(const char* name, int& idHint, int& idSeq, double value);
 	void		Write(const char* name, int& idHint, int& idSeq, int count, const double values[]);
 
+	template <typename T, size_t N>
+	void Write(const char* name, int& idHint, int& idSeq, const bst::array<T, N>& values)
+	{
+		Write(name, idHint, idSeq, N, values.data());
+	}
+
 	void		WriteString(const char* name, int& idHint, int& idSeq, const wchar_t* szName);
 	void		WriteString(const char* name, int& idHint, int& idSeq, const char* szName);
 	void		WriteString(const char* name, int& idHint, int& idSeq, const std::string& szName);
@@ -265,6 +271,12 @@ public:
 
 	void Read(const char* name, double* value);
 	void Read(const char* name, int count, double values[]);
+
+	template <typename T, size_t N>
+	void Read(const char* name, bst::array<T, N>& values)
+	{
+		Read(name, N, values.data());
+	}
 
 	void SkipElement(const char* name, SaveValueType saveType);
 

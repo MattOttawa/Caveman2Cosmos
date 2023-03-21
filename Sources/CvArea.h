@@ -40,8 +40,8 @@ public:
 	void clearModifierTotals();
 
 	// for serialization
-	virtual void read(FDataStreamBase* pStream);
-	virtual void write(FDataStreamBase* pStream);
+	void read(FDataStreamBase* pStream);
+	void write(FDataStreamBase* pStream) const;
 
 	int calculateTotalBestNatureYield() const;
 
@@ -176,29 +176,29 @@ protected:
 
 	bool m_bWater;
 
-	int* m_aiUnitsPerPlayer;
-	int* m_aiAnimalsPerPlayer;
-	int* m_aiCitiesPerPlayer;
-	int* m_aiPopulationPerPlayer;
-	int* m_aiBuildingGoodHealth;
-	int* m_aiBuildingBadHealth;
-	int* m_aiBuildingHappiness;
-	int* m_aiFreeSpecialist;
-	int* m_aiPower;
-	int* m_aiBestFoundValue;
-	int* m_aiMaintenanceModifier;
-	int* m_aiNumRevealedTiles;
-	int* m_aiCleanPowerCount;
-	int* m_aiBorderObstacleCount;
+	bst::array<int, MAX_PLAYERS> m_aiUnitsPerPlayer;
+	bst::array<int, MAX_PLAYERS> m_aiAnimalsPerPlayer;
+	bst::array<int, MAX_PLAYERS> m_aiCitiesPerPlayer;
+	bst::array<int, MAX_PLAYERS> m_aiPopulationPerPlayer;
+	bst::array<int, MAX_PLAYERS> m_aiBuildingGoodHealth;
+	bst::array<int, MAX_PLAYERS> m_aiBuildingBadHealth;
+	bst::array<int, MAX_PLAYERS> m_aiBuildingHappiness;
+	bst::array<int, MAX_PLAYERS> m_aiFreeSpecialist;
+	bst::array<int, MAX_PLAYERS> m_aiPower;
+	bst::array<int, MAX_PLAYERS> m_aiBestFoundValue;
+	bst::array<int, MAX_PLAYERS> m_aiMaintenanceModifier;
+	bst::array<int, MAX_TEAMS> m_aiNumRevealedTiles;
+	bst::array<int, MAX_TEAMS> m_aiCleanPowerCount;
+	bst::array<int, MAX_TEAMS> m_aiBorderObstacleCount;
 	int* m_aiSpawnValidPlotCount;
 	int* m_paiNumBonuses;
 	int* m_paiNumImprovements;
 
-	bool* m_abHomeArea;
+	bst::array<bool, MAX_PLAYERS> m_abHomeArea;
 
-	AreaAITypes* m_aeAreaAIType;
+	bst::array<AreaAITypes, MAX_TEAMS> m_aeAreaAIType;
 
-	IDInfo* m_aTargetCities;
+	bst::array<IDInfo, MAX_PLAYERS> m_aTargetCities;
 
 	int** m_aaiYieldRateModifier;
 	int** m_aaiNumTrainAIUnits;
@@ -212,7 +212,7 @@ protected:
 
 private:
 	int m_iLastGameTurnRecorded;
-	TurnCombatResults m_combatRecord[COMBAT_RECORD_LENGTH];
+	bst::array<TurnCombatResults, COMBAT_RECORD_LENGTH> m_combatRecord;
 
 //
 // Algorithm/range helpers
